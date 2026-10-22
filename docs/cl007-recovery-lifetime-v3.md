@@ -10,6 +10,8 @@ Host 激活时取得对象固定成本额度；第一个原生异步事件取得
 
 正常 Applied 移除事件，队列完全排空且没有移交材料时释放批次 token。隔离时恢复 store 与 Host 共享同一 token，不重复占用批次，也不提前释放；Unknown 永不因窗口销毁、焦点变化、停用或额度紧张而清除。额度耗尽时新事件仍交给应用，旧材料、顺序与来源保持不变。用户显式放弃才可解除未解决材料的额度。
 
+同步 fallback、候选 Finalize 与取消也属于实际写入入口：在写锁内确认 scope 后、改变核心/确认接管之前取得相同 epoch 预算。独立的同步事务材料标注操作类型（不能伪装成来自系统的原生信封）、来源 epoch 和 Started/Writing/Unknown；实际编辑完全完成才释放。预算满时原生 fallback 不吃键，UI操作明确失败且不写入；监测不健康时原生新键透传。迟到的已放弃批次由 store 的来源 epoch 水位拒绝复活。恢复正文同一 store 同时只允许一个视图显示，防止反复打开产生不计费的无限副本。
+
 恢复材料的来源 `instance/epoch`、每条 sequence/outcome 和文本保存在不含 COM/HWND 的独立 store；全模块登记未解决 store，已停用 Host 不再是唯一所有者。窗口只是视图。重复交付同一 epoch 更新同一批材料，不能生成重复历史；不同 epoch 分批。恢复主 HWND 外部销毁只清视图句柄，不清 store。独立的无原文恢复入口允许用户明确重建主窗口，仍须再次点击查看才显示内容。材料不会自动插入新文档，Unknown 不会自动重放。
 
 每个 UI owner 另有无文本 broker HWND；watchdog 与卸载清理请求投递到 broker。`DllCanUnloadNow` 在任意线程仅回收真实 OS 已退出的后台线程，并向其他 STA 的 broker 发有界无文本清理请求；不能取得或移动 Rc/COM、跨线程 DestroyWindow，也不等待 STA。只有 owner STA 可销毁自己的 HWND、注销类和释放其模块租约。失败通知、未泵消息、宿主卡住、未解决材料及未完成回调继续保持 S_FALSE。
