@@ -36,7 +36,8 @@ class EvidenceTests(unittest.TestCase):
             folder = Path(temporary)
             path, _, runtime = self.evidence(folder)
             loaded, _, counts = MODULE.validate_evidence(path)
-            self.assertEqual(loaded, runtime)
+            # Windows临时目录可能由8.3短名展开；核对物理文件身份，不依赖路径拼写。
+            self.assertTrue(loaded.samefile(runtime))
             self.assertEqual(counts["unknown_frequencies"], 1)
             self.assertEqual(counts["multi_character_entries"], 1)
             runtime.write_text(runtime.read_text(encoding="utf-8") + "坏行\n", encoding="utf-8", newline="\n")
