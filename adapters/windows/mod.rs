@@ -2,9 +2,12 @@
 #![allow(non_snake_case)]
 mod candidate;
 mod keys;
+mod ownership;
+mod recovery;
 mod registration;
 mod service;
 mod session;
+mod watchdog;
 use std::panic::{AssertUnwindSafe, catch_unwind};
 use windows::Win32::Foundation::E_UNEXPECTED;
 use windows_core::{Error, GUID, Result};

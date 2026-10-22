@@ -60,6 +60,7 @@ pub(crate) struct CandidateUi {
     id: u32,
     class: Vec<u16>,
     instance: HINSTANCE,
+    closed: bool,
 }
 struct BegunElement {
     manager: ITfUIElementMgr,
@@ -158,10 +159,14 @@ impl CandidateUi {
             id,
             class,
             instance,
+            closed: false,
         })
     }
     pub fn update(&mut self, frame: InputFrame, rect: RECT) -> Result<()> {
         self.view.valid()?;
+        if self.closed || self.view.window.get().is_invalid() {
+            return Err(Error::from_hresult(E_FAIL));
+        }
         self.view.selected.set(frame.highlighted.unwrap_or(0));
         *self.view.frame.borrow_mut() = frame;
         let height = (self.view.frame.borrow().page_size as i32) * 30 + 8;
@@ -191,6 +196,10 @@ impl CandidateUi {
         Ok(())
     }
     pub fn close(&mut self) {
+        if self.closed {
+            return;
+        }
+        self.closed = true;
         // 安全：先销毁窗口释放 userdata，再注销独占 class，最后结束 UI element。
         unsafe {
             if !self.view.window.get().is_invalid() {
@@ -203,9 +212,7 @@ impl CandidateUi {
 }
 impl Drop for CandidateUi {
     fn drop(&mut self) {
-        if !self.view.window.get().is_invalid() {
-            self.close();
-        }
+        self.close();
     }
 }
 
@@ -375,6 +382,9 @@ unsafe extern "system" fn window_proc(window: HWND, message: u32, w: WPARAM, l: 
             }
             let ptr = GetWindowLongPtrW(window, GWLP_USERDATA) as *const View;
             if message == WM_NCDESTROY {
+                if !ptr.is_null() {
+                    (&*ptr).window.set(HWND::default());
+                }
                 SetWindowLongPtrW(window, GWLP_USERDATA, 0);
                 return Ok(DefWindowProcW(window, message, w, l));
             }
@@ -453,6 +463,221 @@ unsafe extern "system" fn window_proc(window: HWND, message: u32, w: WPARAM, l: 
 mod tests {
     use super::*;
     use cloudleaf_types::{InputEvent, Key};
+    use windows_core::Ref;
+
+    #[derive(Default)]
+    struct UiState {
+        begun: Cell<u32>,
+        ended: Cell<u32>,
+        fail_begin: Cell<bool>,
+        fail_end: Cell<bool>,
+        element: RefCell<Option<ITfUIElement>>,
+    }
+    #[implement(ITfThreadMgr, ITfUIElementMgr, Agile = false)]
+    struct UiManager {
+        state: Rc<UiState>,
+    }
+    impl ITfThreadMgr_Impl for UiManager_Impl {
+        fn Activate(&self) -> Result<u32> {
+            Err(Error::from_hresult(E_NOTIMPL))
+        }
+        fn Deactivate(&self) -> Result<()> {
+            Err(Error::from_hresult(E_NOTIMPL))
+        }
+        fn CreateDocumentMgr(&self) -> Result<ITfDocumentMgr> {
+            Err(Error::from_hresult(E_NOTIMPL))
+        }
+        fn EnumDocumentMgrs(&self) -> Result<IEnumTfDocumentMgrs> {
+            Err(Error::from_hresult(E_NOTIMPL))
+        }
+        fn GetFocus(&self) -> Result<ITfDocumentMgr> {
+            Err(Error::from_hresult(E_NOTIMPL))
+        }
+        fn SetFocus(&self, _focus: Ref<ITfDocumentMgr>) -> Result<()> {
+            Err(Error::from_hresult(E_NOTIMPL))
+        }
+        fn AssociateFocus(
+            &self,
+            _window: HWND,
+            _focus: Ref<ITfDocumentMgr>,
+        ) -> Result<ITfDocumentMgr> {
+            Err(Error::from_hresult(E_NOTIMPL))
+        }
+        fn IsThreadFocus(&self) -> Result<windows_core::BOOL> {
+            Err(Error::from_hresult(E_NOTIMPL))
+        }
+        fn GetFunctionProvider(&self, _id: *const GUID) -> Result<ITfFunctionProvider> {
+            Err(Error::from_hresult(E_NOTIMPL))
+        }
+        fn EnumFunctionProviders(&self) -> Result<IEnumTfFunctionProviders> {
+            Err(Error::from_hresult(E_NOTIMPL))
+        }
+        fn GetGlobalCompartment(&self) -> Result<ITfCompartmentMgr> {
+            Err(Error::from_hresult(E_NOTIMPL))
+        }
+    }
+    impl ITfUIElementMgr_Impl for UiManager_Impl {
+        fn BeginUIElement(
+            &self,
+            element: Ref<ITfUIElement>,
+            show: *mut windows_core::BOOL,
+            id: *mut u32,
+        ) -> Result<()> {
+            self.state.begun.set(self.state.begun.get() + 1);
+            if self.state.fail_begin.get() {
+                return Err(Error::from_hresult(E_FAIL));
+            }
+            *self.state.element.borrow_mut() = Some(element.as_ref().unwrap().clone());
+            // 安全：生产构造函数提供有效的输出地址，测试不显示或激活窗口。
+            unsafe {
+                *show = false.into();
+                *id = 91;
+            }
+            Ok(())
+        }
+        fn UpdateUIElement(&self, id: u32) -> Result<()> {
+            assert_eq!(id, 91);
+            Ok(())
+        }
+        fn EndUIElement(&self, id: u32) -> Result<()> {
+            assert_eq!(id, 91);
+            self.state.ended.set(self.state.ended.get() + 1);
+            if self.state.fail_end.get() {
+                return Err(Error::from_hresult(E_FAIL));
+            }
+            self.state.element.borrow_mut().take();
+            Ok(())
+        }
+        fn GetUIElement(&self, _id: u32) -> Result<ITfUIElement> {
+            Err(Error::from_hresult(E_NOTIMPL))
+        }
+        fn EnumUIElements(&self) -> Result<IEnumTfUIElements> {
+            Err(Error::from_hresult(E_NOTIMPL))
+        }
+    }
+    fn candidate_fixture(state: &Rc<UiState>) -> (Shared, ITfContext, InputFrame) {
+        let host = super::super::session::tests::host(0, false);
+        host.engine
+            .borrow_mut()
+            .handle(InputEvent::Key(Key::Char('n')));
+        let manager: ITfThreadMgr = UiManager {
+            state: state.clone(),
+        }
+        .into();
+        *host.manager.borrow_mut() = Some(manager);
+        let context = host.context.borrow().clone().unwrap();
+        let frame = host.engine.borrow().frame();
+        (host, context, frame)
+    }
+
+    #[test]
+    fn externally_destroyed_candidate_releases_class_and_ends_element_once() {
+        for _ in 0..20 {
+            let state = Rc::new(UiState::default());
+            let (host, context, frame) = candidate_fixture(&state);
+            let mut ui = CandidateUi::new(host.clone(), context, frame.clone()).unwrap();
+            let weak = Rc::downgrade(&ui.view);
+            let window = ui.view.window.get();
+            let class = ui.class.clone();
+            let instance = ui.instance;
+            // 安全：销毁测试创建且从未显示的真实 Win32 窗口，模拟系统提前销毁。
+            unsafe {
+                DestroyWindow(window).unwrap();
+            }
+            assert!(ui.view.window.get().is_invalid());
+            assert!(ui.update(frame, RECT::default()).is_err());
+            ui.close();
+            ui.close();
+            assert_eq!(state.ended.get(), 1);
+            // 安全：独占窗口类应已注销，查询失败不更改系统配置。
+            assert!(
+                unsafe {
+                    GetClassInfoW(
+                        Some(instance),
+                        PCWSTR(class.as_ptr()),
+                        &mut WNDCLASSW::default(),
+                    )
+                }
+                .is_err()
+            );
+            drop(ui);
+            assert_eq!(state.ended.get(), 1);
+            assert!(state.element.borrow().is_none());
+            assert!(weak.upgrade().is_none());
+        }
+    }
+
+    #[test]
+    fn end_element_failure_does_not_keep_native_window_or_class_alive() {
+        let state = Rc::new(UiState::default());
+        state.fail_end.set(true);
+        let (host, context, frame) = candidate_fixture(&state);
+        let mut ui = CandidateUi::new(host.clone(), context, frame).unwrap();
+        let weak = Rc::downgrade(&ui.view);
+        let window = ui.view.window.get();
+        let class = ui.class.clone();
+        let instance = ui.instance;
+        ui.close();
+        ui.close();
+        // 安全：查询本测试窗口及类，不销毁其他应用资源。
+        assert!(!unsafe { IsWindow(Some(window)) }.as_bool());
+        assert!(
+            unsafe {
+                GetClassInfoW(
+                    Some(instance),
+                    PCWSTR(class.as_ptr()),
+                    &mut WNDCLASSW::default(),
+                )
+            }
+            .is_err()
+        );
+        drop(ui);
+        assert_eq!(state.ended.get(), 1);
+        // 宿主拒绝注销并保留 element 时仍持有租约；显式释放后才可释放 View。
+        assert!(weak.upgrade().is_some());
+        state.element.borrow_mut().take();
+        assert!(weak.upgrade().is_none());
+    }
+
+    #[test]
+    fn failed_begin_or_class_registration_balances_only_successful_begin() {
+        let state = Rc::new(UiState::default());
+        state.fail_begin.set(true);
+        let (host, context, frame) = candidate_fixture(&state);
+        assert!(CandidateUi::new(host.clone(), context.clone(), frame.clone()).is_err());
+        assert_eq!(state.ended.get(), 0);
+        state.fail_begin.set(false);
+        // 安全：预占本测试的同名类，使生产注册失败；失败清理不能注销别人的类。
+        let instance = HINSTANCE(unsafe { GetModuleHandleW(None).unwrap() }.0);
+        let class: Vec<u16> = format!("CloudleafCandidate_{}_91", host.owner)
+            .encode_utf16()
+            .chain([0])
+            .collect();
+        let wc = WNDCLASSW {
+            lpfnWndProc: Some(window_proc),
+            hInstance: instance,
+            lpszClassName: PCWSTR(class.as_ptr()),
+            ..Default::default()
+        };
+        assert_ne!(unsafe { RegisterClassW(&wc) }, 0);
+        let failed = CandidateUi::new(host, context, frame).is_err();
+        let retained = unsafe {
+            GetClassInfoW(
+                Some(instance),
+                PCWSTR(class.as_ptr()),
+                &mut WNDCLASSW::default(),
+            )
+        }
+        .is_ok();
+        unsafe {
+            UnregisterClassW(PCWSTR(class.as_ptr()), Some(instance)).unwrap();
+        }
+        assert!(failed);
+        assert!(retained);
+        assert_eq!(state.begun.get(), 2);
+        assert_eq!(state.ended.get(), 1);
+        assert!(state.element.borrow().is_none());
+    }
     #[test]
     fn application_owned_ui_can_query_page_count_before_allocating_indices() {
         let host = super::super::session::tests::host(0, false);

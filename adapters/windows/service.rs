@@ -119,6 +119,8 @@ pub unsafe extern "system" fn DllGetClassObject(
 }
 #[unsafe(no_mangle)]
 pub extern "system" fn DllCanUnloadNow() -> HRESULT {
+    super::watchdog::reap();
+    super::recovery::reap();
     if OBJECTS.load(Ordering::Acquire) == 0 && LOCKS.load(Ordering::Acquire) == 0 {
         S_OK
     } else {
@@ -148,6 +150,10 @@ impl ITfTextInputProcessor_Impl for Service_Impl {
                 return Err(Error::from_hresult(E_UNEXPECTED));
             }
             self.host.client.set(client);
+            if let Err(error) = self.host.start_platform() {
+                self.host.client.set(0);
+                return Err(error);
+            }
             *self.host.manager.borrow_mut() = Some(manager.clone());
             let key: ITfKeyEventSink = self.to_interface();
             let thread: ITfThreadMgrEventSink = self.to_interface();
@@ -185,6 +191,7 @@ impl ITfTextInputProcessor_Impl for Service_Impl {
                 }
                 self.host.manager.borrow_mut().take();
                 self.host.client.set(0);
+                self.host.stop_platform();
                 self.host
                     .engine
                     .borrow_mut()
@@ -223,6 +230,7 @@ impl ITfTextInputProcessor_Impl for Service_Impl {
                 .borrow_mut()
                 .handle(cloudleaf_types::InputEvent::Deactivate);
             self.host.client.set(0);
+            self.host.stop_platform();
             cleanup
         })
     }
@@ -249,10 +257,7 @@ impl ITfKeyEventSink_Impl for Service_Impl {
             if unsafe { context.GetStatus()?.dwDynamicFlags & TS_SD_READONLY != 0 } {
                 return Ok(false.into());
             }
-            match keys::normalize(w, l) {
-                Some(key) => Ok(self.host.disposition(key)?.into()),
-                None => Ok(false.into()),
-            }
+            Ok(self.host.native_probe(keys::normalize(w, l))?.into())
         })
     }
     fn OnTestKeyUp(&self, _context: Ref<ITfContext>, _w: WPARAM, _l: LPARAM) -> Result<BOOL> {
@@ -263,15 +268,12 @@ impl ITfKeyEventSink_Impl for Service_Impl {
     }
     fn OnKeyDown(&self, context: Ref<ITfContext>, w: WPARAM, l: LPARAM) -> Result<BOOL> {
         boundary(|| {
-            let Some(key) = keys::normalize(w, l) else {
-                return Ok(false.into());
-            };
             let context = context
                 .as_ref()
                 .ok_or_else(|| Error::from_hresult(E_POINTER))?
                 .clone();
             self.host.focus(Some(context))?;
-            Ok(self.host.key(key)?.into())
+            Ok(self.host.native_key(w, l)?.into())
         })
     }
     fn OnKeyUp(&self, _context: Ref<ITfContext>, _w: WPARAM, _l: LPARAM) -> Result<BOOL> {
@@ -322,3 +324,7 @@ impl Service_Impl {
         self.host.focus(context)
     }
 }
+
+#[cfg(test)]
+#[path = "lifecycle_review_tests.rs"]
+mod lifecycle_review_tests;

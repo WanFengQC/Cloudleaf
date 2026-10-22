@@ -15,6 +15,10 @@ struct Data {
     pending: RefCell<VecDeque<ITfEditSession>>,
     host: RefCell<std::rc::Weak<Host>>,
     calls: RefCell<Vec<&'static str>>,
+    write_owner: Cell<u8>,
+    selection: RefCell<Option<ITfRange>>,
+    blocked_detection: Cell<Option<Detection>>,
+    blocked_quarantine: Cell<bool>,
 }
 
 #[implement(ITfRange, Agile = false)]
@@ -51,12 +55,501 @@ fn fixture() -> (Shared, Rc<Data>, ITfContext) {
     let context: ITfContext = Context { data: data.clone() }.into();
     *host.context.borrow_mut() = Some(context.clone());
     host.engine.borrow_mut().handle(InputEvent::Activate);
+    host.projection.borrow_mut().handle(InputEvent::Activate);
     (host, data, context)
 }
+
+fn native_fixture() -> (Shared, Rc<Data>, ITfContext) {
+    let (host, data, context) = fixture();
+    host.projection.borrow_mut().handle(InputEvent::Activate);
+    *host.watchdog.borrow_mut() = Some(Watchdog::start().unwrap());
+    host.scope_proof.set(Some(Instant::now()));
+    (host, data, context)
+}
+fn native(host: &Shared, virtual_key: u16) -> bool {
+    use windows::Win32::UI::Input::KeyboardAndMouse::{GetKeyboardState, SetKeyboardState};
+    struct RestoreKeyboard([u8; 256]);
+    impl Drop for RestoreKeyboard {
+        fn drop(&mut self) {
+            // 安全：只还原当前测试线程的输入状态表，不影响其他线程或全局键盘指示灯。
+            unsafe { SetKeyboardState(&self.0).unwrap() };
+        }
+    }
+    let mut previous = [0u8; 256];
+    // 安全：缓冲区完整有效；测试固定无修饰状态，不依赖操作人员当前 Caps Lock。
+    unsafe { GetKeyboardState(&mut previous).unwrap() };
+    let _restore = RestoreKeyboard(previous);
+    unsafe { SetKeyboardState(&[0u8; 256]).unwrap() };
+    host.native_key(
+        windows::Win32::Foundation::WPARAM(virtual_key as usize),
+        windows::Win32::Foundation::LPARAM(1),
+    )
+    .unwrap()
+}
+
+#[test]
+fn native_owned_fifo_drains_before_second_space_native_command_and_rejects_late_callback() {
+    use windows::Win32::UI::Input::KeyboardAndMouse::VK_SPACE;
+    let (host, data, _) = native_fixture();
+    assert!(native(&host, b'N' as u16));
+    assert!(native(&host, b'I' as u16));
+    assert!(native(&host, VK_SPACE.0));
+    assert_eq!(data.writes.get(), 0);
+    assert_eq!(host.owned.borrow().len(), 3);
+    assert!(!native(&host, VK_SPACE.0));
+    assert_eq!(text(&data), "你");
+    assert!(host.owned.borrow().is_empty());
+    let writes = data.writes.get();
+    // 原生第二个 Space 仍属于应用；由测试应用插入，晚到旧回调不能覆盖或插入额外空格。
+    data.text.borrow_mut().push(' ' as u16);
+    drain(&data);
+    assert_eq!(text(&data), "你 ");
+    assert_eq!(data.writes.get(), writes);
+    assert!(!host.quarantined.get());
+}
+
+#[test]
+fn native_probe_is_readonly_and_queue_full_does_not_take_new_key() {
+    let (host, data, _) = native_fixture();
+    let before = host.engine.borrow().frame();
+    let projection = host.projection.borrow().frame();
+    for _ in 0..100 {
+        assert!(host.native_probe(Some(Key::Char('n'))).unwrap());
+    }
+    assert_eq!(before, host.engine.borrow().frame());
+    assert_eq!(projection, host.projection.borrow().frame());
+    assert_eq!(host.native_sequence.get(), 1);
+    for _ in 0..QUEUE_LIMIT {
+        assert!(native(&host, b'N' as u16));
+    }
+    let next = host.native_sequence.get();
+    assert!(!native(&host, b'N' as u16));
+    assert_eq!(host.native_sequence.get(), next);
+    assert_eq!(host.owned.borrow().len(), QUEUE_LIMIT);
+    assert!(host.quarantined.get());
+    drain(&data);
+    assert_eq!(data.writes.get(), 0);
+}
+
+#[test]
+fn native_barrier_rejection_preserves_owned_events_and_does_not_fake_enter() {
+    use windows::Win32::UI::Input::KeyboardAndMouse::{VK_RETURN, VK_SPACE};
+    let (host, data, _) = native_fixture();
+    assert!(native(&host, b'N' as u16));
+    assert!(native(&host, VK_SPACE.0));
+    data.mode.set(7);
+    assert!(!native(&host, VK_RETURN.0));
+    assert!(host.quarantined.get());
+    assert_eq!(host.owned.borrow().len(), 2);
+    assert!(
+        host.owned
+            .borrow()
+            .snapshot()
+            .iter()
+            .all(|event| event.outcome == Outcome::NotApplied)
+    );
+    data.mode.set(0);
+    drain(&data);
+    assert_eq!(data.writes.get(), 0);
+    assert_eq!(text(&data), "");
+}
+
+#[test]
+fn native_async_partial_write_is_unknown_with_no_automatic_retry() {
+    let (host, data, _) = native_fixture();
+    assert!(native(&host, b'N' as u16));
+    data.mode.set(2);
+    drain(&data);
+    assert!(host.quarantined.get());
+    assert_eq!(
+        host.owned.borrow().front().unwrap().outcome,
+        Outcome::Unknown
+    );
+    assert_eq!(data.writes.get(), 1);
+    data.mode.set(0);
+    drain(&data);
+    assert!(!native(&host, b'I' as u16));
+    assert_eq!(data.writes.get(), 1);
+    assert_eq!(text(&data), "n");
+}
+
+#[test]
+fn native_external_edit_invalidates_scope_and_old_composition_without_erasing_host_text() {
+    let (host, data, context) = native_fixture();
+    assert!(native(&host, b'N' as u16));
+    drain(&data);
+    data.text.borrow_mut().extend("应用".encode_utf16());
+    let observer: ITfTextEditSink = TextObserver {
+        host: Rc::downgrade(&host),
+        epoch: host.epoch.get(),
+        _lease: super::super::service::Lease::new(),
+    }
+    .into();
+    // 安全：直接注入外部编辑通知，不读取或操作系统应用；旧range的扩大不允许导致删除。
+    unsafe {
+        observer.OnEndEdit(&context, 7, None).unwrap();
+    }
+    drain(&data);
+    assert_eq!(text(&data), "n应用");
+    assert!(host.scope_proof.get().is_none());
+    assert!(host.composition.borrow().is_none());
+    assert!(!native(&host, b'I' as u16));
+    assert_eq!(text(&data), "n应用");
+}
+
+#[test]
+fn native_end_edit_uses_client_write_ownership_true_false_and_error_without_reading_text() {
+    for owner in [0, 1, 2] {
+        let (host, data, context) = native_fixture();
+        assert!(native(&host, b'N' as u16));
+        drain(&data);
+        data.write_owner.set(owner);
+        let epoch = host.epoch.get();
+        let observer: ITfTextEditSink = TextObserver {
+            host: Rc::downgrade(&host),
+            epoch,
+            _lease: super::super::service::Lease::new(),
+        }
+        .into();
+        let writes = data.writes.get();
+        // 安全：实际生产 sink 的 COM 通知只拿只读 cookie，外部通知只能异步结束旧组合。
+        unsafe {
+            observer.OnEndEdit(&context, 7, None).unwrap();
+        }
+        assert!(host.scope_proof.get().is_none());
+        assert!(data.calls.borrow().contains(&"InWriteSession"));
+        assert_eq!(data.writes.get(), writes);
+        if owner == 1 {
+            assert_eq!(host.epoch.get(), epoch);
+            assert!(host.composition.borrow().is_some());
+            assert!(data.pending.borrow().is_empty());
+        } else {
+            assert_ne!(host.epoch.get(), epoch);
+            assert!(host.composition.borrow().is_none());
+            assert_eq!(data.endings.get(), 0);
+            assert_eq!(data.pending.borrow().len(), 1);
+            drain(&data);
+            assert_eq!(data.endings.get(), 1);
+            assert_eq!(text(&data), "n");
+        }
+    }
+}
+
+#[test]
+fn native_sync_fallback_async_select_cancel_and_next_commit_keep_projection_semantics() {
+    let (host, data, _) = native_fixture();
+    host.scope_proof.set(None);
+    assert!(native(&host, b'N' as u16));
+    assert_eq!(text(&data), "n");
+    assert!(native(&host, b'I' as u16));
+    drain(&data);
+    let frame = host.engine.borrow().frame();
+    host.select(frame.revision, frame.candidates[0].id.clone())
+        .unwrap();
+    assert_eq!(text(&data), "你");
+    assert!(native(&host, b'N' as u16));
+    host.cancel().unwrap();
+    assert!(host.owned.borrow().is_empty());
+    assert_eq!(host.engine.borrow().frame().preedit, "");
+    assert_eq!(host.projection.borrow().frame().preedit, "");
+    assert!(native(&host, b'N' as u16));
+    assert!(native(&host, b'I' as u16));
+    drain(&data);
+    assert!(!host.quarantined.get());
+    let frame = host.engine.borrow().frame();
+    host.select(frame.revision, frame.candidates[0].id.clone())
+        .unwrap();
+    assert_eq!(text(&data), "你你");
+}
+
+#[test]
+fn native_unknown_and_focus_reset_do_not_require_shadow_ids_to_equal_actual_ids() {
+    use windows::Win32::UI::Input::KeyboardAndMouse::VK_SPACE;
+    let (host, data, context) = native_fixture();
+    assert!(native(&host, b'N' as u16));
+    assert!(native(&host, b'I' as u16));
+    assert!(native(&host, VK_SPACE.0));
+    // 投影已经计划后续一次提交；实际首个写入发生 Unknown，不能给 actual 补假 ACK。
+    data.mode.set(2);
+    drain(&data);
+    assert!(host.quarantined.get());
+    data.mode.set(0);
+    host.owned.borrow_mut().clear();
+    host.unknown_text.set(true);
+    host.invalidate().unwrap();
+    drain(&data);
+    *host.context.borrow_mut() = Some(context);
+    // 模拟用户在恢复后的新目标选择原文末尾；没有自动搬运或回放 Unknown 原文。
+    *data.selection.borrow_mut() = Some(
+        Range {
+            data: data.clone(),
+            start: Cell::new(data.text.borrow().len()),
+            end: Cell::new(data.text.borrow().len()),
+        }
+        .into(),
+    );
+    host.scope_proof.set(Some(Instant::now()));
+    assert_ne!(
+        host.engine.borrow().frame().revision,
+        host.projection.borrow().frame().revision
+    );
+    assert!(native(&host, b'N' as u16));
+    assert!(native(&host, b'I' as u16));
+    drain(&data);
+    assert!(!host.quarantined.get());
+    let frame = host.engine.borrow().frame();
+    host.select(frame.revision, frame.candidates[0].id.clone())
+        .unwrap();
+    assert_eq!(text(&data), "n你");
+    assert!(!host.quarantined.get());
+}
+
+#[test]
+fn native_semantic_comparison_only_excludes_revision_and_commit_id() {
+    let (host, data, _) = native_fixture();
+    assert!(native(&host, b'N' as u16));
+    let planned = host.owned.borrow().front().unwrap().planned.clone();
+    let mut actual = planned.clone();
+    actual.frame.revision += 19;
+    assert!(same_semantics(&actual, &planned));
+    actual.frame.cursor += 1;
+    assert!(!same_semantics(&actual, &planned));
+    let mut actual = planned.clone();
+    actual.error = Some(cloudleaf_types::CoreError::new(
+        cloudleaf_types::ErrorCode::InvalidInput,
+        "模拟 ID 耗尽",
+    ));
+    assert!(!same_semantics(&actual, &planned));
+    drain(&data);
+}
+
+#[test]
+fn native_empty_composition_delete_has_the_same_unknown_boundary_as_nonempty_writes() {
+    use windows::Win32::UI::Input::KeyboardAndMouse::VK_ESCAPE;
+    for mode in [0u8, 2, 4, 9] {
+        let (host, data, _) = native_fixture();
+        seed_composition(&host, &data);
+        assert!(native(&host, VK_ESCAPE.0));
+        data.mode.set(mode);
+        drain(&data);
+        assert_eq!(text(&data), "");
+        assert_eq!(data.writes.get(), 1);
+        if mode == 0 {
+            assert!(host.owned.borrow().is_empty());
+            assert!(!host.quarantined.get());
+            assert!(!host.unknown_text.get());
+        } else {
+            assert!(host.quarantined.get());
+            assert!(host.unknown_text.get());
+            assert_eq!(
+                host.owned.borrow().front().unwrap().outcome,
+                Outcome::Unknown
+            );
+            if mode == 9 {
+                assert_eq!(
+                    host.watchdog.borrow().as_ref().unwrap().detection(),
+                    Detection::Unknown
+                );
+                assert_eq!(data.blocked_detection.get(), Some(Detection::Unknown));
+                assert!(!data.blocked_quarantine.get());
+                assert_eq!(data.endings.get(), 0);
+            }
+            let writes = data.writes.get();
+            data.mode.set(0);
+            data.text.borrow_mut().extend("应用新文本".encode_utf16());
+            host.invalidate().unwrap();
+            drain(&data);
+            assert_eq!(text(&data), "应用新文本");
+            assert_eq!(data.writes.get(), writes);
+        }
+    }
+}
+
+fn platform_fixture() -> (Shared, Rc<Data>, ITfContext) {
+    let (host, data, context) = fixture();
+    host.start_platform().unwrap();
+    host.scope_proof.set(Some(Instant::now()));
+    (host, data, context)
+}
+fn pump_notifications() {
+    use windows::Win32::UI::WindowsAndMessaging::*;
+    let mut message = MSG::default();
+    // 安全：仅分发当前测试 STA 的消息，不向任何应用生成键盘或文本消息。
+    unsafe {
+        while PeekMessageW(&mut message, None, 0, 0, PM_REMOVE).as_bool() {
+            let _ = TranslateMessage(&message);
+            DispatchMessageW(&message);
+        }
+    }
+}
+fn wait_native(mut condition: impl FnMut() -> bool, pump: bool) {
+    let deadline = Instant::now() + Duration::from_secs(3);
+    while !condition() {
+        assert!(
+            Instant::now() < deadline,
+            "独立检测或 STA 通知未在诊断期限内到达"
+        );
+        if pump {
+            pump_notifications();
+        }
+        std::thread::sleep(Duration::from_millis(5));
+    }
+}
+fn close_platform_fixture(host: Shared, data: &Data) {
+    use windows::Win32::{
+        Foundation::{LPARAM, WPARAM},
+        UI::WindowsAndMessaging::*,
+    };
+    let window = host.recovery.borrow().as_ref().unwrap().handle();
+    host.stop_platform();
+    drain(data);
+    drop(host);
+    // 安全：只关闭测试创建的恢复窗口；此时已无 Host，用户放弃材料不会触及宿主文档。
+    unsafe { SendMessageW(window, WM_CLOSE, Some(WPARAM(0)), Some(LPARAM(0))) };
+    wait_native(
+        || {
+            super::super::watchdog::reap();
+            super::super::recovery::reap();
+            unsafe { !IsWindow(Some(window)).as_bool() }
+        },
+        true,
+    );
+}
+
+#[test]
+fn native_watchdog_without_more_input_notifies_sta_and_seals_the_late_callback() {
+    let (host, data, _) = platform_fixture();
+    assert!(native(&host, b'N' as u16));
+    wait_native(
+        || host.watchdog.borrow().as_ref().unwrap().detection() == Detection::QueuedExpired,
+        false,
+    );
+    assert!(!host.quarantined.get());
+    assert_eq!(data.writes.get(), 0);
+    wait_native(|| host.quarantined.get(), true);
+    assert!(host.recovery.borrow().as_ref().unwrap().has_material());
+    assert_eq!(
+        host.owned.borrow().front().unwrap().outcome,
+        Outcome::NotApplied
+    );
+    drain(&data);
+    assert_eq!(data.writes.get(), 0);
+    close_platform_fixture(host, &data);
+}
+
+#[test]
+fn native_watchdog_failed_notification_is_bounded_and_next_sta_entry_recovers_ownership() {
+    let (host, data, _) = platform_fixture();
+    host.watchdog
+        .borrow()
+        .as_ref()
+        .unwrap()
+        .inject_delivery_failure(true);
+    assert!(native(&host, b'N' as u16));
+    wait_native(
+        || {
+            host.watchdog
+                .borrow()
+                .as_ref()
+                .unwrap()
+                .notification_attempts()
+                == 4
+        },
+        false,
+    );
+    assert_eq!(
+        host.watchdog.borrow().as_ref().unwrap().detection(),
+        Detection::MonitorFailed
+    );
+    assert!(!host.quarantined.get());
+    std::thread::sleep(Duration::from_millis(60));
+    assert_eq!(
+        host.watchdog
+            .borrow()
+            .as_ref()
+            .unwrap()
+            .notification_attempts(),
+        4
+    );
+    assert!(!native(&host, b'I' as u16));
+    assert!(host.quarantined.get());
+    assert!(host.recovery.borrow().as_ref().unwrap().has_material());
+    drain(&data);
+    assert_eq!(data.writes.get(), 0);
+    close_platform_fixture(host, &data);
+}
+
+#[test]
+fn native_watchdog_peer_failure_stops_admission_and_notifies_the_real_sta_window() {
+    let (host, data, _) = platform_fixture();
+    assert!(native(&host, b'N' as u16));
+    host.watchdog
+        .borrow()
+        .as_ref()
+        .unwrap()
+        .inject_primary_stall();
+    wait_native(
+        || host.watchdog.borrow().as_ref().unwrap().detection() == Detection::MonitorFailed,
+        false,
+    );
+    wait_native(|| host.quarantined.get(), true);
+    assert!(host.recovery.borrow().as_ref().unwrap().has_material());
+    assert!(!native(&host, b'I' as u16));
+    drain(&data);
+    assert_eq!(data.writes.get(), 0);
+    close_platform_fixture(host, &data);
+}
+
+#[test]
+fn native_empty_delete_reentrant_focus_cannot_end_or_erase_the_new_context_again() {
+    use windows::Win32::UI::Input::KeyboardAndMouse::VK_ESCAPE;
+    let (host, data, _) = native_fixture();
+    seed_composition(&host, &data);
+    assert!(native(&host, VK_ESCAPE.0));
+    data.mode.set(3);
+    drain(&data);
+    assert_eq!(data.writes.get(), 1);
+    assert_eq!(data.endings.get(), 1);
+    assert_eq!(
+        host.owned.borrow().front().unwrap().outcome,
+        Outcome::Unknown
+    );
+    data.text.borrow_mut().extend("应用新文本".encode_utf16());
+    drain(&data);
+    assert_eq!(text(&data), "应用新文本");
+    assert_eq!(data.writes.get(), 1);
+    assert_eq!(data.endings.get(), 1);
+}
+
+#[test]
+fn native_empty_delete_end_reentrant_focus_preserves_the_new_context_composition() {
+    use windows::Win32::UI::Input::KeyboardAndMouse::VK_ESCAPE;
+    let (host, data, old_context) = native_fixture();
+    seed_composition(&host, &data);
+    assert!(native(&host, VK_ESCAPE.0));
+    data.mode.set(10);
+    drain(&data);
+    assert_eq!(data.writes.get(), 1);
+    assert_eq!(data.endings.get(), 1);
+    assert_ne!(host.context.borrow().as_ref(), Some(&old_context));
+    assert!(host.composition.borrow().is_some());
+    assert_eq!(text(&data), "新上下文文本");
+    assert_eq!(
+        host.owned.borrow().front().unwrap().outcome,
+        Outcome::Unknown
+    );
+    drain(&data);
+    assert_eq!(data.writes.get(), 1);
+    assert!(host.composition.borrow().is_some());
+}
+
 fn seed_composition(host: &Shared, data: &Rc<Data>) {
     // 直接布置初始组合用于隔离写入阶段；不把这一步算作原生按键成功证据。
     for c in ['n', 'i'] {
         host.engine
+            .borrow_mut()
+            .handle(InputEvent::Key(Key::Char(c)));
+        host.projection
             .borrow_mut()
             .handle(InputEvent::Key(Key::Char(c)));
     }
@@ -122,7 +615,7 @@ impl ITfRange_Impl for Range_Impl {
         } else {
             unsafe { std::slice::from_raw_parts(pchtext.0, cch as usize) }.to_vec()
         };
-        let start = self.start.get();
+        let start = self.start.get().min(self.data.text.borrow().len());
         let end = self.end.get().min(self.data.text.borrow().len());
         self.data
             .text
@@ -130,6 +623,15 @@ impl ITfRange_Impl for Range_Impl {
             .splice(start..end, value.clone());
         self.end.set(start + value.len());
         self.data.writes.set(self.data.writes.get() + 1);
+        if self.data.mode.get() == 9 {
+            // 故意阻塞当前 STA 的宿主写调用；独立监测仍须在没有消息泵时标记 Unknown。
+            std::thread::sleep(Duration::from_millis(650));
+            let host = self.data.host.borrow().upgrade().unwrap();
+            self.data
+                .blocked_detection
+                .set(Some(host.watchdog.borrow().as_ref().unwrap().detection()));
+            self.data.blocked_quarantine.set(host.quarantined.get());
+        }
         if self.data.mode.get() == 3 {
             // 在真正的写入回调内部重入生产失焦，随后观察生产清理的执行顺序。
             self.data.mode.set(0);
@@ -271,8 +773,8 @@ impl ITfRange_Impl for Range_Impl {
     fn Clone(&self) -> windows_core::Result<ITfRange> {
         Ok(Range {
             data: self.data.clone(),
-            start: Cell::new(self.start.get()),
-            end: Cell::new(self.end.get()),
+            start: Cell::new(self.start.get().min(self.data.text.borrow().len())),
+            end: Cell::new(self.end.get().min(self.data.text.borrow().len())),
         }
         .into())
     }
@@ -309,7 +811,12 @@ impl ITfContext_Impl for Context_Impl {
         Ok(TS_S_ASYNC)
     }
     fn InWriteSession(&self, tid: u32) -> windows_core::Result<windows_core::BOOL> {
-        Err(Error::from_hresult(E_NOTIMPL))
+        self.data.calls.borrow_mut().push("InWriteSession");
+        match self.data.write_owner.get() {
+            0 => Ok(false.into()),
+            1 => Ok(true.into()),
+            _ => Err(Error::from_hresult(E_FAIL)),
+        }
     }
     fn GetSelection(
         &self,
@@ -321,7 +828,12 @@ impl ITfContext_Impl for Context_Impl {
     ) -> windows_core::Result<()> {
         unsafe {
             *pselection = TF_SELECTION {
-                range: std::mem::ManuallyDrop::new(Some(range(&self.data))),
+                range: std::mem::ManuallyDrop::new(Some(
+                    match self.data.selection.borrow().as_ref() {
+                        Some(selection) => selection.Clone()?,
+                        None => range(&self.data),
+                    },
+                )),
                 style: TF_SELECTIONSTYLE::default(),
             };
             *pcfetched = 1;
@@ -337,6 +849,14 @@ impl ITfContext_Impl for Context_Impl {
         if self.data.mode.get() == 5 {
             return Err(Error::from_hresult(E_FAIL));
         }
+        // 安全：调用期间选择结构及 range 引用有效，复制锚点而非保留借用。
+        *self.data.selection.borrow_mut() = unsafe {
+            (*pselection)
+                .range
+                .as_ref()
+                .map(|range| range.Clone())
+                .transpose()?
+        };
         Ok(())
     }
     fn GetStart(&self, ec: u32) -> windows_core::Result<ITfRange> {
@@ -448,6 +968,29 @@ impl ITfComposition_Impl for Composition_Impl {
         self.data.endings.set(self.data.endings.get() + 1);
         if self.data.mode.get() == 4 {
             return Err(Error::from_hresult(E_FAIL));
+        }
+        if self.data.mode.get() == 10 {
+            // 故意在旧 EndComposition 内切换 context 并安装新组合，旧事务不得取走新资源。
+            self.data.mode.set(0);
+            let host = self.data.host.borrow().upgrade().unwrap();
+            host.invalidate()?;
+            self.data
+                .text
+                .borrow_mut()
+                .extend("新上下文文本".encode_utf16());
+            *host.context.borrow_mut() = Some(
+                Context {
+                    data: self.data.clone(),
+                }
+                .into(),
+            );
+            *host.composition.borrow_mut() = Some(
+                Composition {
+                    data: self.data.clone(),
+                    range: range(&self.data),
+                }
+                .into(),
+            );
         }
         Ok(())
     }
