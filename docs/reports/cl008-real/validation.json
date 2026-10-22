@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "git_head": "3b69e51f603f9622e8d0fdb54867ea6917a2e50b",
+  "measured_at_utc": "2026-10-22T07:54:04.380409+00:00",
+  "source_fingerprint_schema": "cloudleaf-source-v2",
+  "source_sha256": "733ee9dd11d94534737b9cef87da9144762ece4b83428d1b0758073640ab537b",
+  "source_unchanged": true,
+  "checks": [
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--workspace",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.37s\n"
+    },
+    {
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.27s\n"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "stdout": "\nrunning 10 tests\ntest tests::tied_frequency_prefers_longer_text_then_id ... ok\ntest tests::annotations_do_not_change_ranking ... ok\ntest tests::ordering_is_stable_when_rows_are_reordered ... ok\ntest tests::exact_matches_precede_higher_frequency_prefix_matches ... ok\ntest tests::duplicate_text_across_pronunciations_uses_the_best_match ... ok\ntest tests::bucket_limits_preserve_global_top_k_despite_cross_bucket_duplicates ... ok\ntest tests::prototype_generates_words_and_keeps_annotations_separate ... ok\ntest tests::limits_bound_output_and_keep_best_unique_candidates ... ok\ntest tests::unknown_invalid_empty_inputs_and_waiting_boundaries_have_no_candidates ... ok\ntest tests::large_matching_bucket_cannot_exceed_the_public_candidate_limit ... ok\n\ntest result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 2 tests\ntest tests::removing_exact_priority_changes_the_synthetic_control ... ok\ntest tests::ablation_keeps_duplicate_texts_stable_across_parse_paths ... ok\n\ntest result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 7 tests\ntest tests::missing_or_unknown_versions_and_invalid_header_are_rejected ... ok\ntest tests::empty_dictionary_and_crlf_files_are_supported ... ok\ntest tests::limited_queries_preserve_best_unique_texts ... ok\ntest tests::corrupt_rows_are_never_silently_skipped ... ok\ntest tests::prototype_is_valid_and_queries_use_the_whole_pronunciation ... ok\ntest tests::only_the_last_syllable_may_be_a_prefix ... ok\ntest tests::size_and_field_limits_are_enforced ... ok\n\ntest result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 17 tests\ntest tests::activation_is_required_and_idempotent ... ok\ntest tests::failed_commit_preserves_selection_and_complete_failed_request ... ok\ntest tests::cursor_edits_and_backspace_operate_before_the_cursor ... ok\ntest tests::english_mode_and_idle_system_keys_are_passed_through ... ok\ntest tests::punctuation_only_failure_remains_recoverable_until_explicit_cancel ... ok\ntest tests::navigation_crosses_pages_and_clamps_at_both_ends ... ok\ntest tests::exhausted_revision_or_commit_ids_are_not_reused ... ok\ntest tests::punctuation_uses_selected_candidate_and_unknown_unicode_keeps_raw ... ok\ntest tests::cancel_focus_loss_deactivation_and_mode_switch_clear_old_context ... ok\ntest tests::text_change_resets_highlight_and_page_to_current_candidates ... ok\ntest tests::no_dictionary_or_no_match_falls_back_to_exact_raw_input ... ok\ntest tests::stale_confirmation_cannot_clear_new_composition_or_new_request ... ok\ntest tests::selection_and_page_numbering_are_bounded_to_current_page ... ok\ntest tests::overlong_input_and_control_character_do_not_mutate_composition ... ok\ntest tests::space_and_enter_commit_once_without_extra_text_or_annotation ... ok\ntest tests::unavailable_digit_and_zero_preserve_raw_text_and_character ... ok\ntest tests::deterministic_mixed_events_preserve_state_invariants ... ok\n\ntest result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 1 test\ntest fixed_input_corpus_and_candidate_ranking ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s\n\n\nrunning 9 tests\ntest known_failure_retains_full_text_and_requires_explicit_new_request ... ok\ntest queue_bound_preserves_owned_events_and_focus_cancellation_invalidates_frames ... ok\ntest utf16_offsets_and_submission_text_do_not_include_annotations ... ok\ntest unknown_outcome_does_not_become_retryable_failure_or_clear_new_context ... ok\ntest delayed_commit_serializes_owned_input_and_resumes_in_original_order ... ok\ntest native_probe_is_read_only_and_shortcuts_never_become_characters ... ok\ntest duplicate_native_callback_does_not_repeat_input_or_commit ... ok\ntest old_instance_ack_is_rejected_even_when_request_ids_collide ... ok\ntest rejected_queue_event_keeps_its_sequence_until_caller_retries ... ok\n\ntest result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 4 tests\ntest utf16_offsets_reject_split_characters_and_count_surrogate_pairs ... ok\ntest candidate_selection_requires_current_revision_and_id ... ok\ntest configurable_pages_obey_candidate_budget_and_current_page_digits ... ok\ntest readonly_prediction_matches_dispatch_in_all_input_states ... ok\n\ntest result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s\n\n\nrunning 9 tests\ntest tests::invalid_input_is_never_silently_truncated ... ok\ntest tests::continuous_pinyin_and_uppercase_are_supported ... ok\ntest tests::keyboard_umlaut_spelling_is_supported ... ok\ntest tests::explicit_separator_prevents_syllable_merging ... ok\ntest tests::deleting_a_prefix_recomputes_the_segmentation ... ok\ntest tests::trailing_partial_syllable_is_preserved ... ok\ntest tests::six_letter_syllables_and_standard_ju_qu_xu_spelling_work ... ok\ntest tests::ambiguous_paths_have_a_stable_order ... ok\ntest tests::ambiguous_long_input_is_bounded_and_covers_every_letter ... ok\n\ntest result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s\n\n\nrunning 1 test\ntest model::tests::integer_log_is_monotone_and_exact_at_powers ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 11 tests\ntest nullable_frequency_and_legacy_manual_are_preserved ... ok\ntest invalid_limits_and_models_fail_before_search ... ok\ntest rejects_malformed_records_without_echoing_them ... ok\ntest lattice_is_bound_to_original_lexicon ... ok\ntest prefix_cannot_invent_future_syllables_and_oov_never_disappears ... ok\ntest explicit_boundaries_and_utf8_spans_cover_every_raw_byte ... ok\ntest budgets_are_explicit_and_resident_high_water_includes_active_and_clone ... ok\ntest bigram_future_can_defeat_narrow_beam_and_context_is_only_finite_pool ... ok\ntest no_inherited_thirty_two_parse_limit ... ok\ntest all_reference_paths_match_exact_kbest_with_text_duplicates_and_fixed_seed_inputs ... ok\ntest load_limits_are_explicit_and_v2_can_exceed_legacy_entry_limit ... ok\n\ntest result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.92s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 1 test\ntest tests::error_has_stable_code_and_location ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+      "stderr": "    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s\n     Running unittests src\\lib.rs (target\\debug\\deps\\cloudleaf_candidate-1b859b2ce2488501.exe)\n     Running unittests src\\main.rs (target\\debug\\deps\\cloudleaf_cli-d7edcf75ce8be503.exe)\n     Running unittests src\\bin\\evaluate.rs (target\\debug\\deps\\cloudleaf_evaluate-6b8661e5248d7704.exe)\n     Running unittests src\\lib.rs (target\\debug\\deps\\cloudleaf_dictionary-97d5d1931c5db13c.exe)\n     Running unittests src\\lib.rs (target\\debug\\deps\\cloudleaf_input-70eb31a13f379e46.exe)\n     Running tests\\corpus.rs (target\\debug\\deps\\corpus-b5144bc9ef7c773d.exe)\n     Running tests\\platform_contract.rs (target\\debug\\deps\\platform_contract-e8cb9aa6bb34ac95.exe)\n     Running tests\\platform_contract_v2.rs (target\\debug\\deps\\platform_contract_v2-de9c169bdbc916a0.exe)\n     Running unittests src\\lib.rs (target\\debug\\deps\\cloudleaf_pinyin-6d9594f965da5b78.exe)\n     Running unittests src\\lib.rs (target\\debug\\deps\\cloudleaf_search-3634ab27c777b10d.exe)\n     Running tests\\search_contract.rs (target\\debug\\deps\\search_contract-40be5d70b918624e.exe)\n     Running unittests examples\\resource_probe.rs (target\\debug\\examples\\resource_probe-57a965b9662559e4.exe)\n     Running unittests examples\\search_probe.rs (target\\debug\\examples\\search_probe-65e8423dee404a5c.exe)\n     Running unittests src\\lib.rs (target\\debug\\deps\\cloudleaf_types-1b7cfb7fea61cc5d.exe)\n"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--doc",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "stdout": "\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+      "stderr": "    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.05s\n   Doc-tests cloudleaf_candidate\n   Doc-tests cloudleaf_dictionary\n   Doc-tests cloudleaf_input\n   Doc-tests cloudleaf_pinyin\n   Doc-tests cloudleaf_search\n   Doc-tests cloudleaf_types\n"
+    },
+    {
+      "command": [
+        "python",
+        "scripts/check_workspace.py"
+      ],
+      "returncode": 0,
+      "stdout": "资源已验证：tests/evaluation/algorithm-v1.tsv (83 条)\n资源已验证：tests/fixtures/input-v1.tsv (41 条)\n资源已验证：data/dictionaries/prototype.tsv (64 条)\n资源已验证：tests/search-mechanics-v1/cases.tsv (13 条)\n资源已验证：tests/search-mechanics-v1/lexicon.tsv (13 条)\n资源已验证：tests/search-resources-v1/cases.tsv (24 条)\n资源已验证：tests/search-mechanics-v1/train.tsv (3 条)\nworkspace 已验证：7 个crate，0 个已登记外部Rust依赖，MSRV 1.90.0\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py"
+      ],
+      "returncode": 0,
+      "stdout": "资源已验证：data/words.jsonl (2 条)\n",
+      "stderr": ".........................\n----------------------------------------------------------------------\nRan 25 tests in 0.394s\n\nOK\n"
+    }
+  ]
+}
