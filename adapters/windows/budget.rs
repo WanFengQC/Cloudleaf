@@ -15,8 +15,8 @@ pub(crate) struct Usage {
 const LIMITS: Usage = Usage {
     hosts: 64,
     batches: 64,
-    text_bytes: 4 * 1024 * 1024,
-    fixed_bytes: 16 * 1024 * 1024,
+    text_bytes: 64 * 1024 * 1024,
+    fixed_bytes: 128 * 1024 * 1024,
 };
 
 struct Pool {
@@ -331,7 +331,8 @@ mod tests {
             peak = held.len();
             let full = pool.usage();
             assert_eq!(full.batches, 64);
-            assert_eq!(full.text_bytes, limits().text_bytes);
+            assert_eq!(full.text_bytes, full.batches * batch.text_bytes);
+            assert!(full.text_bytes <= limits().text_bytes);
             assert!(full.fixed_bytes <= limits().fixed_bytes);
             assert!(pool.reserve(batch).is_none());
             drop(held);

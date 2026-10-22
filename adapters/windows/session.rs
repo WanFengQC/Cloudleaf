@@ -1,6 +1,6 @@
 //! 会话与编辑事务；TSF 锁内只操作内存与宿主文本。
 use super::{
-    boundary,
+    boundary, budget,
     candidate::CandidateUi,
     ownership::{Ledger, NativeEnvelope, Outcome, OwnedEvent},
     recovery::RecoveryWindow,
@@ -15,6 +15,7 @@ use std::{
     cell::{Cell, RefCell},
     collections::VecDeque,
     rc::Rc,
+    sync::Arc,
     sync::atomic::{AtomicU64, Ordering},
     time::{Duration, Instant},
 };
@@ -31,8 +32,18 @@ use windows_core::{Error, Interface, Result, implement};
 pub(crate) const QUEUE_LIMIT: usize = 32;
 static NEXT_INSTANCE: AtomicU64 = AtomicU64::new(1);
 pub(crate) type Shared = Rc<Host>;
+struct PendingWrite {
+    epoch: u64,
+    action: &'static str,
+    planned: EventResult,
+    outcome: Outcome,
+    native: Option<NativeEnvelope>,
+}
 pub(crate) struct Host {
-    _lease: super::service::Lease,
+    // 固定对象预算凭证本身持有模块租约，避免 Host 另计同一存活边界。
+    recovery_budget: Arc<budget::Reservation>,
+    epoch_budget: RefCell<Option<(u64, Arc<budget::Reservation>)>>,
+    pending_write: RefCell<Option<PendingWrite>>,
     pub owner: u32,
     pub epoch: Cell<u64>,
     pub engine: RefCell<InputEngine>,
@@ -70,7 +81,9 @@ impl Drop for Host {
 }
 #[derive(Clone)]
 enum Operation {
+    #[cfg(test)]
     Key(Key),
+    NativeKey(NativeEnvelope),
     Select(u64, String),
     Refresh,
     Cancel,
@@ -101,13 +114,53 @@ fn same_semantics(actual: &EventResult, planned: &EventResult) -> bool {
     }
     actual == &planned
 }
+/// 从固定的已加载原型字段推导保守容量；所有输入/候选上界均来自现有核心约定。
+fn recovery_cost() -> (usize, usize) {
+    static COST: std::sync::OnceLock<(usize, usize)> = std::sync::OnceLock::new();
+    *COST.get_or_init(|| {
+        let mut largest_fields = 0;
+        let mut largest_text = 64;
+        for row in PROTOTYPE_TSV.lines().skip(2) {
+            let columns: Vec<_> = row.split('\t').collect();
+            if columns.len() == 6 {
+                largest_fields = largest_fields.max(
+                    [0, 2, 4, 5]
+                        .iter()
+                        .map(|index| columns[*index].len())
+                        .sum::<usize>(),
+                );
+                largest_text = largest_text.max(columns[2].len());
+            }
+        }
+        // String 使用两倍字段容量并逐分配计入32字节元数据；候选向量按128个槽覆盖增长。
+        let candidate =
+            std::mem::size_of::<cloudleaf_types::Candidate>() + largest_fields * 2 + 4 * 32;
+        let event =
+            std::mem::size_of::<OwnedEvent>() + 128 * candidate + 128 + largest_text * 2 + 256;
+        // 同时覆盖 ledger、执行克隆、候选UI/两引擎帧和跨外调临时副本。
+        let fixed = event * (QUEUE_LIMIT * 2 + 16) + 8192;
+        // 包括来源数字/格式/原因、UTF8构建副本、UTF16转换及EDIT内拷贝，不使用平均文本长度。
+        let text = (4096 + QUEUE_LIMIT * (1024 + largest_text * 2)) * 32;
+        (text, fixed)
+    })
+}
 impl Host {
     pub fn new() -> Result<Shared> {
         let dictionary =
             Dictionary::from_tsv(PROTOTYPE_TSV).map_err(|_| Error::from_hresult(E_FAIL))?;
         let projection = InputEngine::new(dictionary.clone());
+        let fixed =
+            std::mem::size_of::<Self>() + super::recovery::fixed_cost() + PROTOTYPE_TSV.len() * 32;
+        if !budget::can_reserve_host(fixed) {
+            return Err(Error::new(E_FAIL, "模块恢复固定对象预算已满"));
+        }
+        let recovery_budget = budget::reserve_host(fixed)
+            .map(Arc::new)
+            .ok_or_else(|| Error::new(E_FAIL, "模块恢复固定对象预算已满"))?;
         Ok(Rc::new(Self {
-            _lease: super::service::Lease::new(),
+            recovery_budget,
+            epoch_budget: RefCell::new(None),
+            pending_write: RefCell::new(None),
             // 安全：只读取线程标识，没有外部资源。
             owner: unsafe { GetCurrentThreadId() },
             epoch: Cell::new(1),
@@ -149,7 +202,36 @@ impl Host {
         if unsafe { GetCurrentThreadId() } != self.owner {
             return Err(Error::from_hresult(E_UNEXPECTED));
         }
+        if let Some(window) = self.recovery.borrow().as_ref() {
+            let handle = window.repair()?;
+            if let Some(monitor) = self.watchdog.borrow().as_ref() {
+                monitor.set_window(handle);
+            }
+        }
         Ok(())
+    }
+    pub fn recovery_reservation(&self) -> Arc<budget::Reservation> {
+        self.recovery_budget.clone()
+    }
+    fn reserve_epoch(&self) -> bool {
+        let epoch = self.epoch.get();
+        if self
+            .epoch_budget
+            .borrow()
+            .as_ref()
+            .is_some_and(|(source, _)| *source == epoch)
+        {
+            return true;
+        }
+        let (text, fixed) = recovery_cost();
+        if !budget::can_reserve_batch(text, fixed) {
+            return false;
+        }
+        let Some(reservation) = budget::reserve_batch(text, fixed) else {
+            return false;
+        };
+        *self.epoch_budget.borrow_mut() = Some((epoch, Arc::new(reservation)));
+        true
     }
     pub fn start_platform(self: &Shared) -> Result<()> {
         self.check()?;
@@ -160,6 +242,7 @@ impl Host {
             .borrow()
             .as_ref()
             .is_some_and(Watchdog::healthy)
+            && self.recovery.borrow().is_some()
         {
             return Ok(());
         }
@@ -172,6 +255,15 @@ impl Host {
         Ok(())
     }
     pub fn stop_platform(&self) {
+        if !self.owned.borrow().is_empty() || self.pending_write.borrow().is_some() {
+            self.isolate_owned("服务停止，尚未确认的输入保留在模块恢复材料中");
+            if self.offer_recovery("服务停止，尚未确认的输入保留在模块恢复材料中")
+            {
+                self.owned.borrow_mut().clear();
+                self.pending_write.borrow_mut().take();
+                self.epoch_budget.borrow_mut().take();
+            }
+        }
         let monitor = self.watchdog.borrow_mut().take();
         let window = self.recovery.borrow_mut().take();
         if let Some(monitor) = monitor {
@@ -190,13 +282,68 @@ impl Host {
     }
     fn offer_recovery(&self, reason: &str) -> bool {
         let events = self.owned.borrow().snapshot();
-        if events.is_empty() {
+        let pending = self.pending_write.borrow();
+        if events.is_empty() && pending.is_none() {
             return true;
         }
-        let epoch = events[0].native.epoch;
-        let material = super::ownership::recovery_material(reason, &events);
+        let epoch = events
+            .first()
+            .map(|event| event.native.epoch)
+            .or_else(|| pending.as_ref().map(|pending| pending.epoch))
+            .unwrap();
+        let mut material = super::ownership::recovery_material(reason, &events);
+        if let Some(pending) = pending.as_ref() {
+            material.push_str(&format!(
+                "\r\n同步平台操作={} instance={} epoch={} state={:?}（{}）\r\n",
+                pending.action,
+                self.instance,
+                pending.epoch,
+                pending.outcome,
+                if pending.native.is_some() {
+                    "真实原生同步路径"
+                } else {
+                    "不是原生按键信封"
+                }
+            ));
+            if let Some(native) = &pending.native {
+                material.push_str(&format!("真实原生信封 instance={} epoch={} sequence={} repeat={} 原始键={:?} VK={} LPARAM={:X} layout={:X} modifiers={:X}\r\n",native.instance,native.epoch,native.sequence,native.repeat,native.key,native.wparam,native.lparam,native.layout,native.modifiers));
+            }
+            if matches!(pending.outcome, Outcome::Started | Outcome::NotApplied) {
+                material.push_str(&format!(
+                    "计划文本（未确认应用）：{}\r\n",
+                    pending
+                        .planned
+                        .commit
+                        .as_ref()
+                        .map_or(pending.planned.frame.preedit.as_str(), |commit| commit
+                            .text
+                            .as_str())
+                ));
+            } else {
+                material.push_str("结果未知，可能已经写入；禁止自动重试。\r\n");
+                material.push_str(&format!(
+                    "计划目标（可能已写入，不是可重试的未应用文本）：{}\r\n",
+                    pending
+                        .planned
+                        .commit
+                        .as_ref()
+                        .map_or(pending.planned.frame.preedit.as_str(), |commit| commit
+                            .text
+                            .as_str())
+                ));
+            }
+        }
+        drop(pending);
+        let reservation = self
+            .epoch_budget
+            .borrow()
+            .as_ref()
+            .filter(|(source, _)| *source == epoch)
+            .map(|(_, reservation)| reservation.clone());
         let window = self.recovery.borrow().clone();
-        let transferred = window.is_some_and(|window| window.offer(epoch, material));
+        let transferred = reservation.is_some_and(|reservation| {
+            window.is_some_and(|window| window.offer_reserved(epoch, material, reservation))
+        });
         if !transferred {
             self.quarantined.set(true);
         }
@@ -216,6 +363,13 @@ impl Host {
             .borrow_mut()
             .retain(|operation| !matches!(operation, Operation::Owned(_)));
         self.quarantined.set(true);
+        if let Some(pending) = self.pending_write.borrow_mut().as_mut() {
+            pending.outcome = if matches!(pending.outcome, Outcome::Writing | Outcome::Unknown) {
+                Outcome::Unknown
+            } else {
+                Outcome::NotApplied
+            };
+        }
         self.scope_proof.set(None);
         self.offer_recovery(reason);
     }
@@ -232,7 +386,14 @@ impl Host {
     }
     pub fn discard_recovery(self: &Shared) -> Result<()> {
         self.check()?;
+        if let Some((epoch, _)) = self.epoch_budget.borrow().as_ref()
+            && let Some(window) = self.recovery.borrow().as_ref()
+        {
+            window.discard_epoch(*epoch)?;
+        }
         self.owned.borrow_mut().clear();
+        self.pending_write.borrow_mut().take();
+        self.epoch_budget.borrow_mut().take();
         self.unknown_text.set(true);
         let context = self.context.borrow().clone();
         self.invalidate()?;
@@ -325,10 +486,20 @@ impl Host {
             .borrow()
             .as_ref()
             .is_some_and(Watchdog::healthy)
-            || !self.scope_current()
         {
+            return Ok(false);
+        }
+        if !self.scope_current() {
             self.native_barrier()?;
-            let handled = self.key(key.unwrap())?;
+            let native = NativeEnvelope::capture(
+                self.instance,
+                self.epoch.get(),
+                self.native_sequence.get(),
+                key.unwrap(),
+                w,
+                l,
+            );
+            let handled = self.key_action(key.unwrap(), Operation::NativeKey(native))?;
             return Ok(handled);
         }
         if self.owned.borrow().len() >= QUEUE_LIMIT || self.queue.borrow().len() >= QUEUE_LIMIT {
@@ -349,6 +520,10 @@ impl Host {
         );
         if !self.owned.borrow().can_accept(&native) {
             self.isolate_owned("原生信封未通过入队验证，新事件未被接管");
+            return Ok(false);
+        }
+        if !self.reserve_epoch() {
+            self.isolate_owned("模块共享恢复预算已满，新事件未被接管；原材料保持完整");
             return Ok(false);
         }
         // 此处是实际 OnKeyDown 的 ownership 决策；之后才修改投影引擎。
@@ -580,17 +755,29 @@ impl Host {
             self.owned.borrow_mut().isolate();
         } else {
             self.owned.borrow_mut().clear();
+            if self.pending_write.borrow().is_none() {
+                self.epoch_budget.borrow_mut().take();
+            }
+        }
+        if let Some(pending) = self.pending_write.borrow_mut().as_mut() {
+            pending.outcome = if matches!(pending.outcome, Outcome::Writing | Outcome::Unknown) {
+                Outcome::Unknown
+            } else {
+                Outcome::NotApplied
+            };
         }
         if let Some(sequence) = self.active_owned.take()
             && let Some(monitor) = self.watchdog.borrow().as_ref()
         {
             monitor.cancel(sequence);
         }
-        if !self.owned.borrow().is_empty()
+        if (!self.owned.borrow().is_empty() || self.pending_write.borrow().is_some())
             && self.offer_recovery("焦点或生命周期改变，未完成输入未自动移交其他文档")
         {
             // 材料已由独立窗口取得所有权；没有窗口或容量失败时保留 ledger 并拒绝新接管。
             self.owned.borrow_mut().clear();
+            self.pending_write.borrow_mut().take();
+            self.epoch_budget.borrow_mut().take();
         }
         let erase = !self.unknown_text.replace(false);
         self.quarantined.set(false);
@@ -670,7 +857,11 @@ impl Host {
         }
         failure.map_or(Ok(()), Err)
     }
+    #[cfg(test)]
     pub fn key(self: &Shared, key: Key) -> Result<bool> {
+        self.key_action(key, Operation::Key(key))
+    }
+    fn key_action(self: &Shared, key: Key, action: Operation) -> Result<bool> {
         if self.layout_expired() {
             self.quarantined.set(true);
         }
@@ -695,7 +886,7 @@ impl Host {
             host: self.clone(),
             context: context.clone(),
             epoch,
-            action: Operation::Key(key),
+            action,
             executed: executed.clone(),
             called: called.clone(),
         }
@@ -848,7 +1039,9 @@ impl Host {
                 break;
             };
             let projected_action = match &op {
+                #[cfg(test)]
                 Operation::Key(key) => Some(InputEvent::Key(*key)),
+                Operation::NativeKey(native) => Some(InputEvent::Key(native.key)),
                 Operation::Cancel => Some(InputEvent::Key(Key::Escape)),
                 _ => None,
             };
@@ -857,6 +1050,10 @@ impl Host {
                 _ => None,
             };
             let owned_operation = matches!(op, Operation::Owned(_));
+            let synchronous_native = match &op {
+                Operation::NativeKey(native) => Some(native.clone()),
+                _ => None,
+            };
             let result = match op {
                 Operation::Owned(sequence) => {
                     if !scope_allows_input(context, ec)? {
@@ -892,7 +1089,11 @@ impl Host {
                     }
                     result
                 }
+                #[cfg(test)]
                 Operation::Key(k) => self.engine.borrow_mut().handle(InputEvent::Key(k)),
+                Operation::NativeKey(native) => {
+                    self.engine.borrow_mut().handle(InputEvent::Key(native.key))
+                }
                 Operation::Select(r, id) => self.engine.borrow_mut().select_candidate(r, &id),
                 Operation::Cancel => self
                     .engine
@@ -913,9 +1114,9 @@ impl Host {
                 let projected = if let Some(event) = projected_action {
                     Some(self.projection.borrow_mut().handle(event))
                 } else {
-                    projected_selection.map(|(_, id)| {
+                    projected_selection.as_ref().map(|(_, id)| {
                         let revision = self.projection.borrow().frame().revision;
-                        self.projection.borrow_mut().select_candidate(revision, &id)
+                        self.projection.borrow_mut().select_candidate(revision, id)
                     })
                 };
                 // 投影只模拟未来接管语义，不发布帧、不学习、不确认宿主写入。
@@ -931,11 +1132,41 @@ impl Host {
                             .handle(InputEvent::CommitSucceeded { id: commit.id });
                     }
                 }
+                *self.pending_write.borrow_mut() = Some(PendingWrite {
+                    epoch,
+                    action: if projected_selection.is_some() {
+                        "候选 Finalize"
+                    } else if matches!(projected_action, Some(InputEvent::Key(Key::Escape))) {
+                        "同步取消/删除"
+                    } else {
+                        "同步按键"
+                    },
+                    planned: result.clone(),
+                    outcome: Outcome::Started,
+                    native: synchronous_native,
+                });
             }
             let outcome = self.render(context, ec, &result);
             // 外部 COM 可重入焦点通知；旧事务不能确认新会话或继续消费新队列。
             if epoch != self.epoch.get() {
                 return Ok(());
+            }
+            if !owned_operation {
+                if let Err((classification, _)) = &outcome {
+                    if let Some(pending) = self.pending_write.borrow_mut().as_mut() {
+                        pending.outcome = if *classification == CommitOutcome::NotApplied {
+                            Outcome::NotApplied
+                        } else {
+                            Outcome::Unknown
+                        };
+                    }
+                    self.offer_recovery("同步平台操作失败，未完成材料保留供用户核对");
+                } else {
+                    self.pending_write.borrow_mut().take();
+                    if self.owned.borrow().is_empty() {
+                        self.epoch_budget.borrow_mut().take();
+                    }
+                }
             }
             if let Some(sequence) = self.active_owned.get() {
                 if outcome.is_ok()
@@ -994,6 +1225,9 @@ impl Host {
             if let Some(sequence) = self.active_owned.take() {
                 self.owned.borrow_mut().applied(sequence)?;
                 let next = self.owned.borrow().front().cloned();
+                if next.is_none() {
+                    self.epoch_budget.borrow_mut().take();
+                }
                 if let Some(next) = next
                     && !self.watchdog.borrow().as_ref().is_some_and(|monitor| {
                         monitor.begin(
@@ -1041,6 +1275,9 @@ impl Host {
             // 空文本删除与普通写入共用不确定性边界，失败后旧 range 绝不自动擦除。
             attempted = true;
             self.unknown_text.set(true);
+            if let Some(pending) = self.pending_write.borrow_mut().as_mut() {
+                pending.outcome = Outcome::Writing;
+            }
             if let Some(sequence) = self.active_owned.get() {
                 self.owned.borrow_mut().writing(sequence)?;
                 if !self
@@ -1403,6 +1640,26 @@ impl ITfEditSession_Impl for KeyEdit_Impl {
                 return Ok(());
             }
             self.host.scope_proof.set(Some(Instant::now()));
+            if !self.host.reserve_epoch() {
+                return Err(Error::new(
+                    E_FAIL,
+                    "模块共享恢复预算已满，未取得同步操作所有权",
+                ));
+            }
+            if let Operation::NativeKey(native) = &self.action {
+                if !self.host.owned.borrow().can_accept(native)
+                    || native.sequence != self.host.native_sequence.get()
+                    || native.epoch != self.epoch
+                {
+                    return Err(Error::from_hresult(E_FAIL));
+                }
+                self.host.native_sequence.set(
+                    native
+                        .sequence
+                        .checked_add(1)
+                        .ok_or_else(|| Error::from_hresult(E_UNEXPECTED))?,
+                );
+            }
             self.executed.set(true);
             self.host.queue.borrow_mut().push_back(self.action.clone());
             let result = self.host.run(&self.context, ec, self.epoch);

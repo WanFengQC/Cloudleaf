@@ -1,5 +1,6 @@
 //! 原生 Windows 集成，所有系统依赖和不安全边界限制在此模块树。
 #![allow(non_snake_case)]
+mod budget;
 mod candidate;
 mod keys;
 mod ownership;

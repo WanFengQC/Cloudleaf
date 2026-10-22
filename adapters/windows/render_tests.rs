@@ -88,6 +88,189 @@ fn native(host: &Shared, virtual_key: u16) -> bool {
 }
 
 #[test]
+fn round3_cross_instance_budget_rejects_async_sync_and_candidate_before_ownership() {
+    use super::super::{budget, recovery, service::DllCanUnloadNow};
+    use windows::Win32::{
+        Foundation::{LPARAM, S_OK, WPARAM},
+        UI::WindowsAndMessaging::*,
+    };
+    if recovery::isolated(
+        "native::session::render_tests::round3_cross_instance_budget_rejects_async_sync_and_candidate_before_ownership",
+    ) {
+        return;
+    }
+    let started = Instant::now();
+    let mut retained = Vec::new();
+    for _ in 0..64 {
+        let (host, data, _) = native_fixture();
+        host.start_platform().unwrap();
+        let before = host.engine.borrow().frame();
+        data.mode.set(2);
+        if !native(&host, b'N' as u16) {
+            assert!(host.owned.borrow().is_empty());
+            assert_eq!(data.writes.get(), 0);
+            assert_eq!(host.engine.borrow().frame(), before);
+            host.stop_platform();
+            break;
+        }
+        drain(&data);
+        assert_eq!(data.writes.get(), 1);
+        assert!(host.quarantined.get());
+        let window = host.recovery.borrow().as_ref().unwrap().clone();
+        let original = window.evidence();
+        assert!(original.contains("state=Unknown"));
+        assert_eq!(original.matches("sequence=1 ").count(), 1);
+        host.invalidate().unwrap();
+        host.stop_platform();
+        let final_material = window.evidence();
+        retained.push((window, final_material));
+    }
+    assert!(!retained.is_empty() && retained.len() < 64);
+    let admitted = retained.len();
+    assert_eq!(budget::usage().batches, admitted);
+    {
+        let (host, data, _) = native_fixture();
+        host.start_platform().unwrap();
+        host.scope_proof.set(None);
+        let before = host.engine.borrow().frame();
+        assert!(!native(&host, b'N' as u16));
+        assert_eq!(data.writes.get(), 0);
+        assert_eq!(host.engine.borrow().frame(), before);
+        assert!(host.pending_write.borrow().is_none());
+    }
+    {
+        let (host, data, _) = fixture();
+        host.start_platform().unwrap();
+        seed_composition(&host, &data);
+        let before = host.engine.borrow().frame();
+        let original = text(&data);
+        assert!(
+            host.select(before.revision, before.candidates[0].id.clone())
+                .is_err()
+        );
+        assert!(host.cancel().is_err());
+        assert_eq!(data.writes.get(), 0);
+        assert_eq!(text(&data), original);
+        assert_eq!(host.engine.borrow().frame(), before);
+    }
+    let (text_reservation, fixed_reservation) = recovery_cost();
+    println!(
+        "{{\"experiment\":\"round3-production-com-global-pressure\",\"hosts_retained\":{admitted},\"epoch_text_reservation\":{text_reservation},\"epoch_fixed_reservation\":{fixed_reservation},\"host_size\":{},\"owned_event_size\":{},\"candidate_size\":{},\"ui_fixed_cost\":{},\"elapsed_ns\":{},\"usage\":\"{:?}\"}}",
+        std::mem::size_of::<Host>(),
+        std::mem::size_of::<OwnedEvent>(),
+        std::mem::size_of::<cloudleaf_types::Candidate>(),
+        recovery::fixed_cost(),
+        started.elapsed().as_nanos(),
+        budget::usage()
+    );
+    for (window, original) in retained {
+        assert_eq!(window.evidence(), original);
+        unsafe {
+            SendMessageW(window.handle(), WM_CLOSE, Some(WPARAM(0)), Some(LPARAM(0)));
+        }
+        drop(window);
+    }
+    let until = Instant::now() + Duration::from_secs(3);
+    while DllCanUnloadNow() != S_OK {
+        assert!(Instant::now() < until);
+        std::thread::sleep(Duration::from_millis(2));
+    }
+    assert_eq!(budget::usage(), budget::Usage::default());
+}
+
+#[test]
+fn round3_sync_candidate_unknown_retains_reserved_material_and_applied_releases_it() {
+    use super::super::{budget, recovery};
+    if recovery::isolated(
+        "native::session::render_tests::round3_sync_candidate_unknown_retains_reserved_material_and_applied_releases_it",
+    ) {
+        return;
+    }
+    let (host, data, _) = native_fixture();
+    host.start_platform().unwrap();
+    assert!(native(&host, b'N' as u16));
+    assert!(native(&host, b'I' as u16));
+    drain(&data);
+    assert!(host.epoch_budget.borrow().is_none());
+    assert_eq!(budget::usage().batches, 0);
+    let before = host.engine.borrow().frame();
+    data.mode.set(2);
+    assert!(
+        host.select(before.revision, before.candidates[0].id.clone())
+            .is_err()
+    );
+    assert_eq!(budget::usage().batches, 1);
+    let evidence = host.recovery.borrow().as_ref().unwrap().evidence();
+    assert!(evidence.contains("同步平台操作=候选 Finalize"));
+    assert!(evidence.contains("state=Unknown"));
+    assert!(evidence.contains("不是原生按键信封"));
+    let writes = data.writes.get();
+    host.watchdog_notice().unwrap();
+    assert_eq!(data.writes.get(), writes);
+    // 此 fixture 不实现焦点 sink 的 ITfSource；明确放弃已生效，重新聚焦仍须报告真实接口失败。
+    assert_eq!(
+        host.discard_recovery().unwrap_err().code(),
+        windows::Win32::Foundation::E_NOINTERFACE
+    );
+    drain(&data);
+    assert_eq!(budget::usage().batches, 0);
+}
+
+#[test]
+fn round3_expired_scope_sync_native_unknown_preserves_true_envelope_after_stop_and_new_view() {
+    use super::super::{budget, recovery};
+    if recovery::isolated(
+        "native::session::render_tests::round3_expired_scope_sync_native_unknown_preserves_true_envelope_after_stop_and_new_view",
+    ) {
+        return;
+    }
+    let (host, data, _) = native_fixture();
+    host.start_platform().unwrap();
+    host.scope_proof.set(None);
+    data.mode.set(2);
+    assert!(native(&host, b'N' as u16));
+    assert_eq!(text(&data), "n");
+    assert_eq!(data.writes.get(), 1);
+    let native = host
+        .pending_write
+        .borrow()
+        .as_ref()
+        .unwrap()
+        .native
+        .clone()
+        .unwrap();
+    assert_eq!(native.wparam, b'N' as usize);
+    assert_eq!(native.lparam, 1);
+    assert_eq!(native.key, Key::Char('n'));
+    assert_eq!(native.sequence, 1);
+    assert_eq!(native.repeat, 1);
+    let window = host.recovery.borrow().as_ref().unwrap().clone();
+    host.stop_platform();
+    let original = window.evidence();
+    assert!(original.contains("state=Unknown"));
+    assert!(original.contains("真实原生信封"));
+    assert!(original.contains("原始键=Char('n') VK=78 LPARAM=1"));
+    assert!(original.contains("计划目标（可能已写入，不是可重试的未应用文本）：n"));
+    assert!(original.contains(&format!(
+        "instance={} epoch={} sequence={}",
+        native.instance, native.epoch, native.sequence
+    )));
+    drop(host);
+    let recovered = std::thread::spawn(|| {
+        let host = Host::new().unwrap();
+        let view = recovery::RecoveryWindow::new(Rc::downgrade(&host), 0xbeef).unwrap();
+        view.explicit_all_for_review()
+    })
+    .join()
+    .unwrap();
+    assert_eq!(recovered, original);
+    assert_eq!(data.writes.get(), 1);
+    assert_eq!(budget::usage().batches, 1);
+    window.discard_epoch(native.epoch).unwrap();
+    assert_eq!(budget::usage().batches, 0);
+}
+
+#[test]
 fn native_owned_fifo_drains_before_second_space_native_command_and_rejects_late_callback() {
     use windows::Win32::UI::Input::KeyboardAndMouse::VK_SPACE;
     let (host, data, _) = native_fixture();

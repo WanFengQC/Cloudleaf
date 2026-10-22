@@ -120,7 +120,7 @@ pub unsafe extern "system" fn DllGetClassObject(
 #[unsafe(no_mangle)]
 pub extern "system" fn DllCanUnloadNow() -> HRESULT {
     super::watchdog::reap();
-    super::recovery::reap();
+    super::recovery::request_owner_cleanup();
     if OBJECTS.load(Ordering::Acquire) == 0 && LOCKS.load(Ordering::Acquire) == 0 {
         S_OK
     } else {
