@@ -1,0 +1,827 @@
+{
+  "base_executable": "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+  "cases": [
+    {
+      "after_interruption": {
+        "current": {
+          "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+          "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+        },
+        "previous": null,
+        "schema_version": 1
+      },
+      "before": {
+        "current": {
+          "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+          "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+        },
+        "previous": null,
+        "schema_version": 1
+      },
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "-I",
+        "-c",
+        "import sys;sys.path.insert(0,sys.argv.pop(1));exec(sys.argv.pop(1))",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf",
+        "\nimport os,sys\nfrom pathlib import Path\nfrom tools.data_pipeline import pipeline as p\nrelease,store,phase=Path(sys.argv[1]),Path(sys.argv[2]),sys.argv[3]\nif phase=='lock':\n    with p.publish_lock(store):\n        os._exit(73)\nif phase=='copy-mid':\n    def copy(source,destination):\n        destination.mkdir()\n        (destination/'runtime.tsv').write_bytes(b'partial-copy')\n        os._exit(73)\n    p.shutil.copytree=copy\nif phase=='cache-renamed':\n    original=Path.rename\n    def rename(path,target):\n        result=original(path,target)\n        if path.name=='release':\n            os._exit(73)\n        return result\n    Path.rename=rename\nif phase in {'pointer-written','pointer-replaced','rollback-before','rollback-after'}:\n    original=p.os.replace\n    def replace(source,target):\n        if phase in {'pointer-written','rollback-before'}:\n            os._exit(73)\n        original(source,target)\n        os._exit(73)\n    p.os.replace=replace\nif phase.startswith('rollback'):\n    p.rollback(store)\nelse:\n    p.activate(release,store)\nraise AssertionError('fault injection not reached')\n",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\release-a",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\real-interruption-68b5201\\lock",
+        "lock"
+      ],
+      "elapsed_seconds": 32.85262919999877,
+      "exit_code": 73,
+      "owner_lock": {
+        "owner_pid": 22584,
+        "owner_start": "134371548241494905",
+        "schema_version": 1
+      },
+      "phase": "lock",
+      "pid": 22584,
+      "recovery": {
+        "current": {
+          "current": {
+            "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+            "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+          },
+          "previous": null,
+          "schema_version": 1
+        },
+        "owner_pid": 22584,
+        "owner_status": {
+          "start": null,
+          "status": "dead"
+        },
+        "quarantined": [
+          ".writer.lock"
+        ],
+        "recovered": true,
+        "scope": "process interruption recovery, not physical power-loss durability"
+      },
+      "resumed": {
+        "current": {
+          "manifest_sha256": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f",
+          "release": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f"
+        },
+        "previous": {
+          "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+          "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+        },
+        "schema_version": 1
+      },
+      "rollback": {
+        "current": {
+          "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+          "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+        },
+        "previous": {
+          "manifest_sha256": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f",
+          "release": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f"
+        },
+        "schema_version": 1
+      },
+      "stderr": "",
+      "stdout": "",
+      "user_sha256_before_and_after": "97de41d09a06013362436e2ace797b7499bf0c10e197c5a41e8c5ff4528aa2b1"
+    },
+    {
+      "after_interruption": {
+        "current": {
+          "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+          "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+        },
+        "previous": null,
+        "schema_version": 1
+      },
+      "before": {
+        "current": {
+          "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+          "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+        },
+        "previous": null,
+        "schema_version": 1
+      },
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "-I",
+        "-c",
+        "import sys;sys.path.insert(0,sys.argv.pop(1));exec(sys.argv.pop(1))",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf",
+        "\nimport os,sys\nfrom pathlib import Path\nfrom tools.data_pipeline import pipeline as p\nrelease,store,phase=Path(sys.argv[1]),Path(sys.argv[2]),sys.argv[3]\nif phase=='lock':\n    with p.publish_lock(store):\n        os._exit(73)\nif phase=='copy-mid':\n    def copy(source,destination):\n        destination.mkdir()\n        (destination/'runtime.tsv').write_bytes(b'partial-copy')\n        os._exit(73)\n    p.shutil.copytree=copy\nif phase=='cache-renamed':\n    original=Path.rename\n    def rename(path,target):\n        result=original(path,target)\n        if path.name=='release':\n            os._exit(73)\n        return result\n    Path.rename=rename\nif phase in {'pointer-written','pointer-replaced','rollback-before','rollback-after'}:\n    original=p.os.replace\n    def replace(source,target):\n        if phase in {'pointer-written','rollback-before'}:\n            os._exit(73)\n        original(source,target)\n        os._exit(73)\n    p.os.replace=replace\nif phase.startswith('rollback'):\n    p.rollback(store)\nelse:\n    p.activate(release,store)\nraise AssertionError('fault injection not reached')\n",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\release-a",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\real-interruption-68b5201\\copy-mid",
+        "copy-mid"
+      ],
+      "elapsed_seconds": 38.58781530000124,
+      "exit_code": 73,
+      "owner_lock": {
+        "owner_pid": 42912,
+        "owner_start": "134371548597818124",
+        "schema_version": 1
+      },
+      "phase": "copy-mid",
+      "pid": 42912,
+      "recovery": {
+        "current": {
+          "current": {
+            "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+            "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+          },
+          "previous": null,
+          "schema_version": 1
+        },
+        "owner_pid": 42912,
+        "owner_status": {
+          "start": null,
+          "status": "dead"
+        },
+        "quarantined": [
+          ".writer.lock",
+          ".publish-0p67brle"
+        ],
+        "recovered": true,
+        "scope": "process interruption recovery, not physical power-loss durability"
+      },
+      "resumed": {
+        "current": {
+          "manifest_sha256": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f",
+          "release": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f"
+        },
+        "previous": {
+          "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+          "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+        },
+        "schema_version": 1
+      },
+      "rollback": {
+        "current": {
+          "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+          "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+        },
+        "previous": {
+          "manifest_sha256": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f",
+          "release": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f"
+        },
+        "schema_version": 1
+      },
+      "stderr": "",
+      "stdout": "",
+      "user_sha256_before_and_after": "97de41d09a06013362436e2ace797b7499bf0c10e197c5a41e8c5ff4528aa2b1"
+    },
+    {
+      "after_interruption": {
+        "current": {
+          "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+          "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+        },
+        "previous": null,
+        "schema_version": 1
+      },
+      "before": {
+        "current": {
+          "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+          "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+        },
+        "previous": null,
+        "schema_version": 1
+      },
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "-I",
+        "-c",
+        "import sys;sys.path.insert(0,sys.argv.pop(1));exec(sys.argv.pop(1))",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf",
+        "\nimport os,sys\nfrom pathlib import Path\nfrom tools.data_pipeline import pipeline as p\nrelease,store,phase=Path(sys.argv[1]),Path(sys.argv[2]),sys.argv[3]\nif phase=='lock':\n    with p.publish_lock(store):\n        os._exit(73)\nif phase=='copy-mid':\n    def copy(source,destination):\n        destination.mkdir()\n        (destination/'runtime.tsv').write_bytes(b'partial-copy')\n        os._exit(73)\n    p.shutil.copytree=copy\nif phase=='cache-renamed':\n    original=Path.rename\n    def rename(path,target):\n        result=original(path,target)\n        if path.name=='release':\n            os._exit(73)\n        return result\n    Path.rename=rename\nif phase in {'pointer-written','pointer-replaced','rollback-before','rollback-after'}:\n    original=p.os.replace\n    def replace(source,target):\n        if phase in {'pointer-written','rollback-before'}:\n            os._exit(73)\n        original(source,target)\n        os._exit(73)\n    p.os.replace=replace\nif phase.startswith('rollback'):\n    p.rollback(store)\nelse:\n    p.activate(release,store)\nraise AssertionError('fault injection not reached')\n",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\release-a",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\real-interruption-68b5201\\cache-renamed",
+        "cache-renamed"
+      ],
+      "elapsed_seconds": 35.9893462,
+      "exit_code": 73,
+      "owner_lock": {
+        "owner_pid": 27192,
+        "owner_start": "134371548962009809",
+        "schema_version": 1
+      },
+      "phase": "cache-renamed",
+      "pid": 27192,
+      "recovery": {
+        "current": {
+          "current": {
+            "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+            "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+          },
+          "previous": null,
+          "schema_version": 1
+        },
+        "owner_pid": 27192,
+        "owner_status": {
+          "start": null,
+          "status": "dead"
+        },
+        "quarantined": [
+          ".writer.lock",
+          ".publish-7lkandh8"
+        ],
+        "recovered": true,
+        "scope": "process interruption recovery, not physical power-loss durability"
+      },
+      "resumed": {
+        "current": {
+          "manifest_sha256": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f",
+          "release": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f"
+        },
+        "previous": {
+          "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+          "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+        },
+        "schema_version": 1
+      },
+      "rollback": {
+        "current": {
+          "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+          "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+        },
+        "previous": {
+          "manifest_sha256": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f",
+          "release": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f"
+        },
+        "schema_version": 1
+      },
+      "stderr": "",
+      "stdout": "",
+      "user_sha256_before_and_after": "97de41d09a06013362436e2ace797b7499bf0c10e197c5a41e8c5ff4528aa2b1"
+    },
+    {
+      "after_interruption": {
+        "current": {
+          "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+          "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+        },
+        "previous": null,
+        "schema_version": 1
+      },
+      "before": {
+        "current": {
+          "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+          "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+        },
+        "previous": null,
+        "schema_version": 1
+      },
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "-I",
+        "-c",
+        "import sys;sys.path.insert(0,sys.argv.pop(1));exec(sys.argv.pop(1))",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf",
+        "\nimport os,sys\nfrom pathlib import Path\nfrom tools.data_pipeline import pipeline as p\nrelease,store,phase=Path(sys.argv[1]),Path(sys.argv[2]),sys.argv[3]\nif phase=='lock':\n    with p.publish_lock(store):\n        os._exit(73)\nif phase=='copy-mid':\n    def copy(source,destination):\n        destination.mkdir()\n        (destination/'runtime.tsv').write_bytes(b'partial-copy')\n        os._exit(73)\n    p.shutil.copytree=copy\nif phase=='cache-renamed':\n    original=Path.rename\n    def rename(path,target):\n        result=original(path,target)\n        if path.name=='release':\n            os._exit(73)\n        return result\n    Path.rename=rename\nif phase in {'pointer-written','pointer-replaced','rollback-before','rollback-after'}:\n    original=p.os.replace\n    def replace(source,target):\n        if phase in {'pointer-written','rollback-before'}:\n            os._exit(73)\n        original(source,target)\n        os._exit(73)\n    p.os.replace=replace\nif phase.startswith('rollback'):\n    p.rollback(store)\nelse:\n    p.activate(release,store)\nraise AssertionError('fault injection not reached')\n",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\release-a",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\real-interruption-68b5201\\pointer-written",
+        "pointer-written"
+      ],
+      "elapsed_seconds": 36.180034900000464,
+      "exit_code": 73,
+      "owner_lock": {
+        "owner_pid": 33904,
+        "owner_start": "134371549318958353",
+        "schema_version": 1
+      },
+      "phase": "pointer-written",
+      "pid": 33904,
+      "recovery": {
+        "current": {
+          "current": {
+            "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+            "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+          },
+          "previous": null,
+          "schema_version": 1
+        },
+        "owner_pid": 33904,
+        "owner_status": {
+          "start": null,
+          "status": "dead"
+        },
+        "quarantined": [
+          ".writer.lock",
+          "current.tmp"
+        ],
+        "recovered": true,
+        "scope": "process interruption recovery, not physical power-loss durability"
+      },
+      "resumed": {
+        "current": {
+          "manifest_sha256": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f",
+          "release": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f"
+        },
+        "previous": {
+          "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+          "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+        },
+        "schema_version": 1
+      },
+      "rollback": {
+        "current": {
+          "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+          "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+        },
+        "previous": {
+          "manifest_sha256": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f",
+          "release": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f"
+        },
+        "schema_version": 1
+      },
+      "stderr": "",
+      "stdout": "",
+      "user_sha256_before_and_after": "97de41d09a06013362436e2ace797b7499bf0c10e197c5a41e8c5ff4528aa2b1"
+    },
+    {
+      "after_interruption": {
+        "current": {
+          "manifest_sha256": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f",
+          "release": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f"
+        },
+        "previous": {
+          "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+          "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+        },
+        "schema_version": 1
+      },
+      "before": {
+        "current": {
+          "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+          "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+        },
+        "previous": null,
+        "schema_version": 1
+      },
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "-I",
+        "-c",
+        "import sys;sys.path.insert(0,sys.argv.pop(1));exec(sys.argv.pop(1))",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf",
+        "\nimport os,sys\nfrom pathlib import Path\nfrom tools.data_pipeline import pipeline as p\nrelease,store,phase=Path(sys.argv[1]),Path(sys.argv[2]),sys.argv[3]\nif phase=='lock':\n    with p.publish_lock(store):\n        os._exit(73)\nif phase=='copy-mid':\n    def copy(source,destination):\n        destination.mkdir()\n        (destination/'runtime.tsv').write_bytes(b'partial-copy')\n        os._exit(73)\n    p.shutil.copytree=copy\nif phase=='cache-renamed':\n    original=Path.rename\n    def rename(path,target):\n        result=original(path,target)\n        if path.name=='release':\n            os._exit(73)\n        return result\n    Path.rename=rename\nif phase in {'pointer-written','pointer-replaced','rollback-before','rollback-after'}:\n    original=p.os.replace\n    def replace(source,target):\n        if phase in {'pointer-written','rollback-before'}:\n            os._exit(73)\n        original(source,target)\n        os._exit(73)\n    p.os.replace=replace\nif phase.startswith('rollback'):\n    p.rollback(store)\nelse:\n    p.activate(release,store)\nraise AssertionError('fault injection not reached')\n",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\release-a",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\real-interruption-68b5201\\pointer-replaced",
+        "pointer-replaced"
+      ],
+      "elapsed_seconds": 27.06040049999865,
+      "exit_code": 73,
+      "owner_lock": {
+        "owner_pid": 39768,
+        "owner_start": "134371549685312185",
+        "schema_version": 1
+      },
+      "phase": "pointer-replaced",
+      "pid": 39768,
+      "recovery": {
+        "current": {
+          "current": {
+            "manifest_sha256": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f",
+            "release": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f"
+          },
+          "previous": {
+            "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+            "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+          },
+          "schema_version": 1
+        },
+        "owner_pid": 39768,
+        "owner_status": {
+          "start": null,
+          "status": "dead"
+        },
+        "quarantined": [
+          ".writer.lock"
+        ],
+        "recovered": true,
+        "scope": "process interruption recovery, not physical power-loss durability"
+      },
+      "resumed": {
+        "current": {
+          "manifest_sha256": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f",
+          "release": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f"
+        },
+        "previous": {
+          "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+          "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+        },
+        "schema_version": 1
+      },
+      "rollback": {
+        "current": {
+          "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+          "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+        },
+        "previous": {
+          "manifest_sha256": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f",
+          "release": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f"
+        },
+        "schema_version": 1
+      },
+      "stderr": "",
+      "stdout": "",
+      "user_sha256_before_and_after": "97de41d09a06013362436e2ace797b7499bf0c10e197c5a41e8c5ff4528aa2b1"
+    },
+    {
+      "after_interruption": {
+        "current": {
+          "manifest_sha256": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f",
+          "release": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f"
+        },
+        "previous": {
+          "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+          "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+        },
+        "schema_version": 1
+      },
+      "before": {
+        "current": {
+          "manifest_sha256": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f",
+          "release": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f"
+        },
+        "previous": {
+          "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+          "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+        },
+        "schema_version": 1
+      },
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "-I",
+        "-c",
+        "import sys;sys.path.insert(0,sys.argv.pop(1));exec(sys.argv.pop(1))",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf",
+        "\nimport os,sys\nfrom pathlib import Path\nfrom tools.data_pipeline import pipeline as p\nrelease,store,phase=Path(sys.argv[1]),Path(sys.argv[2]),sys.argv[3]\nif phase=='lock':\n    with p.publish_lock(store):\n        os._exit(73)\nif phase=='copy-mid':\n    def copy(source,destination):\n        destination.mkdir()\n        (destination/'runtime.tsv').write_bytes(b'partial-copy')\n        os._exit(73)\n    p.shutil.copytree=copy\nif phase=='cache-renamed':\n    original=Path.rename\n    def rename(path,target):\n        result=original(path,target)\n        if path.name=='release':\n            os._exit(73)\n        return result\n    Path.rename=rename\nif phase in {'pointer-written','pointer-replaced','rollback-before','rollback-after'}:\n    original=p.os.replace\n    def replace(source,target):\n        if phase in {'pointer-written','rollback-before'}:\n            os._exit(73)\n        original(source,target)\n        os._exit(73)\n    p.os.replace=replace\nif phase.startswith('rollback'):\n    p.rollback(store)\nelse:\n    p.activate(release,store)\nraise AssertionError('fault injection not reached')\n",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\release-a",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\real-interruption-68b5201\\rollback-before",
+        "rollback-before"
+      ],
+      "elapsed_seconds": 28.656602200000634,
+      "exit_code": 73,
+      "owner_lock": {
+        "owner_pid": 24476,
+        "owner_start": "134371549992764846",
+        "schema_version": 1
+      },
+      "phase": "rollback-before",
+      "pid": 24476,
+      "recovery": {
+        "current": {
+          "current": {
+            "manifest_sha256": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f",
+            "release": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f"
+          },
+          "previous": {
+            "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+            "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+          },
+          "schema_version": 1
+        },
+        "owner_pid": 24476,
+        "owner_status": {
+          "start": null,
+          "status": "dead"
+        },
+        "quarantined": [
+          ".writer.lock",
+          "current.tmp"
+        ],
+        "recovered": true,
+        "scope": "process interruption recovery, not physical power-loss durability"
+      },
+      "resumed": {
+        "current": {
+          "manifest_sha256": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f",
+          "release": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f"
+        },
+        "previous": {
+          "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+          "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+        },
+        "schema_version": 1
+      },
+      "rollback": {
+        "current": {
+          "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+          "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+        },
+        "previous": {
+          "manifest_sha256": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f",
+          "release": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f"
+        },
+        "schema_version": 1
+      },
+      "stderr": "",
+      "stdout": "",
+      "user_sha256_before_and_after": "97de41d09a06013362436e2ace797b7499bf0c10e197c5a41e8c5ff4528aa2b1"
+    },
+    {
+      "after_interruption": {
+        "current": {
+          "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+          "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+        },
+        "previous": {
+          "manifest_sha256": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f",
+          "release": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f"
+        },
+        "schema_version": 1
+      },
+      "before": {
+        "current": {
+          "manifest_sha256": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f",
+          "release": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f"
+        },
+        "previous": {
+          "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+          "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+        },
+        "schema_version": 1
+      },
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "-I",
+        "-c",
+        "import sys;sys.path.insert(0,sys.argv.pop(1));exec(sys.argv.pop(1))",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf",
+        "\nimport os,sys\nfrom pathlib import Path\nfrom tools.data_pipeline import pipeline as p\nrelease,store,phase=Path(sys.argv[1]),Path(sys.argv[2]),sys.argv[3]\nif phase=='lock':\n    with p.publish_lock(store):\n        os._exit(73)\nif phase=='copy-mid':\n    def copy(source,destination):\n        destination.mkdir()\n        (destination/'runtime.tsv').write_bytes(b'partial-copy')\n        os._exit(73)\n    p.shutil.copytree=copy\nif phase=='cache-renamed':\n    original=Path.rename\n    def rename(path,target):\n        result=original(path,target)\n        if path.name=='release':\n            os._exit(73)\n        return result\n    Path.rename=rename\nif phase in {'pointer-written','pointer-replaced','rollback-before','rollback-after'}:\n    original=p.os.replace\n    def replace(source,target):\n        if phase in {'pointer-written','rollback-before'}:\n            os._exit(73)\n        original(source,target)\n        os._exit(73)\n    p.os.replace=replace\nif phase.startswith('rollback'):\n    p.rollback(store)\nelse:\n    p.activate(release,store)\nraise AssertionError('fault injection not reached')\n",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\release-a",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\real-interruption-68b5201\\rollback-after",
+        "rollback-after"
+      ],
+      "elapsed_seconds": 40.92783650000274,
+      "exit_code": 73,
+      "owner_lock": {
+        "owner_pid": 47816,
+        "owner_start": "134371550277642722",
+        "schema_version": 1
+      },
+      "phase": "rollback-after",
+      "pid": 47816,
+      "recovery": {
+        "current": {
+          "current": {
+            "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+            "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+          },
+          "previous": {
+            "manifest_sha256": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f",
+            "release": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f"
+          },
+          "schema_version": 1
+        },
+        "owner_pid": 47816,
+        "owner_status": {
+          "start": null,
+          "status": "dead"
+        },
+        "quarantined": [
+          ".writer.lock"
+        ],
+        "recovered": true,
+        "scope": "process interruption recovery, not physical power-loss durability"
+      },
+      "resumed": {
+        "current": {
+          "manifest_sha256": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f",
+          "release": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f"
+        },
+        "previous": {
+          "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+          "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+        },
+        "schema_version": 1
+      },
+      "rollback": {
+        "current": {
+          "manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+          "release": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+        },
+        "previous": {
+          "manifest_sha256": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f",
+          "release": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f"
+        },
+        "schema_version": 1
+      },
+      "stderr": "",
+      "stdout": "",
+      "user_sha256_before_and_after": "97de41d09a06013362436e2ace797b7499bf0c10e197c5a41e8c5ff4528aa2b1"
+    }
+  ],
+  "child_interpreter": {
+    "executable": "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "isolated": 1,
+    "utf8": 1,
+    "version": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]"
+  },
+  "commit": "68b5201f7431fe5582a42ed71a23fdd76b6fd97f",
+  "new_manifest_sha256": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f",
+  "new_verified": {
+    "builder": "cloudleaf-data-2.0.0",
+    "builder_files_sha256": {
+      "__init__.py": "23fe9b9d63d02a01c5401a85ad845defc688fa6db5927dc63d7ae902b4ec83d1",
+      "__main__.py": "9fe6b7f24253eb62cb7250e40b84d557c6fc3c1b218038238ca07067a64b37e1",
+      "filesystem.py": "3ff2533b1fdbf77fea688b45d5a44f04ba8cc7f9bd064844e823e786db8bad12",
+      "pipeline.py": "2600854a4a43d5a74c9fe3bcec5a7aa8c18179f94b271201453d2e8c3ef2be26",
+      "prefix_snapshot.py": "0f624cf0a0fa162117b4dcde7dc78e55af632104c8ae541812bc07d4ee3f0778",
+      "reading_audit.py": "e89dba255cf4e8c5afa8c908edc01cf2d3f33d60e1187b67d1a120d382a1ce5d",
+      "recovery.py": "5d27f4e8d0b3cdd286bc17f9efebef2f49b7dcb2984cc31c6d8c6f9a2ffbf3de",
+      "word_source.py": "1d6d785da2b43895128c42b36e5f2997b1db872a466a86a45bab6961451dcd04"
+    },
+    "entry_count": 701,
+    "license_file": "LICENSE.txt",
+    "normalization_unicode_version": "15.0.0",
+    "rejected_count": 142,
+    "resources": {
+      "LICENSE.txt": {
+        "bytes": 20138,
+        "sha256": "28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5"
+      },
+      "NOTICE.txt": {
+        "bytes": 875,
+        "sha256": "03a4fed272bfa6f153722446330b61a9858920ad51f8c0503b5bd7460f160f18"
+      },
+      "index.json": {
+        "bytes": 72557,
+        "sha256": "195ff249b3a1bfcfeebc45e0e10bc752ac8cf6076cb5e3511df9a1d1c882ade9"
+      },
+      "quality.json": {
+        "bytes": 1848,
+        "sha256": "9b49fa234bd2701c2f50efded3d89d4a97419d9a2041fd82fd199a654380d4ba"
+      },
+      "records.jsonl": {
+        "bytes": 990240,
+        "sha256": "f37f47df55621ad3c6eb28e5290f42ecc3c7a6e7275711e0893bf7e8be9db7a1"
+      },
+      "rejected.jsonl": {
+        "bytes": 311630,
+        "sha256": "5998a7ef18487e0d5878b837d6144bef92a80300cf7b19ff1396dfd135b9619e"
+      },
+      "runtime.tsv": {
+        "bytes": 112639,
+        "sha256": "b47287d0fd405c225409653cd8d08f34f9fcb31ef8bb8c9b9e54dbcf5fd7741c"
+      },
+      "source-lock.json": {
+        "bytes": 3401,
+        "sha256": "46fb6ac082320c6fa48d72a5ff9258eb00c947d8f31d5c0d4f70ed84a98354ce"
+      }
+    },
+    "runtime_format": "cloudleaf-lexicon-v2",
+    "schema_version": 2,
+    "source": {
+      "acquisition": "Publisher-provided public raw bulk endpoint; original transfer ended early. Fixed first 8388608 compressed bytes copied into immutable local snapshot; only complete original JSONL lines retained. Full original hash and CRC remain unverified.",
+      "approved_scope": "Bounded text excerpt for resource and consistency research; not complete raw dump, production lexicon or independent language evaluation.",
+      "attribution": "Chinese Wiktionary contributors (per-entry attribution_url links to page and history); raw extraction by Tatu Ylonen and Wiktextract contributors, https://kaikki.org/zhwiktionary/rawdata.html. Derived text data remains CC BY-SA 4.0; Cloudleaf tool code is separately MIT.",
+      "automated_download_allowed": false,
+      "bytes": 46788375,
+      "compressed_range": [
+        0,
+        8388607
+      ],
+      "discarded_incomplete_tail_bytes": 139,
+      "format": "wiktionary-zh-prefix-jsonl",
+      "full_gzip_crc_verified": false,
+      "full_source_download_complete": false,
+      "license_file": "data/licenses/CC-BY-SA-4.0.txt",
+      "license_id": "CC-BY-SA-4.0",
+      "license_sha256": "28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "limitations": [
+        "Bounded first-byte excerpt with source-order bias, not complete Wiktionary or a production lexicon.",
+        "Original full download/hash and gzip CRC are not verified; plaintext excerpt hash and exact derivation are independently locked.",
+        "Chinese-edition glosses are Chinese; only explicitly sourced English translations are English, with no complete bilingual claim.",
+        "Wikimedia Terms of Use section 7 applies text CC BY-SA4; per-page import attribution/fair-use exceptions have not all been manually reviewed. Available source rights markers are retained or quarantined; no absolute exception-free guarantee.",
+        "No observed frequency, corpus period, language quality or independent accuracy evidence."
+      ],
+      "line_count": 66593,
+      "original_advertised_bytes": 234450401,
+      "original_etag": "\"6ad75338-df96de1\"",
+      "original_last_modified": "Tue, 20 Oct 2026 11:40:40 GMT",
+      "original_sha256": null,
+      "prefix_bytes": 8388608,
+      "prefix_sha256": "fdf3ae6918edb0e6af91cad20dfb51a2ecad8ce59ab026b4ab4e1e7f33581518",
+      "redistribution": {
+        "describe_modifications": true,
+        "license": "CC-BY-SA-4.0",
+        "media_included": false,
+        "per_page_exception_review_complete": false,
+        "retain_attribution_and_license": true,
+        "share_alike": true
+      },
+      "research_only": true,
+      "review_status": "approved",
+      "reviewed_on": "2026-10-22",
+      "schema_version": 1,
+      "sha256": "ca4df3453261f9f12f1223deb11a26d979078ea6e1af870b44da2d3dcf4e2998",
+      "source_id": "wiktionary:zh-20261001-prefix8388608",
+      "source_member": "zhwiktionary-prefix-8388608.jsonl",
+      "source_page": "https://kaikki.org/zhwiktionary/rawdata.html",
+      "source_subset": true,
+      "specification_url": "https://github.com/tatuylonen/wiktextract/tree/c1bb342f3f3afb42e2200dea4dfc8bdc9fb0a4f4/src/wiktextract/extractor/zh",
+      "transformations": "Fixed compressed prefix inflated to complete original JSONL lines; trailing 139 bytes excluded. Import exact multi-character Han headwords with explicit Mandarin/Pinyin tags; preserve Chinese gloss language, sourced POS, explicit English translations, original-line digests and page URLs. Exclude media, quotation examples and entries with unreviewed rights markers. No frequency or script-conversion inference.",
+      "url": "https://kaikki.org/zhwiktionary/raw-wiktextract-data.jsonl.gz",
+      "version": "2026-10-01-extract2026-10-20-prefix8388608"
+    },
+    "source_lock_sha256": "46fb6ac082320c6fa48d72a5ff9258eb00c947d8f31d5c0d4f70ed84a98354ce",
+    "syllables_sha256": "b98f87a68a211cfa911637b9a2026acec0255c0254070f67dfa2366ea58c6021"
+  },
+  "old_manifest_sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715",
+  "old_verified": {
+    "builder": "cloudleaf-data-2.0.0",
+    "entry_count": 44431,
+    "license_file": "LICENSE.txt",
+    "normalization_unicode_version": "15.0.0",
+    "rejected_count": 18,
+    "resources": {
+      "LICENSE.txt": {
+        "bytes": 1995,
+        "sha256": "e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96"
+      },
+      "NOTICE.txt": {
+        "bytes": 488,
+        "sha256": "22c40fbaa8c53fedd4bc0e55af54c6afe5137d10440224c933204040e9f998c2"
+      },
+      "index.json": {
+        "bytes": 4019015,
+        "sha256": "4651b7e9c785a55be183e1d3617b63e7b695451e295d2b12b3d261e882d29fb2"
+      },
+      "quality.json": {
+        "bytes": 1203,
+        "sha256": "0cbbdbd6e65b1a8a7fa1e52468a742159d32a5d66d2812dd75573eeb535d1fd2"
+      },
+      "records.jsonl": {
+        "bytes": 25322366,
+        "sha256": "09da11e46848465c358ecaecaa3758de5f4ae4ea0dd3a4a78255b78ba271de08"
+      },
+      "rejected.jsonl": {
+        "bytes": 1982,
+        "sha256": "d1b453d1442f55a365fc274a7b4558da137b8312a91b9d50ac8a760b9535d462"
+      },
+      "runtime.tsv": {
+        "bytes": 5195378,
+        "sha256": "1b13b199440c0ca9b59074de9100f58c6a0b847b12a7b986e1b752084ff60f8e"
+      },
+      "source-lock.json": {
+        "bytes": 1565,
+        "sha256": "f8b047cd521495c1708345de95860f63c1de06db80dcaa16e22b4444ec05d7ba"
+      }
+    },
+    "runtime_format": "cloudleaf-lexicon-v2",
+    "schema_version": 2,
+    "source": {
+      "acquisition": "Explicit official bulk archive download after source/license review; fixed original bytes cached outside Git.",
+      "attribution": "Unicode Unihan 17.0.0. Original data copyright 1991-2025 Unicode, Inc.; accompanying Unicode License V3 copyright 1991-2026 Unicode, Inc.",
+      "automated_download_allowed": true,
+      "bytes": 8518517,
+      "format": "unihan-zip",
+      "license_file": "data/licenses/Unicode-3.0.txt",
+      "license_id": "Unicode-3.0",
+      "license_sha256": "e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96",
+      "license_url": "https://www.unicode.org/license.txt",
+      "limitations": [
+        "Character-level customary Mandarin readings, not complete polyphones or word/phrase pronunciations.",
+        "English character glosses, not complete bilingual senses/POS/collocations.",
+        "kFrequency removed since Unicode 16; frequency remains null/unknown.",
+        "No independent language-accuracy or current frequency-distribution claim."
+      ],
+      "redistribution": {
+        "commercial_use": true,
+        "endorsement": false,
+        "modified_data": true,
+        "retain_copyright_and_permission": true
+      },
+      "review_status": "approved",
+      "reviewed_on": "2026-10-22",
+      "schema_version": 1,
+      "sha256": "f7a48b2b545acfaa77b2d607ae28747404ce02baefee16396c5d2d7a8ef34b5e",
+      "source_id": "unicode:unihan-17.0.0",
+      "specification_url": "https://www.unicode.org/reports/tr38/tr38-39.html",
+      "transformations": "Extract kMandarin and kDefinition across all Unihan text members; preserve raw readings/glosses and evidence; remove tone marks only for runtime pinyin; no frequency/POS inference.",
+      "url": "https://www.unicode.org/Public/17.0.0/ucd/Unihan.zip",
+      "version": "17.0.0"
+    },
+    "source_lock_sha256": "f8b047cd521495c1708345de95860f63c1de06db80dcaa16e22b4444ec05d7ba",
+    "syllables_sha256": "b98f87a68a211cfa911637b9a2026acec0255c0254070f67dfa2366ea58c6021"
+  },
+  "physical_power_loss_tested": false,
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "schema_version": 1,
+  "scope": "actual locked Unihan and bounded Wiktionary releases; process failure injection only"
+}
