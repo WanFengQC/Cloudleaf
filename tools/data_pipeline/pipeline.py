@@ -18,7 +18,7 @@ from zipfile import ZipFile
 from .filesystem import assert_plain_path
 
 ROOT = Path(__file__).resolve().parents[2]
-VERSION = "cloudleaf-data-2.0.0"
+VERSION = "cloudleaf-data-2.1.0"
 HEADER = "id\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id"
 MAX_SOURCE = 32 * 1024 * 1024
 MAX_EXPANDED = 128 * 1024 * 1024
@@ -102,8 +102,14 @@ def load_lock(path: Path) -> dict:
             raise ValueError("来源或许可标识错误")
     if not SHA256.fullmatch(lock["sha256"]) or not SHA256.fullmatch(lock["license_sha256"]):
         raise ValueError("必须先锁定原件与许可SHA-256")
-    if lock["format"] not in {"unihan-zip", "cedict-text", "wiktionary-zh-gzip", "wiktionary-zh-prefix-jsonl"}:
+    if lock["format"] not in {"unihan-zip", "cedict-text", "cedict-zip-v1", "wiktionary-zh-gzip", "wiktionary-zh-prefix-jsonl"}:
         raise ValueError("来源格式不支持")
+    if lock["format"] == "cedict-zip-v1" and (
+            lock.get("source_member") != "cedict_ts.u8" or type(lock.get("expanded_bytes")) is not int
+            or not 0 < lock["expanded_bytes"] <= MAX_EXPANDED
+            or not isinstance(lock.get("expanded_sha256"), str) or not SHA256.fullmatch(lock["expanded_sha256"])
+            or not isinstance(lock.get("source_header"), dict) or lock.get("zip_full_crc_verified") is not True):
+        raise ValueError("CC-CEDICT完整容器锁字段错误")
     if lock["format"] == "wiktionary-zh-prefix-jsonl" and (
             lock.get("source_subset") is not True or lock.get("research_only") is not True
             or lock.get("original_sha256") is not None or lock.get("full_gzip_crc_verified") is not False
@@ -273,9 +279,9 @@ def runtime_annotation(record: dict) -> str:
 def rejection_categories(rejections: list[dict]) -> dict:
     """运行时能力、预算与许可隔离均不计为源坏记录。"""
     reasons = Counter(row["reason"] for row in rejections)
-    unsupported = sum(reasons[reason] for reason in {"unsupported_reading", "unsupported_word_reading"})
+    unsupported = sum(reasons[reason] for reason in {"unsupported_reading", "unsupported_word_reading", "unsupported_cedict_reading"})
     ambiguous = reasons["ambiguous_or_unsupported_word_reading"]
-    budget = reasons["word_reading_budget"]
+    budget = reasons["word_reading_budget"] + reasons["cedict_runtime_budget"]
     rights = sum(reasons[reason] for reason in {"unreviewed_additional_rights_marker", "rights_or_quotation_marker"})
     result = {"unsupported_runtime_readings": unsupported,
               "malformed_or_conflicting_records": len(rejections) - unsupported - ambiguous - budget - rights}
@@ -314,6 +320,9 @@ def build(lock_path: Path, source: Path, license_path: Path, output: Path) -> di
     if lock["format"].startswith("wiktionary-"):
         from .word_source import import_words
         importer = import_words
+    elif lock["format"] == "cedict-zip-v1":
+        from .cedict_source import import_cedict_archive
+        importer = import_cedict_archive
     else:
         importer = import_unihan if lock["format"] == "unihan-zip" else import_cedict
     raw_records = importer(source, lock, audit)
@@ -343,6 +352,9 @@ def build(lock_path: Path, source: Path, license_path: Path, output: Path) -> di
                                                       else not row["raw_senses"] for row in records),
                          "runtime_annotation_omitted_long": sum(len(runtime_annotation(row)) > 256 for row in records)})
     audit.counts.update(rejection_categories(audit.rejections))
+    if lock["format"] == "cedict-zip-v1":
+        from .cedict_source import derived_quality
+        audit.counts.update(derived_quality(records))
     quality = {"schema_version": 2, "source": lock["source_id"], "counts": dict(sorted(audit.counts.items())),
                "rejection_reasons": dict(sorted(Counter(row["reason"] for row in audit.rejections).items())),
                "scope": lock["limitations"], "evaluation": {"train": None, "dev": None, "heldout": None,
@@ -461,8 +473,17 @@ def validate_record(record: dict, lock: dict) -> None:
         if any(not isinstance(record[field], str) or not clean_field(record[field]) or len(record[field]) > 64
                for field in ("traditional", "simplified")) or record["text"] != record["simplified"]:
             raise ValueError("CC-CEDICT字形不合法")
-        key = digest(canonical([record["traditional"], record["simplified"], raw, "/".join(senses)]))[:32]
-        if record["source_record_id"] != "cedict:" + key:
+        if lock["format"] == "cedict-zip-v1":
+            from .cedict_source import parse_reading, source_key
+            expected_source_id = source_key(record["traditional"], record["simplified"], raw)
+            if parse_reading(raw) != pinyin:
+                raise ValueError("CC-CEDICT v1数字声调格式不一致")
+            if any(item["member"] != lock["source_member"] for item in evidence):
+                raise ValueError("CC-CEDICT固定逻辑成员不一致")
+        else:
+            key = digest(canonical([record["traditional"], record["simplified"], raw, "/".join(senses)]))[:32]
+            expected_source_id = "cedict:" + key
+        if record["source_record_id"] != expected_source_id:
             raise ValueError("CC-CEDICT稳定记录ID不匹配")
         expected_raw = f"{record['traditional']} {record['simplified']} [{raw}] /{'/'.join(senses)}/"
         if any(item["raw"] != expected_raw for item in evidence):
@@ -554,6 +575,9 @@ def verify_release(root: Path) -> dict:
                                              else not row["raw_senses"] for row in records),
                "runtime_annotation_omitted_long": sum(len(runtime_annotation(row)) > 256 for row in records),
                "rejected_records": len(rejected), **rejection_categories(rejected)}
+    if lock["format"] == "cedict-zip-v1":
+        from .cedict_source import derived_quality
+        derived.update(derived_quality(records))
     # 原始行数、源属性重复/冲突等依赖原件；这里只证明事实与拒绝报告能够独立推导的统计。
     if (type(manifest["rejected_count"]) is not int or manifest["rejected_count"] != len(rejected)
             or quality["rejection_reasons"] != reasons
