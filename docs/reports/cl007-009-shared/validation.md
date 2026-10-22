@@ -32,3 +32,9 @@
 | C | `C:/Users/EDY/.codex/worktrees/cl009-data/Cloudleaf` | `codex/cl009-data` | `21ba6f6` |
 
 各分支同步共享实现后独立检查、记录SHA与局限。正式退出条件仍见各方向状态报告和路线图，本共享检查点不代表CL-007/008/009完成。
+
+## 远程检查
+
+代码及上述报告提交 `e26c749f20b70a0c4cc4a020f58929b2a96d2626` 的[草稿PR #1](https://github.com/WanFengQC/Cloudleaf/pull/1)已建立。[Core CI 39715719807](https://github.com/WanFengQC/Cloudleaf/actions/runs/39715719807)两个job均success：Windows `119617221515`、Linux `119617221863`，所有检查、微基准及旧消融通过。
+
+实际存在的产物：Windows `12398394720`（16,396字节，SHA-256 `1a89cf3540f50ed24ad62267a51da1a607b1903c61f3109717d3e831082ce71b`），Linux `12398334870`（24,023字节，SHA-256 `16081836255745fcb00c290ef6d32b788530d74efa0bf85408b5b2783a50d61d`）。本段为检查完成后的文档追加，不声称本段已包含在该被测提交中。
