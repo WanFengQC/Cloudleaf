@@ -37,3 +37,7 @@
 下一步按A/B/C并行：CL-007生产Windows适配、CL-008有实验依据的整体候选/排序/纠错/学习、CL-009正式数据管线；CL-010集成真实系统/应用、准确率、端到端、压力与故障/安装验收。
 
 CL-005仍需持续扩展正式数据、冻结选型指标和比较主要算法；CL-006对候选鼠标选择、surrounding text、选择区、Unicode编辑及异步注释等当前API缺口另行版本化，不静默宣称已有支持。翻译T1/T2/T3在数据准备和接口约束下按完整功能建设，macOS/Linux适配拥有独立真实验收。
+
+## 本轮远程验收补记
+
+代码/数据/契约提交 `3d08350` 已由 [run39712553345](https://github.com/WanFengQC/Cloudleaf/actions/runs/39712553345) 在Windows/Linux全部通过，含新增评估、Python检查和报告上传；精确SHA、job与产物元数据见[本轮验收](reports/cl001-cl006-validation.md)。本补记为事后证据记录，不影响生产源码与数据指纹。

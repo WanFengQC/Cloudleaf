@@ -38,6 +38,6 @@
 
 ## 本轮远程与后续
 
-基线CI已验收。本轮新增评估与契约测试在提交后再次由Windows/Linux CI执行，保存精确版本结果，不沿用历史成功冒充当前版本。后续CI证据追加至执行记录，最新运行可在[仓库Actions](https://github.com/WanFengQC/Cloudleaf/actions)核对。
+本轮代码提交 `3d0835068f040eb3b8ce6fae3803d1d376f49382` 的[Core CI 39712553345](https://github.com/WanFengQC/Cloudleaf/actions/runs/39712553345)已真实success：Windows job `119607042724`、Linux job `119607042482` 均通过全部检查，包括新增Python门禁、83条双方案评估、契约测试与报告上传。两份产物实际存在，元数据见[cl001-cl006-ci.json](cl001-cl006-ci.json)。本记录后续仅追加文档，不伪造其自身包含在上述被测提交中。
 
 后续按[路线图](../roadmap.md)推进CL-007/008/009三方向及CL-010集成；CL-005正式数据/评测与CL-006产品API扩展继续跟踪。正式TSF、生产词库、整体候选/语言模型、学习、双语/整句/离线/API翻译及macOS/Linux系统适配均未在本轮冒称完成。
