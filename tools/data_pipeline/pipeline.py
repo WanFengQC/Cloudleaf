@@ -15,6 +15,8 @@ import unicodedata
 import urllib.request
 from zipfile import ZipFile
 
+from .filesystem import assert_plain_path
+
 ROOT = Path(__file__).resolve().parents[2]
 VERSION = "cloudleaf-data-2.0.0"
 HEADER = "id\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id"
@@ -381,7 +383,8 @@ def safe_child(root: Path, name: str) -> Path:
     if not name or Path(name).name != name or "/" in name or "\\" in name or ":" in name or name in {".", ".."}:
         raise ValueError("资源路径越界")
     path = root / name
-    if path.is_symlink() or not path.resolve().is_relative_to(root.resolve()):
+    assert_plain_path(path)
+    if not path.resolve().is_relative_to(root.resolve()):
         raise ValueError("资源路径含链接或越界")
     return path
 
@@ -470,8 +473,7 @@ def validate_record(record: dict, lock: dict) -> None:
 
 
 def verify_release(root: Path) -> dict:
-    if root.is_symlink():
-        raise ValueError("release不可是符号链接")
+    assert_plain_path(root)
     manifest_path = safe_child(root, "manifest.json")
     if manifest_path.stat().st_size > 1024 * 1024:
         raise ValueError("manifest体积超限")
@@ -581,11 +583,28 @@ def publish_lock(store: Path):
 
 def atomic_json(path: Path, value: dict) -> None:
     temporary = path.with_suffix(".tmp")
-    with temporary.open("wb") as stream:
-        stream.write(canonical(value))
-        stream.flush()
-        os.fsync(stream.fileno())
-    os.replace(temporary, path)
+    assert_plain_path(path)
+    assert_plain_path(temporary)
+    # 现存临时文件必须显式恢复；独占创建避免检查后截断替换进来的既有文件。
+    created = None
+    try:
+        with temporary.open("xb") as stream:
+            created = os.fstat(stream.fileno())
+            stream.write(canonical(value))
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary, path)
+    except BaseException:
+        # 可捕获失败只清理本调用独占创建且身份未变的文件；进程中断仍遗留给显式恢复。
+        if created is not None:
+            try:
+                assert_plain_path(temporary)
+                present = temporary.lstat()
+                if (present.st_dev, present.st_ino) == (created.st_dev, created.st_ino):
+                    temporary.unlink()
+            except FileNotFoundError:
+                pass
+        raise
 
 
 def checked_pointer(store: Path, pointer: dict) -> None:

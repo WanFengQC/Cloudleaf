@@ -40,6 +40,8 @@ python -m tools.data_pipeline recover --store .local/data-store --owner-pid <已
 
 恢复只接受已确认退出的owner；活进程、PID复用或权限/状态不明均拒绝。Windows使用只读进程句柄查询，绝不用`os.kill(pid,0)`模拟POSIX探测。先检查指针及所有孤儿安全，再将固定`.publish-*`、`current.tmp`及owner锁移到`.recovered-*`隔离目录；不自动选择新版本，不删除缓存和用户词典。`--rollback`显式切回已校验previous。实际子进程退出/终止测试不代表物理断电持久性。
 
+发布路径只接受普通本地目录：逐级`lstat`拒绝符号链接、Windows junction及全部重解析点，普通文件硬链接同样拒绝；检查包含父路径、元数据、release资源和恢复孤儿内部。恢复在创建guard之前及持有guard后重新校验。`current.tmp`独占创建，已有文件不覆盖；可捕获失败只清理本次创建且身份未变的临时文件，进程中断仍需显式恢复。该门禁不提供对其他进程并发替换路径的安全沙箱，云文件重解析目录不在支持范围。
+
 ## 固定真实词条研究摘录
 
 完整Kaikki raw gzip原件提前断流，尚无全件SHA/CRC。`wiktionary-zh-prefix-jsonl`独立格式只用于固定前8MiB中的完整JSONL行，不放宽完整gzip门禁；来源锁的`source_subset/research_only`为true，不能当完整dump或正式词库。

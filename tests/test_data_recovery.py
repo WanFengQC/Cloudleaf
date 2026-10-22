@@ -62,6 +62,110 @@ def child_command(code, *arguments):
 
 
 class DataRecoveryTests(unittest.TestCase):
+    @staticmethod
+    def directory_link(link: Path, target: Path) -> None:
+        if os.name == "nt":
+            # junction无需开发者模式；路径来自本测试新建的临时目录。
+            quote = lambda value: "'" + str(value).replace("'", "''") + "'"
+            command = ("New-Item -ItemType Junction -Path " + quote(link)
+                       + " -Target " + quote(target) + " -ErrorAction Stop | Out-Null")
+            subprocess.run(["powershell", "-NoProfile", "-NonInteractive", "-Command", command],
+                           check=True, capture_output=True)
+        else:
+            link.symlink_to(target, target_is_directory=True)
+
+    def test_store_and_ancestor_directory_links_reject_before_guard_creation(self):
+        from unittest.mock import patch
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            for ancestor in [False, True]:
+                with self.subTest(ancestor=ancestor):
+                    physical = root / ("physical-parent" if ancestor else "physical-store")
+                    physical.mkdir()
+                    actual = physical / "store" if ancestor else physical
+                    actual.mkdir(exist_ok=True)
+                    write_json(actual / ".writer.lock", {"owner_pid": 12345})
+                    (actual / "user-dictionary.json").write_bytes(b"private fixture")
+                    before = {path.name: path.read_bytes() for path in actual.iterdir()}
+                    link = root / ("linked-parent" if ancestor else "linked-store")
+                    self.directory_link(link, physical)
+                    requested = link / "store" if ancestor else link
+                    with patch("tools.data_pipeline.recovery.process_identity") as identity:
+                        with self.assertRaisesRegex(ValueError, "链接或越界"):
+                            recover_store(requested, 12345)
+                    identity.assert_not_called()
+                    self.assertEqual({path.name: path.read_bytes() for path in actual.iterdir()}, before)
+
+    def test_nested_orphan_directory_link_is_rejected_before_any_recovery_mutation(self):
+        from unittest.mock import patch
+        with tempfile.TemporaryDirectory() as temporary:
+            store = Path(temporary)
+            (store / "ordinary-inside-target").mkdir()
+            orphan = store / ".publish-nested"
+            orphan.mkdir()
+            self.directory_link(orphan / "inside-link", store / "ordinary-inside-target")
+            write_json(store / ".writer.lock", {"owner_pid": 12345})
+            write_json(store / "current.json", {"schema_version": 1, "current": {}, "previous": {}})
+            before = {name: (store / name).read_bytes() for name in [".writer.lock", "current.json"]}
+            with patch("tools.data_pipeline.recovery.process_identity") as identity:
+                with self.assertRaisesRegex(ValueError, "链接或越界"):
+                    recover_store(store, 12345, rollback=True)
+            identity.assert_not_called()
+            self.assertFalse((store / ".writer.guard").exists())
+            self.assertFalse(list(store.glob(".recovered-*")))
+            self.assertTrue(orphan.is_dir())
+            self.assertEqual({name: (store / name).read_bytes() for name in before}, before)
+
+    def test_release_directory_links_and_linked_ancestors_are_rejected(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            physical = root / "physical"
+            physical.mkdir()
+            (physical / "release").mkdir()
+            link = root / "linked"
+            self.directory_link(link, physical)
+            for candidate in [link, link / "release"]:
+                with self.subTest(path=candidate):
+                    with self.assertRaisesRegex(ValueError, "链接或越界"):
+                        verify_release(candidate)
+
+    def test_store_metadata_hardlinks_are_rejected_before_guard_writes(self):
+        from tools.data_pipeline.recovery import store_guard
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            for name in [".writer.guard", ".writer.lock", "current.json", "current.tmp"]:
+                with self.subTest(name=name):
+                    store = root / name.replace(".", "_")
+                    store.mkdir()
+                    outside = root / (store.name + "-outside")
+                    outside.write_bytes(b"")
+                    os.link(outside, store / name)
+                    with self.assertRaisesRegex(ValueError, "链接或越界"):
+                        with store_guard(store):
+                            self.fail("硬链接不能取得发布guard")
+                    self.assertEqual(outside.read_bytes(), b"")
+                    self.assertFalse(list(store.glob(".recovered-*")))
+                    self.assertEqual({path.name for path in store.iterdir()}, {name})
+
+    def test_atomic_pointer_never_truncates_a_hardlink_or_existing_temporary(self):
+        from tools.data_pipeline.pipeline import atomic_json
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            outside = root / "outside"
+            outside.write_bytes(b"preserve-me")
+            pointer = root / "current.json"
+            temporary_path = root / "current.tmp"
+            os.link(outside, temporary_path)
+            with self.assertRaisesRegex(ValueError, "链接或越界"):
+                atomic_json(pointer, {"schema_version": 1})
+            self.assertEqual(outside.read_bytes(), b"preserve-me")
+            self.assertFalse(pointer.exists())
+            temporary_path.unlink()
+            temporary_path.write_bytes(b"orphan-needs-explicit-recovery")
+            with self.assertRaises(FileExistsError):
+                atomic_json(pointer, {"schema_version": 1})
+            self.assertEqual(temporary_path.read_bytes(), b"orphan-needs-explicit-recovery")
+
     def test_child_exit_recovery_at_copy_cache_and_pointer_boundaries(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

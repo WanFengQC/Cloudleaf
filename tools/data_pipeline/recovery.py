@@ -9,6 +9,8 @@ import re
 import sys
 import uuid
 
+from .filesystem import assert_plain_path, assert_plain_store, assert_plain_tree
+
 
 def process_identity(pid: int) -> dict:
     if type(pid) is not int or pid <= 0:
@@ -54,12 +56,10 @@ def process_identity(pid: int) -> dict:
 @contextmanager
 def store_guard(store: Path):
     """操作系统锁随进程退出自动释放，保护遗留owner锁的显式恢复。"""
-    if store.is_symlink():
-        raise ValueError("发布存储不可为链接")
+    assert_plain_store(store)
     store.mkdir(parents=True, exist_ok=True)
     path = store / ".writer.guard"
-    if path.is_symlink():
-        raise ValueError("发布guard不可为链接")
+    assert_plain_store(store)
     with path.open("a+b") as stream:
         stream.seek(0, 2)
         if stream.tell() == 0:
@@ -89,9 +89,25 @@ def recover_store(store: Path, owner_pid: int, *, rollback: bool = False) -> dic
     from .pipeline import atomic_json, checked_pointer, read_json
     if type(owner_pid) is not int or owner_pid <= 0:
         raise ValueError("恢复必须指定已中断写者正PID")
+    # guard自身可能尚不存在；不安全的孤儿也必须在第一次创建guard之前拒绝。
+    def preflight() -> list[Path]:
+        assert_plain_store(store)
+        if not store.is_dir():
+            raise ValueError("恢复存储不存在")
+        paths = [store / ".writer.lock"]
+        paths += [path for path in store.iterdir() if re.fullmatch(r"\.publish-[A-Za-z0-9_-]+", path.name)]
+        temporary = store / "current.tmp"
+        if temporary.exists():
+            paths.append(temporary)
+        for path in paths:
+            assert_plain_tree(path)
+        return paths
+
+    preflight()
     with store_guard(store):
+        orphan_paths = preflight()
         lock_path = store / ".writer.lock"
-        if lock_path.is_symlink() or not lock_path.is_file() or lock_path.stat().st_size > 4096:
+        if not lock_path.is_file() or lock_path.stat().st_size > 4096:
             raise ValueError("缺少可识别遗留owner锁")
         text = lock_path.read_text(encoding="utf-8")
         lock = json.loads(text) if text.startswith("{") else {"owner_pid": int(text)}
@@ -101,8 +117,7 @@ def recover_store(store: Path, owner_pid: int, *, rollback: bool = False) -> dic
         if status["status"] != "dead":
             raise ValueError("原写者仍存活、PID已复用或状态不明；拒绝恢复")
         pointer_path = store / "current.json"
-        if pointer_path.is_symlink():
-            raise ValueError("恢复指针不可为链接")
+        assert_plain_path(pointer_path)
         current = read_json(pointer_path) if pointer_path.exists() else None
         if rollback and not current:
             raise ValueError("没有可恢复回退的指针")
@@ -117,16 +132,10 @@ def recover_store(store: Path, owner_pid: int, *, rollback: bool = False) -> dic
                 recovered_pointer = {"schema_version": 1, "current": current["previous"], "previous": current["current"]}
             else:
                 checked_pointer(store, current["current"])
-        orphan_paths = [lock_path]
-        orphan_paths += [path for path in store.iterdir() if re.fullmatch(r"\.publish-[A-Za-z0-9_-]+", path.name)]
-        if (store / "current.tmp").exists() or (store / "current.tmp").is_symlink():
-            orphan_paths.append(store / "current.tmp")
         # 只移动本工具固定命名的孤儿至隔离目录，不删除缓存或用户词典。
         quarantine = store / (".recovered-" + uuid.uuid4().hex)
         for path in orphan_paths:
-            if (path.is_symlink() or not path.resolve().is_relative_to(store.resolve())
-                    or (path.is_dir() and any(child.is_symlink() for child in path.rglob("*")))):
-                raise ValueError("孤儿对象含链接或越界，拒绝自动移动")
+            assert_plain_tree(path)
         quarantine.mkdir()
         for path in orphan_paths[1:]:
             path.rename(quarantine / path.name)
