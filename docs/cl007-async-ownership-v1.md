@@ -19,6 +19,8 @@ FIFO 上限32个已接管事件；入队前检查全部容量，满时不吞新�
 
 输入 scope 证明只属于该 context/epoch，外部文本/选区/属性编辑、context 切换、焦点切换和证明过期即失效。焦点时可异步读锁刷新证明；scope 未知或证明失效时不直接异步接管，等待实际锁内验证。每次实际写锁仍重查 readonly/password scope。scope 变化发生在已取得 ownership 后时隔离保全，不在密码目标写入 IME 文本。失败与恢复 UI 不自动显示或记录原文。
 
+`OnEndEdit` 在写会话完成后通知。自身编辑归属只按 Microsoft 指定的 `ITfContext::InWriteSession(client)` 判断，不依赖仍在调用栈内的标志，也不读取宿主正文来猜测来源。返回 true 时保留本服务组合，但使 scope 缓存失效；false 或查询失败一律保守隔离并使旧 epoch 失效。通知的只读 cookie 不能写入：清理通过独立异步 EndComposition，禁止从通知中申请同步写锁或擦除旧 range。依据：[OnEndEdit](https://learn.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itftexteditsink-onendedit)、[InWriteSession](https://learn.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfcontext-inwritesession)。
+
 ## A2：事务状态和用户恢复
 
 每条已接管事件经过 `OwnedQueued -> Started -> Writing -> Applied`，或从 Queued/Started 转 `NotApplied/Isolated`，从 Writing 转 `Unknown`。Applied 只在实际 SetText、选区、EndComposition 完成且身份与健康仍有效后记录；前面步骤成功不代表提交成功。只在写入前可证明未发生编辑时报告 NotApplied；进入 SetText 调用即视为可能写入，超时、重入失焦和异常都不得自动重发。
