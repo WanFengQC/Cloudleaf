@@ -20,6 +20,8 @@ TSF composition 保存 `ITfComposition`，使用 document manager 当前 context
 
 管理工具提供显式 register/unregister/status，注册采用当前用户 COM CLSID 路径，不修改默认输入法；TSF 服务/简体中文 profile/category 注册分步失败回滚。DLL 路径必须绝对且存在。固定 CLSID/profile GUID 由代码唯一声明；注册前报告 root，桌面实测由 root 统一控制。卸载只移除 Cloudleaf 自己的项。x64 DLL 只能加载到 x64 应用；x86/ARM64 分发、签名安装包和权限边界不能由 x64 本地通过推断完成。
 
+真实应用切换增加显式 `activate-session <新快照路径>` 和 `restore-session <快照路径>`。切换之前以 create_new 写入 UTF-8 的 `cloudleaf-profile-v1`，保存原 profile type、LANGID、CLSID、profile GUID 与 HKL；只在快照写入并 flush/sync 成功后调用 FORSESSION 激活，绝不修改默认或系统全局设置。恢复严格校验格式，成功后仍保留快照供验收追溯。不读取或记录宿主输入内容。注册拒绝覆盖已有 Cloudleaf COM 项，卸载须报告系统失败，不把失败操作显示为成功。
+
 ## 验证与状态
 
 执行格式、clippy、全部原有测试、平台新增纯函数/COM 测试、资源审计和 release 基准。真实 Windows 应用验收至少覆盖独立 Notepad 和浏览器输入区：组合/提交/翻页/鼠标/焦点/快捷键/取消/重激活/Unicode；保存命令、程序版本、实际文本与操作结果，不能用模拟宿主代替。故障注入必须覆盖失败回执、迟到 epoch 和 Unknown 不重试。
