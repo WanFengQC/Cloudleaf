@@ -2,7 +2,7 @@
 
 云笺的目标是算法完善、功能完整、响应流畅、翻译可靠、可长期维护的正式跨平台输入法。当前已有可独立测试的 M1/M2 Rust 原型；完整产品按 [v2 路线图](docs/roadmap.md)推进 Windows、核心算法和正式数据三个方向，再集成双语翻译与多平台。
 
-当前边界：TSF、原生候选窗口、生产词库、整句候选/语言模型、纠错/学习和翻译尚未实现。64条手写词典及 CLI 演示不代表最终产品能力。最终50项可追踪能力见[产品范围](docs/product-scope.md)，近期CL-001..006状态见[执行记录](docs/cl001-cl006-progress.md)。
+当前边界：默认输入核心尚未接入TSF、原生候选窗口、生产词库或独立搜索/语言模型；纠错/学习和翻译尚未实现。新增独立实验模块的范围见下文CL-008入口。64条手写词典及 CLI 演示不代表最终产品能力。最终50项可追踪能力见[产品范围](docs/product-scope.md)，近期CL-001..006状态见[执行记录](docs/cl001-cl006-progress.md)。
 
 ## 环境
 
@@ -62,6 +62,16 @@ python scripts/evaluate_algorithms.py --output-dir .local/algorithm-v1
 
 独立算法种子与评估器分别登记来源/划分，比较现有规则与移除精确匹配优先的频率排序消融，保留空结果、超限、OOV和未实现能力的真实分母。报告包含Top-1/Top-5/MRR、逐例位置变化与分组延迟，详见[评估规范](docs/algorithm-evaluation.md)。手写种子不支持正式准确率或最终模型选型结论；DAG/整体候选、N-gram、纠错和学习的比较仍须后续实验。
 
+## CL-008独立搜索实验
+
+新增`cloudleaf-search`提供覆盖原输入区间的词条DAG、穷举参考/精确DP/有界Beam、可解释整数评分、预载Bigram和有限候选池上下文重排。默认输入引擎仍使用原候选实现，新模块尚未接入输入事件。正式语言语料、模型、纠错/简拼/双拼/学习/增量和集成仍未完成；不满足CL-008退出条件，不进入CL-010。
+
+```text
+python scripts/evaluate_search.py --iterations 100 --warmup 10 --output .local/cl008-search.json
+```
+
+该实验使用[机械资源](tests/search-mechanics-v1/README.md)，明确`language_accuracy_valid=false`；不输出正式输入法准确率。[实施状态与风险](docs/reports/cl008-progress.md)、[逐例对照和性能](docs/reports/cl008-search-mechanics-v1.json)及[真实v2数据只读载入](docs/reports/cl008-unihan-v2-load.json)分别记录证据和限制。原64/41/83条资源及其回归测试继续保留。
+
 ## 模块
 
 | crate | 职责 |
@@ -71,6 +81,7 @@ python scripts/evaluate_algorithms.py --output-dir .local/algorithm-v1
 | `cloudleaf-dictionary` | 严格词典校验、载入时建立内存索引 |
 | `cloudleaf-candidate` | 确定性排序、去重与有界候选生成 |
 | `cloudleaf-input` | 输入状态、光标、选择、模式和生命周期 |
+| `cloudleaf-search` | 独立实验的全输入词条图、同图搜索对照与整数语言模型；尚未接入输入核心 |
 | `cloudleaf-cli` | 测试宿主与独立基准入口 |
 
 产品核心不直接写日志，不保存完整输入历史。候选注释不进入提交文本；提交失败保留请求，显式重试需要新 ID；宿主先确认提交，再派发下一事件。日志及错误规范详见[设计约定](docs/m1-m2-design.md)。
