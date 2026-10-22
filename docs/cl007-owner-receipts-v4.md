@@ -36,3 +36,13 @@ Windows线程退出、User32窗口销毁、类注销和COM apartment的官方语
 必须覆盖真实COM apartment init/uninit/线程join、未解决Unknown跨STA可达、明确放弃后的四维预算与DLL归零、反复owner退出与类失败后恢复、异线程卸载/不泵消息/通知失败、部分创建失败、迟到回调及持有外部强sink/callback。正文与token同锁快照、清屏失败保token等第三轮回归不弱化。压力记录多owner/多轮、实际资源尺寸/峰值和成功/拒绝/恢复轨迹，不能只跑空焦点循环。
 
 本轮机制验证仍不替代真实应用、系统profile、密码/readonly宿主、长时间输入、跨架构及安装验收，A5不自动放行。完整README本地检查、固定审计工具、真实新release DLL装卸/原始基准与最终精确提交CI分别记录。
+
+## 异常退出的提前材料快照（实施前补充）
+
+正常 `stop_platform`/COM撤销/线程join与宿主在写入外调中直接退出是两类证据。只在Host析构时移交ledger不足以覆盖后一种；新增纯值flight快照，包含真实NativeEnvelope（UI操作为None）、epoch/sequence、计划文本、阶段和同一epoch预算凭证，不含候选、Rc或COM。它在ownership之后、任何可能写入的外调之前更新；所有Mutex/RefCell借用在外调前释放。
+
+写入前的Queued/Started只有在所有可能修改宿主文本的调用之前已切换Writing时，才能在owner真实退出后归为NotApplied。StartComposition也先标Writing，以保守覆盖宿主实现的外调副作用。Writing/写后退出一律Unknown；Applied仅在真实确认后删除快照。正常材料移交成功后移除同epoch flight，避免双份呈现。快照使用现有epoch全尺寸预留中的轻量副本空间，不能新增未计费候选克隆。
+
+owner真实退出后先把flight纯值转为独立恢复批，再检查回调/监测退出等资源清理门禁；即使未执行Host/COM析构、无法回收固定额度，材料仍可由新STA明确查看。平台启动时即绑定监测completion，不能等stop时才绑定，否则异常退出可能误认后台已结束。未析构强COM/Host引用和未完成监测继续S_FALSE且继续计费，不跨线程释放、不伪造零资源完成。
+
+故障注入仅使用自建隔离子进程中的自有Win32线程，在自有COM宿主SetText内调用ExitThread；不用TerminateThread，不触碰外部线程。用真实OS线程句柄零等待证明退出，不用Rust JoinHandle完成包。证明写后Unknown、原信封和计划文本在新STA可读、读取无共享锁死锁、无自动第二次写入，并记录未析构引用仍保活的明确边界。
