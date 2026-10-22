@@ -96,6 +96,21 @@ class DataRecoveryTests(unittest.TestCase):
                     identity.assert_not_called()
                     self.assertEqual({path.name: path.read_bytes() for path in actual.iterdir()}, before)
 
+    def test_parent_traversal_is_not_normalized_past_a_directory_link(self):
+        from tools.data_pipeline.recovery import store_guard
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            physical = root / "physical"
+            physical.mkdir()
+            link = root / "linked"
+            self.directory_link(link, physical)
+            target = root / "store"
+            target.mkdir()
+            with self.assertRaisesRegex(ValueError, "父级跳转"):
+                with store_guard(link / ".." / "store"):
+                    self.fail("链接路径不能经父级跳转消去检查")
+            self.assertEqual(list(target.iterdir()), [])
+
     def test_nested_orphan_directory_link_is_rejected_before_any_recovery_mutation(self):
         from unittest.mock import patch
         with tempfile.TemporaryDirectory() as temporary:

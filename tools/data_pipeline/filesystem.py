@@ -7,6 +7,8 @@ import stat
 
 def assert_plain_path(path: Path) -> None:
     """先检查词法父路径，避免resolve先跟随Windows junction掩盖来源。"""
+    if ".." in path.parts:
+        raise ValueError("路径含链接或越界（不接受父级跳转）")
     absolute = Path(os.path.abspath(path))
     for component in [*reversed(absolute.parents), absolute]:
         try:
