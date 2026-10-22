@@ -39,6 +39,7 @@ fn run() -> Result<(), Box<dyn Error>> {
     let method = match args[3].as_str() {
         "reference" => Method::Reference,
         "exact" => Method::ExactDag,
+        "position" => Method::PositionDag,
         "beam" => Method::Beam,
         _ => return Err("搜索方法无效".into()),
     };

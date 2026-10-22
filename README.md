@@ -82,6 +82,8 @@ python scripts/evaluate_real_lexicon.py --evidence <数据审核证据JSON> --it
 
 输出包括完整词典冷载入、Reference/ExactDag/Beam1/8/64及三类收紧预算、全部探针的候选路径/来源/许可、采集顺序的延迟样本、独立进程峰值及新增/丢失/名次变化。没有独立语料时Top-1/Top-5/MRR为null；未完整Reference或截断整词边不被用作无损/覆盖收益证明。新工具的真实Rust进程自测随Python测试运行，使用另标的临时机械fixture。
 
+资源证据暴露原ExactDag在无历史评分下的冗余状态后，另按[先行证明](docs/cl008-position-dag-design.md)加入显式PositionDag实验，仅支持Structural/Weighted。它按位置压缩状态，Bigram/ContextRerank明确拒绝；旧ExactDag、Reference及默认输入引擎保持原样。资源工具追加同预算的PositionDag四项配置，完整参考/旧Exact可比较时逐路径校验，不据资源探针宣称语言质量或最终最优。
+
 ## 模块
 
 | crate | 职责 |

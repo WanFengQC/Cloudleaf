@@ -58,6 +58,8 @@ impl std::error::Error for SearchError {}
 pub enum Method {
     Reference,
     ExactDag,
+    /// 仅用于无历史加法评分的精确位置状态压缩；默认方法仍为ExactDag。
+    PositionDag,
     Beam,
 }
 
@@ -117,7 +119,9 @@ impl Config {
             && (1..=512).contains(&self.max_letters)
             && (1..=100_000).contains(&self.max_edges)
             && (1..=2_000_000).contains(&self.max_expansions)
-            && (1..=200_000).contains(&self.max_resident_paths);
+            && (1..=200_000).contains(&self.max_resident_paths)
+            && (self.method != Method::PositionDag
+                || matches!(self.ranker, Ranker::Structural | Ranker::Weighted));
         if valid {
             Ok(())
         } else {

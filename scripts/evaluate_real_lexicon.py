@@ -26,6 +26,10 @@ CONFIGURATIONS = {
     "exact-edges128": ("exact", 64, 128, 200000, 50000),
     "exact-expansions500": ("exact", 64, 16384, 500, 50000),
     "exact-resident128": ("exact", 64, 16384, 200000, 128),
+    "position": ("position", 64, 16384, 200000, 50000),
+    "position-edges128": ("position", 64, 128, 200000, 50000),
+    "position-expansions500": ("position", 64, 16384, 500, 50000),
+    "position-resident128": ("position", 64, 16384, 200000, 128),
 }
 HEADER = ["id", "pinyin", "text", "frequency", "frequency_kind", "annotation", "source", "source_record_id", "license_id"]
 
@@ -161,10 +165,19 @@ def compare(runs: dict, cases: list[dict]) -> tuple[list[dict], list[str]]:
         for label in runs:
             value = indexed[label][key]
             statistics = value.get("statistics", {})
+            oracle = reference if reference_complete else exact
+            oracle_complete = reference_complete or exact_complete
+            equivalence_equal = None
+            if label.startswith("position") and value.get("guaranteed") and oracle_complete:
+                equivalence_equal = all(value.get(field) == oracle.get(field) for field in ("status", "error_kind", "candidates", "waiting", "fallback_preserved"))
+                if not equivalence_equal:
+                    failures.append(f"{label}:{key}")
             methods[label] = {"vs_exact": delta(texts(exact), texts(value)),
                               "vs_reference": delta(texts(reference), texts(value)),
                               "exact_comparison_valid": exact_complete,
                               "reference_comparison_valid": reference_complete,
+                              "position_complete_oracle": "reference" if reference_complete else "exact" if exact_complete else None,
+                              "position_equivalence_equal": equivalence_equal,
                               "observable_pruning": {"budget": statistics.get("budget"), "beam_pruned": statistics.get("beam_pruned", 0)},
                               "candidate_availability": bool(value["candidates"]), "status": value["status"]}
         output.append({**case, "reference_complete": reference_complete, "exact_complete": exact_complete,
@@ -222,11 +235,12 @@ def run() -> None:
               "source_fingerprint_schema": "cloudleaf-source-v2", "source_sha256": before,
               "binary_sha256": sha256(binary), "cases_sha256": sha256(CASES), "protocol_sha256": sha256(PROTOCOL),
               "evidence_sha256": evidence_hash, "evidence": evidence, "lexicon_counts": counts,
-              "summaries": summaries, "comparisons": comparisons, "exact_reference_failures": failures, "runs": runs,
+              "summaries": summaries, "comparisons": comparisons, "equivalence_failures": failures,
+              "exact_reference_failures": [value for value in failures if ":" not in value], "runs": runs,
               "limitations": "真实词条资源探针，无独立gold/授权train/dev/heldout，不计算准确率；Structural禁用频率和模型；进程峰值包含词库/索引/候选/宿主/样本；背景负载未控制，非TSF或产品性能。"}
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps({"output": str(args.output), "summaries": summaries, "exact_reference_failures": failures}, ensure_ascii=False))
+    print(json.dumps({"output": str(args.output), "summaries": summaries, "equivalence_failures": failures}, ensure_ascii=False))
     if failures:
         raise SystemExit(1)
 

@@ -202,6 +202,72 @@ fn no_inherited_thirty_two_parse_limit() {
 }
 
 #[test]
+fn position_states_reject_history_scores_and_bound_extreme_addition() {
+    let lex = lexicon(&[("a", "a", "甲", Some(u32::MAX))]);
+    for ranker in [Ranker::Bigram, Ranker::ContextRerank] {
+        let config = Config {
+            method: Method::PositionDag,
+            ranker,
+            ..Config::default()
+        };
+        assert_eq!(
+            config.validate().unwrap_err().kind,
+            ErrorKind::InvalidConfig
+        );
+    }
+    let mut config = Config {
+        method: Method::PositionDag,
+        output_k: 1,
+        max_input_bytes: 1024,
+        max_letters: 512,
+        ..Config::default()
+    };
+    let raw = "a".repeat(512);
+    let graph = Lattice::build(&lex, &raw, &config).unwrap();
+    let result = search_graph(&lex, &graph, &config, None, None).unwrap();
+    assert!(result.guaranteed);
+    assert_eq!(result.candidates[0].score, 512 * 220);
+    config.method = Method::Reference;
+    let reference = search_graph(&lex, &graph, &config, None, None).unwrap();
+    assert!(reference.guaranteed);
+    assert_eq!(result.candidates, reference.candidates);
+}
+
+#[test]
+fn position_state_merging_preserves_id_ties_across_duplicate_text_splits() {
+    // 输出文本字典序追加后缀可能反转，因此验证的是完整ID序列打平。
+    let lex = lexicon(&[
+        ("01", "a", "甲", None),
+        ("02", "an", "甲乙", None),
+        ("03", "na", "乙", None),
+        ("04", "a na", "甲乙", None),
+        ("05", "a", "甲乙", None),
+        ("06", "na", "甲", None),
+    ]);
+    for raw in ["ana", "anana", "a'na", "anaana", "an", "a'"] {
+        for ranker in [Ranker::Structural, Ranker::Weighted] {
+            for k in [1, 3, 5] {
+                let mut config = Config {
+                    method: Method::Reference,
+                    ranker,
+                    output_k: k,
+                    ..Config::default()
+                };
+                let graph = Lattice::build(&lex, raw, &config).unwrap();
+                let reference = search_graph(&lex, &graph, &config, None, None).unwrap();
+                config.method = Method::PositionDag;
+                let position = search_graph(&lex, &graph, &config, None, None).unwrap();
+                assert!(reference.guaranteed && position.guaranteed);
+                assert_eq!(
+                    position.candidates, reference.candidates,
+                    "{raw} {ranker:?} {k}"
+                );
+            }
+        }
+    }
+}
+
+#[test]
 fn all_reference_paths_match_exact_kbest_with_text_duplicates_and_fixed_seed_inputs() {
     let lex = fixture();
     let model = BigramModel::train(&[
@@ -256,6 +322,13 @@ fn all_reference_paths_match_exact_kbest_with_text_duplicates_and_fixed_seed_inp
                 let beam = search_graph(&lex, &graph, &cfg, Some(&model), Some("a")).unwrap();
                 assert!(beam.guaranteed);
                 assert_eq!(beam.candidates, exact.candidates);
+                if matches!(ranker, Ranker::Structural | Ranker::Weighted) {
+                    cfg.method = Method::PositionDag;
+                    let compressed =
+                        search_graph(&lex, &graph, &cfg, Some(&model), Some("a")).unwrap();
+                    assert!(compressed.guaranteed);
+                    assert_eq!(compressed.candidates, reference.candidates);
+                }
             }
         }
     }
@@ -264,7 +337,12 @@ fn all_reference_paths_match_exact_kbest_with_text_duplicates_and_fixed_seed_inp
 #[test]
 fn budgets_are_explicit_and_resident_high_water_includes_active_and_clone() {
     let lex = fixture();
-    for method in [Method::Reference, Method::ExactDag, Method::Beam] {
+    for method in [
+        Method::Reference,
+        Method::ExactDag,
+        Method::Beam,
+        Method::PositionDag,
+    ] {
         for budget in [
             Budget::GraphEdges,
             Budget::Expansions,
@@ -289,7 +367,7 @@ fn budgets_are_explicit_and_resident_high_water_includes_active_and_clone() {
         }
     }
     let one = lexicon(&[("a", "a", "甲", None)]);
-    for method in [Method::Reference, Method::ExactDag] {
+    for method in [Method::Reference, Method::ExactDag, Method::PositionDag] {
         let mut cfg = Config {
             method,
             max_resident_paths: 1,

@@ -215,6 +215,41 @@ fn dynamic(scorer: &Scorer<'_>, config: &Config, stats: &mut Statistics, k: usiz
         .collect()
 }
 
+fn position_dynamic(
+    scorer: &Scorer<'_>,
+    config: &Config,
+    stats: &mut Statistics,
+    k: usize,
+) -> Vec<Path> {
+    // 仅无历史评分可合并最后词条状态；相同位置具有相同后缀集合和后续增分。
+    let mut states: Vec<Vec<Path>> = vec![Vec::new(); scorer.graph.letters.len() + 1];
+    states[0].push(Path::default());
+    let mut resident = 1;
+    stats.resident_high_water = 1;
+    for position in 0..scorer.graph.letters.len() {
+        let current = std::mem::take(&mut states[position]);
+        // 取出的整批路径仍计入resident，不能只计算尚留在states中的容器。
+        for path in current {
+            for edge_index in &scorer.graph.outgoing[position] {
+                if !expand_allowed(stats, config) {
+                    return Vec::new();
+                }
+                let edge = &scorer.graph.edges[*edge_index];
+                let bucket = &mut states[edge.end];
+                let old = bucket.len();
+                if !resident_allowed(stats, resident + 1, config) {
+                    return Vec::new();
+                }
+                bucket.push(scorer.extend(&path, *edge_index));
+                retain_unique(bucket, k);
+                resident = resident + bucket.len() - old;
+            }
+            resident -= 1;
+        }
+    }
+    states.pop().unwrap_or_default()
+}
+
 /// 在同一个只读词条图上比较搜索方法。输入/模型载入和评估IO由宿主负责。
 pub fn search_graph(
     lexicon: &Lexicon,
@@ -266,6 +301,8 @@ pub fn search_graph(
         Vec::new()
     } else if config.method == Method::Reference {
         reference(&scorer, config, &mut statistics, k)
+    } else if config.method == Method::PositionDag {
+        position_dynamic(&scorer, config, &mut statistics, k)
     } else {
         dynamic(&scorer, config, &mut statistics, k)
     };

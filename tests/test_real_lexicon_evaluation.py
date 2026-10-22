@@ -112,6 +112,16 @@ class ComparisonTests(unittest.TestCase):
         self.assertFalse(whole["whole_entry_complete"])
         self.assertEqual(whole["observed_delta"]["added"], ["甲"])
 
+    def test_position_mismatch_fails_against_complete_exact_when_reference_is_partial(self):
+        reference = self.case(guaranteed=False)
+        exact = self.case(candidates=[{"text": "甲"}])
+        position = self.case(candidates=[{"text": "乙"}])
+        runs = {"reference": {"cases": [reference]}, "exact": {"cases": [exact]},
+                "position": {"cases": [position]}}
+        comparisons, failures = MODULE.compare(runs, [{"id": "a"}])
+        self.assertEqual(failures, ["position:a"])
+        self.assertEqual(comparisons[0]["methods"]["position"]["position_complete_oracle"], "exact")
+
 
 class ActualProbeTests(unittest.TestCase):
     def test_release_host_replays_full_paths_unknown_and_rejected_inputs(self):
@@ -127,7 +137,7 @@ class ActualProbeTests(unittest.TestCase):
                              "whole\tf1\tzhongguo\tpath\nunknown\tf2\tzzzz\tunknown\n"
                              "bad\tf3\tni,hao\tinvalid\n", encoding="utf-8", newline="\n")
             results = []
-            for method in ["reference", "exact", "beam"]:
+            for method in ["reference", "exact", "beam", "position"]:
                 command = [str(binary), str(runtime), str(cases), method, "64", "3", "1", "16384", "200000", "50000", "5"]
                 result, _, _ = MODULE.measure(command)
                 self.assertFalse(result["language_accuracy_valid"])
@@ -146,6 +156,7 @@ class ActualProbeTests(unittest.TestCase):
                 results.append(whole["candidates"])
             self.assertEqual(results[0], results[1])
             self.assertEqual(results[1], results[2])
+            self.assertEqual(results[1], results[3])
 
 
 if __name__ == "__main__":
