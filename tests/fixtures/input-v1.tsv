@@ -1,0 +1,43 @@
+# cloudleaf-input-corpus-v1
+id	initial_mode	events	preedit	candidates	highlighted	commits	state
+common-word	zh	text:nihao	nihao	你好	0	-	CandidatesVisible
+country	zh	text:zhongguo	zhongguo	中国	0	-	CandidatesVisible
+world	zh	text:shijie	shijie	世界	0	-	CandidatesVisible
+brand	zh	text:yunjian	yunjian	云笺	0	-	CandidatesVisible
+reference-annotation-not-committed	zh	text:cankao space	-	-	-	参考	Idle
+umlaut-lv	zh	text:lv	lv	绿|旅	0	-	CandidatesVisible
+umlaut-nv	zh	text:nv	nv	女	0	-	CandidatesVisible
+ambiguous-xian	zh	text:xian	xian	西安|先|线|县|现	0	-	CandidatesVisible
+explicit-separator	zh	text:xi'an	xi'an	西安	0	-	CandidatesVisible
+partial-last-syllable	zh	text:zhongg	zhongg	中国	0	-	CandidatesVisible
+trailing-separator	zh	text:xi'	xi'	-	-	-	Composing
+invalid-pinyin-preserved	zh	text:zzzq	zzzq	-	-	-	Composing
+no-entry-fallback-preserves-case	zh	text:Zzzq enter	-	-	-	Zzzq	Idle
+backspace-to-empty	zh	text:ni backspace backspace	-	-	-	-	Idle
+backspace-refresh	zh	text:nihaox backspace	nihao	你好	0	-	CandidatesVisible
+cursor-insert	zh	text:nhao left left left text:i	nihao	你好	0	-	CandidatesVisible
+cursor-backspace	zh	text:nihao left left left backspace	nhao	-	-	-	Composing
+selection-down	zh	text:ni down	ni	你|尼|呢|泥|拟|逆|倪|匿|腻|霓|昵|溺|您|宁|凝	1	-	CandidatesVisible
+selection-up	zh	text:ni down down up	ni	你|尼|呢|泥|拟|逆|倪|匿|腻|霓|昵|溺|您|宁|凝	1	-	CandidatesVisible
+second-page	zh	text:ni pagedown	ni	你|尼|呢|泥|拟|逆|倪|匿|腻|霓|昵|溺|您|宁|凝	5	-	CandidatesVisible
+third-page	zh	text:ni pagedown pagedown	ni	你|尼|呢|泥|拟|逆|倪|匿|腻|霓|昵|溺|您|宁|凝	10	-	CandidatesVisible
+previous-page	zh	text:ni pagedown pageup	ni	你|尼|呢|泥|拟|逆|倪|匿|腻|霓|昵|溺|您|宁|凝	0	-	CandidatesVisible
+page-local-number-selection	zh	text:ni pagedown char:2	-	-	-	倪	Idle
+unavailable-page-number	zh	text:ni pagedown pagedown char:9	-	-	-	ni9	Idle
+zero-is-normal-digit	zh	text:ni char:0	-	-	-	ni0	Idle
+enter-no-duplicate	zh	text:nihao enter enter	-	-	-	你好	Idle
+space-no-duplicate	zh	text:nihao space space	-	-	-	你好	Idle
+number-selection	zh	text:ni char:2	-	-	-	尼	Idle
+candidate-with-punctuation	zh	text:nihao char:,	-	-	-	你好，	Idle
+unknown-unicode-preserves-raw	zh	text:ni char:🙂	-	-	-	ni🙂	Idle
+idle-chinese-punctuation	zh	char:.	-	-	-	。	Idle
+english-passes-through	en	text:Hello char:, space enter	-	-	-	-	Idle
+mode-switch-cancels	zh	text:ni mode:en text:abc	-	-	-	-	Idle
+mode-resume	en	text:abc mode:zh text:nihao	nihao	你好	0	-	CandidatesVisible
+escape-cancels	zh	text:nihao escape	-	-	-	-	Idle
+focus-loss-cancels	zh	text:nihao focus_lost	-	-	-	-	Idle
+deactivation-clears-and-ignores-input	zh	text:nihao deactivate text:ni	-	-	-	-	Inactive
+idle-system-keys	zh	backspace enter space	-	-	-	-	Idle
+cancel-then-compose	zh	text:ni escape text:zhongguo	zhongguo	中国	0	-	CandidatesVisible
+consecutive-commits	zh	text:nihao space text:zhongguo enter	-	-	-	你好|中国	Idle
+uppercase-raw-is-preserved	zh	text:NiHao	NiHao	你好	0	-	CandidatesVisible

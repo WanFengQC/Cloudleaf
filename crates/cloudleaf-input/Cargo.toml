@@ -1,0 +1,17 @@
+[package]
+name = "cloudleaf-input"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+description = "云笺平台无关输入状态机"
+
+[dependencies]
+cloudleaf-types.workspace = true
+cloudleaf-pinyin.workspace = true
+cloudleaf-dictionary.workspace = true
+cloudleaf-candidate.workspace = true
+
+[lints]
+workspace = true

@@ -1,0 +1,16 @@
+[package]
+name = "cloudleaf-candidate"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+description = "云笺本地候选生成、去重与确定性排序"
+
+[dependencies]
+cloudleaf-types.workspace = true
+cloudleaf-pinyin.workspace = true
+cloudleaf-dictionary.workspace = true
+
+[lints]
+workspace = true
