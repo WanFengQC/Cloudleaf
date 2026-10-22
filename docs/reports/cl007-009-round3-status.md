@@ -19,14 +19,14 @@
 
 ## 已复核的上一轮基线
 
-本轮开始前四个工作区均干净、分支及 HEAD 符合实际。下列固定提交的两平台 job、步骤和两个未过期产物均重新核实成功，修正了第二轮报告中 A/C 尚待确认的状态；原报告和旧快照不覆盖。
+本轮开始前四个工作区均干净、分支及 HEAD 符合实际。固定基线先核实 PR 运行，最终补核下列实际检出精确 SHA 的 push 运行；两平台 job、步骤和两个未过期产物均成功，修正了第二轮报告中 A/C 尚待确认的状态。原报告、PR补充运行和旧快照保留。
 
 | 范围 | 精确提交 | CI |
 |---|---|---|
-| 共享 | `eec5b1aaf5a2a0c74df9cdc1ceaa9b5e1e250d31` | [39803356610](https://github.com/WanFengQC/Cloudleaf/actions/runs/39803356610) |
-| A | `276100138b64ec736abec47f4268e3f46d30eed2` | [39802488539](https://github.com/WanFengQC/Cloudleaf/actions/runs/39802488539) |
-| B | `f0847224fa368df585dea5044632824c782965a7` | [39747246684](https://github.com/WanFengQC/Cloudleaf/actions/runs/39747246684) |
-| C | `ed9516bf74e36649b0dc415850c65792732c10d4` | [39801430517](https://github.com/WanFengQC/Cloudleaf/actions/runs/39801430517) |
+| 共享 | `eec5b1aaf5a2a0c74df9cdc1ceaa9b5e1e250d31` | [39803347043](https://github.com/WanFengQC/Cloudleaf/actions/runs/39803347043) |
+| A | `276100138b64ec736abec47f4268e3f46d30eed2` | [39802481238](https://github.com/WanFengQC/Cloudleaf/actions/runs/39802481238) |
+| B | `f0847224fa368df585dea5044632824c782965a7` | [39747239951](https://github.com/WanFengQC/Cloudleaf/actions/runs/39747239951) |
+| C | `ed9516bf74e36649b0dc415850c65792732c10d4` | [39801423004](https://github.com/WanFengQC/Cloudleaf/actions/runs/39801423004) |
 
 ## A：输入可靠性
 
@@ -66,7 +66,9 @@
 
 ## 精确远程检查与保留边界
 
-A 的 [39817178692](https://github.com/WanFengQC/Cloudleaf/actions/runs/39817178692)、B 的 [39813906201](https://github.com/WanFengQC/Cloudleaf/actions/runs/39813906201)、C 的 [39813323429](https://github.com/WanFengQC/Cloudleaf/actions/runs/39813323429)已核实最终精确 SHA 的 Windows/Linux job、所有步骤和两个产物 digest。完整版本、job/步骤、大小及 digest 见[第三轮 CI 快照](cl007-009-round3-ci.json)，其中也保留上一轮四个精确基线的重新核实。
+A 的 [push 39817171042](https://github.com/WanFengQC/Cloudleaf/actions/runs/39817171042)、B 的 [push 39813899458](https://github.com/WanFengQC/Cloudleaf/actions/runs/39813899458)、C 的 [push 39813314795](https://github.com/WanFengQC/Cloudleaf/actions/runs/39813314795)已核实最终精确 SHA 的 Windows/Linux job、所有步骤和两个产物 digest。完整版本、job/步骤、大小及 digest 见[第三轮 CI 快照](cl007-009-round3-ci.json)，其中也保留上一轮四个精确基线的重新核实。
+
+取证修正：最初仅按 PR run 的 head_sha 关联提交；进一步阅读实际工作流发现 checkout 未指定 ref，PR 默认检出合并快照，不能把关联头误称为实际检出。现改以 push/GITHUB_SHA 运行证明精确提交，原 PR 运行保留在快照补充区，不删除历史记录。检出语义见 [checkout v4](https://github.com/actions/checkout/tree/v4) 与 [GitHub PR 事件文档](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#pull_request)。首次汇总提交 `da1f28b` 的 [push 39818334707](https://github.com/WanFengQC/Cloudleaf/actions/runs/39818334707)也已核实成功；本次修正是后续文档提交，仍须另验。
 
 本共享汇总文档自身的提交 CI 在推送后另外核验，记入 PR #1 正文及最终交付；本文件不以旧运行证明自身，也不伪造包含自身 SHA 的报告。方向代码未合并到共享分支，旧报告/旧待确认快照继续保留。
 
