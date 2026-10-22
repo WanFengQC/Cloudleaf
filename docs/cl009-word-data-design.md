@@ -45,3 +45,13 @@ frequency为nullable观测对象，包含kind、value、unit、corpus_id、perio
 研究快照仍保留相同Wikimedia文本许可与逐record行号/摘要/词条URL。原件未完成的范围、逐页额外署名/例外未逐项人工查清的限制必须显式记录，不能把通用ToU当每个词条绝无例外保证；只保留可得许可标记、排除标记为不明权利/引用的记录，媒体和引用实例不进入派生数据。它不改名为完整dump、正式词库、正式语言评估集或已审核现代频率源；完整原件继续单实例续传。
 
 证据中的member使用来源锁固定的`source_member`逻辑文件名，不使用本地缓存basename或绝对路径。相同内容放在不同本地文件名/目录仍须产物逐字节一致；合法源行号与原始行摘要不因此改变。
+
+## Windows重解析点与硬链接门禁（审阅修复，先提交）
+
+独立审阅在`ca6656c`确认：Windows junction不是`Path.is_symlink()`，发布存储本体、其父路径、孤儿目录内部的junction都可能被旧检查接受。既有进程中断通过不能证明这些对象已安全拒绝；该缺陷修复后另固定实现提交并重放证据。
+
+发布、恢复及release校验统一检查未调用resolve的绝对路径各级已有组件，以`lstat`识别POSIX符号链接和Windows的`FILE_ATTRIBUTE_REPARSE_POINT`，所有重解析类型均保守拒绝。普通文件的`st_nlink > 1`同样拒绝，避免guard空文件经硬链接写到存储外。目录在POSIX的正常链接计数不作为文件硬链接。
+
+store、guard、owner锁、current/current.tmp、releases及所用release资源均适用此规则；恢复递归逐层检查固定命名孤儿，不跟随其目录链接。检查发生在创建guard、隔离目录、移动对象和更新回退指针之前，持有OS guard后再检查一次；不安全对象失败时owner/current/外部用户数据不变。回归覆盖真实Windows junction（存储本体、父目录、嵌套孤儿及release）和guard硬链接，并保留符号链接及真实进程中断测试。
+
+该门禁限定工具操作普通本地目录；不接受云文件重解析点。它不声称提供对不遵守guard的外部进程同时替换路径的安全沙箱或handle-relative原子路径防护，物理断电持久性仍未验证。
