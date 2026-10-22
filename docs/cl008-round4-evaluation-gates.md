@@ -6,7 +6,7 @@
 
 新增离线 `scripts/check_language_readiness.py`，只核对前置证据与完整分母，不打开封存答案、不运行语言打分。即使材料一致，输出的 `language_accuracy_valid` 仍为false，Top-1/5/MRR为null；它不代替正式评估、人工授权审查或盲测保管。当前没有独立人工gold和保管者，实际检查点必须拒绝，不能用测试fixture填补。
 
-计划JSON绑定既有 `cl008-real-resource-protocol.md` SHA及注册时间，固定家族70/15/15、heldout至少2000家族。这是既有预登记门禁，不是现有数据已满足或比例/样本量具有统计最优证据。确定性整数家族配额采用最大余数法，余数打平按train/dev/heldout顺序；不按测试结果改变配额或门限。
+计划JSON绑定既有 `cl008-real-resource-protocol.md` 仓库UTF-8/LF字节SHA及注册时间（仅协议文档规范化换行，避免Windows检出CRLF改变同一Git文档身份），固定家族70/15/15、heldout至少2000家族。这是既有预登记门禁，不是现有数据已满足或比例/样本量具有统计最优证据。确定性整数家族配额采用最大余数法，余数打平按train/dev/heldout顺序；不按测试结果改变配额或门限。
 
 来源分别登记lexicon/evaluation-corpus，含ID、版本、官方HTTPS URL、许可证正文与独立审核文件及SHA、允许评估的明确权限和批准范围；商业使用/修改/再分发各自保留布尔值，不把仅评估许可升级成可发产品。审核文件一致不证明审核者诚实或权利绝对无争议。gold声明必须绑定evaluation-corpus、独立人工标注协议/审核、非合成且非词典生成、未使用旧83 seed，并明确独立保管者；自填声明不能变成自动证明人工独立性。
 
