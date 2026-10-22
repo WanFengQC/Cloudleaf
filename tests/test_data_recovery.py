@@ -53,6 +53,14 @@ raise AssertionError('fault injection not reached')
 """
 
 
+def child_command(code, *arguments):
+    # Windows venv入口是启动器，Popen.pid不一定是执行锁代码的进程；直接持有实际解释器句柄。
+    executable = getattr(sys, "_base_executable", sys.executable) if os.name == "nt" else sys.executable
+    root = str(Path(__file__).resolve().parents[1])
+    bootstrap = "import sys;sys.path.insert(0,sys.argv.pop(1));exec(sys.argv.pop(1))"
+    return [executable, "-X", "utf8", "-I", "-c", bootstrap, root, code, *map(str, arguments)]
+
+
 class DataRecoveryTests(unittest.TestCase):
     def test_child_exit_recovery_at_copy_cache_and_pointer_boundaries(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -82,11 +90,12 @@ class DataRecoveryTests(unittest.TestCase):
                     user_sha = digest(user.read_bytes())
                     before = (store / "current.json").read_bytes()
                     # 仅启动自己的子进程；os._exit跳过finally模拟发布进程异常退出。
-                    child = subprocess.Popen([sys.executable, "-c", CHILD, str(releases[1]), str(store), phase],
+                    child = subprocess.Popen(child_command(CHILD, releases[1], store, phase),
                                              cwd=Path(__file__).resolve().parents[1], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                     stdout, stderr = child.communicate(timeout=30)
                     self.assertEqual(child.returncode, 73, (stdout, stderr))
                     self.assertTrue((store / ".writer.lock").exists())
+                    self.assertEqual(read_json(store / ".writer.lock")["owner_pid"], child.pid)
                     if phase not in {"pointer-replaced", "rollback-after"}:
                         self.assertEqual((store / "current.json").read_bytes(), before)
                     state = read_json(store / "current.json")
@@ -119,11 +128,12 @@ class DataRecoveryTests(unittest.TestCase):
             store = Path(temporary)
             code = ("import sys;from pathlib import Path;from tools.data_pipeline.pipeline import publish_lock;"
                     "\nwith publish_lock(Path(sys.argv[1])):\n print('ready',flush=True)\n sys.stdin.buffer.read(1)\n")
-            child = subprocess.Popen([sys.executable, "-c", code, str(store)], stdin=subprocess.PIPE,
+            child = subprocess.Popen(child_command(code, store), stdin=subprocess.PIPE,
                                      stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                      cwd=Path(__file__).resolve().parents[1])
             try:
                 self.assertEqual(child.stdout.readline().strip(), b"ready")
+                self.assertEqual(read_json(store / ".writer.lock")["owner_pid"], child.pid)
                 # 只终止本测试创建并仍持有Popen句柄的子进程，不按PID探测或操作其他进程。
                 child.terminate()
                 child.communicate(timeout=10)
