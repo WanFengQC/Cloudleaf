@@ -140,7 +140,9 @@ fn run() -> Result<(), Box<dyn Error>> {
             let _ = black_box(query());
             samples.push(start.elapsed().as_nanos());
         }
-        samples.sort_unstable();
+        // 原始采集顺序用于复核波动；分位数仅在副本上排序。
+        let mut ordered = samples.clone();
+        ordered.sort_unstable();
         let (status, result_json) = match query() {
             Ok(result) => {
                 let candidates: Vec<_> = result.candidates.iter().map(|candidate| {
@@ -173,7 +175,12 @@ fn run() -> Result<(), Box<dyn Error>> {
                 format!("\"error_kind\":{}", quote(&format!("{:?}", error.kind))),
             ),
         };
-        outputs.push(format!("{{\"id\":{},\"split\":{},\"family\":{},\"kind\":{},\"status\":{},\"p50_ns\":{},\"p95_ns\":{},\"p99_ns\":{},\"max_ns\":{},{}}}", quote(row[0]), quote(row[1]), quote(row[2]), quote(row[5]), quote(status), percentile(&samples, 50), percentile(&samples, 95), percentile(&samples, 99), samples.last().unwrap(), result_json));
+        let raw_samples = samples
+            .iter()
+            .map(u128::to_string)
+            .collect::<Vec<_>>()
+            .join(",");
+        outputs.push(format!("{{\"id\":{},\"split\":{},\"family\":{},\"kind\":{},\"status\":{},\"samples_ns\":[{}],\"p50_ns\":{},\"p95_ns\":{},\"p99_ns\":{},\"max_ns\":{},{}}}", quote(row[0]), quote(row[1]), quote(row[2]), quote(row[5]), quote(status), raw_samples, percentile(&ordered, 50), percentile(&ordered, 95), percentile(&ordered, 99), ordered.last().unwrap(), result_json));
     }
     println!(
         "{{\"language_accuracy_valid\":false,\"lexicon_entries\":{},\"trie_nodes\":{},\"load_ns\":{},\"training_ns\":{},\"training_sequences\":{},\"iterations_per_case\":{},\"warmup_per_case\":{},\"beam_width\":{},\"output_k\":{},\"cases\":[{}]}}",
