@@ -23,6 +23,8 @@ jobs:
           python-version: "3.12"
       - name: Install pinned Rust
         run: rustup toolchain install 1.90.0 --profile minimal --component clippy --component rustfmt
+      - name: Fetch precisely locked build dependencies
+        run: cargo fetch --locked
       - name: Format
         run: cargo fmt --all --check
       - name: Lint
