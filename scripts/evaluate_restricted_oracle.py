@@ -225,6 +225,7 @@ def run() -> None:
                               "独立参考不使用Rust候选或图；仅验证当前Structural规则，不评估词频、模型或语言质量。",
                               "Python与Rust进程峰值含不同宿主运行时，不据耗时比宣称生产收益；背景负载未控制。"]}
     (folder / "results.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
+    shutil.copyfile(args.evidence, folder / "source-evidence.json")
     for index, source in enumerate(evidence["sources"]):
         license_path = evidence_audit["verified_files"][f"{source['id']}:license"]["path"]
         shutil.copyfile(license_path, folder / f"LICENSE-{index + 1}.txt")
