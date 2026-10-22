@@ -84,6 +84,15 @@ python scripts/evaluate_real_lexicon.py --evidence <数据审核证据JSON> --it
 
 资源证据暴露原ExactDag在无历史评分下的冗余状态后，另按[先行证明](docs/cl008-position-dag-design.md)加入显式PositionDag实验，仅支持Structural/Weighted。它按位置压缩状态，Bigram/ContextRerank明确拒绝；旧ExactDag、Reference及默认输入引擎保持原样。资源工具追加同预算的PositionDag四项配置，完整参考/旧Exact可比较时逐路径校验，不据资源探针宣称语言质量或最终最优。
 
+[第四轮前置门禁](docs/cl008-round4-evaluation-gates.md)核验正式评估的来源许可、独立人工gold声明、家族隔离、封存、参数冻结和预测完整分母，不读取封存答案、不计算准确率。当前登记文件明确缺少人工标注、独立保管者及正式语料，命令应返回2并输出拒绝报告；不能填入机制fixture使其显示就绪。
+
+```text
+python scripts/check_language_readiness.py --plan config/evaluation/language-readiness-v1.json --output .local/language-readiness-new.json
+python scripts/evaluate_restricted_oracle.py --evidence <原有Unihan证据JSON> --output-dir .local/restricted-oracle-new
+```
+
+第二个命令按先冻结的读音/稳定ID规则选择最多26条真实记录，以独立Python字符串匹配和穷举对照现有Rust四策略及预算故障配置。它只验证新的受限词条图，不解除完整词库Reference耗尽的限制，不把词典生成内容作为语言gold。两个工具均拒绝覆盖已有输出；原始样本、指纹和失败分母保留。
+
 ## 模块
 
 | crate | 职责 |
