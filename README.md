@@ -24,6 +24,7 @@ $env:PATH = "$env:USERPROFILE\.cargo\bin;$env:PATH"
 
 ```text
 rustup toolchain install 1.90.0 --profile minimal --component rustfmt --component clippy
+cargo fetch --locked
 cargo build --workspace --locked --offline
 cargo fmt --all --check
 cargo clippy --workspace --all-targets --locked --offline -- -D warnings
@@ -32,7 +33,7 @@ cargo test --workspace --doc --locked --offline
 python scripts/check_workspace.py
 ```
 
-工具链首次安装需要下载。workspace 没有外部 Rust 库依赖，后续 Cargo 构建、测试和核心输入都可离线运行。CI 对 Windows/Linux 执行同一套检查并上传报告；M1/M2检查点 `26b5e45` 已在两个平台真实通过，见[基线与CI记录](docs/reports/cl001-cl002-baseline.md)。原型本地数据见[历史验收报告](docs/reports/m1-m2-validation.md)。
+工具链首次安装需要下载。M1/M2核心没有外部 Rust 库依赖；后续平台分支通过精确审计政策登记依赖，首次locked fetch后离线构建和测试，核心输入始终离线运行。CI 对 Windows/Linux 执行同一套检查并上传报告；M1/M2检查点 `26b5e45` 已在两个平台真实通过，见[基线与CI记录](docs/reports/cl001-cl002-baseline.md)。原型本地数据见[历史验收报告](docs/reports/m1-m2-validation.md)。
 
 ## 运行输入原型
 
