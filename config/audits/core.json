@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "workspace_packages": ["cloudleaf-types", "cloudleaf-pinyin", "cloudleaf-dictionary", "cloudleaf-candidate", "cloudleaf-input", "cloudleaf-cli"],
+  "external_packages": [],
+  "resources": [
+    {"path": "data/dictionaries/prototype.tsv", "source": "cloudleaf:prototype-v1", "license": "MIT", "license_file": "LICENSE"},
+    {"path": "tests/fixtures/input-v1.tsv", "source": "cloudleaf:input-corpus-v1", "license": "MIT", "license_file": "LICENSE"},
+    {"path": "tests/evaluation/algorithm-v1.tsv", "source": "cloudleaf:algorithm-evaluation-v1", "license": "MIT", "license_file": "LICENSE"}
+  ]
+}

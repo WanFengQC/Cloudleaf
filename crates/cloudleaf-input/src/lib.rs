@@ -3,7 +3,7 @@
 use cloudleaf_dictionary::Dictionary;
 use cloudleaf_types::{
     Candidate, CommitRequest, CoreError, ErrorCode, EventResult, InputEvent, InputFrame, InputMode,
-    InputState, Key,
+    InputState, Key, KeyDisposition,
 };
 
 /// 首期每页最多显示五个候选，数字快捷键按当前页编号。
@@ -11,8 +11,24 @@ pub const DEFAULT_PAGE_SIZE: usize = 5;
 /// 单次生成的候选总数上限。
 pub const MAX_CANDIDATES: usize = 50;
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct InputConfig {
+    pub page_size: usize,
+    pub max_candidates: usize,
+}
+
+impl Default for InputConfig {
+    fn default() -> Self {
+        Self {
+            page_size: DEFAULT_PAGE_SIZE,
+            max_candidates: MAX_CANDIDATES,
+        }
+    }
+}
+
 /// 拥有当前组合上下文的同步输入引擎。
 pub struct InputEngine {
+    config: InputConfig,
     dictionary: Dictionary,
     state: InputState,
     mode: InputMode,
@@ -30,7 +46,21 @@ pub struct InputEngine {
 impl InputEngine {
     /// 新引擎处于未激活状态，使用中文模式；词典由宿主在按键路径外加载。
     pub fn new(dictionary: Dictionary) -> Self {
-        Self {
+        Self::with_config(dictionary, InputConfig::default()).expect("默认输入配置必须有效")
+    }
+
+    pub fn with_config(dictionary: Dictionary, config: InputConfig) -> Result<Self, CoreError> {
+        if !(1..=9).contains(&config.page_size)
+            || config.max_candidates == 0
+            || config.max_candidates > cloudleaf_candidate::MAX_CANDIDATES
+        {
+            return Err(CoreError::new(
+                ErrorCode::InvalidConfig,
+                "候选页大小或候选预算无效",
+            ));
+        }
+        Ok(Self {
+            config,
             dictionary,
             state: InputState::Inactive,
             mode: InputMode::Chinese,
@@ -43,7 +73,7 @@ impl InputEngine {
             next_commit_id: 1,
             pending_commit: None,
             failed_commit: None,
-        }
+        })
     }
 
     /// 返回独立的显示快照；候选索引指向完整候选数组。
@@ -57,7 +87,7 @@ impl InputEngine {
             candidates: self.candidates.clone(),
             highlighted: self.highlighted,
             page_start: self.page_start,
-            page_size: DEFAULT_PAGE_SIZE,
+            page_size: self.config.page_size,
         }
     }
 
@@ -66,6 +96,88 @@ impl InputEngine {
     /// 失败后普通按键暂停处理，直到宿主明确重试或取消，记录不会写入日志。
     pub fn failed_commit(&self) -> Option<&CommitRequest> {
         self.failed_commit.as_ref()
+    }
+
+    /// 预判不执行handle、不解析词典、不生成快照；系统修饰键由平台先行过滤。
+    pub fn key_disposition(&self, key: Key) -> KeyDisposition {
+        use KeyDisposition::{Blocked, Handle, PassThrough};
+        if self.revision == u64::MAX {
+            return Blocked(ErrorCode::InvalidInput);
+        }
+        if self.state == InputState::Inactive {
+            return PassThrough;
+        }
+        if key == Key::Escape && (self.pending_commit.is_some() || self.failed_commit.is_some()) {
+            return Handle;
+        }
+        if self.pending_commit.is_some() {
+            return Blocked(ErrorCode::CommitPending);
+        }
+        if self.failed_commit.is_some() {
+            return Blocked(ErrorCode::CommitFailed);
+        }
+        if self.mode == InputMode::English {
+            return PassThrough;
+        }
+        let composing = !self.preedit.is_empty();
+        let handle_composition = if composing { Handle } else { PassThrough };
+        match key {
+            Key::Char(' ' | '\n') | Key::Space | Key::Enter => handle_composition,
+            Key::Char(character)
+                if character.is_ascii_alphabetic() || (character == '\'' && composing) =>
+            {
+                if self.preedit.len() >= cloudleaf_pinyin::MAX_INPUT_LEN {
+                    Blocked(ErrorCode::InputTooLong)
+                } else {
+                    Handle
+                }
+            }
+            Key::Char(character) if character.is_control() => Blocked(ErrorCode::InvalidInput),
+            Key::Char(character) if chinese_punctuation(character).is_some() => Handle,
+            Key::Char(_) | Key::Backspace | Key::Escape | Key::Left | Key::Right => {
+                handle_composition
+            }
+            Key::Up | Key::Down | Key::PageUp | Key::PageDown => {
+                if self.candidates.is_empty() {
+                    PassThrough
+                } else {
+                    Handle
+                }
+            }
+        }
+    }
+
+    /// 鼠标/无障碍选择必须绑定当前帧，不允许平台提交显示缓存中的旧文本。
+    pub fn select_candidate(&mut self, revision: u64, id: &str) -> EventResult {
+        let error = if self.pending_commit.is_some() {
+            Some(ErrorCode::CommitPending)
+        } else if self.failed_commit.is_some() {
+            Some(ErrorCode::CommitFailed)
+        } else if self.revision == u64::MAX || self.state == InputState::Inactive {
+            Some(ErrorCode::InvalidInput)
+        } else if revision != self.revision {
+            Some(ErrorCode::StaleCandidate)
+        } else {
+            None
+        };
+        if let Some(code) = error {
+            return self.result(
+                false,
+                None,
+                Some(CoreError::new(code, "候选选择不属于当前可提交帧")),
+            );
+        }
+        let Some(candidate) = self.candidates.iter().find(|candidate| candidate.id == id) else {
+            return self.result(
+                false,
+                None,
+                Some(CoreError::new(
+                    ErrorCode::UnknownCandidate,
+                    "候选标识不存在",
+                )),
+            );
+        };
+        self.begin_commit(candidate.text.clone())
     }
 
     /// 处理一个事件，不执行文件读写、网络访问或系统文本提交。
@@ -220,7 +332,7 @@ impl InputEngine {
             && !self.candidates.is_empty()
         {
             let index = self.page_start + digit as usize - 1;
-            let page_end = (self.page_start + DEFAULT_PAGE_SIZE).min(self.candidates.len());
+            let page_end = (self.page_start + self.config.page_size).min(self.candidates.len());
             if index < page_end {
                 return self.begin_commit(self.candidates[index].text.clone());
             }
@@ -260,14 +372,14 @@ impl InputEngine {
         let next = match key {
             Key::Up => current.saturating_sub(1),
             Key::Down => (current + 1).min(last),
-            Key::PageUp => self.page_start.saturating_sub(DEFAULT_PAGE_SIZE),
-            Key::PageDown => (self.page_start + DEFAULT_PAGE_SIZE)
-                .min(last / DEFAULT_PAGE_SIZE * DEFAULT_PAGE_SIZE),
+            Key::PageUp => self.page_start.saturating_sub(self.config.page_size),
+            Key::PageDown => (self.page_start + self.config.page_size)
+                .min(last / self.config.page_size * self.config.page_size),
             _ => current,
         };
         if next != current {
             self.highlighted = Some(next);
-            self.page_start = next / DEFAULT_PAGE_SIZE * DEFAULT_PAGE_SIZE;
+            self.page_start = next / self.config.page_size * self.config.page_size;
             self.advance_revision();
         }
         self.result(true, None, None)
@@ -359,7 +471,9 @@ impl InputEngine {
     fn refresh(&mut self) {
         self.candidates = cloudleaf_pinyin::parse(&self.preedit).map_or_else(
             |_| Vec::new(),
-            |parsed| cloudleaf_candidate::generate(&parsed, &self.dictionary, MAX_CANDIDATES),
+            |parsed| {
+                cloudleaf_candidate::generate(&parsed, &self.dictionary, self.config.max_candidates)
+            },
         );
         self.highlighted = (!self.candidates.is_empty()).then_some(0);
         self.page_start = 0;
