@@ -215,6 +215,29 @@ fn duplicate_layout_callback_is_not_a_second_dispatch() {
 }
 
 #[test]
+fn sync_callback_object_is_used_once_even_if_first_scope_check_rejects() {
+    let host = host(2, false);
+    let context = host.context.borrow().clone().unwrap();
+    let edit: ITfEditSession = KeyEdit {
+        host: host.clone(),
+        epoch: host.epoch.get(),
+        context,
+        action: Operation::Key(Key::Char('n')),
+        executed: Rc::new(Cell::new(false)),
+        called: Rc::new(Cell::new(false)),
+    }
+    .into();
+    // 安全：首次缺 scope 返回失败；同一回调重入/迟到再次派发必须无操作成功返回。
+    assert!(unsafe { edit.DoEditSession(7) }.is_err());
+    let before = host.engine.borrow().frame();
+    unsafe {
+        edit.DoEditSession(7).unwrap();
+    }
+    assert_eq!(before, host.engine.borrow().frame());
+    assert!(host.queue.borrow().is_empty());
+}
+
+#[test]
 fn reentrant_candidate_abort_is_queued_even_while_rendering() {
     let host = host(0, false);
     host.scheduled.set(true);
@@ -258,15 +281,66 @@ fn unknown_cleanup_never_obtains_or_erases_text_range() {
         }
         .into(),
         erase: false,
+        called: Rc::new(Cell::new(false)),
+        deadline: None,
         _lease: super::super::service::Lease::new(),
     }
     .into();
     // 安全：测试直接调用清理回调，不注册或激活任何系统服务。
     unsafe {
         cleanup.DoEditSession(7).unwrap();
+        cleanup.DoEditSession(7).unwrap();
     }
     assert_eq!(range_reads.get(), 0);
     assert_eq!(endings.get(), 1);
+}
+
+#[test]
+fn expired_async_cleanup_does_not_touch_or_end_old_composition() {
+    let reads = Rc::new(Cell::new(0));
+    let endings = Rc::new(Cell::new(0));
+    let cleanup: ITfEditSession = Cleanup {
+        composition: UnknownComposition {
+            range_reads: reads.clone(),
+            endings: endings.clone(),
+        }
+        .into(),
+        erase: false,
+        called: Rc::new(Cell::new(false)),
+        deadline: Some(Instant::now() - Duration::from_secs(1)),
+        _lease: super::super::service::Lease::new(),
+    }
+    .into();
+    // 安全：故障宿主交还超时旧回调，不能再触及宿主组合。
+    assert!(unsafe { cleanup.DoEditSession(7) }.is_err());
+    assert_eq!(reads.get(), 0);
+    assert_eq!(endings.get(), 0);
+}
+
+#[test]
+fn layout_queue_overflow_reports_failure_and_quarantines_without_dropping_owned_work() {
+    let host = host(0, false);
+    host.retry_layout.set(true);
+    for _ in 0..QUEUE_LIMIT {
+        host.queue.borrow_mut().push_back(Operation::Refresh);
+    }
+    let observer: ITfTextLayoutSink = LayoutObserver {
+        host: Rc::downgrade(&host),
+        epoch: host.epoch.get(),
+        _lease: super::super::service::Lease::new(),
+    }
+    .into();
+    let before = host.engine.borrow().frame();
+    // 安全：仅注入本测试 COM 的布局通知，满队列不能静默丢已有操作。
+    assert!(
+        unsafe {
+            observer.OnLayoutChange(host.context.borrow().as_ref().unwrap(), TF_LC_CHANGE, None)
+        }
+        .is_err()
+    );
+    assert_eq!(host.queue.borrow().len(), QUEUE_LIMIT);
+    assert!(host.quarantined.get());
+    assert_eq!(before, host.engine.borrow().frame());
 }
 
 #[test]

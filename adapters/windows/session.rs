@@ -88,7 +88,7 @@ impl Host {
         if self.context.borrow().is_none() {
             return Ok(false);
         }
-        if self.quarantined.get() {
+        if self.quarantined.get() || self.layout_expired() {
             return Ok(key == Key::Escape);
         }
         if self.scheduled.get() || !self.queue.borrow().is_empty() {
@@ -107,7 +107,14 @@ impl Host {
         if *self.context.borrow() == context {
             return Ok(());
         }
+        let previous_epoch = self.epoch.get();
         self.invalidate()?;
+        let epoch = previous_epoch
+            .checked_add(1)
+            .ok_or_else(|| Error::from_hresult(E_UNEXPECTED))?;
+        if self.epoch.get() != epoch {
+            return Err(Error::from_hresult(windows::Win32::Foundation::E_ABORT));
+        }
         *self.context.borrow_mut() = context.clone();
         if let Some(context) = context {
             let observer: ITfTextLayoutSink = LayoutObserver {
@@ -125,10 +132,21 @@ impl Host {
             let cookie = match subscribed {
                 Ok(cookie) => cookie,
                 Err(error) => {
-                    self.context.borrow_mut().take();
+                    if self.epoch.get() == epoch {
+                        self.context.borrow_mut().take();
+                    }
                     return Err(error);
                 }
             };
+            if self.epoch.get() != epoch {
+                // 安全：订阅期间重入切换焦点，只撤销本次旧 context 的 cookie。
+                unsafe {
+                    let _ = context
+                        .cast::<ITfSource>()
+                        .and_then(|source| source.UnadviseSink(cookie));
+                }
+                return Err(Error::from_hresult(windows::Win32::Foundation::E_ABORT));
+            }
             self.layout_cookie.set(Some(cookie));
             self.engine.borrow_mut().handle(InputEvent::Activate);
         }
@@ -171,17 +189,36 @@ impl Host {
             }
         }
         if let (Some(composition), Some(context)) = (composition, context) {
+            let executed = Rc::new(Cell::new(false));
             let cleanup: ITfEditSession = Cleanup {
-                composition,
+                composition: composition.clone(),
                 erase,
+                called: executed.clone(),
+                deadline: None,
                 _lease: super::service::Lease::new(),
             }
             .into();
             // 安全：清理只持有旧组合，独立于新会话队列；迟到回调不能写新文档。
             unsafe {
-                let result = context
-                    .RequestEditSession(client, &cleanup, TF_ES_READWRITE | TF_ES_ASYNCDONTCARE)
+                let sync = context
+                    .RequestEditSession(client, &cleanup, TF_ES_READWRITE | TF_ES_SYNC)
                     .and_then(|hr| hr.ok());
+                let ran = executed.replace(true);
+                let result = if ran {
+                    sync
+                } else {
+                    let safe: ITfEditSession = Cleanup {
+                        composition,
+                        erase: false,
+                        called: Rc::new(Cell::new(false)),
+                        deadline: Some(Instant::now() + Duration::from_millis(500)),
+                        _lease: super::service::Lease::new(),
+                    }
+                    .into();
+                    context
+                        .RequestEditSession(client, &safe, TF_ES_READWRITE | TF_ES_ASYNCDONTCARE)
+                        .and_then(|hr| hr.ok())
+                };
                 if failure.is_none() {
                     failure = result.err();
                 }
@@ -208,6 +245,7 @@ impl Host {
             return Ok(false);
         };
         let executed = Rc::new(Cell::new(false));
+        let called = Rc::new(Cell::new(false));
         let epoch = self.epoch.get();
         let edit: ITfEditSession = KeyEdit {
             host: self.clone(),
@@ -215,6 +253,7 @@ impl Host {
             epoch,
             action: Operation::Key(key),
             executed: executed.clone(),
+            called: called.clone(),
         }
         .into();
         self.scheduled.set(true);
@@ -222,6 +261,8 @@ impl Host {
         let requested = unsafe {
             context.RequestEditSession(self.client.get(), &edit, TF_ES_READWRITE | TF_ES_SYNC)
         };
+        // 同步申请返回后封闭回调，即使违约宿主保留对象也不能迟到处理已透传原生键。
+        called.set(true);
         if epoch == self.epoch.get() {
             self.scheduled.set(false);
         }
@@ -264,12 +305,14 @@ impl Host {
             .ok_or_else(|| Error::from_hresult(E_FAIL))?;
         let epoch = self.epoch.get();
         let executed = Rc::new(Cell::new(false));
+        let called = Rc::new(Cell::new(false));
         let edit: ITfEditSession = KeyEdit {
             host: self.clone(),
             epoch,
             context: context.clone(),
             action,
             executed: executed.clone(),
+            called: called.clone(),
         }
         .into();
         self.scheduled.set(true);
@@ -278,6 +321,7 @@ impl Host {
             context.RequestEditSession(self.client.get(), &edit, TF_ES_READWRITE | TF_ES_SYNC)
         }
         .and_then(|hr| hr.ok());
+        called.set(true);
         if epoch == self.epoch.get() {
             self.scheduled.set(false);
         }
@@ -366,7 +410,9 @@ impl Host {
                 }
             };
             if result.error.is_some() {
-                continue;
+                return Err(Error::from_hresult(
+                    windows::Win32::Foundation::E_INVALIDARG,
+                ));
             }
             let outcome = self.render(context, ec, &result);
             // 外部 COM 可重入焦点通知；旧事务不能确认新会话或继续消费新队列。
@@ -569,13 +615,15 @@ impl Host {
         let mut clipped = false.into();
         // 安全：布局输出引用为有效局部值，读取当前锁内自己的组合范围。
         if let Some(c) = composition {
-            let layout = unsafe {
-                let view = context.GetActiveView()?;
-                current()?;
-                let range = c.GetRange()?;
-                current()?;
-                view.GetTextExt(ec, &range, &mut rect, &mut clipped)
-            };
+            let layout = (|| -> Result<()> {
+                unsafe {
+                    let view = context.GetActiveView()?;
+                    current()?;
+                    let range = c.GetRange()?;
+                    current()?;
+                    view.GetTextExt(ec, &range, &mut rect, &mut clipped)
+                }
+            })();
             current()?;
             if let Err(error) = layout {
                 if error.code() != TS_E_NOLAYOUT {
@@ -659,11 +707,15 @@ struct KeyEdit {
     context: ITfContext,
     action: Operation,
     executed: Rc<Cell<bool>>,
+    called: Rc<Cell<bool>>,
 }
 impl ITfEditSession_Impl for KeyEdit_Impl {
     fn DoEditSession(&self, ec: u32) -> Result<()> {
         boundary(|| {
             self.host.check()?;
+            if self.called.replace(true) {
+                return Ok(());
+            }
             if self.epoch != self.host.epoch.get()
                 || self.host.context.borrow().as_ref() != Some(&self.context)
             {
@@ -679,7 +731,11 @@ impl ITfEditSession_Impl for KeyEdit_Impl {
             self.executed.set(true);
             self.host.queue.borrow_mut().push_back(self.action.clone());
             let result = self.host.run(&self.context, ec, self.epoch);
-            if result.is_err() && self.epoch == self.host.epoch.get() {
+            if result
+                .as_ref()
+                .is_err_and(|error| error.code() != windows::Win32::Foundation::E_INVALIDARG)
+                && self.epoch == self.host.epoch.get()
+            {
                 self.host.quarantined.set(true);
             }
             result
@@ -791,11 +847,22 @@ impl ITfCompositionSink_Impl for CompositionObserver_Impl {
 struct Cleanup {
     composition: ITfComposition,
     erase: bool,
+    called: Rc<Cell<bool>>,
+    deadline: Option<Instant>,
     _lease: super::service::Lease,
 }
 impl ITfEditSession_Impl for Cleanup_Impl {
     fn DoEditSession(&self, ec: u32) -> Result<()> {
         boundary(|| {
+            if self.called.replace(true) {
+                return Ok(());
+            }
+            if self
+                .deadline
+                .is_some_and(|deadline| Instant::now() > deadline)
+            {
+                return Err(Error::from_hresult(E_FAIL));
+            }
             // 安全：旧 context 授予写锁，只操作此回调独占的旧组合。
             unsafe {
                 if self.erase {
@@ -810,3 +877,7 @@ impl ITfEditSession_Impl for Cleanup_Impl {
 #[cfg(test)]
 #[path = "session_tests.rs"]
 pub(crate) mod tests;
+
+#[cfg(test)]
+#[path = "render_tests.rs"]
+mod render_tests;

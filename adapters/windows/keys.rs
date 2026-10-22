@@ -3,6 +3,9 @@ use cloudleaf_types::Key;
 use windows::Win32::Foundation::{LPARAM, WPARAM};
 use windows::Win32::UI::Input::KeyboardAndMouse::*;
 pub(crate) fn normalize(w: WPARAM, l: LPARAM) -> Option<Key> {
+    if !single_repeat(l) {
+        return None;
+    }
     // 安全：仅查询当前线程状态，不保存系统指针；缓冲区固定有效。
     unsafe {
         if [VK_CONTROL, VK_MENU, VK_LWIN, VK_RWIN]
@@ -48,5 +51,22 @@ pub(crate) fn normalize(w: WPARAM, l: LPARAM) -> Option<Key> {
             }
         };
         Some(key)
+    }
+}
+fn single_repeat(l: LPARAM) -> bool {
+    (l.0 as usize & 0xffff) == 1
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn repeat_bit_is_not_an_event_identity_and_merged_repeats_are_not_partly_consumed() {
+        assert!(single_repeat(LPARAM(1)));
+        assert!(single_repeat(LPARAM((1 << 30) | 1)));
+        assert!(!single_repeat(LPARAM(0)));
+        assert!(!single_repeat(LPARAM(2)));
+        assert!(!single_repeat(LPARAM((1 << 30) | 0xffff)));
+        assert_eq!(normalize(WPARAM(VK_BACK.0 as usize), LPARAM(2)), None);
     }
 }
