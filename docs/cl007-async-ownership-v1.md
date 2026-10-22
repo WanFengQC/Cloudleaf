@@ -41,9 +41,9 @@ Queued 超时通过 CAS 封闭回调入口；Writing 超时只标 Unknown 和暂
 
 ## A4：退出与资源
 
-每个服务实例的线程、通知窗口、候选窗口、COM sink、edit callback、恢复窗口与后台任务分别登记生命周期。先原子停止 admission/使 epoch 失效，再让 STA detach 旧 COM 资源；后台线程只处理停止标志并释放自身 ModuleLease，不能等待 STA。STA 不阻塞 join 一个可能失效的线程；线程未退出时 DLLCanUnloadNow 必须保持 S_FALSE，不能假装资源已释放。
+每个服务实例的线程、通知窗口、候选窗口、COM sink、edit callback、恢复窗口与后台任务分别登记生命周期。先原子停止 admission/使 epoch 失效，再让 STA detach 旧 COM 资源；后台线程只处理停止标志，不能等待 STA，也不能自行释放最后的 ModuleLease。STA 不阻塞 join 一个可能失效的线程；线程未退出时 DLLCanUnloadNow 必须保持 S_FALSE，不能假装资源已释放。
 
-后台模块保活进一步收紧：worker 不释放最后 ModuleLease，owner 持有 JoinHandle 与 lease；停用后尚未退出的任务转移到有界 retired 集合。DllCanUnloadNow 先用真实 OS 线程 HANDLE 的零等待确认 signaled，之后才 join 并释放 lease/handle；不能仅凭 is_finished 或 worker 尾部析构推断 DLL 已安全退出。启动部分失败也必须进入该集合，集合容量在启动前预留，满时拒绝新监测。停止后的 monitor 不健康；重新激活创建新监测。通知投递失败是可观察故障，停止异步 admission，并有界重复尝试发送无文本恢复信号。
+后台模块保活进一步收紧：worker 不释放最后 ModuleLease，owner 持有 JoinHandle 与 lease；停用后尚未退出的任务转移到有界 retired 集合。DllCanUnloadNow 先用真实 OS 线程 HANDLE 的零等待确认 signaled，之后才 join 并释放 lease/handle；不能仅凭 is_finished 或 worker 尾部析构推断 DLL 已安全退出。启动部分失败也必须进入该集合，集合容量在启动前预留，满时拒绝新监测。停止后的 monitor 不健康；重新激活创建新监测。通知投递失败是可观察故障，停止异步 admission，每个监测生命周期最多尝试四次无文本恢复通知；持续失败后仅保留故障原子状态，下一次 STA 入口仍须检测并隔离，不能宣称通知始终可达。
 
 测试分别验证资源取得/释放对称、Factory、Activate中间失败回滚、Deactivate、晚到callback、持有的跨实例对象、线程退出、窗口销毁、COM sink撤销、后台ModuleLease与DLL可卸载结果。弱引用或一个计数归零不等于所有资源完成。跨线程只能操作原子，故障注入不得在错误线程直接调用非agile COM 对象来伪造支持。
 
