@@ -33,6 +33,12 @@ pub(crate) struct Reservation {
     charge: Usage,
     _lease: Lease,
 }
+impl Reservation {
+    /// 调用方核对实际保全需求；只读成本不能用于转移或清空活跃额度。
+    pub fn charge(&self) -> Usage {
+        self.charge
+    }
+}
 static GLOBAL: OnceLock<Arc<Pool>> = OnceLock::new();
 
 pub(crate) fn reservation_overhead() -> usize {
@@ -250,6 +256,7 @@ mod tests {
             ..Usage::default()
         };
         let ledger = Arc::new(pool.reserve(charge).unwrap());
+        assert_eq!(ledger.charge(), charge);
         let material_store = ledger.clone();
         drop(ledger);
         assert_eq!(pool.usage(), charge);
