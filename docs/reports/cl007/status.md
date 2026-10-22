@@ -43,6 +43,8 @@ python scripts/benchmark.py --iterations 1000 --output .local/core-performance.j
 python scripts/evaluate_algorithms.py --output-dir .local/algorithm-final
 ```
 
+其中新增10项 `render_tests` 直接通过本分支生产 COM 回调进入 run/render，覆盖成功提交、GetStatus/SetText前后/SetSelection/EndComposition失败、SetText内重入失焦、同对象幂等、独立对象合法重复、同步拒锁后迟到回调、候选拒锁/陈旧ID、布局过期和持有关系。部分测试直接布置 `ni` 组合 fixture，因此不证明完整原生键盘消息链；弱引用测试只证明 Edit 持有 Host，不能据此推断 Deactivate/全部 DLL 可卸载路径完成；重复回调测试不等同跨实例 ACK 隔离证明。跨实例 ACK 仍只保留原有模型测试，真实应用、TSF锁竞争与长期资源验证没有被这些测试替代。
+
 `core-performance.json` 和算法报告只测64条手写原型词典及83条诊断种子，源码指纹 v3 包含 adapters。它们不是正式准确率、TSF UI 延迟或真实 Windows 输入法性能。原生 DLL 体积与哈希另记录，不据体积推断运行性能。
 
 本轮源码指纹为 `cloudleaf-source-v3` / `5c37626623ad0c448e2f9ddafd0b8b7ccc38732bfa5cc48810e5857c00e0a2dd`。原型核心事件 p50/p95/p99 为1.9/4.9/10.2微秒，峰值进程工作集6,000,640字节。模拟 COM 诊断（100预热、1000样本）记录于 `native-diagnostic.json`，keyedit p50/p95/p99 19.3/38.0/61.9微秒，候选提交4.9/8.8/20.1微秒；这些都是模拟宿主机制测量，背景负载未控制，非 Windows 应用端到端性能。
