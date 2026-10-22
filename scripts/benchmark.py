@@ -22,11 +22,11 @@ def source_sha256() -> str:
     # 源码尚未提交时也有可重复追溯的标识；排除 target/.git 与生成的报告。
     paths = [ROOT / "Cargo.toml", ROOT / "Cargo.lock", ROOT / "rust-toolchain.toml"]
     for folder, pattern in [("crates", "*.rs"), ("crates", "Cargo.toml"),
-                            ("apps", "*.rs"), ("apps", "Cargo.toml"), ("tests", "*.tsv"),
+                            ("apps", "*.rs"), ("apps", "Cargo.toml"), ("tests", "*.py"), ("tests", "*.tsv"),
                             ("data", "*.tsv"), ("scripts", "*.py")]:
         paths.extend((ROOT / folder).rglob(pattern))
     digest = hashlib.sha256()
-    for path in sorted(set(paths)):
+    for path in sorted(set(paths), key=lambda item: item.relative_to(ROOT).as_posix()):
         digest.update(path.relative_to(ROOT).as_posix().encode("utf-8") + b"\0")
         digest.update(path.read_bytes())
         digest.update(b"\0")
@@ -102,6 +102,33 @@ def measure_process(binary: Path, iterations: int, output, errors) -> tuple[dict
     return json.loads(stdout), peak_bytes, method
 
 
+def build_host() -> Path:
+    # 以 Cargo 实际构建产物为准，兼容 CARGO_TARGET_DIR 与显式目标平台配置。
+    build = subprocess.run(
+        ["cargo", "build", "--release", "--locked", "--offline", "-p", "cloudleaf-cli",
+         "--bin", "cloudleaf-cli", "--message-format=json"],
+        cwd=ROOT, check=False, capture_output=True, text=True, encoding="utf-8",
+    )
+    if build.returncode:
+        for line in build.stdout.splitlines():
+            message = json.loads(line)
+            if message.get("reason") == "compiler-message":
+                print(message["message"].get("rendered", ""), file=sys.stderr, end="")
+        print(build.stderr, file=sys.stderr, end="")
+        raise subprocess.CalledProcessError(build.returncode, build.args)
+    paths = []
+    for line in build.stdout.splitlines():
+        message = json.loads(line)
+        if (message.get("reason") == "compiler-artifact"
+                and message.get("target", {}).get("name") == "cloudleaf-cli"
+                and "bin" in message.get("target", {}).get("kind", [])
+                and message.get("executable")):
+            paths.append(Path(message["executable"]))
+    if len(paths) != 1 or not paths[0].is_file():
+        raise RuntimeError("Cargo 未返回唯一且存在的 cloudleaf-cli 产物")
+    return paths[0]
+
+
 def run() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--iterations", type=int, default=1000)
@@ -110,9 +137,7 @@ def run() -> None:
     if not 1 <= args.iterations <= 10000:
         parser.error("iterations 必须在 1..10000")
     source_hash = source_sha256()
-    subprocess.run(["cargo", "build", "--release", "--locked", "--offline", "-p", "cloudleaf-cli"],
-                   cwd=ROOT, check=True)
-    binary = ROOT / "target/release" / ("cloudleaf-cli.exe" if os.name == "nt" else "cloudleaf-cli")
+    binary = build_host()
     result, peak, method = measure(binary, args.iterations)
     if source_sha256() != source_hash:
         raise RuntimeError("构建或测量期间源码发生变化，请重新运行基准")
@@ -121,6 +146,7 @@ def run() -> None:
     result["git_head"] = subprocess.run(["git", "rev-parse", "--verify", "HEAD"], cwd=ROOT,
                                          capture_output=True, text=True, encoding="utf-8").stdout.strip() or None
     result["source_sha256"] = source_hash
+    result["source_fingerprint_schema"] = "cloudleaf-source-v2"
     result["binary_sha256"] = hashlib.sha256(binary.read_bytes()).hexdigest()
     result["measured_at_utc"] = datetime.now(timezone.utc).isoformat()
     result["build_profile"] = "release"

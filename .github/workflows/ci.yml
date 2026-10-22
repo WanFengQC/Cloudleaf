@@ -33,9 +33,15 @@ jobs:
         run: cargo test --workspace --doc --locked --offline
       - name: Dependency, license and fixture audit
         run: python scripts/check_workspace.py
+      - name: Evaluation and artifact provenance tests
+        run: python -m unittest discover -s tests -p "test_*.py"
       - name: Benchmark smoke
         run: python scripts/benchmark.py --iterations 100 --output .local/m2-performance.json
+      - name: Algorithm baseline and ablation
+        run: python scripts/evaluate_algorithms.py --output-dir .local/algorithm-v1
       - uses: actions/upload-artifact@v4
         with:
           name: core-performance-${{ matrix.os }}
-          path: .local/m2-performance.json
+          path: |
+            .local/m2-performance.json
+            .local/algorithm-v1/

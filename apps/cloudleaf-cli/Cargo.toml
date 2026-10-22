@@ -1,5 +1,6 @@
 [package]
 name = "cloudleaf-cli"
+default-run = "cloudleaf-cli"
 description = "云笺输入核心测试宿主与性能基准"
 version.workspace = true
 edition.workspace = true
@@ -16,3 +17,7 @@ cloudleaf-input.workspace = true
 
 [lints]
 workspace = true
+
+[[bin]]
+name = "cloudleaf-evaluate"
+path = "src/bin/evaluate.rs"

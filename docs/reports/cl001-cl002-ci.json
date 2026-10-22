@@ -1,0 +1,153 @@
+{
+  "repository": "WanFengQC/Cloudleaf",
+  "baseline_commit": "26b5e45da8e4d77a59d57817db82ac814b5e4b0a",
+  "run_id": 39709545895,
+  "url": "https://github.com/WanFengQC/Cloudleaf/actions/runs/39709545895",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "id": 119597327112,
+      "name": "core (windows-latest)",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install pinned Rust",
+          "conclusion": "success"
+        },
+        {
+          "name": "Format",
+          "conclusion": "success"
+        },
+        {
+          "name": "Lint",
+          "conclusion": "success"
+        },
+        {
+          "name": "Tests and fixed input corpus",
+          "conclusion": "success"
+        },
+        {
+          "name": "Documentation tests",
+          "conclusion": "success"
+        },
+        {
+          "name": "Dependency, license and fixture audit",
+          "conclusion": "success"
+        },
+        {
+          "name": "Benchmark smoke",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 119597327401,
+      "name": "core (ubuntu-latest)",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install pinned Rust",
+          "conclusion": "success"
+        },
+        {
+          "name": "Format",
+          "conclusion": "success"
+        },
+        {
+          "name": "Lint",
+          "conclusion": "success"
+        },
+        {
+          "name": "Tests and fixed input corpus",
+          "conclusion": "success"
+        },
+        {
+          "name": "Documentation tests",
+          "conclusion": "success"
+        },
+        {
+          "name": "Dependency, license and fixture audit",
+          "conclusion": "success"
+        },
+        {
+          "name": "Benchmark smoke",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 12396940168,
+      "name": "core-performance-ubuntu-latest",
+      "size_in_bytes": 917,
+      "digest": "sha256:3660bdf48aa34475c8981a2206cf52939e283601be38599540fa2585b14e09ac",
+      "expired": false,
+      "expires_at": "2027-01-20T02:06:38Z"
+    },
+    {
+      "id": 12396925242,
+      "name": "core-performance-windows-latest",
+      "size_in_bytes": 947,
+      "digest": "sha256:5f5396a8459cac1b5f123ff242834434c3187334135461f5adc385a5aca32892",
+      "expired": false,
+      "expires_at": "2027-01-20T02:06:38Z"
+    }
+  ]
+}

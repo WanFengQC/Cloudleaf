@@ -55,7 +55,7 @@ def check() -> None:
         width = len(lines[1].split("\t"))
         assert all(len(line.split("\t")) == width for line in lines[2:]), "资源 TSV 字段数量不一致"
         print(f"资源已验证：{manifest['path']} ({manifest['entry_count']} 条)")
-    assert resources == {"data/dictionaries/prototype.tsv", "tests/fixtures/input-v1.tsv"}, "词典与输入语料清单必须完整对应当前基线"
+    assert resources == {"data/dictionaries/prototype.tsv", "tests/fixtures/input-v1.tsv", "tests/evaluation/algorithm-v1.tsv"}, "词典、输入回归与独立算法评估清单必须完整对应当前基线"
     print(f"workspace 已验证：{len(members)} 个 crate，0 个外部 Rust 依赖，MSRV {version}")
 
 

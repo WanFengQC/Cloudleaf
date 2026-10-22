@@ -1,7 +1,7 @@
 # 云笺（Cloudleaf）测试与质量保障规范
 
 - 文档路径：`docs/testing.md`
-- 文档版本：1.0
+- 文档版本：2.0，2026-10-22
 - 目标：保证核心行为正确、输入流畅、翻译故障隔离、平台接入可靠且发布可重复
 
 ## 1. 测试原则
@@ -62,6 +62,8 @@
 模拟器或核心测试程序无法完全代替系统级测试。
 
 ## 3. 输入核心测试集
+
+本节事件语料用于行为回归；独立算法质量集按 [algorithm-evaluation.md](algorithm-evaluation.md) 分train/dev/heldout及意图家族，不能与41条事件回归混为准确率评测。候选Top-1/Top-5/MRR、OOV/无候选总体分母、纠错/上下文与逐例变化分别统计。当前手写种子仅验证工具，正式规模/代表性与主要算法比较未据此完成。
 
 建立版本化的输入测试语料。每条用例至少包含：
 
@@ -212,6 +214,8 @@ Windows 首发阶段：
 - `cargo test`
 - 许可证与依赖清单检查
 - 数据文件格式与校验和检查
+- 独立算法数据防泄漏、指标分母与基线/消融报告
+- 核心平台宿主契约（身份、重复事件、异步提交三态）模型测试，不替代真实TSF
 - 核心基准测试（按变更范围触发）
 - 平台构建任务（按代码路径触发）
 
@@ -249,4 +253,4 @@ Windows 首发阶段：
 
 ## 11. M1/M2 已落地检查
 
-完整命令见 [README](../README.md)；固定语料为 tests/fixtures/input-v1.tsv，数据清单与 SHA-256 位于 data/manifests/。Windows/Linux CI 执行固定工具链的格式、静态、测试、依赖/资源审计及 release 基准。当前本地结果与边界见 [验收报告](reports/m1-m2-validation.md)，远程 CI 与真实 Windows 应用验收不得由核心测试替代。
+完整命令见 [README](../README.md)；固定语料为 tests/fixtures/input-v1.tsv，数据清单与 SHA-256 位于 data/manifests/。Windows/Linux CI 执行固定工具链的格式、静态、测试、依赖/资源审计及 release 基准。当前本地结果与边界见 [验收报告](reports/m1-m2-validation.md)，M1/M2远程基线已实际通过，见[CI记录](reports/cl001-cl002-baseline.md)；真实Windows应用验收仍不能由核心测试替代。

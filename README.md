@@ -1,6 +1,8 @@
 # 云笺 Cloudleaf
 
-自研、离线优先的中文拼音输入核心。当前完成 M1 工程初始化与 M2 平台无关原型，可在命令行验证输入流程；Windows TSF、候选窗口与安装包从 M3 开始。
+云笺的目标是算法完善、功能完整、响应流畅、翻译可靠、可长期维护的正式跨平台输入法。当前已有可独立测试的 M1/M2 Rust 原型；完整产品按 [v2 路线图](docs/roadmap.md)推进 Windows、核心算法和正式数据三个方向，再集成双语翻译与多平台。
+
+当前边界：TSF、原生候选窗口、生产词库、整句候选/语言模型、纠错/学习和翻译尚未实现。64条手写词典及 CLI 演示不代表最终产品能力。最终50项可追踪能力见[产品范围](docs/product-scope.md)，近期CL-001..006状态见[执行记录](docs/cl001-cl006-progress.md)。
 
 ## 环境
 
@@ -30,7 +32,7 @@ cargo test --workspace --doc --locked --offline
 python scripts/check_workspace.py
 ```
 
-工具链首次安装需要下载。workspace 没有外部 Rust 库依赖，后续 Cargo 构建、测试和核心输入都可离线运行。CI 对 Windows/Linux 执行同一套检查并上传基准 JSON；当前远程 CI 尚未运行，实际本地结果见[验收报告](docs/reports/m1-m2-validation.md)。
+工具链首次安装需要下载。workspace 没有外部 Rust 库依赖，后续 Cargo 构建、测试和核心输入都可离线运行。CI 对 Windows/Linux 执行同一套检查并上传报告；M1/M2检查点 `26b5e45` 已在两个平台真实通过，见[基线与CI记录](docs/reports/cl001-cl002-baseline.md)。原型本地数据见[历史验收报告](docs/reports/m1-m2-validation.md)。
 
 ## 运行输入原型
 
@@ -51,9 +53,13 @@ cargo run --locked --offline -p cloudleaf-cli -- --help
 ```text
 python scripts/benchmark.py --iterations 1000 --output .local/m2-performance.json
 cargo test -p cloudleaf-input --test corpus --locked --offline -- --nocapture
+python -m unittest discover -s tests -p "test_*.py"
+python scripts/evaluate_algorithms.py --output-dir .local/algorithm-v1
 ```
 
-基准脚本先构建 release，再单独启动宿主，记录源码及二进制 SHA-256、工具链、硬件、冷加载、事件/查询的 P50/P95/P99/max 和进程峰值内存。结果只描述小型原型词典与当前机器，不能替代生产词库或 UI 测量。[本地验收报告](docs/reports/m1-m2-validation.md)附有实际结果及 41 条语料的[候选排序报告](docs/reports/m2-candidate-ranking.md)。
+基准脚本先构建 release，从 Cargo 实际返回的产物路径运行宿主（兼容自定义 target 目录），记录源码及二进制 SHA-256、工具链、硬件、冷加载、事件/查询分位数和进程峰值内存。结果仅描述小型原型，不替代生产词库或UI测量。原有41条[候选回归](docs/reports/m2-candidate-ranking.md)继续保留。
+
+独立算法种子与评估器分别登记来源/划分，比较现有规则与移除精确匹配优先的频率排序消融，保留空结果、超限、OOV和未实现能力的真实分母。报告包含Top-1/Top-5/MRR、逐例位置变化与分组延迟，详见[评估规范](docs/algorithm-evaluation.md)。手写种子不支持正式准确率或最终模型选型结论；DAG/整体候选、N-gram、纠错和学习的比较仍须后续实验。
 
 ## 模块
 
@@ -68,4 +74,4 @@ cargo test -p cloudleaf-input --test corpus --locked --offline -- --nocapture
 
 产品核心不直接写日志，不保存完整输入历史。候选注释不进入提交文本；提交失败保留请求，显式重试需要新 ID；宿主先确认提交，再派发下一事件。日志及错误规范详见[设计约定](docs/m1-m2-design.md)。
 
-项目代码与手写原型数据采用 MIT 许可证；依赖及数据来源见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。[路线图](docs/roadmap.md)定义后续阶段，[任务记录](docs/m1-m2-tasks.md)逐项登记本次交付与验收。
+代码与项目手写数据采用 MIT 许可证；来源见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。[算法设计](docs/algorithm-design.md)、[平台契约](docs/core-platform-contract.md)及[Windows设计](docs/windows-tsf-design.md)定义后续并行边界；契约模型测试不等于TSF实装。[M1/M2任务记录](docs/m1-m2-tasks.md)保留历史成果。
