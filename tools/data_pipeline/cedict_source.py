@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 import re
+import stat
 from zipfile import ZipFile
 
 from .pipeline import Audit, MAX_EXPANDED, canonical, digest, make_record, normalize_reading
@@ -27,9 +28,11 @@ def read_archive(source: Path, lock: dict) -> tuple[str, dict]:
         if len(infos) != 1:
             raise ValueError("CC-CEDICT归档必须只有一个已锁定成员")
         info = infos[0]
+        # DOS归档可没有Unix类型位；有类型位时只允许普通文件，不在磁盘解包。
+        member_type = stat.S_IFMT(info.external_attr >> 16)
         if (info.filename != "cedict_ts.u8" or info.filename != lock.get("source_member")
                 or info.is_dir() or info.flag_bits & 1 or info.file_size > MAX_EXPANDED
-                or (info.external_attr >> 16) & 0o170000 == 0o120000):
+                or member_type not in (0, stat.S_IFREG)):
             raise ValueError("CC-CEDICT成员名称、类型或体积错误")
         # ZipFile.read会校验完整成员CRC；不在磁盘展开归档路径。
         data = archive.read(info)

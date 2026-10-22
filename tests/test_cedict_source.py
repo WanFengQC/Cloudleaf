@@ -89,7 +89,7 @@ class CedictSourceTests(unittest.TestCase):
         self.assertEqual(q['counts']['malformed_or_conflicting_records'], 1)
 
     def test_header_count_plain_hash_and_archive_paths_fail_closed(self):
-        for change in ['count','hash','path','extra','symlink']:
+        for change in ['count','hash','path','extra','symlink','fifo','socket','character','block']:
             with self.subTest(change=change):
                 self.prepare(['你好 你好 [ni3 hao3] /hello/'])
                 if change == 'count':
@@ -107,7 +107,9 @@ class CedictSourceTests(unittest.TestCase):
                             archive.writestr('other', b'x')
                         else:
                             info = ZipInfo('cedict_ts.u8')
-                            info.external_attr = 0o120777 << 16
+                            kinds = {'symlink':0o120000, 'fifo':0o010000, 'socket':0o140000,
+                                     'character':0o020000, 'block':0o060000}
+                            info.external_attr = (kinds[change] | 0o777) << 16
                             archive.writestr(info, data)
                     self.lock['sha256'] = digest(self.source.read_bytes())
                 write_json(self.lock_path, self.lock)
