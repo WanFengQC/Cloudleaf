@@ -22,6 +22,8 @@ TSF composition 保存 `ITfComposition`，使用 document manager 当前 context
 
 真实应用切换增加显式 `activate-session <新快照路径>` 和 `restore-session <快照路径>`。切换之前以 create_new 写入 UTF-8 的 `cloudleaf-profile-v1`，保存原 profile type、LANGID、CLSID、profile GUID 与 HKL；只在快照写入并 flush/sync 成功后调用 FORSESSION 激活，绝不修改默认或系统全局设置。恢复严格校验格式，成功后仍保留快照供验收追溯。不读取或记录宿主输入内容。注册拒绝覆盖已有 Cloudleaf COM 项，卸载须报告系统失败，不把失败操作显示为成功。
 
+注册以新建 HKCU CLSID 项作为所有权边界，并先枚举 TSF 服务拒绝同 GUID 冲突；失败只按已成功步骤逆序回滚，回滚错误必须呈现。服务 Activate 任意中间失败均撤销已建立的 sink 和状态。当前 context 订阅布局通知，TS_E_NOLAYOUT 时隐藏候选并在后续布局通知中重试，禁止将暂缺布局判为未知文本提交。每次外部 COM 调用后重查 epoch，旧事务不能确认新会话提交。只读和密码输入 scope 在按键 admission 阶段透传；push/pop 重新查询实际焦点，不凭通知参数切换其他文档。
+
 ## 验证与状态
 
 执行格式、clippy、全部原有测试、平台新增纯函数/COM 测试、资源审计和 release 基准。真实 Windows 应用验收至少覆盖独立 Notepad 和浏览器输入区：组合/提交/翻页/鼠标/焦点/快捷键/取消/重激活/Unicode；保存命令、程序版本、实际文本与操作结果，不能用模拟宿主代替。故障注入必须覆盖失败回执、迟到 epoch 和 Unknown 不重试。
