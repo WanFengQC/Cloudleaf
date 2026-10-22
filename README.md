@@ -4,12 +4,14 @@
 
 当前边界：TSF、原生候选窗口、生产词库、整句候选/语言模型、纠错/学习和翻译尚未实现。64条手写词典及 CLI 演示不代表最终产品能力。最终50项可追踪能力见[产品范围](docs/product-scope.md)，近期CL-001..006状态见[执行记录](docs/cl001-cl006-progress.md)。
 
+CL-009数据分支新增[离线Python管线](tools/data_pipeline/README.md)：固定Unicode17字符常用读音/英文原始释义、nullable词频、确定性TSV v2/JSONL、质量/校验/索引及原子升级回退。真实派生数据在`.local`，尚未替换默认输入的64条原型；词短语、真实频率、完整双语及独立语言质量仍未完成。
+
 ## 环境
 
 - Git。
 - [官方 rustup](https://rust-lang.org/tools/install/) 和 Rust **1.90.0**；`rust-toolchain.toml` 锁定工具链，MSRV 同为 1.90.0，edition 2024。
 - Windows 使用 `x86_64-pc-windows-msvc`，安装 Visual Studio C++ 构建工具及 Windows SDK；公共核心也可在 Linux/macOS 编译。
-- Python **3.11+**（CI 固定 3.12），只用于工程审计与性能报告，输入核心无 Python 运行时依赖。
+- Python **3.11+**（CI 固定 3.12），用于工程审计、离线数据管线与性能报告，输入核心无 Python 运行时依赖。
 
 Windows PowerShell 若尚未识别 Cargo，可在当前终端设置：
 
