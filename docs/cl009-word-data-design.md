@@ -35,3 +35,11 @@ frequency为nullable观测对象，包含kind、value、unit、corpus_id、perio
 ## 实施范围与验证
 
 只改C的`tools/data_pipeline`、C测试、来源锁/许可及C文档；B/A/shared代码不改。先交付合法真实多字runtime及manifest/quality/source-lock/license位置和SHA给B，冻结该数据快照后再做资源对照。最后按README检查、基准、干净归档独立venv两次构建及精确SHA CI；报告完成/部分/未完成/阻塞，CL-009与CL-010门禁不因局部交付改变。
+
+## 有界摘录研究快照补充（先提交再实施）
+
+公开234,450,401 bytes原件下载缓慢，完整gzip门禁不变。另建立明确不同的dataset/source_id与`wiktionary-zh-prefix-jsonl`格式，source_subset=true、research_only=true，仅供B资源/一致性机制实验。先从已到手部分复制固定前8,388,608个压缩字节形成不再增长的快照；不得直接从增长中的.part构建。
+
+锁登记HTTP实体ETag/Last-Modified、压缩前缀固定范围0..8,388,607、大小/SHA；全件SHA为null、全件下载完成和gzip全件CRC验证均为false。只解压该固定前缀，输出末尾完整换行之前的原始JSONL行；不补截断记录、不选择gold词条、不猜失去的尾部。摘录plaintext独立锁定完整SHA/字节/行数、丢弃尾部字节数及派生规则。纯离线工具从固定压缩前缀重建摘录，必须逐字节一致。
+
+研究快照仍保留相同Wikimedia文本许可与逐record行号/摘要/词条URL。原件未完成的范围、逐页额外署名/例外未逐项人工查清的限制必须显式记录，不能把通用ToU当每个词条绝无例外保证；只保留可得许可标记、排除标记为不明权利/引用的记录，媒体和引用实例不进入派生数据。它不改名为完整dump、正式词库、正式语言评估集或已审核现代频率源；完整原件继续单实例续传。
