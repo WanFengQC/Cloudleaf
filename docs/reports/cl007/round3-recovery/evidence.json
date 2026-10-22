@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "implementation_commit": "77cbbd62969629ae2c7f5eb349c3cdacd4fd2d4f",
+  "source_fingerprint_schema": "cloudleaf-source-v3",
+  "source_sha256": "7c068d7da55788c391bac6a950e56928a631c303d16da8e174eb22b8ab2460a4",
+  "system_registration_executed": false,
+  "profile_activation_executed": false,
+  "real_application_acceptance": false,
+  "product_complete": false,
+  "rust_workspace_passed": 144,
+  "native_passed": 84,
+  "diagnostics_ignored_by_default": 2,
+  "python_passed": 16,
+  "policy": {
+    "hosts": 64,
+    "batches": 64,
+    "text_bytes": 67108864,
+    "fixed_bytes": 134217728
+  },
+  "per_epoch_charge": {
+    "text_bytes": 1310720,
+    "fixed_bytes": 3592832,
+    "reservation_overhead": 88
+  },
+  "pressure_peak": {
+    "hosts": 37,
+    "batches": 36,
+    "text_bytes": 47185920,
+    "fixed_bytes": 133670864,
+    "after_explicit_release": "all four counters zero; DllCanUnloadNow S_OK"
+  },
+  "physical_sta_exit": {
+    "old_and_new_owner_com_apartment_initialized": true,
+    "unresolved_material_reachable_and_explicitly_discardable": true,
+    "owner_window_class_teardown_proven": false,
+    "retained_hosts_after_discard": 1,
+    "dll_can_unload": "S_FALSE",
+    "exit_gate_closed": false
+  },
+  "limitations": [
+    "材料与可达展示副本保守计费，不是OS窗口或分配器物理内存上限",
+    "真实STA永久退出后的窗口类/owner资源仅保守保活，尚无安全回收流程",
+    "真实宿主压力、安装、跨架构及A5均未验收"
+  ]
+}

@@ -42,6 +42,8 @@ TSF composition 保存 `ITfComposition`，使用 document manager 当前 context
 
 当前状态：已有部分原生实现及可重放的 COM/Win32 可靠性证据，CL-007 未完成；真实应用、系统注册/激活和安装验收未执行。A1–A4 仍须补长时间压力、真实宿主故障及未覆盖资源故障，未关闭前不放行 A5。外部销毁恢复窗口后的可达性、不同线程调用 DllCanUnloadNow 时 STA 窗口退出、所有宿主停止行为没有本轮完成证据。正式词典、完整算法和跨架构分发不属于本分支完成证据。
 
+第三轮按[共享恢复生命周期](cl007-recovery-lifetime-v3.md)和[模块预算](cl007-recovery-budget.md)补充全模块预留、脱离HWND的材料、显式重开及跨线程owner通知。具体结果见[第三轮原生报告](reports/cl007/round3-recovery-status.md)。主窗外毁和暂时不泵消息已有证据，物理STA退出与持续销毁/注销异常仍只有保守保活，未取得完整资源回收/可用性退出证据；不能据此放行A5。
+
 上游依据：
 
 - https://docs.rs/crate/windows/0.62.2/source/Cargo.toml.orig
