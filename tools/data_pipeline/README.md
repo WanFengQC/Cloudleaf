@@ -21,6 +21,8 @@ python -m unittest discover -s tests -p test_data_pipeline.py -v
 
 原始英文释义不切成推测义项；Unihan的整个kDefinition保留一个原始字符串。超过256字符的运行时注释为空，完整内容留在事实层，质量报告登记数量。字符常用读音与英文字符释义不代表完整多音字、词短语、中英双向或现代词频。
 
+`verify`从事实与拒绝JSONL独立重算不同文字/拼音键、缺失字段、超长注释、拒绝原因及unsupported/坏记录统计，并校验来源范围和未评测声明。原始行数、目标属性数、源重复/冲突等需要固定原件重建才能证明；自包含校验明确输出`source_only_statistics_rebuilt=false`，不能把包内这些计数当作已重新统计原件。
+
 ## 发布与回退
 
 ```text

@@ -482,10 +482,37 @@ def verify_release(root: Path) -> dict:
     if index != {"schema_version": 2, "by_pinyin": expected_pinyin, "by_text": expected_text}:
         raise ValueError("索引不一致")
     quality = read_json(root / "quality.json")
-    rejected = (root / "rejected.jsonl").read_text(encoding="utf-8").splitlines()
-    if (quality["counts"]["accepted_records"] != len(records) or manifest["rejected_count"] != len(rejected)
-            or quality["counts"].get("rejected_records", 0) != len(rejected)):
-        raise ValueError("质量报告计数不一致")
+    rejected = [json.loads(line) for line in (root / "rejected.jsonl").read_text(encoding="utf-8").splitlines()]
+    for row in rejected:
+        if (not isinstance(row, dict) or set(row) != {"reason", "member", "line", "raw"}
+                or type(row["line"]) is not int or not 1 <= row["line"] <= 0xFFFFFFFF
+                or any(not isinstance(row[field], str) or not clean_field(row[field]) for field in ("reason", "member"))
+                or Path(row["member"]).name != row["member"] or any(char in row["member"] for char in "/\\:")
+                or not isinstance(row["raw"], str)):
+            raise ValueError("拒绝报告记录结构不合法")
+    evaluation = {"train": None, "dev": None, "heldout": None, "accuracy_claim": False,
+                  "reason": "来源数据完整性检查，不是独立语言评测"}
+    if (not isinstance(quality, dict) or quality.get("schema_version") != 2
+            or quality.get("source") != lock["source_id"] or quality.get("scope") != lock["limitations"]
+            or quality.get("evaluation") != evaluation or quality["evaluation"]["accuracy_claim"] is not False
+            or not isinstance(quality.get("counts"), dict) or not isinstance(quality.get("rejection_reasons"), dict)):
+        raise ValueError("质量报告schema、来源范围或未评测声明不一致")
+    if any(type(value) is not int or value < 0 for value in [*quality["counts"].values(), *quality["rejection_reasons"].values()]):
+        raise ValueError("质量报告计数必须是非负整数")
+    reasons = dict(Counter(row["reason"] for row in rejected))
+    unsupported = reasons.get("unsupported_reading", 0)
+    derived = {"accepted_records": len(records), "distinct_texts": len(expected_text),
+               "distinct_pinyin": len(expected_pinyin), "missing_frequency": sum(row["frequency"] is None for row in records),
+               "missing_pos": sum(row["pos"] is None for row in records),
+               "missing_english_gloss": sum(not row["raw_senses"] for row in records),
+               "runtime_annotation_omitted_long": sum(len("; ".join(row["raw_senses"])) > 256 for row in records),
+               "rejected_records": len(rejected), "unsupported_runtime_readings": unsupported,
+               "malformed_or_conflicting_records": len(rejected) - unsupported}
+    # 原始行数、源属性重复/冲突等依赖原件；这里只证明事实与拒绝报告能够独立推导的统计。
+    if (type(manifest["rejected_count"]) is not int or manifest["rejected_count"] != len(rejected)
+            or quality["rejection_reasons"] != reasons
+            or any(quality["counts"].get(key) != value for key, value in derived.items())):
+        raise ValueError("质量报告派生计数或拒绝原因不一致")
     return manifest
 
 

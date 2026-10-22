@@ -100,7 +100,8 @@ def main() -> None:
                           "peak_process_bytes": peak_memory_bytes()}, ensure_ascii=False))
     elif args.command == "verify":
         result = verify_release(args.release)
-        print(json.dumps({"verified": True, "entries": result["entry_count"], "source": result["source"]["source_id"]}))
+        print(json.dumps({"verified": True, "entries": result["entry_count"], "source": result["source"]["source_id"],
+                          "source_only_statistics_rebuilt": False}))
     elif args.command == "activate":
         print(json.dumps(activate(args.release, args.store)))
     elif args.command == "rollback":

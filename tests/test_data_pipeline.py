@@ -281,6 +281,44 @@ class PipelineTests(unittest.TestCase):
         self.assertFalse((raced_store / "current.json").exists())
         self.assertFalse((raced_store / "releases" / first_hash).exists())
 
+    def test_rehashed_quality_statistics_scope_and_accuracy_claim_are_verified(self) -> None:
+        self.prepare("U+4E00\tkMandarin\tyī\nU+4E09\tkMandarin\txyz\n")
+        fields = ["accepted_records", "distinct_texts", "distinct_pinyin", "missing_frequency", "missing_pos",
+                  "missing_english_gloss", "runtime_annotation_omitted_long", "rejected_records",
+                  "unsupported_runtime_readings", "malformed_or_conflicting_records"]
+        attacks = [("count:" + field, field) for field in fields] + [
+            ("reasons", None), ("source", None), ("scope", None), ("accuracy", None),
+            ("non_integer_count", None), ("rejected_json", None), ("rejected_structure", None)]
+        for number, (attack, field) in enumerate(attacks):
+            with self.subTest(attack=attack):
+                output = self.create(f"quality-attack-{number}")
+                quality = read_json(output / "quality.json")
+                if field:
+                    quality["counts"][field] += 1
+                elif attack == "reasons":
+                    quality["rejection_reasons"] = {"wrong": 1}
+                elif attack == "source":
+                    quality["source"] = "cloudleaf:wrong"
+                elif attack == "scope":
+                    quality["scope"] = ["伪造完整词库覆盖"]
+                elif attack == "accuracy":
+                    quality["evaluation"]["accuracy_claim"] = True
+                elif attack == "non_integer_count":
+                    quality["counts"]["raw_lines"] = True
+                elif attack == "rejected_json":
+                    (output / "rejected.jsonl").write_bytes(b"not-json\n")
+                else:
+                    (output / "rejected.jsonl").write_bytes(canonical({"reason": "unsupported_reading"}))
+                write_json(output / "quality.json", quality)
+                manifest = read_json(output / "manifest.json")
+                # 同步重算全部资源哈希，排除仅由文件完整性检查挡住攻击的情况。
+                for name in manifest["resources"]:
+                    data = (output / name).read_bytes()
+                    manifest["resources"][name] = {"sha256": digest(data), "bytes": len(data)}
+                write_json(output / "manifest.json", manifest)
+                with self.assertRaises(ValueError):
+                    verify_release(output)
+
 
 if __name__ == "__main__":
     unittest.main()
