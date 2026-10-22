@@ -121,7 +121,7 @@ impl InputEngine {
         }
         let composing = !self.preedit.is_empty();
         let handle_composition = if composing { Handle } else { PassThrough };
-        match key {
+        let disposition = match key {
             Key::Char(' ' | '\n') | Key::Space | Key::Enter => handle_composition,
             Key::Char(character)
                 if character.is_ascii_alphabetic() || (character == '\'' && composing) =>
@@ -144,6 +144,23 @@ impl InputEngine {
                     Handle
                 }
             }
+        };
+        // 提交序号耗尽时，仅阻止会创建提交的键；光标编辑和取消仍可执行。
+        let creates_commit = match key {
+            Key::Char(' ' | '\n') | Key::Space | Key::Enter => composing,
+            Key::Char(character)
+                if character.is_ascii_alphabetic() || (character == '\'' && composing) =>
+            {
+                false
+            }
+            Key::Char(character) if character.is_control() => false,
+            Key::Char(character) => composing || chinese_punctuation(character).is_some(),
+            _ => false,
+        };
+        if disposition == Handle && creates_commit && self.next_commit_id == u64::MAX {
+            Blocked(ErrorCode::InvalidInput)
+        } else {
+            disposition
         }
     }
 
@@ -977,6 +994,16 @@ mod tests {
         });
         type_text(&mut engine, "ni");
         let before = engine.frame();
+        assert_eq!(
+            engine.key_disposition(Key::Enter),
+            KeyDisposition::Blocked(ErrorCode::InvalidInput)
+        );
+        assert_eq!(engine.key_disposition(Key::Left), KeyDisposition::Handle);
+        assert_eq!(
+            engine.key_disposition(Key::Char('a')),
+            KeyDisposition::Handle
+        );
+        assert_eq!(engine.frame(), before);
         let exhausted = key(&mut engine, Key::Enter);
         assert!(!exhausted.handled);
         assert!(exhausted.commit.is_none());
