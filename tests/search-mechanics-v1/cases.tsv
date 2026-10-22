@@ -1,0 +1,15 @@
+# cloudleaf-search-cases-v1
+id	split	family	input	left_word	kind
+dev-boundary	dev	boundary-development	xi'an		boundary
+dev-umlaut	dev	normalization-development	LÜ'NV		utf8
+test-empty	test	empty-test			empty
+test-unknown	test	oov-test	q		oov
+test-unknown-tail	test	oov-test	xianq		oov
+test-waiting	test	waiting-test	xi'		waiting
+test-invalid	test	invalid-test	a''na		invalid
+test-ambiguous	test	ambiguity-test	xian		ambiguity
+test-composition	test	composition-test	xianna		composition
+test-prefix	test	prefix-test	xia		prefix
+test-same-token	test	context-test	a	context	context
+test-beam-loss	test	beam-future-test	ana		beam_future
+test-repeat	test	repetition-test	ananana		branching
