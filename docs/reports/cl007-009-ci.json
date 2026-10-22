@@ -1,0 +1,1318 @@
+{
+  "checked_at_utc": "2026-10-22T06:54:27.150454+00:00",
+  "scope": "固定提交的历史双平台检查与产物身份；不代表产品或真实应用验收，也不包含后续文档提交",
+  "runs": [
+    {
+      "direction": "shared",
+      "run_id": 39716279234,
+      "head_sha": "acdb34f6e6df820b6a569914dea34f603bc01404",
+      "url": "https://github.com/WanFengQC/Cloudleaf/actions/runs/39716279234",
+      "event": "pull_request",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 119619045204,
+          "name": "core (ubuntu-latest)",
+          "conclusion": "success",
+          "started_at": "2026-10-22T03:20:25Z",
+          "completed_at": "2026-10-22T03:20:47Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-22T03:20:25Z",
+              "completed_at": "2026-10-22T03:20:26Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-22T03:20:26Z",
+              "completed_at": "2026-10-22T03:20:27Z"
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-22T03:20:27Z",
+              "completed_at": "2026-10-22T03:20:27Z"
+            },
+            {
+              "name": "Install pinned Rust",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-22T03:20:27Z",
+              "completed_at": "2026-10-22T03:20:34Z"
+            },
+            {
+              "name": "Fetch precisely locked build dependencies",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-22T03:20:34Z",
+              "completed_at": "2026-10-22T03:20:34Z"
+            },
+            {
+              "name": "Format",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-22T03:20:34Z",
+              "completed_at": "2026-10-22T03:20:34Z"
+            },
+            {
+              "name": "Lint",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-10-22T03:20:34Z",
+              "completed_at": "2026-10-22T03:20:35Z"
+            },
+            {
+              "name": "Tests and fixed input corpus",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-10-22T03:20:35Z",
+              "completed_at": "2026-10-22T03:20:37Z"
+            },
+            {
+              "name": "Documentation tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-22T03:20:37Z",
+              "completed_at": "2026-10-22T03:20:37Z"
+            },
+            {
+              "name": "Dependency, license and fixture audit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-22T03:20:37Z",
+              "completed_at": "2026-10-22T03:20:37Z"
+            },
+            {
+              "name": "Evaluation and artifact provenance tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-22T03:20:37Z",
+              "completed_at": "2026-10-22T03:20:38Z"
+            },
+            {
+              "name": "Benchmark smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-10-22T03:20:38Z",
+              "completed_at": "2026-10-22T03:20:41Z"
+            },
+            {
+              "name": "Algorithm baseline and ablation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-10-22T03:20:41Z",
+              "completed_at": "2026-10-22T03:20:44Z"
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-10-22T03:20:44Z",
+              "completed_at": "2026-10-22T03:20:45Z"
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 27,
+              "started_at": "2026-10-22T03:20:45Z",
+              "completed_at": "2026-10-22T03:20:45Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 28,
+              "started_at": "2026-10-22T03:20:45Z",
+              "completed_at": "2026-10-22T03:20:45Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 29,
+              "started_at": "2026-10-22T03:20:45Z",
+              "completed_at": "2026-10-22T03:20:45Z"
+            }
+          ]
+        },
+        {
+          "id": 119619045509,
+          "name": "core (windows-latest)",
+          "conclusion": "success",
+          "started_at": "2026-10-22T03:20:25Z",
+          "completed_at": "2026-10-22T03:21:14Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-22T03:20:26Z",
+              "completed_at": "2026-10-22T03:20:27Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-22T03:20:27Z",
+              "completed_at": "2026-10-22T03:20:32Z"
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-22T03:20:32Z",
+              "completed_at": "2026-10-22T03:20:32Z"
+            },
+            {
+              "name": "Install pinned Rust",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-22T03:20:32Z",
+              "completed_at": "2026-10-22T03:20:44Z"
+            },
+            {
+              "name": "Fetch precisely locked build dependencies",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-22T03:20:44Z",
+              "completed_at": "2026-10-22T03:20:46Z"
+            },
+            {
+              "name": "Format",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-22T03:20:46Z",
+              "completed_at": "2026-10-22T03:20:47Z"
+            },
+            {
+              "name": "Lint",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-10-22T03:20:47Z",
+              "completed_at": "2026-10-22T03:20:49Z"
+            },
+            {
+              "name": "Tests and fixed input corpus",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-10-22T03:20:49Z",
+              "completed_at": "2026-10-22T03:20:55Z"
+            },
+            {
+              "name": "Documentation tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-22T03:20:55Z",
+              "completed_at": "2026-10-22T03:20:56Z"
+            },
+            {
+              "name": "Dependency, license and fixture audit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-22T03:20:56Z",
+              "completed_at": "2026-10-22T03:20:58Z"
+            },
+            {
+              "name": "Evaluation and artifact provenance tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-22T03:20:58Z",
+              "completed_at": "2026-10-22T03:20:59Z"
+            },
+            {
+              "name": "Benchmark smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-10-22T03:20:59Z",
+              "completed_at": "2026-10-22T03:21:05Z"
+            },
+            {
+              "name": "Algorithm baseline and ablation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-10-22T03:21:05Z",
+              "completed_at": "2026-10-22T03:21:09Z"
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-10-22T03:21:09Z",
+              "completed_at": "2026-10-22T03:21:10Z"
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 27,
+              "started_at": "2026-10-22T03:21:10Z",
+              "completed_at": "2026-10-22T03:21:11Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 28,
+              "started_at": "2026-10-22T03:21:11Z",
+              "completed_at": "2026-10-22T03:21:13Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 29,
+              "started_at": "2026-10-22T03:21:13Z",
+              "completed_at": "2026-10-22T03:21:13Z"
+            }
+          ]
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 12399735323,
+          "name": "core-performance-windows-latest",
+          "size_in_bytes": 16575,
+          "digest": "sha256:8d340ed3e37ccc4ad322450e43895db38a6482c4c2f5029cd7614d4f90803ece",
+          "expired": false
+        },
+        {
+          "id": 12399097602,
+          "name": "core-performance-ubuntu-latest",
+          "size_in_bytes": 21186,
+          "digest": "sha256:91265eb44dd82a3ca390104e74947f542f9299e028b43b5ecbfb9de471fd4554",
+          "expired": false
+        }
+      ]
+    },
+    {
+      "direction": "CL-008",
+      "run_id": 39717696624,
+      "head_sha": "aa53da6caa547ae3124f1c7cf257598f5e13090e",
+      "url": "https://github.com/WanFengQC/Cloudleaf/actions/runs/39717696624",
+      "event": "pull_request",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 119623662217,
+          "name": "core (ubuntu-latest)",
+          "conclusion": "success",
+          "started_at": "2026-10-22T03:35:44Z",
+          "completed_at": "2026-10-22T03:36:20Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-22T03:35:45Z",
+              "completed_at": "2026-10-22T03:35:46Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-22T03:35:46Z",
+              "completed_at": "2026-10-22T03:35:46Z"
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-22T03:35:46Z",
+              "completed_at": "2026-10-22T03:35:46Z"
+            },
+            {
+              "name": "Install pinned Rust",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-22T03:35:46Z",
+              "completed_at": "2026-10-22T03:35:56Z"
+            },
+            {
+              "name": "Fetch precisely locked build dependencies",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-22T03:35:56Z",
+              "completed_at": "2026-10-22T03:35:56Z"
+            },
+            {
+              "name": "Format",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-22T03:35:56Z",
+              "completed_at": "2026-10-22T03:35:56Z"
+            },
+            {
+              "name": "Lint",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-10-22T03:35:56Z",
+              "completed_at": "2026-10-22T03:35:58Z"
+            },
+            {
+              "name": "Tests and fixed input corpus",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-10-22T03:35:58Z",
+              "completed_at": "2026-10-22T03:36:03Z"
+            },
+            {
+              "name": "Documentation tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-22T03:36:03Z",
+              "completed_at": "2026-10-22T03:36:03Z"
+            },
+            {
+              "name": "Dependency, license and fixture audit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-22T03:36:03Z",
+              "completed_at": "2026-10-22T03:36:03Z"
+            },
+            {
+              "name": "Evaluation and artifact provenance tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-22T03:36:03Z",
+              "completed_at": "2026-10-22T03:36:04Z"
+            },
+            {
+              "name": "Benchmark smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-10-22T03:36:04Z",
+              "completed_at": "2026-10-22T03:36:08Z"
+            },
+            {
+              "name": "Algorithm baseline and ablation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-10-22T03:36:08Z",
+              "completed_at": "2026-10-22T03:36:12Z"
+            },
+            {
+              "name": "Full-coverage search differential smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-10-22T03:36:12Z",
+              "completed_at": "2026-10-22T03:36:17Z"
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15,
+              "started_at": "2026-10-22T03:36:17Z",
+              "completed_at": "2026-10-22T03:36:18Z"
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 29,
+              "started_at": "2026-10-22T03:36:18Z",
+              "completed_at": "2026-10-22T03:36:18Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 30,
+              "started_at": "2026-10-22T03:36:18Z",
+              "completed_at": "2026-10-22T03:36:18Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 31,
+              "started_at": "2026-10-22T03:36:18Z",
+              "completed_at": "2026-10-22T03:36:18Z"
+            }
+          ]
+        },
+        {
+          "id": 119623662330,
+          "name": "core (windows-latest)",
+          "conclusion": "success",
+          "started_at": "2026-10-22T03:35:44Z",
+          "completed_at": "2026-10-22T03:36:47Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-22T03:35:45Z",
+              "completed_at": "2026-10-22T03:35:46Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-22T03:35:46Z",
+              "completed_at": "2026-10-22T03:35:51Z"
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-22T03:35:51Z",
+              "completed_at": "2026-10-22T03:35:51Z"
+            },
+            {
+              "name": "Install pinned Rust",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-22T03:35:51Z",
+              "completed_at": "2026-10-22T03:36:03Z"
+            },
+            {
+              "name": "Fetch precisely locked build dependencies",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-22T03:36:03Z",
+              "completed_at": "2026-10-22T03:36:04Z"
+            },
+            {
+              "name": "Format",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-22T03:36:04Z",
+              "completed_at": "2026-10-22T03:36:05Z"
+            },
+            {
+              "name": "Lint",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-10-22T03:36:05Z",
+              "completed_at": "2026-10-22T03:36:08Z"
+            },
+            {
+              "name": "Tests and fixed input corpus",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-10-22T03:36:08Z",
+              "completed_at": "2026-10-22T03:36:17Z"
+            },
+            {
+              "name": "Documentation tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-22T03:36:17Z",
+              "completed_at": "2026-10-22T03:36:18Z"
+            },
+            {
+              "name": "Dependency, license and fixture audit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-22T03:36:18Z",
+              "completed_at": "2026-10-22T03:36:20Z"
+            },
+            {
+              "name": "Evaluation and artifact provenance tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-22T03:36:20Z",
+              "completed_at": "2026-10-22T03:36:21Z"
+            },
+            {
+              "name": "Benchmark smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-10-22T03:36:21Z",
+              "completed_at": "2026-10-22T03:36:31Z"
+            },
+            {
+              "name": "Algorithm baseline and ablation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-10-22T03:36:31Z",
+              "completed_at": "2026-10-22T03:36:36Z"
+            },
+            {
+              "name": "Full-coverage search differential smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-10-22T03:36:36Z",
+              "completed_at": "2026-10-22T03:36:42Z"
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15,
+              "started_at": "2026-10-22T03:36:42Z",
+              "completed_at": "2026-10-22T03:36:43Z"
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 29,
+              "started_at": "2026-10-22T03:36:43Z",
+              "completed_at": "2026-10-22T03:36:44Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 30,
+              "started_at": "2026-10-22T03:36:44Z",
+              "completed_at": "2026-10-22T03:36:46Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 31,
+              "started_at": "2026-10-22T03:36:46Z",
+              "completed_at": "2026-10-22T03:36:46Z"
+            }
+          ]
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 12400025069,
+          "name": "core-performance-ubuntu-latest",
+          "size_in_bytes": 37695,
+          "digest": "sha256:24600ba999b04dcef74071caca85929feb98eacdc598bb841fd817a6ccd1df9f",
+          "expired": false
+        },
+        {
+          "id": 12398904566,
+          "name": "core-performance-windows-latest",
+          "size_in_bytes": 29803,
+          "digest": "sha256:b6577d8bf0751a0ebd361b07ea1480ecf332443bebfdebc14a7f59c412d16913",
+          "expired": false
+        }
+      ]
+    },
+    {
+      "direction": "CL-009",
+      "run_id": 39734960161,
+      "head_sha": "a68e03846f3de133068bbb133c77afb9955f9590",
+      "url": "https://github.com/WanFengQC/Cloudleaf/actions/runs/39734960161",
+      "event": "pull_request",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 119678378713,
+          "name": "core (windows-latest)",
+          "conclusion": "success",
+          "started_at": "2026-10-22T06:36:08Z",
+          "completed_at": "2026-10-22T06:36:58Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-22T06:36:08Z",
+              "completed_at": "2026-10-22T06:36:09Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-22T06:36:09Z",
+              "completed_at": "2026-10-22T06:36:15Z"
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-22T06:36:15Z",
+              "completed_at": "2026-10-22T06:36:15Z"
+            },
+            {
+              "name": "Install pinned Rust",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-22T06:36:15Z",
+              "completed_at": "2026-10-22T06:36:27Z"
+            },
+            {
+              "name": "Fetch precisely locked build dependencies",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-22T06:36:27Z",
+              "completed_at": "2026-10-22T06:36:28Z"
+            },
+            {
+              "name": "Format",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-22T06:36:28Z",
+              "completed_at": "2026-10-22T06:36:29Z"
+            },
+            {
+              "name": "Lint",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-10-22T06:36:29Z",
+              "completed_at": "2026-10-22T06:36:32Z"
+            },
+            {
+              "name": "Tests and fixed input corpus",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-10-22T06:36:32Z",
+              "completed_at": "2026-10-22T06:36:37Z"
+            },
+            {
+              "name": "Documentation tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-22T06:36:37Z",
+              "completed_at": "2026-10-22T06:36:38Z"
+            },
+            {
+              "name": "Dependency, license and fixture audit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-22T06:36:38Z",
+              "completed_at": "2026-10-22T06:36:40Z"
+            },
+            {
+              "name": "Evaluation and artifact provenance tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-22T06:36:40Z",
+              "completed_at": "2026-10-22T06:36:43Z"
+            },
+            {
+              "name": "Benchmark smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-10-22T06:36:43Z",
+              "completed_at": "2026-10-22T06:36:49Z"
+            },
+            {
+              "name": "Algorithm baseline and ablation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-10-22T06:36:49Z",
+              "completed_at": "2026-10-22T06:36:53Z"
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-10-22T06:36:53Z",
+              "completed_at": "2026-10-22T06:36:55Z"
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 27,
+              "started_at": "2026-10-22T06:36:55Z",
+              "completed_at": "2026-10-22T06:36:55Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 28,
+              "started_at": "2026-10-22T06:36:55Z",
+              "completed_at": "2026-10-22T06:36:57Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 29,
+              "started_at": "2026-10-22T06:36:57Z",
+              "completed_at": "2026-10-22T06:36:57Z"
+            }
+          ]
+        },
+        {
+          "id": 119678378991,
+          "name": "core (ubuntu-latest)",
+          "conclusion": "success",
+          "started_at": "2026-10-22T06:36:07Z",
+          "completed_at": "2026-10-22T06:36:27Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-22T06:36:08Z",
+              "completed_at": "2026-10-22T06:36:09Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-22T06:36:09Z",
+              "completed_at": "2026-10-22T06:36:09Z"
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-22T06:36:09Z",
+              "completed_at": "2026-10-22T06:36:09Z"
+            },
+            {
+              "name": "Install pinned Rust",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-22T06:36:09Z",
+              "completed_at": "2026-10-22T06:36:16Z"
+            },
+            {
+              "name": "Fetch precisely locked build dependencies",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-22T06:36:16Z",
+              "completed_at": "2026-10-22T06:36:16Z"
+            },
+            {
+              "name": "Format",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-22T06:36:16Z",
+              "completed_at": "2026-10-22T06:36:16Z"
+            },
+            {
+              "name": "Lint",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-10-22T06:36:16Z",
+              "completed_at": "2026-10-22T06:36:17Z"
+            },
+            {
+              "name": "Tests and fixed input corpus",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-10-22T06:36:17Z",
+              "completed_at": "2026-10-22T06:36:18Z"
+            },
+            {
+              "name": "Documentation tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-22T06:36:18Z",
+              "completed_at": "2026-10-22T06:36:19Z"
+            },
+            {
+              "name": "Dependency, license and fixture audit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-22T06:36:19Z",
+              "completed_at": "2026-10-22T06:36:19Z"
+            },
+            {
+              "name": "Evaluation and artifact provenance tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-22T06:36:19Z",
+              "completed_at": "2026-10-22T06:36:19Z"
+            },
+            {
+              "name": "Benchmark smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-10-22T06:36:19Z",
+              "completed_at": "2026-10-22T06:36:22Z"
+            },
+            {
+              "name": "Algorithm baseline and ablation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-10-22T06:36:22Z",
+              "completed_at": "2026-10-22T06:36:25Z"
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-10-22T06:36:25Z",
+              "completed_at": "2026-10-22T06:36:26Z"
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 27,
+              "started_at": "2026-10-22T06:36:26Z",
+              "completed_at": "2026-10-22T06:36:26Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 28,
+              "started_at": "2026-10-22T06:36:26Z",
+              "completed_at": "2026-10-22T06:36:26Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 29,
+              "started_at": "2026-10-22T06:36:26Z",
+              "completed_at": "2026-10-22T06:36:26Z"
+            }
+          ]
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 12406865887,
+          "name": "core-performance-windows-latest",
+          "size_in_bytes": 16209,
+          "digest": "sha256:8ffd2ca949b790881594112f4a678feda4698ae2803dcee2f2f642f6b481874d",
+          "expired": false
+        },
+        {
+          "id": 12406657883,
+          "name": "core-performance-ubuntu-latest",
+          "size_in_bytes": 20718,
+          "digest": "sha256:ac123420127066f77a124d99481ece3bae4695d769bc7fbe9c99b6c11fe3a618",
+          "expired": false
+        }
+      ]
+    },
+    {
+      "direction": "CL-007",
+      "run_id": 39736023194,
+      "head_sha": "3579d2c576ed29285041128cd5cc0e0f90016859",
+      "url": "https://github.com/WanFengQC/Cloudleaf/actions/runs/39736023194",
+      "event": "pull_request",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 119681766260,
+          "name": "core (windows-latest)",
+          "conclusion": "success",
+          "started_at": "2026-10-22T06:46:08Z",
+          "completed_at": "2026-10-22T06:53:33Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-22T06:46:09Z",
+              "completed_at": "2026-10-22T06:46:10Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-22T06:46:10Z",
+              "completed_at": "2026-10-22T06:46:16Z"
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-22T06:46:16Z",
+              "completed_at": "2026-10-22T06:46:16Z"
+            },
+            {
+              "name": "Install pinned Rust",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-22T06:46:16Z",
+              "completed_at": "2026-10-22T06:46:29Z"
+            },
+            {
+              "name": "Fetch precisely locked build dependencies",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-22T06:46:29Z",
+              "completed_at": "2026-10-22T06:46:36Z"
+            },
+            {
+              "name": "Format",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-22T06:46:36Z",
+              "completed_at": "2026-10-22T06:46:37Z"
+            },
+            {
+              "name": "Lint",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-10-22T06:46:37Z",
+              "completed_at": "2026-10-22T06:46:57Z"
+            },
+            {
+              "name": "Tests and fixed input corpus",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-10-22T06:46:57Z",
+              "completed_at": "2026-10-22T06:47:18Z"
+            },
+            {
+              "name": "Documentation tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-22T06:47:18Z",
+              "completed_at": "2026-10-22T06:47:19Z"
+            },
+            {
+              "name": "Dependency, license and fixture audit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-22T06:47:19Z",
+              "completed_at": "2026-10-22T06:47:21Z"
+            },
+            {
+              "name": "Install pinned development vulnerability auditor",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-22T06:47:21Z",
+              "completed_at": "2026-10-22T06:53:11Z"
+            },
+            {
+              "name": "Exact Windows dependency licenses and RustSec audit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-10-22T06:53:11Z",
+              "completed_at": "2026-10-22T06:53:17Z"
+            },
+            {
+              "name": "Evaluation and artifact provenance tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-10-22T06:53:17Z",
+              "completed_at": "2026-10-22T06:53:18Z"
+            },
+            {
+              "name": "Benchmark smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-10-22T06:53:18Z",
+              "completed_at": "2026-10-22T06:53:24Z"
+            },
+            {
+              "name": "Algorithm baseline and ablation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15,
+              "started_at": "2026-10-22T06:53:24Z",
+              "completed_at": "2026-10-22T06:53:28Z"
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 16,
+              "started_at": "2026-10-22T06:53:28Z",
+              "completed_at": "2026-10-22T06:53:30Z"
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 31,
+              "started_at": "2026-10-22T06:53:30Z",
+              "completed_at": "2026-10-22T06:53:30Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 32,
+              "started_at": "2026-10-22T06:53:30Z",
+              "completed_at": "2026-10-22T06:53:32Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 33,
+              "started_at": "2026-10-22T06:53:32Z",
+              "completed_at": "2026-10-22T06:53:32Z"
+            }
+          ]
+        },
+        {
+          "id": 119681766561,
+          "name": "core (ubuntu-latest)",
+          "conclusion": "success",
+          "started_at": "2026-10-22T06:46:09Z",
+          "completed_at": "2026-10-22T06:50:02Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-22T06:46:10Z",
+              "completed_at": "2026-10-22T06:46:10Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-22T06:46:10Z",
+              "completed_at": "2026-10-22T06:46:11Z"
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-22T06:46:11Z",
+              "completed_at": "2026-10-22T06:46:12Z"
+            },
+            {
+              "name": "Install pinned Rust",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-22T06:46:12Z",
+              "completed_at": "2026-10-22T06:46:21Z"
+            },
+            {
+              "name": "Fetch precisely locked build dependencies",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-22T06:46:21Z",
+              "completed_at": "2026-10-22T06:46:22Z"
+            },
+            {
+              "name": "Format",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-22T06:46:22Z",
+              "completed_at": "2026-10-22T06:46:22Z"
+            },
+            {
+              "name": "Lint",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-10-22T06:46:22Z",
+              "completed_at": "2026-10-22T06:46:23Z"
+            },
+            {
+              "name": "Tests and fixed input corpus",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-10-22T06:46:23Z",
+              "completed_at": "2026-10-22T06:46:26Z"
+            },
+            {
+              "name": "Documentation tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-22T06:46:26Z",
+              "completed_at": "2026-10-22T06:46:26Z"
+            },
+            {
+              "name": "Dependency, license and fixture audit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-22T06:46:26Z",
+              "completed_at": "2026-10-22T06:46:26Z"
+            },
+            {
+              "name": "Install pinned development vulnerability auditor",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-22T06:46:26Z",
+              "completed_at": "2026-10-22T06:49:45Z"
+            },
+            {
+              "name": "Exact Windows dependency licenses and RustSec audit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-10-22T06:49:45Z",
+              "completed_at": "2026-10-22T06:49:49Z"
+            },
+            {
+              "name": "Evaluation and artifact provenance tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-10-22T06:49:49Z",
+              "completed_at": "2026-10-22T06:49:49Z"
+            },
+            {
+              "name": "Benchmark smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-10-22T06:49:49Z",
+              "completed_at": "2026-10-22T06:49:54Z"
+            },
+            {
+              "name": "Algorithm baseline and ablation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15,
+              "started_at": "2026-10-22T06:49:54Z",
+              "completed_at": "2026-10-22T06:49:58Z"
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 16,
+              "started_at": "2026-10-22T06:49:58Z",
+              "completed_at": "2026-10-22T06:49:59Z"
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 31,
+              "started_at": "2026-10-22T06:49:59Z",
+              "completed_at": "2026-10-22T06:50:00Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 32,
+              "started_at": "2026-10-22T06:50:00Z",
+              "completed_at": "2026-10-22T06:50:00Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 33,
+              "started_at": "2026-10-22T06:50:00Z",
+              "completed_at": "2026-10-22T06:50:00Z"
+            }
+          ]
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 12406982317,
+          "name": "core-performance-ubuntu-latest",
+          "size_in_bytes": 26105,
+          "digest": "sha256:a40a0abdf14f7bcd9e6f1b5c351cef852166622933a3b793a9df24d6f44d237b",
+          "expired": false
+        },
+        {
+          "id": 12406823144,
+          "name": "core-performance-windows-latest",
+          "size_in_bytes": 18392,
+          "digest": "sha256:270705f682b47fee8e2d6db1ddfe80d8c3c3da5b9107f7172d2628399801ec8d",
+          "expired": false
+        }
+      ]
+    }
+  ]
+}
