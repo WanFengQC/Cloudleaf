@@ -14,6 +14,19 @@ SPEC.loader.exec_module(BENCHMARK)
 
 
 class ArtifactTests(unittest.TestCase):
+    def test_adapter_changes_are_part_of_source_provenance(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            for name in ["Cargo.toml", "Cargo.lock", "rust-toolchain.toml"]:
+                (root / name).write_text("fixture\n", encoding="utf-8")
+            adapter = root / "adapters/windows/session.rs"
+            adapter.parent.mkdir(parents=True)
+            adapter.write_text("// 旧事务\n", encoding="utf-8")
+            with patch.object(BENCHMARK, "ROOT", root):
+                before = BENCHMARK.source_sha256()
+                adapter.write_text("// 新事务\n", encoding="utf-8")
+                self.assertNotEqual(before, BENCHMARK.source_sha256())
+
     def test_uses_only_actual_host_executable_in_custom_directory(self):
         with tempfile.TemporaryDirectory() as temporary:
             host = Path(temporary) / "custom-target" / "host.exe"

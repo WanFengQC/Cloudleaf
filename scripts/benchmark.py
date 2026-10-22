@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def source_sha256() -> str:
     # 源码尚未提交时也有可重复追溯的标识；排除 target/.git 与生成的报告。
     paths = [ROOT / "Cargo.toml", ROOT / "Cargo.lock", ROOT / "rust-toolchain.toml"]
-    for folder, pattern in [("crates", "*.rs"), ("crates", "Cargo.toml"),
+    for folder, pattern in [("crates", "*.rs"), ("adapters", "*.rs"), ("crates", "Cargo.toml"),
                             ("apps", "*.rs"), ("apps", "Cargo.toml"), ("tests", "*.py"), ("tests", "*.tsv"),
                             ("data", "*.tsv"), ("scripts", "*.py")]:
         paths.extend((ROOT / folder).rglob(pattern))
@@ -146,7 +146,7 @@ def run() -> None:
     result["git_head"] = subprocess.run(["git", "rev-parse", "--verify", "HEAD"], cwd=ROOT,
                                          capture_output=True, text=True, encoding="utf-8").stdout.strip() or None
     result["source_sha256"] = source_hash
-    result["source_fingerprint_schema"] = "cloudleaf-source-v2"
+    result["source_fingerprint_schema"] = "cloudleaf-source-v3"
     result["binary_sha256"] = hashlib.sha256(binary.read_bytes()).hexdigest()
     result["measured_at_utc"] = datetime.now(timezone.utc).isoformat()
     result["build_profile"] = "release"

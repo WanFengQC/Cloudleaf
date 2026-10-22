@@ -4,6 +4,8 @@
 
 当前边界：TSF、原生候选窗口、生产词库、整句候选/语言模型、纠错/学习和翻译尚未实现。64条手写词典及 CLI 演示不代表最终产品能力。最终50项可追踪能力见[产品范围](docs/product-scope.md)，近期CL-001..006状态见[执行记录](docs/cl001-cl006-progress.md)。
 
+CL-007 独立开发分支已加入 TSF 原生服务、候选 UI 和显式管理工具的部分实现，以及原生 COM 故障注入测试；尚未注册、激活或完成真实应用验收，不能作为可发布输入法使用。同步写锁按键路径、异步候选/清理路径及未完成项见[原生实现约定](docs/cl007-implementation.md)。
+
 ## 环境
 
 - Git。
@@ -31,6 +33,8 @@ cargo clippy --workspace --all-targets --locked --offline -- -D warnings
 cargo test --workspace --all-targets --locked --offline
 cargo test --workspace --doc --locked --offline
 python scripts/check_workspace.py
+cargo install cargo-audit --version 0.22.2 --locked
+python scripts/audit_windows_dependencies.py --output .local/windows-dependency-audit.json
 ```
 
 工具链首次安装需要下载。M1/M2核心没有外部 Rust 库依赖；后续平台分支通过精确审计政策登记依赖，首次locked fetch后离线构建和测试，核心输入始终离线运行。CI 对 Windows/Linux 执行同一套检查并上传报告；M1/M2检查点 `26b5e45` 已在两个平台真实通过，见[基线与CI记录](docs/reports/cl001-cl002-baseline.md)。原型本地数据见[历史验收报告](docs/reports/m1-m2-validation.md)。
