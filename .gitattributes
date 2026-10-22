@@ -10,4 +10,5 @@
 licenses/windows/* -text
 licenses/windows/manifest.json text eol=lf
 docs/reports/cl007/async-ownership/*.txt text eol=lf
-docs/reports/cl007/round3-recovery/*.txt text eol=lf
+# 原始 Cargo 输出保留行尾空格和末尾空行，代码文件仍执行默认空白检查。
+docs/reports/cl007/round3-recovery/*.txt text eol=lf whitespace=-blank-at-eol,-blank-at-eof
