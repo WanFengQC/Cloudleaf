@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "measured_at_utc": "2026-10-22T06:44:23.611302+00:00",
+  "git_head": "3a6696eb6efa85297c47c46732f03475c9715e75",
+  "source_fingerprint_schema": "cloudleaf-source-v3",
+  "source_sha256": "5c37626623ad0c448e2f9ddafd0b8b7ccc38732bfa5cc48810e5857c00e0a2dd",
+  "build_command": [
+    "cargo",
+    "test",
+    "-p",
+    "cloudleaf-windows-ime",
+    "--lib",
+    "--release",
+    "--locked",
+    "--offline",
+    "--no-run",
+    "--message-format=json"
+  ],
+  "run_command": [
+    "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\target\\release\\deps\\cloudleaf_windows_ime-8e239ad3ea4478ec.exe",
+    "simulated_com_diagnostic_benchmark",
+    "--ignored",
+    "--nocapture",
+    "--test-threads=1"
+  ],
+  "test_binary_sha256": "f85404b3e1c05004541c5e1c8e90eae1853bd910716400391fbf74f75e6b9059",
+  "test_binary_bytes": 1137152,
+  "results": [
+    {
+      "benchmark": "simulated-com-production-transaction",
+      "real_windows_application": false,
+      "production_tsf_performance": false,
+      "fixture": "prototype64/VT_EMPTY_scope/TS_E_NOLAYOUT",
+      "path": "keyedit",
+      "warmup": 100,
+      "samples": 1000,
+      "unit": "ns",
+      "p50": 19300,
+      "p95": 38000,
+      "p99": 61900,
+      "max": 378100
+    },
+    {
+      "benchmark": "simulated-com-production-transaction",
+      "real_windows_application": false,
+      "production_tsf_performance": false,
+      "fixture": "prototype64/VT_EMPTY_scope/TS_E_NOLAYOUT",
+      "path": "candidate_commit",
+      "warmup": 100,
+      "samples": 1000,
+      "unit": "ns",
+      "p50": 4900,
+      "p95": 8800,
+      "p99": 20100,
+      "max": 410400
+    }
+  ]
+}

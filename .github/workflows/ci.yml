@@ -35,6 +35,10 @@ jobs:
         run: cargo test --workspace --doc --locked --offline
       - name: Dependency, license and fixture audit
         run: python scripts/check_workspace.py
+      - name: Install pinned development vulnerability auditor
+        run: cargo install cargo-audit --version 0.22.2 --locked
+      - name: Exact Windows dependency licenses and RustSec audit
+        run: python scripts/audit_windows_dependencies.py --output .local/windows-dependency-audit.json
       - name: Evaluation and artifact provenance tests
         run: python -m unittest discover -s tests -p "test_*.py"
       - name: Benchmark smoke
@@ -47,3 +51,4 @@ jobs:
           path: |
             .local/m2-performance.json
             .local/algorithm-v1/
+            .local/windows-dependency-audit.json
