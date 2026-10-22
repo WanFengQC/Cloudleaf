@@ -100,8 +100,13 @@ def load_lock(path: Path) -> dict:
             raise ValueError("来源或许可标识错误")
     if not SHA256.fullmatch(lock["sha256"]) or not SHA256.fullmatch(lock["license_sha256"]):
         raise ValueError("必须先锁定原件与许可SHA-256")
-    if lock["format"] not in {"unihan-zip", "cedict-text"}:
+    if lock["format"] not in {"unihan-zip", "cedict-text", "wiktionary-zh-gzip", "wiktionary-zh-prefix-jsonl"}:
         raise ValueError("来源格式不支持")
+    if lock["format"] == "wiktionary-zh-prefix-jsonl" and (
+            lock.get("source_subset") is not True or lock.get("research_only") is not True
+            or lock.get("original_sha256") is not None or lock.get("full_gzip_crc_verified") is not False
+            or lock.get("full_source_download_complete") is not False):
+        raise ValueError("研究摘录必须明确不完整原件及未核验全件CRC")
     return lock
 
 
@@ -119,8 +124,9 @@ def fetch(lock_path: Path, output: Path) -> str:
     with urllib.request.urlopen(request, timeout=30) as response:
         if response.geturl() != lock["url"]:
             raise ValueError("来源发生重定向，需重新审核URL")
-        data = response.read(MAX_SOURCE + 1)
-    if len(data) > MAX_SOURCE or digest(data) != lock["sha256"]:
+        maximum = 512 * 1024 * 1024 if lock["format"].startswith("wiktionary-") else MAX_SOURCE
+        data = response.read(maximum + 1)
+    if len(data) > maximum or digest(data) != lock["sha256"]:
         raise ValueError("原件体积或哈希不匹配")
     # 排他写入，不替换不同原件。
     with output.open("xb") as stream:
@@ -255,11 +261,33 @@ def import_cedict(source: Path, lock: dict, audit: Audit) -> list[dict]:
     return records
 
 
+def runtime_annotation(record: dict) -> str:
+    """九列v2无语言标签，仅投影明确英语提示；中文释义留在事实层。"""
+    if record["schema_version"] == 3:
+        return "; ".join(dict.fromkeys(item["word"] for item in record["source_fields"]["english_translations"]))
+    return "; ".join(record["raw_senses"])
+
+
+def rejection_categories(rejections: list[dict]) -> dict:
+    """运行时能力、预算与许可隔离均不计为源坏记录。"""
+    reasons = Counter(row["reason"] for row in rejections)
+    unsupported = sum(reasons[reason] for reason in {"unsupported_reading", "unsupported_word_reading"})
+    ambiguous = reasons["ambiguous_or_unsupported_word_reading"]
+    budget = reasons["word_reading_budget"]
+    rights = sum(reasons[reason] for reason in {"unreviewed_additional_rights_marker", "rights_or_quotation_marker"})
+    result = {"unsupported_runtime_readings": unsupported,
+              "malformed_or_conflicting_records": len(rejections) - unsupported - ambiguous - budget - rights}
+    if ambiguous or budget or rights:
+        result.update({"ambiguous_runtime_readings": ambiguous, "runtime_budget_isolations": budget,
+                       "rights_or_quotation_isolations": rights})
+    return result
+
+
 def runtime(records: list[dict]) -> bytes:
     rows = ["# cloudleaf-lexicon-v2", HEADER]
     for record in records:
         # 长释义留在富记录；投影超长时明确不显示，不截断伪造完整释义。
-        annotation = "; ".join(record["raw_senses"])
+        annotation = runtime_annotation(record)
         annotation = annotation if len(annotation) <= 256 else ""
         fields = [record["id"], " ".join(record["pinyin"]), record["text"], "", "unknown", annotation,
                   record["source"], record["source_record_id"], record["license_id"]]
@@ -273,15 +301,24 @@ def build(lock_path: Path, source: Path, license_path: Path, output: Path) -> di
     lock = load_lock(lock_path)
     if output.exists():
         raise ValueError("输出目录已存在，拒绝覆盖")
-    if source.stat().st_size > MAX_SOURCE or digest(source.read_bytes()) != lock["sha256"]:
+    maximum = 512 * 1024 * 1024 if lock["format"].startswith("wiktionary-") else MAX_SOURCE
+    if source.stat().st_size > maximum or digest(source.read_bytes()) != lock["sha256"]:
         raise ValueError("原件体积或SHA-256不匹配")
     license_data = license_path.read_bytes()
     if digest(license_data) != lock["license_sha256"]:
         raise ValueError("许可证原文SHA-256不匹配")
     license_data.decode("utf-8")
     audit = Audit()
-    importer = import_unihan if lock["format"] == "unihan-zip" else import_cedict
+    if lock["format"].startswith("wiktionary-"):
+        from .word_source import import_words
+        importer = import_words
+    else:
+        importer = import_unihan if lock["format"] == "unihan-zip" else import_cedict
     raw_records = importer(source, lock, audit)
+    if lock["format"] == "wiktionary-zh-prefix-jsonl" and (
+            type(lock.get("line_count")) is not int or audit.counts["raw_lines"] != lock["line_count"]
+            or source.stat().st_size != lock.get("bytes")):
+        raise ValueError("研究摘录完整行数或字节锁不匹配")
     unique = {}
     for record in raw_records:
         key = record["id"]
@@ -299,15 +336,17 @@ def build(lock_path: Path, source: Path, license_path: Path, output: Path) -> di
         by_text[record["text"]].append(record["id"])
     audit.counts.update({"accepted_records": len(records), "distinct_texts": len(by_text),
                          "distinct_pinyin": len(by_pinyin), "missing_frequency": len(records),
-                         "missing_pos": len(records), "missing_english_gloss": sum(not row["raw_senses"] for row in records),
-                         "runtime_annotation_omitted_long": sum(len("; ".join(row["raw_senses"])) > 256 for row in records)})
-    audit.counts["unsupported_runtime_readings"] = sum(row["reason"] == "unsupported_reading" for row in audit.rejections)
-    audit.counts["malformed_or_conflicting_records"] = len(audit.rejections) - audit.counts["unsupported_runtime_readings"]
+                         "missing_pos": sum(row["pos"] is None for row in records),
+                         "missing_english_gloss": sum(not row["source_fields"]["english_translations"] if row["schema_version"] == 3
+                                                      else not row["raw_senses"] for row in records),
+                         "runtime_annotation_omitted_long": sum(len(runtime_annotation(row)) > 256 for row in records)})
+    audit.counts.update(rejection_categories(audit.rejections))
     quality = {"schema_version": 2, "source": lock["source_id"], "counts": dict(sorted(audit.counts.items())),
                "rejection_reasons": dict(sorted(Counter(row["reason"] for row in audit.rejections).items())),
                "scope": lock["limitations"], "evaluation": {"train": None, "dev": None, "heldout": None,
                "accuracy_claim": False, "reason": "来源数据完整性检查，不是独立语言评测"},
-               "source_conflicts": "Unihan重复属性冲突字符全部隔离，不择一覆盖"}
+               "source_conflicts": "Unihan重复属性冲突字符全部隔离，不择一覆盖" if lock["format"] == "unihan-zip"
+                                   else "词条保留来源字段差异；仅相同稳定ID合并行号证据"}
     output.parent.mkdir(parents=True, exist_ok=True)
     # 临时目录仅在指定输出的父目录内创建，失败不会改变已有release。
     with tempfile.TemporaryDirectory(prefix=".cloudleaf-build-", dir=output.parent) as temporary:
@@ -349,6 +388,10 @@ def safe_child(root: Path, name: str) -> Path:
 
 def validate_record(record: dict, lock: dict) -> None:
     """校验事实层语义，不能以重新生成哈希绕过格式/来源约束。"""
+    if lock["format"].startswith("wiktionary-"):
+        from .word_source import validate_word_record
+        validate_word_record(record, lock)
+        return
     common = {"schema_version", "id", "text", "pinyin", "raw_reading", "raw_senses", "pos", "frequency",
               "frequency_kind", "source", "source_version", "source_record_id", "license_id", "evidence"}
     extra = {"reading_preference", "raw_properties"} if lock["format"] == "unihan-zip" else {"traditional", "simplified"}
@@ -438,8 +481,10 @@ def verify_release(root: Path) -> dict:
             or set(manifest["resources"]) != required
             or {path.name for path in root.iterdir()} != required | {"manifest.json"}):
         raise ValueError("release版本、资源清单或未知文件不匹配")
-    if (sum(row["bytes"] for row in manifest["resources"].values()) > MAX_RELEASE
-            or any(type(row["bytes"]) is not int or not 0 <= row["bytes"] <= MAX_EXPANDED
+    word_source = manifest.get("source", {}).get("format", "").startswith("wiktionary-")
+    release_limit, resource_limit = (1024 * 1024 * 1024, 512 * 1024 * 1024) if word_source else (MAX_RELEASE, MAX_EXPANDED)
+    if (sum(row["bytes"] for row in manifest["resources"].values()) > release_limit
+            or any(type(row["bytes"]) is not int or not 0 <= row["bytes"] <= resource_limit
                    or not isinstance(row["sha256"], str) or not SHA256.fullmatch(row["sha256"])
                    for row in manifest["resources"].values())):
         raise ValueError("release资源体积或哈希格式超限")
@@ -468,7 +513,7 @@ def verify_release(root: Path) -> dict:
         if record["id"] in ids or record["source"] != lock["source_id"] or record["license_id"] != lock["license_id"]:
             raise ValueError("重复ID或来源许可映射错误")
         ids.add(record["id"])
-        if record["frequency"] is not None or record["frequency_kind"] != "unknown" or record["pos"] is not None:
+        if record["frequency"] is not None or record["frequency_kind"] != "unknown" or (not word_source and record["pos"] is not None):
             raise ValueError("本轮来源不能生成词频或词性")
         if not record["pinyin"] or any(value not in SYLLABLES for value in record["pinyin"]):
             raise ValueError("拼音音节错误")
@@ -500,14 +545,13 @@ def verify_release(root: Path) -> dict:
     if any(type(value) is not int or value < 0 for value in [*quality["counts"].values(), *quality["rejection_reasons"].values()]):
         raise ValueError("质量报告计数必须是非负整数")
     reasons = dict(Counter(row["reason"] for row in rejected))
-    unsupported = reasons.get("unsupported_reading", 0)
     derived = {"accepted_records": len(records), "distinct_texts": len(expected_text),
                "distinct_pinyin": len(expected_pinyin), "missing_frequency": sum(row["frequency"] is None for row in records),
                "missing_pos": sum(row["pos"] is None for row in records),
-               "missing_english_gloss": sum(not row["raw_senses"] for row in records),
-               "runtime_annotation_omitted_long": sum(len("; ".join(row["raw_senses"])) > 256 for row in records),
-               "rejected_records": len(rejected), "unsupported_runtime_readings": unsupported,
-               "malformed_or_conflicting_records": len(rejected) - unsupported}
+               "missing_english_gloss": sum(not row["source_fields"]["english_translations"] if row["schema_version"] == 3
+                                             else not row["raw_senses"] for row in records),
+               "runtime_annotation_omitted_long": sum(len(runtime_annotation(row)) > 256 for row in records),
+               "rejected_records": len(rejected), **rejection_categories(rejected)}
     # 原始行数、源属性重复/冲突等依赖原件；这里只证明事实与拒绝报告能够独立推导的统计。
     if (type(manifest["rejected_count"]) is not int or manifest["rejected_count"] != len(rejected)
             or quality["rejection_reasons"] != reasons
@@ -518,19 +562,21 @@ def verify_release(root: Path) -> dict:
 
 @contextmanager
 def publish_lock(store: Path):
-    store.mkdir(parents=True, exist_ok=True)
-    path = store / ".writer.lock"
-    try:
-        stream = path.open("x", encoding="utf-8")
-    except FileExistsError as error:
-        raise ValueError("已有发布写者；崩溃遗留锁需人工确认后移除") from error
-    try:
-        with stream:
-            stream.write(str(os.getpid()))
-            stream.flush()
-        yield
-    finally:
-        path.unlink()
+    from .recovery import process_identity, store_guard
+    with store_guard(store):
+        path = store / ".writer.lock"
+        try:
+            stream = path.open("x", encoding="utf-8")
+        except FileExistsError as error:
+            raise ValueError("已有发布写者；遗留owner锁需显式恢复") from error
+        try:
+            with stream:
+                stream.write(canonical({"schema_version": 1, "owner_pid": os.getpid(),
+                                        "owner_start": process_identity(os.getpid())["start"]}).decode("utf-8"))
+                stream.flush()
+            yield
+        finally:
+            path.unlink()
 
 
 def atomic_json(path: Path, value: dict) -> None:

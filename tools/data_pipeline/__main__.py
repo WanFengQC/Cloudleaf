@@ -89,6 +89,19 @@ def main() -> None:
     bench.add_argument("release", type=Path)
     bench.add_argument("--iterations", type=int, default=10000)
     bench.add_argument("--output", type=Path, required=True)
+    readings = commands.add_parser("audit-readings")
+    readings.add_argument("--lock", type=Path, required=True)
+    readings.add_argument("--source", type=Path, required=True)
+    readings.add_argument("--output", type=Path, required=True)
+    recover = commands.add_parser("recover")
+    recover.add_argument("--store", type=Path, required=True)
+    recover.add_argument("--owner-pid", type=int, required=True)
+    recover.add_argument("--rollback", action="store_true")
+    excerpt = commands.add_parser("extract-prefix")
+    excerpt.add_argument("--prefix", type=Path, required=True)
+    excerpt.add_argument("--sha256", required=True)
+    excerpt.add_argument("--output", type=Path, required=True)
+    excerpt.add_argument("--metadata", type=Path, required=True)
     args = parser.parse_args()
     if args.command == "fetch":
         print(fetch(args.lock, args.output))
@@ -106,6 +119,21 @@ def main() -> None:
         print(json.dumps(activate(args.release, args.store)))
     elif args.command == "rollback":
         print(json.dumps(rollback(args.store)))
+    elif args.command == "audit-readings":
+        from .reading_audit import audit_readings
+        result = audit_readings(args.lock, args.source)
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        write_json(args.output, result)
+        print(json.dumps({"readings": result["reading_count"], "classification": result["classifications"]}))
+    elif args.command == "recover":
+        from .recovery import recover_store
+        print(json.dumps(recover_store(args.store, args.owner_pid, rollback=args.rollback), ensure_ascii=False))
+    elif args.command == "extract-prefix":
+        from .prefix_snapshot import extract_prefix
+        result = extract_prefix(args.prefix, args.sha256, args.output)
+        args.metadata.parent.mkdir(parents=True, exist_ok=True)
+        write_json(args.metadata, result)
+        print(json.dumps(result, ensure_ascii=False))
     else:
         if args.iterations < 1:
             raise ValueError("iterations必须为正")

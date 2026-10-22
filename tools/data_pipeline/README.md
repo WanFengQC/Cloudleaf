@@ -17,7 +17,7 @@ python -m unittest discover -s tests -p test_data_pipeline.py -v
 
 `build`纯离线，拒绝已有输出目录，不改变任何历史release。对两次输出的全部文件逐字节比较，而不是只看词条数。不同Python内置Unicode规范化版本会写入manifest；同版本、同source-lock和参数才能要求完整manifest逐字节一致。
 
-每个release含：完整`records.jsonl`事实、`runtime.tsv`投影、拼音/文字`index.json`、质量`quality.json`、完整拒绝位置`rejected.jsonl`、`source-lock.json`、`NOTICE.txt`、`LICENSE.txt`和SHA-256资源`manifest.json`。unknown频率保持null/空，词性保持null。合法源中当前音节表无法表达的读音单列`unsupported_runtime_readings`，不能称作源数据错误；`malformed_or_conflicting_records`另报。
+每个release含：完整`records.jsonl`事实、`runtime.tsv`投影、拼音/文字`index.json`、质量`quality.json`、完整拒绝位置`rejected.jsonl`、`source-lock.json`、`NOTICE.txt`、`LICENSE.txt`和SHA-256资源`manifest.json`。unknown频率保持null/空；Unihan词性保持null，词条schema3仅保留来源明确的POS。合法源中当前音节表无法表达的读音单列`unsupported_runtime_readings`，歧义、运行时预算和许可/引用待审分别统计，均不算源坏行；`malformed_or_conflicting_records`另报。
 
 原始英文释义不切成推测义项；Unihan的整个kDefinition保留一个原始字符串。超过256字符的运行时注释为空，完整内容留在事实层，质量报告登记数量。字符常用读音与英文字符释义不代表完整多音字、词短语、中英双向或现代词频。
 
@@ -31,7 +31,25 @@ python -m tools.data_pipeline activate <下一版已校验release> --store .loca
 python -m tools.data_pipeline rollback --store .local/data-store
 ```
 
-先校验所有资源及事实/投影/索引的语义关系，复制到按manifest哈希命名的不可变目录，再原子替换`current.json`，上一版保留。相同release重复激活不会抹掉上一版；回退目标损坏、指针越界、版本不兼容或写入失败都保持原指针。排他`.writer.lock`拒绝并发写者；进程异常留下锁时，人工确认没有运行写者后移除。工具只写自己的release目录和指针，不迁移或删除用户词典。
+先校验所有资源及事实/投影/索引的语义关系，复制到按manifest哈希命名的不可变目录，再原子替换`current.json`，上一版保留。相同release重复激活不会抹掉上一版；回退目标损坏、指针越界、版本不兼容或写入失败都保持原指针。`.writer.guard`使用操作系统排他锁，退出自动释放；`.writer.lock`记录owner PID和启动标识，崩溃遗留时必须显式恢复。工具只写自己的release目录和指针，不迁移或删除用户词典。
+
+```text
+python -m tools.data_pipeline recover --store .local/data-store --owner-pid <已中断写者PID>
+python -m tools.data_pipeline recover --store .local/data-store --owner-pid <已中断写者PID> --rollback
+```
+
+恢复只接受已确认退出的owner；活进程、PID复用或权限/状态不明均拒绝。Windows使用只读进程句柄查询，绝不用`os.kill(pid,0)`模拟POSIX探测。先检查指针及所有孤儿安全，再将固定`.publish-*`、`current.tmp`及owner锁移到`.recovered-*`隔离目录；不自动选择新版本，不删除缓存和用户词典。`--rollback`显式切回已校验previous。实际子进程退出/终止测试不代表物理断电持久性。
+
+## 固定真实词条研究摘录
+
+完整Kaikki raw gzip原件提前断流，尚无全件SHA/CRC。`wiktionary-zh-prefix-jsonl`独立格式只用于固定前8MiB中的完整JSONL行，不放宽完整gzip门禁；来源锁的`source_subset/research_only`为true，不能当完整dump或正式词库。
+
+```text
+python -m tools.data_pipeline extract-prefix --prefix .local/data-sources/zhwiktionary-prefix-8388608.gz.partial --sha256 fdf3ae6918edb0e6af91cad20dfb51a2ecad8ce59ab026b4ab4e1e7f33581518 --output .local/data-sources/replayed-prefix.jsonl --metadata .local/data-sources/replayed-prefix.json
+python -m tools.data_pipeline build --lock data/sources/locks/wiktionary-zh-20261001-prefix8388608.json --source .local/data-sources/replayed-prefix.jsonl --license data/licenses/CC-BY-SA-4.0.txt --output .local/wiktionary-replay
+```
+
+schema3保留中文gloss、原POS和明确英文翻译；九列v2 annotation仅投影英文翻译的word，缺英文为空。稳定`source_record_id`在`records.jsonl`映射`attribution_url`与源行SHA；消费者展示或派生报告须保留逐页署名/许可链。仅选择原词头，不自动简繁互转或用单字拼出词语读音。全部频率/频率观测仍null/unknown。媒体、引用实例不输出，可得额外权利标记记录隔离；逐页许可例外未全部人工复核，限制随来源锁保留。派生文本CC-BY-SA4与MIT工具代码分开。
 
 这里的hash保证固定原件和内容完整性，不是发布者签名。`review_status=approved`是可信来源锁的人工审核结论，不会从任意自包含release获得真实授权。导入外部锁/派生包前必须核对可信Git来源、许可原文及hash；正式安装器的签名、断电持久性、跨版本用户词典迁移仍未交付。
 

@@ -18,3 +18,5 @@ M1/M2 使用 Rust 1.90.0 标准库及 workspace 内部 crate，没有 crates.io�
 资源登记模板：名称、类别（代码/词典/语料/模型/字体/素材）、准确版本、上游 URL、取得日期、SHA-256、SPDX/授权文件、署名、修改内容、可分发范围、审查人及审查结果。不得把第三方数据改标为项目自编数据。
 
 Unihan原件SHA-256为`f7a48b2b545acfaa77b2d607ae28747404ce02baefee16396c5d2d7a8ef34b5e`，许可原文SHA-256为`e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96`。来源锁位于`data/sources/locks/unihan-17.0.0.json`。修改仅为目标属性提取、原始证据保存、运行时去调规范化与索引；不推测词频/词性。Unicode许可仍为Unicode-3.0，不受项目MIT重新授权。项目编写的来源审查事实清单及导入工具采用MIT，各自许可证明确分开。详见[CL-009设计](docs/cl009-design.md)与[管线操作](tools/data_pipeline/README.md)。
+
+本轮新增Kaikki发布者自身的zhwiktionary raw固定前8MiB真实文本摘录（dump2026-10-01/extracted2026-10-20），范围及SHA见`data/sources/locks/wiktionary-zh-20261001-prefix8388608.json`。完整gzip提前断流，未标全件完成或CRC通过。中文Wiktionary contributors按逐词条`attribution_url`链接署名，Kaikki/Wiktextract提取链保留；文本按CC-BY-SA4修改/分发并保留许可及修改说明，完整原文见`data/licenses/CC-BY-SA-4.0.txt`（SHA `28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5`）。媒体/引用实例不输出，可得额外权利标记隔离，逐页导入署名与fair-use例外未全部人工核清，不宣称绝无例外；仅供资源和一致性研究，非正式词库/语言质量验收。项目工具MIT不重新授权该文本。Google Books及Leipzig词频仅登记候选/阻塞，未下载或当作正式词频。
