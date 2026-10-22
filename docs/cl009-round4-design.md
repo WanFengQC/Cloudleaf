@@ -25,3 +25,9 @@
 对固定完整包使用已提交源码归档、新无pip venv和独立进程两次离线build/verify，全部九资源逐字节一致，记录源码/二进制/数据/许可摘要与时间/内存；保留失败。真实升级/回退/损坏拒绝及七个进程中断点用新完整包复测，用户词典探针哈希不变，物理断电仍不声称已测。README全检查与旧核心性能对照继续保留，不删除原测试。稳定产物runtime/source-lock/license/manifest与边界先交B，再收尾报告。
 
 若来源审查导向不同格式（例如DF观测侧包或完整Wiktionary），须先追加明确的格式/许可/验证设计；不把本设计当任意外部数据的批准。正式数据采用与语言质量验收仍分别记录。
+
+## 固定授权分发镜像补充（先设计后实现）
+
+MDBG footer未明确给脚本取得bulk例外；robots Allow不能取代授权，因此不从受禁站自动取得。另审查`poliwhirl555/cc-canto-cedict-jsons`的固定commit `7019e1c3ec3de3a44b165b15177ce2bb39a026d3`：README明确为程序使用提供带日期原始ZIP；LICENSE.md明确CC-CEDICT原件和JSON为CC BY-SA4，并列MDBG及原贡献者，镜像作者Lester Lin另署名。该分发许可与原CC BY-SA4再分发权相容，不取镜像的解析器、算法、JSON派生、CC-Canto或其他代码。
+
+只选择该commit公开的`cedict_1_0_ts_utf-8_mdbg_2026-06-04_21:48_GMT.zip`完整原始ZIP。取得方式为GitHub公开固定文件，不请求MDBG查询/导出API，也不宣称镜像等于发布者签名。新增`cedict-zip-v1`对应容器（不是把ZIP冒充gzip），只接受单个普通`cedict_ts.u8`成员，拒绝路径/重复成员/链接/加密及展开超限；全件ZIP CRC验证、保留完整头部许可和版本/条数核对。其余稳定ID、字段、隔离和九文件验证沿用前文新格式契约。若归档实际头部与所审授权不一致，拒绝采用。
