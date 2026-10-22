@@ -93,6 +93,9 @@ def select_fields(row: dict) -> dict:
 def import_words(source: Path, lock: dict, audit) -> list[dict]:
     records = []
     expanded = 0
+    member = lock.get("source_member", "wiktionary-source.jsonl")
+    if not isinstance(member, str) or not clean_field(member) or Path(member).name != member or any(char in member for char in "/\\:"):
+        raise ValueError("来源逻辑文件名无效")
     opener = source.open if lock["format"] == "wiktionary-zh-prefix-jsonl" else lambda mode: gzip.open(source, mode)
     with opener("rb") as stream:
         while raw := stream.readline(MAX_WORD_LINE + 1):
@@ -113,10 +116,10 @@ def import_words(source: Path, lock: dict, audit) -> list[dict]:
             try:
                 fields = select_fields(row)
             except ValueError as error:
-                audit.reject(str(error), source.name, line, word)
+                audit.reject(str(error), member, line, word)
                 continue
             if fields["rights_markers"]:
-                audit.reject("unreviewed_additional_rights_marker", source.name, line, canonical(fields["rights_markers"]).decode("utf-8").strip())
+                audit.reject("unreviewed_additional_rights_marker", member, line, canonical(fields["rights_markers"]).decode("utf-8").strip())
                 continue
             sounds = fields["mandarin_pinyin"]
             if not sounds:
@@ -128,7 +131,7 @@ def import_words(source: Path, lock: dict, audit) -> list[dict]:
                     pinyin = normalize_word_reading(reading)
                     key = "wiki:" + digest(canonical([word, fields, reading]))[:32]
                     record = make_record(lock, key, word, pinyin, reading, glosses,
-                                         [{"member": source.name, "line": line, "raw": reading, "raw_record_sha256": digest(raw)}],
+                                         [{"member": member, "line": line, "raw": reading, "raw_record_sha256": digest(raw)}],
                                          gloss_language="zh", source_fields=fields, source_record_sha256=digest(raw),
                                          attribution_url="https://zh.wiktionary.org/wiki/" + quote(word, safe=""),
                                          frequency_observation=None)
@@ -136,7 +139,7 @@ def import_words(source: Path, lock: dict, audit) -> list[dict]:
                     record["pos"] = fields["pos"]
                     records.append(record)
                 except ValueError as error:
-                    audit.reject(str(error), source.name, line, word + "\t" + reading)
+                    audit.reject(str(error), member, line, word + "\t" + reading)
     audit.counts["expanded_source_bytes"] = expanded
     return records
 
@@ -202,6 +205,7 @@ def validate_word_record(record: dict, lock: dict) -> None:
         if (set(evidence) != {"member", "line", "raw", "raw_record_sha256"} or evidence["raw"] != record["raw_reading"]
                 or type(evidence["line"]) is not int or not 1 <= evidence["line"] <= 0xFFFFFFFF
                 or not isinstance(evidence["member"], str) or Path(evidence["member"]).name != evidence["member"]
+                or evidence["member"] != lock.get("source_member", "wiktionary-source.jsonl")
                 or any(char in evidence["member"] for char in "/\\:")
                 or not isinstance(evidence["raw_record_sha256"], str) or not re.fullmatch("[a-f0-9]{64}", evidence["raw_record_sha256"])):
             raise ValueError("词条行号证据错误")

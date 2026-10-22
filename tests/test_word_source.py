@@ -50,6 +50,12 @@ class WordSourceTests(unittest.TestCase):
             self.assertEqual(record["source_fields"]["english_translations"][0]["word"], "homepage")
             self.assertNotIn("examples", record["source_fields"]["senses"][0])
             self.assertEqual(read_json(output / "quality.json")["counts"]["missing_english_gloss"], 0)
+            renamed = root / "another-local-name.gz"
+            renamed.write_bytes(source.read_bytes())
+            second = root / "another-release"
+            build(lock, renamed, license_path, second)
+            self.assertEqual({p.name: p.read_bytes() for p in output.iterdir()},
+                             {p.name: p.read_bytes() for p in second.iterdir()})
             projection = (output / "runtime.tsv").read_text(encoding="utf-8").splitlines()[2].split("\t")
             self.assertEqual(projection[5], "homepage")
             self.assertNotIn("網站的主要頁面", projection[5])
