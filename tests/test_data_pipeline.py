@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import shutil
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -253,6 +254,32 @@ class PipelineTests(unittest.TestCase):
         atomic_json(store / "current.json", {"schema_version": 1, "current": {"release": "../outside", "manifest_sha256": "a"}, "previous": None})
         with self.assertRaisesRegex(ValueError, "越界"):
             activate(output, store)
+
+    def test_wrong_complete_cached_or_copied_release_cannot_publish_invalid_pointer(self) -> None:
+        self.prepare("U+4E00\tkMandarin\tyī\n")
+        first = self.create("first")
+        self.prepare("U+4E8C\tkMandarin\tèr\n")
+        second = self.create("second")
+        first_hash = digest((first / "manifest.json").read_bytes())
+        store = self.root / "cached-store"
+        target = store / "releases" / first_hash
+        target.parent.mkdir(parents=True)
+        shutil.copytree(second, target)
+        # 缓存中的另一份包内部完全有效，仍不得以首包哈希发布指针。
+        with self.assertRaisesRegex(ValueError, "请求哈希"):
+            activate(first, store)
+        self.assertFalse((store / "current.json").exists())
+
+        raced_store = self.root / "raced-store"
+        copytree = shutil.copytree
+        # 模拟验证后来源被更换，复制得到另一份完整有效包。
+        def copy_replaced_source(source, destination):
+            return copytree(second, destination)
+        with patch("tools.data_pipeline.pipeline.shutil.copytree", side_effect=copy_replaced_source):
+            with self.assertRaisesRegex(ValueError, "请求哈希"):
+                activate(first, raced_store)
+        self.assertFalse((raced_store / "current.json").exists())
+        self.assertFalse((raced_store / "releases" / first_hash).exists())
 
 
 if __name__ == "__main__":

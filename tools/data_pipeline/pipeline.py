@@ -539,8 +539,12 @@ def activate(release: Path, store: Path) -> dict:
                 staging = Path(temporary) / "release"
                 shutil.copytree(release, staging)
                 verify_release(staging)
+                if digest((staging / "manifest.json").read_bytes()) != release_hash:
+                    raise ValueError("复制的发布包清单与请求哈希不一致")
                 staging.rename(target)
         verify_release(target)
+        if digest((target / "manifest.json").read_bytes()) != release_hash:
+            raise ValueError("缓存发布包清单与请求哈希不一致")
         pointer = {"release": release_hash, "manifest_sha256": release_hash}
         if current and current["current"] == pointer:
             return current
