@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "measured_at_utc": "2026-10-22T15:10:55.934475+00:00",
+  "git_head": "ca8e200389c350f55d42bd3250b140c3687e7993",
+  "source_fingerprint_schema": "cloudleaf-source-v3",
+  "source_sha256": "2aaf0b8f08ea77ad3e42fbdb00617cb7e9b8ebc6600fc3b1e75e77aac9d63492",
+  "toolchain": "Rust 1.90.0 / Edition 2024",
+  "text_artifact_line_endings": "LF; normalized before hashing to match Git text checkout",
+  "environment": {
+    "os": "Windows-11-10.0.26300-SP0",
+    "machine": "AMD64",
+    "cpu": "11th Gen Intel(R) Core(TM) i5-11400 @ 2.60GHz",
+    "logical_cpus": 12,
+    "physical_memory_bytes": 34110734336
+  },
+  "checks": {
+    "workspace_rust_passed": 126,
+    "windows_native_passed": 66,
+    "failed": 0,
+    "explicit_ignored": 2,
+    "python_passed": 16,
+    "fmt": true,
+    "clippy_deny_warnings": true,
+    "doc_tests": true,
+    "locked_offline_debug_build": true,
+    "locked_offline_release_build": true,
+    "resource_audit": true,
+    "rustsec_audit": true
+  },
+  "artifacts": [
+    {
+      "path": "target\\release\\cloudleaf_windows_ime.dll",
+      "bytes": 520192,
+      "sha256": "5e7bfdcffe353af19dc887ade0ee39bebc524b5a119f4080bedce8f0ac6c999f"
+    },
+    {
+      "path": "target\\release\\deps\\cloudleaf_windows_ime-bc46e0fa3eb0a77d.exe",
+      "bytes": 1448960,
+      "sha256": "f22ce2fe7dfd5e093dbc5e6f826ef58d55ff2f6ddc5a66e5baa62a4c3f918785"
+    }
+  ],
+  "loader": {
+    "diagnostic": "real_dll_fake_manager_lifecycle",
+    "iterations": 20,
+    "warmup": 1,
+    "baseline_handles": 149,
+    "final_handles": 149,
+    "registered": false,
+    "real_application_acceptance": false
+  },
+  "simulated_com": [
+    {
+      "benchmark": "simulated-com-production-transaction",
+      "real_windows_application": false,
+      "production_tsf_performance": false,
+      "fixture": "prototype64/VT_EMPTY_scope/TS_E_NOLAYOUT",
+      "path": "keyedit",
+      "warmup": 100,
+      "samples": 1000,
+      "unit": "ns",
+      "p50": 22200,
+      "p95": 40600,
+      "p99": 49900,
+      "max": 307400
+    },
+    {
+      "benchmark": "simulated-com-production-transaction",
+      "real_windows_application": false,
+      "production_tsf_performance": false,
+      "fixture": "prototype64/VT_EMPTY_scope/TS_E_NOLAYOUT",
+      "path": "candidate_commit",
+      "warmup": 100,
+      "samples": 1000,
+      "unit": "ns",
+      "p50": 13700,
+      "p95": 30100,
+      "p99": 44300,
+      "max": 73500
+    }
+  ],
+  "registration_executed": false,
+  "system_profile_activated": false,
+  "real_application_acceptance": false,
+  "a1_a4_exit_conditions_complete": false,
+  "limitations": [
+    "COM 故障宿主与自己创建的 Win32 控件不是系统 TSF 真实应用验收",
+    "STA 被阻塞时独立检测完成，不等于宿主已经恢复",
+    "持续通知失败仅保留原子故障，四次后等待下一 STA 入口",
+    "外部销毁恢复窗口后的可达性及跨线程 DllCanUnloadNow 的 STA 清理未覆盖",
+    "有未放弃恢复材料或未退出后台线程时保留模块，不报告退出完成",
+    "未验证长时间压力、x86/ARM64、安装/升级/签名和所有真实宿主行为",
+    "小原型和模拟 COM 分位数不描述正式数据或真实 Windows 输入延迟"
+  ]
+}
