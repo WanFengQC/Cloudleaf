@@ -18,6 +18,8 @@ ExactDag等价的边界：同一`(位置,最后词条)`状态的未来加分相�
 
 [机器可读检查证据](cl008-checks.json)记录执行命令、返回码、源码指纹和输出。独立release实验：
 
+Windows/Linux CI另运行每例10次、预热2次的同一差分门禁并上传JSON；它是持续回归smoke，不替代本地100轮测量，也不提供正式准确率证据。
+
 ```text
 python scripts/evaluate_search.py --iterations 100 --warmup 10 --output .local/cl008-search.json
 ```
