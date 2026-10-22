@@ -1,10 +1,33 @@
 {
   "schema_version": 1,
-  "workspace_packages": ["cloudleaf-search"],
+  "workspace_packages": [
+    "cloudleaf-search"
+  ],
   "external_packages": [],
   "resources": [
-    {"path": "tests/search-mechanics-v1/lexicon.tsv", "source": "cloudleaf:search-mechanics-v1", "license": "MIT", "license_file": "LICENSE"},
-    {"path": "tests/search-mechanics-v1/train.tsv", "source": "cloudleaf:search-mechanics-v1", "license": "MIT", "license_file": "LICENSE"},
-    {"path": "tests/search-mechanics-v1/cases.tsv", "source": "cloudleaf:search-mechanics-v1", "license": "MIT", "license_file": "LICENSE"}
+    {
+      "path": "tests/search-mechanics-v1/lexicon.tsv",
+      "source": "cloudleaf:search-mechanics-v1",
+      "license": "MIT",
+      "license_file": "LICENSE"
+    },
+    {
+      "path": "tests/search-mechanics-v1/train.tsv",
+      "source": "cloudleaf:search-mechanics-v1",
+      "license": "MIT",
+      "license_file": "LICENSE"
+    },
+    {
+      "path": "tests/search-mechanics-v1/cases.tsv",
+      "source": "cloudleaf:search-mechanics-v1",
+      "license": "MIT",
+      "license_file": "LICENSE"
+    },
+    {
+      "path": "tests/search-resources-v1/cases.tsv",
+      "source": "cloudleaf:search-resource-probes-v1",
+      "license": "MIT",
+      "license_file": "LICENSE"
+    }
   ]
 }

@@ -72,6 +72,16 @@ python scripts/evaluate_search.py --iterations 100 --warmup 10 --output .local/c
 
 该实验使用[机械资源](tests/search-mechanics-v1/README.md)，明确`language_accuracy_valid=false`；不输出正式输入法准确率。[实施状态与风险](docs/reports/cl008-progress.md)、[逐例对照和性能](docs/reports/cl008-search-mechanics-v1.json)及[真实v2数据只读载入](docs/reports/cl008-unihan-v2-load.json)分别记录证据和限制。原64/41/83条资源及其回归测试继续保留。
 
+真实授权词条另走[预登记资源实验](docs/cl008-real-resource-protocol.md)，不混用机械语言模型，也不生成字典自派生gold：
+
+```text
+python scripts/evaluate_real_lexicon.py --evidence <数据审核证据JSON> --iterations 30 --warmup 5 --output .local/real-lexicon-search.json
+```
+
+证据JSON要求`schema_version=1`、`dataset_id`、`real_data=true`，`runtime`与`build_report`均含`path/sha256`；每个`sources`项含`id/version/url/license_id/review_status=approved/synthetic=false`，以及`license`和`audit`的`path/sha256`。相对路径以证据文件目录为基准。工具逐记录核对来源/许可和unknown空频率，核对的只是批准材料一致性，来源许可仍需C独立审核。正文候选继承其数据许可，不能按项目MIT重新发布。
+
+输出包括完整词典冷载入、Reference/ExactDag/Beam1/8/64及三类收紧预算、全部探针的候选路径/来源/许可、采集顺序的延迟样本、独立进程峰值及新增/丢失/名次变化。没有独立语料时Top-1/Top-5/MRR为null；未完整Reference或截断整词边不被用作无损/覆盖收益证明。新工具的真实Rust进程自测随Python测试运行，使用另标的临时机械fixture。
+
 ## 模块
 
 | crate | 职责 |
