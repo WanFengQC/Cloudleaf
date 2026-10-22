@@ -86,7 +86,7 @@ impl Lexicon {
                 "词典装载预算无效",
             ));
         }
-        if text.len() > limits.max_bytes || text.starts_with('\u{feff}') || text.contains('\r') {
+        if text.len() > limits.max_bytes || text.starts_with('\u{feff}') {
             return Err(invalid());
         }
         let mut lines = text.lines();
@@ -95,6 +95,9 @@ impl Lexicon {
             Some("# cloudleaf-dictionary-v1") => false,
             _ => return Err(invalid()),
         };
+        if v2 && text.contains('\r') {
+            return Err(invalid());
+        }
         let expected = if v2 {
             "id\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id"
         } else {

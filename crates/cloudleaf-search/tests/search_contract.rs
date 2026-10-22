@@ -48,6 +48,8 @@ fn nullable_frequency_and_legacy_manual_are_preserved() {
     let legacy = Lexicon::from_tsv("# cloudleaf-dictionary-v1\nid\tpinyin\ttext\tfrequency\tannotation\tsource\nid\ta\t甲\t0\t\tcloudleaf:legacy\n").unwrap();
     assert_eq!(legacy.entries()[0].frequency, Some(0));
     assert_eq!(legacy.entries()[0].frequency_kind, FrequencyKind::Manual);
+    let crlf = "# cloudleaf-dictionary-v1\r\nid\tpinyin\ttext\tfrequency\tannotation\tsource\r\nid\ta\t甲\t0\t\tcloudleaf:legacy\r\n";
+    assert_eq!(Lexicon::from_tsv(crlf).unwrap().entries(), legacy.entries());
     let cfg = Config::default();
     let graph = Lattice::build(&lex, "lv", &cfg).unwrap();
     let result = search_graph(&lex, &graph, &cfg, None, None).unwrap();
@@ -165,6 +167,16 @@ fn lattice_is_bound_to_original_lexicon() {
             .unwrap_err()
             .kind,
         ErrorKind::InvalidInput
+    );
+    let smaller = Config {
+        max_edges: 1,
+        ..cfg
+    };
+    assert_eq!(
+        search_graph(&lex, &graph, &smaller, None, None)
+            .unwrap_err()
+            .kind,
+        ErrorKind::InvalidConfig
     );
 }
 

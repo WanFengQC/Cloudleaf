@@ -237,6 +237,15 @@ pub fn search_graph(
             "词条图与词典不匹配",
         ));
     }
+    if graph.raw.len() > config.max_input_bytes
+        || graph.letters.len() > config.max_letters
+        || graph.edges.len() > config.max_edges
+    {
+        return Err(SearchError::new(
+            ErrorKind::InvalidConfig,
+            "已有词条图超出本次搜索预算",
+        ));
+    }
     let mut statistics = Statistics {
         graph_edges: graph.edges.len(),
         budget: graph.budget,
