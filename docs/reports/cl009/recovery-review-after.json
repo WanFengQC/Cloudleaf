@@ -1,0 +1,82 @@
+{
+  "repo_head": "68b5201f7431fe5582a42ed71a23fdd76b6fd97f",
+  "source_file_hashes": {
+    "filesystem.py": "3ff2533b1fdbf77fea688b45d5a44f04ba8cc7f9bd064844e823e786db8bad12",
+    "recovery.py": "5d27f4e8d0b3cdd286bc17f9efebef2f49b7dcb2984cc31c6d8c6f9a2ffbf3de",
+    "pipeline.py": "2600854a4a43d5a74c9fe3bcec5a7aa8c18179f94b271201453d2e8c3ef2be26"
+  },
+  "all_cases_passed": true,
+  "cases": [
+    {
+      "case": "root-junction",
+      "rejected": true,
+      "error": "路径含链接或越界（包括重解析点、文件硬链接）",
+      "no_guard_created": true,
+      "owner_bytes_unchanged": true,
+      "no_quarantine_created": true,
+      "user_sha_unchanged": true
+    },
+    {
+      "case": "ancestor-junction",
+      "rejected": true,
+      "error": "路径含链接或越界（包括重解析点、文件硬链接）",
+      "no_guard_created": true,
+      "owner_bytes_unchanged": true,
+      "no_quarantine_created": true,
+      "user_sha_unchanged": true
+    },
+    {
+      "case": "nested-orphan-outside-junction",
+      "rejected": true,
+      "error": "路径含链接或越界（包括重解析点、文件硬链接）",
+      "no_guard_created": true,
+      "owner_bytes_unchanged": true,
+      "no_quarantine_created": true,
+      "user_sha_unchanged": true
+    },
+    {
+      "case": "nested-orphan-inside-junction",
+      "rejected": true,
+      "error": "路径含链接或越界（包括重解析点、文件硬链接）",
+      "no_guard_created": true,
+      "owner_bytes_unchanged": true,
+      "no_quarantine_created": true,
+      "user_sha_unchanged": true
+    },
+    {
+      "case": "metadata-hardlink-.writer.guard",
+      "rejected": true,
+      "target_unchanged": true,
+      "no_other_file_created": true,
+      "error": "路径含链接或越界（包括重解析点、文件硬链接）"
+    },
+    {
+      "case": "metadata-hardlink-.writer.lock",
+      "rejected": true,
+      "target_unchanged": true,
+      "no_other_file_created": true,
+      "error": "路径含链接或越界（包括重解析点、文件硬链接）"
+    },
+    {
+      "case": "metadata-hardlink-current.json",
+      "rejected": true,
+      "target_unchanged": true,
+      "no_other_file_created": true,
+      "error": "路径含链接或越界（包括重解析点、文件硬链接）"
+    },
+    {
+      "case": "metadata-hardlink-current.tmp",
+      "rejected": true,
+      "target_unchanged": true,
+      "no_other_file_created": true,
+      "error": "路径含链接或越界（包括重解析点、文件硬链接）"
+    },
+    {
+      "case": "atomic-temp-hardlink",
+      "rejected": true,
+      "outside_content_unchanged": true,
+      "no_pointer_created": true,
+      "error": "路径含链接或越界（包括重解析点、文件硬链接）"
+    }
+  ]
+}

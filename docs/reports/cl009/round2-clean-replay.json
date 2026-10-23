@@ -1,0 +1,563 @@
+{
+  "builds": [
+    {
+      "build_seconds": 1.3232272999994166,
+      "entries": 701,
+      "peak_process_bytes": 70848512,
+      "rejected": 142
+    },
+    {
+      "build_seconds": 1.247708999999304,
+      "entries": 701,
+      "peak_process_bytes": 70856704,
+      "rejected": 142
+    }
+  ],
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "archive",
+        "--format=zip",
+        "--output=C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\source.zip",
+        "68b5201f7431fe5582a42ed71a23fdd76b6fd97f"
+      ],
+      "cwd": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf",
+      "elapsed_seconds": 0.16558819999772822,
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-m",
+        "venv",
+        "--without-pip",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\venv"
+      ],
+      "cwd": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf",
+      "elapsed_seconds": 0.34421389999988605,
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-I",
+        "-c",
+        "import importlib.metadata,json,sys;sys.path.insert(0,sys.argv[1]);import tools.data_pipeline.pipeline as p;print(json.dumps({'python':sys.version,'executable':sys.executable,'prefix':sys.prefix,'base_prefix':sys.base_prefix,'isolated':sys.flags.isolated,'no_user_site':sys.flags.no_user_site,'sys_path':sys.path,'distributions':[d.metadata['Name'] for d in importlib.metadata.distributions()],'pipeline':p.__file__}))",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\checkout"
+      ],
+      "cwd": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\checkout",
+      "elapsed_seconds": 0.45520699999906356,
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"python\": \"3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]\", \"executable\": \"C:\\\\Users\\\\EDY\\\\.codex\\\\worktrees\\\\cl009-data\\\\Cloudleaf\\\\.local\\\\clean-round2-68b5201\\\\venv\\\\Scripts\\\\python.exe\", \"prefix\": \"C:\\\\Users\\\\EDY\\\\.codex\\\\worktrees\\\\cl009-data\\\\Cloudleaf\\\\.local\\\\clean-round2-68b5201\\\\venv\", \"base_prefix\": \"C:\\\\Users\\\\EDY\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\", \"isolated\": 1, \"no_user_site\": 1, \"sys_path\": [\"C:\\\\Users\\\\EDY\\\\.codex\\\\worktrees\\\\cl009-data\\\\Cloudleaf\\\\.local\\\\clean-round2-68b5201\\\\checkout\", \"C:\\\\Users\\\\EDY\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python312.zip\", \"C:\\\\Users\\\\EDY\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\DLLs\", \"C:\\\\Users\\\\EDY\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\Lib\", \"C:\\\\Users\\\\EDY\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\", \"C:\\\\Users\\\\EDY\\\\.codex\\\\worktrees\\\\cl009-data\\\\Cloudleaf\\\\.local\\\\clean-round2-68b5201\\\\venv\", \"C:\\\\Users\\\\EDY\\\\.codex\\\\worktrees\\\\cl009-data\\\\Cloudleaf\\\\.local\\\\clean-round2-68b5201\\\\venv\\\\Lib\\\\site-packages\"], \"distributions\": [], \"pipeline\": \"C:\\\\Users\\\\EDY\\\\.codex\\\\worktrees\\\\cl009-data\\\\Cloudleaf\\\\.local\\\\clean-round2-68b5201\\\\checkout\\\\tools\\\\data_pipeline\\\\pipeline.py\"}\n"
+    },
+    {
+      "argv": [
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-I",
+        "-c",
+        "import runpy,sys,urllib.request\nsys.path.insert(0,sys.argv.pop(1))\ndef deny(*args,**kwargs):raise RuntimeError('network forbidden during offline replay')\nurllib.request.urlopen=deny\nrunpy.run_module('tools.data_pipeline',run_name='__main__')\n",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\checkout",
+        "extract-prefix",
+        "--prefix",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\data-sources\\zhwiktionary-prefix-8388608.gz.partial",
+        "--sha256",
+        "fdf3ae6918edb0e6af91cad20dfb51a2ecad8ce59ab026b4ab4e1e7f33581518",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\prefix-a.jsonl",
+        "--metadata",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\prefix-a.json"
+      ],
+      "cwd": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\checkout",
+      "elapsed_seconds": 0.6460702000003948,
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"format\": \"wiktionary-zh-prefix-jsonl\", \"source_subset\": true, \"research_only\": true, \"prefix_sha256\": \"fdf3ae6918edb0e6af91cad20dfb51a2ecad8ce59ab026b4ab4e1e7f33581518\", \"prefix_bytes\": 8388608, \"compressed_range\": [0, 8388607], \"original_sha256\": null, \"full_source_download_complete\": false, \"full_gzip_crc_verified\": false, \"sha256\": \"ca4df3453261f9f12f1223deb11a26d979078ea6e1af870b44da2d3dcf4e2998\", \"bytes\": 46788375, \"line_count\": 66593, \"decompressed_prefix_bytes\": 46788514, \"discarded_incomplete_tail_bytes\": 139, \"derivation\": \"Inflate fixed compressed prefix; preserve complete original LF-terminated UTF-8 JSONL lines only; discard trailing incomplete line; no lexical/gold selection.\"}\n"
+    },
+    {
+      "argv": [
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-I",
+        "-c",
+        "import runpy,sys,urllib.request\nsys.path.insert(0,sys.argv.pop(1))\ndef deny(*args,**kwargs):raise RuntimeError('network forbidden during offline replay')\nurllib.request.urlopen=deny\nrunpy.run_module('tools.data_pipeline',run_name='__main__')\n",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\checkout",
+        "build",
+        "--lock",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\checkout\\data\\sources\\locks\\wiktionary-zh-20261001-prefix8388608.json",
+        "--source",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\prefix-a.jsonl",
+        "--license",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\checkout\\data\\licenses\\CC-BY-SA-4.0.txt",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\release-a"
+      ],
+      "cwd": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\checkout",
+      "elapsed_seconds": 1.6008019000000786,
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"entries\": 701, \"rejected\": 142, \"build_seconds\": 1.3232272999994166, \"peak_process_bytes\": 70848512}\n"
+    },
+    {
+      "argv": [
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-I",
+        "-c",
+        "import runpy,sys,urllib.request\nsys.path.insert(0,sys.argv.pop(1))\ndef deny(*args,**kwargs):raise RuntimeError('network forbidden during offline replay')\nurllib.request.urlopen=deny\nrunpy.run_module('tools.data_pipeline',run_name='__main__')\n",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\checkout",
+        "verify",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\release-a"
+      ],
+      "cwd": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\checkout",
+      "elapsed_seconds": 0.45391030000246246,
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"verified\": true, \"entries\": 701, \"source\": \"wiktionary:zh-20261001-prefix8388608\", \"source_only_statistics_rebuilt\": false}\n"
+    },
+    {
+      "argv": [
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-I",
+        "-c",
+        "import runpy,sys,urllib.request\nsys.path.insert(0,sys.argv.pop(1))\ndef deny(*args,**kwargs):raise RuntimeError('network forbidden during offline replay')\nurllib.request.urlopen=deny\nrunpy.run_module('tools.data_pipeline',run_name='__main__')\n",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\checkout",
+        "extract-prefix",
+        "--prefix",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\data-sources\\zhwiktionary-prefix-8388608.gz.partial",
+        "--sha256",
+        "fdf3ae6918edb0e6af91cad20dfb51a2ecad8ce59ab026b4ab4e1e7f33581518",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\prefix-b.jsonl",
+        "--metadata",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\prefix-b.json"
+      ],
+      "cwd": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\checkout",
+      "elapsed_seconds": 0.6139289000020653,
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"format\": \"wiktionary-zh-prefix-jsonl\", \"source_subset\": true, \"research_only\": true, \"prefix_sha256\": \"fdf3ae6918edb0e6af91cad20dfb51a2ecad8ce59ab026b4ab4e1e7f33581518\", \"prefix_bytes\": 8388608, \"compressed_range\": [0, 8388607], \"original_sha256\": null, \"full_source_download_complete\": false, \"full_gzip_crc_verified\": false, \"sha256\": \"ca4df3453261f9f12f1223deb11a26d979078ea6e1af870b44da2d3dcf4e2998\", \"bytes\": 46788375, \"line_count\": 66593, \"decompressed_prefix_bytes\": 46788514, \"discarded_incomplete_tail_bytes\": 139, \"derivation\": \"Inflate fixed compressed prefix; preserve complete original LF-terminated UTF-8 JSONL lines only; discard trailing incomplete line; no lexical/gold selection.\"}\n"
+    },
+    {
+      "argv": [
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-I",
+        "-c",
+        "import runpy,sys,urllib.request\nsys.path.insert(0,sys.argv.pop(1))\ndef deny(*args,**kwargs):raise RuntimeError('network forbidden during offline replay')\nurllib.request.urlopen=deny\nrunpy.run_module('tools.data_pipeline',run_name='__main__')\n",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\checkout",
+        "build",
+        "--lock",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\checkout\\data\\sources\\locks\\wiktionary-zh-20261001-prefix8388608.json",
+        "--source",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\prefix-b.jsonl",
+        "--license",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\checkout\\data\\licenses\\CC-BY-SA-4.0.txt",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\release-b"
+      ],
+      "cwd": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\checkout",
+      "elapsed_seconds": 1.5273199999974167,
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"entries\": 701, \"rejected\": 142, \"build_seconds\": 1.247708999999304, \"peak_process_bytes\": 70856704}\n"
+    },
+    {
+      "argv": [
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-I",
+        "-c",
+        "import runpy,sys,urllib.request\nsys.path.insert(0,sys.argv.pop(1))\ndef deny(*args,**kwargs):raise RuntimeError('network forbidden during offline replay')\nurllib.request.urlopen=deny\nrunpy.run_module('tools.data_pipeline',run_name='__main__')\n",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\checkout",
+        "verify",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\release-b"
+      ],
+      "cwd": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\checkout",
+      "elapsed_seconds": 0.46400159999757307,
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"verified\": true, \"entries\": 701, \"source\": \"wiktionary:zh-20261001-prefix8388608\", \"source_only_statistics_rebuilt\": false}\n"
+    },
+    {
+      "argv": [
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-I",
+        "-c",
+        "import runpy,sys,urllib.request\nsys.path.insert(0,sys.argv.pop(1))\ndef deny(*args,**kwargs):raise RuntimeError('network forbidden during offline replay')\nurllib.request.urlopen=deny\nrunpy.run_module('tools.data_pipeline',run_name='__main__')\n",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\checkout",
+        "audit-readings",
+        "--lock",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\checkout\\data\\sources\\locks\\unihan-17.0.0.json",
+        "--source",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\data-sources\\Unihan-17.0.0.zip",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\reading-audit.json"
+      ],
+      "cwd": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\checkout",
+      "elapsed_seconds": 3.304369499997847,
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"readings\": 18, \"classification\": {\"syllabic-nasal-or-interjection\": 7, \"inventory-gap\": 11}}\n"
+    },
+    {
+      "argv": [
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-I",
+        "-c",
+        "import runpy,sys;sys.path.insert(0,sys.argv.pop(1));runpy.run_module('unittest',run_name='__main__')",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\checkout",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "cwd": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\checkout",
+      "elapsed_seconds": 14.77563740000187,
+      "exit_code": 0,
+      "stderr": "test_actual_seed_is_group_isolated_and_does_not_reuse_regression_inputs (test_algorithm_evaluation.EvaluationIntegrityTests.test_actual_seed_is_group_isolated_and_does_not_reuse_regression_inputs) ... ok\ntest_all_misses_oov_and_unsupported_stay_in_denominator (test_algorithm_evaluation.EvaluationIntegrityTests.test_all_misses_oov_and_unsupported_stay_in_denominator) ... ok\ntest_clean_input_modification_is_a_prediction_but_never_correction_success (test_algorithm_evaluation.EvaluationIntegrityTests.test_clean_input_modification_is_a_prediction_but_never_correction_success) ... ok\ntest_distinct_context_intents_can_share_input_inside_one_split (test_algorithm_evaluation.EvaluationIntegrityTests.test_distinct_context_intents_can_share_input_inside_one_split) ... ok\ntest_equivalent_multigold_order_does_not_bypass_duplicate_check (test_algorithm_evaluation.EvaluationIntegrityTests.test_equivalent_multigold_order_does_not_bypass_duplicate_check) ... ok\ntest_family_cannot_cross_dev_and_heldout_even_with_different_inputs (test_algorithm_evaluation.EvaluationIntegrityTests.test_family_cannot_cross_dev_and_heldout_even_with_different_inputs) ... ok\ntest_historical_input_cannot_be_renamed_or_recased_into_heldout (test_algorithm_evaluation.EvaluationIntegrityTests.test_historical_input_cannot_be_renamed_or_recased_into_heldout) ... ok\ntest_no_correction_predictions_have_undefined_precision_and_zero_recall (test_algorithm_evaluation.EvaluationIntegrityTests.test_no_correction_predictions_have_undefined_precision_and_zero_recall) ... ok\ntest_percentiles_use_all_samples_and_nearest_rank (test_algorithm_evaluation.EvaluationIntegrityTests.test_percentiles_use_all_samples_and_nearest_rank) ... ok\ntest_missing_artifact_fails_instead_of_falling_back_to_stale_file (test_benchmark.ArtifactTests.test_missing_artifact_fails_instead_of_falling_back_to_stale_file) ... ok\ntest_uses_only_actual_host_executable_in_custom_directory (test_benchmark.ArtifactTests.test_uses_only_actual_host_executable_in_custom_directory) ... ok\ntest_archive_size_limit_and_utf8 (test_data_pipeline.PipelineTests.test_archive_size_limit_and_utf8) ... ok\ntest_archive_traversal_rejected (test_data_pipeline.PipelineTests.test_archive_traversal_rejected) ... ok\ntest_atomic_upgrade_and_rollback_preserve_user_data (test_data_pipeline.PipelineTests.test_atomic_upgrade_and_rollback_preserve_user_data) ... ok\ntest_concurrent_writer_and_pointer_traversal_fail_closed (test_data_pipeline.PipelineTests.test_concurrent_writer_and_pointer_traversal_fail_closed) ... ok\ntest_conflicts_isolated_duplicate_counted_and_bad_rows_reported (test_data_pipeline.PipelineTests.test_conflicts_isolated_duplicate_counted_and_bad_rows_reported) ... ok\ntest_corruption_detected_and_rejected_before_activation (test_data_pipeline.PipelineTests.test_corruption_detected_and_rejected_before_activation) ... ok\ntest_cross_resource_semantics_verified_even_if_hash_updated (test_data_pipeline.PipelineTests.test_cross_resource_semantics_verified_even_if_hash_updated) ... ok\ntest_damaged_rollback_target_and_replace_failure_keep_pointer (test_data_pipeline.PipelineTests.test_damaged_rollback_target_and_replace_failure_keep_pointer) ... ok\ntest_deterministic_build_and_offline (test_data_pipeline.PipelineTests.test_deterministic_build_and_offline) ... ok\ntest_hash_mismatch_fails_without_output (test_data_pipeline.PipelineTests.test_hash_mismatch_fails_without_output) ... ok\ntest_license_and_review_fail_closed (test_data_pipeline.PipelineTests.test_license_and_review_fail_closed) ... ok\ntest_local_cedict_preserves_raw_senses_and_deduplicates (test_data_pipeline.PipelineTests.test_local_cedict_preserves_raw_senses_and_deduplicates) ... ok\ntest_manifest_symlink_rejected (test_data_pipeline.PipelineTests.test_manifest_symlink_rejected) ... ok\ntest_no_automatic_cedict_or_unapproved_download (test_data_pipeline.PipelineTests.test_no_automatic_cedict_or_unapproved_download) ... ok\ntest_normalization_does_not_guess_readings (test_data_pipeline.PipelineTests.test_normalization_does_not_guess_readings) ... ok\ntest_nullable_frequency_and_rich_evidence (test_data_pipeline.PipelineTests.test_nullable_frequency_and_rich_evidence) ... ok\ntest_python_and_rust_syllable_inventory_match (test_data_pipeline.PipelineTests.test_python_and_rust_syllable_inventory_match) ... ok\ntest_rehashed_facts_projection_and_index_cannot_bypass_semantics (test_data_pipeline.PipelineTests.test_rehashed_facts_projection_and_index_cannot_bypass_semantics) ... ok\ntest_rehashed_quality_statistics_scope_and_accuracy_claim_are_verified (test_data_pipeline.PipelineTests.test_rehashed_quality_statistics_scope_and_accuracy_claim_are_verified) ... ok\ntest_wrong_complete_cached_or_copied_release_cannot_publish_invalid_pointer (test_data_pipeline.PipelineTests.test_wrong_complete_cached_or_copied_release_cannot_publish_invalid_pointer) ... ok\ntest_alive_or_wrong_owner_and_unknown_status_never_clear_lock (test_data_recovery.DataRecoveryTests.test_alive_or_wrong_owner_and_unknown_status_never_clear_lock) ... ok\ntest_atomic_pointer_never_truncates_a_hardlink_or_existing_temporary (test_data_recovery.DataRecoveryTests.test_atomic_pointer_never_truncates_a_hardlink_or_existing_temporary) ... ok\ntest_child_exit_recovery_at_copy_cache_and_pointer_boundaries (test_data_recovery.DataRecoveryTests.test_child_exit_recovery_at_copy_cache_and_pointer_boundaries) ... ok\ntest_nested_orphan_directory_link_is_rejected_before_any_recovery_mutation (test_data_recovery.DataRecoveryTests.test_nested_orphan_directory_link_is_rejected_before_any_recovery_mutation) ... ok\ntest_parent_termination_releases_os_guard_but_requires_explicit_owner_recovery (test_data_recovery.DataRecoveryTests.test_parent_termination_releases_os_guard_but_requires_explicit_owner_recovery) ... ok\ntest_parent_traversal_is_not_normalized_past_a_directory_link (test_data_recovery.DataRecoveryTests.test_parent_traversal_is_not_normalized_past_a_directory_link) ... ok\ntest_reading_audit_replays_source_without_changing_inventory (test_data_recovery.DataRecoveryTests.test_reading_audit_replays_source_without_changing_inventory) ... ok\ntest_release_directory_links_and_linked_ancestors_are_rejected (test_data_recovery.DataRecoveryTests.test_release_directory_links_and_linked_ancestors_are_rejected) ... ok\ntest_store_and_ancestor_directory_links_reject_before_guard_creation (test_data_recovery.DataRecoveryTests.test_store_and_ancestor_directory_links_reject_before_guard_creation) ... ok\ntest_store_metadata_hardlinks_are_rejected_before_guard_writes (test_data_recovery.DataRecoveryTests.test_store_metadata_hardlinks_are_rejected_before_guard_writes) ... ok\ntest_unsafe_orphan_is_rejected_before_rollback_pointer_changes (test_data_recovery.DataRecoveryTests.test_unsafe_orphan_is_rejected_before_rollback_pointer_changes) ... ok\ntest_explicit_mandarin_segmentation_preserves_boundaries_and_rejects_ambiguity (test_word_source.WordSourceTests.test_explicit_mandarin_segmentation_preserves_boundaries_and_rejects_ambiguity) ... ok\ntest_real_word_schema_preserves_languages_pos_english_and_unknown_frequency (test_word_source.WordSourceTests.test_real_word_schema_preserves_languages_pos_english_and_unknown_frequency) ... ok\ntest_research_prefix_keeps_only_complete_lines_and_locks_bytes (test_word_source.WordSourceTests.test_research_prefix_keeps_only_complete_lines_and_locks_bytes) ... ok\ntest_runtime_and_rights_isolations_are_not_source_malformations (test_word_source.WordSourceTests.test_runtime_and_rights_isolations_are_not_source_malformations) ... ok\ntest_external_packages_require_exact_version_license_and_source (test_workspace_audit.AuditTests.test_external_packages_require_exact_version_license_and_source) ... ok\ntest_policies_reject_duplicates_unreviewed_sources_and_path_escape (test_workspace_audit.AuditTests.test_policies_reject_duplicates_unreviewed_sources_and_path_escape) ... ok\ntest_resource_hash_license_count_format_and_missing_registration (test_workspace_audit.AuditTests.test_resource_hash_license_count_format_and_missing_registration) ... ok\n\n----------------------------------------------------------------------\nRan 49 tests in 14.290s\n\nOK\n",
+      "stdout": "资源已验证：data/words.jsonl (2 条)\n"
+    },
+    {
+      "argv": [
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-I",
+        "-c",
+        "import runpy,sys,urllib.request\nsys.path.insert(0,sys.argv.pop(1))\ndef deny(*args,**kwargs):raise RuntimeError('network forbidden during offline replay')\nurllib.request.urlopen=deny\nrunpy.run_module('tools.data_pipeline',run_name='__main__')\n",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\checkout",
+        "benchmark",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\release-a",
+        "--iterations",
+        "10000",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\performance.json"
+      ],
+      "cwd": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\checkout",
+      "elapsed_seconds": 0.6250805999989097,
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"scope\": \"Python离线JSON索引载入和精确键查询；不是Rust候选、TSF或语言准确率\", \"python\": \"3.12.10\", \"platform\": \"Windows-11-10.0.26300-SP0\", \"machine\": \"AMD64\", \"processor\": \"Intel64 Family 6 Model 167 Stepping 1, GenuineIntel\", \"iterations\": 10000, \"index_bytes\": 72557, \"manifest_sha256\": \"df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f\", \"builder_files_sha256\": {\"__init__.py\": \"23fe9b9d63d02a01c5401a85ad845defc688fa6db5927dc63d7ae902b4ec83d1\", \"__main__.py\": \"9fe6b7f24253eb62cb7250e40b84d557c6fc3c1b218038238ca07067a64b37e1\", \"filesystem.py\": \"3ff2533b1fdbf77fea688b45d5a44f04ba8cc7f9bd064844e823e786db8bad12\", \"pipeline.py\": \"2600854a4a43d5a74c9fe3bcec5a7aa8c18179f94b271201453d2e8c3ef2be26\", \"prefix_snapshot.py\": \"0f624cf0a0fa162117b4dcde7dc78e55af632104c8ae541812bc07d4ee3f0778\", \"reading_audit.py\": \"e89dba255cf4e8c5afa8c908edc01cf2d3f33d60e1187b67d1a120d382a1ce5d\", \"recovery.py\": \"5d27f4e8d0b3cdd286bc17f9efebef2f49b7dcb2984cc31c6d8c6f9a2ffbf3de\", \"word_source.py\": \"1d6d785da2b43895128c42b36e5f2997b1db872a466a86a45bab6961451dcd04\"}, \"release_builder_files_sha256\": {\"__init__.py\": \"23fe9b9d63d02a01c5401a85ad845defc688fa6db5927dc63d7ae902b4ec83d1\", \"__main__.py\": \"9fe6b7f24253eb62cb7250e40b84d557c6fc3c1b218038238ca07067a64b37e1\", \"filesystem.py\": \"3ff2533b1fdbf77fea688b45d5a44f04ba8cc7f9bd064844e823e786db8bad12\", \"pipeline.py\": \"2600854a4a43d5a74c9fe3bcec5a7aa8c18179f94b271201453d2e8c3ef2be26\", \"prefix_snapshot.py\": \"0f624cf0a0fa162117b4dcde7dc78e55af632104c8ae541812bc07d4ee3f0778\", \"reading_audit.py\": \"e89dba255cf4e8c5afa8c908edc01cf2d3f33d60e1187b67d1a120d382a1ce5d\", \"recovery.py\": \"5d27f4e8d0b3cdd286bc17f9efebef2f49b7dcb2984cc31c6d8c6f9a2ffbf3de\", \"word_source.py\": \"1d6d785da2b43895128c42b36e5f2997b1db872a466a86a45bab6961451dcd04\"}, \"release_builder_matches_current\": true, \"load_ms\": 1.4795, \"query_ns\": {\"p50\": 100.0, \"p95\": 200, \"p99\": 300, \"max\": 28800}, \"peak_process_bytes\": 33222656, \"memory_method\": \"OS进程峰值工作集/RSS（包括前置完整校验）\", \"result_count\": 13162, \"background_load\": \"未隔离桌面后台负载\"}\n"
+    }
+  ],
+  "commit": "68b5201f7431fe5582a42ed71a23fdd76b6fd97f",
+  "environment": {
+    "base_prefix": "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312",
+    "distributions": [],
+    "executable": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\venv\\Scripts\\python.exe",
+    "isolated": 1,
+    "no_user_site": 1,
+    "pipeline": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\checkout\\tools\\data_pipeline\\pipeline.py",
+    "prefix": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\venv",
+    "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+    "sys_path": [
+      "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\checkout",
+      "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python312.zip",
+      "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\DLLs",
+      "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\Lib",
+      "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312",
+      "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\venv",
+      "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\clean-round2-68b5201\\venv\\Lib\\site-packages"
+    ]
+  },
+  "export": {
+    "bytes": 310897,
+    "git_and_old_local_absent": true,
+    "method": "git archive --format=zip",
+    "sha256": "f142d57793d172a4323981d27ecbb7c2040e8bebaac21d5da126ef16fdd556f5",
+    "tracked_files": 109,
+    "utf8_lf_files_checked": 103
+  },
+  "extract_replays": [
+    {
+      "bytes": 46788375,
+      "compressed_range": [
+        0,
+        8388607
+      ],
+      "decompressed_prefix_bytes": 46788514,
+      "derivation": "Inflate fixed compressed prefix; preserve complete original LF-terminated UTF-8 JSONL lines only; discard trailing incomplete line; no lexical/gold selection.",
+      "discarded_incomplete_tail_bytes": 139,
+      "format": "wiktionary-zh-prefix-jsonl",
+      "full_gzip_crc_verified": false,
+      "full_source_download_complete": false,
+      "line_count": 66593,
+      "original_sha256": null,
+      "prefix_bytes": 8388608,
+      "prefix_sha256": "fdf3ae6918edb0e6af91cad20dfb51a2ecad8ce59ab026b4ab4e1e7f33581518",
+      "research_only": true,
+      "sha256": "ca4df3453261f9f12f1223deb11a26d979078ea6e1af870b44da2d3dcf4e2998",
+      "source_subset": true
+    },
+    {
+      "bytes": 46788375,
+      "compressed_range": [
+        0,
+        8388607
+      ],
+      "decompressed_prefix_bytes": 46788514,
+      "derivation": "Inflate fixed compressed prefix; preserve complete original LF-terminated UTF-8 JSONL lines only; discard trailing incomplete line; no lexical/gold selection.",
+      "discarded_incomplete_tail_bytes": 139,
+      "format": "wiktionary-zh-prefix-jsonl",
+      "full_gzip_crc_verified": false,
+      "full_source_download_complete": false,
+      "line_count": 66593,
+      "original_sha256": null,
+      "prefix_bytes": 8388608,
+      "prefix_sha256": "fdf3ae6918edb0e6af91cad20dfb51a2ecad8ce59ab026b4ab4e1e7f33581518",
+      "research_only": true,
+      "sha256": "ca4df3453261f9f12f1223deb11a26d979078ea6e1af870b44da2d3dcf4e2998",
+      "source_subset": true
+    }
+  ],
+  "fresh_process_each_command": true,
+  "manifest": {
+    "builder": "cloudleaf-data-2.0.0",
+    "builder_files_sha256": {
+      "__init__.py": "23fe9b9d63d02a01c5401a85ad845defc688fa6db5927dc63d7ae902b4ec83d1",
+      "__main__.py": "9fe6b7f24253eb62cb7250e40b84d557c6fc3c1b218038238ca07067a64b37e1",
+      "filesystem.py": "3ff2533b1fdbf77fea688b45d5a44f04ba8cc7f9bd064844e823e786db8bad12",
+      "pipeline.py": "2600854a4a43d5a74c9fe3bcec5a7aa8c18179f94b271201453d2e8c3ef2be26",
+      "prefix_snapshot.py": "0f624cf0a0fa162117b4dcde7dc78e55af632104c8ae541812bc07d4ee3f0778",
+      "reading_audit.py": "e89dba255cf4e8c5afa8c908edc01cf2d3f33d60e1187b67d1a120d382a1ce5d",
+      "recovery.py": "5d27f4e8d0b3cdd286bc17f9efebef2f49b7dcb2984cc31c6d8c6f9a2ffbf3de",
+      "word_source.py": "1d6d785da2b43895128c42b36e5f2997b1db872a466a86a45bab6961451dcd04"
+    },
+    "entry_count": 701,
+    "license_file": "LICENSE.txt",
+    "normalization_unicode_version": "15.0.0",
+    "rejected_count": 142,
+    "resources": {
+      "LICENSE.txt": {
+        "bytes": 20138,
+        "sha256": "28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5"
+      },
+      "NOTICE.txt": {
+        "bytes": 875,
+        "sha256": "03a4fed272bfa6f153722446330b61a9858920ad51f8c0503b5bd7460f160f18"
+      },
+      "index.json": {
+        "bytes": 72557,
+        "sha256": "195ff249b3a1bfcfeebc45e0e10bc752ac8cf6076cb5e3511df9a1d1c882ade9"
+      },
+      "quality.json": {
+        "bytes": 1848,
+        "sha256": "9b49fa234bd2701c2f50efded3d89d4a97419d9a2041fd82fd199a654380d4ba"
+      },
+      "records.jsonl": {
+        "bytes": 990240,
+        "sha256": "f37f47df55621ad3c6eb28e5290f42ecc3c7a6e7275711e0893bf7e8be9db7a1"
+      },
+      "rejected.jsonl": {
+        "bytes": 311630,
+        "sha256": "5998a7ef18487e0d5878b837d6144bef92a80300cf7b19ff1396dfd135b9619e"
+      },
+      "runtime.tsv": {
+        "bytes": 112639,
+        "sha256": "b47287d0fd405c225409653cd8d08f34f9fcb31ef8bb8c9b9e54dbcf5fd7741c"
+      },
+      "source-lock.json": {
+        "bytes": 3401,
+        "sha256": "46fb6ac082320c6fa48d72a5ff9258eb00c947d8f31d5c0d4f70ed84a98354ce"
+      }
+    },
+    "runtime_format": "cloudleaf-lexicon-v2",
+    "schema_version": 2,
+    "source": {
+      "acquisition": "Publisher-provided public raw bulk endpoint; original transfer ended early. Fixed first 8388608 compressed bytes copied into immutable local snapshot; only complete original JSONL lines retained. Full original hash and CRC remain unverified.",
+      "approved_scope": "Bounded text excerpt for resource and consistency research; not complete raw dump, production lexicon or independent language evaluation.",
+      "attribution": "Chinese Wiktionary contributors (per-entry attribution_url links to page and history); raw extraction by Tatu Ylonen and Wiktextract contributors, https://kaikki.org/zhwiktionary/rawdata.html. Derived text data remains CC BY-SA 4.0; Cloudleaf tool code is separately MIT.",
+      "automated_download_allowed": false,
+      "bytes": 46788375,
+      "compressed_range": [
+        0,
+        8388607
+      ],
+      "discarded_incomplete_tail_bytes": 139,
+      "format": "wiktionary-zh-prefix-jsonl",
+      "full_gzip_crc_verified": false,
+      "full_source_download_complete": false,
+      "license_file": "data/licenses/CC-BY-SA-4.0.txt",
+      "license_id": "CC-BY-SA-4.0",
+      "license_sha256": "28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "limitations": [
+        "Bounded first-byte excerpt with source-order bias, not complete Wiktionary or a production lexicon.",
+        "Original full download/hash and gzip CRC are not verified; plaintext excerpt hash and exact derivation are independently locked.",
+        "Chinese-edition glosses are Chinese; only explicitly sourced English translations are English, with no complete bilingual claim.",
+        "Wikimedia Terms of Use section 7 applies text CC BY-SA4; per-page import attribution/fair-use exceptions have not all been manually reviewed. Available source rights markers are retained or quarantined; no absolute exception-free guarantee.",
+        "No observed frequency, corpus period, language quality or independent accuracy evidence."
+      ],
+      "line_count": 66593,
+      "original_advertised_bytes": 234450401,
+      "original_etag": "\"6ad75338-df96de1\"",
+      "original_last_modified": "Tue, 20 Oct 2026 11:40:40 GMT",
+      "original_sha256": null,
+      "prefix_bytes": 8388608,
+      "prefix_sha256": "fdf3ae6918edb0e6af91cad20dfb51a2ecad8ce59ab026b4ab4e1e7f33581518",
+      "redistribution": {
+        "describe_modifications": true,
+        "license": "CC-BY-SA-4.0",
+        "media_included": false,
+        "per_page_exception_review_complete": false,
+        "retain_attribution_and_license": true,
+        "share_alike": true
+      },
+      "research_only": true,
+      "review_status": "approved",
+      "reviewed_on": "2026-10-22",
+      "schema_version": 1,
+      "sha256": "ca4df3453261f9f12f1223deb11a26d979078ea6e1af870b44da2d3dcf4e2998",
+      "source_id": "wiktionary:zh-20261001-prefix8388608",
+      "source_member": "zhwiktionary-prefix-8388608.jsonl",
+      "source_page": "https://kaikki.org/zhwiktionary/rawdata.html",
+      "source_subset": true,
+      "specification_url": "https://github.com/tatuylonen/wiktextract/tree/c1bb342f3f3afb42e2200dea4dfc8bdc9fb0a4f4/src/wiktextract/extractor/zh",
+      "transformations": "Fixed compressed prefix inflated to complete original JSONL lines; trailing 139 bytes excluded. Import exact multi-character Han headwords with explicit Mandarin/Pinyin tags; preserve Chinese gloss language, sourced POS, explicit English translations, original-line digests and page URLs. Exclude media, quotation examples and entries with unreviewed rights markers. No frequency or script-conversion inference.",
+      "url": "https://kaikki.org/zhwiktionary/raw-wiktextract-data.jsonl.gz",
+      "version": "2026-10-01-extract2026-10-20-prefix8388608"
+    },
+    "source_lock_sha256": "46fb6ac082320c6fa48d72a5ff9258eb00c947d8f31d5c0d4f70ed84a98354ce",
+    "syllables_sha256": "b98f87a68a211cfa911637b9a2026acec0255c0254070f67dfa2366ea58c6021"
+  },
+  "network_forbidden": true,
+  "performance": {
+    "background_load": "未隔离桌面后台负载",
+    "builder_files_sha256": {
+      "__init__.py": "23fe9b9d63d02a01c5401a85ad845defc688fa6db5927dc63d7ae902b4ec83d1",
+      "__main__.py": "9fe6b7f24253eb62cb7250e40b84d557c6fc3c1b218038238ca07067a64b37e1",
+      "filesystem.py": "3ff2533b1fdbf77fea688b45d5a44f04ba8cc7f9bd064844e823e786db8bad12",
+      "pipeline.py": "2600854a4a43d5a74c9fe3bcec5a7aa8c18179f94b271201453d2e8c3ef2be26",
+      "prefix_snapshot.py": "0f624cf0a0fa162117b4dcde7dc78e55af632104c8ae541812bc07d4ee3f0778",
+      "reading_audit.py": "e89dba255cf4e8c5afa8c908edc01cf2d3f33d60e1187b67d1a120d382a1ce5d",
+      "recovery.py": "5d27f4e8d0b3cdd286bc17f9efebef2f49b7dcb2984cc31c6d8c6f9a2ffbf3de",
+      "word_source.py": "1d6d785da2b43895128c42b36e5f2997b1db872a466a86a45bab6961451dcd04"
+    },
+    "index_bytes": 72557,
+    "iterations": 10000,
+    "load_ms": 1.4795,
+    "machine": "AMD64",
+    "manifest_sha256": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f",
+    "memory_method": "OS进程峰值工作集/RSS（包括前置完整校验）",
+    "peak_process_bytes": 33222656,
+    "platform": "Windows-11-10.0.26300-SP0",
+    "processor": "Intel64 Family 6 Model 167 Stepping 1, GenuineIntel",
+    "python": "3.12.10",
+    "query_ns": {
+      "max": 28800,
+      "p50": 100.0,
+      "p95": 200,
+      "p99": 300
+    },
+    "release_builder_files_sha256": {
+      "__init__.py": "23fe9b9d63d02a01c5401a85ad845defc688fa6db5927dc63d7ae902b4ec83d1",
+      "__main__.py": "9fe6b7f24253eb62cb7250e40b84d557c6fc3c1b218038238ca07067a64b37e1",
+      "filesystem.py": "3ff2533b1fdbf77fea688b45d5a44f04ba8cc7f9bd064844e823e786db8bad12",
+      "pipeline.py": "2600854a4a43d5a74c9fe3bcec5a7aa8c18179f94b271201453d2e8c3ef2be26",
+      "prefix_snapshot.py": "0f624cf0a0fa162117b4dcde7dc78e55af632104c8ae541812bc07d4ee3f0778",
+      "reading_audit.py": "e89dba255cf4e8c5afa8c908edc01cf2d3f33d60e1187b67d1a120d382a1ce5d",
+      "recovery.py": "5d27f4e8d0b3cdd286bc17f9efebef2f49b7dcb2984cc31c6d8c6f9a2ffbf3de",
+      "word_source.py": "1d6d785da2b43895128c42b36e5f2997b1db872a466a86a45bab6961451dcd04"
+    },
+    "release_builder_matches_current": true,
+    "result_count": 13162,
+    "scope": "Python离线JSON索引载入和精确键查询；不是Rust候选、TSF或语言准确率"
+  },
+  "physical_power_loss_tested": false,
+  "python_tests": 49,
+  "quality": {
+    "counts": {
+      "accepted_records": 701,
+      "ambiguous_runtime_readings": 30,
+      "characters_with_mandarin": 0,
+      "conflicting_characters": 0,
+      "distinct_pinyin": 532,
+      "distinct_texts": 521,
+      "duplicate_property_lines": 0,
+      "duplicate_records": 0,
+      "expanded_source_bytes": 46788375,
+      "input_reading_records": 0,
+      "malformed_or_conflicting_records": 0,
+      "missing_english_gloss": 485,
+      "missing_explicit_mandarin_pinyin": 111,
+      "missing_frequency": 701,
+      "missing_pos": 0,
+      "non_chinese_entries_skipped": 65265,
+      "outside_multichar_han_scope_skipped": 608,
+      "raw_lines": 66593,
+      "rejected_records": 142,
+      "rights_or_quotation_isolations": 18,
+      "runtime_annotation_omitted_long": 0,
+      "runtime_budget_isolations": 0,
+      "selected_property_lines": 0,
+      "unsupported_runtime_readings": 94
+    },
+    "evaluation": {
+      "accuracy_claim": false,
+      "dev": null,
+      "heldout": null,
+      "reason": "来源数据完整性检查，不是独立语言评测",
+      "train": null
+    },
+    "rejection_reasons": {
+      "ambiguous_or_unsupported_word_reading": 30,
+      "unreviewed_additional_rights_marker": 18,
+      "unsupported_word_reading": 94
+    },
+    "schema_version": 2,
+    "scope": [
+      "Bounded first-byte excerpt with source-order bias, not complete Wiktionary or a production lexicon.",
+      "Original full download/hash and gzip CRC are not verified; plaintext excerpt hash and exact derivation are independently locked.",
+      "Chinese-edition glosses are Chinese; only explicitly sourced English translations are English, with no complete bilingual claim.",
+      "Wikimedia Terms of Use section 7 applies text CC BY-SA4; per-page import attribution/fair-use exceptions have not all been manually reviewed. Available source rights markers are retained or quarantined; no absolute exception-free guarantee.",
+      "No observed frequency, corpus period, language quality or independent accuracy evidence."
+    ],
+    "source": "wiktionary:zh-20261001-prefix8388608",
+    "source_conflicts": "词条保留来源字段差异；仅相同稳定ID合并行号证据"
+  },
+  "reproducibility": {
+    "B_frozen_data_resources_match": true,
+    "B_frozen_metadata_changed": [
+      "manifest.json",
+      "source-lock.json"
+    ],
+    "all_files_sha256": {
+      "LICENSE.txt": "28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5",
+      "NOTICE.txt": "03a4fed272bfa6f153722446330b61a9858920ad51f8c0503b5bd7460f160f18",
+      "index.json": "195ff249b3a1bfcfeebc45e0e10bc752ac8cf6076cb5e3511df9a1d1c882ade9",
+      "manifest.json": "df137d60c7299d84cdaa262386556bafa4e56103fde2ae592738a31bbe292d6f",
+      "quality.json": "9b49fa234bd2701c2f50efded3d89d4a97419d9a2041fd82fd199a654380d4ba",
+      "records.jsonl": "f37f47df55621ad3c6eb28e5290f42ecc3c7a6e7275711e0893bf7e8be9db7a1",
+      "rejected.jsonl": "5998a7ef18487e0d5878b837d6144bef92a80300cf7b19ff1396dfd135b9619e",
+      "runtime.tsv": "b47287d0fd405c225409653cd8d08f34f9fcb31ef8bb8c9b9e54dbcf5fd7741c",
+      "source-lock.json": "46fb6ac082320c6fa48d72a5ff9258eb00c947d8f31d5c0d4f70ed84a98354ce"
+    },
+    "identical": true,
+    "reading_audit_identical": true
+  },
+  "rust_tests_historical": 60,
+  "schema_version": 1,
+  "scope": "fixed-prefix real-word research snapshot; no complete dump or language-accuracy claim"
+}

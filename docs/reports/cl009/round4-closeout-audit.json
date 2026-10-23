@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "implementation_commit": "0dee2e27fa7749d952df24e44bfaefc9a2331c6d",
+  "scope": "read-only closure audit; no existing evidence or frozen release overwritten",
+  "archive_sha256_verified": "fbb2aec73efa01d3672c5e8144f684ec83b7bbf4002d446f8aed3b580ee44825",
+  "final_releases": [
+    {
+      "release": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-0dee2e2\\release-a",
+      "all_nine_reported_hashes_match": true
+    },
+    {
+      "release": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-0dee2e2\\release-b",
+      "all_nine_reported_hashes_match": true
+    }
+  ],
+  "frozen_2401_release_unchanged": true,
+  "cross_implementation_changed_files": [
+    "manifest.json"
+  ],
+  "ordinary_source_cache_sha256_verified": "fff8763673740aecbbe4c7f414445171ef4a70e55eac3ceee364e4f9c7cc766a",
+  "seven_completed_interruption_stores_match_recorded_final_pointers_and_user_sha": true,
+  "readme_commands_all_nine_success": true,
+  "historical_report_files_unchanged": 45,
+  "historical_whitespace_failure_replayed": {
+    "provenance": "Re-executed now against immutable historical commits; not a fabricated original terminal capture.",
+    "argv": [
+      "git",
+      "diff",
+      "--check",
+      "fb2a743",
+      "7afd507"
+    ],
+    "exit_code": 2,
+    "stdout": "data/sources/evidence/cccedict-mirror-7019e1c/LICENSE.md:7: trailing whitespace.\n+Below are a list of contributors from their [website](https://cc-cedict.org/wiki):  \ndata/sources/evidence/cccedict-mirror-7019e1c/LICENSE.md:16: trailing whitespace.\n+The data for CC-CANTO and it's CEDICT Cantonese readings are provided under the [Creative Commons Attribution-ShareAlike 3.0 License](https://creativecommons.org/licenses/by-sa/3.0/), \ndata/sources/evidence/cccedict-mirror-7019e1c/LICENSE.md:227: new blank line at EOF.\ndata/sources/evidence/cccedict-mirror-7019e1c/README.md:32: trailing whitespace.\n+c = CC_Dict(\"CANTO\") # Creates a CC_Dict object that can access the JSONs and dictionary data for CC-Canto. \ndata/sources/evidence/cccedict-mirror-7019e1c/README.md:43: trailing whitespace.\n+c.get_data(key = None) \ndata/sources/evidence/cccedict-mirror-7019e1c/README.md:67: trailing whitespace.\n+[{'traditional': '貓', 'simplified': '猫', 'pinyin': 'mao1', 'jyutping': 'maau1', 'definitions': ['cat M: 只zhī [只]', '(dialect) to hide oneself', '(coll.) modem', \"to arch one's back\", 'to be drunk', 'to be high on drugs']}, \ndata/sources/evidence/cccedict-mirror-7019e1c/README.md:68: trailing whitespace.\n+{'traditional': '貓', 'simplified': '猫', 'pinyin': 'mao1', 'jyutping': 'maau4', 'definitions': ['cat M: 只zhī [只]', '(dialect) to hide oneself', '(coll.) modem', \"to arch one's back\", 'to be drunk', 'to be high on drugs']}, \ndata/sources/evidence/cccedict-mirror-7019e1c/README.md:99: trailing whitespace.\n+fetch_raw() \n",
+    "stderr": "",
+    "fixed_by_commit": "2401b1640d37b17ea4112aeb51862fb0ddba41d1"
+  }
+}

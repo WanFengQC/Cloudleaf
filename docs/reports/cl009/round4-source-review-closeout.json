@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-10-23",
+  "scope": "Source and rights metadata review only; no candidate corpus, frequencies, sentences or heldout answers downloaded.",
+  "method": "web open of primary maintainer and publisher documents; failed retrieval retained separately from license findings; successful documents separately fetched once as metadata bytes for SHA-256 and Git blob identity",
+  "documents": [
+    {
+      "url": "https://raw.githubusercontent.com/thunlp/THUOCL/a30ce79d895d01ab5132a5c74c29703ff7efb4cc/README.md",
+      "retrieval": "success",
+      "findings": [
+        "DF counts documents containing a word, not tokens.",
+        "Source periods include CSDN 2014-2016, Sina news 2008-2016 and Sogou.",
+        "README permits research and commercial use and requests academic citation.",
+        "Word sources include website labels, trending searches and input-method lexicons."
+      ],
+      "decision": "candidate-provenance-review; no import and no substitution for unknown token frequency",
+      "byte_identity": {
+        "requested_at_utc": "2026-10-23T15:59:38.211538+00:00",
+        "response_status": 200,
+        "requested_url": "https://raw.githubusercontent.com/thunlp/THUOCL/a30ce79d895d01ab5132a5c74c29703ff7efb4cc/README.md",
+        "final_url": "https://raw.githubusercontent.com/thunlp/THUOCL/a30ce79d895d01ab5132a5c74c29703ff7efb4cc/README.md",
+        "bytes": 7104,
+        "sha256": "388f9d0351d511bcd2a5ecf714b762d822aabc375ece710aae98687eb0d5bcc3",
+        "headers": {
+          "Content-Type": "text/plain; charset=utf-8",
+          "ETag": "\"f9a62d7a591160924aca6dc3ad681fe853631e35798706d32cb245e3e53cdb55\"",
+          "Last-Modified": null
+        },
+        "repository": "thunlp/THUOCL",
+        "commit": "a30ce79d895d01ab5132a5c74c29703ff7efb4cc",
+        "path": "README.md",
+        "git_blob_sha1": "7ecec701449e4332360d1c7a14575fd3e1cbe774",
+        "local_metadata_document": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-source-document-identities\\c42f3c8268bd434420f94b7fc38b8608a5c66dd34f3092f4ca11b09ad2929a66.utf8"
+      },
+      "retrieval_tool": "web open for content review; Python urllib for independently recorded exact document bytes"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/thunlp/THUOCL/a30ce79d895d01ab5132a5c74c29703ff7efb4cc/LICENSE",
+      "retrieval": "success",
+      "findings": [
+        "MIT, copyright 2018 THUNLP, retention of copyright and permission notice."
+      ],
+      "decision": "Does not alone resolve each upstream word source.",
+      "byte_identity": {
+        "requested_at_utc": "2026-10-23T15:59:38.212552+00:00",
+        "response_status": 200,
+        "requested_url": "https://raw.githubusercontent.com/thunlp/THUOCL/a30ce79d895d01ab5132a5c74c29703ff7efb4cc/LICENSE",
+        "final_url": "https://raw.githubusercontent.com/thunlp/THUOCL/a30ce79d895d01ab5132a5c74c29703ff7efb4cc/LICENSE",
+        "bytes": 1063,
+        "sha256": "db4b8cca414db4cf487b933d07a0514f77caf44f9f3d392f2bc9d7ba0d511c58",
+        "headers": {
+          "Content-Type": "text/plain; charset=utf-8",
+          "ETag": "\"46616b31c5f9db0f8601b624bf0a6f71afaeb568086cf1ea1d5d29c3cd708e55\"",
+          "Last-Modified": null
+        },
+        "repository": "thunlp/THUOCL",
+        "commit": "a30ce79d895d01ab5132a5c74c29703ff7efb4cc",
+        "path": "LICENSE",
+        "git_blob_sha1": "968c114bb4e6b605b2e984833d89a3895d1ed2b7",
+        "local_metadata_document": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-source-document-identities\\44815906a2f3c83495a0bcf3502861b58d9c7dc930fd71a20eccbc23825804cb.utf8"
+      },
+      "retrieval_tool": "web open for content review; Python urllib for independently recorded exact document bytes"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/rspeer/wordfreq/912caf64b657478d1dff1138efdc078947d54bb1/README.md",
+      "retrieval": "success",
+      "findings": [
+        "Data is a snapshot through about 2021.",
+        "Chinese miscellaneous list from Jieba has explicitly unknown provenance.",
+        "Default minimum on absent words is not an observation of zero frequency."
+      ],
+      "decision": "blocked-provenance; not installed or exported",
+      "byte_identity": {
+        "requested_at_utc": "2026-10-23T15:59:38.212552+00:00",
+        "response_status": 200,
+        "requested_url": "https://raw.githubusercontent.com/rspeer/wordfreq/912caf64b657478d1dff1138efdc078947d54bb1/README.md",
+        "final_url": "https://raw.githubusercontent.com/rspeer/wordfreq/912caf64b657478d1dff1138efdc078947d54bb1/README.md",
+        "bytes": 27642,
+        "sha256": "0f1db058e1df2e6bda2db5d0ea851a7111d2390ec16a9939d971ef53ea24f684",
+        "headers": {
+          "Content-Type": "text/plain; charset=utf-8",
+          "ETag": "\"ed446da4a2a968079d42e55923cc2973178dad9a14faf5646237ca2c54dbdf6e\"",
+          "Last-Modified": null
+        },
+        "repository": "rspeer/wordfreq",
+        "commit": "912caf64b657478d1dff1138efdc078947d54bb1",
+        "path": "README.md",
+        "git_blob_sha1": "46f45656792d81249c51ca9cb4ac284be53dfbc5",
+        "local_metadata_document": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-source-document-identities\\67a5bc8381223e71b25befbed9000f9405e068fefe12cf66d131b5a2660b07fc.utf8"
+      },
+      "retrieval_tool": "web open for content review; Python urllib for independently recorded exact document bytes"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/rspeer/wordfreq/912caf64b657478d1dff1138efdc078947d54bb1/NOTICE.md",
+      "retrieval": "success",
+      "findings": [
+        "Apache code and CC BY-SA 4 data have distinct obligations, including Robyn Speer and source attribution.",
+        "SUBTLEX email permission is described as distribution in wordfreq; it is not proof of an independent Cloudleaf package grant."
+      ],
+      "decision": "Keep data provenance and SUBTLEX independent-package scope unresolved.",
+      "byte_identity": {
+        "requested_at_utc": "2026-10-23T15:59:38.213538+00:00",
+        "response_status": 200,
+        "requested_url": "https://raw.githubusercontent.com/rspeer/wordfreq/912caf64b657478d1dff1138efdc078947d54bb1/NOTICE.md",
+        "final_url": "https://raw.githubusercontent.com/rspeer/wordfreq/912caf64b657478d1dff1138efdc078947d54bb1/NOTICE.md",
+        "bytes": 2891,
+        "sha256": "d9b104dafe63886af55e7cea7484824e32e12d4e1f57f319923dd643b36d6b15",
+        "headers": {
+          "Content-Type": "text/plain; charset=utf-8",
+          "ETag": "\"f5264019664881b95327977a93a4235339ccf0c7da9306e7e7558b670319d3f1\"",
+          "Last-Modified": null
+        },
+        "repository": "rspeer/wordfreq",
+        "commit": "912caf64b657478d1dff1138efdc078947d54bb1",
+        "path": "NOTICE.md",
+        "git_blob_sha1": "1e7c6da3843e05b539bf096481200bb394c7796d",
+        "local_metadata_document": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-source-document-identities\\3b7579590714cf3881399abe2e23bba67e759fdb89717b0b5175c65fd503466e.utf8"
+      },
+      "retrieval_tool": "web open for content review; Python urllib for independently recorded exact document bytes"
+    },
+    {
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0010729",
+      "retrieval": "success",
+      "findings": [
+        "2010 authors' paper describes film/subtitle statistics and research availability.",
+        "Article has CC Attribution terms; independent dataset commercial modification and redistribution scope was not established by this review."
+      ],
+      "decision": "blocked-license-scope for adopting a standalone SUBTLEX-CH package",
+      "byte_identity": {
+        "requested_at_utc": "2026-10-23T15:59:38.336540+00:00",
+        "response_status": 200,
+        "requested_url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0010729",
+        "final_url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0010729",
+        "bytes": 176151,
+        "sha256": "c43de2aefe90d0a6cc7f612af7579ac25ca366e083069d40f2a4072e7fad47ce",
+        "headers": {
+          "Content-Type": "text/html;charset=UTF-8",
+          "ETag": null,
+          "Last-Modified": null
+        },
+        "scope": "Dynamic publisher HTML at this retrieval, not a stable corpus version or supplementary-file hash.",
+        "local_metadata_document": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-source-document-identities\\6f88ad3464bdfaec5c063c9f6db946546bf85d9c8625622f721b1dd97cae0ac0.utf8"
+      },
+      "retrieval_tool": "web open for content review; Python urllib for independently recorded exact document bytes"
+    },
+    {
+      "url": "https://tatoeba.org/en/terms_of_use",
+      "retrieval": "failed",
+      "raw_error": "Failed to fetch https://tatoeba.org/en/terms_of_use: (400) Timeout fetching",
+      "findings": [],
+      "decision": "No new license confirmation from this closeout retrieval; prior Round 3 conditional candidate status retained, no fixed dump or IME gold approved.",
+      "byte_identity": null,
+      "retrieval_tool": "web open; exact tool error retained, no source bytes available"
+    }
+  ],
+  "modern_frequency_selected": false,
+  "independent_ime_gold_approved": false,
+  "full_cccedict_decision": "Approved fixed mirror source is documented separately by source lock, original authorization envelope and acquisition report; no additional source approval implied.",
+  "metadata_bytes_are_not_corpus_downloads": true,
+  "recorded_at_utc": "2026-10-23T16:00:02.877585+00:00"
+}
