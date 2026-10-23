@@ -55,10 +55,27 @@ schema3保留中文gloss、原POS和明确英文翻译；九列v2 annotation仅�
 
 这里的hash保证固定原件和内容完整性，不是发布者签名。`review_status=approved`是可信来源锁的人工审核结论，不会从任意自包含release获得真实授权。导入外部锁/派生包前必须核对可信Git来源、许可原文及hash；正式安装器的签名、断电持久性、跨版本用户词典迁移仍未交付。
 
+## 固定完整CC-CEDICT词条包
+
+第四轮重新审查了MDBG的开放数据许可和站点取得限制。MDBG页提供bulk，但footer禁止脚本访问，未找到明确例外，因此不自动请求该站的导出、查询或API。另行审核的GitHub分发者在固定commit中提供完整原始ZIP及CC BY-SA4授权，适用范围见`data/sources/locks/cccedict-20260604-mirror7019e1c.json`；没有取镜像解析代码、JSON、CC-CANTO或粤语数据。
+
+```text
+python -m tools.data_pipeline fetch --lock data/sources/locks/cccedict-20260604-mirror7019e1c.json --output .local/data-sources/cccedict-20260604.zip
+python -m tools.data_pipeline build --lock data/sources/locks/cccedict-20260604-mirror7019e1c.json --source .local/data-sources/cccedict-20260604.zip --license data/licenses/CC-BY-SA-4.0.txt --output .local/cccedict-20260604-a
+python -m tools.data_pipeline verify .local/cccedict-20260604-a
+python -m unittest discover -s tests -p test_cedict_source.py -v
+```
+
+本地缓存名不使用上游文件名中的冒号，避免NTFS将其解释为备用数据流。新`cedict-zip-v1`固定单成员`cedict_ts.u8`、ZIP CRC、展开字节数/SHA和完整版本头/源条数；不在磁盘解包，拒绝路径、额外成员、链接及声明的特殊文件类型。带日期的完整镜像不等于最新官方版本或发布者签名。
+
+125,012条源记录中接受123,544条，多字110,045条；1,468条不支持读音或超预算记录保持逐行隔离。事实层保留繁简原文、区分大小写的数字声调读音、旧版斜线分段义项和原行。没有自动繁简转换、从单字补读音或推断词性，全部词频仍unknown/null。稳定来源ID不包含可修订释义，相同身份的不同释义冲突全部隔离。英语原始释义存在不表示义项对齐或双向翻译已验收；241条过长注释只省略运行时投影，完整内容仍在事实层。
+
+原授权README与LICENSE原文以无损UTF-8 JSON字符串保存在`data/sources/evidence/cccedict-mirror-7019e1c/upstream-documents.json`，重建Git blob逐份核验，保留上游原始空白。CC BY-SA4数据保留其署名、许可及修改/同许可义务，不能按本项目MIT代码许可重新标记。新完整词条包的双构建、质量、独立评测边界和恢复证据见[第四轮报告](../../docs/reports/cl009-round4.md)。
+
 ## 其他来源
 
 2026-10-23新增[正式来源候选与质量门禁](../../docs/cl009-formal-data-review.md)，逐项区分许可声明、实际取得版本与项目采用决定；[第三轮报告](../../docs/reports/cl009-round3.md)追加固定两来源双构建、18条审计和真实中断恢复证据。候选清单不自动增加已批准来源，历史锁和七条审核记录不变。
 
-审查登记见`data/sources/source-review.jsonl`。CC-CEDICT不自动下载：本地`cedict-text`锁须由人工补齐固定原件hash、合法取得方式、CC BY-SA4完整许可及署名链，随后用相同build命令导入。测试中的自编三行夹具只验证语法/去重，不代表CC-CEDICT正式数据已经取得。SUBTLEX-CH许可范围和wordfreq中文来源问题保持阻塞。
+审查登记见`data/sources/source-review.jsonl`。旧本地`cedict-text`锁仍须人工补齐固定原件hash、合法取得方式、CC BY-SA4完整许可及署名链；测试中的自编夹具仅验证语法/去重，不能代替新完整ZIP的取得证据。SUBTLEX-CH许可范围和wordfreq中文来源问题保持阻塞，其他候选也不因CC-CEDICT镜像批准而自动通过。
 
-此版本索引只用于Python离线精确查询验证；Rust消费TSV后建立自身内存索引。索引查询时间不能作为中文候选延迟、输入法端到端延迟或语言质量证据。生产词/短语、统计语料/频率、完整双语数据、独立评估和产品资源预算均未完成，CL-009不关闭。
+此版本索引只用于Python离线精确查询验证；Rust消费TSV后建立自身内存索引。索引查询时间不能作为中文候选延迟、输入法端到端延迟或语言质量证据。完整来源词条已可重放，生产读音/覆盖验收、统计语料/频率、完整双语数据、独立评估和产品资源预算仍未完成，CL-009不关闭。
