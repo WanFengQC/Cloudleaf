@@ -655,6 +655,28 @@ fn native_probe_is_readonly_and_queue_full_does_not_take_new_key() {
 }
 
 #[test]
+fn round4_expired_scope_with_full_ownership_rejects_before_barrier_or_write() {
+    let (host, data, _) = native_fixture();
+    for _ in 0..QUEUE_LIMIT {
+        // 布置已知有效scope的满队列；容量条件成立后再明确撤销scope证明。
+        host.scope_proof.set(Some(Instant::now()));
+        assert!(native(&host, b'N' as u16));
+    }
+    assert_eq!(host.owned.borrow().len(), QUEUE_LIMIT);
+    let next = host.native_sequence.get();
+    host.scope_proof.set(None);
+    data.calls.borrow_mut().clear();
+    assert!(!native(&host, b'N' as u16));
+    assert_eq!(host.native_sequence.get(), next);
+    assert_eq!(host.owned.borrow().len(), QUEUE_LIMIT);
+    assert!(host.quarantined.get());
+    assert!(data.calls.borrow().is_empty());
+    assert_eq!(data.writes.get(), 0);
+    drain(&data);
+    assert_eq!(data.writes.get(), 0);
+}
+
+#[test]
 fn native_barrier_rejection_preserves_owned_events_and_does_not_fake_enter() {
     use windows::Win32::UI::Input::KeyboardAndMouse::{VK_RETURN, VK_SPACE};
     let (host, data, _) = native_fixture();

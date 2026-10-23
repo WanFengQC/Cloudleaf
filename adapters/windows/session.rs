@@ -519,6 +519,10 @@ impl Host {
         {
             return Ok(false);
         }
+        if self.owned.borrow().len() >= QUEUE_LIMIT || self.queue.borrow().len() >= QUEUE_LIMIT {
+            self.isolate_owned("接管队列已满，新原生事件未被接管");
+            return Ok(false);
+        }
         if !self.scope_current() {
             self.native_barrier()?;
             let native = NativeEnvelope::capture(
@@ -531,10 +535,6 @@ impl Host {
             );
             let handled = self.key_action(key.unwrap(), Operation::NativeKey(native))?;
             return Ok(handled);
-        }
-        if self.owned.borrow().len() >= QUEUE_LIMIT || self.queue.borrow().len() >= QUEUE_LIMIT {
-            self.isolate_owned("接管队列已满，新原生事件未被接管");
-            return Ok(false);
         }
         let sequence = self.native_sequence.get();
         let next = sequence
