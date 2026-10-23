@@ -1,16 +1,23 @@
 //! 恢复材料与 HWND 分离；broker 只传无文本通知，全部 HWND 操作留在创建 STA。
-use super::{boundary, budget, service::Lease, session::Host, watchdog};
+use super::ownership::{NativeEnvelope, Outcome};
+use super::{
+    boundary, budget, owner_cleanup::OwnerThreadProof, service::Lease, session::Host, watchdog,
+};
+use cloudleaf_types::EventResult;
+#[cfg(test)]
+use std::cell::Cell;
 use std::{
-    cell::{Cell, RefCell},
+    cell::RefCell,
+    collections::BTreeMap,
     rc::{Rc, Weak},
     sync::{
         Arc, Mutex, OnceLock,
-        atomic::{AtomicBool, AtomicIsize, AtomicU8, AtomicU64, Ordering},
+        atomic::{AtomicBool, AtomicIsize, AtomicU8, AtomicU64, AtomicUsize, Ordering},
     },
 };
 use windows::Win32::{
     Foundation::*,
-    System::{LibraryLoader::GetModuleHandleW, Threading::GetCurrentThreadId},
+    System::LibraryLoader::GetModuleHandleW,
     UI::{Controls::EM_SETSEL, Input::KeyboardAndMouse::SetFocus, WindowsAndMessaging::*},
 };
 use windows_core::{Error, PCWSTR, Result};
@@ -24,7 +31,7 @@ const MATERIAL_LIMIT: usize = 1024 * 1024;
 const CONTEXT_LIMIT: usize = 32;
 const NOTICE_ATTEMPTS: u8 = 4;
 static NEXT_WINDOW: AtomicU64 = AtomicU64::new(1);
-static ENDPOINTS: OnceLock<Mutex<Vec<Arc<Endpoint>>>> = OnceLock::new();
+static RECEIPTS: OnceLock<Mutex<Vec<Arc<View>>>> = OnceLock::new();
 static MATERIALS: OnceLock<Mutex<Vec<Arc<MaterialStore>>>> = OnceLock::new();
 #[cfg(test)]
 thread_local! { static REGISTER_FAILURE: Cell<Option<usize>> = const { Cell::new(None) }; }
@@ -54,12 +61,126 @@ struct MaterialStore {
     batches: Mutex<Vec<RecoveryBatch>>,
     discarded_through: AtomicU64,
     viewer: AtomicU64,
+    flight: Mutex<Vec<FlightValue>>,
+}
+// 异常退出材料提前放在纯值存储；不含COM/Rc/候选，不在外调期间持有此锁。
+struct FlightValue {
+    epoch: u64,
+    native: Option<NativeEnvelope>,
+    target: String,
+    phase: Outcome,
+    reservation: Arc<budget::Reservation>,
+}
+impl FlightValue {
+    fn sequence(&self) -> u64 {
+        self.native.as_ref().map_or(0, |native| native.sequence)
+    }
 }
 struct MaterialSnapshot {
     text: String,
     reservations: Vec<Arc<budget::Reservation>>,
 }
 impl MaterialStore {
+    fn offer_reserved(
+        self: &Arc<Self>,
+        epoch: u64,
+        material: String,
+        reservation: Arc<budget::Reservation>,
+        nonblocking: bool,
+    ) -> bool {
+        if epoch != 0 && epoch <= self.discarded_through.load(Ordering::Acquire) {
+            return true;
+        }
+        let batches = if nonblocking {
+            self.batches.try_lock().ok()
+        } else {
+            self.batches.lock().ok()
+        };
+        let Some(mut batches) = batches else {
+            return false;
+        };
+        let existing = batches.iter().position(|batch| batch.epoch == epoch);
+        let previous = existing.map_or(0, |index| batches[index].text.len());
+        let total = batches.iter().map(|batch| batch.text.len()).sum::<usize>();
+        let capacity = material
+            .capacity()
+            .checked_add(128)
+            .and_then(|capacity| capacity.checked_mul(16));
+        let retained = existing.map_or(&reservation, |index| &batches[index]._reservation);
+        if epoch == 0
+            || material.is_empty()
+            || capacity.is_none_or(|capacity| capacity > retained.charge().text_bytes)
+            || material.len() > MATERIAL_LIMIT
+            || total - previous > MATERIAL_LIMIT - material.len()
+            || (existing.is_none() && batches.len() >= CONTEXT_LIMIT)
+        {
+            return false;
+        }
+        let directory = MATERIALS.get_or_init(|| Mutex::new(Vec::new()));
+        let materials = if nonblocking {
+            directory.try_lock().ok()
+        } else {
+            directory.lock().ok()
+        };
+        let Some(mut materials) = materials else {
+            return false;
+        };
+        if let Some(index) = existing {
+            batches[index].text = material;
+        } else {
+            batches.push(RecoveryBatch {
+                epoch,
+                text: material,
+                _reservation: reservation,
+            });
+        }
+        if !materials.iter().any(|store| Arc::ptr_eq(store, self)) {
+            materials.push(self.clone());
+        }
+        true
+    }
+    fn publish_dead_flight(self: &Arc<Self>) -> Result<()> {
+        let mut flight = self
+            .flight
+            .try_lock()
+            .map_err(|_| Error::from_hresult(E_FAIL))?;
+        let mut epochs = Vec::new();
+        for record in flight.iter() {
+            if !epochs.contains(&record.epoch) {
+                epochs.push(record.epoch);
+            }
+        }
+        for epoch in epochs {
+            let records: Vec<_> = flight
+                .iter()
+                .filter(|record| record.epoch == epoch)
+                .collect();
+            let mut material = String::from(
+                "owner真实线程已退出；提前保存的纯值材料。原生命令没有重放，Unknown可能已经写入，禁止自动重试。\r\n",
+            );
+            for record in &records {
+                let phase = if matches!(record.phase, Outcome::Writing | Outcome::Unknown) {
+                    Outcome::Unknown
+                } else {
+                    Outcome::NotApplied
+                };
+                if let Some(native) = &record.native {
+                    material.push_str(&format!("instance={} epoch={} sequence={} state={phase:?} repeat={} 原始键={:?} VK={} LPARAM={:X} layout={:X} modifiers={:X}\r\n",native.instance,native.epoch,native.sequence,native.repeat,native.key,native.wparam,native.lparam,native.layout,native.modifiers));
+                } else {
+                    material.push_str(&format!("instance={} epoch={epoch} 同步UI操作 state={phase:?}（不是原生按键信封）\r\n",self.instance));
+                }
+                material.push_str(&format!(
+                    "计划目标（仅供核对；Unknown不得重试）：{}\r\n",
+                    record.target
+                ));
+            }
+            if !self.offer_reserved(epoch, material, records[0].reservation.clone(), true) {
+                return Err(Error::from_hresult(E_FAIL));
+            }
+            flight.retain(|record| record.epoch != epoch);
+        }
+        Ok(())
+    }
     fn has_material(&self) -> bool {
         self.batches
             .lock()
@@ -110,80 +231,241 @@ impl MaterialStore {
         Ok(last)
     }
 }
+/// 句柄只保存数值身份；只有 owner 或类已注销证明允许写回，不跨线程 DestroyWindow。
+struct WindowSlot(AtomicIsize);
+impl WindowSlot {
+    fn new() -> Self {
+        Self(AtomicIsize::new(0))
+    }
+    fn get(&self) -> HWND {
+        HWND(self.0.load(Ordering::Acquire) as *mut _)
+    }
+    fn set(&self, window: HWND) {
+        self.0.store(window.0 as isize, Ordering::Release);
+    }
+}
+struct Flag(AtomicBool);
+impl Flag {
+    fn new(value: bool) -> Self {
+        Self(AtomicBool::new(value))
+    }
+    fn get(&self) -> bool {
+        self.0.load(Ordering::Acquire)
+    }
+    fn set(&self, value: bool) {
+        self.0.store(value, Ordering::Release);
+    }
+}
 struct View {
-    host: Weak<Host>,
-    owner: u32,
-    window: Cell<HWND>,
-    broker: Cell<HWND>,
+    owner: Arc<OwnerThreadProof>,
+    window: WindowSlot,
+    broker: WindowSlot,
     store: Arc<MaterialStore>,
-    edit: Cell<HWND>,
+    edit: WindowSlot,
     class: Vec<u16>,
     broker_class: Vec<u16>,
-    instance: HINSTANCE,
+    instance: usize,
     endpoint: Arc<Endpoint>,
     generation: u64,
-    shown: RefCell<Vec<DisplayedStore>>,
-    main_registered: Cell<bool>,
-    broker_registered: Cell<bool>,
+    shown: Mutex<Vec<DisplayedStore>>,
+    main_registered: Flag,
+    broker_registered: Flag,
+    retired: AtomicBool,
+    released: AtomicBool,
+    completion: Mutex<Arc<AtomicBool>>,
+    monitor: Mutex<Option<Arc<watchdog::Signals>>>,
+    cleanup_gate: Mutex<()>,
+    callbacks: AtomicUsize,
+    last_error: AtomicIsize,
+    cleanup_attempts: AtomicU64,
+    #[cfg(test)]
+    fail_cleanup: AtomicU8,
     _reservation: Arc<budget::Reservation>,
     _lease: Lease,
 }
+impl View {
+    fn instance(&self) -> HINSTANCE {
+        HINSTANCE(self.instance as *mut _)
+    }
+}
 pub(crate) struct RecoveryWindow {
-    view: Rc<View>,
+    view: Arc<View>,
 }
 struct DisplayedStore {
     store: Arc<MaterialStore>,
     _reservations: Vec<Arc<budget::Reservation>>,
 }
-struct OwnerRetired {
-    windows: RefCell<Vec<(Rc<RecoveryWindow>, Arc<AtomicBool>)>>,
+// TLS只含弱hook，不含最后一个UI/模块租约；析构不调User32、不等待、不释放强COM。
+thread_local! { static HOOKS: RefCell<BTreeMap<u64,Weak<Host>>> = const {RefCell::new(BTreeMap::new())}; }
+fn owner_host(view: &View) -> Option<Rc<Host>> {
+    if !view.owner.is_owner() {
+        return None;
+    }
+    HOOKS
+        .try_with(|hooks| hooks.borrow().get(&view.generation).and_then(Weak::upgrade))
+        .ok()
+        .flatten()
 }
-impl Drop for OwnerRetired {
+fn detach_hook(view: &View) {
+    if view.owner.is_owner() {
+        let _ = HOOKS.try_with(|hooks| hooks.borrow_mut().remove(&view.generation));
+    }
+}
+struct CallbackGuard {
+    view: Arc<View>,
+}
+impl CallbackGuard {
+    fn new(view: Arc<View>) -> Self {
+        view.callbacks.fetch_add(1, Ordering::AcqRel);
+        Self { view }
+    }
+}
+impl Drop for CallbackGuard {
     fn drop(&mut self) {
-        // 线程退出不等于已注销窗口类；不可由 TLS 析构丢弃材料或最后的模块租约。
-        for item in self.windows.get_mut().drain(..) {
-            std::mem::forget(item);
+        self.view.callbacks.fetch_sub(1, Ordering::AcqRel);
+    }
+}
+pub(crate) fn retire(window: Rc<RecoveryWindow>, completion: Arc<AtomicBool>) {
+    if let Ok(mut proof) = window.view.completion.lock() {
+        *proof = completion;
+    } else {
+        return;
+    }
+    detach_hook(&window.view);
+    window.view.retired.store(true, Ordering::Release);
+}
+fn release_dead_display(view: &View) -> Result<()> {
+    let displayed = std::mem::take(
+        &mut *view
+            .shown
+            .try_lock()
+            .map_err(|_| Error::from_hresult(E_FAIL))?,
+    );
+    for item in displayed {
+        let _ = item.store.viewer.compare_exchange(
+            view.generation,
+            0,
+            Ordering::AcqRel,
+            Ordering::Acquire,
+        );
+    }
+    Ok(())
+}
+fn cleanup(view: &Arc<View>) -> Result<bool> {
+    if view.released.load(Ordering::Acquire) {
+        return Ok(true);
+    }
+    let Ok(_gate) = view.cleanup_gate.try_lock() else {
+        return Ok(false);
+    };
+    let owner = view.owner.is_owner();
+    let dead = view.owner.exited();
+    if dead {
+        if let Ok(monitor) = view.monitor.try_lock()
+            && let Some(monitor) = monitor.as_ref()
+        {
+            monitor.owner_exited();
+        }
+        view.store.publish_dead_flight()?;
+    }
+    let completed = view
+        .completion
+        .try_lock()
+        .is_ok_and(|complete| complete.load(Ordering::Acquire));
+    if (!owner && !dead) || !completed {
+        return Ok(false);
+    }
+    let empty = view
+        .store
+        .batches
+        .try_lock()
+        .is_ok_and(|batches| batches.is_empty());
+    if !dead && (!view.retired.load(Ordering::Acquire) || !empty) {
+        return Ok(false);
+    }
+    if dead && view.callbacks.load(Ordering::Acquire) != 0 {
+        return Ok(false);
+    }
+    view.cleanup_attempts.fetch_add(1, Ordering::AcqRel);
+    #[cfg(test)]
+    if view.fail_cleanup.load(Ordering::Acquire) != 0 {
+        return Err(Error::new(E_FAIL, "故障注入：owner类清理未取得成功证明"));
+    }
+    if owner {
+        detach_hook(view);
+        for window in [view.window.get(), view.broker.get()] {
+            if !window.is_invalid() {
+                #[cfg(test)]
+                if DROP_FAILURE.with(|fault| fault.get() == 1) {
+                    return Err(Error::new(E_FAIL, "故障注入：窗口销毁失败"));
+                }
+                // 安全：只由真实创建线程销毁；失败保留receipt与raw userdata。
+                unsafe {
+                    DestroyWindow(window)?;
+                }
+            }
         }
     }
-}
-thread_local! { static RETIRED: OwnerRetired = const { OwnerRetired { windows: RefCell::new(Vec::new()) } }; }
-pub(crate) fn retire(window: Rc<RecoveryWindow>, completion: Arc<AtomicBool>) {
-    let mut item = Some((window, completion));
-    if RETIRED
-        .try_with(|retired| retired.windows.borrow_mut().push(item.take().unwrap()))
-        .is_err()
-    {
-        // owner TLS 已不可用，保守保活而不从退出线程假称完成资源清理。
-        std::mem::forget(item);
+    #[cfg(test)]
+    if DROP_FAILURE.with(|fault| fault.get() == 2) {
+        return Err(Error::new(E_FAIL, "故障注入：注销类失败"));
     }
+    for (name, registered) in [
+        (&view.class, &view.main_registered),
+        (&view.broker_class, &view.broker_registered),
+    ] {
+        if registered.get() {
+            // 安全：owner自身或已真实终止的owner；仅注销唯一类，系统有存活窗口时会拒绝。
+            unsafe {
+                UnregisterClassW(PCWSTR(name.as_ptr()), Some(view.instance()))?;
+            }
+            registered.set(false);
+        }
+    }
+    // 类注销成功证明不存在此类窗口，不能依赖可复用的旧HWND仍指向原窗口。
+    view.window.set(HWND::default());
+    view.broker.set(HWND::default());
+    view.edit.set(HWND::default());
+    view.endpoint.broker.store(0, Ordering::Release);
+    release_dead_display(view)?;
+    view.released.store(true, Ordering::Release);
+    Ok(true)
 }
 pub(crate) fn reap() {
-    let _ = RETIRED.try_with(|retired| {
-        let previous = std::mem::take(&mut *retired.windows.borrow_mut());
-        let (remaining, released): (Vec<_>, Vec<_>) =
-            previous.into_iter().partition(|(window, complete)| {
-                !complete.load(Ordering::Acquire) || window.has_material()
-            });
-        *retired.windows.borrow_mut() = remaining;
-        // DestroyWindow 会重入窗口过程，不跨外调持有 TLS 借用。
-        drop(released);
-    });
+    let Some(receipts) = RECEIPTS.get() else {
+        return;
+    };
+    let Ok(snapshot) = receipts.try_lock().map(|receipts| receipts.clone()) else {
+        return;
+    };
+    for view in snapshot {
+        if let Err(error) = cleanup(&view) {
+            view.last_error
+                .store(error.code().0 as isize, Ordering::Release);
+        }
+    }
+    if let Ok(mut receipts) = receipts.try_lock() {
+        receipts.retain(|view| !view.released.load(Ordering::Acquire));
+    }
 }
-/// 任意线程只发无文本消息，不执行 apartment 清理，不等待 owner。
+/// 任意线程零等待；活owner只收到无文本通知，不转移COM/Rc或误销毁其窗口。
 pub(crate) fn request_owner_cleanup() {
     reap();
-    let Some(endpoints) = ENDPOINTS.get() else {
+    let Some(receipts) = RECEIPTS.get() else {
         return;
     };
-    let Ok(endpoints) = endpoints.try_lock().map(|endpoints| endpoints.clone()) else {
+    let Ok(receipts) = receipts.try_lock().map(|receipts| receipts.clone()) else {
         return;
     };
-    for endpoint in &endpoints {
-        // owner 身份只供路由/诊断，任何线程均不借此越过 STA 执行清理。
-        if endpoint.owner == 0 {
+    for view in &receipts {
+        if view.owner.exited() {
             continue;
         }
+        let endpoint = &view.endpoint;
         let broker = endpoint.broker.load(Ordering::Acquire);
+        if endpoint.owner != view.owner.owner_id() {
+            continue;
+        }
         if broker == 0 {
             endpoint.failed.store(true, Ordering::Release);
             continue;
@@ -201,13 +483,13 @@ pub(crate) fn request_owner_cleanup() {
             endpoint.pending.store(false, Ordering::Release);
             continue;
         }
-        // 安全：消息无文本，目标窗口只由其 STA 解释；发送成功不视为处理成功。
         #[cfg(test)]
         if endpoint.fail_delivery.load(Ordering::Acquire) {
             endpoint.failed.store(true, Ordering::Release);
             endpoint.pending.store(false, Ordering::Release);
             continue;
         }
+        // 安全：仅向owner投递无文本信号；发送不表示处理完成。
         if unsafe { PostMessageW(Some(HWND(broker as *mut _)), CLEANUP, WPARAM(0), LPARAM(0)) }
             .is_err()
         {
@@ -216,15 +498,135 @@ pub(crate) fn request_owner_cleanup() {
         }
     }
 }
+
+#[cfg(test)]
+#[derive(Debug)]
+pub(crate) struct ReceiptAudit {
+    pub instance: u64,
+    pub generation: u64,
+    pub owner_exited: bool,
+    pub last_error: isize,
+    pub attempts: u64,
+}
+#[cfg(test)]
+pub(crate) fn receipt_snapshot_for_review() -> Vec<ReceiptAudit> {
+    let receipts = RECEIPTS
+        .get_or_init(|| Mutex::new(Vec::new()))
+        .lock()
+        .unwrap()
+        .clone();
+    receipts
+        .iter()
+        .map(|view| ReceiptAudit {
+            instance: view.store.instance,
+            generation: view.generation,
+            owner_exited: view.owner.exited(),
+            last_error: view.last_error.load(Ordering::Acquire),
+            attempts: view.cleanup_attempts.load(Ordering::Acquire),
+        })
+        .collect()
+}
+#[cfg(test)]
+pub(crate) fn clear_cleanup_failure_for_review(generation: u64) {
+    let receipts = RECEIPTS
+        .get_or_init(|| Mutex::new(Vec::new()))
+        .lock()
+        .unwrap()
+        .clone();
+    let view = receipts
+        .iter()
+        .find(|view| view.generation == generation)
+        .unwrap();
+    view.fail_cleanup.store(0, Ordering::Release);
+}
 pub(crate) fn fixed_cost() -> usize {
     std::mem::size_of::<RecoveryWindow>()
         + std::mem::size_of::<View>()
         + std::mem::size_of::<Endpoint>()
         + std::mem::size_of::<MaterialStore>()
         + CONTEXT_LIMIT * std::mem::size_of::<RecoveryBatch>()
+        + super::session::QUEUE_LIMIT * std::mem::size_of::<FlightValue>()
         + 4096
 }
 impl RecoveryWindow {
+    pub fn bind_completion(&self, completion: Arc<AtomicBool>) -> Result<()> {
+        *self
+            .view
+            .completion
+            .lock()
+            .map_err(|_| Error::from_hresult(E_FAIL))? = completion;
+        Ok(())
+    }
+    pub fn bind_monitor(&self, monitor: Arc<watchdog::Signals>) -> Result<()> {
+        *self
+            .view
+            .monitor
+            .lock()
+            .map_err(|_| Error::from_hresult(E_FAIL))? = Some(monitor);
+        Ok(())
+    }
+    pub fn cache_flight(
+        &self,
+        epoch: u64,
+        native: Option<NativeEnvelope>,
+        planned: &EventResult,
+        reservation: Arc<budget::Reservation>,
+    ) -> Result<()> {
+        let sequence = native.as_ref().map_or(0, |native| native.sequence);
+        let target = planned
+            .commit
+            .as_ref()
+            .map_or(planned.frame.preedit.as_str(), |commit| {
+                commit.text.as_str()
+            })
+            .to_owned();
+        let mut records = self
+            .view
+            .store
+            .flight
+            .lock()
+            .map_err(|_| Error::from_hresult(E_FAIL))?;
+        if let Some(record) = records
+            .iter_mut()
+            .find(|record| record.epoch == epoch && record.sequence() == sequence)
+        {
+            record.target = target;
+        } else {
+            if records.len() >= super::session::QUEUE_LIMIT {
+                return Err(Error::from_hresult(E_FAIL));
+            }
+            records.push(FlightValue {
+                epoch,
+                native,
+                target,
+                phase: Outcome::Queued,
+                reservation,
+            });
+        }
+        Ok(())
+    }
+    pub fn flight_phase(&self, epoch: u64, sequence: u64, phase: Outcome) -> Result<()> {
+        let mut records = self
+            .view
+            .store
+            .flight
+            .lock()
+            .map_err(|_| Error::from_hresult(E_FAIL))?;
+        if phase == Outcome::Applied {
+            records.retain(|record| record.epoch != epoch || record.sequence() != sequence);
+        } else if let Some(record) = records
+            .iter_mut()
+            .find(|record| record.epoch == epoch && record.sequence() == sequence)
+        {
+            record.phase = phase;
+        }
+        Ok(())
+    }
+    fn clear_flight_epoch(&self, epoch: u64) {
+        if let Ok(mut records) = self.view.store.flight.lock() {
+            records.retain(|record| record.epoch != epoch);
+        }
+    }
     pub fn new(host: Weak<Host>, identity: u64) -> Result<Self> {
         let reservation = host
             .upgrade()
@@ -237,10 +639,10 @@ impl RecoveryWindow {
             })
             .map_err(|_| Error::from_hresult(E_FAIL))?;
         // 安全：只读取当前线程与进程模块身份，所有窗口均由当前 STA 创建。
-        let owner = unsafe { GetCurrentThreadId() };
+        let owner = OwnerThreadProof::capture_current()?;
         let instance = HINSTANCE(unsafe { GetModuleHandleW(None)? }.0);
         let endpoint = Arc::new(Endpoint {
-            owner,
+            owner: owner.owner_id(),
             broker: AtomicIsize::new(0),
             pending: AtomicBool::new(false),
             attempts: AtomicU8::new(0),
@@ -249,35 +651,48 @@ impl RecoveryWindow {
             fail_delivery: AtomicBool::new(false),
             _lease: Lease::new(),
         });
-        let view = Rc::new(View {
-            host,
+        let view = Arc::new(View {
             owner,
-            window: Cell::new(HWND::default()),
-            broker: Cell::new(HWND::default()),
+            window: WindowSlot::new(),
+            broker: WindowSlot::new(),
             store: Arc::new(MaterialStore {
                 instance: identity,
                 batches: Mutex::new(Vec::with_capacity(CONTEXT_LIMIT)),
                 discarded_through: AtomicU64::new(0),
                 viewer: AtomicU64::new(0),
+                flight: Mutex::new(Vec::with_capacity(super::session::QUEUE_LIMIT)),
             }),
-            edit: Cell::new(HWND::default()),
+            edit: WindowSlot::new(),
             class: wide(&format!("CloudleafRecovery_{identity}_{generation}")),
             broker_class: wide(&format!("CloudleafRecoveryBroker_{identity}_{generation}")),
-            instance,
+            instance: instance.0 as usize,
             endpoint,
             generation,
-            shown: RefCell::new(Vec::new()),
-            main_registered: Cell::new(false),
-            broker_registered: Cell::new(false),
+            shown: Mutex::new(Vec::new()),
+            main_registered: Flag::new(false),
+            broker_registered: Flag::new(false),
+            retired: AtomicBool::new(false),
+            released: AtomicBool::new(false),
+            completion: Mutex::new(Arc::new(AtomicBool::new(true))),
+            monitor: Mutex::new(None),
+            cleanup_gate: Mutex::new(()),
+            callbacks: AtomicUsize::new(0),
+            last_error: AtomicIsize::new(0),
+            cleanup_attempts: AtomicU64::new(0),
+            #[cfg(test)]
+            fail_cleanup: AtomicU8::new(0),
             _reservation: reservation,
             _lease: Lease::new(),
         });
         let window = Self { view };
-        ENDPOINTS
+        RECEIPTS
             .get_or_init(|| Mutex::new(Vec::new()))
             .lock()
             .map_err(|_| Error::from_hresult(E_FAIL))?
-            .push(window.view.endpoint.clone());
+            .push(window.view.clone());
+        HOOKS.with(|hooks| {
+            hooks.borrow_mut().insert(generation, host);
+        });
         for (index, (class, procedure, registered)) in [
             (
                 &window.view.class,
@@ -326,7 +741,7 @@ impl RecoveryWindow {
     }
     fn check_owner(&self) -> Result<()> {
         // 安全：仅比较线程身份；错误线程不读取 Rc 所拥有的 HWND 数据。
-        if unsafe { GetCurrentThreadId() } == self.view.owner {
+        if self.view.owner.is_owner() {
             Ok(())
         } else {
             Err(Error::from_hresult(E_UNEXPECTED))
@@ -350,8 +765,8 @@ impl RecoveryWindow {
                 170,
                 None,
                 None,
-                Some(self.view.instance),
-                Some(Rc::as_ptr(&self.view).cast()),
+                Some(self.view.instance()),
+                Some(Arc::as_ptr(&self.view).cast()),
             )?
         };
         self.view.broker.set(window);
@@ -368,6 +783,16 @@ impl RecoveryWindow {
         self.view.broker.get()
     }
     #[cfg(test)]
+    pub fn inject_cleanup_failure(&self, fail: bool) {
+        self.view
+            .fail_cleanup
+            .store(u8::from(fail), Ordering::Release);
+    }
+    #[cfg(test)]
+    pub fn receipt_id_for_review(&self) -> u64 {
+        self.view.generation
+    }
+    #[cfg(test)]
     pub fn evidence(&self) -> String {
         self.view.store.text().unwrap()
     }
@@ -380,6 +805,12 @@ impl RecoveryWindow {
             String::from_utf16(&text[..length as usize]).unwrap()
         }
     }
+    #[cfg(test)]
+    pub fn explicit_discard_all_for_review(&self) {
+        unsafe {
+            SendMessageW(self.handle(), WM_COMMAND, Some(WPARAM(5)), Some(LPARAM(0)));
+        }
+    }
     pub fn repair(&self) -> Result<HWND> {
         self.ensure_broker()?;
         Ok(self.handle())
@@ -388,6 +819,9 @@ impl RecoveryWindow {
         self.view.store.has_material()
     }
     pub fn discard_epoch(&self, epoch: u64) -> Result<()> {
+        self.check_owner()?;
+        // 显式owner入口先回收已退出reader的展示凭证；不能等额外卸载探测才归还同批额度。
+        reap();
         release_display(&self.view)?;
         let mut batches = self
             .view
@@ -441,49 +875,14 @@ impl RecoveryWindow {
         material: String,
         reservation: Arc<budget::Reservation>,
     ) -> bool {
-        if epoch != 0 && epoch <= self.view.store.discarded_through.load(Ordering::Acquire) {
-            return true;
-        }
-        let Ok(mut batches) = self.view.store.batches.lock() else {
-            return false;
-        };
-        let existing = batches.iter().position(|batch| batch.epoch == epoch);
-        let previous = existing.map_or(0, |index| batches[index].text.len());
-        let total = batches.iter().map(|batch| batch.text.len()).sum::<usize>();
-        let capacity = material
-            .capacity()
-            .checked_add(128)
-            .and_then(|capacity| capacity.checked_mul(16));
-        let retained = existing.map_or(&reservation, |index| &batches[index]._reservation);
-        if epoch == 0
-            || material.is_empty()
-            || capacity.is_none_or(|capacity| capacity > retained.charge().text_bytes)
-            || material.len() > MATERIAL_LIMIT
-            || total - previous > MATERIAL_LIMIT - material.len()
-            || (existing.is_none() && batches.len() >= CONTEXT_LIMIT)
+        if !self
+            .view
+            .store
+            .offer_reserved(epoch, material, reservation, false)
         {
             return false;
         }
-        if let Some(index) = existing {
-            batches[index].text = material;
-        } else {
-            batches.push(RecoveryBatch {
-                epoch,
-                text: material,
-                _reservation: reservation,
-            });
-        }
-        drop(batches);
-        if let Ok(mut materials) = MATERIALS.get_or_init(|| Mutex::new(Vec::new())).lock() {
-            if !materials
-                .iter()
-                .any(|store| Arc::ptr_eq(store, &self.view.store))
-            {
-                materials.push(self.view.store.clone());
-            }
-        } else {
-            return false;
-        }
+        self.clear_flight_epoch(epoch);
         // 外部销毁主窗口不丢 store；broker 的按钮提供显式重开入口。
         if self.ensure_broker().is_err() {
             return true;
@@ -500,7 +899,7 @@ impl RecoveryWindow {
         true
     }
 }
-fn ensure_main(view: &Rc<View>) -> Result<()> {
+fn ensure_main(view: &Arc<View>) -> Result<()> {
     if !view.window.get().is_invalid() {
         return Ok(());
     }
@@ -521,8 +920,8 @@ fn ensure_main(view: &Rc<View>) -> Result<()> {
             440,
             None,
             None,
-            Some(view.instance),
-            Some(Rc::as_ptr(view).cast()),
+            Some(view.instance()),
+            Some(Arc::as_ptr(view).cast()),
         )?
     };
     view.window.set(window);
@@ -530,57 +929,8 @@ fn ensure_main(view: &Rc<View>) -> Result<()> {
 }
 impl Drop for RecoveryWindow {
     fn drop(&mut self) {
-        if self.check_owner().is_err() {
-            std::mem::forget(self.view.clone());
-            return;
-        }
-        // 安全：仅创建 STA 清理自己的窗口。保留临时 Rc 至所有同步窗口过程返回。
-        unsafe {
-            let mut destroyed = true;
-            for window in [self.view.window.get(), self.view.broker.get()] {
-                if !window.is_invalid() {
-                    #[cfg(test)]
-                    let fail = DROP_FAILURE.with(|fault| fault.get() == 1);
-                    #[cfg(not(test))]
-                    let fail = false;
-                    if fail || DestroyWindow(window).is_err() {
-                        destroyed = false;
-                    }
-                }
-            }
-            if !destroyed {
-                std::mem::forget(self.view.clone());
-                return;
-            }
-            #[cfg(test)]
-            if DROP_FAILURE.with(|fault| fault.get() == 2) {
-                std::mem::forget(self.view.clone());
-                return;
-            }
-            let main = if self.view.main_registered.get() {
-                UnregisterClassW(PCWSTR(self.view.class.as_ptr()), Some(self.view.instance))
-            } else {
-                Ok(())
-            };
-            let broker = if self.view.broker_registered.get() {
-                UnregisterClassW(
-                    PCWSTR(self.view.broker_class.as_ptr()),
-                    Some(self.view.instance),
-                )
-            } else {
-                Ok(())
-            };
-            if main.is_err() || broker.is_err() {
-                // 注销未获证明时保留 endpoint 租约，不能让 DLL 返回虚假可卸载。
-                std::mem::forget(self.view.clone());
-                return;
-            }
-        }
-        if let Some(endpoints) = ENDPOINTS.get()
-            && let Ok(mut endpoints) = endpoints.lock()
-        {
-            endpoints.retain(|endpoint| !Arc::ptr_eq(endpoint, &self.view.endpoint));
-        }
+        // 全局 receipt 已在窗口创建前保有 Arc；析构只标记，不在 TLS/任意线程执行 User32。
+        self.view.retired.store(true, Ordering::Release);
     }
 }
 fn release_display(view: &View) -> Result<()> {
@@ -593,7 +943,12 @@ fn release_display(view: &View) -> Result<()> {
             }
         }
     }
-    for displayed in view.shown.borrow_mut().drain(..) {
+    for displayed in view
+        .shown
+        .lock()
+        .map_err(|_| Error::from_hresult(E_FAIL))?
+        .drain(..)
+    {
         let _ = displayed.store.viewer.compare_exchange(
             view.generation,
             0,
@@ -603,7 +958,7 @@ fn release_display(view: &View) -> Result<()> {
     }
     Ok(())
 }
-fn display(view: &Rc<View>, all: bool) -> Result<()> {
+fn display(view: &Arc<View>, all: bool) -> Result<()> {
     release_display(view)?;
     ensure_main(view)?;
     let stores = if all {
@@ -644,10 +999,13 @@ fn display(view: &Rc<View>, all: bool) -> Result<()> {
                 return Err(error);
             }
         };
-        view.shown.borrow_mut().push(DisplayedStore {
-            store: store.clone(),
-            _reservations: snapshot.reservations,
-        });
+        view.shown
+            .lock()
+            .map_err(|_| Error::from_hresult(E_FAIL))?
+            .push(DisplayedStore {
+                store: store.clone(),
+                _reservations: snapshot.reservations,
+            });
         texts.push(snapshot.text);
     }
     let content = texts.join("\r\n======\r\n");
@@ -705,7 +1063,7 @@ fn dispatch(broker: bool, window: HWND, message: u32, w: WPARAM, l: LPARAM) -> L
             if message == WM_NCCREATE { let create = &*(l.0 as *const CREATESTRUCTW); SetWindowLongPtrW(window, GWLP_USERDATA, create.lpCreateParams as isize); }
             let ptr = GetWindowLongPtrW(window, GWLP_USERDATA) as *const View;
             if ptr.is_null() { return Ok(DefWindowProcW(window, message, w, l)); }
-            Rc::increment_strong_count(ptr); let view = Rc::from_raw(ptr);
+            Arc::increment_strong_count(ptr); let view = Arc::from_raw(ptr); let _callback=CallbackGuard::new(view.clone());
             match message {
                 WM_CREATE if broker => {
                     for (id,text,y) in [(3,"重新打开本实例恢复材料",8),(4,"查看本进程其他未解决材料",44),(5,"明确放弃本进程全部恢复材料",80)] {
@@ -722,7 +1080,7 @@ fn dispatch(broker: bool, window: HWND, message: u32, w: WPARAM, l: LPARAM) -> L
                     let edit = CreateWindowExW(WS_EX_CLIENTEDGE, windows_core::w!("EDIT"), PCWSTR::null(), WS_CHILD | WS_VISIBLE | WS_VSCROLL | WINDOW_STYLE(ES_MULTILINE as u32 | ES_READONLY as u32 | ES_AUTOVSCROLL as u32), 12, 112, 600, 270, Some(window), None, None, None)?;
                     view.edit.set(edit); Ok(LRESULT(0))
                 }
-                watchdog::NOTICE => { if let Some(host) = view.host.upgrade() { host.watchdog_notice()?; } Ok(LRESULT(0)) }
+                watchdog::NOTICE => { if let Some(host) = owner_host(&view) { host.watchdog_notice()?; } Ok(LRESULT(0)) }
                 CLEANUP => { view.endpoint.pending.store(false, Ordering::Release); view.endpoint.attempts.store(0, Ordering::Release); super::watchdog::reap(); reap(); Ok(LRESULT(0)) }
                 REPAIR => { if view.store.has_material() { let _ = ShowWindow(view.broker.get(), SW_SHOWNOACTIVATE); } Ok(LRESULT(0)) }
                 WM_COMMAND if w.0 & 0xffff == 3 => { release_display(&view)?; ensure_main(&view)?; SetWindowTextW(view.edit.get(), windows_core::w!(""))?; let _ = ShowWindow(view.window.get(), SW_SHOWNOACTIVATE); Ok(LRESULT(0)) }
@@ -739,7 +1097,7 @@ fn dispatch(broker: bool, window: HWND, message: u32, w: WPARAM, l: LPARAM) -> L
                 WM_CLOSE => {
                     release_display(&view)?;
                     let last = view.store.clear()?;
-                    if let Some(host) = view.host.upgrade() && last == Some(host.epoch.get()) && host.quarantined.get() { host.discard_recovery()?; }
+                    if let Some(host) = owner_host(&view) && last == Some(host.epoch.get()) && host.quarantined.get() { host.discard_recovery()?; }
                     for hwnd in [view.window.get(), view.broker.get()] { if !hwnd.is_invalid() { let _ = ShowWindow(hwnd, SW_HIDE); } }
                     if !view.edit.get().is_invalid() { SetWindowTextW(view.edit.get(), windows_core::w!(""))?; }
                     Ok(LRESULT(0))
@@ -757,6 +1115,7 @@ fn dispatch(broker: bool, window: HWND, message: u32, w: WPARAM, l: LPARAM) -> L
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::cell::Cell;
     use std::sync::atomic::AtomicBool;
     thread_local! { static EDIT_PREVIOUS: Cell<isize> = const { Cell::new(0) }; }
     unsafe extern "system" fn reject_clear(
@@ -856,7 +1215,7 @@ mod tests {
         EDIT_PREVIOUS.with(|previous| previous.set(old));
         close(&reader);
         assert_eq!(edit_text(&reader), shown);
-        assert_eq!(reader.view.shown.borrow().len(), 1);
+        assert_eq!(reader.view.shown.lock().unwrap().len(), 1);
         assert_eq!(budget::usage().batches, 1);
         unsafe {
             SetWindowLongPtrW(reader.view.edit.get(), GWLP_WNDPROC, old);
@@ -879,7 +1238,7 @@ mod tests {
         command(&reader, 4);
         CREATE_FAILURE.with(|fault| fault.set(false));
         assert_eq!(source.view.store.viewer.load(Ordering::Acquire), 0);
-        assert!(reader.view.shown.borrow().is_empty());
+        assert!(reader.view.shown.lock().unwrap().is_empty());
         drop(reader);
         command(&source, 1);
         assert!(edit_text(&source).contains("主窗创建失败"));
@@ -950,12 +1309,12 @@ mod tests {
                     50,
                     None,
                     None,
-                    Some(window.view.instance),
-                    Some(Rc::as_ptr(&window.view).cast()),
+                    Some(window.view.instance()),
+                    Some(Arc::as_ptr(&window.view).cast()),
                 )
                 .unwrap()
             };
-            let view = Rc::downgrade(&window.view);
+            let view = Arc::downgrade(&window.view);
             drop(window);
             drop(host);
             assert!(view.upgrade().is_some());
@@ -1111,6 +1470,8 @@ mod tests {
             let _apartment = Apartment::new();
             let host = Host::new().unwrap();
             let window = Rc::new(RecoveryWindow::new(Rc::downgrade(&host), 0xdead).unwrap());
+            // 保留第三轮保守门禁：类清理仍未得到成功证明时，放弃材料也不能假称已卸载。
+            window.inject_cleanup_failure(true);
             assert!(window.offer(19, "旧STA sequence=9 state=Unknown 不自动重试".into()));
             unsafe {
                 DestroyWindow(window.view.window.get()).unwrap();

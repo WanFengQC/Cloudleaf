@@ -111,6 +111,11 @@ pub(crate) enum Detection {
 }
 
 impl Signals {
+    pub fn owner_exited(&self) {
+        // 真实owner线程已退出后停工；仅原子信号，不接触其COM或JoinHandle。
+        self.window.store(0, Ordering::Release);
+        self.stop.store(true, Ordering::Release);
+    }
     fn notify(&self) {
         let window = self.window.load(Ordering::Acquire);
         if window != 0 {
@@ -307,6 +312,9 @@ impl Watchdog {
     }
     pub fn completion(&self) -> Arc<AtomicBool> {
         self.retired.as_ref().unwrap().finished.clone()
+    }
+    pub fn signals(&self) -> Arc<Signals> {
+        self.signals.clone()
     }
     pub fn detection(&self) -> Detection {
         self.signals.detection()

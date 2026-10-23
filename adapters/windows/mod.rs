@@ -3,6 +3,7 @@
 mod budget;
 mod candidate;
 mod keys;
+mod owner_cleanup;
 mod ownership;
 mod recovery;
 mod registration;

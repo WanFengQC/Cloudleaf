@@ -19,6 +19,139 @@ struct Data {
     selection: RefCell<Option<ITfRange>>,
     blocked_detection: Cell<Option<Detection>>,
     blocked_quarantine: Cell<bool>,
+    exit_probe: RefCell<Option<Arc<ExitProbe>>>,
+}
+#[derive(Default)]
+struct ExitProbe {
+    synchronous: bool,
+    writes: std::sync::atomic::AtomicUsize,
+    first_unit: AtomicU64,
+    instance: AtomicU64,
+    epoch: AtomicU64,
+    returned: std::sync::atomic::AtomicBool,
+}
+// 独立故障编号，避免覆盖既有mode=10的EndComposition重入回归。
+const EXIT_AFTER_WRITE: u8 = 11;
+
+unsafe extern "system" fn abrupt_owner(parameter: *mut core::ffi::c_void) -> u32 {
+    // 安全：隔离测试父线程持有Arc直到真实OS句柄signaled；绝不转移COM/Rc。
+    let probe = unsafe { &*(parameter.cast::<Arc<ExitProbe>>()) };
+    let _apartment = ReviewApartment::new();
+    let (host, data, _context) = native_fixture();
+    host.start_platform().unwrap();
+    *data.exit_probe.borrow_mut() = Some(probe.clone());
+    probe.instance.store(host.instance, Ordering::Release);
+    probe.epoch.store(host.epoch.get(), Ordering::Release);
+    if probe.synchronous {
+        host.scope_proof.set(None);
+        data.mode.set(EXIT_AFTER_WRITE);
+        native(&host, b'N' as u16);
+    } else {
+        host.scope_proof.set(Some(Instant::now()));
+        native(&host, b'N' as u16);
+        native(&host, b'I' as u16);
+        native(
+            &host,
+            windows::Win32::UI::Input::KeyboardAndMouse::VK_SPACE.0,
+        );
+        data.mode.set(EXIT_AFTER_WRITE);
+        drain(&data);
+    }
+    probe.returned.store(true, Ordering::Release);
+    1
+}
+
+#[test]
+fn round4_abrupt_settext_exit_preserves_flight_without_drop_or_retry() {
+    use super::super::{budget, recovery, service::DllCanUnloadNow};
+    use windows::Win32::{
+        Foundation::{CloseHandle, S_FALSE, WAIT_OBJECT_0, WAIT_TIMEOUT},
+        System::Threading::{
+            CreateThread, GetExitCodeThread, THREAD_CREATION_FLAGS, WaitForSingleObject,
+        },
+    };
+    if recovery::isolated(
+        "native::session::render_tests::round4_abrupt_settext_exit_preserves_flight_without_drop_or_retry",
+    ) {
+        return;
+    }
+    for (index, synchronous) in [false, true].into_iter().enumerate() {
+        let probe = Arc::new(ExitProbe {
+            synchronous,
+            ..ExitProbe::default()
+        });
+        // 仅自有Win32故障线程；ExitThread不跑Rust析构，不用std JoinHandle完成包。
+        let handle = unsafe {
+            CreateThread(
+                None,
+                0,
+                Some(abrupt_owner),
+                Some((&probe as *const Arc<ExitProbe>).cast()),
+                THREAD_CREATION_FLAGS(0),
+                None,
+            )
+            .unwrap()
+        };
+        let until = Instant::now() + Duration::from_secs(5);
+        loop {
+            let result = unsafe { WaitForSingleObject(handle, 0) };
+            if result == WAIT_OBJECT_0 {
+                break;
+            }
+            assert_eq!(result, WAIT_TIMEOUT);
+            assert!(Instant::now() < until);
+            std::thread::sleep(Duration::from_millis(2));
+        }
+        let mut exit = 0;
+        unsafe {
+            GetExitCodeThread(handle, &mut exit).unwrap();
+            CloseHandle(handle).unwrap();
+        }
+        assert_eq!(exit, 77);
+        assert!(!probe.returned.load(Ordering::Acquire));
+        assert_eq!(probe.writes.load(Ordering::Acquire), 1);
+        assert_eq!(probe.first_unit.load(Ordering::Acquire), u64::from(b'n'));
+        assert_eq!(DllCanUnloadNow(), S_FALSE);
+        assert_eq!(budget::usage().batches, index + 1);
+        let instance = probe.instance.load(Ordering::Acquire);
+        let epoch = probe.epoch.load(Ordering::Acquire);
+        let _apartment = ReviewApartment::new();
+        let reader = Host::new().unwrap();
+        let view = recovery::RecoveryWindow::new(Rc::downgrade(&reader), 0xbeef).unwrap();
+        let shown = view.explicit_all_for_review();
+        let count = if synchronous { 1 } else { 3 };
+        for sequence in 1..=count {
+            assert_eq!(
+                shown
+                    .matches(&format!(
+                        "instance={instance} epoch={epoch} sequence={sequence} "
+                    ))
+                    .count(),
+                1
+            );
+        }
+        assert!(shown.contains("sequence=1 state=Unknown"));
+        assert!(shown.contains("计划目标（仅供核对；Unknown不得重试）：n"));
+        assert!(shown.contains("原始键=Char('n') VK=78 LPARAM=1"));
+        if !synchronous {
+            assert!(shown.contains("sequence=2 state=NotApplied"));
+            assert!(shown.contains("sequence=3 state=NotApplied"));
+        }
+        view.explicit_discard_all_for_review();
+        assert!(view.explicit_all_for_review().is_empty());
+        drop(view);
+        drop(reader);
+        assert_eq!(DllCanUnloadNow(), S_FALSE);
+        // 未析构Host仍持有同一epoch凭证；目录清空不等于其预算可以提前退还。
+        assert_eq!(budget::usage().batches, index + 1);
+        // 故意违约的未析构Host/COM仍真实保活并计费，不能跨线程释放冒充S_OK。
+        assert_eq!(budget::usage().hosts, index + 1);
+        std::thread::sleep(Duration::from_millis(30));
+        assert_eq!(probe.writes.load(Ordering::Acquire), 1);
+    }
+    println!(
+        "{{\"experiment\":\"r4-owned-os-thread-write-then-ExitThread\",\"cases\":2,\"writes_per_case\":1,\"materials_reachable\":true,\"material_directory_empty_after_explicit_discard\":true,\"unwound\":false,\"remaining_hosts\":2,\"remaining_epoch_reservations\":2,\"dll_unload\":\"S_FALSE\",\"registered\":false}}"
+    );
 }
 
 #[implement(ITfRange, Agile = false)]
@@ -66,6 +199,213 @@ fn native_fixture() -> (Shared, Rc<Data>, ITfContext) {
     host.scope_proof.set(Some(Instant::now()));
     (host, data, context)
 }
+struct ReviewApartment;
+impl ReviewApartment {
+    fn new() -> Self {
+        // 安全：独立测试owner初始化自己的COM STA；先析构该owner对象，最后对称撤销。
+        unsafe {
+            windows::Win32::System::Com::CoInitializeEx(
+                None,
+                windows::Win32::System::Com::COINIT_APARTMENTTHREADED,
+            )
+            .ok()
+            .unwrap();
+        }
+        Self
+    }
+}
+impl Drop for ReviewApartment {
+    fn drop(&mut self) {
+        unsafe {
+            windows::Win32::System::Com::CoUninitialize();
+        }
+    }
+}
+
+#[test]
+fn round4_physical_sta_exit_releases_receipt_but_preserves_unknown_until_new_sta_discards() {
+    use super::super::{budget, recovery, service::DllCanUnloadNow};
+    use windows::Win32::Foundation::{S_FALSE, S_OK};
+    if recovery::isolated(
+        "native::session::render_tests::round4_physical_sta_exit_releases_receipt_but_preserves_unknown_until_new_sta_discards",
+    ) {
+        return;
+    }
+    let (instance, epoch, material) = std::thread::spawn(|| {
+        let _apartment = ReviewApartment::new();
+        let (host, data, _context) = native_fixture();
+        host.start_platform().unwrap();
+        host.scope_proof.set(None);
+        data.mode.set(2);
+        assert!(native(&host, b'N' as u16));
+        assert_eq!(data.writes.get(), 1);
+        assert_eq!(text(&data), "n");
+        let window = host.recovery.borrow().as_ref().unwrap().clone();
+        let identity = (host.instance, host.epoch.get());
+        host.stop_platform();
+        let evidence = window.evidence();
+        drop(window);
+        drop(host);
+        assert_eq!(data.writes.get(), 1);
+        (identity.0, identity.1, evidence)
+    })
+    .join()
+    .unwrap();
+    let until = Instant::now() + Duration::from_secs(3);
+    while !recovery::receipt_snapshot_for_review().is_empty() {
+        assert!(Instant::now() < until);
+        assert_eq!(DllCanUnloadNow(), S_FALSE);
+        std::thread::sleep(Duration::from_millis(2));
+    }
+    assert_eq!(budget::usage().hosts, 0);
+    assert_eq!(budget::usage().batches, 1);
+    assert_eq!(DllCanUnloadNow(), S_FALSE);
+    let _apartment = ReviewApartment::new();
+    let host = Host::new().unwrap();
+    let view = recovery::RecoveryWindow::new(Rc::downgrade(&host), 0xbeef).unwrap();
+    let shown = view.explicit_all_for_review();
+    assert_eq!(shown, material);
+    assert!(shown.contains(&format!("instance={instance} epoch={epoch} sequence=1")));
+    assert!(shown.contains("state=Unknown"));
+    view.explicit_discard_all_for_review();
+    drop(view);
+    drop(host);
+    assert_eq!(DllCanUnloadNow(), S_OK);
+    assert_eq!(budget::usage(), budget::Usage::default());
+}
+
+#[test]
+fn round4_multista_unknown_exit_and_class_failure_recover_for_twenty_rounds() {
+    use super::super::{budget, recovery, service::DllCanUnloadNow};
+    use windows::Win32::Foundation::{S_FALSE, S_OK};
+    if recovery::isolated(
+        "native::session::render_tests::round4_multista_unknown_exit_and_class_failure_recover_for_twenty_rounds",
+    ) {
+        return;
+    }
+    let started = Instant::now();
+    let extended = std::env::var("CLOUDLEAF_REVIEW_STRESS_SECONDS")
+        .map(|seconds| {
+            let seconds = seconds.parse::<u64>().expect("延长档必须是整数秒");
+            assert!((180..=600).contains(&seconds), "延长档仅允许180至600秒");
+            Duration::from_secs(seconds)
+        })
+        .unwrap_or_default();
+    if !extended.is_zero() {
+        println!(
+            "{{\"experiment\":\"r4-owner-stress-start\",\"pid\":{},\"requested_seconds\":{}}}",
+            std::process::id(),
+            extended.as_secs()
+        );
+    }
+    let mut tested = 0;
+    let mut highest_fixed = 0;
+    let mut round = 0;
+    while round < 20 || started.elapsed() < extended {
+        let owners: Vec<_> = (0..4)
+            .map(|_| {
+                std::thread::spawn(move || {
+                    let _apartment = ReviewApartment::new();
+                    let (host, data, _context) = native_fixture();
+                    host.start_platform().unwrap();
+                    host.scope_proof.set(Some(Instant::now()));
+                    data.mode.set(2);
+                    assert!(native(&host, b'N' as u16));
+                    assert!(native(&host, b'I' as u16));
+                    assert!(native(
+                        &host,
+                        windows::Win32::UI::Input::KeyboardAndMouse::VK_SPACE.0
+                    ));
+                    drain(&data);
+                    assert_eq!(data.writes.get(), 1);
+                    assert!(host.quarantined.get());
+                    let window = host.recovery.borrow().as_ref().unwrap().clone();
+                    window.inject_cleanup_failure(round % 2 == 0);
+                    let identity = (
+                        host.instance,
+                        host.epoch.get(),
+                        window.receipt_id_for_review(),
+                    );
+                    host.stop_platform();
+                    let evidence = window.evidence();
+                    assert!(evidence.contains("state=Unknown"));
+                    drop(window);
+                    drop(host);
+                    assert_eq!(data.writes.get(), 1);
+                    (identity, evidence)
+                })
+            })
+            .collect();
+        let records: Vec<_> = owners
+            .into_iter()
+            .map(|owner| owner.join().unwrap())
+            .collect();
+        tested += records.len();
+        highest_fixed = highest_fixed.max(budget::usage().fixed_bytes);
+        assert_eq!(DllCanUnloadNow(), S_FALSE);
+        if round % 2 == 0 {
+            let receipts = recovery::receipt_snapshot_for_review();
+            assert_eq!(receipts.len(), 4);
+            for ((instance, _, generation), _) in &records {
+                let receipt = receipts
+                    .iter()
+                    .find(|receipt| receipt.generation == *generation)
+                    .unwrap();
+                assert_eq!(receipt.instance, *instance);
+                assert!(receipt.owner_exited);
+                assert!(receipt.last_error != 0 && receipt.attempts > 0);
+                recovery::clear_cleanup_failure_for_review(*generation);
+            }
+        }
+        let until = Instant::now() + Duration::from_secs(3);
+        while !recovery::receipt_snapshot_for_review().is_empty() {
+            assert!(Instant::now() < until);
+            assert_eq!(DllCanUnloadNow(), S_FALSE);
+            std::thread::sleep(Duration::from_millis(2));
+        }
+        assert_eq!(budget::usage().hosts, 0);
+        assert_eq!(budget::usage().batches, 4);
+        {
+            let _apartment = ReviewApartment::new();
+            let host = Host::new().unwrap();
+            let view = recovery::RecoveryWindow::new(Rc::downgrade(&host), 0xbeef).unwrap();
+            let shown = view.explicit_all_for_review();
+            for ((instance, epoch, _), material) in records {
+                assert!(shown.contains(&material));
+                for sequence in 1..=3 {
+                    assert_eq!(
+                        shown
+                            .matches(&format!(
+                                "instance={instance} epoch={epoch} sequence={sequence} "
+                            ))
+                            .count(),
+                        1
+                    );
+                }
+            }
+            view.explicit_discard_all_for_review();
+        }
+        assert_eq!(DllCanUnloadNow(), S_OK);
+        assert_eq!(budget::usage(), budget::Usage::default());
+        round += 1;
+        if !extended.is_zero() && round % 20 == 0 {
+            println!(
+                "{{\"experiment\":\"r4-owner-stress-progress\",\"rounds\":{round},\"owners\":{tested},\"all_four_counters_zero\":true,\"dll_unload\":\"S_OK\",\"elapsed_ns\":{}}}",
+                started.elapsed().as_nanos()
+            );
+        }
+    }
+    println!(
+        "{{\"experiment\":\"r4-multista-real-com-unknown-exit\",\"rounds\":{round},\"owners\":{tested},\"faulted_rounds\":{},\"peak_charged_fixed\":{highest_fixed},\"elapsed_ns\":{},\"all_rounds_returned_to_zero\":true,\"registered\":false}}",
+        (round + 1) / 2,
+        started.elapsed().as_nanos()
+    );
+    if !extended.is_zero() {
+        // 工程父进程仍可采样最终清理后的句柄/线程；不在生产输入路径等待。
+        std::thread::sleep(Duration::from_millis(500));
+    }
+}
+
 fn native(host: &Shared, virtual_key: u16) -> bool {
     use windows::Win32::UI::Input::KeyboardAndMouse::{GetKeyboardState, SetKeyboardState};
     struct RestoreKeyboard([u8; 256]);
@@ -806,6 +1146,19 @@ impl ITfRange_Impl for Range_Impl {
             .splice(start..end, value.clone());
         self.end.set(start + value.len());
         self.data.writes.set(self.data.writes.get() + 1);
+        if self.data.mode.get() == EXIT_AFTER_WRITE {
+            let probe = self.data.exit_probe.borrow().as_ref().unwrap().clone();
+            probe
+                .writes
+                .store(self.data.writes.get(), Ordering::Release);
+            probe
+                .first_unit
+                .store(u64::from(self.data.text.borrow()[0]), Ordering::Release);
+            // 只在隔离子进程的自有线程中注入；写已发生，刻意不执行COM撤销或Rust Drop。
+            unsafe {
+                windows::Win32::System::Threading::ExitThread(77);
+            }
+        }
         if self.data.mode.get() == 9 {
             // 故意阻塞当前 STA 的宿主写调用；独立监测仍须在没有消息泵时标记 Unknown。
             std::thread::sleep(Duration::from_millis(650));

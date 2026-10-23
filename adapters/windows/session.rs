@@ -233,6 +233,34 @@ impl Host {
         *self.epoch_budget.borrow_mut() = Some((epoch, Arc::new(reservation)));
         true
     }
+    fn cache_flight(
+        &self,
+        epoch: u64,
+        native: Option<NativeEnvelope>,
+        planned: &EventResult,
+    ) -> Result<()> {
+        let reservation = self
+            .epoch_budget
+            .borrow()
+            .as_ref()
+            .filter(|(source, _)| *source == epoch)
+            .map(|(_, token)| token.clone());
+        if let Some(window) = self.recovery.borrow().as_ref() {
+            window.cache_flight(
+                epoch,
+                native,
+                planned,
+                reservation.ok_or_else(|| Error::from_hresult(E_FAIL))?,
+            )?;
+        }
+        Ok(())
+    }
+    fn flight_phase(&self, epoch: u64, sequence: u64, phase: Outcome) -> Result<()> {
+        if let Some(window) = self.recovery.borrow().as_ref() {
+            window.flight_phase(epoch, sequence, phase)?;
+        }
+        Ok(())
+    }
     pub fn start_platform(self: &Shared) -> Result<()> {
         self.check()?;
         super::watchdog::reap();
@@ -249,6 +277,8 @@ impl Host {
         self.stop_platform();
         let window = Rc::new(RecoveryWindow::new(Rc::downgrade(self), self.instance)?);
         let monitor = Watchdog::start().map_err(|error| Error::new(E_FAIL, error.to_string()))?;
+        window.bind_completion(monitor.completion())?;
+        window.bind_monitor(monitor.signals())?;
         monitor.set_window(window.handle());
         *self.recovery.borrow_mut() = Some(window);
         *self.watchdog.borrow_mut() = Some(monitor);
@@ -543,6 +573,11 @@ impl Host {
             outcome: Outcome::Queued,
             admitted: Instant::now(),
         };
+        self.cache_flight(
+            event.native.epoch,
+            Some(event.native.clone()),
+            &event.planned,
+        )?;
         self.owned
             .borrow_mut()
             .push(event)
@@ -1065,6 +1100,7 @@ impl Host {
                         return Ok(());
                     }
                     let record = self.owned.borrow_mut().start(sequence)?;
+                    self.flight_phase(epoch, sequence, Outcome::Started)?;
                     if record.native.instance != self.instance || record.native.epoch != epoch {
                         self.isolate_owned("所有权身份不匹配，拒绝旧会话写入");
                         return Err(Error::from_hresult(E_UNEXPECTED));
@@ -1132,6 +1168,7 @@ impl Host {
                             .handle(InputEvent::CommitSucceeded { id: commit.id });
                     }
                 }
+                self.cache_flight(epoch, synchronous_native.clone(), &result)?;
                 *self.pending_write.borrow_mut() = Some(PendingWrite {
                     epoch,
                     action: if projected_selection.is_some() {
@@ -1162,6 +1199,13 @@ impl Host {
                     }
                     self.offer_recovery("同步平台操作失败，未完成材料保留供用户核对");
                 } else {
+                    let sequence = self
+                        .pending_write
+                        .borrow()
+                        .as_ref()
+                        .and_then(|pending| pending.native.as_ref())
+                        .map_or(0, |native| native.sequence);
+                    self.flight_phase(epoch, sequence, Outcome::Applied)?;
                     self.pending_write.borrow_mut().take();
                     if self.owned.borrow().is_empty() {
                         self.epoch_budget.borrow_mut().take();
@@ -1224,6 +1268,7 @@ impl Host {
             }
             if let Some(sequence) = self.active_owned.take() {
                 self.owned.borrow_mut().applied(sequence)?;
+                self.flight_phase(epoch, sequence, Outcome::Applied)?;
                 let next = self.owned.borrow().front().cloned();
                 if next.is_none() {
                     self.epoch_budget.borrow_mut().take();
@@ -1273,8 +1318,22 @@ impl Host {
         };
         let mut begin_write = || -> Result<()> {
             // 空文本删除与普通写入共用不确定性边界，失败后旧 range 绝不自动擦除。
+            if attempted {
+                return Ok(());
+            }
             attempted = true;
             self.unknown_text.set(true);
+            let synchronous_sequence = self
+                .pending_write
+                .borrow()
+                .as_ref()
+                .and_then(|pending| pending.native.as_ref())
+                .map_or(0, |native| native.sequence);
+            self.flight_phase(
+                epoch,
+                self.active_owned.get().unwrap_or(synchronous_sequence),
+                Outcome::Writing,
+            )?;
             if let Some(pending) = self.pending_write.borrow_mut().as_mut() {
                 pending.outcome = Outcome::Writing;
             }
@@ -1341,6 +1400,8 @@ impl Host {
                     return Ok(());
                 }
                 if composition.is_none() {
+                    // StartComposition也是宿主外调，保守地先跨越可能写入边界。
+                    begin_write()?;
                     let sink: ITfCompositionSink = CompositionObserver {
                         host: Rc::downgrade(self),
                         epoch: self.epoch.get(),
