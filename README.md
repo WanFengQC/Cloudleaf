@@ -93,6 +93,8 @@ python scripts/evaluate_restricted_oracle.py --evidence <原有Unihan证据JSON>
 
 第二个命令按先冻结的读音/稳定ID规则选择最多26条真实记录，以独立Python字符串匹配和穷举对照现有Rust四策略及预算故障配置。它只验证新的受限词条图，不解除完整词库Reference耗尽的限制，不把词典生成内容作为语言gold。两个工具均拒绝覆盖已有输出；原始样本、指纹和失败分母保留。
 
+[第四轮隔离修复补充](docs/reports/cl008-round4-followup/README.md)修复两个获批来源间同一近重复组可以跨split的门禁缺口，保留原版本3项真实失败与修复后的完整检查。近重复组使用全局标识，来源局部段落编号仍按来源限定；既有34,060条测量保留原源码身份，不改绑到此修复。
+
 ## 模块
 
 | crate | 职责 |
