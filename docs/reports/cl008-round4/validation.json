@@ -1,0 +1,215 @@
+{
+  "git_head": "7d1a0fcaaa1302a8c88e60b0f1aafbf6228e69d1",
+  "commands": [
+    {
+      "command": [
+        "cargo",
+        "fetch",
+        "--locked"
+      ],
+      "started_utc": "2026-10-22T17:24:56.376241+00:00",
+      "ended_utc": "2026-10-22T17:24:56.597240+00:00",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "command-01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--workspace",
+        "--locked",
+        "--offline"
+      ],
+      "started_utc": "2026-10-22T17:24:56.597240+00:00",
+      "ended_utc": "2026-10-22T17:24:56.816239+00:00",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "command-02.log",
+      "log_sha256": "736e2582f563605dd272e5fb977840b0c0767377d27b6940c440caf75eec7157"
+    },
+    {
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "started_utc": "2026-10-22T17:24:56.820240+00:00",
+      "ended_utc": "2026-10-22T17:24:57.383239+00:00",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "command-03.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "started_utc": "2026-10-22T17:24:57.384242+00:00",
+      "ended_utc": "2026-10-22T17:24:58.003243+00:00",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "command-04.log",
+      "log_sha256": "9d892c5778d0c975f64a671e66ea5a753502353da3addd1dfdf3825225e406a2"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--offline"
+      ],
+      "started_utc": "2026-10-22T17:24:58.013271+00:00",
+      "ended_utc": "2026-10-22T17:25:01.228239+00:00",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "command-05.log",
+      "log_sha256": "b36d1cb263a688442a3b062569510fc7ba71fedcd9f6568e037137edafe1dbf2"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--doc",
+        "--locked",
+        "--offline"
+      ],
+      "started_utc": "2026-10-22T17:25:01.240240+00:00",
+      "ended_utc": "2026-10-22T17:25:02.015308+00:00",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "command-06.log",
+      "log_sha256": "12b6bffe6732d2ca22f487697d272183a4bb05a396a6471d790b69d8c318b23c"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "scripts/check_workspace.py"
+      ],
+      "started_utc": "2026-10-22T17:25:02.023240+00:00",
+      "ended_utc": "2026-10-22T17:25:02.396252+00:00",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "command-07.log",
+      "log_sha256": "6ad36ae402da4ec38c3c568ed6870234412850f26a91aad7f82e37cbe855288d"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "started_utc": "2026-10-22T17:25:02.398240+00:00",
+      "ended_utc": "2026-10-22T17:25:07.688089+00:00",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "command-08.log",
+      "log_sha256": "ee2981fc31c1aa472c8612e568d8890fa4288a6194a4abb302407d8909daf150"
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--workspace",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "started_utc": "2026-10-22T17:25:07.699126+00:00",
+      "ended_utc": "2026-10-22T17:25:07.894089+00:00",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "command-09.log",
+      "log_sha256": "9576f1f7e73fc2bb1ec2336aae60cb485c591eadc60a1b998573411c34057e08"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "scripts/check_language_readiness.py",
+        "--plan",
+        "config/evaluation/language-readiness-v1.json",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round4-20261023-final\\language-readiness.json"
+      ],
+      "started_utc": "2026-10-22T17:25:07.896089+00:00",
+      "ended_utc": "2026-10-22T17:25:08.129089+00:00",
+      "exit_code": 2,
+      "expected_exit_code": 2,
+      "log": "command-10.log",
+      "log_sha256": "6b1df799e14b3978b8937d303dfd4009f9852935f4353313f350be3f04153b2f"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "scripts/evaluate_restricted_oracle.py",
+        "--evidence",
+        ".local/real-lexicon/unihan-evidence.json",
+        "--output-dir",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round4-20261023-final\\restricted"
+      ],
+      "started_utc": "2026-10-22T17:25:08.145089+00:00",
+      "ended_utc": "2026-10-22T17:25:10.067419+00:00",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "command-11.log",
+      "log_sha256": "5fb24b3e43bb3de5bab1cac16812d2e2cc02f3d50be55ccd0a8df456299078ae"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "scripts/evaluate_search.py",
+        "--iterations",
+        "100",
+        "--warmup",
+        "10",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round4-20261023-final\\mechanical.json"
+      ],
+      "started_utc": "2026-10-22T17:25:10.074423+00:00",
+      "ended_utc": "2026-10-22T17:25:11.490988+00:00",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "command-12.log",
+      "log_sha256": "c992afa92aa2024ea5e345d25728dabf70a8895a06274be9c15cdc5aaa6c8005"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "scripts/evaluate_real_lexicon.py",
+        "--evidence",
+        ".local/real-lexicon/cccedict-round4-evidence.json",
+        "--iterations",
+        "30",
+        "--warmup",
+        "5",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round4-20261023-final\\cccedict-full.json"
+      ],
+      "started_utc": "2026-10-22T17:25:11.500032+00:00",
+      "ended_utc": "2026-10-22T17:28:10.918210+00:00",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "command-13.log",
+      "log_sha256": "da0ebc71771714353b0cd9579966066a35a58c378656cbfc580a69689acd35d3"
+    }
+  ]
+}

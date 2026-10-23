@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "dataset_id": "unicode-unihan-17-full-character-resource",
+  "real_data": true,
+  "runtime": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\unihan-17-final-a\\runtime.tsv",
+    "sha256": "1b13b199440c0ca9b59074de9100f58c6a0b847b12a7b986e1b752084ff60f8e"
+  },
+  "build_report": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\unihan-17-final-a\\manifest.json",
+    "sha256": "98b881d036c58a1d3044489ea6acbe659685f13bbe321e962dd9e626c3e72715"
+  },
+  "sources": [
+    {
+      "id": "unicode:unihan-17.0.0",
+      "version": "17.0.0",
+      "url": "https://www.unicode.org/Public/17.0.0/ucd/Unihan.zip",
+      "license_id": "Unicode-3.0",
+      "review_status": "approved",
+      "synthetic": false,
+      "license": {
+        "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\unihan-17-final-a\\LICENSE.txt",
+        "sha256": "e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96"
+      },
+      "audit": {
+        "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\unihan-17-final-a\\source-lock.json",
+        "sha256": "f8b047cd521495c1708345de95860f63c1de06db80dcaa16e22b4444ec05d7ba"
+      },
+      "upstream_sha256": "f7a48b2b545acfaa77b2d607ae28747404ce02baefee16396c5d2d7a8ef34b5e",
+      "attribution": "Unicode Unihan 17.0.0. Original data copyright 1991-2025 Unicode, Inc.; accompanying Unicode License V3 copyright 1991-2026 Unicode, Inc.",
+      "transformations": "Extract kMandarin and kDefinition across all Unihan text members; preserve raw readings/glosses and evidence; remove tone marks only for runtime pinyin; no frequency/POS inference."
+    }
+  ]
+}

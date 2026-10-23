@@ -2,7 +2,7 @@
 
 云笺的目标是算法完善、功能完整、响应流畅、翻译可靠、可长期维护的正式跨平台输入法。当前已有可独立测试的 M1/M2 Rust 原型；完整产品按 [v2 路线图](docs/roadmap.md)推进 Windows、核心算法和正式数据三个方向，再集成双语翻译与多平台。
 
-当前边界：TSF、原生候选窗口、生产词库、整句候选/语言模型、纠错/学习和翻译尚未实现。64条手写词典及 CLI 演示不代表最终产品能力。最终50项可追踪能力见[产品范围](docs/product-scope.md)，近期CL-001..006状态见[执行记录](docs/cl001-cl006-progress.md)。
+当前边界：默认输入核心尚未接入TSF、原生候选窗口、生产词库或独立搜索/语言模型；纠错/学习和翻译尚未实现。新增独立实验模块的范围见下文CL-008入口。64条手写词典及 CLI 演示不代表最终产品能力。最终50项可追踪能力见[产品范围](docs/product-scope.md)，近期CL-001..006状态见[执行记录](docs/cl001-cl006-progress.md)。
 
 ## 环境
 
@@ -62,6 +62,39 @@ python scripts/evaluate_algorithms.py --output-dir .local/algorithm-v1
 
 独立算法种子与评估器分别登记来源/划分，比较现有规则与移除精确匹配优先的频率排序消融，保留空结果、超限、OOV和未实现能力的真实分母。报告包含Top-1/Top-5/MRR、逐例位置变化与分组延迟，详见[评估规范](docs/algorithm-evaluation.md)。手写种子不支持正式准确率或最终模型选型结论；DAG/整体候选、N-gram、纠错和学习的比较仍须后续实验。
 
+## CL-008独立搜索实验
+
+新增`cloudleaf-search`提供覆盖原输入区间的词条DAG、穷举参考/精确DP/有界Beam、可解释整数评分、预载Bigram和有限候选池上下文重排。默认输入引擎仍使用原候选实现，新模块尚未接入输入事件。正式语言语料、模型、纠错/简拼/双拼/学习/增量和集成仍未完成；不满足CL-008退出条件，不进入CL-010。
+
+```text
+python scripts/evaluate_search.py --iterations 100 --warmup 10 --output .local/cl008-search.json
+```
+
+该实验使用[机械资源](tests/search-mechanics-v1/README.md)，明确`language_accuracy_valid=false`；不输出正式输入法准确率。[实施状态与风险](docs/reports/cl008-progress.md)、[逐例对照和性能](docs/reports/cl008-search-mechanics-v1.json)及[真实v2数据只读载入](docs/reports/cl008-unihan-v2-load.json)分别记录证据和限制。原64/41/83条资源及其回归测试继续保留。
+
+真实授权词条另走[预登记资源实验](docs/cl008-real-resource-protocol.md)，不混用机械语言模型，也不生成字典自派生gold：
+
+```text
+python scripts/evaluate_real_lexicon.py --evidence <数据审核证据JSON> --iterations 30 --warmup 5 --output .local/real-lexicon-search.json
+```
+
+证据JSON要求`schema_version=1`、`dataset_id`、`real_data=true`，`runtime`与`build_report`均含`path/sha256`；每个`sources`项含`id/version/url/license_id/review_status=approved/synthetic=false`，以及`license`和`audit`的`path/sha256`。相对路径以证据文件目录为基准。工具逐记录核对来源/许可和unknown空频率，核对的只是批准材料一致性，来源许可仍需C独立审核。正文候选继承其数据许可，不能按项目MIT重新发布。
+
+输出包括完整词典冷载入、Reference/ExactDag/Beam1/8/64及三类收紧预算、全部探针的候选路径/来源/许可、采集顺序的延迟样本、独立进程峰值及新增/丢失/名次变化。没有独立语料时Top-1/Top-5/MRR为null；未完整Reference或截断整词边不被用作无损/覆盖收益证明。新工具的真实Rust进程自测随Python测试运行，使用另标的临时机械fixture。
+
+资源证据暴露原ExactDag在无历史评分下的冗余状态后，另按[先行证明](docs/cl008-position-dag-design.md)加入显式PositionDag实验，仅支持Structural/Weighted。它按位置压缩状态，Bigram/ContextRerank明确拒绝；旧ExactDag、Reference及默认输入引擎保持原样。资源工具追加同预算的PositionDag四项配置，完整参考/旧Exact可比较时逐路径校验，不据资源探针宣称语言质量或最终最优。
+
+[第四轮前置门禁](docs/cl008-round4-evaluation-gates.md)核验正式评估的来源许可、独立人工gold声明、家族隔离、封存、参数冻结和预测完整分母，不读取封存答案、不计算准确率。当前登记文件明确缺少人工标注、独立保管者及正式语料，命令应返回2并输出拒绝报告；不能填入机制fixture使其显示就绪。
+
+```text
+python scripts/check_language_readiness.py --plan config/evaluation/language-readiness-v1.json --output .local/language-readiness-new.json
+python scripts/evaluate_restricted_oracle.py --evidence <原有Unihan证据JSON> --output-dir .local/restricted-oracle-new
+```
+
+第二个命令按先冻结的读音/稳定ID规则选择最多26条真实记录，以独立Python字符串匹配和穷举对照现有Rust四策略及预算故障配置。它只验证新的受限词条图，不解除完整词库Reference耗尽的限制，不把词典生成内容作为语言gold。两个工具均拒绝覆盖已有输出；原始样本、指纹和失败分母保留。
+
+[第四轮隔离修复补充](docs/reports/cl008-round4-followup/README.md)修复两个获批来源间同一近重复组可以跨split的门禁缺口，保留原版本3项真实失败与修复后的完整检查。近重复组使用全局标识，来源局部段落编号仍按来源限定；既有34,060条测量保留原源码身份，不改绑到此修复。
+
 ## 模块
 
 | crate | 职责 |
@@ -71,6 +104,7 @@ python scripts/evaluate_algorithms.py --output-dir .local/algorithm-v1
 | `cloudleaf-dictionary` | 严格词典校验、载入时建立内存索引 |
 | `cloudleaf-candidate` | 确定性排序、去重与有界候选生成 |
 | `cloudleaf-input` | 输入状态、光标、选择、模式和生命周期 |
+| `cloudleaf-search` | 独立实验的全输入词条图、同图搜索对照与整数语言模型；尚未接入输入核心 |
 | `cloudleaf-cli` | 测试宿主与独立基准入口 |
 
 产品核心不直接写日志，不保存完整输入历史。候选注释不进入提交文本；提交失败保留请求，显式重试需要新 ID；宿主先确认提交，再派发下一事件。日志及错误规范详见[设计约定](docs/m1-m2-design.md)。

@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "implementation_git_head": "fa2f9812d19ff7ffb56f9c6ee9ae7eea5aa155d6",
+  "source_sha256": "ffcdd12298982b8ad784e83c67f580c3ad0ba9edd9c683b9e25c1d0d00a45146",
+  "protocol_files_sha256": {
+    "docs/cl008-design.md": "cf7bb86c674bf04d4f750132b264261159d55c0faefa33ef2762f6995dcbb66b",
+    "docs/cl008-position-dag-design.md": "9f60f89c88cfd6e6c210362a353612a76ed732bc4c27bccc1999b7951e68094f",
+    "docs/cl008-real-resource-protocol.md": "692067c0507676bdf6c5dbe632a566e87cfcaedd6719c06bf5c75d1e5ae11e37",
+    "docs/cl008-round3-analysis-design.md": "dee5229285a5e22f2d8c03939ee8fc4b6221177db3efaf804f16c689748c18a7",
+    "tests/search-mechanics-v1/README.md": "fa6cebafad06e65ea7379ed15c8cfe67b3ee9a55cdc3a57e128594d2281dc6c4"
+  },
+  "binary_sha256": {
+    "mechanical": "fe0073fa176a8d073f9bf1b45f89769210a95ec85e250fd39ba4f83bf6b40b12",
+    "unihan": "392fff18038982343f7cfd7418619ace139b0f8fb127c1f22cc2a59c13ecd858",
+    "wiktionary": "392fff18038982343f7cfd7418619ace139b0f8fb127c1f22cc2a59c13ecd858"
+  },
+  "files_sha256": {
+    ".gitattributes": "6643e4a8bc0c09f7b21152d267a82d228aa5de5d75305c169e189187b0176201",
+    "analysis.json": "b864fc8bd3b5d3317afaf1439b636c53a6e73bb0a6cc6837ae914f0d0b5b661d",
+    "command-01.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "command-02.log": "4618eeba4e21359898995b7f544b56cd4d474efe9641525e1447388aaa8fabe6",
+    "command-03.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "command-04.log": "6194572d42f66549e2888302609da7b2517b826f7af552a5f9c77a9310b99a95",
+    "command-05.log": "0d1e224a912a525885fc71aa4227dc9db0c51b938c9f81518160707954f2820d",
+    "command-06.log": "12b6bffe6732d2ca22f487697d272183a4bb05a396a6471d790b69d8c318b23c",
+    "command-07.log": "6ad36ae402da4ec38c3c568ed6870234412850f26a91aad7f82e37cbe855288d",
+    "command-08.log": "9ac980c18c7c7a83682a86c94e34978675e5d89dd1d002534722a74acc863011",
+    "command-09.log": "0de31bb8485638adca3b21dd27a3da83f5bdd092455b92448f3a6f4e707f716b",
+    "command-10.log": "0dc3eafcf69dfdbe062815941e328283750b760d8d2ce98931d5c748955cb413",
+    "command-11.log": "35aa8942d22ca3d5a73895a6520cbc0acefb064bbd2eaed141262a021d99696d",
+    "command-12.log": "460989f0dc01bcf2a18efdaa374d43b29fcfc14d949ca67106950c80e287e253",
+    "command-13.log": "d816b12ce9353347e29f2d7340dcbe12616eb6cba65a2dcc6f0b4b66bf7501b4",
+    "groups.md": "80f4728a00a59eee78417bf20d6cdc1a91ba1657876911b2642072896087936a",
+    "mechanical.json": "ee22f23117a6c961643e59da8f4a5b484e7b9daff30ae701bdf8406937cea75a",
+    "source-evidence-validation.json": "6bb7e42a823080fda0bd8f699032a731f1dc4b6cfa1d3e279e0b7b54093898c7",
+    "unihan.json": "6722d25a8e1261fed3b771ed71a39a3548e27d958430a45812931240f565db2f",
+    "validation.json": "6ed8c0703540b6c946d24a3427df79f8f006205478c129f5be66dcff78649489",
+    "wiktionary.json": "45b147fcb8acad80eea0196d65e198966889254a6481b57b24914dd13dc78466"
+  },
+  "raw_sample_count": {
+    "mechanical": 20800,
+    "unihan": 8640,
+    "wiktionary": 8640
+  },
+  "mechanical_provenance": {
+    "data_sha256": {
+      "cases.tsv": "c1dc20f5154a289a37a39493f5b2da3a1238bc82d10a957bf5579c2d5ace821c",
+      "lexicon.tsv": "4ea495fde2d8e3fdd93e2acbf995a46ab11e3939b353f64822724240cc411893",
+      "train.tsv": "16c9061926a48734040320d0fb7a56013e0e898603eb0f5714411056e8d69417"
+    },
+    "probe_sha256": "c1dc20f5154a289a37a39493f5b2da3a1238bc82d10a957bf5579c2d5ace821c",
+    "protocol_sha256": "cf7bb86c674bf04d4f750132b264261159d55c0faefa33ef2762f6995dcbb66b",
+    "definition_sha256": "fa6cebafad06e65ea7379ed15c8cfe67b3ee9a55cdc3a57e128594d2281dc6c4"
+  },
+  "limits": [
+    "没有将历史机械分位数补造成原始样本。",
+    "provenance自身和README不加入files_sha256，避免自引用。"
+  ],
+  "publication": {
+    "encoding": "UTF-8 without BOM",
+    "line_ending": "LF",
+    "local_originals_unchanged": true,
+    "original_to_publication": {
+      "analysis.json": {
+        "local_original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round3-20261023\\analysis\\analysis.json",
+        "local_original_sha256": "86f01003ecad3ff08f683ec1e6cb9677320198855a9b63407dd554564c88966e",
+        "published_utf8_lf_sha256": "b864fc8bd3b5d3317afaf1439b636c53a6e73bb0a6cc6837ae914f0d0b5b661d",
+        "change": "仅CRLF转LF，无字段或样本更改"
+      },
+      "command-01.log": {
+        "local_original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round3-20261023\\command-01.log",
+        "local_original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "published_utf8_lf_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "change": "仅CRLF转LF，无字段或样本更改"
+      },
+      "command-02.log": {
+        "local_original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round3-20261023\\command-02.log",
+        "local_original_sha256": "8ac09a0184c54318c7a633051c724123f95c465f783eac85e41ea074cad45176",
+        "published_utf8_lf_sha256": "4618eeba4e21359898995b7f544b56cd4d474efe9641525e1447388aaa8fabe6",
+        "change": "仅CRLF转LF，无字段或样本更改"
+      },
+      "command-03.log": {
+        "local_original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round3-20261023\\command-03.log",
+        "local_original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "published_utf8_lf_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "change": "仅CRLF转LF，无字段或样本更改"
+      },
+      "command-04.log": {
+        "local_original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round3-20261023\\command-04.log",
+        "local_original_sha256": "7b155bad557a277c920b74c720507b1a1ab7e6d5e9c428cb37c1eca7a2d49c8a",
+        "published_utf8_lf_sha256": "6194572d42f66549e2888302609da7b2517b826f7af552a5f9c77a9310b99a95",
+        "change": "仅CRLF转LF，无字段或样本更改"
+      },
+      "command-05.log": {
+        "local_original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round3-20261023\\command-05.log",
+        "local_original_sha256": "814b2988e9b323d68a04ddd99c1eb7a54993e84a4af871abb1809d4cb3908ff8",
+        "published_utf8_lf_sha256": "0d1e224a912a525885fc71aa4227dc9db0c51b938c9f81518160707954f2820d",
+        "change": "仅CRLF转LF，无字段或样本更改"
+      },
+      "command-06.log": {
+        "local_original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round3-20261023\\command-06.log",
+        "local_original_sha256": "ab0b49b2d9d4e26b7bf69fc8ee7ecb5213ffb7c248c1a4a5c3938ec99a74fdf8",
+        "published_utf8_lf_sha256": "12b6bffe6732d2ca22f487697d272183a4bb05a396a6471d790b69d8c318b23c",
+        "change": "仅CRLF转LF，无字段或样本更改"
+      },
+      "command-07.log": {
+        "local_original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round3-20261023\\command-07.log",
+        "local_original_sha256": "0bb7250cb2c233d5b261d9c9e4fde6ba7950b04fe59aafcd4e302c2c3c4728bf",
+        "published_utf8_lf_sha256": "6ad36ae402da4ec38c3c568ed6870234412850f26a91aad7f82e37cbe855288d",
+        "change": "仅CRLF转LF，无字段或样本更改"
+      },
+      "command-08.log": {
+        "local_original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round3-20261023\\command-08.log",
+        "local_original_sha256": "b55099b39bdb20a99b52218e5316635dd60672e6da1ad0a5ed5952c7ba6a67af",
+        "published_utf8_lf_sha256": "9ac980c18c7c7a83682a86c94e34978675e5d89dd1d002534722a74acc863011",
+        "change": "仅CRLF转LF，无字段或样本更改"
+      },
+      "command-09.log": {
+        "local_original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round3-20261023\\command-09.log",
+        "local_original_sha256": "b27b77a56706f45b22d6bb51b5c7f127578d2f6e7766559fe5f63f7d4161f172",
+        "published_utf8_lf_sha256": "0de31bb8485638adca3b21dd27a3da83f5bdd092455b92448f3a6f4e707f716b",
+        "change": "仅CRLF转LF，无字段或样本更改"
+      },
+      "command-10.log": {
+        "local_original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round3-20261023\\command-10.log",
+        "local_original_sha256": "0b7db842e27e0a34379cde58e12316d9f217228826b46f74e7de62454caf1c25",
+        "published_utf8_lf_sha256": "0dc3eafcf69dfdbe062815941e328283750b760d8d2ce98931d5c748955cb413",
+        "change": "仅CRLF转LF，无字段或样本更改"
+      },
+      "command-11.log": {
+        "local_original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round3-20261023\\command-11.log",
+        "local_original_sha256": "7641ff3f5824692701b230b1cf7eacbe322ea0a1cdd653b04c1d72e3faf974cf",
+        "published_utf8_lf_sha256": "35aa8942d22ca3d5a73895a6520cbc0acefb064bbd2eaed141262a021d99696d",
+        "change": "仅CRLF转LF，无字段或样本更改"
+      },
+      "command-12.log": {
+        "local_original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round3-20261023\\command-12.log",
+        "local_original_sha256": "40c6080a713c826ce74975349d98a63ede644c35bcfc86bd0013de305d15cb1f",
+        "published_utf8_lf_sha256": "460989f0dc01bcf2a18efdaa374d43b29fcfc14d949ca67106950c80e287e253",
+        "change": "仅CRLF转LF，无字段或样本更改"
+      },
+      "command-13.log": {
+        "local_original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round3-20261023\\command-13.log",
+        "local_original_sha256": "7608a3c2ed898756476374100054ae504799f4cc0b090009bf5df56834f51c8f",
+        "published_utf8_lf_sha256": "d816b12ce9353347e29f2d7340dcbe12616eb6cba65a2dcc6f0b4b66bf7501b4",
+        "change": "仅CRLF转LF，无字段或样本更改"
+      },
+      "mechanical.json": {
+        "local_original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round3-20261023\\mechanical.json",
+        "local_original_sha256": "b2d5e2d81c2e437d62b65721e34fdee6178f0a2668e5f65a1107398af1ae4596",
+        "published_utf8_lf_sha256": "ee22f23117a6c961643e59da8f4a5b484e7b9daff30ae701bdf8406937cea75a",
+        "change": "仅CRLF转LF，无字段或样本更改"
+      },
+      "source-evidence-validation.json": {
+        "local_original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round3-20261023\\source-evidence-validation.json",
+        "local_original_sha256": "17d75ee982a2aa853ce3b1ef47807c4bdf4aa783a320a281514409d8eeba009c",
+        "published_utf8_lf_sha256": "6bb7e42a823080fda0bd8f699032a731f1dc4b6cfa1d3e279e0b7b54093898c7",
+        "change": "仅CRLF转LF，无字段或样本更改"
+      },
+      "unihan.json": {
+        "local_original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round3-20261023\\unihan.json",
+        "local_original_sha256": "1401bacdbfffb8e89bf01847e10366c981a7132f50ab2e2bc3e6dd4a62627148",
+        "published_utf8_lf_sha256": "6722d25a8e1261fed3b771ed71a39a3548e27d958430a45812931240f565db2f",
+        "change": "仅CRLF转LF，无字段或样本更改"
+      },
+      "validation.json": {
+        "local_original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round3-20261023\\validation.json",
+        "local_original_sha256": "83ba83dc9efc8ee52301b9ac550cb36ab08cf620dcf4d21d2c7a84273ae42ffc",
+        "published_utf8_lf_sha256": "6ed8c0703540b6c946d24a3427df79f8f006205478c129f5be66dcff78649489",
+        "change": "仅CRLF转LF，无字段或样本更改"
+      },
+      "wiktionary.json": {
+        "local_original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round3-20261023\\wiktionary.json",
+        "local_original_sha256": "765e26e079eb501379e37bc37f31080381ddd2c826bc042fefc1d88e92a2f907",
+        "published_utf8_lf_sha256": "45b147fcb8acad80eea0196d65e198966889254a6481b57b24914dd13dc78466",
+        "change": "仅CRLF转LF，无字段或样本更改"
+      }
+    },
+    "meaning": "analysis输入与validation日志哈希指向本地测量原件；files_sha256指向可从Git取得的LF发布件。"
+  }
+}

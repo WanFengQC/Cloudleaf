@@ -1,0 +1,165 @@
+{
+  "git_head": "736c517ddb0903dd9dbf10bba5e80ac2ed1783d4",
+  "source_sha256": "cea0d0681c01d7a522811e10c3a12d9abd2e1fb9c699b3dc025f073af7978a77",
+  "commands": [
+    {
+      "command": [
+        "cargo",
+        "fetch",
+        "--locked"
+      ],
+      "started_utc": "2026-10-23T16:04:10.148135+00:00",
+      "ended_utc": "2026-10-23T16:04:10.311480+00:00",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "command-01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--workspace",
+        "--locked",
+        "--offline"
+      ],
+      "started_utc": "2026-10-23T16:04:10.313017+00:00",
+      "ended_utc": "2026-10-23T16:04:10.953858+00:00",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "command-02.log",
+      "log_sha256": "29162d76fb109d9c6005d8544d63a4a438d15235d4f9b8e73d51adc9ba6e95d7"
+    },
+    {
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "started_utc": "2026-10-23T16:04:10.953858+00:00",
+      "ended_utc": "2026-10-23T16:04:11.425463+00:00",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "command-03.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "started_utc": "2026-10-23T16:04:11.425463+00:00",
+      "ended_utc": "2026-10-23T16:04:12.254502+00:00",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "command-04.log",
+      "log_sha256": "45d8f7d972875790a6cec7ca48e9acc17c5af68372da1940633becec3b4cd60a"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--offline"
+      ],
+      "started_utc": "2026-10-23T16:04:12.256463+00:00",
+      "ended_utc": "2026-10-23T16:04:18.224358+00:00",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "command-05.log",
+      "log_sha256": "41e7afedede62476d5d8c1a80c3862cb6fb3e717526dbdf09b060debf688e3e7"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--doc",
+        "--locked",
+        "--offline"
+      ],
+      "started_utc": "2026-10-23T16:04:18.225348+00:00",
+      "ended_utc": "2026-10-23T16:04:19.061351+00:00",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "command-06.log",
+      "log_sha256": "12b6bffe6732d2ca22f487697d272183a4bb05a396a6471d790b69d8c318b23c"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "scripts/check_workspace.py"
+      ],
+      "started_utc": "2026-10-23T16:04:19.062350+00:00",
+      "ended_utc": "2026-10-23T16:04:19.516348+00:00",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "command-07.log",
+      "log_sha256": "0bb7250cb2c233d5b261d9c9e4fde6ba7950b04fe59aafcd4e302c2c3c4728bf"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "started_utc": "2026-10-23T16:04:19.517552+00:00",
+      "ended_utc": "2026-10-23T16:04:26.740290+00:00",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "command-08.log",
+      "log_sha256": "ae9b5f61277c1024972238c30902f16a0231eb590351711af5da384eaf484875"
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--workspace",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "started_utc": "2026-10-23T16:04:26.741294+00:00",
+      "ended_utc": "2026-10-23T16:04:27.194295+00:00",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "log": "command-09.log",
+      "log_sha256": "f18e8aa44b81e7d9d1663536017be739eb80ede7041400fe06bf4e1c755d3d59"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "scripts/check_language_readiness.py",
+        "--plan",
+        "config/evaluation/language-readiness-v1.json",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round4-followup\\checks\\language-readiness.json"
+      ],
+      "started_utc": "2026-10-23T16:04:27.195296+00:00",
+      "ended_utc": "2026-10-23T16:04:27.413294+00:00",
+      "exit_code": 2,
+      "expected_exit_code": 2,
+      "log": "command-10.log",
+      "log_sha256": "f6e7c5479971970af65b4226317cae9ac37e8283877ae792ed41fe84410bff1e"
+    }
+  ],
+  "historical_measurements_rerun": false,
+  "historical_measurement_source": "7d1a0fcaaa1302a8c88e60b0f1aafbf6228e69d1",
+  "source_unchanged_during_validation": true
+}
