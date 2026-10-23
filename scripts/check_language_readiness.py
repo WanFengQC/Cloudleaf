@@ -136,7 +136,7 @@ def split_index(plan: dict, folder: Path, approved: dict) -> tuple[list[dict], d
             ids.add(row["case_id"])
             split = row["split"]
             for key in [("family", row["family_id"]), ("unit", row["source_id"], row["source_unit_id"]),
-                        ("near", row["source_id"], row["near_duplicate_group"]),
+                        ("near", row["near_duplicate_group"]),
                         ("input", row["normalized_input_sha256"]), ("task", row["task_sha256"])]:
                 require(owners.setdefault(key, split) == split, "家族/来源段落/近重复/规范输入/任务跨split泄漏")
             family_split[row["family_id"]] = split

@@ -97,6 +97,38 @@ class ReadinessTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 MODULE.split_index(self.changed_index(rows), self.folder, {source["id"]: source for source in self.plan["sources"]})
 
+    def test_cross_source_near_duplicate_groups_cannot_cross_any_split(self):
+        # 近重复组在整份清单中全局标识，转载不能靠改来源绕过隔离。
+        for earlier, later in (("train", "dev"), ("train", "heldout"), ("dev", "heldout")):
+            with self.subTest(earlier=earlier, later=later):
+                rows = copy.deepcopy(self.rows)
+                first = next(row for row in rows if row["split"] == earlier)
+                other = next(row for row in rows if row["split"] == later)
+                other["source_id"] = "fixture-eval-second"
+                other["near_duplicate_group"] = first["near_duplicate_group"]
+                plan = self.changed_index(rows)
+                second = copy.deepcopy(plan["sources"][1])
+                second["id"] = "fixture-eval-second"
+                plan["sources"].append(second)
+                result = MODULE.audit(plan, self.folder)
+                self.assertFalse(result["prerequisites_ready"], result)
+                self.assertTrue(any(issue["section"] == "split_isolation" and "泄漏" in issue["reason"]
+                                    for issue in result["issues"]), result["issues"])
+
+    def test_distinct_sources_can_share_local_unit_ids_without_sharing_near_duplicate_groups(self):
+        # 来源局部段落编号可以相同，不能把编号巧合等同于内容近重复。
+        rows = copy.deepcopy(self.rows)
+        other = next(row for row in rows if row["split"] == "heldout")
+        other["source_id"] = "fixture-eval-second"
+        other["source_unit_id"] = rows[0]["source_unit_id"]
+        plan = self.changed_index(rows)
+        second = copy.deepcopy(plan["sources"][1])
+        second["id"] = "fixture-eval-second"
+        plan["sources"].append(second)
+        result = MODULE.audit(plan, self.folder)
+        self.assertTrue(result["prerequisites_ready"], result["issues"])
+        self.assertFalse(result["language_accuracy_valid"])
+
     def test_changed_ratio_small_heldout_dictionary_gold_and_missing_permissions_block(self):
         changes = []
         for section, field, value in [("gold", "dictionary_derived", True), ("seal", "gold_opened", True),
