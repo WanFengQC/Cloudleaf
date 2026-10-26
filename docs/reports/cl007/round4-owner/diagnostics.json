@@ -1,0 +1,141 @@
+[
+  {
+    "check": "real-dll-loader",
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "cloudleaf-windows-ime",
+      "--lib",
+      "lifecycle_review_real_dll_loader_no_registration",
+      "--release",
+      "--locked",
+      "--offline",
+      "--",
+      "--ignored",
+      "--nocapture",
+      "--test-threads=1"
+    ],
+    "exit_code": 0,
+    "seconds": 18.758208600003854
+  },
+  {
+    "check": "simulated-com-benchmark",
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "cloudleaf-windows-ime",
+      "--lib",
+      "simulated_com_diagnostic_benchmark",
+      "--release",
+      "--locked",
+      "--offline",
+      "--",
+      "--ignored",
+      "--nocapture",
+      "--test-threads=1"
+    ],
+    "exit_code": 0,
+    "seconds": 0.6622512999892933
+  },
+  {
+    "check": "production-pressure",
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "cloudleaf-windows-ime",
+      "--lib",
+      "round3_cross_instance_budget_rejects_async_sync_and_candidate_before_ownership",
+      "--release",
+      "--locked",
+      "--offline",
+      "--",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "seconds": 1.2971609999949578
+  },
+  {
+    "check": "recovery-fault-matrix",
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "cloudleaf-windows-ime",
+      "--lib",
+      "recovery::tests",
+      "--release",
+      "--locked",
+      "--offline",
+      "--",
+      "--nocapture",
+      "--test-threads=1"
+    ],
+    "exit_code": 0,
+    "seconds": 2.589237600011984
+  },
+  {
+    "check": "native-round4",
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "cloudleaf-windows-ime",
+      "--lib",
+      "round4_",
+      "--release",
+      "--locked",
+      "--offline",
+      "--",
+      "--nocapture",
+      "--test-threads=1"
+    ],
+    "exit_code": 0,
+    "seconds": 3.0533905000047525
+  },
+  {
+    "check": "native-round3",
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "cloudleaf-windows-ime",
+      "--lib",
+      "round3_",
+      "--release",
+      "--locked",
+      "--offline",
+      "--",
+      "--nocapture",
+      "--test-threads=1"
+    ],
+    "exit_code": 0,
+    "seconds": 1.5483726999955252
+  },
+  {
+    "check": "core-benchmark",
+    "command": [
+      "python",
+      "scripts/benchmark.py",
+      "--iterations",
+      "1000",
+      "--output",
+      ".local\\round4-validation-5c0ba9d\\core-performance.json"
+    ],
+    "exit_code": 0,
+    "seconds": 4.012450299996999
+  },
+  {
+    "check": "algorithm-regression",
+    "command": [
+      "python",
+      "scripts/evaluate_algorithms.py",
+      "--output-dir",
+      ".local\\round4-validation-5c0ba9d\\algorithm-v1"
+    ],
+    "exit_code": 0,
+    "seconds": 4.533964800008107
+  }
+]

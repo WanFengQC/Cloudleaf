@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "implementation_commit": "5c0ba9d651038eca5b3fcb53dba3f6835cf13a0c",
+  "source_fingerprint_schema": "cloudleaf-source-v3",
+  "source_sha256": "88fcfefd694709e4304108b9001d00fc86e306f67755ab95381d84cfbccf3027",
+  "data_sha256": {
+    "data/dictionaries/prototype.tsv": "d4a87e958b23097253a4601b9ae373f02964e3e37729bb7f560e20835d5bb5f0",
+    "tests/fixtures/input-v1.tsv": "5fc0d0baf3e1d9082974d87292fb565a64b0ecca42d573a4dc4e354f8f64d7e0",
+    "tests/evaluation/algorithm-v1.tsv": "d8bf45fcb578db3c7ed1a2d7cce5c5e98f126de70dcfe3cfe69eb4becc0618fb"
+  },
+  "system_registration_executed": false,
+  "profile_activation_executed": false,
+  "real_application_acceptance": false,
+  "product_complete": false,
+  "long_term_production_reliability_accepted": false,
+  "rust_workspace_passed": 153,
+  "native_passed": 93,
+  "diagnostics_ignored_by_default": 2,
+  "python_passed": 16,
+  "owner_proof_os_handle_tests": 5,
+  "policy": {
+    "hosts": 64,
+    "batches": 64,
+    "text_bytes": 67108864,
+    "fixed_bytes": 134217728
+  },
+  "per_epoch_charge": {
+    "text_bytes": 1310720,
+    "fixed_bytes": 3592832,
+    "reservation_overhead": 88
+  },
+  "ui_fixed_cost": 9032,
+  "global_pressure_peak": {
+    "hosts": 37,
+    "batches": 36,
+    "text_bytes": 47185920,
+    "fixed_bytes": 133797256,
+    "after_explicit_release": "all four counters zero; DllCanUnloadNow S_OK"
+  },
+  "normal_owner_exit": {
+    "real_os_exit_proven": true,
+    "unique_class_unregister_proven": true,
+    "unknown_survives_until_explicit_discard": true,
+    "zero_after_explicit_discard": true
+  },
+  "abrupt_write_then_os_exit": {
+    "cases": 2,
+    "write_count_per_case": 1,
+    "unwinding_executed": false,
+    "material_reachable_from_new_sta": true,
+    "unknown_never_retried": true,
+    "material_directory_empty_after_explicit_discard": true,
+    "retained_hosts": 2,
+    "retained_epoch_reservations": 2,
+    "dll_can_unload": "S_FALSE",
+    "arbitrary_abnormal_exit_resource_gate_closed": false
+  },
+  "extended_stress": {
+    "test": {
+      "experiment": "r4-multista-real-com-unknown-exit",
+      "rounds": 1368,
+      "owners": 5472,
+      "faulted_rounds": 684,
+      "peak_charged_fixed": 14852992,
+      "elapsed_ns": 180003402100,
+      "all_rounds_returned_to_zero": true,
+      "registered": false
+    },
+    "binary_sha256": "ba28808555b78743119829e88699f06681780cb4bd7b0d8b57bbca0de1fc7793",
+    "exit_code": 0,
+    "sample_count": 602,
+    "sampling_errors": [],
+    "first": {
+      "elapsed_seconds": 0.015476200002012774,
+      "handles": 4,
+      "threads": 1
+    },
+    "sampled_peak": {
+      "handles": 150,
+      "threads": 17
+    },
+    "last": {
+      "elapsed_seconds": 180.41185979999136,
+      "handles": 124,
+      "threads": 2
+    },
+    "interval_observations": [
+      {
+        "from_seconds": 0,
+        "to_seconds": 60,
+        "count": 201,
+        "handles": {
+          "min": 4,
+          "median": 150,
+          "max": 150
+        },
+        "threads": {
+          "min": 1,
+          "median": 9,
+          "max": 17
+        }
+      },
+      {
+        "from_seconds": 60,
+        "to_seconds": 120,
+        "count": 201,
+        "handles": {
+          "min": 124,
+          "median": 150,
+          "max": 150
+        },
+        "threads": {
+          "min": 2,
+          "median": 6,
+          "max": 14
+        }
+      },
+      {
+        "from_seconds": 120,
+        "to_seconds": 181,
+        "count": 200,
+        "handles": {
+          "min": 124,
+          "median": 150.0,
+          "max": 150
+        },
+        "threads": {
+          "min": 2,
+          "median": 6.0,
+          "max": 14
+        }
+      }
+    ],
+    "limitation": "200ms samples, initial is process cold-start before Win32/COM initialization; no claim that initial/final delta proves leaks or leak freedom"
+  },
+  "new_code_files": [
+    "adapters/windows/owner_cleanup.rs",
+    "adapters/windows/mod.rs",
+    "adapters/windows/recovery.rs",
+    "adapters/windows/session.rs",
+    "adapters/windows/watchdog.rs",
+    "adapters/windows/render_tests.rs",
+    "scripts/stress_windows_owner.py"
+  ]
+}
