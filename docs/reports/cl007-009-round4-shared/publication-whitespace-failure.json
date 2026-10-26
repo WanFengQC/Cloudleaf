@@ -1,0 +1,11 @@
+{
+  "command": [
+    "git",
+    "diff",
+    "--cached",
+    "--check"
+  ],
+  "exit_code": 2,
+  "stdout": "docs/reports/cl007-009-round4-shared/command-06.log:121: new blank line at EOF.\ndocs/reports/cl007-009-round4-shared/command-07.log:31: new blank line at EOF.\n",
+  "resolution": "Retain exact original logs losslessly in raw-logs.json; trim display logs and record both hashes; no test/assertion or historical evidence changed."
+}
