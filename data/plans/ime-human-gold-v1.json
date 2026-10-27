@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "plan_id": "cloudleaf-independent-human-ime-gold-v1",
+  "status": "blocked-no-authorized-human-annotations",
+  "synthetic": false,
+  "dictionary_derived": false,
+  "language_accuracy_valid": false,
+  "artifact": null,
+  "license_grant": null,
+  "sources": [],
+  "annotators": [],
+  "adjudicator": null,
+  "independent_custodian": null,
+  "sealed_answers_sha256": null,
+  "preprocessing_protocol_sha256": null,
+  "top1": null,
+  "top5": null,
+  "mrr": null,
+  "required_tasks": [
+    "Explicit authorized original Chinese intent/context and acceptable outputs",
+    "Human-produced full key trace including apostrophes, edits, cancel, OOV and supported input modes",
+    "Two independent reviewers, disagreement record and a distinct adjudicator",
+    "Representative pre-registered groups; unavailable capabilities remain in denominators",
+    "Do not derive answers from the Cloudleaf lexicon or old 41/83 diagnostic seeds"
+  ],
+  "required_provenance": [
+    "Original artifact SHA and fixed source/revision/author/permission scope",
+    "Global source lineage and semantic near-duplicate group across mirrors and republications",
+    "Canonical source unit IDs and one common preprocessing/normalization protocol SHA",
+    "Per-task consent and privacy review; no private input history collected by default"
+  ],
+  "split_policy": {
+    "family_percent_train_dev_heldout": [70, 15, 15],
+    "minimum_heldout_families": 2000,
+    "status": "existing_B_preregistration_dependency_not_satisfied",
+    "never_tune_on_heldout": true,
+    "freeze_before_evaluation": ["data", "parameters", "source", "binary", "lexicon", "protocol"]
+  },
+  "handoff": {
+    "B_contract": "cl008-round5-quality-preparation.md",
+    "compatibility": "not_implemented_requires_explicit_conversion_and_review",
+    "C_linguistic_sidecar_is_gold": false
+  },
+  "release_blockers": [
+    "No actual annotation license/consent and frozen source artifact",
+    "No independent reviewers, adjudicator, custodian or sealed answers",
+    "No actual global lineage or semantic duplicate audit",
+    "No accepted representative language-quality or production resource evidence"
+  ]
+}

@@ -72,6 +72,19 @@ python -m unittest discover -s tests -p test_cedict_source.py -v
 
 原授权README与LICENSE原文以无损UTF-8 JSON字符串保存在`data/sources/evidence/cccedict-mirror-7019e1c/upstream-documents.json`，重建Git blob逐份核验，保留上游原始空白。CC BY-SA4数据保留其署名、许可及修改/同许可义务，不能按本项目MIT代码许可重新标记。新完整词条包的双构建、质量、独立评测边界和恢复证据见[第四轮报告](../../docs/reports/cl009-round4.md)。
 
+## Round 5：只读隔离审计与独立类型侧包
+
+```text
+python -m tools.data_pipeline.audit_isolations --lock data/sources/locks/cccedict-20260604-mirror7019e1c.json --source <已锁定完整ZIP> --release <已校验完整词条包> --output-dir <全新审计目录>
+python -m tools.data_pipeline.linguistic_sidecar --sidecar <独立侧包JSON> --facts <records.jsonl> --facts-sha256 <事实文件SHA256>
+```
+
+第一条逐源行独立重放接受/隔离边界，固定原件应保留1,468条隔离，输出每条原文、读音token形状分类、源位置/原行SHA、原原因与未更改处置，附CC BY-SA4许可/署名。不会修改旧包、生产音节表或自动补读音；固定原件0来源冲突，通用冲突审计不在范围，遇冲突失败。`r5`、`xx5`、成音鼻音、无空格声调串、标点/数字/字母与预算维度分列，形状不是语言规范证明。
+
+第二条只校验独立`cloudleaf-linguistic-sidecar-v1`的token比例、DF文档数和原生/派生Zipf类型、观测零/unknown、完整语料/预处理身份，以及POS/义项/有向翻译/短语引用和来源/双审声明。正计数float下溢不得记为真实0，派生Zipf母子不可换词/换语料。侧包不进入现有schema2/3或TSV v2，不自动训练/排序；自编fixture不是真实频率、注释或gold。格式正确不能证明许可证、reviewer身份或语言事实真实。
+
+[设计](../../docs/cl009-round5-design.md)、[来源采用与模型边界](../../docs/cl009-round5-frequency-and-annotation.md)及[人工评测实际阻塞计划](../../data/plans/ime-human-gold-v1.json)分别登记。当前没有批准的现代token频率、正式POS/义项对齐或独立人工gold，不补0、不用词条量声明准确率。本轮证据另存，不覆盖Round 4冻结包和前轮报告。
+
 ## 其他来源
 
 2026-10-23新增[正式来源候选与质量门禁](../../docs/cl009-formal-data-review.md)，逐项区分许可声明、实际取得版本与项目采用决定；[第三轮报告](../../docs/reports/cl009-round3.md)追加固定两来源双构建、18条审计和真实中断恢复证据。候选清单不自动增加已批准来源，历史锁和七条审核记录不变。
