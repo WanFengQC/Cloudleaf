@@ -88,6 +88,10 @@ class PhaseTests(unittest.TestCase):
         self.assertEqual(result['outcomes'], {'budget': 1, 'rejected': 1})
         self.assertFalse(result['stage_sums_valid'])
         self.assertIsNone(result['exclusive_cpu_cost'])
+        self.assertNotIn('p95_ns', result['clock_reads'])
+        self.assertEqual(result['clock_reads']['unit'], 'clock_reads')
+        self.assertNotIn('p95_ns', result['phases']['normalize']['calls'])
+        self.assertEqual(result['phases']['normalize']['calls']['unit'], 'calls')
         changed = copy.deepcopy(run)
         changed['cases'].pop()
         with self.assertRaisesRegex(ValueError, '分母'):

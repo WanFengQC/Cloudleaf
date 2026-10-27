@@ -17,6 +17,10 @@ SEMANTICS = ('status', 'error_kind', 'candidates', 'waiting', 'fallback_preserve
              'whole_entry_candidates', 'whole_entry_complete', 'statistics')
 
 
+def count_quantiles(samples: list[int], unit: str) -> dict:
+    return {'unit': unit, **{key.replace('_ns', ''): value for key, value in quantiles(samples).items()}}
+
+
 def build_host() -> Path:
     result = subprocess.run(['cargo', 'build', '--release', '--locked', '--offline', '-p',
                              'cloudleaf-search', '--example', 'resource_phase_probe', '--message-format=json'],
@@ -89,11 +93,11 @@ def validate_run(run: dict, cases: list[dict], iterations: int, warmup: int) -> 
         present = [sample['profile']['phases'][name] for sample in all_samples if sample['profile']['phases'][name] is not None]
         phases[name] = {'attempted_samples': len(present), 'not_entered_samples': len(all_samples) - len(present),
                         'nanos': quantiles([row['ns'] for row in present]),
-                        'calls': quantiles([row['calls'] for row in present])}
+                        'calls': count_quantiles([row['calls'] for row in present], 'calls')}
     return {'cases': len(rows), 'outcomes': dict(counts), 'samples': len(all_samples), 'phases': phases,
             'plain_ns': quantiles([row['plain_ns'] for row in all_samples]),
             'profile_outer_ns': quantiles([row['profile_outer_ns'] for row in all_samples]),
-            'clock_reads': quantiles([row['profile']['clock_reads'] for row in all_samples]),
+            'clock_reads': count_quantiles([row['profile']['clock_reads'] for row in all_samples], 'clock_reads'),
             'stage_sums_valid': False, 'exclusive_cpu_cost': None}
 
 
