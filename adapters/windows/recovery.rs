@@ -546,6 +546,7 @@ pub(crate) fn fixed_cost() -> usize {
         + std::mem::size_of::<MaterialStore>()
         + CONTEXT_LIMIT * std::mem::size_of::<RecoveryBatch>()
         + super::session::QUEUE_LIMIT * std::mem::size_of::<FlightValue>()
+        + watchdog::fixed_cost()
         + 4096
 }
 impl RecoveryWindow {

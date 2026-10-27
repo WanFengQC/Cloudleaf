@@ -274,7 +274,7 @@ fn round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session() {
     let until = Instant::now() + Duration::from_secs(3);
     while budget::usage().hosts != 32 {
         assert!(Instant::now() < until);
-        DllCanUnloadNow();
+        let _ = DllCanUnloadNow();
         std::thread::sleep(Duration::from_millis(2));
     }
     assert_eq!(budget::usage().batches, 32);

@@ -26,12 +26,14 @@ const UNKNOWN: u64 = 5;
 const EXPIRED_STARTED: u64 = 6;
 const MASK: u64 = 15;
 static CLOCK: OnceLock<Instant> = OnceLock::new();
-static RETIRED: OnceLock<Mutex<Vec<Retired>>> = OnceLock::new();
+static RETIRED: OnceLock<Mutex<Vec<Arc<MonitorTask>>>> = OnceLock::new();
 static SLOTS: AtomicUsize = AtomicUsize::new(0);
 const SLOT_LIMIT: usize = 32;
 const NOTICE_ATTEMPTS: u8 = 4;
 #[cfg(test)]
 thread_local! { static SPAWN_FAILURE: std::cell::Cell<Option<usize>> = const { std::cell::Cell::new(None) }; }
+#[cfg(test)]
+thread_local! { static REGISTER_FAILURE: std::cell::Cell<bool> = const { std::cell::Cell::new(false) }; }
 fn millis() -> u64 {
     CLOCK.get_or_init(Instant::now).elapsed().as_millis() as u64 + 1
 }
@@ -47,6 +49,7 @@ pub(crate) struct Signals {
     delivery_failed: AtomicBool,
     notice_pending: AtomicBool,
     notice_attempts: AtomicU8,
+    retirement_requested: Arc<AtomicBool>,
     #[cfg(test)]
     fail_delivery: AtomicBool,
     #[cfg(test)]
@@ -54,7 +57,14 @@ pub(crate) struct Signals {
 }
 pub(crate) struct Watchdog {
     signals: Arc<Signals>,
-    retired: Option<Retired>,
+    task: Arc<MonitorTask>,
+    finished: Arc<AtomicBool>,
+}
+// 只有纯Send对象；创建worker前全局登记，Host不析构仍可找到真正的JoinHandle。
+struct MonitorTask {
+    state: Mutex<Option<Retired>>,
+    constructing: AtomicBool,
+    retirement_requested: Arc<AtomicBool>,
 }
 struct Retired {
     workers: Vec<JoinHandle<()>>,
@@ -70,36 +80,62 @@ pub(crate) fn reap() {
     let Some(retired) = RETIRED.get() else {
         return;
     };
-    let Ok(mut tasks) = retired.lock() else {
+    let Ok(tasks) = retired.try_lock().map(|tasks| tasks.clone()) else {
         return;
     };
-    let mut index = 0;
-    while index < tasks.len() {
-        let exited = tasks[index].workers.iter().all(|worker| {
+    for task in tasks {
+        if task.constructing.load(Ordering::Acquire)
+            || !task.retirement_requested.load(Ordering::Acquire)
+        {
+            continue;
+        }
+        let Ok(mut state) = task.state.try_lock() else {
+            // 不能证明状态可独占取得时，原JoinHandle/Lease/slot全部继续保留。
+            continue;
+        };
+        let Some(work) = state.as_ref() else {
+            continue;
+        };
+        let exited = work.workers.iter().all(|worker| {
             // 安全：JoinHandle 持有真实线程句柄；只零等待，不能阻塞调用线程。
             unsafe { WaitForSingleObject(HANDLE(worker.as_raw_handle()), 0) == WAIT_OBJECT_0 }
         });
         if exited {
-            let mut task = tasks.swap_remove(index);
-            for worker in task.workers.drain(..) {
+            let mut retired = state.take().unwrap();
+            for worker in retired.workers.drain(..) {
                 let _ = worker.join();
             }
-            task.finished.store(true, Ordering::Release);
-            drop(task);
-        } else {
-            index += 1;
+            retired.finished.store(true, Ordering::Release);
+            drop(retired);
         }
     }
+    if let Ok(mut tasks) = retired.try_lock() {
+        tasks.retain(|task| task.state.try_lock().map_or(true, |state| state.is_some()));
+    }
 }
-fn retire(task: Retired) {
-    // 每次启动前已预留一个 slot，因此集合容量不可能超过上限；中毒时保留 lease 而不冒险卸载。
-    match RETIRED
+fn register(task: Arc<MonitorTask>) -> std::io::Result<()> {
+    #[cfg(test)]
+    if REGISTER_FAILURE.with(|fault| fault.get()) {
+        return Err(std::io::Error::other("故障注入：在线程创建前拒绝全局登记"));
+    }
+    // 登记发生在创建worker前；失败时只有空任务可正常析构，不丢弃任何活worker句柄。
+    let mut tasks = RETIRED
         .get_or_init(|| Mutex::new(Vec::with_capacity(SLOT_LIMIT)))
         .lock()
-    {
-        Ok(mut tasks) => tasks.push(task),
-        Err(_) => std::mem::forget(task),
-    }
+        .map_err(|_| std::io::Error::other("全局监测任务目录不可用，未创建worker"))?;
+    tasks.retain(|task| task.state.try_lock().map_or(true, |state| state.is_some()));
+    tasks.push(task);
+    Ok(())
+}
+pub(crate) fn fixed_cost() -> usize {
+    // 全局任务、共享原子及其分配元数据均预计；不把worker移出Host当成对象消失。
+    std::mem::size_of::<Watchdog>()
+        + std::mem::size_of::<Signals>()
+        + std::mem::size_of::<MonitorTask>()
+        + std::mem::size_of::<Retired>()
+        + 2 * std::mem::size_of::<JoinHandle<()>>()
+        + 5 * (2 * std::mem::size_of::<usize>() + 32)
+        + 2 * std::mem::size_of::<AtomicBool>()
 }
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub(crate) enum Detection {
@@ -115,6 +151,7 @@ impl Signals {
         // 真实owner线程已退出后停工；仅原子信号，不接触其COM或JoinHandle。
         self.window.store(0, Ordering::Release);
         self.stop.store(true, Ordering::Release);
+        self.retirement_requested.store(true, Ordering::Release);
     }
     fn notify(&self) {
         let window = self.window.load(Ordering::Acquire);
@@ -230,6 +267,18 @@ impl Watchdog {
             })
             .map_err(|_| std::io::Error::other("监测资源尚未退出，拒绝启动新线程"))?;
         let now = millis();
+        let retirement_requested = Arc::new(AtomicBool::new(false));
+        let finished = Arc::new(AtomicBool::new(false));
+        let task = Arc::new(MonitorTask {
+            state: Mutex::new(Some(Retired {
+                workers: Vec::with_capacity(2),
+                _lease: Lease::new(),
+                finished: finished.clone(),
+            })),
+            constructing: AtomicBool::new(true),
+            retirement_requested: retirement_requested.clone(),
+        });
+        register(task.clone())?;
         let signals = Arc::new(Signals {
             token: AtomicU64::new(0),
             deadline: AtomicU64::new(0),
@@ -241,16 +290,17 @@ impl Watchdog {
             delivery_failed: AtomicBool::new(false),
             notice_pending: AtomicBool::new(false),
             notice_attempts: AtomicU8::new(0),
+            retirement_requested,
             #[cfg(test)]
             fail_delivery: AtomicBool::new(false),
             #[cfg(test)]
             pause_primary: AtomicBool::new(false),
         });
-        let mut task = Retired {
-            workers: Vec::with_capacity(2),
-            _lease: Lease::new(),
-            finished: Arc::new(AtomicBool::new(false)),
-        };
+        let mut state = task
+            .state
+            .lock()
+            .map_err(|_| std::io::Error::other("监测任务构造状态不可用"))?;
+        let work = state.as_mut().unwrap();
         for primary in [true, false] {
             let shared = signals.clone();
             let guard = WorkerGuard {
@@ -265,7 +315,7 @@ impl Watchdog {
                 .into(),
             );
             #[cfg(test)]
-            let fail_spawn = SPAWN_FAILURE.with(|fault| fault.get() == Some(task.workers.len()));
+            let fail_spawn = SPAWN_FAILURE.with(|fault| fault.get() == Some(work.workers.len()));
             #[cfg(not(test))]
             let fail_spawn = false;
             let spawned = if fail_spawn {
@@ -285,21 +335,25 @@ impl Watchdog {
                 })
             };
             match spawned {
-                Ok(worker) => task.workers.push(worker),
+                Ok(worker) => work.workers.push(worker),
                 Err(error) => {
                     signals.failed.store(3, Ordering::Release);
                     signals.stop.store(true, Ordering::Release);
-                    for worker in &task.workers {
+                    for worker in &work.workers {
                         worker.thread().unpark();
                     }
-                    retire(task);
+                    task.retirement_requested.store(true, Ordering::Release);
+                    task.constructing.store(false, Ordering::Release);
                     return Err(error);
                 }
             }
         }
+        drop(state);
+        task.constructing.store(false, Ordering::Release);
         Ok(Self {
             signals,
-            retired: Some(task),
+            task,
+            finished,
         })
     }
     pub fn set_window(&self, window: HWND) {
@@ -311,7 +365,7 @@ impl Watchdog {
         self.signals.detection() == Detection::Healthy
     }
     pub fn completion(&self) -> Arc<AtomicBool> {
-        self.retired.as_ref().unwrap().finished.clone()
+        self.finished.clone()
     }
     pub fn signals(&self) -> Arc<Signals> {
         self.signals.clone()
@@ -394,7 +448,9 @@ impl Watchdog {
     pub fn stop(&self) {
         self.signals.stop.store(true, Ordering::Release);
         self.signals.window.store(0, Ordering::Release);
-        if let Some(task) = &self.retired {
+        if let Ok(state) = self.task.state.try_lock()
+            && let Some(task) = state.as_ref()
+        {
             for worker in &task.workers {
                 worker.thread().unpark();
             }
@@ -404,9 +460,9 @@ impl Watchdog {
 impl Drop for Watchdog {
     fn drop(&mut self) {
         self.stop();
-        if let Some(task) = self.retired.take() {
-            retire(task);
-        }
+        self.task
+            .retirement_requested
+            .store(true, Ordering::Release);
     }
 }
 
@@ -452,7 +508,10 @@ mod tests {
     fn worker_shutdown_releases_module_leases_without_blocking_sta() {
         let watchdog = Watchdog::start().unwrap();
         let workers: Vec<_> = watchdog
-            .retired
+            .task
+            .state
+            .lock()
+            .unwrap()
             .as_ref()
             .unwrap()
             .workers
@@ -463,7 +522,10 @@ mod tests {
         watchdog.stop();
         wait_until(|| {
             watchdog
-                .retired
+                .task
+                .state
+                .lock()
+                .unwrap()
                 .as_ref()
                 .unwrap()
                 .workers
@@ -500,7 +562,10 @@ mod tests {
         monitor.stop();
         wait_until(|| {
             monitor
-                .retired
+                .task
+                .state
+                .lock()
+                .unwrap()
                 .as_ref()
                 .unwrap()
                 .workers
@@ -518,5 +583,49 @@ mod tests {
             reap();
             completed.load(Ordering::Acquire)
         });
+    }
+
+    #[test]
+    fn registration_failure_creates_no_unreachable_worker_and_future_start_succeeds() {
+        REGISTER_FAILURE.with(|fault| fault.set(true));
+        let failed = Watchdog::start();
+        REGISTER_FAILURE.with(|fault| fault.set(false));
+        assert!(failed.is_err());
+        let watchdog = Watchdog::start().unwrap();
+        let completion = watchdog.completion();
+        drop(watchdog);
+        wait_until(|| {
+            reap();
+            completion.load(Ordering::Acquire)
+        });
+    }
+
+    #[test]
+    fn locked_or_constructing_task_remains_pinned_until_exclusive_completed_cleanup() {
+        let watchdog = Watchdog::start().unwrap();
+        let finished = watchdog.completion();
+        let task = watchdog.task.clone();
+        watchdog.stop();
+        task.retirement_requested.store(true, Ordering::Release);
+        {
+            let _held = task.state.lock().unwrap();
+            reap();
+            assert!(!finished.load(Ordering::Acquire));
+        }
+        task.constructing.store(true, Ordering::Release);
+        thread::sleep(Duration::from_millis(30));
+        reap();
+        assert!(!finished.load(Ordering::Acquire));
+        task.constructing.store(false, Ordering::Release);
+        wait_until(|| {
+            reap();
+            finished.load(Ordering::Acquire)
+        });
+        for _ in 0..10 {
+            watchdog.stop();
+            reap();
+        }
+        assert!(finished.load(Ordering::Acquire));
+        assert!(task.state.lock().unwrap().is_none());
     }
 }
