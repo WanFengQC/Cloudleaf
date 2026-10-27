@@ -46,3 +46,9 @@ R4已把flight/store/owner receipt提早保存，但`Watchdog.retired`仍把纯S
 README完整Rust/Python、fmt/Clippy/doc、资源/依赖许可/RustSec、release loader、故障/压力及原型性能各自冻结代码后执行。所有失败和原始报告保留，测量SHA不随纯文档提交改绑；最新push双平台CI由共享汇总另核。
 
 官方边界：[Rust1.90 JoinHandle状态](https://github.com/rust-lang/rust/blob/1.90.0/library/std/src/thread/mod.rs)、[WaitForSingleObject](https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject)、[ExitThread](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-exitthread)。
+
+## 持续不可回收占用的显式profile（实施前补充）
+
+`088bf9c`已通过10条工程检查及157项Rust/16项Python；其原始证据保持。再给新增v5故障回归加入测试专用`CLOUDLEAF_REVIEW_PINNED_SECONDS=180..600`：先制造32个写后异常退出，再在同一进程持续保留这些Host/epoch原额度，健康新Host连续至少180秒执行六个真实生产原生事件到“你好”的FIFO周期。每周期核对六次写入、健康ledger/epoch已清、旧32Host/epoch及原材料不变；不减记、转移或提高总预算。默认无环境变量仍只测3周期，普通CI不跑长档。fixture每周期清理自身诊断调用向量/自有文档，不制造无界工程日志。
+
+新增离线`scripts/stress_windows_faults.py`只启动自己的已构建测试进程；Win32句柄/线程、GetProcessMemoryInfo的当前working set/OS记录的进程峰working set及当前private commit分别按时序记录，不能把采样最大值当OS精确峰或把commit当物理RSS。记录固定SHA、实际原始命令、环境变量、开始/结束与每个检查点，末值与冷启动不直接相减推泄漏。此profile是有界异常占用机制证据，8h/24h、真实应用和物理内存容量门禁继续未完成。
