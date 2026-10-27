@@ -97,6 +97,15 @@ python scripts/evaluate_restricted_oracle.py --evidence <原有Unihan证据JSON>
 
 ## 模块
 
+Round 5另提供[可选阶段观测](docs/cl008-round5-profiling-design.md)和[真实评估来源家族准备契约](docs/cl008-round5-quality-preparation.md)。观测入口与未读钟旧入口共用算法；逐样本核对结果、预算与图，记录归一化、建图、搜索验证、路径遍历、嵌套桶排序、最终排序及物化。嵌套阶段不可相加/相减推导CPU成本，profile开销不作产品延迟。
+
+```text
+python scripts/evaluate_search_phases.py --evidence <R4固定来源证据JSON> --historical docs/reports/cl008-round4/cccedict-full.json --output-dir .local/round5-phases-new
+python scripts/check_quality_preparation.py --plan config/evaluation/language-readiness-v1.json --preparation config/evaluation/quality-preparation-v1.json --output .local/quality-preparation-new.json
+```
+
+后一命令在实际独立人工来源/lineage/标注审核/封存不足时返回2并保留null语言指标；声明一致不证明人工真实性。新目录拒绝覆盖旧证据，旧Round1–4样本仍绑定原版本。默认输入引擎未替换，CL-008/CL-010不放行。
+
 | crate | 职责 |
 |---|---|
 | `cloudleaf-types` | 平台无关事件、候选帧、稳定错误和提交确认协议 |

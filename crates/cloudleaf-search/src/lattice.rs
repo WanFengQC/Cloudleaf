@@ -1,3 +1,4 @@
+use crate::profiling::{Noop, Observer, Phase};
 use crate::{Budget, Config, ErrorKind, Lexicon, SearchError};
 use std::collections::BTreeSet;
 
@@ -31,39 +32,42 @@ pub struct Lattice<'a> {
 
 impl<'a> Lattice<'a> {
     pub fn build(lexicon: &'a Lexicon, input: &str, config: &Config) -> Result<Self, SearchError> {
-        config.validate()?;
-        let invalid = || SearchError::new(ErrorKind::InvalidInput, "输入字符或长度无效");
-        if input.len() > config.max_input_bytes {
-            return Err(invalid());
-        }
-        let mut letters = String::new();
-        let mut raw_offsets = vec![0];
-        let mut separators = BTreeSet::new();
-        let mut waiting = false;
-        for (offset, ch) in input.char_indices() {
-            match ch {
-                '\'' => {
-                    if letters.is_empty() || waiting {
-                        return Err(invalid());
-                    }
-                    separators.insert(letters.len());
-                    waiting = true;
-                }
-                'a'..='z' | 'A'..='Z' | 'ü' | 'Ü' => {
-                    letters.push(if ch == 'ü' || ch == 'Ü' {
-                        'v'
-                    } else {
-                        ch.to_ascii_lowercase()
-                    });
-                    raw_offsets.push(offset + ch.len_utf8());
-                    waiting = false;
-                }
-                _ => return Err(invalid()),
-            }
-            if letters.len() > config.max_letters {
-                return Err(invalid());
-            }
-        }
+        Self::build_observed(lexicon, input, config, &mut Noop)
+    }
+
+    pub(crate) fn build_observed<O: Observer>(
+        lexicon: &'a Lexicon,
+        input: &str,
+        config: &Config,
+        observer: &mut O,
+    ) -> Result<Self, SearchError> {
+        let stamp = observer.start(Phase::Normalize);
+        let normalized = normalize(input, config);
+        observer.stop(Phase::Normalize, stamp);
+        let (letters, raw_offsets, separators, waiting) = normalized?;
+        let stamp = observer.start(Phase::Lattice);
+        let graph = Self::from_normalized(
+            lexicon,
+            input,
+            config,
+            letters,
+            raw_offsets,
+            separators,
+            waiting,
+        );
+        observer.stop(Phase::Lattice, stamp);
+        Ok(graph)
+    }
+
+    fn from_normalized(
+        lexicon: &'a Lexicon,
+        input: &str,
+        config: &Config,
+        letters: String,
+        raw_offsets: Vec<usize>,
+        separators: BTreeSet<usize>,
+        waiting: bool,
+    ) -> Self {
         let mut graph = Self {
             lexicon,
             raw: input.into(),
@@ -75,7 +79,7 @@ impl<'a> Lattice<'a> {
             budget: None,
         };
         if waiting {
-            return Ok(graph);
+            return graph;
         }
         'positions: for start in 0..graph.letters.len() {
             let mut node = 0;
@@ -119,7 +123,7 @@ impl<'a> Lattice<'a> {
                 }
             }
         }
-        Ok(graph)
+        graph
     }
 
     pub fn raw(&self) -> &str {
@@ -140,4 +144,43 @@ impl<'a> Lattice<'a> {
     pub fn budget(&self) -> Option<Budget> {
         self.budget
     }
+}
+
+type Normalized = (String, Vec<usize>, BTreeSet<usize>, bool);
+
+fn normalize(input: &str, config: &Config) -> Result<Normalized, SearchError> {
+    config.validate()?;
+    let invalid = || SearchError::new(ErrorKind::InvalidInput, "输入字符或长度无效");
+    if input.len() > config.max_input_bytes {
+        return Err(invalid());
+    }
+    let mut letters = String::new();
+    let mut raw_offsets = vec![0];
+    let mut separators = BTreeSet::new();
+    let mut waiting = false;
+    for (offset, ch) in input.char_indices() {
+        match ch {
+            '\'' => {
+                if letters.is_empty() || waiting {
+                    return Err(invalid());
+                }
+                separators.insert(letters.len());
+                waiting = true;
+            }
+            'a'..='z' | 'A'..='Z' | 'ü' | 'Ü' => {
+                letters.push(if ch == 'ü' || ch == 'Ü' {
+                    'v'
+                } else {
+                    ch.to_ascii_lowercase()
+                });
+                raw_offsets.push(offset + ch.len_utf8());
+                waiting = false;
+            }
+            _ => return Err(invalid()),
+        }
+        if letters.len() > config.max_letters {
+            return Err(invalid());
+        }
+    }
+    Ok((letters, raw_offsets, separators, waiting))
 }

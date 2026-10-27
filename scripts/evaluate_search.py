@@ -76,7 +76,7 @@ def build_host() -> Path:
     return artifacts[0]
 
 
-def measure(command: list[str]) -> tuple[dict, int | None, str]:
+def measure(command: list[str], *, stdout_path: Path | None = None, stderr_path: Path | None = None) -> tuple[dict, int | None, str]:
     with tempfile.TemporaryFile() as output, tempfile.TemporaryFile() as errors:
         process = subprocess.Popen(command, cwd=ROOT, stdout=output, stderr=errors)
         peak, memory_method = None, "unavailable"
@@ -105,9 +105,14 @@ def measure(command: list[str]) -> tuple[dict, int | None, str]:
             memory_method = "wait4(probe_pid).ru_maxrss"
         output.seek(0)
         errors.seek(0)
+        output_bytes, error_bytes = output.read(), errors.read()
+        if stdout_path is not None:
+            stdout_path.write_bytes(output_bytes)
+        if stderr_path is not None:
+            stderr_path.write_bytes(error_bytes)
         if process.returncode:
-            raise RuntimeError(errors.read().decode("utf-8"))
-        return json.loads(output.read().decode("utf-8")), peak, memory_method
+            raise RuntimeError(error_bytes.decode("utf-8"))
+        return json.loads(output_bytes.decode("utf-8")), peak, memory_method
 
 
 def compare_results(runs: dict) -> dict:

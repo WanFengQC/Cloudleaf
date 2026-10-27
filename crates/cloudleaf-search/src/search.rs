@@ -1,3 +1,4 @@
+use crate::profiling::{Noop, Observer, Phase};
 use crate::{
     BigramModel, Budget, Config, ErrorKind, Lattice, Lexicon, MatchKind, Method, Ranker,
     SearchError,
@@ -119,11 +120,13 @@ impl Scorer<'_> {
     }
 }
 
-fn retain_unique(paths: &mut Vec<Path>, k: usize) {
+fn retain_unique<O: Observer>(paths: &mut Vec<Path>, k: usize, observer: &mut O, phase: Phase) {
+    let stamp = observer.start(phase);
     paths.sort_by(compare);
     let mut texts = std::collections::BTreeSet::new();
     paths.retain(|path| texts.insert(path.text.clone()));
     paths.truncate(k);
+    observer.stop(phase, stamp);
 }
 
 fn expand_allowed(statistics: &mut Statistics, config: &Config) -> bool {
@@ -146,7 +149,13 @@ fn resident_allowed(statistics: &mut Statistics, resident: usize, config: &Confi
     }
 }
 
-fn reference(scorer: &Scorer<'_>, config: &Config, stats: &mut Statistics, k: usize) -> Vec<Path> {
+fn reference<O: Observer>(
+    scorer: &Scorer<'_>,
+    config: &Config,
+    stats: &mut Statistics,
+    k: usize,
+    observer: &mut O,
+) -> Vec<Path> {
     let mut pending = vec![(0, Path::default())];
     let mut complete = Vec::new();
     stats.resident_high_water = 1;
@@ -154,7 +163,7 @@ fn reference(scorer: &Scorer<'_>, config: &Config, stats: &mut Statistics, k: us
         if position == scorer.graph.letters.len() {
             complete.push(scorer.finish(path));
             // 参考枚举所有路径，只将已完成输出压缩为当前最佳unique top-k。
-            retain_unique(&mut complete, k);
+            retain_unique(&mut complete, k, observer, Phase::BucketSortDedup);
             continue;
         }
         for edge in &scorer.graph.outgoing[position] {
@@ -171,7 +180,13 @@ fn reference(scorer: &Scorer<'_>, config: &Config, stats: &mut Statistics, k: us
     complete
 }
 
-fn dynamic(scorer: &Scorer<'_>, config: &Config, stats: &mut Statistics, k: usize) -> Vec<Path> {
+fn dynamic<O: Observer>(
+    scorer: &Scorer<'_>,
+    config: &Config,
+    stats: &mut Statistics,
+    k: usize,
+    observer: &mut O,
+) -> Vec<Path> {
     // last词条是未来一阶评分的充分状态；文本去重在每个状态内进行。
     let mut states: Vec<BTreeMap<Option<usize>, Vec<Path>>> =
         vec![BTreeMap::new(); scorer.graph.letters.len() + 1];
@@ -200,7 +215,7 @@ fn dynamic(scorer: &Scorer<'_>, config: &Config, stats: &mut Statistics, k: usiz
                     return Vec::new();
                 }
                 bucket.push(scorer.extend(&path, *edge_index));
-                retain_unique(bucket, k);
+                retain_unique(bucket, k, observer, Phase::BucketSortDedup);
                 resident = resident + bucket.len() - old;
             }
             resident -= 1;
@@ -215,11 +230,12 @@ fn dynamic(scorer: &Scorer<'_>, config: &Config, stats: &mut Statistics, k: usiz
         .collect()
 }
 
-fn position_dynamic(
+fn position_dynamic<O: Observer>(
     scorer: &Scorer<'_>,
     config: &Config,
     stats: &mut Statistics,
     k: usize,
+    observer: &mut O,
 ) -> Vec<Path> {
     // 仅无历史评分可合并最后词条状态；相同位置具有相同后缀集合和后续增分。
     let mut states: Vec<Vec<Path>> = vec![Vec::new(); scorer.graph.letters.len() + 1];
@@ -241,7 +257,7 @@ fn position_dynamic(
                     return Vec::new();
                 }
                 bucket.push(scorer.extend(&path, *edge_index));
-                retain_unique(bucket, k);
+                retain_unique(bucket, k, observer, Phase::BucketSortDedup);
                 resident = resident + bucket.len() - old;
             }
             resident -= 1;
@@ -258,29 +274,46 @@ pub fn search_graph(
     model: Option<&BigramModel>,
     left_word: Option<&str>,
 ) -> Result<SearchResult, SearchError> {
-    config.validate()?;
-    if matches!(config.ranker, Ranker::Bigram | Ranker::ContextRerank) && model.is_none() {
-        return Err(SearchError::new(
-            ErrorKind::InvalidModel,
-            "所选评分需要预加载模型",
-        ));
-    }
-    // 图字段只读且借用原词典；拒绝把索引应用于另一份同长度词典。
-    if !std::ptr::eq(lexicon, graph.lexicon) {
-        return Err(SearchError::new(
-            ErrorKind::InvalidInput,
-            "词条图与词典不匹配",
-        ));
-    }
-    if graph.raw.len() > config.max_input_bytes
-        || graph.letters.len() > config.max_letters
-        || graph.edges.len() > config.max_edges
-    {
-        return Err(SearchError::new(
-            ErrorKind::InvalidConfig,
-            "已有词条图超出本次搜索预算",
-        ));
-    }
+    search_observed(lexicon, graph, config, model, left_word, &mut Noop)
+}
+
+pub(crate) fn search_observed<O: Observer>(
+    lexicon: &Lexicon,
+    graph: &Lattice<'_>,
+    config: &Config,
+    model: Option<&BigramModel>,
+    left_word: Option<&str>,
+    observer: &mut O,
+) -> Result<SearchResult, SearchError> {
+    let stamp = observer.start(Phase::SearchValidate);
+    let validation = (|| {
+        config.validate()?;
+        if matches!(config.ranker, Ranker::Bigram | Ranker::ContextRerank) && model.is_none() {
+            return Err(SearchError::new(
+                ErrorKind::InvalidModel,
+                "所选评分需要预加载模型",
+            ));
+        }
+        // 图字段只读且借用原词典；拒绝把索引应用于另一份同长度词典。
+        if !std::ptr::eq(lexicon, graph.lexicon) {
+            return Err(SearchError::new(
+                ErrorKind::InvalidInput,
+                "词条图与词典不匹配",
+            ));
+        }
+        if graph.raw.len() > config.max_input_bytes
+            || graph.letters.len() > config.max_letters
+            || graph.edges.len() > config.max_edges
+        {
+            return Err(SearchError::new(
+                ErrorKind::InvalidConfig,
+                "已有词条图超出本次搜索预算",
+            ));
+        }
+        Ok(())
+    })();
+    observer.stop(Phase::SearchValidate, stamp);
+    validation?;
     let mut statistics = Statistics {
         graph_edges: graph.edges.len(),
         budget: graph.budget,
@@ -297,17 +330,20 @@ pub fn search_graph(
         ranker: config.ranker,
         model,
     };
+    let stamp = observer.start(Phase::Traversal);
     let mut paths = if graph.letters.is_empty() || graph.waiting {
         Vec::new()
     } else if config.method == Method::Reference {
-        reference(&scorer, config, &mut statistics, k)
+        reference(&scorer, config, &mut statistics, k, observer)
     } else if config.method == Method::PositionDag {
-        position_dynamic(&scorer, config, &mut statistics, k)
+        position_dynamic(&scorer, config, &mut statistics, k, observer)
     } else {
-        dynamic(&scorer, config, &mut statistics, k)
+        dynamic(&scorer, config, &mut statistics, k, observer)
     };
-    retain_unique(&mut paths, k);
+    observer.stop(Phase::Traversal, stamp);
+    retain_unique(&mut paths, k, observer, Phase::FinalSortDedup);
     if config.ranker == Ranker::ContextRerank {
+        let stamp = observer.start(Phase::ContextRerank);
         if let (Some(model), Some(left)) = (model, left_word) {
             for path in &mut paths {
                 if let Some(first) = path.ids.first() {
@@ -320,10 +356,12 @@ pub fn search_graph(
             }
         }
         paths.sort_by(compare);
+        observer.stop(Phase::ContextRerank, stamp);
     }
     paths.truncate(config.output_k);
     let guaranteed = statistics.budget.is_none() && statistics.beam_pruned == 0;
-    Ok(SearchResult {
+    let stamp = observer.start(Phase::Materialize);
+    let result = SearchResult {
         candidates: paths
             .into_iter()
             .map(|path| Candidate {
@@ -343,5 +381,7 @@ pub fn search_graph(
         guaranteed,
         finite_pool_only: config.ranker == Ranker::ContextRerank,
         statistics,
-    })
+    };
+    observer.stop(Phase::Materialize, stamp);
+    Ok(result)
 }
