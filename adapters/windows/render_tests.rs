@@ -154,6 +154,207 @@ fn round4_abrupt_settext_exit_preserves_flight_without_drop_or_retry() {
     );
 }
 
+unsafe extern "system" fn round5_abrupt_owner(parameter: *mut core::ffi::c_void) -> u32 {
+    // 仅自有故障线程；父线程在真实OS句柄结束之前保持此Arc槽存活。
+    let probe = unsafe { &*(parameter.cast::<Arc<ExitProbe>>()) };
+    let _apartment = ReviewApartment::new();
+    let (host, data, _) = fixture();
+    host.start_platform().unwrap();
+    *data.exit_probe.borrow_mut() = Some(probe.clone());
+    probe.instance.store(host.instance, Ordering::Release);
+    probe.epoch.store(host.epoch.get(), Ordering::Release);
+    host.scope_proof.set(Some(Instant::now()));
+    assert!(native(&host, b'N' as u16));
+    data.mode.set(EXIT_AFTER_WRITE);
+    drain(&data);
+    probe.returned.store(true, Ordering::Release);
+    1
+}
+
+#[test]
+fn round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session() {
+    use super::super::{budget, recovery, service::DllCanUnloadNow};
+    use windows::Win32::{
+        Foundation::{CloseHandle, S_FALSE, WAIT_OBJECT_0, WAIT_TIMEOUT},
+        System::Threading::{
+            CreateThread, GetExitCodeThread, THREAD_CREATION_FLAGS, WaitForSingleObject,
+        },
+    };
+    if recovery::isolated(
+        "native::session::render_tests::round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session",
+    ) {
+        return;
+    }
+    let started = Instant::now();
+    let mut probes = Vec::new();
+    for index in 0..32 {
+        let probe = Arc::new(ExitProbe::default());
+        let handle = unsafe {
+            CreateThread(
+                None,
+                0,
+                Some(round5_abrupt_owner),
+                Some((&probe as *const Arc<ExitProbe>).cast()),
+                THREAD_CREATION_FLAGS(0),
+                None,
+            )
+            .unwrap()
+        };
+        let until = Instant::now() + Duration::from_secs(5);
+        loop {
+            let outcome = unsafe { WaitForSingleObject(handle, 0) };
+            if outcome == WAIT_OBJECT_0 {
+                break;
+            }
+            assert_eq!(outcome, WAIT_TIMEOUT);
+            assert!(Instant::now() < until);
+            std::thread::sleep(Duration::from_millis(2));
+        }
+        let mut exit = 0;
+        unsafe {
+            GetExitCodeThread(handle, &mut exit).unwrap();
+            CloseHandle(handle).unwrap();
+        }
+        assert_eq!(exit, 77);
+        assert!(!probe.returned.load(Ordering::Acquire));
+        assert_eq!(probe.writes.load(Ordering::Acquire), 1);
+        assert_eq!(DllCanUnloadNow(), S_FALSE);
+        assert_eq!(budget::usage().hosts, index + 1);
+        assert_eq!(budget::usage().batches, index + 1);
+        probes.push(probe);
+        // 仅故障宿主工程测试等待已停工线程，不在生产按键路径等待。
+        std::thread::sleep(Duration::from_millis(20));
+        assert_eq!(DllCanUnloadNow(), S_FALSE);
+    }
+    let occupied = budget::usage();
+    println!(
+        "{{\"experiment\":\"r5-abrupt-owner-occupied\",\"owners\":32,\"fixed_bytes\":{},\"text_bytes\":{},\"global_fixed_limit\":{}}}",
+        occupied.fixed_bytes,
+        occupied.text_bytes,
+        budget::limits().fixed_bytes
+    );
+    let _apartment = ReviewApartment::new();
+    let (healthy, data, _) = fixture();
+    let activation = healthy.start_platform();
+    assert!(
+        activation.is_ok(),
+        "32个故障owner停工后，已证明安全的monitor slot必须可供健康会话使用：{activation:?}"
+    );
+    for _ in 0..3 {
+        healthy.scope_proof.set(Some(Instant::now()));
+        for key in [b'N', b'I', b'H', b'A', b'O', b' '] {
+            assert!(native(&healthy, u16::from(key)));
+        }
+        drain(&data);
+        assert_eq!(text(&data), "你好");
+        assert!(healthy.owned.borrow().is_empty());
+        assert!(healthy.epoch_budget.borrow().is_none());
+        data.text.borrow_mut().clear();
+    }
+    assert_eq!(data.writes.get(), 18);
+    let window = healthy.recovery.borrow().as_ref().unwrap().clone();
+    let material = window.explicit_all_for_review();
+    for probe in &probes {
+        let instance = probe.instance.load(Ordering::Acquire);
+        let epoch = probe.epoch.load(Ordering::Acquire);
+        assert_eq!(
+            material
+                .matches(&format!("instance={instance} epoch={epoch} sequence=1 "))
+                .count(),
+            1
+        );
+        assert_eq!(probe.writes.load(Ordering::Acquire), 1);
+    }
+    assert_eq!(material.matches("state=Unknown").count(), 32);
+    window.explicit_discard_all_for_review();
+    assert!(window.explicit_all_for_review().is_empty());
+    healthy.stop_platform();
+    drop(window);
+    drop(healthy);
+    let until = Instant::now() + Duration::from_secs(3);
+    while budget::usage().hosts != 32 {
+        assert!(Instant::now() < until);
+        DllCanUnloadNow();
+        std::thread::sleep(Duration::from_millis(2));
+    }
+    assert_eq!(budget::usage().batches, 32);
+    assert_eq!(DllCanUnloadNow(), S_FALSE);
+    println!(
+        "{{\"experiment\":\"r5-abrupt-owner-recovery\",\"faulted_owners\":32,\"healthy_cycles\":3,\"healthy_writes\":18,\"unknown_replays\":0,\"remaining_hosts\":32,\"remaining_batches\":32,\"elapsed_ns\":{},\"registered\":false}}",
+        started.elapsed().as_nanos()
+    );
+}
+
+#[test]
+fn round5_external_com_references_pin_old_host_without_polluting_new_context() {
+    use super::super::{budget, recovery, service::DllCanUnloadNow};
+    use windows::Win32::Foundation::{S_FALSE, S_OK};
+    if recovery::isolated(
+        "native::session::render_tests::round5_external_com_references_pin_old_host_without_polluting_new_context",
+    ) {
+        return;
+    }
+    let _apartment = ReviewApartment::new();
+    let (old, old_data, _) = fixture();
+    old.start_platform().unwrap();
+    old.scope_proof.set(Some(Instant::now()));
+    assert!(native(&old, b'N' as u16));
+    let retained = old_data.pending.borrow_mut().pop_front().unwrap();
+    let duplicate = retained.clone();
+    let old_instance = old.instance;
+    let old_epoch = old.epoch.get();
+    old.invalidate().unwrap();
+    old.stop_platform();
+    let old_weak = Rc::downgrade(&old);
+    drop(old);
+    assert!(old_weak.upgrade().is_some());
+    assert_eq!(DllCanUnloadNow(), S_FALSE);
+    let (new, data, _) = fixture();
+    new.start_platform().unwrap();
+    new.scope_proof.set(Some(Instant::now()));
+    assert_ne!(old_instance, new.instance);
+    for key in [b'N', b'I', b'H', b'A', b'O', b' '] {
+        assert!(native(&new, u16::from(key)));
+    }
+    drain(&data);
+    assert_eq!(text(&data), "你好");
+    let frame = new.engine.borrow().frame();
+    for callback in [&retained, &duplicate, &retained] {
+        unsafe {
+            callback.DoEditSession(7).unwrap();
+        }
+    }
+    assert_eq!(data.writes.get(), 6);
+    assert_eq!(old_data.writes.get(), 0);
+    assert_eq!(text(&old_data), "");
+    assert_eq!(new.engine.borrow().frame(), frame);
+    let window = new.recovery.borrow().as_ref().unwrap().clone();
+    let material = window.explicit_all_for_review();
+    assert!(material.contains(&format!(
+        "instance={old_instance} epoch={old_epoch} sequence=1 "
+    )));
+    assert!(material.contains("state=NotApplied"));
+    drop(retained);
+    assert!(old_weak.upgrade().is_some());
+    assert_eq!(budget::usage().hosts, 2);
+    drop(duplicate);
+    assert!(old_weak.upgrade().is_none());
+    // 材料和reader可能仍共享原凭证，最终确认在显式放弃和正常退出之后。
+    window.explicit_discard_all_for_review();
+    new.stop_platform();
+    drop(window);
+    drop(new);
+    let until = Instant::now() + Duration::from_secs(3);
+    while DllCanUnloadNow() != S_OK {
+        assert!(Instant::now() < until);
+        std::thread::sleep(Duration::from_millis(2));
+    }
+    assert_eq!(budget::usage(), budget::Usage::default());
+    println!(
+        "{{\"experiment\":\"r5-external-com-isolation\",\"retained_callbacks\":2,\"late_calls\":3,\"old_writes\":0,\"new_writes\":6,\"final_four_counters_zero\":true,\"registered\":false}}"
+    );
+}
+
 #[implement(ITfRange, Agile = false)]
 struct Range {
     data: Rc<Data>,
