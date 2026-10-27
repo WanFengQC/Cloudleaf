@@ -98,6 +98,28 @@ class SidecarTests(unittest.TestCase):
         z['value']=None
         self.check(item)
 
+    def test_zipf_cannot_relabel_another_entry_corpus_source_or_preprocessing(self):
+        item=package()
+        base=observation()
+        derived=observation('zipf')
+        derived.update(id='observation:z',value=8.0,numerator=None,denominator=None,
+                       denominator_unit='per_billion_tokens',transform={'kind':'derived-token',
+                       'parent_id':'observation:1','log_base':10,'scale':1000000000})
+        item['observations']=[base,derived]
+        self.check(item)
+        for change in ['entry','source','corpus-id','corpus-sha','period','tokenizer']:
+            invalid=copy.deepcopy(item)
+            changed=invalid['observations'][1]
+            if change=='entry':changed['entry_id']='entry:b'
+            elif change=='source':
+                source=copy.deepcopy(invalid['sources'][0]);source['id']='fixture-other'
+                invalid['sources'].append(source);changed['source_id']='fixture-other'
+            elif change=='corpus-id':changed['corpus']['id']='another-corpus'
+            elif change=='corpus-sha':changed['corpus']['sha256']='b'*64
+            elif change=='period':changed['corpus']['period']=['2026-01-01','2026-10-01']
+            else:changed['corpus']['tokenizer']['config_sha256']='b'*64
+            with self.subTest(change=change),self.assertRaises(ValueError):self.check(invalid)
+
     def test_sense_translation_phrase_links_and_review_are_explicit(self):
         item=package()
         item['senses']=[sense(),sense('sense:2','entry:b')]

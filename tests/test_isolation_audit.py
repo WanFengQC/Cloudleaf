@@ -6,11 +6,23 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from test_cedict_source import CedictSourceTests
+import test_cedict_source as fixtures
 from tools.data_pipeline.audit_isolations import audit_isolations, classify_token
 
 
-class IsolationAuditTests(CedictSourceTests):
+class IsolationAuditTests(unittest.TestCase):
+    def setUp(self):
+        self.fixture = fixtures.CedictSourceTests()
+        self.fixture.setUp()
+        self.addCleanup(self.fixture.doCleanups)
+
+    def prepare(self, entries):
+        self.fixture.prepare(entries)
+        self.lock_path, self.source = self.fixture.lock_path, self.fixture.source
+
+    def create(self):
+        return self.fixture.create()
+
     def test_classifications_are_shapes_and_source_expressions_not_language_proof(self):
         expected = {'r5': 'erhua_suffix', 'xx5': 'unspecified_reading', 'm2': 'syllabic_nasal',
                     'hm5': 'syllabic_nasal', 'biang2': 'tone_number_not_in_inventory',
