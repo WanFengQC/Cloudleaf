@@ -27,7 +27,8 @@ class IsolationAuditTests(unittest.TestCase):
         expected = {'r5': 'erhua_suffix', 'xx5': 'unspecified_reading', 'm2': 'syllabic_nasal',
                     'hm5': 'syllabic_nasal', 'biang2': 'tone_number_not_in_inventory',
                     '11': 'literal_number', 'ABC': 'untoned_ascii_literal', ',': 'separator_comma',
-                    '·': 'separator_middle_dot', 'nu:3': 'supported', 'ê4': 'other_source_token'}
+                    '·': 'separator_middle_dot', ':':'separator_colon',
+                    'shi2ke4':'joined_tone_number_syllables', 'nu:3': 'supported', 'ê4': 'other_source_token'}
         for token, category in expected.items():
             with self.subTest(token=token):
                 row = classify_token(token)
