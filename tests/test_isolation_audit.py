@@ -74,6 +74,17 @@ class IsolationAuditTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             audit_isolations(self.lock_path, self.source, release)
 
+    def test_bad_syntax_and_senses_are_not_called_multiple_token_gaps(self):
+        self.prepare(['bad', '甲 甲 [jia3] /valid//', '好 好 [hao3] /good/'])
+        result = audit_isolations(self.lock_path, self.source, self.create())
+        self.assertEqual([row['classification'] for row in result['records']], ['source_syntax','source_senses'])
+        self.assertTrue(all(not row['classification_dimensions'] for row in result['records']))
+
+    def test_conflicting_source_keys_fail_closed_outside_fixed_zero_conflict_scope(self):
+        self.prepare(['好 好 [hao3] /one/', '好 好 [hao3] /two/', '甲 甲 [jia3] /good/'])
+        with self.assertRaises(ValueError):
+            audit_isolations(self.lock_path, self.source, self.create())
+
 
 if __name__ == '__main__':
     unittest.main()
