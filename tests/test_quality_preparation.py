@@ -32,6 +32,12 @@ class PreparationTests(unittest.TestCase):
                       **{key: artifact for key in ['preprocessing', 'lineage_audit', 'annotation_protocol', 'annotation_review']},
                       'sources': [{'id': name, 'artifact_sha256': 'a' * 64, 'lineage_id': 'shared-lineage',
                                    'preprocessing_sha256': artifact['sha256']} for name in self.approved]}
+        review = self.folder / 'annotation-review.json'
+        review.write_text(json.dumps({'schema_version': 1, 'sources': [{'id': name, 'artifact_sha256': 'a' * 64,
+                           'annotation_protocol_sha256': artifact['sha256']} for name in self.approved]}), encoding='utf-8')
+        self.value['annotation_review'] = {'path': review.name, 'sha256': MODULE.base.digest(review)}
+        for row in self.value['sources']:
+            row.update(annotation_protocol_sha256=artifact['sha256'], annotation_review_sha256=MODULE.base.digest(review))
 
     def audit(self, value=None, rows=None):
         return MODULE.validate_preparation(value or self.value, self.plan,
@@ -70,4 +76,22 @@ class PreparationTests(unittest.TestCase):
             else:
                 value['sources'][0][key] = 'b' * 64
             with self.assertRaises(ValueError):
+                self.audit(value)
+
+    def test_rehashed_review_covering_only_one_source_cannot_cover_all_sources(self):
+        review = self.folder / 'annotation-review.json'
+        value = json.loads(review.read_text(encoding='utf-8'))
+        value['sources'].pop()
+        review.write_text(json.dumps(value), encoding='utf-8')
+        self.value['annotation_review']['sha256'] = MODULE.base.digest(review)
+        for row in self.value['sources']:
+            row['annotation_review_sha256'] = MODULE.base.digest(review)
+        with self.assertRaisesRegex(ValueError, '标注review.*覆盖'):
+            self.audit()
+
+    def test_source_annotation_binding_drift_is_rejected(self):
+        for field in ['annotation_protocol_sha256', 'annotation_review_sha256']:
+            value = copy.deepcopy(self.value)
+            value['sources'][1][field] = 'b' * 64
+            with self.assertRaisesRegex(ValueError, '标注'):
                 self.audit(value)
