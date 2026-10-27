@@ -151,5 +151,14 @@ class SidecarTests(unittest.TestCase):
             else:invalid['observations'][0].update(coverage='unobserved',numerator=0,value=0.0)
             with self.subTest(change=change),self.assertRaises(ValueError):self.check(invalid)
 
+    def test_positive_count_float_underflow_is_not_an_observed_zero(self):
+        item=package()
+        row=observation()
+        row.update(numerator=1,denominator=10**400,value=0.0)
+        item['observations']=[row]
+        with self.assertRaises(ValueError):self.check(item)
+        row.update(numerator=0)
+        self.assertEqual(self.check(item)['observed_zero'],1)
+
 
 if __name__=='__main__':unittest.main()
