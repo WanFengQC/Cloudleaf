@@ -240,7 +240,17 @@ fn round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session() {
         activation.is_ok(),
         "32个故障owner停工后，已证明安全的monitor slot必须可供健康会话使用：{activation:?}"
     );
-    for _ in 0..3 {
+    let extended = std::env::var("CLOUDLEAF_REVIEW_PINNED_SECONDS")
+        .map(|value| {
+            let seconds = value.parse::<u64>().expect("异常占用延长档必须为整数秒");
+            assert!((180..=600).contains(&seconds));
+            Duration::from_secs(seconds)
+        })
+        .unwrap_or_default();
+    let steady_started = Instant::now();
+    let steady_budget = budget::usage();
+    let mut cycles = 0;
+    while cycles < 3 || steady_started.elapsed() < extended {
         healthy.scope_proof.set(Some(Instant::now()));
         for key in [b'N', b'I', b'H', b'A', b'O', b' '] {
             assert!(native(&healthy, u16::from(key)));
@@ -249,9 +259,20 @@ fn round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session() {
         assert_eq!(text(&data), "你好");
         assert!(healthy.owned.borrow().is_empty());
         assert!(healthy.epoch_budget.borrow().is_none());
+        assert_eq!(budget::usage(), steady_budget);
         data.text.borrow_mut().clear();
+        data.calls.borrow_mut().clear();
+        cycles += 1;
+        assert_eq!(data.writes.get(), cycles * 6);
+        if !extended.is_zero() && cycles % 1000 == 0 {
+            println!(
+                "{{\"experiment\":\"r5-pinned-progress\",\"healthy_cycles\":{cycles},\"remaining_hosts\":33,\"remaining_batches\":32,\"pinned_budget_unchanged\":true,\"elapsed_ns\":{}}}",
+                steady_started.elapsed().as_nanos()
+            );
+        }
     }
-    assert_eq!(data.writes.get(), 18);
+    let steady_elapsed = steady_started.elapsed();
+    assert_eq!(data.writes.get(), cycles * 6);
     let window = healthy.recovery.borrow().as_ref().unwrap().clone();
     let material = window.explicit_all_for_review();
     for probe in &probes {
@@ -280,9 +301,14 @@ fn round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session() {
     assert_eq!(budget::usage().batches, 32);
     assert_eq!(DllCanUnloadNow(), S_FALSE);
     println!(
-        "{{\"experiment\":\"r5-abrupt-owner-recovery\",\"faulted_owners\":32,\"healthy_cycles\":3,\"healthy_writes\":18,\"unknown_replays\":0,\"remaining_hosts\":32,\"remaining_batches\":32,\"elapsed_ns\":{},\"registered\":false}}",
+        "{{\"experiment\":\"r5-pinned-availability\",\"faulted_owners\":32,\"healthy_cycles\":{cycles},\"healthy_writes\":{},\"unknown_replays\":0,\"remaining_hosts\":32,\"remaining_batches\":32,\"pinned_budget_unchanged\":true,\"steady_elapsed_ns\":{},\"elapsed_ns\":{},\"registered\":false}}",
+        data.writes.get(),
+        steady_elapsed.as_nanos(),
         started.elapsed().as_nanos()
     );
+    if !extended.is_zero() {
+        std::thread::sleep(Duration::from_millis(500));
+    }
 }
 
 #[test]
