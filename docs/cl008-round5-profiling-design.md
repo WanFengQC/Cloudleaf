@@ -6,7 +6,7 @@
 
 现有宿主只测Lattice::build与search_graph合并墙钟，不能把它外推成某个算法阶段。归一化在建图内部，桶内sort/dedup穿插在每次搜索扩展中。新增研究crate内的可选`profile_query`及阶段记录类型，旧API保留签名/结果，默认Noop观察器不读时钟；使用同一实现而非复制一份算法。
 
-阶段为normalize（含配置/输入拒绝）、lattice（Trie匹配/边生成）、traversal（路径扩展及其中桶处理）、bucket_sort_dedup（traversal嵌套子阶段）、final_sort_dedup、context_rerank、materialize（候选ID/正文输出物化）、query_total。每阶段保留attempt次数/原始纳秒；未执行为null，真实执行但空工作可为0。失败必须结束已进入阶段并保留错误，不用0替代未进入阶段；预算属于搜索结果而非错误，保留原结果/剪枝/失败分母。
+阶段为normalize（含配置/输入拒绝）、lattice（Trie匹配/边生成）、search_validate（模型/图/配置验证）、traversal（路径扩展及其中桶处理）、bucket_sort_dedup（traversal嵌套子阶段）、final_sort_dedup、context_rerank、materialize（候选ID/正文输出物化）、query_total。每阶段保留attempt次数/原始纳秒；未执行为null，真实执行但空工作可为0。失败必须结束已进入阶段并保留错误，不用0替代未进入阶段；预算属于搜索结果而非错误，保留原结果/剪枝/失败分母。
 
 `bucket_sort_dedup`嵌套在traversal；query_total包含全部阶段及观测开销。不能相加嵌套阶段，不以相减计算未观测的净CPU成本。每段使用Instant，记录时钟读取次数。大量桶排序的读钟开销可能明显，因此同配置另跑旧未观测入口并保留原始时间与所有结果全字段对照；不把观测版时间当产品延迟，不对本轮直接宣称优化。
 
