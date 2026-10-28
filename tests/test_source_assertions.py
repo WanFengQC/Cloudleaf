@@ -12,16 +12,21 @@ class SourceAssertionTests(unittest.TestCase):
     def fixture(self, folder):
         source = Path(folder) / 'source.jsonl'
         rows = [{'word': '夹具', 'lang_code': 'zh', 'pos': 'noun',
+                 'sounds': [{'tags': ['Mandarin', 'Pinyin'], 'zh_pron': 'jiājù'}],
                  'senses': [{'glosses': ['自编义项']}],
                  'translations': [{'lang_code': 'en', 'word': 'fixture', 'sense': '原始未对齐标签'}]},
                 {'word': '隔离', 'lang_code': 'zh', 'pos': 'noun', 'copyright': 'not reviewed',
+                 'sounds': [{'tags': ['Mandarin', 'Pinyin'], 'zh_pron': 'gélí'}],
                  'senses': [{'glosses': ['不可导出']}]}]
         source.write_text(''.join(json.dumps(row, ensure_ascii=False) + '\n' for row in rows), encoding='utf-8', newline='\n')
+        license_file = Path(folder) / 'LICENSE.txt'
+        license_file.write_text('Synthetic fixture permission only.\n', encoding='utf-8')
         lock = {'source_id': 'synthetic-fixture', 'version': 'fixture-1', 'research_only': True,
                 'review_status': 'approved', 'approved_scope': 'Bounded research',
                 'format': 'wiktionary-zh-prefix-jsonl', 'bytes': source.stat().st_size,
                 'sha256': hashlib.sha256(source.read_bytes()).hexdigest(), 'line_count': 2,
-                'license_id': 'MIT', 'license_sha256': 'a' * 64,
+                'license_id': 'fixture', 'license_file': str(license_file),
+                'license_sha256': hashlib.sha256(license_file.read_bytes()).hexdigest(),
                 'attribution': 'Synthetic mechanism fixture only'}
         return source, lock
 
