@@ -253,7 +253,11 @@ fn run() -> Result<(), Box<dyn Error>> {
         let start = Instant::now();
         let result = details(last.as_ref().unwrap(), fields[2], &lexicon, config.output_k);
         let details_ns = start.elapsed().as_nanos();
-        output.push(format!("{{\"id\":{},\"family\":{},\"input\":{},\"kind\":{},\"samples\":[{}],\"details_ns\":{},\"result\":{}}}",quote(fields[0]),quote(fields[1]),quote(fields[2]),quote(fields[3]),samples.join(","),details_ns,result));
+        let full_result = format!(
+            "{:?}",
+            last.as_ref().unwrap().as_ref().map(|(_, result)| result)
+        );
+        output.push(format!("{{\"id\":{},\"family\":{},\"input\":{},\"kind\":{},\"samples\":[{}],\"details_ns\":{},\"result\":{},\"result_debug\":{}}}",quote(fields[0]),quote(fields[1]),quote(fields[2]),quote(fields[3]),samples.join(","),details_ns,result,quote(&full_result)));
     }
     println!(
         "{{\"schema_version\":1,\"experiment\":\"cloudleaf-stage-profile-v1\",\"language_accuracy_valid\":false,\"lexicon_entries\":{},\"trie_nodes\":{},\"load_ns\":{},\"iterations_per_case\":{},\"warmup_per_case\":{},\"cases\":[{}]}}",
