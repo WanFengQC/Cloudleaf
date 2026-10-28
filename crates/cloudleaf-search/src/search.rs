@@ -129,6 +129,22 @@ fn retain_unique<O: Observer>(paths: &mut Vec<Path>, k: usize, observer: &mut O,
     observer.stop(phase, stamp);
 }
 
+fn insert_unique<O: Observer>(paths: &mut Vec<Path>, next: Path, k: usize, observer: &mut O) {
+    let stamp = observer.start(Phase::BucketSortDedup);
+    if let Some(index) = paths.iter().position(|path| path.text == next.text) {
+        // 桶始终有序且正文唯一；相等时保留先到路径，含其原edge与features。
+        if compare(&next, &paths[index]) != Ordering::Less {
+            observer.stop(Phase::BucketSortDedup, stamp);
+            return;
+        }
+        paths.remove(index);
+    }
+    let index = paths.partition_point(|path| compare(path, &next) != Ordering::Greater);
+    paths.insert(index, next);
+    paths.truncate(k);
+    observer.stop(Phase::BucketSortDedup, stamp);
+}
+
 fn expand_allowed(statistics: &mut Statistics, config: &Config) -> bool {
     if statistics.expansions == config.max_expansions {
         statistics.budget = Some(Budget::Expansions);
@@ -161,9 +177,8 @@ fn reference<O: Observer>(
     stats.resident_high_water = 1;
     while let Some((position, path)) = pending.pop() {
         if position == scorer.graph.letters.len() {
-            complete.push(scorer.finish(path));
             // 参考枚举所有路径，只将已完成输出压缩为当前最佳unique top-k。
-            retain_unique(&mut complete, k, observer, Phase::BucketSortDedup);
+            insert_unique(&mut complete, scorer.finish(path), k, observer);
             continue;
         }
         for edge in &scorer.graph.outgoing[position] {
@@ -214,8 +229,7 @@ fn dynamic<O: Observer>(
                 if !resident_allowed(stats, resident + 1, config) {
                     return Vec::new();
                 }
-                bucket.push(scorer.extend(&path, *edge_index));
-                retain_unique(bucket, k, observer, Phase::BucketSortDedup);
+                insert_unique(bucket, scorer.extend(&path, *edge_index), k, observer);
                 resident = resident + bucket.len() - old;
             }
             resident -= 1;
@@ -256,8 +270,7 @@ fn position_dynamic<O: Observer>(
                 if !resident_allowed(stats, resident + 1, config) {
                     return Vec::new();
                 }
-                bucket.push(scorer.extend(&path, *edge_index));
-                retain_unique(bucket, k, observer, Phase::BucketSortDedup);
+                insert_unique(bucket, scorer.extend(&path, *edge_index), k, observer);
                 resident = resident + bucket.len() - old;
             }
             resident -= 1;
@@ -401,8 +414,7 @@ mod bucket_regression {
     }
 
     fn insert(bucket: &mut Vec<Path>, next: Path, k: usize) {
-        bucket.push(next);
-        retain_unique(bucket, k, &mut Noop, Phase::BucketSortDedup);
+        insert_unique(bucket, next, k, &mut Noop);
     }
 
     #[test]
