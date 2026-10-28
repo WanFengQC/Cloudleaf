@@ -15,6 +15,13 @@ use windows_core::{
 
 static OBJECTS: AtomicUsize = AtomicUsize::new(0);
 static LOCKS: AtomicUsize = AtomicUsize::new(0);
+#[cfg(test)]
+pub(crate) fn module_counts_for_review() -> (usize, usize) {
+    (
+        OBJECTS.load(Ordering::Acquire),
+        LOCKS.load(Ordering::Acquire),
+    )
+}
 pub(crate) fn retain() {
     OBJECTS.fetch_add(1, Ordering::Relaxed);
 }

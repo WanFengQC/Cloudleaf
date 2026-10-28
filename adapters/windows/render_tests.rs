@@ -234,28 +234,56 @@ fn round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session() {
         budget::limits().fixed_bytes
     );
     let _apartment = ReviewApartment::new();
-    let (healthy, data, _) = fixture();
+    let (healthy, data, context) = fixture();
     let activation = healthy.start_platform();
     assert!(
         activation.is_ok(),
         "32个故障owner停工后，已证明安全的monitor slot必须可供健康会话使用：{activation:?}"
     );
+    let profile = std::env::var("CLOUDLEAF_REVIEW_SOAK_PROFILE").unwrap_or_default();
     let extended = std::env::var("CLOUDLEAF_REVIEW_PINNED_SECONDS")
         .map(|value| {
             let seconds = value.parse::<u64>().expect("异常占用延长档必须为整数秒");
-            assert!((180..=600).contains(&seconds));
+            match profile.as_str() {
+                "8h" => assert_eq!(seconds, 28800),
+                "24h" => assert_eq!(seconds, 86400),
+                "diagnostic" => assert!((1..=60).contains(&seconds)),
+                "" | "bounded" => assert!((180..=600).contains(&seconds)),
+                _ => panic!("未知长期诊断档"),
+            }
             Duration::from_secs(seconds)
         })
         .unwrap_or_default();
     let steady_started = Instant::now();
     let steady_budget = budget::usage();
+    let raw_audit = matches!(profile.as_str(), "diagnostic" | "8h" | "24h");
+    let cycle_ms = std::env::var("CLOUDLEAF_REVIEW_CYCLE_MS")
+        .map(|value| value.parse::<u64>().expect("周期必须为整数毫秒"))
+        .unwrap_or(0);
+    assert!(cycle_ms <= 60000);
+    if matches!(profile.as_str(), "8h" | "24h") {
+        assert!(cycle_ms >= 1000);
+    }
+    let fail_cycle = std::env::var("CLOUDLEAF_REVIEW_FAIL_CYCLE")
+        .map(|value| value.parse::<usize>().expect("失败周期必须为整数"))
+        .unwrap_or(0);
+    assert!(fail_cycle == 0 || profile == "diagnostic");
+    let diagnostic_unknown: windows_core::IUnknown = context.cast().unwrap();
     let mut cycles = 0;
     while cycles < 3 || steady_started.elapsed() < extended {
+        let cycle_started = Instant::now();
         healthy.scope_proof.set(Some(Instant::now()));
+        let mut audit = Vec::with_capacity(6);
         for key in [b'N', b'I', b'H', b'A', b'O', b' '] {
+            let admitted = Instant::now();
             assert!(native(&healthy, u16::from(key)));
+            if raw_audit {
+                let event = healthy.owned.borrow().snapshot().pop().unwrap();
+                audit.push((event.native, admitted, admitted.elapsed().as_nanos()));
+            }
         }
         drain(&data);
+        let confirmed = Instant::now();
         assert_eq!(text(&data), "你好");
         assert!(healthy.owned.borrow().is_empty());
         assert!(healthy.epoch_budget.borrow().is_none());
@@ -264,10 +292,47 @@ fn round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session() {
         data.calls.borrow_mut().clear();
         cycles += 1;
         assert_eq!(data.writes.get(), cycles * 6);
+        if raw_audit {
+            for (event, admitted, admission_ns) in audit {
+                println!(
+                    "{{\"experiment\":\"r6-owned-key\",\"cycle\":{cycles},\"instance\":{},\"epoch\":{},\"sequence\":{},\"vk\":{},\"lparam\":{},\"admission_ns\":{admission_ns},\"commit_complete_ns\":{}}}",
+                    event.instance,
+                    event.epoch,
+                    event.sequence,
+                    event.wparam,
+                    event.lparam,
+                    confirmed.duration_since(admitted).as_nanos()
+                );
+            }
+            // 安全：仅在owner STA对自有测试IUnknown成对增减；不是全局COM引用计数。
+            let (add_return, release_return) = unsafe {
+                let table = diagnostic_unknown.vtable();
+                let raw = diagnostic_unknown.as_raw();
+                ((table.AddRef)(raw), (table.Release)(raw))
+            };
+            let (module_leases, module_locks) = super::super::service::module_counts_for_review();
+            println!(
+                "{{\"experiment\":\"r6-cycle\",\"cycle\":{cycles},\"healthy_writes\":{},\"hosts\":{},\"batches\":{},\"fixed_bytes\":{},\"text_bytes\":{},\"host_rc_strong_count\":{},\"module_leases\":{module_leases},\"module_locks\":{module_locks},\"own_iunknown_addref_return\":{add_return},\"own_iunknown_release_return\":{release_return},\"external_com_reference_count\":null,\"fifo_and_budget_verified\":true}}",
+                data.writes.get(),
+                steady_budget.hosts,
+                steady_budget.batches,
+                steady_budget.fixed_bytes,
+                steady_budget.text_bytes,
+                Rc::strong_count(&healthy)
+            );
+            use std::io::Write;
+            std::io::stdout().flush().unwrap();
+        }
+        assert!(fail_cycle == 0 || cycles != fail_cycle, "显式短档故障注入");
         if !extended.is_zero() && cycles % 1000 == 0 {
             println!(
                 "{{\"experiment\":\"r5-pinned-progress\",\"healthy_cycles\":{cycles},\"remaining_hosts\":33,\"remaining_batches\":32,\"pinned_budget_unchanged\":true,\"elapsed_ns\":{}}}",
                 steady_started.elapsed().as_nanos()
+            );
+        }
+        if cycle_ms > 0 {
+            std::thread::sleep(
+                Duration::from_millis(cycle_ms).saturating_sub(cycle_started.elapsed()),
             );
         }
     }
