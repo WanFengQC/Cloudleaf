@@ -571,6 +571,24 @@ fn round4_multista_unknown_exit_and_class_failure_recover_for_twenty_rounds() {
         highest_fixed = highest_fixed.max(budget::usage().fixed_bytes);
         assert_eq!(DllCanUnloadNow(), S_FALSE);
         if round % 2 == 0 {
+            // 零等待回收须先取得worker真实退出证明，再观察已注入的类清理失败。
+            let until = Instant::now() + Duration::from_secs(3);
+            loop {
+                let receipts = recovery::receipt_snapshot_for_review();
+                if receipts.len() == 4
+                    && receipts
+                        .iter()
+                        .all(|receipt| receipt.last_error != 0 && receipt.attempts > 0)
+                {
+                    break;
+                }
+                assert!(
+                    Instant::now() < until,
+                    "未在期限内观察到四个清理失败：{receipts:?}"
+                );
+                assert_eq!(DllCanUnloadNow(), S_FALSE);
+                std::thread::sleep(Duration::from_millis(2));
+            }
             let receipts = recovery::receipt_snapshot_for_review();
             assert_eq!(receipts.len(), 4);
             for ((instance, _, generation), _) in &records {
