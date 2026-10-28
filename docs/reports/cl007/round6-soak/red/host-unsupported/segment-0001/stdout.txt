@@ -1,0 +1,15 @@
+
+running 1 test
+test native::session::render_tests::round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session ... {"experiment":"r5-abrupt-owner-occupied","owners":32,"fixed_bytes":118838080,"text_bytes":41943040,"global_fixed_limit":134217728}
+
+thread 'native::session::render_tests::round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session' panicked at apps\windows-ime\src\..\..\..\adapters\windows\render_tests.rs:246:13:
+assertion failed: (180..=600).contains(&seconds)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    native::session::render_tests::round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 98 filtered out; finished in 1.36s

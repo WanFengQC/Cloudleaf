@@ -1,0 +1,6 @@
+{
+  "encoding": "UTF-8",
+  "original_bytes": 813,
+  "original_sha256": "ff2e6a0a74ce7441304fde02a5e283a0fe48874505dae9cd40545a16bb41f723",
+  "raw_text": "\nrunning 1 test\ntest native::session::render_tests::round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session ... {\"experiment\":\"r5-abrupt-owner-occupied\",\"owners\":32,\"fixed_bytes\":118838080,\"text_bytes\":41943040,\"global_fixed_limit\":134217728}\n\nthread 'native::session::render_tests::round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session' panicked at apps\\windows-ime\\src\\..\\..\\..\\adapters\\windows\\render_tests.rs:246:13:\nassertion failed: (180..=600).contains(&seconds)\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\nFAILED\n\nfailures:\n\nfailures:\n    native::session::render_tests::round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session\n\ntest result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 98 filtered out; finished in 1.36s\n\n"
+}

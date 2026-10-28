@@ -1,0 +1,123 @@
+{
+  "schema_version": 2,
+  "command": [
+    "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\target\\release\\deps\\cloudleaf_windows_ime-bc46e0fa3eb0a77d.exe",
+    "native::session::render_tests::round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session",
+    "--exact",
+    "--nocapture",
+    "--test-threads=1"
+  ],
+  "explicit_configuration": {
+    "profile": "diagnostic",
+    "seconds": 4,
+    "cycle_ms": 50,
+    "checkpoint_seconds": 0.1,
+    "sample_seconds": 0.05,
+    "long_profile": false
+  },
+  "runner": {
+    "pid": 35648,
+    "created": 134376708135110542
+  },
+  "child": {
+    "pid": 22196,
+    "created": 134376708142612094
+  },
+  "exit_code": 101,
+  "interrupted": false,
+  "timeout": false,
+  "wall_seconds": 1.882202699984191,
+  "mechanism_passed": false,
+  "continuous_long_profile_completed": false,
+  "samples": null,
+  "events": null,
+  "latest_events": {
+    "r5-abrupt-owner-occupied": {
+      "experiment": "r5-abrupt-owner-occupied",
+      "owners": 32,
+      "fixed_bytes": 118838080,
+      "text_bytes": 41943040,
+      "global_fixed_limit": 134217728
+    },
+    "r6-owned-key": {
+      "experiment": "r6-owned-key",
+      "cycle": 3,
+      "instance": 33,
+      "epoch": 1,
+      "sequence": 18,
+      "vk": 32,
+      "lparam": 1,
+      "admission_ns": 15300,
+      "commit_complete_ns": 81300
+    },
+    "r6-cycle": {
+      "experiment": "r6-cycle",
+      "cycle": 3,
+      "healthy_writes": 18,
+      "hosts": 33,
+      "batches": 32,
+      "fixed_bytes": 118958850,
+      "text_bytes": 41943040,
+      "host_rc_strong_count": 1,
+      "module_leases": 132,
+      "module_locks": 0,
+      "own_iunknown_addref_return": 4,
+      "own_iunknown_release_return": 3,
+      "external_com_reference_count": null,
+      "fifo_and_budget_verified": true
+    }
+  },
+  "sampling_errors": [],
+  "output_errors": [],
+  "sampled_peak": {
+    "handles": 145,
+    "threads": 8,
+    "working_set_bytes": 14729216,
+    "private_commit_bytes": 5894144
+  },
+  "final_memory": {
+    "working_set_bytes": 32768,
+    "os_peak_working_set_bytes": 15511552,
+    "private_commit_bytes": 77824
+  },
+  "latency": {
+    "events": 18,
+    "admission_ns": {
+      "p50": 23900,
+      "p95": 87000,
+      "p99": 87000,
+      "max": 87000
+    },
+    "commit_complete_ns": {
+      "p50": 145900,
+      "p95": 331900,
+      "p99": 331900,
+      "max": 331900
+    },
+    "raw_errors": [],
+    "external_com_reference_count": null,
+    "scope": "own diagnostic native FIFO; commit latency ends at cycle drain, not real TSF latency"
+  },
+  "recovery": {
+    "expected_unknown_materials": 32,
+    "verified": null,
+    "success_rate": null,
+    "automatic_replays": null
+  },
+  "external_com_reference_count": null,
+  "real_application_acceptance": false,
+  "system_registration_executed": false,
+  "long_term_production_reliability_accepted": false,
+  "files_sha256": {
+    "checkpoint.json": "5031dcb17d272fd98000478ae4711a20c744095d53a3ed845431302ac1ffce69",
+    "checkpoints.jsonl": "f03a0c6be46e4d6aac62ddccdf84438dd27a97d42437bbc6a28639c8f940e0c2",
+    "events.jsonl": "90230fa292eef0c49bc2f7c53bece849f6289697f52883817ce1fdf9ebfc10ec",
+    "samples.jsonl": "a114e0b7277ff61a2c4685e8219aedf3551399809f18bc3331c623a74bf06b14",
+    "stdout.txt": "527e1b1f6936416dcb4995541a7651aeabdab5850dfd077e42a3c03ea645e9f7"
+  },
+  "limitations": [
+    "only owned diagnostic process; raw sampling peaks are not exact RSS bounds",
+    "new segments restart independent sessions; elapsed time never joins across segments",
+    "Rc/Lease counts and paired own-IUnknown returns are separate from global COM reference count"
+  ]
+}

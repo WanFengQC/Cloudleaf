@@ -8,6 +8,8 @@ CL-007 独立开发分支已加入 TSF 原生服务、候选 UI、显式管理�
 
 Round 5新增提前全局登记的监测worker回收及异常预算持续占用下的健康会话验证，详见[v5设计](docs/cl007-fault-isolation-v5.md)和[Round 5原始证据与阻塞](docs/reports/cl007/round5-isolation-status.md)。未析构Host/外部COM仍保活计费，真实应用和8小时/24小时压力尚未验收。
 
+Round 6补齐流式原始事件/资源、周期检查点和严格身份的新段续跑，新增8h/24h专用压力档；实际只完成短档正常/中断/续跑/失败验证。详见[本轮设计](docs/cl007-round6-isolation-and-soak.md)与[原始证据及准入阻塞](docs/reports/cl007/round6-soak-status.md)。可运行长期档不等于已完成长期验收，系统输入法仍不注册/激活。
+
 ## 环境
 
 - Git。
