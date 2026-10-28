@@ -56,3 +56,5 @@ README完整Rust/Python、fmt/Clippy/doc、资源/依赖许可/RustSec、release
 ## R4 清理失败断言的异步观测
 
 `ad45bfe`完整回归真实捕获了R4多STA测试失败：单次`DllCanUnloadNow`后某个receipt的`attempts=0`。该导出只零等待；v5要求监测worker的真实OS线程结束后才能置completion，因此owner退出、Rust JoinHandle返回或一次reap均不承诺本次已尝试类清理。测试将在原3秒期限内轮询同一真实导出及receipt，等待全部四项确实取得失败尝试/error，再执行原有owner退出、错误、清理及四维额度归零断言。超时仍失败；不改生产回收条件，不清除故障后伪装为已观察失败。原始失败日志单独保留。
+
+`9ba0ea2`完整回归另捕获旧只读预判/满队列测试的overflow返回true：该fixture的scope证明有TTL，100次只读预判及填队列后scope若过期，会先走同步barrier，无法继续断言队列未处理。容量测试将和既有R4满队列用例一样，在每次输入及最终overflow前显式布置有效scope；保留全部原只读、序号、容量、隔离和零写断言。既有`round4_expired_scope_with_full_ownership_rejects_before_barrier_or_write`继续单独验证过期scope，不修改生产TTL或准入。
