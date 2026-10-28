@@ -94,3 +94,14 @@ python -m tools.data_pipeline.linguistic_sidecar --sidecar <独立侧包JSON> --
 审查登记见`data/sources/source-review.jsonl`。旧本地`cedict-text`锁仍须人工补齐固定原件hash、合法取得方式、CC BY-SA4完整许可及署名链；测试中的自编夹具仅验证语法/去重，不能代替新完整ZIP的取得证据。SUBTLEX-CH许可范围和wordfreq中文来源问题保持阻塞，其他候选也不因CC-CEDICT镜像批准而自动通过。
 
 此版本索引只用于Python离线精确查询验证；Rust消费TSV后建立自身内存索引。索引查询时间不能作为中文候选延迟、输入法端到端延迟或语言质量证据。完整来源词条已可重放，生产读音/覆盖验收、统计语料/频率、完整双语数据、独立评估和产品资源预算仍未完成，CL-009不关闭。
+
+## Round 6 独立离线工具
+
+[设计](../../docs/cl009-round6-design.md)和[人工任务交付映射](../../docs/cl009-round6-annotation-handoff.md)定义本轮范围。`annotation_workflow`支持待填队列、双审/仲裁绑定、全局split隔离和不可覆盖冻结，真实12任务仍缺人员/授权/答案；不自动产生gold。`source_assertions`只从既有批准研究片段输出多字词源POS/义项/英语翻译断言及双向lookup，反查不新增反向翻译事实；`corpus_gate`只核固定官方revision与实际准入证据，不对未审wikitext伪造词频。
+
+```text
+python -m tools.data_pipeline.source_assertions --source <固定JSONL> --lock data/sources/locks/wiktionary-zh-20261001-prefix8388608.json --output-dir <全新研究目录>
+python -m tools.data_pipeline.corpus_gate --revision <固定官方API响应> --page-id 342 --revision-id 94816134 --output <新准入报告JSON>
+```
+
+缺rights/作者历史/提取/分词证据时准入exit2、token/DF/Zipf均null；现有生产包、解析/发布/回滚和输入核心不变。所有工具只在离线工程路径调用，无实时输入依赖。

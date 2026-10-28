@@ -1,5 +1,8 @@
 """固定revision及统计准入不能由许可关键词或末编辑者代替。"""
 import hashlib
+import json
+from pathlib import Path
+import tempfile
 import unittest
 
 from tools.data_pipeline.corpus_gate import audit_revision
@@ -15,6 +18,30 @@ def response():
 
 
 class CorpusGateTests(unittest.TestCase):
+    def test_bound_documents_are_checked_and_changed_protocol_fails(self):
+        value = response()
+        content = value['query']['pages'][0]['revisions'][0]['slots']['main']['content']
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            rights = {'status': 'approved', 'reviewer_id': 'synthetic-reviewer', 'page_id': 342,
+                      'revision_id': 9, 'content_sha256': hashlib.sha256(content.encode()).hexdigest(),
+                      'license_id': 'CC-BY-SA-4.0', 'all_page_exceptions_reviewed': True}
+            history = {'page_id': 342, 'revision_id': 9, 'all_authors_resolved': True,
+                       'history_url': 'https://example.invalid/synthetic-history'}
+            protocol = {'id': 'synthetic', 'version': '1', 'normalization': 'synthetic',
+                        'implementation_sha256': 'a' * 64, 'configuration_sha256': 'b' * 64, 'unit': 'tokens'}
+            review = {}
+            for name, document in [('license_and_exception_review', rights), ('attribution_history', history),
+                                   ('extraction_protocol', protocol), ('tokenizer_protocol', protocol)]:
+                path = root / (name + '.json')
+                path.write_text(json.dumps(document), encoding='utf-8')
+                review[name] = {'path': path.name, 'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
+            report = audit_revision(value, {'page_id': 342, 'revision_id': 9}, review, root)
+            self.assertTrue(report['statistical_use_ready'])
+            self.assertFalse(report['evidence_declarations_independently_proven'])
+            (root / 'tokenizer_protocol.json').write_text('{}', encoding='utf-8')
+            self.assertFalse(audit_revision(value, {'page_id': 342, 'revision_id': 9}, review, root)['statistical_use_ready'])
+
     def test_real_content_identity_does_not_approve_rights_or_tokenization(self):
         result = audit_revision(response(), {'page_id': 342, 'revision_id': 9}, {})
         self.assertTrue(result['revision_identity_valid'])
