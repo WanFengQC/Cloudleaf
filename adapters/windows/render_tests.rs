@@ -887,10 +887,11 @@ fn native_probe_is_readonly_and_queue_full_does_not_take_new_key() {
     assert_eq!(before, host.engine.borrow().frame());
     assert_eq!(projection, host.projection.borrow().frame());
     assert_eq!(host.native_sequence.get(), 1);
-    for _ in 0..QUEUE_LIMIT {
+    for index in 0..QUEUE_LIMIT {
         // 此用例固定有效scope以测容量；过期scope另有独立回归。
         host.scope_proof.set(Some(Instant::now()));
         assert!(native(&host, b'N' as u16));
+        assert_eq!(host.owned.borrow().len(), index + 1);
     }
     let next = host.native_sequence.get();
     host.scope_proof.set(Some(Instant::now()));
