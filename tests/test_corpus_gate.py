@@ -29,3 +29,12 @@ class CorpusGateTests(unittest.TestCase):
             value['query']['pages'][0]['revisions'][0]['revid' if kind == 'revision' else 'sha1'] = 10 if kind == 'revision' else '0' * 40
             with self.assertRaises(ValueError):
                 audit_revision(value, {'page_id': 342, 'revision_id': 9}, {})
+
+    def test_claimed_hashes_without_real_bound_evidence_cannot_approve(self):
+        value = response()
+        content = value['query']['pages'][0]['revisions'][0]['slots']['main']['content']
+        review = {key: 'a' * 64 for key in ['license_and_exception_review_sha256',
+                  'attribution_history_sha256', 'extraction_protocol_sha256', 'tokenizer_protocol_sha256']}
+        review.update(all_page_exceptions_reviewed=True, reviewed_revision_id=9,
+                      reviewed_content_sha256=hashlib.sha256(content.encode()).hexdigest())
+        self.assertFalse(audit_revision(value, {'page_id': 342, 'revision_id': 9}, review)['statistical_use_ready'])

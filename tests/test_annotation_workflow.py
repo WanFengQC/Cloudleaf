@@ -20,7 +20,7 @@ def packet():
                 'key_trace': ['text:fixture' + str(index), 'Enter'], 'scenario': 'fixture', 'reviews': [],
                 'adjudication': None}
         task['reviews'] = [{'reviewer_id': name, 'annotation_sha256': annotation_digest(task),
-                            'decision': 'approve'} for name in ['fixture-a', 'fixture-b']]
+                            'protocol_sha256': SHA, 'decision': 'approve'} for name in ['fixture-a', 'fixture-b']]
         tasks.append(task)
     return {'schema_version': 1, 'format': 'cloudleaf-ime-annotation-v1', 'synthetic': True,
             'dictionary_derived': False, 'protocol_sha256': SHA, 'preprocessing_sha256': SHA,
@@ -57,7 +57,7 @@ class AnnotationWorkflowTests(unittest.TestCase):
         task['reviews'][1]['decision'] = 'reject'
         self.assertFalse(audit(value)['structurally_ready'])
         task['adjudication'] = {'adjudicator_id': 'fixture-arbiter', 'decision': 'approve',
-                                'annotation_sha256': annotation_digest(task)}
+                                'annotation_sha256': annotation_digest(task), 'protocol_sha256': SHA}
         self.assertTrue(audit(value)['structurally_ready'])
         task['adjudication']['adjudicator_id'] = 'fixture-a'
         self.assertFalse(audit(value)['structurally_ready'])
@@ -84,6 +84,11 @@ class AnnotationWorkflowTests(unittest.TestCase):
             value = packet()
             mutate(value)
             self.assertFalse(audit(value)['structurally_ready'])
+
+    def test_protocol_replacement_invalidates_existing_reviews(self):
+        value = packet()
+        value['protocol_sha256'] = 'b' * 64
+        self.assertFalse(audit(value)['structurally_ready'])
 
     def test_freeze_preserves_split_answer_boundary_and_refuses_overwrite(self):
         with tempfile.TemporaryDirectory() as folder:
