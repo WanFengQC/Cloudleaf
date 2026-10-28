@@ -116,3 +116,17 @@ class ActualProfileTests(unittest.TestCase):
                 self.assertEqual(summary['cases'], 3)
                 self.assertEqual(summary['outcomes']['rejected'], 1)
                 self.assertTrue(all(row['all_observed_fields_equal'] for row in MODULE.validate_historical(observed, old)))
+
+    def test_actual_host_preserves_full_result_for_cross_version_comparison(self):
+        binary = MODULE.build_host()
+        with tempfile.TemporaryDirectory() as temporary:
+            folder = Path(temporary)
+            runtime, cases = folder / 'runtime.tsv', folder / 'cases.tsv'
+            runtime.write_text('# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\na\ta\t甲\t\tunknown\t\tfixture\t1\tMIT\n', encoding='utf-8', newline='\n')
+            cases.write_text('# cloudleaf-search-resource-cases-v1\nid\tfamily\tinput\tkind\nvalid\tf0\taa\tcomplete\nbad\tf1\ta,\tinvalid\n', encoding='utf-8', newline='\n')
+            for method in ['reference', 'exact', 'position', 'beam']:
+                observed = json.loads(subprocess.check_output([str(binary), str(runtime), str(cases), method, '1', '1', '0', '16384', '200000', '50000', '5'], cwd=ROOT))
+                self.assertIn('edge_indices:', observed['cases'][0]['result_debug'])
+                self.assertIn('finite_pool_only:', observed['cases'][0]['result_debug'])
+                self.assertIn('raw_fallback:', observed['cases'][0]['result_debug'])
+                self.assertIn('InvalidInput', observed['cases'][1]['result_debug'])

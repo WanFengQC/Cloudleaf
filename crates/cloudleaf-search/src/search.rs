@@ -385,3 +385,67 @@ pub(crate) fn search_observed<O: Observer>(
     observer.stop(Phase::Materialize, stamp);
     Ok(result)
 }
+
+#[cfg(test)]
+mod bucket_regression {
+    use super::*;
+
+    fn path(text: &str, score: i64, ids: &[usize], edge: usize) -> Path {
+        Path {
+            text: text.into(),
+            score,
+            ids: ids.to_vec(),
+            edges: vec![edge],
+            ..Path::default()
+        }
+    }
+
+    fn insert(bucket: &mut Vec<Path>, next: Path, k: usize) {
+        bucket.push(next);
+        retain_unique(bucket, k, &mut Noop, Phase::BucketSortDedup);
+    }
+
+    #[test]
+    fn same_text_keeps_strict_best_and_equal_first_edges() {
+        let mut bucket = Vec::new();
+        for next in [
+            path("甲", 1, &[2], 10),
+            path("甲", 0, &[0], 11),
+            path("甲", 1, &[1], 12),
+            path("甲", 1, &[1], 13),
+        ] {
+            insert(&mut bucket, next, 5);
+        }
+        assert_eq!(bucket.len(), 1);
+        assert_eq!(bucket[0].score, 1);
+        assert_eq!(bucket[0].ids, [1]);
+        assert_eq!(bucket[0].edges, [12]);
+    }
+
+    #[test]
+    fn different_text_equal_order_is_stable_and_truncation_follows_order() {
+        let mut bucket = Vec::new();
+        for next in [
+            path("甲", 1, &[1], 1),
+            path("乙", 1, &[1], 2),
+            path("丙", 1, &[1], 3),
+            path("丁", 2, &[9], 4),
+        ] {
+            insert(&mut bucket, next, 2);
+        }
+        assert_eq!(
+            bucket.iter().map(|p| p.text.as_str()).collect::<Vec<_>>(),
+            ["丁", "甲"]
+        );
+        insert(&mut bucket, path("甲", 3, &[8], 5), 2);
+        assert_eq!(
+            bucket.iter().map(|p| p.edges[0]).collect::<Vec<_>>(),
+            [5, 4]
+        );
+        insert(&mut bucket, path("戊", 2, &[9], 6), 2);
+        assert_eq!(
+            bucket.iter().map(|p| p.edges[0]).collect::<Vec<_>>(),
+            [5, 4]
+        );
+    }
+}
