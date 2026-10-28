@@ -97,6 +97,8 @@ python scripts/evaluate_restricted_oracle.py --evidence <原有Unihan证据JSON>
 
 ## 模块
 
+Round 6在独立研究搜索中维护稳定有序unique候选桶，保留原预算/遍历与完整候选字段；阶段宿主在计时外保存完整Result Debug，以便优化前后同源宿主逐字段对照。设计见[稳定桶约定](docs/cl008-round6-search-design.md)，完整同机旧新矩阵、原始失败及剩余门禁见[Round 6证据](docs/reports/cl008-round6/README.md)。未测单算法allocation/live/RSS，不以宿主峰值代替；默认输入核心与正式质量门禁不变。
+
 Round 5另提供[可选阶段观测](docs/cl008-round5-profiling-design.md)和[真实评估来源家族准备契约](docs/cl008-round5-quality-preparation.md)。观测入口与未读钟旧入口共用算法；逐样本核对结果、预算与图，记录归一化、建图、搜索验证、路径遍历、嵌套桶排序、最终排序及物化。嵌套阶段不可相加/相减推导CPU成本，profile开销不作产品延迟。
 
 ```text

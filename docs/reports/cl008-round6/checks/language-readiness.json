@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "experiment": "cloudleaf-language-readiness-report-v1",
+  "prerequisites_ready": false,
+  "language_accuracy_valid": false,
+  "top1": null,
+  "top5": null,
+  "mrr": null,
+  "sealed_gold_opened_by_tool": false,
+  "sections": {
+    "protocol": {
+      "passed": true,
+      "details": {
+        "protocol_sha256": "692067c0507676bdf6c5dbe632a566e87cfcaedd6719c06bf5c75d1e5ae11e37",
+        "family_ratios": [
+          70,
+          15,
+          15
+        ],
+        "minimum_heldout_families": 2000
+      }
+    },
+    "sources": {
+      "passed": false
+    },
+    "gold": {
+      "passed": false
+    },
+    "split_isolation": {
+      "passed": false
+    },
+    "heldout_seal": {
+      "passed": false
+    },
+    "parameter_freeze": {
+      "passed": false
+    }
+  },
+  "issues": [
+    {
+      "section": "sources",
+      "reason": "缺少独立评估语料或词库来源批准"
+    },
+    {
+      "section": "gold",
+      "reason": "缺少已核验的独立人工gold来源"
+    },
+    {
+      "section": "split_isolation",
+      "reason": "文件描述或SHA缺失"
+    },
+    {
+      "section": "heldout_seal",
+      "reason": "heldout未封存/已打开/保管者与评估者未分离"
+    },
+    {
+      "section": "parameter_freeze",
+      "reason": "'sealed_at'"
+    }
+  ],
+  "limitations": [
+    "只核验证据及摘要一致性，不自动证明人工标注、近重复语义、加密或保管者身份真实。",
+    "未读取封存答案、未执行语言打分；前置材料通过不等于正式质量或产品验收通过。"
+  ],
+  "plan_sha256": "f8565f739865a25d789bbaf3d6a885f1877219e3ab0879f5688cf5111bde2e46",
+  "tool_sha256": "b6ad0c85aa44de53205589447ebe6ff56e6df4f9b5bea50d246f359ac7ccccf3",
+  "source_sha256": "c39bc6f8ca56ee59489be8af39eedef0b37b5aafe979e844706b4467b8fec456",
+  "checked_at_utc": "2026-10-28T14:21:40.225766+00:00"
+}

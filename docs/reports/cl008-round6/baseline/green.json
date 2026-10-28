@@ -1,0 +1,28 @@
+[
+  {
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "cloudleaf-search",
+      "--lib",
+      "bucket_regression",
+      "--locked",
+      "--offline"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_search_phases.py"
+    ],
+    "exit_code": 0
+  }
+]
