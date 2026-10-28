@@ -1,0 +1,57 @@
+   Compiling cloudleaf-windows-ime v0.1.0 (C:\Users\EDY\.codex\worktrees\cl007-windows\Cloudleaf\apps\windows-ime)
+warning: unused `windows_core::HRESULT` that must be used
+   --> apps\windows-ime\src\..\..\..\adapters\windows\render_tests.rs:277:9
+    |
+277 |         DllCanUnloadNow();
+    |         ^^^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(unused_must_use)]` on by default
+help: use `let _ = ...` to ignore the resulting value
+    |
+277 |         let _ = DllCanUnloadNow();
+    |         +++++++
+
+warning: `cloudleaf-windows-ime` (lib test) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 7.01s
+     Running unittests src\lib.rs (target\debug\deps\cloudleaf_windows_ime-074298fd7fbc2509.exe)
+
+running 2 tests
+test native::session::render_tests::round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session ...
+thread 'native::session::render_tests::round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session' panicked at apps\windows-ime\src\..\..\..\adapters\windows\recovery.rs:1044:5:
+
+running 1 test
+test native::session::render_tests::round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session ... {"experiment":"r5-abrupt-owner-occupied","owners":32,"fixed_bytes":118823936,"text_bytes":41943040,"global_fixed_limit":134217728}
+FAILED
+
+failures:
+
+failures:
+    native::session::render_tests::round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 96 filtered out; finished in 1.39s
+
+
+
+thread 'native::session::render_tests::round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session' panicked at apps\windows-ime\src\..\..\..\adapters\windows\render_tests.rs:239:5:
+32个故障owner停工后，已证明安全的monitor slot必须可供健康会话使用：Err(Error { code: HRESULT(0x80004005), message: "监测资源尚未退出，拒绝启动新线程" })
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+test native::session::render_tests::round5_external_com_references_pin_old_host_without_polluting_new_context ...
+running 1 test
+test native::session::render_tests::round5_external_com_references_pin_old_host_without_polluting_new_context ... {"experiment":"r5-external-com-isolation","retained_callbacks":2,"late_calls":3,"old_writes":0,"new_writes":6,"final_four_counters_zero":true,"registered":false}
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 96 filtered out; finished in 0.08s
+
+ok
+
+failures:
+
+failures:
+    native::session::render_tests::round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session
+
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 95 filtered out; finished in 1.54s
+
+error: test failed, to rerun pass `-p cloudleaf-windows-ime --lib`

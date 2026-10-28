@@ -6,6 +6,8 @@
 
 CL-007 独立开发分支已加入 TSF 原生服务、候选 UI、显式管理工具，以及有界原生事件 ownership、独立 watchdog、用户显式恢复与 COM/Win32 故障注入；尚未注册、激活或完成真实应用验收，不能作为可发布输入法使用。同步 barrier、异步事件和仍未关闭的资源/宿主风险见[原生实现约定](docs/cl007-implementation.md)及[可靠性约定](docs/cl007-async-ownership-v1.md)。
 
+Round 5新增提前全局登记的监测worker回收及异常预算持续占用下的健康会话验证，详见[v5设计](docs/cl007-fault-isolation-v5.md)和[Round 5原始证据与阻塞](docs/reports/cl007/round5-isolation-status.md)。未析构Host/外部COM仍保活计费，真实应用和8小时/24小时压力尚未验收。
+
 ## 环境
 
 - Git。

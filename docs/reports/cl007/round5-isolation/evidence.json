@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "implementation_commit": "519ea587fe5a0fe56cb2a5ebc239832a118f692a",
+  "source_fingerprint_schema": "cloudleaf-source-v3",
+  "source_sha256": "8151e6aa5ff2ac10fc46b373d44d8b92f44e2c4864444965c4e5058fa139795a",
+  "data_sha256": {
+    "data/dictionaries/prototype.tsv": "d4a87e958b23097253a4601b9ae373f02964e3e37729bb7f560e20835d5bb5f0",
+    "tests/fixtures/input-v1.tsv": "5fc0d0baf3e1d9082974d87292fb565a64b0ecca42d573a4dc4e354f8f64d7e0",
+    "tests/evaluation/algorithm-v1.tsv": "d8bf45fcb578db3c7ed1a2d7cce5c5e98f126de70dcfe3cfe69eb4becc0618fb"
+  },
+  "environment": {
+    "os": "Windows-11-10.0.26300-SP0",
+    "machine": "AMD64",
+    "cpu": "11th Gen Intel(R) Core(TM) i5-11400 @ 2.60GHz",
+    "logical_cpus": 12,
+    "physical_memory_bytes": 34110734336
+  },
+  "rust_passed": 157,
+  "python_passed": 16,
+  "default_ignored": 2,
+  "pinned_profile": {
+    "mechanism_passed": true,
+    "final_event": {
+      "experiment": "r5-pinned-availability",
+      "faulted_owners": 32,
+      "healthy_cycles": 1017364,
+      "healthy_writes": 6104184,
+      "unknown_replays": 0,
+      "remaining_hosts": 32,
+      "remaining_batches": 32,
+      "pinned_budget_unchanged": true,
+      "steady_elapsed_ns": 180000092000,
+      "elapsed_ns": 181402059400,
+      "registered": false
+    },
+    "binary_sha256": "0c10c7a15b2aabed93d6d4b180624e96d39e87e7b64ca8dfe61733ce74bf388e",
+    "sampling_errors": [],
+    "sample_count": 622,
+    "intervals": [
+      {
+        "start": 10,
+        "end": 60,
+        "count": 172,
+        "ranges": {
+          "handles": {
+            "min": 144,
+            "median": 144.0,
+            "max": 144
+          },
+          "threads": {
+            "min": 4,
+            "median": 4.0,
+            "max": 7
+          },
+          "working_set_bytes": {
+            "min": 15687680,
+            "median": 15687680.0,
+            "max": 15736832
+          },
+          "private_commit_bytes": {
+            "min": 5681152,
+            "median": 5681152.0,
+            "max": 5771264
+          }
+        }
+      },
+      {
+        "start": 60,
+        "end": 120,
+        "count": 206,
+        "ranges": {
+          "handles": {
+            "min": 144,
+            "median": 144.0,
+            "max": 144
+          },
+          "threads": {
+            "min": 4,
+            "median": 4.0,
+            "max": 4
+          },
+          "working_set_bytes": {
+            "min": 15687680,
+            "median": 15687680.0,
+            "max": 15687680
+          },
+          "private_commit_bytes": {
+            "min": 5681152,
+            "median": 5681152.0,
+            "max": 5681152
+          }
+        }
+      },
+      {
+        "start": 120,
+        "end": 181,
+        "count": 209,
+        "ranges": {
+          "handles": {
+            "min": 144,
+            "median": 144,
+            "max": 144
+          },
+          "threads": {
+            "min": 4,
+            "median": 4,
+            "max": 4
+          },
+          "working_set_bytes": {
+            "min": 15687680,
+            "median": 15687680,
+            "max": 15687680
+          },
+          "private_commit_bytes": {
+            "min": 5681152,
+            "median": 5681152,
+            "max": 5681152
+          }
+        }
+      }
+    ]
+  },
+  "policy": {
+    "hosts": 64,
+    "batches": 64,
+    "text_bytes": 67108864,
+    "fixed_bytes": 134217728
+  },
+  "registration_executed": false,
+  "profile_activation_executed": false,
+  "real_application_acceptance": false,
+  "long_term_8h_24h_accepted": false,
+  "product_complete": false,
+  "changed_files": [
+    "adapters/windows/recovery.rs",
+    "adapters/windows/render_tests.rs",
+    "adapters/windows/watchdog.rs",
+    "docs/cl007-fault-isolation-v5.md",
+    "scripts/stress_windows_faults.py"
+  ]
+}

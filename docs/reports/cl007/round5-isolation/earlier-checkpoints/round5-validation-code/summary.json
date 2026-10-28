@@ -1,0 +1,128 @@
+[
+  {
+    "check": "fetch",
+    "command": [
+      "cargo",
+      "fetch",
+      "--locked"
+    ],
+    "exit_code": 0,
+    "seconds": 0.18537009999272414
+  },
+  {
+    "check": "build-debug",
+    "command": [
+      "cargo",
+      "build",
+      "--workspace",
+      "--locked",
+      "--offline"
+    ],
+    "exit_code": 0,
+    "seconds": 6.82112419999612
+  },
+  {
+    "check": "fmt",
+    "command": [
+      "cargo",
+      "fmt",
+      "--all",
+      "--check"
+    ],
+    "exit_code": 0,
+    "seconds": 0.6321965999959502
+  },
+  {
+    "check": "clippy",
+    "command": [
+      "cargo",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--locked",
+      "--offline",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit_code": 0,
+    "seconds": 3.5832034000050044
+  },
+  {
+    "check": "workspace-tests",
+    "command": [
+      "cargo",
+      "test",
+      "--workspace",
+      "--all-targets",
+      "--locked",
+      "--offline"
+    ],
+    "exit_code": 0,
+    "seconds": 11.234316699992632
+  },
+  {
+    "check": "doc-tests",
+    "command": [
+      "cargo",
+      "test",
+      "--workspace",
+      "--doc",
+      "--locked",
+      "--offline"
+    ],
+    "exit_code": 0,
+    "seconds": 1.3586956999934046
+  },
+  {
+    "check": "resource-audit",
+    "command": [
+      "python",
+      "scripts/check_workspace.py"
+    ],
+    "exit_code": 0,
+    "seconds": 0.5136975000059465
+  },
+  {
+    "check": "python-tests",
+    "command": [
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_*.py",
+      "-v"
+    ],
+    "exit_code": 0,
+    "seconds": 0.7167807999940123
+  },
+  {
+    "check": "dependency-audit",
+    "command": [
+      "python",
+      "scripts/audit_windows_dependencies.py",
+      "--audit-binary",
+      "C:\\Users\\EDY\\WebstormProjects\\Cloudleaf\\.local\\audit-tool\\bin\\cargo-audit.exe",
+      "--output",
+      ".local\\round5-validation-code\\dependency-audit.json"
+    ],
+    "exit_code": 0,
+    "seconds": 7.479358199998387
+  },
+  {
+    "check": "build-release",
+    "command": [
+      "cargo",
+      "build",
+      "--workspace",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "exit_code": 0,
+    "seconds": 13.565217800001847
+  }
+]

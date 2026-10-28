@@ -1,0 +1,62 @@
+    Finished `release` profile [optimized] target(s) in 0.07s
+     Running unittests src\lib.rs (target\release\deps\cloudleaf_windows_ime-bc46e0fa3eb0a77d.exe)
+
+running 13 tests
+test native::recovery::tests::actual_class_unregister_failure_pins_userdata_and_host_budget_until_admission_stops ...
+running 1 test
+test native::recovery::tests::actual_class_unregister_failure_pins_userdata_and_host_budget_until_admission_stops ... {"experiment":"real-unregister-failure-cap","retained_hosts":64,"new_admission_rejected":true,"dll_unload":"S_FALSE"}
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 98 filtered out; finished in 1.34s
+
+ok
+test native::recovery::tests::destroyed_main_reopens_from_broker_without_losing_or_duplicating_unknown_material ... ok
+test native::recovery::tests::failed_cleanup_notice_is_bounded_and_destroyed_broker_is_repaired_only_by_owner ...
+running 1 test
+test native::recovery::tests::failed_cleanup_notice_is_bounded_and_destroyed_broker_is_repaired_only_by_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 98 filtered out; finished in 0.04s
+
+ok
+test native::recovery::tests::failed_clear_keeps_display_token_after_source_was_explicitly_discarded ...
+running 1 test
+test native::recovery::tests::failed_clear_keeps_display_token_after_source_was_explicitly_discarded ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 98 filtered out; finished in 0.06s
+
+ok
+test native::recovery::tests::failed_main_creation_does_not_leave_a_claim_that_blocks_source_reopen ... ok
+test native::recovery::tests::late_transfer_keeps_source_epoch_after_host_has_already_invalidated ... ok
+test native::recovery::tests::material_budget_rejects_new_context_without_overwriting_unreleased_records ... ok
+test native::recovery::tests::offer_hides_previous_display_and_separates_epochs_without_changing_new_context ... ok
+test native::recovery::tests::one_locked_snapshot_binds_text_and_tokens_across_real_owner_updates_and_clear ...
+running 1 test
+test native::recovery::tests::one_locked_snapshot_binds_text_and_tokens_across_real_owner_updates_and_clear ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 98 filtered out; finished in 0.03s
+
+ok
+test native::recovery::tests::partial_window_class_failure_balances_registered_classes_and_module_leases ...
+running 1 test
+test native::recovery::tests::partial_window_class_failure_balances_registered_classes_and_module_leases ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 98 filtered out; finished in 0.00s
+
+ok
+test native::recovery::tests::physical_sta_exit_keeps_data_reachable_from_new_explicit_entry_but_pins_unfinished_owner ...
+running 1 test
+test native::recovery::tests::physical_sta_exit_keeps_data_reachable_from_new_explicit_entry_but_pins_unfinished_owner ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 98 filtered out; finished in 0.07s
+
+ok
+test native::recovery::tests::retired_recovery_remains_accessible_after_host_release_until_explicit_close ... ok
+test native::recovery::tests::unload_other_thread_requests_owner_without_destroying_or_waiting_for_message_pump ...
+running 1 test
+test native::recovery::tests::unload_other_thread_requests_owner_without_destroying_or_waiting_for_message_pump ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 98 filtered out; finished in 0.05s
+
+ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 86 filtered out; finished in 2.45s
