@@ -22,7 +22,7 @@ def packet():
         task['reviews'] = [{'reviewer_id': name, 'annotation_sha256': annotation_digest(task),
                             'protocol_sha256': SHA, 'decision': 'approve'} for name in ['fixture-a', 'fixture-b']]
         tasks.append(task)
-    return {'schema_version': 1, 'format': 'cloudleaf-ime-annotation-v1', 'synthetic': True,
+    value = {'schema_version': 1, 'format': 'cloudleaf-ime-annotation-v1', 'synthetic': True,
             'dictionary_derived': False, 'protocol_sha256': SHA, 'preprocessing_sha256': SHA,
             'lineage_audit_sha256': SHA, 'custodian_id': 'fixture-custodian',
             'sources': [{'id': 'fixture', 'artifact_sha256': SHA, 'lineage_id': 'fixture-family',
@@ -30,6 +30,12 @@ def packet():
                          'authorization': {'status': 'approved', 'sha256': SHA,
                                            'scope': ['evaluation', 'modification', 'redistribution']}}],
             'tasks': tasks}
+    from tools.data_pipeline.annotation_workflow import source_digest
+    for task in tasks:
+        task['source_binding_sha256'] = source_digest(value['sources'][0])
+        for review in task['reviews']:
+            review['annotation_sha256'] = annotation_digest(task)
+    return value
 
 
 class AnnotationWorkflowTests(unittest.TestCase):
@@ -90,6 +96,13 @@ class AnnotationWorkflowTests(unittest.TestCase):
         value['protocol_sha256'] = 'b' * 64
         self.assertFalse(audit(value)['structurally_ready'])
 
+    def test_source_or_grant_replacement_invalidates_existing_reviews(self):
+        for field in ['artifact_sha256', 'version', 'authorization']:
+            value = packet()
+            value['sources'][0][field] = {'status': 'approved', 'sha256': 'b' * 64,
+                                        'scope': ['evaluation', 'modification', 'redistribution']} if field == 'authorization' else 'b' * 64
+            self.assertFalse(audit(value)['structurally_ready'], field)
+
     def test_freeze_preserves_split_answer_boundary_and_refuses_overwrite(self):
         with tempfile.TemporaryDirectory() as folder:
             target = Path(folder) / 'freeze'
@@ -102,5 +115,8 @@ class AnnotationWorkflowTests(unittest.TestCase):
                                           'near_duplicate_group', 'split', 'normalized_input_sha256', 'task_sha256'})
             self.assertFalse(result['formal_language_ready'])
             self.assertFalse(result['heldout_encrypted'])
+            for path in target.iterdir():
+                if path.name != 'heldout-tasks.jsonl':
+                    self.assertNotIn('自编输出2', path.read_text(encoding='utf-8'), path.name)
             with self.assertRaises(ValueError):
                 freeze(packet(), target)

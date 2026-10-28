@@ -14,6 +14,8 @@ R5人工gold只有blocked计划，无法录入任务、绑定双审结果、检�
 
 审核/仲裁还须逐项绑定同一annotation protocol SHA；替换包级协议不能继续使用旧审核。许可/提取/分词准入的证据必须是实际文件path/SHA及被核对的结构化内容，不能只填写四个64位字符串就批准统计。提取协议固定实现/配置，分词协议固定实现/配置/单位；权利声明必须绑定具体revision/正文且包含作者历史与页面例外审阅。仍不自动证明声明真实。
 
+任务另绑定其具体source记录的规范SHA（含artifact/version/authorization等）；同source_id更换来源原件或授权后旧审核立即失效。公共packet metadata只保存来源、协议与task ID，不复制完整tasks，heldout答案只能出现在独立heldout文件；manifest/index/metadata不得意外重复答案。分文件仍非访问控制，实际冻结必须由真实保管者在受控目录执行，不能以此冒充B所需加密封存。
+
 冻结前核验所有完成记录和来源、全局family/near组、lineage+unit及规范化输入/输出近似键不得跨train/dev/heldout；不同镜像ID的相同artifact必须归入同lineage。源单元/分组的语义真实性仍需人工审计，不能靠程序相似键证明。split由独立保管者明确分配，不静默随机重分；一旦输出目录存在拒绝覆盖。冻结manifest绑定全部输入、协议、工具和输出SHA，公开索引不含heldout答案，heldout答案独立文件由保管者在受控目录运行保存；文件分开不是加密或访问控制。
 
 本协议不降低B原70/15/15家族与heldout>=2000家族等正式前置门禁。C冻结文件只是显式交付材料，是否满足B由旧门禁及新增preparation继续判断；正式质量指标始终由独立评估计算，本工具不计算Top-1/Top-5/MRR。实际12个待填任务保持blocked。测试fixture显式synthetic，不能混入正式任务。
