@@ -85,6 +85,8 @@ python -m tools.data_pipeline.linguistic_sidecar --sidecar <独立侧包JSON> --
 
 [设计](../../docs/cl009-round5-design.md)、[来源采用与模型边界](../../docs/cl009-round5-frequency-and-annotation.md)及[人工评测实际阻塞计划](../../data/plans/ime-human-gold-v1.json)分别登记。当前没有批准的现代token频率、正式POS/义项对齐或独立人工gold，不补0、不用词条量声明准确率。本轮证据另存，不覆盖Round 4冻结包和前轮报告。
 
+本轮具体修改、逐条隔离审计、固定归档回归、双构建及恢复证据见[Round 5状态报告](../../docs/reports/cl009-round5.md)。报告保留未冻结工作态诊断的身份限制，正式结论绑定最终实现和新包摘要。
+
 ## 其他来源
 
 2026-10-23新增[正式来源候选与质量门禁](../../docs/cl009-formal-data-review.md)，逐项区分许可声明、实际取得版本与项目采用决定；[第三轮报告](../../docs/reports/cl009-round3.md)追加固定两来源双构建、18条审计和真实中断恢复证据。候选清单不自动增加已批准来源，历史锁和七条审核记录不变。

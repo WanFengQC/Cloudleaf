@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "implementation_commit": "6d3d4e1ac717ad96de8c839ee9857c3629ebecbc",
+  "completed": 4,
+  "commands": [
+    {
+      "argv": [
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-I",
+        "-c",
+        "import runpy,sys;sys.path.insert(0,sys.argv.pop(1));runpy.run_module('tools.data_pipeline.audit_isolations',run_name='__main__')",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\checkout",
+        "--lock",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\checkout\\data\\sources\\locks\\cccedict-20260604-mirror7019e1c.json",
+        "--source",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-source-cedict\\cccedict-20260604-mirror7019e1c.zip",
+        "--release",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a",
+        "--output-dir",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-final-isolation-6d3d4e1"
+      ],
+      "cwd": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\checkout",
+      "exit_code": 0,
+      "stdout": "{\"source_entries\": 125012, \"accepted_records\": 123544, \"isolated_records\": 1468, \"reason_counts\": {\"cedict_runtime_budget\": 1, \"unsupported_cedict_reading\": 763, \"unsupported_reading\": 704}}\n",
+      "stderr": "",
+      "elapsed_seconds": 20.7494069999957
+    },
+    {
+      "argv": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        ".local/round5-final-interruption.py"
+      ],
+      "cwd": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf",
+      "exit_code": 0,
+      "stdout": "{\"phase\": \"lock\", \"recovered\": true}\n{\"phase\": \"copy-mid\", \"recovered\": true}\n{\"phase\": \"cache-renamed\", \"recovered\": true}\n{\"phase\": \"pointer-written\", \"recovered\": true}\n{\"phase\": \"pointer-replaced\", \"recovered\": true}\n{\"phase\": \"rollback-before\", \"recovered\": true}\n{\"phase\": \"rollback-after\", \"recovered\": true}\n{\"cases\": 7, \"all_recovered\": true, \"commit\": \"6d3d4e1ac717ad96de8c839ee9857c3629ebecbc\"}\n",
+      "stderr": "",
+      "elapsed_seconds": 380.657927799999
+    },
+    {
+      "argv": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/benchmark.py",
+        "--iterations",
+        "1000",
+        "--output",
+        "docs/reports/cl009/round5-core-performance.json"
+      ],
+      "cwd": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf",
+      "exit_code": 0,
+      "stdout": "{\n  \"schema\": 1,\n  \"iterations\": 1000,\n  \"dictionary_entries\": 64,\n  \"dictionary_bytes\": 3435,\n  \"candidate_limit\": 50,\n  \"cold_load_and_nihao_sequence_ns\": 291900,\n  \"event\": {\n    \"samples\": 79000,\n    \"p50_ns\": 2000,\n    \"p95_ns\": 5300,\n    \"p99_ns\": 13200,\n    \"max_ns\": 370600\n  },\n  \"dictionary_query\": {\n    \"samples\": 11000,\n    \"p50_ns\": 300,\n    \"p95_ns\": 600,\n    \"p99_ns\": 700,\n    \"max_ns\": 17400\n  },\n  \"environment\": {\n    \"os\": \"Windows-11-10.0.26300-SP0\",\n    \"machine\": \"AMD64\",\n    \"cpu\": \"11th Gen Intel(R) Core(TM) i5-11400 @ 2.60GHz\",\n    \"logical_cpus\": 12,\n    \"physical_memory_bytes\": 34110734336\n  },\n  \"rustc\": \"rustc 1.90.0 (1159e78c4 2025-09-14)\",\n  \"git_head\": \"6d3d4e1ac717ad96de8c839ee9857c3629ebecbc\",\n  \"source_sha256\": \"8a6bc1038113fceca89c8a932d24b09a964581f2c7acdc30b2702772962d1ee2\",\n  \"source_fingerprint_schema\": \"cloudleaf-source-v2\",\n  \"binary_sha256\": \"d53f54a25bd6b4fb8c114a06966010d4b98bf0597efb7e9c5e897e96c59e5b80\",\n  \"measured_at_utc\": \"2026-10-28T12:51:48.306099+00:00\",\n  \"build_profile\": \"release\",\n  \"peak_process_memory_bytes\": 6004736,\n  \"memory_method\": \"Windows GetProcessMemoryInfo.PeakWorkingSetSize\",\n  \"limitations\": \"64 条手工原型词典；空闲/当前背景负载未控制；进程内存包含运行时和样本数组；不含 TSF/UI；不是生产词库成绩。\"\n}\n",
+      "stderr": "",
+      "elapsed_seconds": 1.5165345999994315
+    },
+    {
+      "argv": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/evaluate_algorithms.py",
+        "--output-dir",
+        ".local/cl009-round5-algorithm-v1"
+      ],
+      "cwd": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf",
+      "exit_code": 0,
+      "stdout": "完成 83 条样例、两个排序方案，每例预热 20 次、正式测量 100 次。\n{\n  \"production-rules-v1\": {\n    \"dev\": {\n      \"count\": 16,\n      \"top1_count\": 8,\n      \"top5_count\": 11,\n      \"top1\": 0.5,\n      \"top5\": 0.6875,\n      \"mrr\": 0.59375,\n      \"candidate_availability\": 0.6875,\n      \"gold_coverage\": 0.6875,\n      \"errors\": 0,\n      \"correction\": {\n        \"capability\": false,\n        \"required\": 3,\n        \"attempts\": 0,\n        \"correct\": 0,\n        \"precision\": null,\n        \"recall\": 0.0\n      },\n      \"latency\": {\n        \"samples\": 1600,\n        \"p50_ns\": 2300,\n        \"p95_ns\": 3900,\n        \"p99_ns\": 6900,\n        \"max_ns\": 123400\n      }\n    },\n    \"heldout\": {\n      \"count\": 67,\n      \"top1_count\": 31,\n      \"top5_count\": 37,\n      \"top1\": 0.4626865671641791,\n      \"top5\": 0.5522388059701493,\n      \"mrr\": 0.5012437810945274,\n      \"candidate_availability\": 0.5522388059701493,\n      \"gold_coverage\": 0.5522388059701493,\n      \"errors\": 1,\n      \"correction\": {\n        \"capability\": false,\n        \"required\": 12,\n        \"attempts\": 0,\n        \"correct\": 0,\n        \"precision\": null,\n        \"recall\": 0.0\n      },\n      \"latency\": {\n        \"samples\": 6700,\n        \"p50_ns\": 1700,\n        \"p95_ns\": 6300,\n        \"p99_ns\": 11000,\n        \"max_ns\": 58200\n      }\n    }\n  },\n  \"frequency-only-ablation-v1\": {\n    \"dev\": {\n      \"count\": 16,\n      \"top1_count\": 8,\n      \"top5_count\": 11,\n      \"top1\": 0.5,\n      \"top5\": 0.6875,\n      \"mrr\": 0.59375,\n      \"candidate_availability\": 0.6875,\n      \"gold_coverage\": 0.6875,\n      \"errors\": 0,\n      \"correction\": {\n        \"capability\": false,\n        \"required\": 3,\n        \"attempts\": 0,\n        \"correct\": 0,\n        \"precision\": null,\n        \"recall\": 0.0\n      },\n      \"latency\": {\n        \"samples\": 1600,\n        \"p50_ns\": 2200,\n        \"p95_ns\": 3900,\n        \"p99_ns\": 4400,\n        \"max_ns\": 19500\n      }\n    },\n    \"heldout\": {\n      \"count\": 67,\n      \"top1_count\": 31,\n      \"top5_count\": 37,\n      \"top1\": 0.4626865671641791,\n      \"top5\": 0.5522388059701493,\n      \"mrr\": 0.4987562189054726,\n      \"candidate_availability\": 0.5522388059701493,\n      \"gold_coverage\": 0.5522388059701493,\n      \"errors\": 1,\n      \"correction\": {\n        \"capability\": false,\n        \"required\": 12,\n        \"attempts\": 0,\n        \"correct\": 0,\n        \"precision\": null,\n        \"recall\": 0.0\n      },\n      \"latency\": {\n        \"samples\": 6700,\n        \"p50_ns\": 1700,\n        \"p95_ns\": 6500,\n        \"p99_ns\": 12400,\n        \"max_ns\": 75000\n      }\n    }\n  }\n}\n",
+      "stderr": "",
+      "elapsed_seconds": 1.1305893999815453
+    }
+  ]
+}
