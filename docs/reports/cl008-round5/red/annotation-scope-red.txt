@@ -1,0 +1,23 @@
+.F..F.
+======================================================================
+FAIL: test_rehashed_review_covering_only_one_source_cannot_cover_all_sources (test_quality_preparation.PreparationTests.test_rehashed_review_covering_only_one_source_cannot_cover_all_sources)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_quality_preparation.py", line 89, in test_rehashed_review_covering_only_one_source_cannot_cover_all_sources
+    with self.assertRaisesRegex(ValueError, '标注review.*覆盖'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_source_annotation_binding_drift_is_rejected (test_quality_preparation.PreparationTests.test_source_annotation_binding_drift_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_quality_preparation.py", line 96, in test_source_annotation_binding_drift_is_rejected
+    with self.assertRaisesRegex(ValueError, '标注'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.139s
+
+FAILED (failures=2)

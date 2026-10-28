@@ -1,0 +1,226 @@
+{
+  "implementation_commit": "292cbd06614c376dbd1b8cc0a8172e099590e4db",
+  "source_sha256": "b62f6f8bcb6420bbb4a0ee8ba0cab64d413b8b0e8176325c5d075a8ec3ccb1ef",
+  "source_after_sha256": "b62f6f8bcb6420bbb4a0ee8ba0cab64d413b8b0e8176325c5d075a8ec3ccb1ef",
+  "checks": [
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "fetch",
+        "--locked"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "elapsed_seconds": 0.22131389999412932,
+      "raw_log": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-01.log",
+      "raw_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "build",
+        "--workspace",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "elapsed_seconds": 0.7692274999863002,
+      "raw_log": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-02.log",
+      "raw_log_sha256": "3e43b255d4b20a7b309afeb5012d5088aa471e53c75606d9df8a98bab335f40e"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "elapsed_seconds": 0.5436519000213593,
+      "raw_log": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-03.log",
+      "raw_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "elapsed_seconds": 0.8650183000136167,
+      "raw_log": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-04.log",
+      "raw_log_sha256": "3e43b255d4b20a7b309afeb5012d5088aa471e53c75606d9df8a98bab335f40e"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "test",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "elapsed_seconds": 5.780961999989813,
+      "raw_log": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-05.log",
+      "raw_log_sha256": "00f1d73a1939fabef122deb6278c13f223729cfa11dda42d17fed10298cb7bd9"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "test",
+        "--workspace",
+        "--doc",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "elapsed_seconds": 0.8983485999924596,
+      "raw_log": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-06.log",
+      "raw_log_sha256": "760b0ed2f0c87ad9a64ae7372bfa1f8af197efccad598fd4ece846186880b7d8"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "scripts/check_workspace.py"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "elapsed_seconds": 0.49643660002038814,
+      "raw_log": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-07.log",
+      "raw_log_sha256": "0bb7250cb2c233d5b261d9c9e4fde6ba7950b04fe59aafcd4e302c2c3c4728bf"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "elapsed_seconds": 8.707843399984995,
+      "raw_log": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-08.log",
+      "raw_log_sha256": "c8dc611f3038806fcb27b6acc63190f4df9812a57bc45679553238cc84d08f23"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "build",
+        "--workspace",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "elapsed_seconds": 0.47570439998526126,
+      "raw_log": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-09.log",
+      "raw_log_sha256": "403998d7813def59ff54ef8942a37a928b6a42f3aea6f4660bbd1cdb0d4ebac8"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "scripts/benchmark.py",
+        "--iterations",
+        "1000",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\prototype-performance.json"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "elapsed_seconds": 1.1850808000017423,
+      "raw_log": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-10.log",
+      "raw_log_sha256": "2fcf79e4b121d94f0b2d932a203e6141a7843155075c2a6ed2c8c34a60dc3fc9"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "scripts/evaluate_algorithms.py",
+        "--output-dir",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\algorithm-v1"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "elapsed_seconds": 1.103189499990549,
+      "raw_log": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-11.log",
+      "raw_log_sha256": "cf115c59c35dfbb2423d1182cd51f6cc3d68cb41afddd79543b8354bb3b3bf68"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "scripts/evaluate_search.py",
+        "--iterations",
+        "100",
+        "--warmup",
+        "10",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\mechanical.json"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "elapsed_seconds": 1.6812105999852065,
+      "raw_log": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-12.log",
+      "raw_log_sha256": "84322717f7d9dbc9123af13b06fff43bf51c719a85221ab85755fa5837cf52bb"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "scripts/check_language_readiness.py",
+        "--plan",
+        "config/evaluation/language-readiness-v1.json",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\language-readiness.json"
+      ],
+      "returncode": 2,
+      "expected_returncode": 2,
+      "elapsed_seconds": 0.2880941999901552,
+      "raw_log": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-13.log",
+      "raw_log_sha256": "5a46b0a0a58135a68475044301a3f8ef5ac960470a077a00fa3b4874ee53cf58"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "scripts/check_quality_preparation.py",
+        "--plan",
+        "config/evaluation/language-readiness-v1.json",
+        "--preparation",
+        "config/evaluation/quality-preparation-v1.json",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\quality-preparation.json"
+      ],
+      "returncode": 2,
+      "expected_returncode": 2,
+      "elapsed_seconds": 0.2717807000153698,
+      "raw_log": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-14.log",
+      "raw_log_sha256": "4573adbd46817b5eced62fd70cedd230ea9f90fb8a2eadd1d1534e1c1c4aee79"
+    },
+    {
+      "command": [
+        "C:\\Program Files\\Git\\cmd\\git.EXE",
+        "diff",
+        "--check"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "elapsed_seconds": 0.0840602999960538,
+      "raw_log": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-15.log",
+      "raw_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}
