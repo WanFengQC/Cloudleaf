@@ -59,6 +59,18 @@ fn run() -> Result<(), Box<dyn Error>> {
         ..Config::default()
     };
     config.validate()?;
+    let configuration = format!(
+        "{{\"method\":{},\"beam_width\":{},\"max_edges\":{},\"max_expansions\":{},\"max_resident_paths\":{},\"max_input_bytes\":{},\"max_letters\":{},\"output_k\":{},\"context_pool\":{},\"ranker\":\"Structural\"}}",
+        quote(&args[3]),
+        config.beam_width,
+        config.max_edges,
+        config.max_expansions,
+        config.max_resident_paths,
+        config.max_input_bytes,
+        config.max_letters,
+        config.output_k,
+        config.context_pool
+    );
     let started = Instant::now();
     let raw = fs::read_to_string(&args[1])?;
     if !raw.starts_with("# cloudleaf-lexicon-v2\n") {
@@ -158,10 +170,11 @@ fn run() -> Result<(), Box<dyn Error>> {
                 quote(&format!("{:?}", error.kind))
             ),
         };
-        output.push(format!("{{\"id\":{},\"family\":{},\"input\":{},\"kind\":{},\"samples_ns\":[{}],\"p50_ns\":{},\"p95_ns\":{},\"p99_ns\":{},\"max_ns\":{},{}}}", quote(fields[0]), quote(fields[1]), quote(fields[2]), quote(fields[3]), samples_json, percentile(&sorted_samples, 50), percentile(&sorted_samples, 95), percentile(&sorted_samples, 99), sorted_samples.last().unwrap(), details));
+        output.push(format!("{{\"id\":{},\"family\":{},\"input\":{},\"kind\":{},\"raw_fallback\":{},\"samples_ns\":[{}],\"p50_ns\":{},\"p95_ns\":{},\"p99_ns\":{},\"max_ns\":{},{}}}", quote(fields[0]), quote(fields[1]), quote(fields[2]), quote(fields[3]), quote(fields[2]), samples_json, percentile(&sorted_samples, 50), percentile(&sorted_samples, 95), percentile(&sorted_samples, 99), sorted_samples.last().unwrap(), details));
     }
     println!(
-        "{{\"language_accuracy_valid\":false,\"frequency_feature_enabled\":false,\"language_model_loaded\":false,\"lexicon_entries\":{},\"trie_nodes\":{},\"load_ns\":{},\"missing_frequencies\":{},\"iterations_per_case\":{},\"warmup_per_case\":{},\"cases\":[{}]}}",
+        "{{\"format\":\"cloudleaf-search-resource-observation-v2\",\"configuration\":{},\"language_accuracy_valid\":false,\"frequency_feature_enabled\":false,\"language_model_loaded\":false,\"lexicon_entries\":{},\"trie_nodes\":{},\"load_ns\":{},\"missing_frequencies\":{},\"iterations_per_case\":{},\"warmup_per_case\":{},\"cases\":[{}]}}",
+        configuration,
         lexicon.entries().len(),
         lexicon.trie_nodes(),
         load_ns,

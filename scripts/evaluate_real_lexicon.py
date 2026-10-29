@@ -13,6 +13,7 @@ import sys
 
 from benchmark import environment, source_sha256
 from evaluate_search import measure
+from search_resource_contract import validate_case
 
 ROOT = Path(__file__).resolve().parents[1]
 CASES = ROOT / "tests/search-resources-v1/cases.tsv"
@@ -151,6 +152,8 @@ def compare(runs: dict, cases: list[dict]) -> tuple[list[dict], list[str]]:
         if len(run["cases"]) != len(expected) or {case["id"] for case in run["cases"]} != expected:
             raise ValueError("搜索策略丢失案例或重复ID")
         indexed[label] = {case["id"]: case for case in run["cases"]}
+        for expected_case in cases:
+            validate_case(indexed[label][expected_case["id"]], expected_case)
     output, failures = [], []
     for case in cases:
         key = case["id"]
