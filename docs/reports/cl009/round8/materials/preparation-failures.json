@@ -1,0 +1,21 @@
+{
+  "scope": "External-material publication preparation, separate from production tests",
+  "failures": [
+    {
+      "operation": "Inline PowerShell inspection containing regex quote syntax",
+      "exit_code": 1,
+      "tool_returned_text": "ParserError: Missing type name after '['.",
+      "resolution": "Used explicit UTF-8 inspect_round8_source_docs.py instead; no page content or repository source was modified."
+    },
+    {
+      "operation": "First git diff --cached --check of copied license",
+      "exit_code": 2,
+      "tool_returned_text": "docs/acceptance/cl009-round8/LICENSE.txt:428: new blank line at EOF.",
+      "original_subprocess_bytes_saved": false,
+      "resolution": "Preserved the original generator; changed generator to normalize excess final line endings of license display only. Original source license and its raw SHA stay unchanged; generated display SHA is separate."
+    }
+  ],
+  "web_tool_limits": [
+    "Official datasets page exceeded web tool content limit; the bounded 6MiB direct official HTML acquisition succeeded. No corpus partition was downloaded."
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "material_commit": "3d02431fadbf349afe513525e81ba407d5947e09",
+  "checked_at_utc": "2026-10-29T16:36:05.248886+00:00",
+  "runner_sha256": "5b6623319e180711385f7b2338df97551de101f6d19ef1a568f59eca850c092c",
+  "checks": [
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\rustc.exe",
+        "--version"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.14499410000280477,
+      "stdout_file": "check-01-stdout.txt",
+      "stdout_sha256": "3397f54a03033c1b027496d83acc64e8f3ceeb4017e0575150f78726edce8a1a",
+      "stderr_file": "check-01-stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.exe",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.45400230000086594,
+      "stdout_file": "check-02-stdout.txt",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_file": "check-02-stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/check_workspace.py"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.3520721000022604,
+      "stdout_file": "check-03-stdout.txt",
+      "stdout_sha256": "7d7d6fe2b8aeaf0b86895ef327b72577d2dab2c4e724c90457e896d328e9be42",
+      "stderr_file": "check-03-stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        ".local/validate_round8_materials.py"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.5426306000008481,
+      "stdout_file": "check-04-stdout.txt",
+      "stdout_sha256": "eccab9cd7668c48e92ae81efcba112e1a9c707433b82a7d2e1574b09b76f4646",
+      "stderr_file": "check-04-stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "-m",
+        "tools.data_pipeline.annotation_workflow",
+        "--packet",
+        "data/plans/ime-annotation-round6.json",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round8-verification\\pending-audit.json"
+      ],
+      "returncode": 2,
+      "expected_returncode": 2,
+      "seconds": 0.20107199999620207,
+      "stdout_file": "check-05-stdout.txt",
+      "stdout_sha256": "1a6d72f25cee45328047d687ffcf21ab45b76f14f1583a81ce10ffeed9b26e3b",
+      "stderr_file": "check-05-stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.07778310000139754,
+      "stdout_file": "check-06-stdout.txt",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_file": "check-06-stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}
