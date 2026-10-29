@@ -1,0 +1,134 @@
+test_assigned_packet_missing_original_slot_and_nonindependent_custodian_are_rejected_or_pending (test_annotation_queue.AnnotationQueueTests.test_assigned_packet_missing_original_slot_and_nonindependent_custodian_are_rejected_or_pending) ... ERROR
+test_author_reviewer_duplicate_and_empty_protocols_do_not_count_as_reviewed (test_annotation_queue.AnnotationQueueTests.test_author_reviewer_duplicate_and_empty_protocols_do_not_count_as_reviewed) ... ERROR
+test_authorization_missing_tampered_scope_and_source_changes_are_reported (test_annotation_queue.AnnotationQueueTests.test_authorization_missing_tampered_scope_and_source_changes_are_reported) ... ERROR
+test_changed_annotation_and_rejection_require_current_independent_arbitration (test_annotation_queue.AnnotationQueueTests.test_changed_annotation_and_rejection_require_current_independent_arbitration) ... ERROR
+test_cli_hash_and_existing_output_are_rejected_without_replacing_bytes (test_annotation_queue.AnnotationQueueTests.test_cli_hash_and_existing_output_are_rejected_without_replacing_bytes) ... ERROR
+test_complete_personal_draft_and_matching_declarations_never_become_formal_gold (test_annotation_queue.AnnotationQueueTests.test_complete_personal_draft_and_matching_declarations_never_become_formal_gold) ... ERROR
+test_export_preserves_pending_tasks_without_filling_people_or_answers (test_annotation_queue.AnnotationQueueTests.test_export_preserves_pending_tasks_without_filling_people_or_answers) ... ERROR
+test_repository_evaluator_is_pending_not_an_invented_team (test_annotation_queue.AnnotationQueueTests.test_repository_evaluator_is_pending_not_an_invented_team) ... FAIL
+
+======================================================================
+ERROR: test_assigned_packet_missing_original_slot_and_nonindependent_custodian_are_rejected_or_pending (test_annotation_queue.AnnotationQueueTests.test_assigned_packet_missing_original_slot_and_nonindependent_custodian_are_rejected_or_pending)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_annotation_queue.py", line 155, in test_assigned_packet_missing_original_slot_and_nonindependent_custodian_are_rejected_or_pending
+    implementation = module()
+                     ^^^^^^^^
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_annotation_queue.py", line 19, in module
+    spec.loader.exec_module(result)
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1132, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1190, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\scripts\\manage_ime_annotation_queue.py'
+
+======================================================================
+ERROR: test_author_reviewer_duplicate_and_empty_protocols_do_not_count_as_reviewed (test_annotation_queue.AnnotationQueueTests.test_author_reviewer_duplicate_and_empty_protocols_do_not_count_as_reviewed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_annotation_queue.py", line 103, in test_author_reviewer_duplicate_and_empty_protocols_do_not_count_as_reviewed
+    original = self.complete()
+               ^^^^^^^^^^^^^^^
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_annotation_queue.py", line 46, in complete
+    implementation = module()
+                     ^^^^^^^^
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_annotation_queue.py", line 19, in module
+    spec.loader.exec_module(result)
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1132, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1190, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\scripts\\manage_ime_annotation_queue.py'
+
+======================================================================
+ERROR: test_authorization_missing_tampered_scope_and_source_changes_are_reported (test_annotation_queue.AnnotationQueueTests.test_authorization_missing_tampered_scope_and_source_changes_are_reported)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_annotation_queue.py", line 117, in test_authorization_missing_tampered_scope_and_source_changes_are_reported
+    original = self.complete()
+               ^^^^^^^^^^^^^^^
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_annotation_queue.py", line 46, in complete
+    implementation = module()
+                     ^^^^^^^^
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_annotation_queue.py", line 19, in module
+    spec.loader.exec_module(result)
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1132, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1190, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\scripts\\manage_ime_annotation_queue.py'
+
+======================================================================
+ERROR: test_changed_annotation_and_rejection_require_current_independent_arbitration (test_annotation_queue.AnnotationQueueTests.test_changed_annotation_and_rejection_require_current_independent_arbitration)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_annotation_queue.py", line 137, in test_changed_annotation_and_rejection_require_current_independent_arbitration
+    queue = self.complete()
+            ^^^^^^^^^^^^^^^
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_annotation_queue.py", line 46, in complete
+    implementation = module()
+                     ^^^^^^^^
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_annotation_queue.py", line 19, in module
+    spec.loader.exec_module(result)
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1132, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1190, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\scripts\\manage_ime_annotation_queue.py'
+
+======================================================================
+ERROR: test_cli_hash_and_existing_output_are_rejected_without_replacing_bytes (test_annotation_queue.AnnotationQueueTests.test_cli_hash_and_existing_output_are_rejected_without_replacing_bytes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_annotation_queue.py", line 179, in test_cli_hash_and_existing_output_are_rejected_without_replacing_bytes
+    module().export_queue(source, 'a' * 64)
+    ^^^^^^^^
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_annotation_queue.py", line 19, in module
+    spec.loader.exec_module(result)
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1132, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1190, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\scripts\\manage_ime_annotation_queue.py'
+
+======================================================================
+ERROR: test_complete_personal_draft_and_matching_declarations_never_become_formal_gold (test_annotation_queue.AnnotationQueueTests.test_complete_personal_draft_and_matching_declarations_never_become_formal_gold)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_annotation_queue.py", line 91, in test_complete_personal_draft_and_matching_declarations_never_become_formal_gold
+    report = self.report(self.complete())
+                         ^^^^^^^^^^^^^^^
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_annotation_queue.py", line 46, in complete
+    implementation = module()
+                     ^^^^^^^^
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_annotation_queue.py", line 19, in module
+    spec.loader.exec_module(result)
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1132, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1190, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\scripts\\manage_ime_annotation_queue.py'
+
+======================================================================
+ERROR: test_export_preserves_pending_tasks_without_filling_people_or_answers (test_annotation_queue.AnnotationQueueTests.test_export_preserves_pending_tasks_without_filling_people_or_answers)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_annotation_queue.py", line 81, in test_export_preserves_pending_tasks_without_filling_people_or_answers
+    queue = self.exported()
+            ^^^^^^^^^^^^^^^
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_annotation_queue.py", line 43, in exported
+    return module().export_queue(source, hashlib.sha256(source.read_bytes()).hexdigest())
+           ^^^^^^^^
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_annotation_queue.py", line 19, in module
+    spec.loader.exec_module(result)
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1132, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1190, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\scripts\\manage_ime_annotation_queue.py'
+
+======================================================================
+FAIL: test_repository_evaluator_is_pending_not_an_invented_team (test_annotation_queue.AnnotationQueueTests.test_repository_evaluator_is_pending_not_an_invented_team)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_annotation_queue.py", line 78, in test_repository_evaluator_is_pending_not_an_invented_team
+    self.assertIsNone(plan['evaluator_id'])
+AssertionError: 'cloudleaf-development-team' is not None
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.177s
+
+FAILED (failures=1, errors=7)
