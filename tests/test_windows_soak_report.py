@@ -36,6 +36,7 @@ class SoakReportTests(unittest.TestCase):
         self.assertTrue(second['evidence_integrity_verified'], second['issues'])
         self.assertEqual([row['latency']['events'] for row in report['segments']], [132, 480])
         self.assertTrue(first['interrupted'])
+        self.assertIsNone(first['native_steady_seconds'])
         self.assertIsNone(first['recovery']['success_rate'])
         self.assertFalse(first['latency']['trace_complete'])
         self.assertTrue(second['latency']['trace_complete'])
