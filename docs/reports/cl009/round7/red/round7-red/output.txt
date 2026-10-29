@@ -1,0 +1,32 @@
+test_actual_pending_tasks_cannot_freeze (test_annotation_workflow.AnnotationWorkflowTests.test_actual_pending_tasks_cannot_freeze) ... ok
+test_authorization_unknown_and_dictionary_answers_are_blocked (test_annotation_workflow.AnnotationWorkflowTests.test_authorization_unknown_and_dictionary_answers_are_blocked) ... ok
+test_disagreement_requires_bound_distinct_adjudicator (test_annotation_workflow.AnnotationWorkflowTests.test_disagreement_requires_bound_distinct_adjudicator) ... ok
+test_freeze_preserves_split_answer_boundary_and_refuses_overwrite (test_annotation_workflow.AnnotationWorkflowTests.test_freeze_preserves_split_answer_boundary_and_refuses_overwrite) ... ok
+test_global_family_near_lineage_and_alias_isolation (test_annotation_workflow.AnnotationWorkflowTests.test_global_family_near_lineage_and_alias_isolation) ... ok
+test_preprocessing_or_lineage_replacement_invalidates_existing_reviews (test_annotation_workflow.AnnotationWorkflowTests.test_preprocessing_or_lineage_replacement_invalidates_existing_reviews) ...
+  test_preprocessing_or_lineage_replacement_invalidates_existing_reviews (test_annotation_workflow.AnnotationWorkflowTests.test_preprocessing_or_lineage_replacement_invalidates_existing_reviews) (field='preprocessing_sha256') ... FAIL
+  test_preprocessing_or_lineage_replacement_invalidates_existing_reviews (test_annotation_workflow.AnnotationWorkflowTests.test_preprocessing_or_lineage_replacement_invalidates_existing_reviews) (field='lineage_audit_sha256') ... FAIL
+test_protocol_replacement_invalidates_existing_reviews (test_annotation_workflow.AnnotationWorkflowTests.test_protocol_replacement_invalidates_existing_reviews) ... ok
+test_review_is_bound_to_annotation_and_two_independent_people (test_annotation_workflow.AnnotationWorkflowTests.test_review_is_bound_to_annotation_and_two_independent_people) ... ok
+test_source_or_grant_replacement_invalidates_existing_reviews (test_annotation_workflow.AnnotationWorkflowTests.test_source_or_grant_replacement_invalidates_existing_reviews) ... ok
+
+======================================================================
+FAIL: test_preprocessing_or_lineage_replacement_invalidates_existing_reviews (test_annotation_workflow.AnnotationWorkflowTests.test_preprocessing_or_lineage_replacement_invalidates_existing_reviews) (field='preprocessing_sha256')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tests\test_annotation_workflow.py", line 104, in test_preprocessing_or_lineage_replacement_invalidates_existing_reviews
+    self.assertFalse(audit(value)['structurally_ready'])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_preprocessing_or_lineage_replacement_invalidates_existing_reviews (test_annotation_workflow.AnnotationWorkflowTests.test_preprocessing_or_lineage_replacement_invalidates_existing_reviews) (field='lineage_audit_sha256')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tests\test_annotation_workflow.py", line 104, in test_preprocessing_or_lineage_replacement_invalidates_existing_reviews
+    self.assertFalse(audit(value)['structurally_ready'])
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.069s
+
+FAILED (failures=2)

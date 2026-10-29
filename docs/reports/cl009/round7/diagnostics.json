@@ -1,0 +1,142 @@
+{
+  "implementation_commit": "e96ed5dc96c6cc0446f3446838fab9305047c1bc",
+  "checked_at_utc": "2026-10-29T15:33:53.279432+00:00",
+  "runner_sha256": "a70af3333279fa1b38241c5041e5a8f2a66650f94b382be6e944b07c756a1c52",
+  "checks": [
+    {
+      "name": "source-matrix-a",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-I",
+        "-X",
+        "utf8",
+        "-c",
+        "import sys,runpy;sys.path.insert(0,sys.argv.pop(1));runpy.run_module(sys.argv.pop(1),run_name=\"__main__\")",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round7-diagnostics-e96ed5d\\checkout",
+        "tools.data_pipeline.source_review",
+        "--root",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round7-diagnostics-e96ed5d\\checkout",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round7-diagnostics-e96ed5d\\matrix-a.json"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.2929352999999537,
+      "stdout": "{\"sources\": 9, \"creates_new_source_approval\": false}\r\n",
+      "stderr": ""
+    },
+    {
+      "name": "source-matrix-b",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-I",
+        "-X",
+        "utf8",
+        "-c",
+        "import sys,runpy;sys.path.insert(0,sys.argv.pop(1));runpy.run_module(sys.argv.pop(1),run_name=\"__main__\")",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round7-diagnostics-e96ed5d\\checkout",
+        "tools.data_pipeline.source_review",
+        "--root",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round7-diagnostics-e96ed5d\\checkout",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round7-diagnostics-e96ed5d\\matrix-b.json"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.2141399999964051,
+      "stdout": "{\"sources\": 9, \"creates_new_source_approval\": false}\r\n",
+      "stderr": ""
+    },
+    {
+      "name": "pending-audit",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-I",
+        "-X",
+        "utf8",
+        "-c",
+        "import sys,runpy;sys.path.insert(0,sys.argv.pop(1));runpy.run_module(sys.argv.pop(1),run_name=\"__main__\")",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round7-diagnostics-e96ed5d\\checkout",
+        "tools.data_pipeline.annotation_workflow",
+        "--packet",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round7-diagnostics-e96ed5d\\checkout\\data\\plans\\ime-annotation-round6.json",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round7-diagnostics-e96ed5d\\pending-audit.json"
+      ],
+      "returncode": 2,
+      "expected_returncode": 2,
+      "seconds": 0.22779820000141626,
+      "stdout": "{\"structurally_ready\": false, \"details\": null, \"issues\": [\"协议/预处理/来源家族审计SHA未交付\"], \"formal_language_ready\": false, \"human_identity_or_permission_independently_proven\": false, \"top1\": null, \"top5\": null, \"mrr\": null, \"limitations\": [\"只核对声明；不证明真人/授权/语义近重复，也不满足B正式配额、封存和参数门禁。\"]}\r\n",
+      "stderr": ""
+    },
+    {
+      "name": "pending-freeze",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-I",
+        "-X",
+        "utf8",
+        "-c",
+        "import sys,runpy;sys.path.insert(0,sys.argv.pop(1));runpy.run_module(sys.argv.pop(1),run_name=\"__main__\")",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round7-diagnostics-e96ed5d\\checkout",
+        "tools.data_pipeline.annotation_workflow",
+        "--packet",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round7-diagnostics-e96ed5d\\checkout\\data\\plans\\ime-annotation-round6.json",
+        "--freeze",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round7-diagnostics-e96ed5d\\pending-freeze"
+      ],
+      "returncode": 1,
+      "expected_returncode": 1,
+      "seconds": 0.22100570000475273,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\r\n  File \"<string>\", line 1, in <module>\r\n  File \"<frozen runpy>\", line 229, in run_module\r\n  File \"<frozen runpy>\", line 88, in _run_code\r\n  File \"C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round7-diagnostics-e96ed5d\\checkout\\tools\\data_pipeline\\annotation_workflow.py\", line 180, in <module>\r\n    main()\r\n  File \"C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round7-diagnostics-e96ed5d\\checkout\\tools\\data_pipeline\\annotation_workflow.py\", line 168, in main\r\n    result = freeze(value, args.output)\r\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round7-diagnostics-e96ed5d\\checkout\\tools\\data_pipeline\\annotation_workflow.py\", line 125, in freeze\r\n    require(checked['structurally_ready'], '; '.join(checked['issues']))\r\n  File \"C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round7-diagnostics-e96ed5d\\checkout\\tools\\data_pipeline\\annotation_workflow.py\", line 38, in require\r\n    raise ValueError(message)\r\nValueError: 协议/预处理/来源家族审计SHA未交付\r\n"
+    },
+    {
+      "name": "wikipedia-gate",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-I",
+        "-X",
+        "utf8",
+        "-c",
+        "import sys,runpy;sys.path.insert(0,sys.argv.pop(1));runpy.run_module(sys.argv.pop(1),run_name=\"__main__\")",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round7-diagnostics-e96ed5d\\checkout",
+        "tools.data_pipeline.corpus_gate",
+        "--revision",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round6-wikipedia-acquisition\\revision.utf8",
+        "--page-id",
+        "342",
+        "--revision-id",
+        "94816134",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round7-diagnostics-e96ed5d\\wikipedia-gate.json"
+      ],
+      "returncode": 2,
+      "expected_returncode": 2,
+      "seconds": 0.24285999999847263,
+      "stdout": "{\"revision_identity_valid\": true, \"page_id\": 342, \"revision_id\": 94816134, \"revision_timestamp\": \"2026-10-07T07:31:16Z\", \"content_sha1\": \"a8aa38891980a843b77d0715fc69d90d23e520e2\", \"content_sha256\": \"56e173a1f64ee94c13e1061e3cc970ebe3153e75f8e8cffc50c8293073392f12\", \"content_bytes\": 10501, \"history_url\": \"https://zh.wikipedia.org/w/index.php?curid=342&action=history\", \"permalink\": \"https://zh.wikipedia.org/w/index.php?oldid=94816134\", \"statistical_use_ready\": false, \"issues\": [\"license_and_exception_review:'license_and_exception_review'\", \"attribution_history:'attribution_history'\", \"extraction_protocol:'extraction_protocol'\", \"tokenizer_protocol:'tokenizer_protocol'\", \"rights-not-approved-for-fixed-content\", \"author-history-unresolved\", \"protocol-not-frozen:extraction_protocol\", \"protocol-not-frozen:tokenizer_protocol\", \"token-unit-not-fixed\"], \"all_authors_resolved\": false, \"evidence_declarations_independently_proven\": false, \"token_frequency\": null, \"document_frequency\": null, \"zipf\": null, \"body_included_in_report\": false, \"formal_language_quality_valid\": false, \"limitations\": [\"末编辑者不是全部作者。文件声明不能证明许可/页面例外审读或分词真实性；百科不是日常输入分布。\"], \"response_sha256\": \"d0cbce6752c5971399e2176470992549bca95ee61800c5bd45f8ad507b99d70f\", \"tool_sha256\": \"c5443eaa5345236556f793846026e6e9b5d9070529de1eea41c3d35bf240e73d\"}\r\n",
+      "stderr": ""
+    },
+    {
+      "name": "old-package-verify",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-I",
+        "-X",
+        "utf8",
+        "-c",
+        "import sys,runpy;sys.path.insert(0,sys.argv.pop(1));runpy.run_module(sys.argv.pop(1),run_name=\"__main__\")",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round7-diagnostics-e96ed5d\\checkout",
+        "tools.data_pipeline",
+        "verify",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 16.746015400000033,
+      "stdout": "{\"verified\": true, \"entries\": 123544, \"source\": \"cccedict:mirror-20260604\", \"source_only_statistics_rebuilt\": false}\r\n",
+      "stderr": ""
+    }
+  ]
+}
