@@ -1,0 +1,7 @@
+{
+  "scope": "Tool preparation, not product test failure",
+  "failed_operation": "Initial multi-file apply_patch included an abbreviated README line that did not exist",
+  "tool_returned_error": "apply_patch verification failed: Failed to find expected lines in README.md",
+  "resolution": "Read actual README line, then separately created new templates and applied the complete actual line. No old report or implementation was overwritten.",
+  "identity_limit": "Rejected patch remained in tool history, no historical failed helper file or byte hash is claimed"
+}
