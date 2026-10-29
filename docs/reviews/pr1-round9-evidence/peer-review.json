@@ -1,0 +1,45 @@
+{
+  "reviewed_at_utc": "2026-10-29T17:54:37.991232+00:00",
+  "reviewer_type": "AI",
+  "review_scope": "Read-only textual consistency review; not a human decision or byte/CI audit",
+  "human_approval": false,
+  "merge_authorization": false,
+  "reviewed_documents": [
+    {
+      "path": "docs/reports/cl007-009-round9-status.md",
+      "physical_bytes_sha256": "307d45558db8cbf40bf18dff5775bbfdab671769ef8500c92f57d39fcd167560"
+    },
+    {
+      "path": "docs/reviews/pr1-round9-human-review.md",
+      "physical_bytes_sha256": "236bb74cc6d7b67c6f97e9849d9615af6e3d73bd44bf034e06a54fe9a46277d2"
+    },
+    {
+      "path": "docs/reviews/pr1-round9-decision-template.json",
+      "physical_bytes_sha256": "6c4ae2310fa68056771509cec79e9c90b8dcb7bd070053d1b8ab485c75dc4be7"
+    }
+  ],
+  "findings": [],
+  "checks": {
+    "single_user_owner_and_worktree_isolation_clear": true,
+    "B_actual_packet_tasks": 12,
+    "B_personal_annotations_complete": 0,
+    "B_current_review_declarations": 0,
+    "B_formal_ready": false,
+    "official_language_metrics": [
+      null,
+      null,
+      null
+    ],
+    "independent_review_arbitration_custodian_gates_retained": true,
+    "A_long_soak_TSF_and_real_apps_not_run": true,
+    "C_fixed_candidate_analysis_not_production_frequency_or_semantics": true,
+    "PR1_human_decision": "pending",
+    "supplement_unchecked_user_items": 4,
+    "CL010_allowed": false
+  },
+  "limits": [
+    "CI assertions were checked for textual scope and exact-head separation, not independently fetched in this peer review.",
+    "Evidence link directories are being assembled by root; link existence and byte manifests were intentionally not re-audited.",
+    "Technical AI review cannot prove signatures, human independence, authorization, real Windows environment or product acceptance."
+  ]
+}
