@@ -1,0 +1,35 @@
+{
+  "ready": false,
+  "long_run_approval_required": true,
+  "issues": [
+    "缺少隔离Windows长测环境与执行授权记录"
+  ],
+  "identity": {
+    "implementation_commit": "e50c1d88b34fbf824cd46d1f22c2035700cc75cf",
+    "source_sha256": "dad282f1abd9085f418569b99647e297380ef8a1fdfe9b1faf90617a74de6aa5",
+    "source_fingerprint_schema": "cloudleaf-source-v3",
+    "binary_sha256": "c7fe4b34c197871bb8d02acb37a005f93ac658800712a015a544312a7e54a0b6",
+    "tool_sha256": "8acc7e0745d3e9ecba818d2c12dd2a99a22442a5cf1fd42da98166f6a937f1c1",
+    "data_sha256": "d4a87e958b23097253a4601b9ae373f02964e3e37729bb7f560e20835d5bb5f0",
+    "configuration": {
+      "profile": "24h",
+      "seconds": 86400,
+      "cycle_ms": 1000,
+      "checkpoint_seconds": 60.0,
+      "sample_seconds": 1.0,
+      "long_profile": true
+    },
+    "os": "Windows-11-10.0.26300-SP0",
+    "environment": {
+      "os": "Windows-11-10.0.26300-SP0",
+      "architecture": "AMD64",
+      "cpu_count": 12,
+      "machine_id_sha256": "9caa652a8ff90d868fa7aed97177d4a62e32860c466134370e7be616617b3805",
+      "python_version": "3.12.10",
+      "python_executable_sha256": "4d6f5f81a4bca11191c4c7c6b43632694d0a4ce74e068619d8fdc161d469859a"
+    }
+  },
+  "declarations_independently_verified": false,
+  "approval_sha256": null,
+  "scope": "owned diagnostic process only; no registration or real-host input authorization"
+}

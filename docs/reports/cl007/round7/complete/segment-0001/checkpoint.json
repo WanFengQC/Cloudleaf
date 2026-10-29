@@ -1,0 +1,63 @@
+{
+  "state": "finished",
+  "runner": {
+    "pid": 41992,
+    "created": 134377615838753367
+  },
+  "child": {
+    "pid": 41532,
+    "created": 134377615843049311
+  },
+  "elapsed_seconds": 6.204546200002369,
+  "latest": {
+    "r5-abrupt-owner-occupied": {
+      "experiment": "r5-abrupt-owner-occupied",
+      "owners": 32,
+      "fixed_bytes": 118838080,
+      "text_bytes": 41943040,
+      "global_fixed_limit": 134217728
+    },
+    "r6-owned-key": {
+      "experiment": "r6-owned-key",
+      "cycle": 80,
+      "instance": 33,
+      "epoch": 1,
+      "sequence": 480,
+      "vk": 32,
+      "lparam": 1,
+      "admission_ns": 14900,
+      "commit_complete_ns": 91000
+    },
+    "r6-cycle": {
+      "experiment": "r6-cycle",
+      "cycle": 80,
+      "healthy_writes": 480,
+      "hosts": 33,
+      "batches": 32,
+      "fixed_bytes": 118958850,
+      "text_bytes": 41943040,
+      "host_rc_strong_count": 1,
+      "module_leases": 132,
+      "module_locks": 0,
+      "own_iunknown_addref_return": 4,
+      "own_iunknown_release_return": 3,
+      "external_com_reference_count": null,
+      "fifo_and_budget_verified": true
+    },
+    "r5-pinned-availability": {
+      "experiment": "r5-pinned-availability",
+      "faulted_owners": 32,
+      "healthy_cycles": 80,
+      "healthy_writes": 480,
+      "unknown_replays": 0,
+      "remaining_hosts": 32,
+      "remaining_batches": 32,
+      "pinned_budget_unchanged": true,
+      "steady_elapsed_ns": 4032951200,
+      "elapsed_ns": 5619577300,
+      "registered": false
+    }
+  },
+  "sampling_errors": 0,
+  "exit_code": 0
+}

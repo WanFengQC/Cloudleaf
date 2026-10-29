@@ -1,0 +1,167 @@
+{
+  "implementation_commit": "e50c1d88b34fbf824cd46d1f22c2035700cc75cf",
+  "checks": [
+    {
+      "name": "fetch",
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "fetch",
+        "--locked"
+      ],
+      "returncode": 0,
+      "seconds": 0.6200488000031328,
+      "output": "fetch.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "name": "build-debug",
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "build",
+        "--workspace",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 1.2552983999994467,
+      "output": "build-debug.raw",
+      "sha256": "94779bc7b63779fcd8f3dccb00a152843086ec36467c6227596d2b9cd4fe8d45",
+      "bytes": 72
+    },
+    {
+      "name": "fmt",
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "returncode": 0,
+      "seconds": 0.7502082999999402,
+      "output": "fmt.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "name": "clippy",
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "returncode": 0,
+      "seconds": 0.9027989999958663,
+      "output": "clippy.raw",
+      "sha256": "0b9c85a57402765a9638848a90eec54abbd9a68f42a071a97aaa9d8acc5ba131",
+      "bytes": 72
+    },
+    {
+      "name": "workspace-tests",
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "test",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 17.33265119999851,
+      "output": "workspace-tests.raw",
+      "sha256": "b31746b96462bcf2669c2f806c3ad38b6b4a754739cfdaba4282421412158148",
+      "bytes": 17734
+    },
+    {
+      "name": "doc-tests",
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "test",
+        "--workspace",
+        "--doc",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 1.694883000003756,
+      "output": "doc-tests.raw",
+      "sha256": "b77ede3ce4e6d611e5fc941414c1995d5b8ba90dc756afd6f035fad74752617a",
+      "bytes": 941
+    },
+    {
+      "name": "resource-audit",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/check_workspace.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.4058705999996164,
+      "output": "resource-audit.raw",
+      "sha256": "84764b7ede0dec1c5c82d530cc642ab6dec6612f2193b7ca173fb26e87358bf4",
+      "bytes": 260
+    },
+    {
+      "name": "python-tests",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "returncode": 0,
+      "seconds": 0.5524947000012617,
+      "output": "python-tests.raw",
+      "sha256": "629fbeee3e7a5ee1dfd3fca27291309de92a3a01b0e4a1889b3604df762bfcf7",
+      "bytes": 4738
+    },
+    {
+      "name": "dependency-audit",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/audit_windows_dependencies.py",
+        "--audit-binary",
+        "C:\\Users\\EDY\\WebstormProjects\\Cloudleaf\\.local\\audit-tool\\bin\\cargo-audit.exe",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\.local\\round7-validation\\dependency-audit.json"
+      ],
+      "returncode": 0,
+      "seconds": 7.006090499999118,
+      "output": "dependency-audit.raw",
+      "sha256": "ae6c48a06e313e847c3315018e7cce59f3af4bf0830384e011b77fdbec92c2cf",
+      "bytes": 266
+    },
+    {
+      "name": "build-release",
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "build",
+        "--workspace",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 7.16276420000213,
+      "output": "build-release.raw",
+      "sha256": "31c9f67d8dcc053a4333982380af1fd921995c09f9795ec04c7fa891f6a1febf",
+      "bytes": 171
+    }
+  ]
+}

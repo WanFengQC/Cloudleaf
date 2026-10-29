@@ -1,0 +1,84 @@
+id	split	category	input	context	gold	production_rank	ablation_rank	rank_gain_ablation	candidate_order_changed	added_by_ablation	removed_by_ablation	production_candidates	ablation_candidates	gold_rank_comparison
+dev-001	dev	common	hao	-	好	1	1	0	False			好|号|浩|毫	好|号|浩|毫	same_gold_rank
+dev-002	dev	context	hao	编号是什么	号	2	2	0	False			好|号|浩|毫	好|号|浩|毫	same_gold_rank
+dev-003	dev	prefix	ha	-	好	1	1	0	False			好|号|浩|毫	好|号|浩|毫	same_gold_rank
+dev-004	dev	correction	haoo	-	好	0	0	0	False					same_gold_rank
+dev-005	dev	phrase	haohao	-	好好	0	0	0	False					same_gold_rank
+dev-006	dev	common	guo	-	国	1	1	0	False			国|过|果|锅	国|过|果|锅	same_gold_rank
+dev-007	dev	context	guo	曾经经历	过	2	2	0	False			国|过|果|锅	国|过|果|锅	same_gold_rank
+dev-008	dev	prefix	gu	-	国	1	1	0	False			国|过|果|锅	国|过|果|锅	same_gold_rank
+dev-009	dev	correction	gou	国家	国	0	0	0	False					same_gold_rank
+dev-010	dev	phrase	guozi	-	果子	0	0	0	False					same_gold_rank
+dev-011	dev	phrase	xuexi	-	学习	1	1	0	False			学习	学习	same_gold_rank
+dev-012	dev	prefix	xuex	-	学习	1	1	0	False			学习	学习	same_gold_rank
+dev-013	dev	correction	xuei	-	学习	0	0	0	False					same_gold_rank
+dev-014	dev	ambiguity	xue'xi	-	学习	1	1	0	False			学习	学习	same_gold_rank
+dev-015	dev	common	jie	-	界	1	1	0	False			界|解	界|解	same_gold_rank
+dev-016	dev	prefix	ji	-	界	2	2	0	False			笺|界|解	笺|界|解	same_gold_rank
+held-001	heldout	common	zhong	-	中	1	1	0	False			中|重|钟|种	中|重|钟|种	same_gold_rank
+held-002	heldout	phrase	zhongwen	-	中文	1	1	0	False			中文	中文	same_gold_rank
+held-003	heldout	phrase	zhongxin	-	中心	1	1	0	False			中心	中心	same_gold_rank
+held-004	heldout	phrase	zhonghua	-	中华	1	1	0	False			中华	中华	same_gold_rank
+held-005	heldout	prefix	zhongw	-	中文	1	1	0	False			中文	中文	same_gold_rank
+held-006	heldout	prefix	zhongx	-	中心	1	1	0	False			中心	中心	same_gold_rank
+held-007	heldout	prefix	zhongh	-	中华	1	1	0	False			中华	中华	same_gold_rank
+held-008	heldout	correction	zhonggng	-	中	0	0	0	False					same_gold_rank
+held-009	heldout	correction	zhonggou	-	中国	0	0	0	False					same_gold_rank
+held-010	heldout	correction	zhonguowen	-	中文	0	0	0	False					same_gold_rank
+held-011	heldout	common	shi	-	是	1	1	0	False			是|时|事|市|十|使|世	是|时|事|市|十|使|世	same_gold_rank
+held-012	heldout	context	shi	现在什么时候	时	2	2	0	False			是|时|事|市|十|使|世	是|时|事|市|十|使|世	same_gold_rank
+held-013	heldout	context	shi	办理什么事情	事	3	3	0	False			是|时|事|市|十|使|世	是|时|事|市|十|使|世	same_gold_rank
+held-014	heldout	context	shi	居住在哪座城市	市	4	4	0	False			是|时|事|市|十|使|世	是|时|事|市|十|使|世	same_gold_rank
+held-015	heldout	prefix	sh	-	是	1	1	0	False			是|时|事|市|十|使|世	是|时|事|市|十|使|世	same_gold_rank
+held-016	heldout	prefix	shij	-	世界	1	1	0	False			世界	世界	same_gold_rank
+held-017	heldout	correction	shjie	-	世界	0	0	0	False					same_gold_rank
+held-018	heldout	correction	shijiee	-	世界	0	0	0	False					same_gold_rank
+held-019	heldout	common	Xi	-	西	1	1	0	True			西|希|先|线|县|现	西|先|希|线|县|现	same_gold_rank
+held-020	heldout	context	xi	表达希望	希	2	3	-1	True			西|希|先|线|县|现	西|先|希|线|县|现	ablation_regressed
+held-021	heldout	prefix	x	-	先	2	2	0	False			西|先|希|线|县|现	西|先|希|线|县|现	same_gold_rank
+held-022	heldout	prefix	xia	-	先	2	2	0	False			西安|先|线|县|现	西安|先|线|县|现	same_gold_rank
+held-023	heldout	ambiguity	xianyang	-	咸阳	0	0	0	False					same_gold_rank
+held-024	heldout	ambiguity	xingan	-	兴安	0	0	0	False					same_gold_rank
+held-025	heldout	common	an	-	安	1	1	0	False			安	安	same_gold_rank
+held-026	heldout	prefix	a	-	安	1	1	0	False			安	安	same_gold_rank
+held-027	heldout	correction	gan	-	安	0	0	0	False					same_gold_rank
+held-028	heldout	common	can	-	参	1	1	0	False			参	参	same_gold_rank
+held-029	heldout	prefix	c	-	参	1	1	0	False			参	参	same_gold_rank
+held-030	heldout	prefix	ca	-	参	1	1	0	False			参	参	same_gold_rank
+held-031	heldout	correction	cao	-	参	0	0	0	False					same_gold_rank
+held-032	heldout	common	kao	-	考	1	1	0	False			考	考	same_gold_rank
+held-033	heldout	prefix	ka	-	考	1	1	0	False			考	考	same_gold_rank
+held-034	heldout	correction	kaoo	-	考	0	0	0	False					same_gold_rank
+held-035	heldout	common	ren	-	人	1	1	0	False			人	人	same_gold_rank
+held-036	heldout	prefix	re	-	人	1	1	0	False			人	人	same_gold_rank
+held-037	heldout	prefix	r	-	人	1	1	0	False			人	人	same_gold_rank
+held-038	heldout	correction	rng	-	人	0	0	0	False					same_gold_rank
+held-039	heldout	phrase	gongzuo	-	工作	1	1	0	False			工作	工作	same_gold_rank
+held-040	heldout	prefix	gongz	-	工作	1	1	0	False			工作	工作	same_gold_rank
+held-041	heldout	prefix	gongzu	-	工作	1	1	0	False			工作	工作	same_gold_rank
+held-042	heldout	correction	gongzou	-	工作	0	0	0	False					same_gold_rank
+held-043	heldout	ambiguity	gong'zuo	-	工作	1	1	0	False			工作	工作	same_gold_rank
+held-044	heldout	common	yun	-	云	1	1	0	False			云	云	same_gold_rank
+held-045	heldout	prefix	yu	-	云	1	1	0	False			云	云	same_gold_rank
+held-046	heldout	correction	yunn	-	云	0	0	0	False					same_gold_rank
+held-047	heldout	common	jian	-	笺	1	1	0	False			笺	笺	same_gold_rank
+held-048	heldout	prefix	jia	-	笺	1	1	0	False			笺	笺	same_gold_rank
+held-049	heldout	correction	jain	-	笺	0	0	0	False					same_gold_rank
+held-050	heldout	homophone	nin	-	您	1	1	0	False			您|宁|凝	您|宁|凝	same_gold_rank
+held-051	heldout	homophone	ning	-	宁	1	1	0	False			宁|凝	宁|凝	same_gold_rank
+held-052	heldout	phrase	nvren	-	女人	0	0	0	False					same_gold_rank
+held-053	heldout	phrase	lvxing	-	旅行	0	0	0	False					same_gold_rank
+held-054	heldout	umlaut	lve	-	略	0	0	0	False					same_gold_rank
+held-055	heldout	umlaut	nve	-	虐	0	0	0	False					same_gold_rank
+held-056	heldout	umlaut	lü	-	绿	0	0	0	False					same_gold_rank
+held-057	heldout	umlaut	nüxing	-	女性	0	0	0	False					same_gold_rank
+held-058	heldout	oov	women	-	我们	0	0	0	False					same_gold_rank
+held-059	heldout	oov	beijing	-	北京	0	0	0	False					same_gold_rank
+held-060	heldout	long	jintiantiqihenhao	-	今天天气很好	0	0	0	False					same_gold_rank
+held-061	heldout	long	wozaixuexizhongwen	-	我在学习中文	0	0	0	False					same_gold_rank
+held-062	heldout	long	nihaoshijie	-	你好世界	0	0	0	False					same_gold_rank
+held-063	heldout	mixed	cloudleaf2026	-	云笺2026	0	0	0	False					same_gold_rank
+held-064	heldout	mixed	gongzuo2026	-	工作2026	0	0	0	False					same_gold_rank
+held-065	heldout	extension	zg	-	中国	0	0	0	False					same_gold_rank
+held-066	heldout	extension	si	-	是	0	0	0	False					same_gold_rank
+held-067	heldout	long	zhongwenzhongwenzhongwenzhongwenzhongwenzhongwenzhongwenzhongwenzhongwenzhongwen	-	中文中文中文中文中文中文中文中文中文中文	0	0	0	False					same_gold_rank
