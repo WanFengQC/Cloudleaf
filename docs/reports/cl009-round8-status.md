@@ -1,5 +1,7 @@
 # CL-009 Round 8：真实语义待办、候选许可取得与发布器设计
 
+下述主体是第一阶段 metadata-only 检查点，已完整提交于 `0f65339`；后续有界原件取得见文末增补，不将早期 HEAD/body=0 证据改写成完整取得。
+
 2026-10-30。起点`3d573384ce1f31e437bdb4e7dc109cf438c261f4`，设计先行`74f30953d396722087e9643d2dd2946df9e69b53`；外部材料冻结并校验于 **`3d02431fadbf349afe513525e81ba407d5947e09`**。其后只归档报告，不改绑原结果。生产代码、测试、来源锁、正式词条包和原发布/恢复机制均未改。本轮没有把重复回归或新增测试数量当作进展。
 
 ## 实际交付与文件范围
@@ -70,3 +72,22 @@ Unihan、CC-CEDICT固定原件均在既有本机缓存找到且核SHA/完整性�
 |未实现/未执行|生产语义发布器/新格式reader/签署部署/用户迁移；新频率统计、正式语义内容、独立语言评测、物理断电；未调用生产激活/回滚|
 
 PR #3保持Draft，不合main，不进入CL-010。下一步先由负责人取得并核固定Google原件/分母和协议，落实真实审读人员与授权，随后按设计审阅生产发布器实现；不能用待办或CI替代这些外部事实。
+
+## 第二阶段增补：固定候选原件已实际取得
+
+设计先行提交 **`fc539e9f3bd97c062aaf2af8351ba8ee58d43fd0`**，见[有界取得设计](../acceptance/cl009-round8/bounded-acquisition-design.md)。仅在全新 Git 外 `.local/round8-ngram-acquisition` 请求两个已由官方索引/HEAD确定的资源；无重试、无覆盖、无额外语料抓取。运行65.047秒，Python3.12.10/Windows11构建26300。原件不进入Git，完整URL、绝对路径、HTTP、时间和身份在[取得原记录](cl009/round8-acquisition/acquisition.json)，运行器与原始检查日志另归档。
+
+|固定资源|实际完整字节 / SHA-256|
+|---|---|
+|`20200217/chi_sim/1-00000-of-00001.gz`|60,833,224 / `6ab29862a8c904c261bb9d5a02a342285c4dbabf79cee5c4f8818076fd44fb86`|
+|同版`totalcounts-1`|7,479 / `f4a136b63419c0f34dfbfcf76f501ac80a745ad535f5cc9bda2666189a35e9f3`|
+
+两项均HTTP200、长度与HEAD/GET一致、流式SHA完成。gzip读到EOF并通过标准库CRC/ISIZE，解压195,878,750字节，SHA `f5535ee7d0c0a5ba18bff3b4019d150da0e63265b8e2abdebb2d442db45b95f0`；严格UTF-8解码508,674行。实际每行首字段之后是数量不等的逗号三元组，共19,074,163组三个十进制字段，tab字段数2–457；**并非直接套用v2四列逐年格式**。totalcounts实读464条空白分隔记录、每条四个十进制字段。这是结构观察，尚未批准三元组语义、年份/分母、提取/中文分词或筛选协议；未计算产品token/DF/Zipf或合并词频。
+
+本次解决“没有候选原件SHA/CRC/实际v3形状”缺口。来源登记与批准锁完全未改，Google仍candidate-not-approved，既有123,544 runtime词频仍unknown、1,468隔离记录不动。原件属于已有具体CC BY3编译数据候选，不代表原书全文许可、现代IME代表性、正式数据或独立gold已接受。发布器仍仅设计，生产词频与语义发布继续阻塞。
+
+[追加检查](cl009/round8-acquisition/checks.json)保存原始输出和返回码：原件/初始21项Git清单/18原件/153历史报告与生产边界核验、资源许可审计、fmt、diff。取得脚本的终端输出仅在执行工具转录中，未另存原始stdout字节；`acquisition.json`是实际执行生成的完整记录，后续检查stdout/stderr原字节无损封装，不重造取得日志。新最终HEAD的Windows/Linux push CI由共享R8最终汇总绑定，第一阶段CI/旧回归不转绑。
+
+最终已完成：候选原件完整取得/CRC及结构观察、来源与角色交接、语义待审实物、发布器设计。仍需负责人完成统计协议和生产采用审查、实际授权人员与语义双审/仲裁、独立heldout保管；token/DF/Zipf及正式Top-1/Top-5/MRR继续null。未执行任何生产激活/回滚、真实平台/物理断电验收或CL-010。
+
+追加归档的两次准备失败亦保留：[初次环境失败](cl009/round8-acquisition-initial-check/checks.json)中workspace audit因子进程PATH缺cargo返回1，补显式既有cargo路径后通过；[文档检查失败](cl009/round8-acquisition-diff-failure/checks.json)中diff返回2指出新增末尾空行，规范文档末尾后通过。原始封装和修正前脚本/文档字节留存，未重取网络原件、未修改审计规则或放宽断言。

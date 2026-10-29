@@ -28,3 +28,6 @@ Content-Length、ETag和Last-Modified仅是这次HEAD观察，不等于完整SHA
 官方说明中文使用统计分词；具体实现/版本/参数和代表性尚未交付。书籍文本不等于口语IME使用分布，旧年代、OCR、自动标注和取样局限要分开评估。token比例不从筛选后分区的计数和猜分母；book DF不冒充token，也不跨年随意相加为去重文档数；Zipf仅能从同词/同源/同范围正token比例派生。
 
 **决定**：将该固定版本列为下一次有界取得和口径核对的首选候选，具体bulk许可出处这一项已落实；原件、协议、项目采用/分发审核和语言质量仍未通过，production继续不批准，所有频率仍unknown/null。未批准来源的限制不因本轮证据而取消。
+# 第二阶段补充入口
+
+本文件的 metadata-only 结论固定于 `3d02431`，`google-source-evidence.json`保留当时body=0记录。随后按[先提交的有界设计](bounded-acquisition-design.md)实际取得两个固定候选原件，完整SHA/CRC/实际v3多组三元组行形状见[阶段增补报告](../../reports/cl009-round8-status.md#第二阶段增补固定候选原件已实际取得)。这关闭取得身份缺项，不批准生产、不改变unknown或统计协议状态。
