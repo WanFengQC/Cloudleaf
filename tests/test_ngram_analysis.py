@@ -58,6 +58,8 @@ class NgramAnalysisTests(unittest.TestCase):
             self.assertTrue(result['scan_completed'])
             self.assertEqual(result['counts']['rows'], 3)
             self.assertEqual(result['counts']['valid_triplets'], 6)
+            self.assertEqual(result['counts']['triplet_fields'], 7)
+            self.assertIsNone(result['structural_missing_token_year_pairs'])
             for key in ['duplicate_token', 'duplicate_year', 'nonmonotonic_year', 'malformed_triplet',
                         'field_3_exceeds_field_2', 'year_missing_from_totalcounts', 'field_2_exceeds_total', 'field_3_exceeds_total']:
                 self.assertEqual(result['anomaly_counts'][key], 1, key)
