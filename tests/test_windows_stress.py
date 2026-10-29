@@ -1,5 +1,6 @@
 """长期诊断的配置、原文落盘及身份隔离；真实COM另由实际Windows子进程验证。"""
 import importlib.util
+import copy
 import json
 import os
 from pathlib import Path
@@ -138,6 +139,33 @@ class StressEvidenceTests(unittest.TestCase):
                     'operator': 'fixture-operator', 'snapshot': 'fixture-snapshot', 'rollback_plan': 'fixture-rollback',
                     'authorization_reference': 'fixture-only-not-real-approval', 'identity': identity}
         self.assertFalse(STRESS.execution_preflight(identity, approval)['ready'])
+
+    def test_replacing_outer_identity_cannot_reuse_unchanged_execution_authorization(self):
+        identity = {'configuration': STRESS.configuration('8h', None, None, 60, 1),
+                    'implementation_commit': 'fixture-commit', 'source_sha256': 'a' * 64,
+                    'binary_sha256': 'b' * 64, 'data_sha256': 'c' * 64, 'tool_sha256': 'd' * 64,
+                    'environment': {'os': 'Windows-fixture', 'architecture': 'AMD64'}}
+        with tempfile.TemporaryDirectory() as temporary:
+            folder = Path(temporary)
+            request = prepared_request(folder)
+            approval = {'status': 'approved', 'isolated_windows_environment': True,
+                        'environment_id': request['environment']['vm_id'], 'operator': request['people']['test_operator'],
+                        'snapshot': request['environment']['snapshot_id'], 'rollback_plan': 'fixture-rollback',
+                        'authorization_reference': 'fixture-only-not-real-approval', 'identity': identity,
+                        'environment_request': save_material(folder, 'request.json', request)}
+            self.assertTrue(STRESS.execution_preflight(identity, approval, folder)['ready'])
+            authorization_path = folder / request['signatures_and_authorization_evidence']['path']
+            original = authorization_path.read_bytes()
+            for field in ['implementation_commit', 'source_sha256', 'binary_sha256', 'data_sha256', 'tool_sha256', 'configuration']:
+                with self.subTest(field=field):
+                    changed = copy.deepcopy(identity)
+                    if field == 'configuration':
+                        changed[field]['checkpoint_seconds'] = 61
+                    else:
+                        changed[field] = 'changed'
+                    updated_approval = dict(approval, identity=changed)
+                    self.assertFalse(STRESS.execution_preflight(changed, updated_approval, folder)['ready'])
+                    self.assertEqual(authorization_path.read_bytes(), original)
 
     @unittest.skipUnless(os.name == 'nt', '需要真实Windows进程句柄')
     def test_process_identity_refuses_live_child_and_recognizes_its_actual_exit(self):
