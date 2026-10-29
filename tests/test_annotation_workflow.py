@@ -96,6 +96,13 @@ class AnnotationWorkflowTests(unittest.TestCase):
         value['protocol_sha256'] = 'b' * 64
         self.assertFalse(audit(value)['structurally_ready'])
 
+    def test_preprocessing_or_lineage_replacement_invalidates_existing_reviews(self):
+        for field in ['preprocessing_sha256', 'lineage_audit_sha256']:
+            with self.subTest(field=field):
+                value = packet()
+                value[field] = 'b' * 64
+                self.assertFalse(audit(value)['structurally_ready'])
+
     def test_source_or_grant_replacement_invalidates_existing_reviews(self):
         for field in ['artifact_sha256', 'version', 'authorization']:
             value = packet()
