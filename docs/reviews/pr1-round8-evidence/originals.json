@@ -1,0 +1,41 @@
+{
+  "encoding": "utf8.encode reproduces exact captured bytes",
+  "files": {
+    "check-01-stdout.txt": {
+      "capture": "subprocess.PIPE",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    "check-01-stderr.txt": {
+      "capture": "subprocess.PIPE",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    "check-02-stdout.txt": {
+      "capture": "subprocess.PIPE",
+      "bytes": 259,
+      "sha256": "4b7019865a497453c476782a0aacb9de7d425e4c54076063107d959f3bcd3467",
+      "utf8": "资源已验证：tests/evaluation/algorithm-v1.tsv (83 条)\r\n资源已验证：tests/fixtures/input-v1.tsv (41 条)\r\n资源已验证：data/dictionaries/prototype.tsv (64 条)\r\nworkspace 已验证：6 个crate，0 个已登记外部Rust依赖，MSRV 1.90.0\r\n"
+    },
+    "check-02-stderr.txt": {
+      "capture": "subprocess.PIPE",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    "check-03-stdout.txt": {
+      "capture": "subprocess.PIPE",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    "check-03-stderr.txt": {
+      "capture": "subprocess.PIPE",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "checked_at_utc": "2026-10-29T16:55:35.359315+00:00",
+  "reviewer_type": "AI",
+  "human_approval": false,
+  "merge_authorization": false,
+  "reviewed_files": {
+    "docs/reports/cl007-009-round8-status.md": "4c584ea2509064a5d60bbdf5348e65588f20fcfdea703a2d7c500b3a6a71f3dc",
+    "docs/reviews/pr1-round8-human-review.md": "8c1a5306d6b9efdc8e4eed674bc42d388c94364ab34224e49ba5cc6f73defa6e",
+    "docs/reviews/pr1-round8-decision-template.json": "db1feb45593e30cb074885a281d5b765383b4e7d15cb9fa32973b39dc0aa38e4"
+  },
+  "review_scope": "Consistency review only; no new tests, edits to tracked files, CI execution, external acceptance, or human decision",
+  "findings": [],
+  "conclusion": "No contradiction with independent final A/B/C audits or pending external gates identified. Shared final-head push CI is explicitly pending post-push and is not substituted by R7/intermediate CI.",
+  "checked_facts": [
+    "A final333dc90e includes actual intermediate Windows failure and bounded CRLF fix; 31 Python tests are not long/native or real-application acceptance",
+    "B finalf991a812 formal gates exit2 and Top1/Top5/MRR remain null; people, gold, and signatures pending",
+    "C finalef6cf16c exact candidate originals obtained, still candidate-not-approved; product frequencies null and semantic publisher design only",
+    "Main unchanged/four Drafts/no CL010 stated; human checklist remains unmarked and decision template pending without merge authority"
+  ],
+  "pending_checklist_items": 14,
+  "decision_template_pending": true,
+  "limitations": [
+    "This review does not independently re-fetch current CI; report raw-response publication was still in progress",
+    "direction-ci.json was not yet present at inspection; publisher must materialize all referenced reports before commit"
+  ],
+  "preparation_errors": [
+    {
+      "operation": "Read referenced direction-ci.json during preparation",
+      "returncode": 1,
+      "error": "FileNotFoundError",
+      "raw_process_bytes_saved": false
+    }
+  ]
+}
