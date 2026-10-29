@@ -4,6 +4,7 @@
 - 最终目标：构建算法完善、功能完整、响应流畅、翻译可靠、可长期维护的正式跨平台输入法。
 - 当前进度：M1/M2 原型已固定；CL-007/008/009 在独立草稿分支实施，尚未合入 main。轨迹完整性/长期准入、任务评估映射/评分观测、三协议审核失效和来源矩阵见[第七轮检查点](reports/cl007-009-round7-status.md)，共享PR另有[合并审查准备](reviews/pr1-round7-merge-readiness.md)；[第六轮](reports/cl007-009-round6-status.md)、[第五轮](reports/cl007-009-round5-status.md)、[第四轮](reports/cl007-009-round4-status.md)与[第三轮](reports/cl007-009-round3-status.md)历史保留。8h/24h、独立语言质量、正式词频/语义和真实Windows验收未放行，不进入CL-010。
 - 最终能力由 [product-scope.md](product-scope.md) 的稳定需求 ID 管理。阶段只控制依赖、风险和质量，不缩减最终产品范围。
+- Round 10方向设计和验收范围见[本轮记录](cl007-009-round10-plan.md)：独立语义发布基础设施、候选计数门禁、完整运行身份准入；实际结果与未放行条件见[Round 10汇总](reports/cl007-009-round10-status.md)。main及产品验收状态不变。
 
 ## 1. 开发原则
 
