@@ -33,6 +33,7 @@ class SourceReviewTests(unittest.TestCase):
         self.assertFalse(mirror['research_only'])
         self.assertTrue(rows['wiktionary:zh-20261001-prefix8388608']['research_only'])
         self.assertIsNone(rows['subtlex-ch']['permissions']['commercial_use'])
+        self.assertIsNone(rows['subtlex-ch']['approved_scope'])
         self.assertIsNone(rows['google-books-ngrams-zh2019']['original_sha256'])
         self.assertFalse(rows['wikipedia:zh-page342-rev94816134']['statistics_ready'])
         self.assertFalse(result['creates_new_source_approval'])
