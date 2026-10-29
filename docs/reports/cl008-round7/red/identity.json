@@ -1,0 +1,60 @@
+{
+  "head": "ba17cbf46100e96708d9790cb3dcf85f620cd706",
+  "checks": [
+    {
+      "name": "fallback",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_language_readiness.py",
+        "-k",
+        "non_ok",
+        "-v"
+      ],
+      "returncode": 1,
+      "log": "fallback.txt",
+      "sha256": "5e567790b72772aa26c0a5302455db3ba4f1c6341b3a30d4158d11ecd53264df"
+    },
+    {
+      "name": "task-handoff",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_ime_task_handoff.py",
+        "-v"
+      ],
+      "returncode": 1,
+      "log": "task-handoff.txt",
+      "sha256": "eef401e2d03c803c8cf47f45e2082ecd3f19292bad8d847684f4a380a11c6c6c"
+    },
+    {
+      "name": "scoring",
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "test",
+        "--locked",
+        "--offline",
+        "-p",
+        "cloudleaf-search",
+        "--test",
+        "profiling",
+        "scoring_is_an_explicit",
+        "--",
+        "--nocapture"
+      ],
+      "returncode": 101,
+      "log": "scoring.txt",
+      "sha256": "35fc25a8085413a29e824af256f24edf11dcb5584a53f516f6e9b4e3259d8a0e"
+    }
+  ]
+}

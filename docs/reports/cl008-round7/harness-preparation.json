@@ -1,0 +1,8 @@
+{
+  "scope": "Local evidence harness preparation, not product failure",
+  "operation": "The first red runner completed Python failures, then failed launching cargo by bare name on Windows",
+  "exit_code": 1,
+  "tool_error_excerpt": "FileNotFoundError: [WinError 2] 系统找不到指定的文件。",
+  "historical_helper_bytes_archived": false,
+  "resolution": "Resolved actual cargo executable with shutil.which; complete red replay at the same ba17cbf implementation is in red/. Original partial Python logs remain in .local/round7-red."
+}

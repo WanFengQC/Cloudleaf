@@ -1,0 +1,271 @@
+{
+  "implementation_commit": "2a2bd9a7ea9df73b647ccdba609d9aae8f0ad935",
+  "checks": [
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\rustc.EXE",
+        "--version"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.13009540000348352,
+      "log": "command-01.txt",
+      "log_sha256": "3397f54a03033c1b027496d83acc64e8f3ceeb4017e0575150f78726edce8a1a"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "fetch",
+        "--locked"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.1765333000003011,
+      "log": "command-02.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "build",
+        "--workspace",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.6144735999987461,
+      "log": "command-03.txt",
+      "log_sha256": "54d32f1312e9ec321c58af432997bfe3bae5b14322fc06e68fd35a1f2f0e6519"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.49155569999857107,
+      "log": "command-04.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 1.759111599996686,
+      "log": "command-05.txt",
+      "log_sha256": "33196c4f9f46bf2cb41f08b0206b6f9a07455a0af86df9e1e5c6136859b21487"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "test",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 6.641216500000155,
+      "log": "command-06.txt",
+      "log_sha256": "73e9e19f324c881eb784a3c9e7da239c487213c860ff0ff9a52349d515ea591c"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "test",
+        "--workspace",
+        "--doc",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.8101485000006505,
+      "log": "command-07.txt",
+      "log_sha256": "12b6bffe6732d2ca22f487697d272183a4bb05a396a6471d790b69d8c318b23c"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "build",
+        "--workspace",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.4626016000038362,
+      "log": "command-08.txt",
+      "log_sha256": "d1235ea4563620b53ef5bdd2da5f595fec9d54f9efb48376378c20547dd95e57"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/check_workspace.py"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.39208520000102,
+      "log": "command-09.txt",
+      "log_sha256": "0bb7250cb2c233d5b261d9c9e4fde6ba7950b04fe59aafcd4e302c2c3c4728bf"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 11.459957499995653,
+      "log": "command-10.txt",
+      "log_sha256": "7a072ff186ab0191cd185f857b07df6622e6024c21dea851d51de8c44fd590bb"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/evaluate_search.py",
+        "--iterations",
+        "100",
+        "--warmup",
+        "10",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\mechanics.json"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 4.4328068000031635,
+      "log": "command-11.txt",
+      "log_sha256": "21321877cb1ea2e18f4a71d952f3f432d02bbe9827c46f66f58877890bd9f6ba"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/benchmark.py",
+        "--iterations",
+        "1000",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\prototype.json"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 1.2098031999994419,
+      "log": "command-12.txt",
+      "log_sha256": "5c475eaa5e6774980e5558c99766a15af31dd57d8c85ac1b911b4291912d439f"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/evaluate_algorithms.py",
+        "--output-dir",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\algorithm-v1"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 1.0475761000052444,
+      "log": "command-13.txt",
+      "log_sha256": "4fa9873cbcb08a67f33d25f29b4aca2673d5962110238938486f8ad9db01a3ee"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/check_language_readiness.py",
+        "--plan",
+        "config/evaluation/language-readiness-v1.json",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\language-readiness.json"
+      ],
+      "returncode": 2,
+      "expected_returncode": 2,
+      "seconds": 0.20000419999996666,
+      "log": "command-14.txt",
+      "log_sha256": "b0602ad5af366f0094e1310c1641ef27aae7aa983edb124982ca71ea272ddee5"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/check_quality_preparation.py",
+        "--plan",
+        "config/evaluation/language-readiness-v1.json",
+        "--preparation",
+        "config/evaluation/quality-preparation-v1.json",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\quality-preparation.json"
+      ],
+      "returncode": 2,
+      "expected_returncode": 2,
+      "seconds": 0.19287159999657888,
+      "log": "command-15.txt",
+      "log_sha256": "93b3bf54bab626907125dfbc249dd8d8c106c7e8b068f41e0b222fe44ff1cfc2"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/check_ime_task_handoff.py",
+        "--plan",
+        "config/evaluation/language-readiness-v1.json",
+        "--preparation",
+        "config/evaluation/quality-preparation-v1.json",
+        "--handoff",
+        "config/evaluation/ime-task-handoff-v1.json",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\ime-task-handoff.json"
+      ],
+      "returncode": 2,
+      "expected_returncode": 2,
+      "seconds": 0.17919959999562707,
+      "log": "command-16.txt",
+      "log_sha256": "bff18186e516ebe700cf478a7807d711642a835a386e27012a202096c1cdd9de"
+    },
+    {
+      "command": [
+        "C:\\Program Files\\Git\\cmd\\git.EXE",
+        "diff",
+        "--check"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.08017249999829801,
+      "log": "command-17.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

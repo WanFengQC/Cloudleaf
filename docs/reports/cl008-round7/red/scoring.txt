@@ -1,0 +1,20 @@
+   Compiling cloudleaf-search v0.1.0 (C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\crates\cloudleaf-search)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.90s
+     Running tests\profiling.rs (target\debug\deps\profiling-4ac8a294a9271235.exe)
+
+running 1 test
+
+thread 'scoring_is_an_explicit_nested_observation_without_changing_complete_results' panicked at crates\cloudleaf-search\tests\profiling.rs:123:9:
+assertion failed: profile.measurements().any(|(phase, value)|
+        phase.name() == "scoring" && value.calls > 0)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test scoring_is_an_explicit_nested_observation_without_changing_complete_results ... FAILED
+
+failures:
+
+failures:
+    scoring_is_an_explicit_nested_observation_without_changing_complete_results
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p cloudleaf-search --test profiling`
