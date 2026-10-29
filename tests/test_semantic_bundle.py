@@ -219,6 +219,21 @@ class SemanticBundleTests(unittest.TestCase):
         p.activate(self.input / 'lexicon', self.root / 'legacy-store')
         self.assertTrue((self.root / 'legacy-store/current.json').exists())
 
+    def test_approval_reader_version_rejects_boolean_even_after_hash_refresh(self):
+        bundle = self.build()
+        policy = trust(self.root, [bundle])
+        policy_path = Path(policy['path'])
+        value = p.read_json(policy_path)
+        approval_path = self.root / value['releases'][0]['approval']['path']
+        approval = p.read_json(approval_path)
+        approval['reader_version'] = True
+        p.write_json(approval_path, approval)
+        value['releases'][0]['approval']['sha256'] = p.digest(approval_path.read_bytes())
+        p.write_json(policy_path, value)
+        policy['sha256'] = p.digest(policy_path.read_bytes())
+        with self.assertRaisesRegex(ValueError, '审批'):
+            s.verify_bundle(bundle, production=True, trust_policy=policy)
+
 
 if __name__ == '__main__':
     unittest.main()
