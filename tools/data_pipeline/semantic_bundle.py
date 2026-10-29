@@ -320,6 +320,7 @@ def verify_policy(root, snapshot, policy, store=None):
     approval, _ = external_document(release['approval'], path.parent, forbidden)
     shape(approval, 'schema_version kind manifest_sha256 content_sha256 review_binding_sha256 reader_version status authorized_by reason')
     require(type(approval['schema_version']) is int and approval['schema_version'] == 1
+            and type(approval['reader_version']) is int
             and approval['kind'] == 'cloudleaf-semantic-release-approval-v1' and approval['status'] == 'approved'
             and text(approval['authorized_by']) and text(approval['reason'])
             and all(approval[key] == release[key] for key in ['manifest_sha256', 'content_sha256', 'review_binding_sha256', 'reader_version']), '外部审批身份/内容绑定不符')
@@ -364,16 +365,26 @@ def publisher_verifier(trust_policy, store):
     return verify
 
 
+def check_store_policy(trust_policy, store):
+    require(trust_policy is not None, '缺显式外部策略；拒绝store写入')
+    value, _ = external_document(trust_policy, Path.cwd(), [Path(store)])
+    shape(value, 'schema_version kind releases')
+    require(type(value['schema_version']) is int and value['schema_version'] == 1
+            and value['kind'] == 'cloudleaf-semantic-trust-policy-v1' and isinstance(value['releases'], list), '外部策略版本不符')
+
+
 def activate(release, store, *, trust_policy):
     return p.activate(Path(release), Path(store), verifier=publisher_verifier(trust_policy, store), transition=check_transition)
 
 
 def rollback(store, *, trust_policy):
+    check_store_policy(trust_policy, store)
     return p.rollback(Path(store), verifier=publisher_verifier(trust_policy, store))
 
 
 def recover(store, owner_pid, *, trust_policy, rollback=False):
     from .recovery import recover_store
+    check_store_policy(trust_policy, store)
     return recover_store(Path(store), owner_pid, rollback=rollback, verifier=publisher_verifier(trust_policy, store))
 
 

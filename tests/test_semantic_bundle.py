@@ -138,6 +138,9 @@ class SemanticBundleTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             s.activate(bundle, store, trust_policy=None)
         self.assertFalse(store.exists())
+        with self.assertRaisesRegex(ValueError, '策略'):
+            s.rollback(store, trust_policy=None)
+        self.assertFalse(store.exists())
         internal = bundle / 'policy.json'
         internal.write_bytes(b'{}')
         with self.assertRaises(ValueError):
@@ -233,6 +236,51 @@ class SemanticBundleTests(unittest.TestCase):
         policy['sha256'] = p.digest(policy_path.read_bytes())
         with self.assertRaisesRegex(ValueError, '审批'):
             s.verify_bundle(bundle, production=True, trust_policy=policy)
+
+    def test_self_review_duplicate_reviewers_dispute_and_source_scope_are_blocked(self):
+        content = p.read_json(self.input / 'content.json')
+        for mode in ['self', 'duplicate', 'dispute', 'bad-arbiter', 'research', 'scope']:
+            with self.subTest(mode=mode):
+                changed = copy.deepcopy(content)
+                if mode == 'research': changed['sources'][0]['status'] = 'research_only'
+                if mode == 'scope': changed['sources'][0]['scope'].remove('translation')
+                write_content(self.input, changed)
+                reviews = p.read_json(self.input / 'reviews.json')
+                row = reviews['records'][0]
+                if mode == 'self': row['decisions'][0]['reviewer_id'] = row['author_id']
+                if mode == 'duplicate': row['decisions'][1]['reviewer_id'] = row['decisions'][0]['reviewer_id']
+                if mode in {'dispute', 'bad-arbiter'}:
+                    row['decisions'][0]['decision'] = 'reject'
+                if mode == 'bad-arbiter':
+                    row['adjudication'] = {'adjudicator_id': row['author_id'], 'decision': 'approve',
+                        'reason': 'fixture dispute', 'review_binding_sha256': reviews['review_binding_sha256']}
+                p.write_json(self.input / 'reviews.json', reviews)
+                candidate = self.root / ('review-invalid-' + mode)
+                s.build_bundle(self.input, candidate)
+                with self.assertRaises(ValueError):
+                    s.verify_bundle(candidate, production=True, trust_policy=trust(self.root, [candidate], mode))
+
+    def test_current_independent_arbitration_and_damaged_rollback_target(self):
+        reviews = p.read_json(self.input / 'reviews.json')
+        row = reviews['records'][0]
+        row['decisions'][0]['decision'] = 'reject'
+        row['adjudication'] = {'adjudicator_id': 'fixture-arbiter', 'decision': 'approve',
+            'reason': 'fixture-only adjudication', 'review_binding_sha256': reviews['review_binding_sha256']}
+        p.write_json(self.input / 'reviews.json', reviews)
+        bundle = self.build()
+        policy = trust(self.root, [bundle])
+        s.verify_bundle(bundle, production=True, trust_policy=policy)
+        store = self.root / 'store'
+        state = s.activate(bundle, store, trust_policy=policy)
+        second_input = fixture(self.root, 'second-input', state['current']['manifest_sha256'], True)
+        second = self.root / 'second'
+        s.build_bundle(second_input, second)
+        policy = trust(self.root, [bundle, second], 'both')
+        s.activate(second, store, trust_policy=policy)
+        before = (store / 'current.json').read_bytes()
+        (store / 'releases' / state['current']['release'] / 'NOTICE.txt').write_bytes(b'damaged rollback target')
+        with self.assertRaises(ValueError): s.rollback(store, trust_policy=policy)
+        self.assertEqual((store / 'current.json').read_bytes(), before)
 
 
 if __name__ == '__main__':
