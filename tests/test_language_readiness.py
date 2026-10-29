@@ -176,6 +176,23 @@ class ReadinessTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 MODULE.predictions(path, self.rows, frozen)
 
+    def test_non_ok_prediction_cannot_claim_lost_raw_fallback_is_ready(self):
+        frozen = MODULE.freeze(self.plan, self.folder, {source['id']: source for source in self.plan['sources']})
+        cases = [{'case_id': row['case_id'], 'status': 'ok', 'candidates': [], 'fallback_preserved': True}
+                 for row in self.rows if row['split'] == 'heldout']
+        path = self.folder / 'lost-fallback.json'
+        for status in ['budget', 'rejected', 'unsupported']:
+            with self.subTest(status=status):
+                rows = copy.deepcopy(cases)
+                rows[0].update(status=status, fallback_preserved=False)
+                value = {'schema_version': 1, 'run_started_at': '2020-04-01T00:00:00Z',
+                         'bindings': {key: frozen[key] for key in
+                                      ('parameters_sha256', 'source_sha256', 'binary_sha256', 'lexicon_sha256')},
+                         'cases': rows}
+                path.write_text(json.dumps(value), encoding='utf-8')
+                with self.assertRaisesRegex(ValueError, '原文回退'):
+                    MODULE.predictions(path, self.rows, frozen)
+
 
 if __name__ == "__main__":
     unittest.main()

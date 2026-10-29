@@ -110,3 +110,16 @@ fn configuration_and_model_failures_retain_the_actual_attempted_phase() {
     assert!(profile.phase(Phase::Normalize).is_some());
     assert!(profile.phase(Phase::Lattice).is_none());
 }
+
+#[test]
+fn scoring_is_an_explicit_nested_observation_without_changing_complete_results() {
+    let lexicon = lexicon();
+    for method in [Method::Reference, Method::ExactDag, Method::PositionDag, Method::Beam] {
+        let config = Config { method, ranker: Ranker::Structural, ..Config::default() };
+        let graph = Lattice::build(&lexicon, "aaa", &config).unwrap();
+        let plain = search_graph(&lexicon, &graph, &config, None, None).unwrap();
+        let (profiled, profile) = profile_query(&lexicon, "aaa", &config, None, None);
+        assert_eq!(profiled.unwrap().1, plain);
+        assert!(profile.measurements().any(|(phase, value)| phase.name() == "scoring" && value.calls > 0));
+    }
+}
