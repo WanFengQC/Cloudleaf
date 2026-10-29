@@ -1,5 +1,7 @@
 # CL-007 Round 8：外部验收交接与只读资源趋势
 
+**后续实际 CI 反例已修复：** 初次交付 `05dd085` 的 Windows push CI 失败、Linux 成功；根因为 checkout CRLF 改变已发布 JSONL 的物理字节。新增回归 `ffe03ee` 在旧实现真实失败后，`8d955a58518ef4f52c300fd4461c6fa5e56f2758` 仅在 CRLF→LF 候选精确匹配原记录 SHA 时解释换行，分列物理/重建身份，任意改动仍拒绝。重新执行 31 项 Python 全回归、审计、fmt 和三个只读报告通过。原 CI 失败、红测原文和新身份另存[追加证据](cl007/round8-ci-fix/checksums.json)，初次 `cl007/round8/` 的 37 文件均未改。下文原来的最终被测实现/30 项及源码 SHA 属于初次交付快照；本次修复的 source-v3 为 `0dc201a4aa9e70263639b14b317c9c9f12782472a2860eb1937dbe950c623b57`，reporter 为 `2b48f22e4d37cbd0bb40298067b6a4058b6f78f80a46d80e51e8b64040d936c7`，完整命令、返回码和数据身份见[新检查](cl007/round8-ci-fix/validation/checks.json)、[身份](cl007/round8-ci-fix/validation/identity.json)。新最终提交仍需独立 Windows/Linux push CI，不以本地通过改写原失败结果。
+
 2026-10-30。分支`codex/cl007-windows`，起点`fa4f1fab93394f115d3a987a7f0201b8662c08cf`，本轮最终被测实现 **`9479138b9b6db62a7ff28986f7fa66602ff15a88`**。后续方向提交只归档报告，不把测量改绑到报告head。真实隔离环境、负责人、快照/恢复证明及执行授权均由用户明确为未准备；8h/24h未启动，真实应用未验收。
 
 ## 实际交付与边界

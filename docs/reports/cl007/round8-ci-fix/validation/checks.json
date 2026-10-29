@@ -1,0 +1,160 @@
+{
+  "implementation_commit": "8d955a58518ef4f52c300fd4461c6fa5e56f2758",
+  "checks": [
+    {
+      "name": "python-version",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "--version"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.01923469999746885,
+      "raw_file": "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\.local\\round8-ci-fix\\validation\\python-version.log",
+      "bytes": 16,
+      "sha256": "6a5d9f6462ca5dfc6788cfd216ba579fffd7875776ab9d9b35659be78858f73a"
+    },
+    {
+      "name": "python-regression",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.7871025999993435,
+      "raw_file": "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\.local\\round8-ci-fix\\validation\\python-regression.log",
+      "bytes": 5898,
+      "sha256": "2c2cd03b51fb29b0afba0c7469fd027b5233470f175c8ef804da34b9bf4440af"
+    },
+    {
+      "name": "resource-audit",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/check_workspace.py"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.3696787000008044,
+      "raw_file": "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\.local\\round8-ci-fix\\validation\\resource-audit.log",
+      "bytes": 260,
+      "sha256": "84764b7ede0dec1c5c82d530cc642ab6dec6612f2193b7ca173fb26e87358bf4"
+    },
+    {
+      "name": "fmt",
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.5699650000024121,
+      "raw_file": "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\.local\\round8-ci-fix\\validation\\fmt.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "diff",
+      "command": [
+        "C:\\Program Files\\Git\\cmd\\git.EXE",
+        "diff",
+        "--check"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.08702600000106031,
+      "raw_file": "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\.local\\round8-ci-fix\\validation\\diff.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "complete",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/report_windows_soak.py",
+        "--run-dir",
+        "docs/reports/cl007/round7/complete",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\.local\\round8-ci-fix\\validation\\complete.json"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.1695904000007431,
+      "raw_file": "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\.local\\round8-ci-fix\\validation\\complete.log",
+      "bytes": 93,
+      "sha256": "c0e76bc1fb2789a7660470951488e65c56ee3febda86a582ed36fa075690f30d"
+    },
+    {
+      "name": "resumed",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/report_windows_soak.py",
+        "--run-dir",
+        "docs/reports/cl007/round7/resumed",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\.local\\round8-ci-fix\\validation\\resumed.json"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.1752003000001423,
+      "raw_file": "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\.local\\round8-ci-fix\\validation\\resumed.log",
+      "bytes": 93,
+      "sha256": "1c697cbd4608e256a1ad319686ccbfa8bb22da1e4a929335b0b12e3c5e988be5"
+    },
+    {
+      "name": "injected-failure",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/report_windows_soak.py",
+        "--run-dir",
+        "docs/reports/cl007/round7/injected-failure",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\.local\\round8-ci-fix\\validation\\injected-failure.json"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.16636300000391202,
+      "raw_file": "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\.local\\round8-ci-fix\\validation\\injected-failure.log",
+      "bytes": 93,
+      "sha256": "c0e76bc1fb2789a7660470951488e65c56ee3febda86a582ed36fa075690f30d"
+    },
+    {
+      "name": "existing-output-refused",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/report_windows_soak.py",
+        "--run-dir",
+        "docs/reports/cl007/round7/injected-failure",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\.local\\round8-ci-fix\\validation\\injected-failure.json"
+      ],
+      "returncode": 2,
+      "expected_returncode": 2,
+      "seconds": 0.1494444999989355,
+      "raw_file": "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\.local\\round8-ci-fix\\validation\\existing-output-refused.log",
+      "bytes": 145,
+      "sha256": "4623c8043bebdd56ca634cf163dbfada199f67be2893c2f990b42327489ad936"
+    }
+  ]
+}
