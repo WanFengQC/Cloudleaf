@@ -1,0 +1,34 @@
+{
+  "implementation_commit": "eb353ae981ea891d4f84888fd7551e95e8998ca4",
+  "source_fingerprint_schema": "cloudleaf-source-v3",
+  "source_sha256": "182bc819e2a461b00cb3e075681a3ecd2e2fc668276765cf4dffee7c9f15b587",
+  "data_sha256": "d4a87e958b23097253a4601b9ae373f02964e3e37729bb7f560e20835d5bb5f0",
+  "tools": {
+    "scripts/check_windows_soak_admission.py": "6abcc4e5851314803eba67a21596daee18d2a476e5d431e5979f2e6671eca6e2",
+    "scripts/stress_windows_faults.py": "8ac58e1bb51f133b2022e887a32c0c994cccc13bd434736861fda4164278e1cc",
+    "scripts/report_windows_soak.py": "2b48f22e4d37cbd0bb40298067b6a4058b6f78f80a46d80e51e8b64040d936c7"
+  },
+  "built_release_files": {
+    "target\\release\\cloudleaf-cli.exe": {
+      "bytes": 347136,
+      "sha256": "ea27f277b39e36454c250b2bb2bddf16b02c1012b543693009e38d0166c4c4d9"
+    },
+    "target\\release\\cloudleaf-evaluate.exe": {
+      "bytes": 367104,
+      "sha256": "c158685bb110adbebbe3b61597020e0a9808beb216da27105c022610617e792d"
+    },
+    "target\\release\\cloudleaf-ime.exe": {
+      "bytes": 197120,
+      "sha256": "9a68fedc04c2339a5bfd35d4e7ffbbda92a9f5338af41338b076abf123e5b138"
+    },
+    "target\\release\\cloudleaf_windows_ime.dll": {
+      "bytes": 599552,
+      "sha256": "204fbb8ee725562a449ba6bcac730ab113944350e92c7a2d6ddd97fd6e73b552"
+    }
+  },
+  "historical_reports_unchanged": 529,
+  "production_rust_and_data_unchanged": true,
+  "new_long_run_or_loader_or_tsf_executed": false,
+  "new_performance_measurement": false,
+  "scope": "Workspace original byte fingerprint; Git normalized source is separately identified by full implementation commit."
+}

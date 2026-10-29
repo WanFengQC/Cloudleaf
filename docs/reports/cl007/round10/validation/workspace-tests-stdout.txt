@@ -1,0 +1,218 @@
+
+running 10 tests
+test tests::duplicate_text_across_pronunciations_uses_the_best_match ... ok
+test tests::annotations_do_not_change_ranking ... ok
+test tests::tied_frequency_prefers_longer_text_then_id ... ok
+test tests::exact_matches_precede_higher_frequency_prefix_matches ... ok
+test tests::ordering_is_stable_when_rows_are_reordered ... ok
+test tests::bucket_limits_preserve_global_top_k_despite_cross_bucket_duplicates ... ok
+test tests::limits_bound_output_and_keep_best_unique_candidates ... ok
+test tests::unknown_invalid_empty_inputs_and_waiting_boundaries_have_no_candidates ... ok
+test tests::prototype_generates_words_and_keeps_annotations_separate ... ok
+test tests::large_matching_bucket_cannot_exceed_the_public_candidate_limit ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 2 tests
+test tests::removing_exact_priority_changes_the_synthetic_control ... ok
+test tests::ablation_keeps_duplicate_texts_stable_across_parse_paths ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 7 tests
+test tests::missing_or_unknown_versions_and_invalid_header_are_rejected ... ok
+test tests::empty_dictionary_and_crlf_files_are_supported ... ok
+test tests::corrupt_rows_are_never_silently_skipped ... ok
+test tests::limited_queries_preserve_best_unique_texts ... ok
+test tests::only_the_last_syllable_may_be_a_prefix ... ok
+test tests::prototype_is_valid_and_queries_use_the_whole_pronunciation ... ok
+test tests::size_and_field_limits_are_enforced ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 17 tests
+test tests::activation_is_required_and_idempotent ... ok
+test tests::punctuation_only_failure_remains_recoverable_until_explicit_cancel ... ok
+test tests::cursor_edits_and_backspace_operate_before_the_cursor ... ok
+test tests::failed_commit_preserves_selection_and_complete_failed_request ... ok
+test tests::english_mode_and_idle_system_keys_are_passed_through ... ok
+test tests::navigation_crosses_pages_and_clamps_at_both_ends ... ok
+test tests::punctuation_uses_selected_candidate_and_unknown_unicode_keeps_raw ... ok
+test tests::exhausted_revision_or_commit_ids_are_not_reused ... ok
+test tests::cancel_focus_loss_deactivation_and_mode_switch_clear_old_context ... ok
+test tests::text_change_resets_highlight_and_page_to_current_candidates ... ok
+test tests::no_dictionary_or_no_match_falls_back_to_exact_raw_input ... ok
+test tests::stale_confirmation_cannot_clear_new_composition_or_new_request ... ok
+test tests::overlong_input_and_control_character_do_not_mutate_composition ... ok
+test tests::space_and_enter_commit_once_without_extra_text_or_annotation ... ok
+test tests::selection_and_page_numbering_are_bounded_to_current_page ... ok
+test tests::deterministic_mixed_events_preserve_state_invariants ... ok
+test tests::unavailable_digit_and_zero_preserve_raw_text_and_character ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 1 test
+test fixed_input_corpus_and_candidate_ranking ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+
+running 9 tests
+test utf16_offsets_and_submission_text_do_not_include_annotations ... ok
+test known_failure_retains_full_text_and_requires_explicit_new_request ... ok
+test queue_bound_preserves_owned_events_and_focus_cancellation_invalidates_frames ... ok
+test native_probe_is_read_only_and_shortcuts_never_become_characters ... ok
+test duplicate_native_callback_does_not_repeat_input_or_commit ... ok
+test delayed_commit_serializes_owned_input_and_resumes_in_original_order ... ok
+test unknown_outcome_does_not_become_retryable_failure_or_clear_new_context ... ok
+test old_instance_ack_is_rejected_even_when_request_ids_collide ... ok
+test rejected_queue_event_keeps_its_sequence_until_caller_retries ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 4 tests
+test utf16_offsets_reject_split_characters_and_count_surrogate_pairs ... ok
+test candidate_selection_requires_current_revision_and_id ... ok
+test configurable_pages_obey_candidate_budget_and_current_page_digits ... ok
+test readonly_prediction_matches_dispatch_in_all_input_states ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+
+
+running 9 tests
+test tests::invalid_input_is_never_silently_truncated ... ok
+test tests::deleting_a_prefix_recomputes_the_segmentation ... ok
+test tests::explicit_separator_prevents_syllable_merging ... ok
+test tests::keyboard_umlaut_spelling_is_supported ... ok
+test tests::continuous_pinyin_and_uppercase_are_supported ... ok
+test tests::trailing_partial_syllable_is_preserved ... ok
+test tests::six_letter_syllables_and_standard_ju_qu_xu_spelling_work ... ok
+test tests::ambiguous_paths_have_a_stable_order ... ok
+test tests::ambiguous_long_input_is_bounded_and_covers_every_letter ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 1 test
+test tests::error_has_stable_code_and_location ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 99 tests
+test native::budget::tests::shared_token_preserves_cost_until_last_owner_explicitly_releases_it ... ok
+test native::budget::tests::overflow_and_zero_cost_never_create_a_global_token ... ok
+test native::budget::tests::read_only_hint_is_not_a_reservation_or_a_guarantee ... ok
+test native::budget::tests::every_limit_rejects_without_changing_existing_reservations ... ok
+test native::keys::tests::repeat_bit_is_not_an_event_identity_and_merged_repeats_are_not_partly_consumed ... ok
+test native::owner_cleanup::tests::actual_wait_access_failure_proves_neither_owner_nor_exit ... ok
+test native::owner_cleanup::tests::current_thread_is_owner_but_cross_thread_observer_is_not ... ok
+test native::ownership::tests::fifo_preserves_distinct_identical_native_messages_and_rejects_duplicate_callbacks ... ok
+test native::owner_cleanup::tests::duplicate_proves_original_os_thread_exit_after_join ... ok
+test native::ownership::tests::isolate_preserves_identity_order_raw_repeat_and_known_unwritten_material ... ok
+test native::candidate::tests::application_owned_ui_can_query_page_count_before_allocating_indices ... ok
+test native::ownership::tests::passthrough_shortcut_merged_repeat_and_core_error_are_not_owned ... ok
+test native::ownership::tests::queue_full_rejects_new_ownership_without_overwriting_or_advancing_watermark ... ok
+test native::ownership::tests::uncertain_recovery_does_not_label_planned_commit_as_unapplied ... ok
+test native::candidate::tests::failed_begin_or_class_registration_balances_only_successful_begin ... ok
+test native::budget::tests::epoch_capacity_pressure_records_real_token_size_and_fails_closed ... ok
+test native::owner_cleanup::tests::duplicate_remains_valid_after_rust_join_handle_is_dropped ... ok
+test native::ownership::tests::writing_and_unknown_never_become_not_applied_or_automatically_restart ... ok
+test native::budget::tests::concurrent_acquisition_never_exceeds_any_dimension_and_releases_all_tokens ... ok
+test native::owner_cleanup::tests::repeated_owner_receipts_keep_live_and_exited_proofs_distinct ... ok
+test native::candidate::tests::end_element_failure_does_not_keep_native_window_or_class_alive ... ok
+test native::recovery::tests::partial_window_class_failure_balances_registered_classes_and_module_leases ... ok
+test native::recovery::tests::late_transfer_keeps_source_epoch_after_host_has_already_invalidated ... ok
+test native::recovery::tests::offer_hides_previous_display_and_separates_epochs_without_changing_new_context ... ok
+test native::registration::tests::malformed_snapshot_rejected ... ok
+test native::registration::tests::session_snapshot_roundtrip_preserves_full_identity ... ok
+test native::recovery::tests::one_locked_snapshot_binds_text_and_tokens_across_real_owner_updates_and_clear ... ok
+test native::service::lifecycle_review_tests::lifecycle_review_factory_lock_and_reference_lease_are_balanced ... ok
+test native::service::lifecycle_review_tests::lifecycle_review_real_dll_loader_no_registration ... ignored, 须显式提供已构建的真实 DLL；独立假 manager 仅测装载退出，不注册或激活系统输入法
+test native::recovery::tests::failed_cleanup_notice_is_bounded_and_destroyed_broker_is_repaired_only_by_owner ... ok
+test native::recovery::tests::failed_main_creation_does_not_leave_a_claim_that_blocks_source_reopen ... ok
+test native::session::render_tests::native_async_partial_write_is_unknown_with_no_automatic_retry ... ok
+test native::recovery::tests::retired_recovery_remains_accessible_after_host_release_until_explicit_close ... ok
+test native::session::render_tests::native_barrier_rejection_preserves_owned_events_and_does_not_fake_enter ... ok
+test native::session::render_tests::native_empty_delete_end_reentrant_focus_preserves_the_new_context_composition ... ok
+test native::session::render_tests::native_empty_delete_reentrant_focus_cannot_end_or_erase_the_new_context_again ... ok
+test native::session::render_tests::native_end_edit_uses_client_write_ownership_true_false_and_error_without_reading_text ... ok
+test native::session::render_tests::native_external_edit_invalidates_scope_and_old_composition_without_erasing_host_text ... ok
+test native::session::render_tests::native_owned_fifo_drains_before_second_space_native_command_and_rejects_late_callback ... ok
+test native::recovery::tests::failed_clear_keeps_display_token_after_source_was_explicitly_discarded ... ok
+test native::session::render_tests::native_semantic_comparison_only_excludes_revision_and_commit_id ... ok
+test native::session::render_tests::native_sync_fallback_async_select_cancel_and_next_commit_keep_projection_semantics ... ok
+test native::recovery::tests::unload_other_thread_requests_owner_without_destroying_or_waiting_for_message_pump ... ok
+test native::session::render_tests::native_unknown_and_focus_reset_do_not_require_shadow_ids_to_equal_actual_ids ... ok
+test native::candidate::tests::externally_destroyed_candidate_releases_class_and_ends_element_once ... ok
+test native::session::render_tests::native_probe_is_readonly_and_queue_full_does_not_take_new_key ... ok
+test native::session::render_tests::review_async_callback_keeps_host_alive_until_callback_is_released ... ok
+test native::session::render_tests::review_candidate_sync_lock_rejection_preserves_frame_and_original_key ... ok
+test native::session::render_tests::review_distinct_keyedits_preserve_legal_auto_repeat ... ok
+test native::session::render_tests::review_duplicate_edit_and_stale_candidate_do_not_repeat_commit_or_ack ... ok
+test native::session::render_tests::review_duplicate_keyedit_executes_once ... ok
+test native::session::render_tests::review_expired_layout_retains_owned_queue_without_writing ... ok
+test native::session::render_tests::review_production_commit_stages ... ok
+test native::session::render_tests::review_rejected_sync_callback_cannot_later_consume_native_key_or_candidate ... ok
+test native::session::render_tests::review_rejected_sync_cleanup_cannot_erase_later_native_text ... ok
+test native::session::render_tests::review_settext_reentrant_focus_preserves_written_commit ... ok
+test native::recovery::tests::physical_sta_exit_keeps_data_reachable_from_new_explicit_entry_but_pins_unfinished_owner ... ok
+test native::service::lifecycle_review_tests::lifecycle_review_partial_activation_failure_rolls_back_only_completed_steps ... ok
+test native::service::lifecycle_review_tests::lifecycle_review_unadvise_failure_defangs_host_and_pins_dll_until_external_release ... ok
+test native::session::render_tests::round3_sync_candidate_unknown_retains_reserved_material_and_applied_releases_it ... ok
+test native::session::render_tests::native_empty_composition_delete_has_the_same_unknown_boundary_as_nonempty_writes ... ok
+test native::recovery::tests::material_budget_rejects_new_context_without_overwriting_unreleased_records ... ok
+test native::session::render_tests::round4_expired_scope_with_full_ownership_rejects_before_barrier_or_write ... ok
+test native::session::render_tests::round3_expired_scope_sync_native_unknown_preserves_true_envelope_after_stop_and_new_view ... ok
+test native::session::render_tests::native_watchdog_peer_failure_stops_admission_and_notifies_the_real_sta_window ... ok
+test native::session::render_tests::simulated_com_diagnostic_benchmark ... ignored, 模拟 COM 机制诊断；显式使用 release 与 ignored 参数运行，不是真实 Windows 应用基准
+test native::session::tests::duplicate_layout_callback_is_not_a_second_dispatch ... ok
+test native::session::tests::expired_async_cleanup_does_not_touch_or_end_old_composition ... ok
+test native::session::tests::expired_layout_callback_quarantines_without_running_queued_operations ... ok
+test native::session::tests::focus_loss_during_uncertain_commit_only_ends_old_composition ... ok
+test native::session::tests::late_edit_does_not_clear_new_epoch_queue_or_schedule ... ok
+test native::session::tests::layout_queue_overflow_reports_failure_and_quarantines_without_dropping_owned_work ... ok
+test native::session::tests::missing_input_scope_fails_closed_without_consuming_key ... ok
+test native::session::tests::readonly_write_callback_does_not_consume_or_mutate_core ... ok
+test native::session::tests::reentrant_candidate_abort_is_queued_even_while_rendering ... ok
+test native::session::tests::rejected_candidate_lock_keeps_revision_text_and_candidates_for_retry ... ok
+test native::session::tests::rejected_sync_lock_preserves_core_queue_and_original_key ... ok
+test native::session::tests::sync_callback_object_is_used_once_even_if_first_scope_check_rejects ... ok
+test native::session::tests::unknown_cleanup_never_obtains_or_erases_text_range ... ok
+test native::session::tests::unknown_marker_is_consumed_even_without_composition ... ok
+test native::watchdog::tests::completion_is_owner_proof_after_os_thread_handles_signal ... ok
+test native::watchdog::tests::independent_detection_needs_no_sta_message_or_input ... ok
+test native::watchdog::tests::locked_or_constructing_task_remains_pinned_until_exclusive_completed_cleanup ... ok
+test native::session::render_tests::native_watchdog_without_more_input_notifies_sta_and_seals_the_late_callback ... ok
+test native::watchdog::tests::partial_worker_start_failure_is_retired_and_does_not_poison_future_monitors ... ok
+test native::watchdog::tests::registration_failure_creates_no_unreachable_worker_and_future_start_succeeds ... ok
+test native::watchdog::tests::worker_shutdown_releases_module_leases_without_blocking_sta ... ok
+test native::session::render_tests::native_watchdog_failed_notification_is_bounded_and_next_sta_entry_recovers_ownership ... ok
+test native::watchdog::tests::writing_timeout_is_unknown_and_cannot_be_confirmed_or_retried ... ok
+test native::watchdog::tests::observer_detects_failed_primary_monitor_and_disables_admission ... ok
+test native::session::render_tests::round4_physical_sta_exit_releases_receipt_but_preserves_unknown_until_new_sta_discards ... ok
+test native::session::render_tests::round5_external_com_references_pin_old_host_without_polluting_new_context ... ok
+test native::session::render_tests::round4_abrupt_settext_exit_preserves_flight_without_drop_or_retry ... ok
+test native::recovery::tests::destroyed_main_reopens_from_broker_without_losing_or_duplicating_unknown_material ... ok
+test native::session::render_tests::round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session ... ok
+test native::session::render_tests::round3_cross_instance_budget_rejects_async_sync_and_candidate_before_ownership ... ok
+test native::session::render_tests::round4_multista_unknown_exit_and_class_failure_recover_for_twenty_rounds ... ok
+test native::service::lifecycle_review_tests::lifecycle_review_repeated_activate_deactivate_releases_manager_and_sinks ... ok
+test native::recovery::tests::actual_class_unregister_failure_pins_userdata_and_host_budget_until_admission_stops ... ok
+
+test result: ok. 97 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 9.76s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

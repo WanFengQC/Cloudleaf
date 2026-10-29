@@ -1,0 +1,57 @@
+{
+  "implementation_commit": "e50c1d88b34fbf824cd46d1f22c2035700cc75cf",
+  "baseline": "caefb7f2ac7c8584249c05359fcb174f87640886",
+  "source_fingerprint_schema": "cloudleaf-source-v3",
+  "source_sha256": "dad282f1abd9085f418569b99647e297380ef8a1fdfe9b1faf90617a74de6aa5",
+  "tool_sha256": "8acc7e0745d3e9ecba818d2c12dd2a99a22442a5cf1fd42da98166f6a937f1c1",
+  "test_binary_sha256": "c7fe4b34c197871bb8d02acb37a005f93ac658800712a015a544312a7e54a0b6",
+  "data_sha256": {
+    "data/dictionaries/prototype.tsv": "d4a87e958b23097253a4601b9ae373f02964e3e37729bb7f560e20835d5bb5f0",
+    "tests/fixtures/input-v1.tsv": "5fc0d0baf3e1d9082974d87292fb565a64b0ecca42d573a4dc4e354f8f64d7e0",
+    "tests/evaluation/algorithm-v1.tsv": "d8bf45fcb578db3c7ed1a2d7cce5c5e98f126de70dcfe3cfe69eb4becc0618fb"
+  },
+  "environment": {
+    "os": "Windows-11-10.0.26300-SP0",
+    "machine": "AMD64",
+    "cpu": "11th Gen Intel(R) Core(TM) i5-11400 @ 2.60GHz",
+    "logical_cpus": 12,
+    "physical_memory_bytes": 34110734336
+  },
+  "run_environment": {
+    "os": "Windows-11-10.0.26300-SP0",
+    "architecture": "AMD64",
+    "cpu_count": 12,
+    "machine_id_sha256": "9caa652a8ff90d868fa7aed97177d4a62e32860c466134370e7be616617b3805",
+    "python_version": "3.12.10",
+    "python_executable_sha256": "4d6f5f81a4bca11191c4c7c6b43632694d0a4ce74e068619d8fdc161d469859a"
+  },
+  "source_files_sha256": {
+    "adapters/windows/service.rs": "1a04da1834b7824811a49278ea9a34c723afd0329cfa63807de42f00947aa30f",
+    "adapters/windows/session.rs": "ca265ee3251e6a5394fb9ed612c610420e3c5f3c4a4b39709022f8be7d2f41ec",
+    "adapters/windows/watchdog.rs": "a2f767e6e15502a727260c58526647eb9a63bff3f41477856426e7bc1d7c7da5",
+    "adapters/windows/owner_cleanup.rs": "0e5d073ed24b4551005e910778fa24c2d8ebf25f58c11909fab2b6dbd85c48e6",
+    "adapters/windows/recovery.rs": "722c4cfbcf5a606816d1ca732fd5954113791721b8846c9774037b720f6b497d",
+    "adapters/windows/ownership.rs": "ca95ee9f13c06b16a6b4507e41cfe8f78336440bdb9ad2b1c4aabb5fb61e5118",
+    "adapters/windows/budget.rs": "d2f5f81e1b7800bb83abcf9828582bf1131f1082f03bc09076dab0e3085206e1",
+    "adapters/windows/candidate.rs": "0cb0619ea64dbc6a5639f292b50ffecb15ab73e0b8d77255043e70cc0128a11a"
+  },
+  "rust_passed": 157,
+  "python_passed": 25,
+  "default_ignored": 2,
+  "historical_reports_unchanged": 346,
+  "historical_reports_changed": [],
+  "old_tests_deleted": [],
+  "production_code_changes": [],
+  "long_8h_executed": false,
+  "long_24h_executed": false,
+  "long_run_environment_approved": false,
+  "real_application_accepted": false,
+  "system_registration_executed": false,
+  "system_activation_executed": false,
+  "failure_identity": {
+    "commit": "7914589a03fedad0e50b0ab5598a609d450abfc2",
+    "path": "red/output.raw.json",
+    "summary": "five failed semantic assertions and two missing-feature errors; not production COM failures"
+  },
+  "scope": "offline diagnostic trace audit and explicit long-run admission; production Rust and budgets unchanged"
+}

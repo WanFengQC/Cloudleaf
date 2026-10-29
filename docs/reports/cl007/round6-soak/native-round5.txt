@@ -1,0 +1,23 @@
+    Finished `release` profile [optimized] target(s) in 0.08s
+     Running unittests src\lib.rs (target\release\deps\cloudleaf_windows_ime-bc46e0fa3eb0a77d.exe)
+
+running 2 tests
+test native::session::render_tests::round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session ...
+running 1 test
+test native::session::render_tests::round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session ... {"experiment":"r5-abrupt-owner-occupied","owners":32,"fixed_bytes":118838080,"text_bytes":41943040,"global_fixed_limit":134217728}
+{"experiment":"r5-pinned-availability","faulted_owners":32,"healthy_cycles":3,"healthy_writes":18,"unknown_replays":0,"remaining_hosts":32,"remaining_batches":32,"pinned_budget_unchanged":true,"steady_elapsed_ns":902300,"elapsed_ns":1482643100,"registered":false}
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 98 filtered out; finished in 1.48s
+
+ok
+test native::session::render_tests::round5_external_com_references_pin_old_host_without_polluting_new_context ...
+running 1 test
+test native::session::render_tests::round5_external_com_references_pin_old_host_without_polluting_new_context ... {"experiment":"r5-external-com-isolation","retained_callbacks":2,"late_calls":3,"old_writes":0,"new_writes":6,"final_four_counters_zero":true,"registered":false}
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 98 filtered out; finished in 0.07s
+
+ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 97 filtered out; finished in 1.63s

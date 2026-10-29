@@ -1,0 +1,96 @@
+{
+  "schema_version": 2,
+  "command": [
+    "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\target\\release\\deps\\cloudleaf_windows_ime-bc46e0fa3eb0a77d.exe",
+    "native::session::render_tests::round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session",
+    "--exact",
+    "--nocapture",
+    "--test-threads=1"
+  ],
+  "explicit_configuration": {
+    "profile": "diagnostic",
+    "seconds": 1,
+    "cycle_ms": 10,
+    "checkpoint_seconds": 5,
+    "sample_seconds": 0.2,
+    "long_profile": false
+  },
+  "runner": {
+    "pid": 46780,
+    "created": 134376705967296310
+  },
+  "child": {
+    "pid": 48420,
+    "created": 134376705979479436
+  },
+  "exit_code": 101,
+  "interrupted": false,
+  "timeout": false,
+  "wall_seconds": 1.6230843999946956,
+  "mechanism_passed": false,
+  "continuous_long_profile_completed": false,
+  "samples": null,
+  "events": null,
+  "latest_events": {
+    "r5-abrupt-owner-occupied": {
+      "experiment": "r5-abrupt-owner-occupied",
+      "owners": 32,
+      "fixed_bytes": 118838080,
+      "text_bytes": 41943040,
+      "global_fixed_limit": 134217728
+    }
+  },
+  "sampling_errors": [],
+  "output_errors": [],
+  "sampled_peak": {
+    "handles": 142,
+    "threads": 6,
+    "working_set_bytes": 15478784,
+    "private_commit_bytes": 5435392
+  },
+  "final_memory": {
+    "working_set_bytes": 32768,
+    "os_peak_working_set_bytes": 16207872,
+    "private_commit_bytes": 77824
+  },
+  "latency": {
+    "events": 0,
+    "admission_ns": {
+      "p50": null,
+      "p95": null,
+      "p99": null,
+      "max": null
+    },
+    "commit_complete_ns": {
+      "p50": null,
+      "p95": null,
+      "p99": null,
+      "max": null
+    },
+    "raw_errors": [],
+    "external_com_reference_count": null,
+    "scope": "own diagnostic native FIFO; commit latency ends at cycle drain, not real TSF latency"
+  },
+  "recovery": {
+    "expected_unknown_materials": 32,
+    "verified": null,
+    "success_rate": null,
+    "automatic_replays": null
+  },
+  "external_com_reference_count": null,
+  "real_application_acceptance": false,
+  "system_registration_executed": false,
+  "long_term_production_reliability_accepted": false,
+  "files_sha256": {
+    "checkpoint.json": "dbe7ad2f7c93cab89e076f23e7c3a9745dd62c174541071fa251569bd7daaa9d",
+    "checkpoints.jsonl": "5e6deed634b64134ade66f43b7ff28b4be15daf34f2c4b078f9ccde476acfd1d",
+    "events.jsonl": "0e7070561896bdbe943bca81d6b57de7dac097727561ba74641b6bd63b353f72",
+    "samples.jsonl": "a507d3f650a0c0d410b59328d9718ee10db5fc2f857d45a9d29f83bc8bedbeb9",
+    "stdout.txt": "ff2e6a0a74ce7441304fde02a5e283a0fe48874505dae9cd40545a16bb41f723"
+  },
+  "limitations": [
+    "only owned diagnostic process; raw sampling peaks are not exact RSS bounds",
+    "new segments restart independent sessions; elapsed time never joins across segments",
+    "Rc/Lease counts and paired own-IUnknown returns are separate from global COM reference count"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "scope": "publication preparation, separate from the frozen full check run",
+  "original_shell_command": "python -X utf8 .local/verify_round7_publication.py; python -X utf8 scripts/check_workspace.py; git diff --cached --check; git diff --name-only caefb7f HEAD -- adapters/windows crates apps Cargo.toml Cargo.lock; git status --porcelain=v1 | Measure-Object -Line",
+  "shell_exit_code": 0,
+  "individual_audit_exit_code_observed": null,
+  "tool_returned_audit_text": "工程审计失败：[WinError 2] 系统找不到指定的文件。\n",
+  "identity_limit": "Original subprocess bytes were not separately captured; this records tool-returned text, not a claimed original raw byte hash.",
+  "cause": "Standalone closing shell did not prepend .cargo/bin; the full frozen checks used the explicit environment and passed.",
+  "resolution": "Do not infer success from the later shell command exit code; rerun this audit independently with explicit PATH and preserve raw output.",
+  "rerun": {
+    "command": [
+      "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/check_workspace.py"
+    ],
+    "returncode": 0,
+    "path_prepended": "C:\\Users\\EDY\\.cargo\\bin",
+    "stdout_utf8": "资源已验证：tests/evaluation/algorithm-v1.tsv (83 条)\r\n资源已验证：tests/fixtures/input-v1.tsv (41 条)\r\n资源已验证：data/dictionaries/prototype.tsv (64 条)\r\nworkspace 已验证：7 个crate，15 个已登记外部Rust依赖，MSRV 1.90.0\r\n"
+  }
+}

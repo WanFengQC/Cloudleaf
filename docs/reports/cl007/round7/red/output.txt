@@ -1,0 +1,77 @@
+test_checkpoint_preserves_jsonl_prefix_and_rejects_changed_identity (test_windows_stress.StressEvidenceTests.test_checkpoint_preserves_jsonl_prefix_and_rejects_changed_identity) ... ok
+test_complete_trace_keeps_denominator_but_missing_final_is_partial (test_windows_stress.StressEvidenceTests.test_complete_trace_keeps_denominator_but_missing_final_is_partial) ... ERROR
+test_diagnostic_is_explicit_and_cannot_claim_long_acceptance (test_windows_stress.StressEvidenceTests.test_diagnostic_is_explicit_and_cannot_claim_long_acceptance) ... ok
+test_duplicate_sequence_or_changed_context_is_retained_as_trace_error (test_windows_stress.StressEvidenceTests.test_duplicate_sequence_or_changed_context_is_retained_as_trace_error) ...
+  test_duplicate_sequence_or_changed_context_is_retained_as_trace_error (test_windows_stress.StressEvidenceTests.test_duplicate_sequence_or_changed_context_is_retained_as_trace_error) (field='sequence') ... FAIL
+  test_duplicate_sequence_or_changed_context_is_retained_as_trace_error (test_windows_stress.StressEvidenceTests.test_duplicate_sequence_or_changed_context_is_retained_as_trace_error) (field='instance') ... FAIL
+  test_duplicate_sequence_or_changed_context_is_retained_as_trace_error (test_windows_stress.StressEvidenceTests.test_duplicate_sequence_or_changed_context_is_retained_as_trace_error) (field='cycle') ... FAIL
+test_long_profiles_are_exact_contiguous_durations_and_bounded_still_compatible (test_windows_stress.StressEvidenceTests.test_long_profiles_are_exact_contiguous_durations_and_bounded_still_compatible) ... ok
+test_long_run_admission_requires_explicit_matching_isolated_approval (test_windows_stress.StressEvidenceTests.test_long_run_admission_requires_explicit_matching_isolated_approval) ... ERROR
+test_process_identity_refuses_live_child_and_recognizes_its_actual_exit (test_windows_stress.StressEvidenceTests.test_process_identity_refuses_live_child_and_recognizes_its_actual_exit) ... ok
+test_raw_latency_distributions_keep_event_denominator_and_unknown_counts (test_windows_stress.StressEvidenceTests.test_raw_latency_distributions_keep_event_denominator_and_unknown_counts) ... ok
+test_valid_json_missing_key_or_cycle_cannot_be_complete_evidence (test_windows_stress.StressEvidenceTests.test_valid_json_missing_key_or_cycle_cannot_be_complete_evidence) ...
+  test_valid_json_missing_key_or_cycle_cannot_be_complete_evidence (test_windows_stress.StressEvidenceTests.test_valid_json_missing_key_or_cycle_cannot_be_complete_evidence) (rows=[{'experiment': 'r6-owned-key', 'cycle': 1, 'instance': 35, 'epoch': 2, 'sequence': 2, 'vk': 73, 'lparam': 1, 'admission_ns': 2, 'commit_complete_ns': 12}, {'experiment': 'r6-owned-key', 'cycle': 1, 'instance': 35, 'epoch': 2, 'sequence': 3, 'vk': 72, 'lparam': 1, 'admission_ns': 3, 'commit_complete_ns': 13}, {'experiment': 'r6-owned-key', 'cycle': 1, 'instance': 35, 'epoch': 2, 'sequence': 4, 'vk': 65, 'lparam': 1, 'admission_ns': 4, 'commit_complete_ns': 14}, {'experiment': 'r6-owned-key', 'cycle': 1, 'instance': 35, 'epoch': 2, 'sequence': 5, 'vk': 79, 'lparam': 1, 'admission_ns': 5, 'commit_complete_ns': 15}, {'experiment': 'r6-owned-key', 'cycle': 1, 'instance': 35, 'epoch': 2, 'sequence': 6, 'vk': 32, 'lparam': 1, 'admission_ns': 6, 'commit_complete_ns': 16}, {'experiment': 'r6-cycle', 'cycle': 1, 'healthy_writes': 6, 'fifo_and_budget_verified': True}, {'experiment': 'r5-pinned-availability', 'healthy_cycles': 1, 'healthy_writes': 6, 'faulted_owners': 32, 'unknown_replays': 0, 'remaining_hosts': 32, 'remaining_batches': 32, 'pinned_budget_unchanged': True, 'steady_elapsed_ns': 1000000000}]) ... FAIL
+  test_valid_json_missing_key_or_cycle_cannot_be_complete_evidence (test_windows_stress.StressEvidenceTests.test_valid_json_missing_key_or_cycle_cannot_be_complete_evidence) (rows=[{'experiment': 'r6-owned-key', 'cycle': 1, 'instance': 35, 'epoch': 2, 'sequence': 1, 'vk': 78, 'lparam': 1, 'admission_ns': 1, 'commit_complete_ns': 11}, {'experiment': 'r6-owned-key', 'cycle': 1, 'instance': 35, 'epoch': 2, 'sequence': 2, 'vk': 73, 'lparam': 1, 'admission_ns': 2, 'commit_complete_ns': 12}, {'experiment': 'r6-owned-key', 'cycle': 1, 'instance': 35, 'epoch': 2, 'sequence': 3, 'vk': 72, 'lparam': 1, 'admission_ns': 3, 'commit_complete_ns': 13}, {'experiment': 'r6-owned-key', 'cycle': 1, 'instance': 35, 'epoch': 2, 'sequence': 4, 'vk': 65, 'lparam': 1, 'admission_ns': 4, 'commit_complete_ns': 14}, {'experiment': 'r6-owned-key', 'cycle': 1, 'instance': 35, 'epoch': 2, 'sequence': 5, 'vk': 79, 'lparam': 1, 'admission_ns': 5, 'commit_complete_ns': 15}, {'experiment': 'r6-owned-key', 'cycle': 1, 'instance': 35, 'epoch': 2, 'sequence': 6, 'vk': 32, 'lparam': 1, 'admission_ns': 6, 'commit_complete_ns': 16}, {'experiment': 'r5-pinned-availability', 'healthy_cycles': 1, 'healthy_writes': 6, 'faulted_owners': 32, 'unknown_replays': 0, 'remaining_hosts': 32, 'remaining_batches': 32, 'pinned_budget_unchanged': True, 'steady_elapsed_ns': 1000000000}]) ... FAIL
+
+======================================================================
+ERROR: test_complete_trace_keeps_denominator_but_missing_final_is_partial (test_windows_stress.StressEvidenceTests.test_complete_trace_keeps_denominator_but_missing_final_is_partial)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl007-windows\Cloudleaf\tests\test_windows_stress.py", line 104, in test_complete_trace_keeps_denominator_but_missing_final_is_partial
+    self.assertTrue(result['trace_complete'])
+                    ~~~~~~^^^^^^^^^^^^^^^^^^
+KeyError: 'trace_complete'
+
+======================================================================
+ERROR: test_long_run_admission_requires_explicit_matching_isolated_approval (test_windows_stress.StressEvidenceTests.test_long_run_admission_requires_explicit_matching_isolated_approval)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl007-windows\Cloudleaf\tests\test_windows_stress.py", line 114, in test_long_run_admission_requires_explicit_matching_isolated_approval
+    missing = STRESS.execution_preflight(identity, None)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'windows_stress' has no attribute 'execution_preflight'
+
+======================================================================
+FAIL: test_duplicate_sequence_or_changed_context_is_retained_as_trace_error (test_windows_stress.StressEvidenceTests.test_duplicate_sequence_or_changed_context_is_retained_as_trace_error) (field='sequence')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl007-windows\Cloudleaf\tests\test_windows_stress.py", line 97, in test_duplicate_sequence_or_changed_context_is_retained_as_trace_error
+    self.assertTrue(summarize_rows(folder, rows)['raw_errors'])
+AssertionError: [] is not true
+
+======================================================================
+FAIL: test_duplicate_sequence_or_changed_context_is_retained_as_trace_error (test_windows_stress.StressEvidenceTests.test_duplicate_sequence_or_changed_context_is_retained_as_trace_error) (field='instance')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl007-windows\Cloudleaf\tests\test_windows_stress.py", line 97, in test_duplicate_sequence_or_changed_context_is_retained_as_trace_error
+    self.assertTrue(summarize_rows(folder, rows)['raw_errors'])
+AssertionError: [] is not true
+
+======================================================================
+FAIL: test_duplicate_sequence_or_changed_context_is_retained_as_trace_error (test_windows_stress.StressEvidenceTests.test_duplicate_sequence_or_changed_context_is_retained_as_trace_error) (field='cycle')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl007-windows\Cloudleaf\tests\test_windows_stress.py", line 97, in test_duplicate_sequence_or_changed_context_is_retained_as_trace_error
+    self.assertTrue(summarize_rows(folder, rows)['raw_errors'])
+AssertionError: [] is not true
+
+======================================================================
+FAIL: test_valid_json_missing_key_or_cycle_cannot_be_complete_evidence (test_windows_stress.StressEvidenceTests.test_valid_json_missing_key_or_cycle_cannot_be_complete_evidence) (rows=[{'experiment': 'r6-owned-key', 'cycle': 1, 'instance': 35, 'epoch': 2, 'sequence': 2, 'vk': 73, 'lparam': 1, 'admission_ns': 2, 'commit_complete_ns': 12}, {'experiment': 'r6-owned-key', 'cycle': 1, 'instance': 35, 'epoch': 2, 'sequence': 3, 'vk': 72, 'lparam': 1, 'admission_ns': 3, 'commit_complete_ns': 13}, {'experiment': 'r6-owned-key', 'cycle': 1, 'instance': 35, 'epoch': 2, 'sequence': 4, 'vk': 65, 'lparam': 1, 'admission_ns': 4, 'commit_complete_ns': 14}, {'experiment': 'r6-owned-key', 'cycle': 1, 'instance': 35, 'epoch': 2, 'sequence': 5, 'vk': 79, 'lparam': 1, 'admission_ns': 5, 'commit_complete_ns': 15}, {'experiment': 'r6-owned-key', 'cycle': 1, 'instance': 35, 'epoch': 2, 'sequence': 6, 'vk': 32, 'lparam': 1, 'admission_ns': 6, 'commit_complete_ns': 16}, {'experiment': 'r6-cycle', 'cycle': 1, 'healthy_writes': 6, 'fifo_and_budget_verified': True}, {'experiment': 'r5-pinned-availability', 'healthy_cycles': 1, 'healthy_writes': 6, 'faulted_owners': 32, 'unknown_replays': 0, 'remaining_hosts': 32, 'remaining_batches': 32, 'pinned_budget_unchanged': True, 'steady_elapsed_ns': 1000000000}])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl007-windows\Cloudleaf\tests\test_windows_stress.py", line 88, in test_valid_json_missing_key_or_cycle_cannot_be_complete_evidence
+    self.assertTrue(result['raw_errors'])
+AssertionError: [] is not true
+
+======================================================================
+FAIL: test_valid_json_missing_key_or_cycle_cannot_be_complete_evidence (test_windows_stress.StressEvidenceTests.test_valid_json_missing_key_or_cycle_cannot_be_complete_evidence) (rows=[{'experiment': 'r6-owned-key', 'cycle': 1, 'instance': 35, 'epoch': 2, 'sequence': 1, 'vk': 78, 'lparam': 1, 'admission_ns': 1, 'commit_complete_ns': 11}, {'experiment': 'r6-owned-key', 'cycle': 1, 'instance': 35, 'epoch': 2, 'sequence': 2, 'vk': 73, 'lparam': 1, 'admission_ns': 2, 'commit_complete_ns': 12}, {'experiment': 'r6-owned-key', 'cycle': 1, 'instance': 35, 'epoch': 2, 'sequence': 3, 'vk': 72, 'lparam': 1, 'admission_ns': 3, 'commit_complete_ns': 13}, {'experiment': 'r6-owned-key', 'cycle': 1, 'instance': 35, 'epoch': 2, 'sequence': 4, 'vk': 65, 'lparam': 1, 'admission_ns': 4, 'commit_complete_ns': 14}, {'experiment': 'r6-owned-key', 'cycle': 1, 'instance': 35, 'epoch': 2, 'sequence': 5, 'vk': 79, 'lparam': 1, 'admission_ns': 5, 'commit_complete_ns': 15}, {'experiment': 'r6-owned-key', 'cycle': 1, 'instance': 35, 'epoch': 2, 'sequence': 6, 'vk': 32, 'lparam': 1, 'admission_ns': 6, 'commit_complete_ns': 16}, {'experiment': 'r5-pinned-availability', 'healthy_cycles': 1, 'healthy_writes': 6, 'faulted_owners': 32, 'unknown_replays': 0, 'remaining_hosts': 32, 'remaining_batches': 32, 'pinned_budget_unchanged': True, 'steady_elapsed_ns': 1000000000}])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl007-windows\Cloudleaf\tests\test_windows_stress.py", line 88, in test_valid_json_missing_key_or_cycle_cannot_be_complete_evidence
+    self.assertTrue(result['raw_errors'])
+AssertionError: [] is not true
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.128s
+
+FAILED (failures=5, errors=2)

@@ -1,0 +1,9 @@
+    Finished `release` profile [optimized] target(s) in 0.06s
+     Running unittests src\lib.rs (target\release\deps\cloudleaf_windows_ime-bc46e0fa3eb0a77d.exe)
+
+running 1 test
+test native::session::render_tests::simulated_com_diagnostic_benchmark ... {"benchmark":"simulated-com-production-transaction","real_windows_application":false,"production_tsf_performance":false,"fixture":"prototype64/VT_EMPTY_scope/TS_E_NOLAYOUT","path":"keyedit","warmup":100,"samples":1000,"unit":"ns","p50":28900,"p95":57900,"p99":84100,"max":221000}
+{"benchmark":"simulated-com-production-transaction","real_windows_application":false,"production_tsf_performance":false,"fixture":"prototype64/VT_EMPTY_scope/TS_E_NOLAYOUT","path":"candidate_commit","warmup":100,"samples":1000,"unit":"ns","p50":20000,"p95":36400,"p99":49700,"max":224700}
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 98 filtered out; finished in 0.49s

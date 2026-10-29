@@ -1,0 +1,4366 @@
+{
+  "schema_version": 1,
+  "dataset_version": "algorithm-v1",
+  "provenance": {
+    "measured_at_utc": "2026-10-28T12:37:22.480208+00:00",
+    "source_sha256": "8151e6aa5ff2ac10fc46b373d44d8b92f44e2c4864444965c4e5058fa139795a",
+    "source_fingerprint_schema": "cloudleaf-source-v3",
+    "dataset_sha256": "d8bf45fcb578db3c7ed1a2d7cce5c5e98f126de70dcfe3cfe69eb4becc0618fb",
+    "binary_sha256": "7e93f9be6b9bee1812fb407b7ae7c7f8b85002c4f5050e2605d0838eeaa163d3",
+    "dictionary_sha256": "d4a87e958b23097253a4601b9ae373f02964e3e37729bb7f560e20835d5bb5f0",
+    "rustc": "rustc 1.90.0 (1159e78c4 2025-09-14)",
+    "git_head": "519ea587fe5a0fe56cb2a5ebc239832a118f692a",
+    "git_tracked_dirty": false,
+    "environment": {
+      "os": "Windows-11-10.0.26300-SP0",
+      "cpu": "Intel64 Family 6 Model 167 Stepping 1, GenuineIntel",
+      "machine": "AMD64"
+    },
+    "profile": "release",
+    "warmup_per_case": 20,
+    "measurements_per_case": 100,
+    "candidate_limit": 50,
+    "context_used": false,
+    "correction_capability": false
+  },
+  "dataset": {
+    "count": 83,
+    "splits": {
+      "dev": 16,
+      "heldout": 67
+    },
+    "train_count": 0,
+    "dev_tuned": false
+  },
+  "limitations": [
+    "手工诊断seed不是成熟语言准确率评估",
+    "固定64条原型词典且人工词频",
+    "context被两个算法忽略",
+    "无纠错、模糊音、简拼、双拼、整句生成或学习",
+    "本轮只比较移除Exact优先的排序消融",
+    "heldout首轮查看后不能继续当盲测调参"
+  ],
+  "algorithms": {
+    "production-rules-v1": {
+      "all": {
+        "count": 83,
+        "top1_count": 39,
+        "top5_count": 48,
+        "top1": 0.46987951807228917,
+        "top5": 0.5783132530120482,
+        "mrr": 0.5190763052208835,
+        "candidate_availability": 0.5783132530120482,
+        "gold_coverage": 0.5783132530120482,
+        "errors": 1,
+        "correction": {
+          "capability": false,
+          "required": 15,
+          "attempts": 0,
+          "correct": 0,
+          "precision": null,
+          "recall": 0.0
+        },
+        "latency": {
+          "samples": 8300,
+          "p50_ns": 1900,
+          "p95_ns": 4900,
+          "p99_ns": 11300,
+          "max_ns": 216100
+        }
+      },
+      "lexicon_known": {
+        "count": 66,
+        "top1_count": 39,
+        "top5_count": 48,
+        "top1": 0.5909090909090909,
+        "top5": 0.7272727272727273,
+        "mrr": 0.6527777777777778,
+        "candidate_availability": 0.7272727272727273,
+        "gold_coverage": 0.7272727272727273,
+        "errors": 0,
+        "correction": {
+          "capability": false,
+          "required": 15,
+          "attempts": 0,
+          "correct": 0,
+          "precision": null,
+          "recall": 0.0
+        },
+        "latency": {
+          "samples": 6600,
+          "p50_ns": 1800,
+          "p95_ns": 3100,
+          "p99_ns": 9300,
+          "max_ns": 67300
+        }
+      },
+      "by_split": {
+        "dev": {
+          "count": 16,
+          "top1_count": 8,
+          "top5_count": 11,
+          "top1": 0.5,
+          "top5": 0.6875,
+          "mrr": 0.59375,
+          "candidate_availability": 0.6875,
+          "gold_coverage": 0.6875,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 3,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 1600,
+            "p50_ns": 2200,
+            "p95_ns": 4200,
+            "p99_ns": 5500,
+            "max_ns": 216100
+          }
+        },
+        "heldout": {
+          "count": 67,
+          "top1_count": 31,
+          "top5_count": 37,
+          "top1": 0.4626865671641791,
+          "top5": 0.5522388059701493,
+          "mrr": 0.5012437810945274,
+          "candidate_availability": 0.5522388059701493,
+          "gold_coverage": 0.5522388059701493,
+          "errors": 1,
+          "correction": {
+            "capability": false,
+            "required": 12,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 6700,
+            "p50_ns": 1700,
+            "p95_ns": 5700,
+            "p99_ns": 13300,
+            "max_ns": 61000
+          }
+        }
+      },
+      "by_category": {
+        "ambiguity": {
+          "count": 4,
+          "top1_count": 2,
+          "top5_count": 2,
+          "top1": 0.5,
+          "top5": 0.5,
+          "mrr": 0.5,
+          "candidate_availability": 0.5,
+          "gold_coverage": 0.5,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 400,
+            "p50_ns": 4000,
+            "p95_ns": 5200,
+            "p99_ns": 20000,
+            "max_ns": 21600
+          }
+        },
+        "common": {
+          "count": 12,
+          "top1_count": 12,
+          "top5_count": 12,
+          "top1": 1.0,
+          "top5": 1.0,
+          "mrr": 1.0,
+          "candidate_availability": 1.0,
+          "gold_coverage": 1.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 1200,
+            "p50_ns": 2000,
+            "p95_ns": 3000,
+            "p99_ns": 8900,
+            "max_ns": 18100
+          }
+        },
+        "context": {
+          "count": 6,
+          "top1_count": 0,
+          "top5_count": 6,
+          "top1": 0.0,
+          "top5": 1.0,
+          "mrr": 0.4305555555555556,
+          "candidate_availability": 1.0,
+          "gold_coverage": 1.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 600,
+            "p50_ns": 2100,
+            "p95_ns": 2500,
+            "p99_ns": 10800,
+            "max_ns": 67300
+          }
+        },
+        "correction": {
+          "count": 15,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 15,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 1500,
+            "p50_ns": 1300,
+            "p95_ns": 3100,
+            "p99_ns": 3200,
+            "max_ns": 38300
+          }
+        },
+        "extension": {
+          "count": 2,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 200,
+            "p50_ns": 400,
+            "p95_ns": 700,
+            "p99_ns": 700,
+            "max_ns": 700
+          }
+        },
+        "homophone": {
+          "count": 2,
+          "top1_count": 2,
+          "top5_count": 2,
+          "top1": 1.0,
+          "top5": 1.0,
+          "mrr": 1.0,
+          "candidate_availability": 1.0,
+          "gold_coverage": 1.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 200,
+            "p50_ns": 1900,
+            "p95_ns": 2100,
+            "p99_ns": 2300,
+            "max_ns": 9700
+          }
+        },
+        "long": {
+          "count": 4,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 1,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 400,
+            "p50_ns": 6200,
+            "p95_ns": 8900,
+            "p99_ns": 20700,
+            "max_ns": 61000
+          }
+        },
+        "mixed": {
+          "count": 2,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 200,
+            "p50_ns": 100,
+            "p95_ns": 100,
+            "p99_ns": 100,
+            "max_ns": 100
+          }
+        },
+        "oov": {
+          "count": 2,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 200,
+            "p50_ns": 2000,
+            "p95_ns": 2100,
+            "p99_ns": 2100,
+            "max_ns": 2200
+          }
+        },
+        "phrase": {
+          "count": 9,
+          "top1_count": 5,
+          "top5_count": 5,
+          "top1": 0.5555555555555556,
+          "top5": 0.5555555555555556,
+          "mrr": 0.5555555555555556,
+          "candidate_availability": 0.5555555555555556,
+          "gold_coverage": 0.5555555555555556,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 900,
+            "p50_ns": 2500,
+            "p95_ns": 4300,
+            "p99_ns": 17400,
+            "max_ns": 216100
+          }
+        },
+        "prefix": {
+          "count": 21,
+          "top1_count": 18,
+          "top5_count": 21,
+          "top1": 0.8571428571428571,
+          "top5": 1.0,
+          "mrr": 0.9285714285714286,
+          "candidate_availability": 1.0,
+          "gold_coverage": 1.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 2100,
+            "p50_ns": 1600,
+            "p95_ns": 2800,
+            "p99_ns": 10200,
+            "max_ns": 33800
+          }
+        },
+        "umlaut": {
+          "count": 4,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 400,
+            "p50_ns": 100,
+            "p95_ns": 1400,
+            "p99_ns": 1400,
+            "max_ns": 7300
+          }
+        }
+      },
+      "by_group": {
+        "dev-guo": {
+          "count": 5,
+          "top1_count": 2,
+          "top5_count": 3,
+          "top1": 0.4,
+          "top5": 0.6,
+          "mrr": 0.5,
+          "candidate_availability": 0.6,
+          "gold_coverage": 0.6,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 1,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 500,
+            "p50_ns": 2000,
+            "p95_ns": 2900,
+            "p99_ns": 4300,
+            "max_ns": 17400
+          }
+        },
+        "dev-hao": {
+          "count": 5,
+          "top1_count": 2,
+          "top5_count": 3,
+          "top1": 0.4,
+          "top5": 0.6,
+          "mrr": 0.5,
+          "candidate_availability": 0.6,
+          "gold_coverage": 0.6,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 1,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 500,
+            "p50_ns": 2300,
+            "p95_ns": 4300,
+            "p99_ns": 8900,
+            "max_ns": 216100
+          }
+        },
+        "dev-jie": {
+          "count": 2,
+          "top1_count": 1,
+          "top5_count": 2,
+          "top1": 0.5,
+          "top5": 1.0,
+          "mrr": 0.75,
+          "candidate_availability": 1.0,
+          "gold_coverage": 1.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 200,
+            "p50_ns": 1800,
+            "p95_ns": 2200,
+            "p99_ns": 2800,
+            "max_ns": 18100
+          }
+        },
+        "dev-xuexi": {
+          "count": 4,
+          "top1_count": 3,
+          "top5_count": 3,
+          "top1": 0.75,
+          "top5": 0.75,
+          "mrr": 0.75,
+          "candidate_availability": 0.75,
+          "gold_coverage": 0.75,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 1,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 400,
+            "p50_ns": 2800,
+            "p95_ns": 3400,
+            "p99_ns": 4100,
+            "max_ns": 18900
+          }
+        },
+        "held-an": {
+          "count": 3,
+          "top1_count": 2,
+          "top5_count": 2,
+          "top1": 0.6666666666666666,
+          "top5": 0.6666666666666666,
+          "mrr": 0.6666666666666666,
+          "candidate_availability": 0.6666666666666666,
+          "gold_coverage": 0.6666666666666666,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 1,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 300,
+            "p50_ns": 1200,
+            "p95_ns": 1500,
+            "p99_ns": 1600,
+            "max_ns": 7600
+          }
+        },
+        "held-beijing": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 2000,
+            "p95_ns": 2100,
+            "p99_ns": 2200,
+            "max_ns": 2200
+          }
+        },
+        "held-branddigits": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 100,
+            "p95_ns": 100,
+            "p99_ns": 100,
+            "max_ns": 100
+          }
+        },
+        "held-can": {
+          "count": 4,
+          "top1_count": 3,
+          "top5_count": 3,
+          "top1": 0.75,
+          "top5": 0.75,
+          "mrr": 0.75,
+          "candidate_availability": 0.75,
+          "gold_coverage": 0.75,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 1,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 400,
+            "p50_ns": 1300,
+            "p95_ns": 1600,
+            "p99_ns": 1700,
+            "max_ns": 1700
+          }
+        },
+        "held-city": {
+          "count": 2,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 200,
+            "p50_ns": 4400,
+            "p95_ns": 18700,
+            "p99_ns": 20400,
+            "max_ns": 21600
+          }
+        },
+        "held-fuzzy": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 600,
+            "p95_ns": 700,
+            "p99_ns": 700,
+            "max_ns": 700
+          }
+        },
+        "held-gongzuo": {
+          "count": 5,
+          "top1_count": 4,
+          "top5_count": 4,
+          "top1": 0.8,
+          "top5": 0.8,
+          "mrr": 0.8,
+          "candidate_availability": 0.8,
+          "gold_coverage": 0.8,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 1,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 500,
+            "p50_ns": 1900,
+            "p95_ns": 4300,
+            "p99_ns": 17500,
+            "max_ns": 35100
+          }
+        },
+        "held-greeting": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 5700,
+            "p95_ns": 5900,
+            "p99_ns": 6100,
+            "max_ns": 10400
+          }
+        },
+        "held-jian": {
+          "count": 3,
+          "top1_count": 2,
+          "top5_count": 2,
+          "top1": 0.6666666666666666,
+          "top5": 0.6666666666666666,
+          "mrr": 0.6666666666666666,
+          "candidate_availability": 0.6666666666666666,
+          "gold_coverage": 0.6666666666666666,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 1,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 300,
+            "p50_ns": 1900,
+            "p95_ns": 2900,
+            "p99_ns": 16500,
+            "max_ns": 21900
+          }
+        },
+        "held-jianpin": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 300,
+            "p95_ns": 400,
+            "p99_ns": 400,
+            "max_ns": 400
+          }
+        },
+        "held-kao": {
+          "count": 3,
+          "top1_count": 2,
+          "top5_count": 2,
+          "top1": 0.6666666666666666,
+          "top5": 0.6666666666666666,
+          "mrr": 0.6666666666666666,
+          "candidate_availability": 0.6666666666666666,
+          "gold_coverage": 0.6666666666666666,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 1,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 300,
+            "p50_ns": 1600,
+            "p95_ns": 2300,
+            "p99_ns": 2300,
+            "max_ns": 2400
+          }
+        },
+        "held-lu": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 100,
+            "p95_ns": 100,
+            "p99_ns": 100,
+            "max_ns": 100
+          }
+        },
+        "held-lve": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 1400,
+            "p95_ns": 1400,
+            "p99_ns": 1500,
+            "max_ns": 7300
+          }
+        },
+        "held-lvxing": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 2200,
+            "p95_ns": 2300,
+            "p99_ns": 2300,
+            "max_ns": 2300
+          }
+        },
+        "held-nin": {
+          "count": 1,
+          "top1_count": 1,
+          "top5_count": 1,
+          "top1": 1.0,
+          "top5": 1.0,
+          "mrr": 1.0,
+          "candidate_availability": 1.0,
+          "gold_coverage": 1.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 1900,
+            "p95_ns": 2000,
+            "p99_ns": 2300,
+            "max_ns": 2300
+          }
+        },
+        "held-ning": {
+          "count": 1,
+          "top1_count": 1,
+          "top5_count": 1,
+          "top1": 1.0,
+          "top5": 1.0,
+          "mrr": 1.0,
+          "candidate_availability": 1.0,
+          "gold_coverage": 1.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 1900,
+            "p95_ns": 2100,
+            "p99_ns": 2300,
+            "max_ns": 9700
+          }
+        },
+        "held-nuxing": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 100,
+            "p95_ns": 100,
+            "p99_ns": 100,
+            "max_ns": 100
+          }
+        },
+        "held-nve": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 1300,
+            "p95_ns": 1400,
+            "p99_ns": 1400,
+            "max_ns": 4500
+          }
+        },
+        "held-nvren": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 2100,
+            "p95_ns": 2200,
+            "p99_ns": 11000,
+            "max_ns": 13300
+          }
+        },
+        "held-overlimit": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 1,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 100,
+            "p95_ns": 100,
+            "p99_ns": 100,
+            "max_ns": 100
+          }
+        },
+        "held-ren": {
+          "count": 4,
+          "top1_count": 3,
+          "top5_count": 3,
+          "top1": 0.75,
+          "top5": 0.75,
+          "mrr": 0.75,
+          "candidate_availability": 0.75,
+          "gold_coverage": 0.75,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 1,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 400,
+            "p50_ns": 1000,
+            "p95_ns": 1800,
+            "p99_ns": 3200,
+            "max_ns": 18000
+          }
+        },
+        "held-shi": {
+          "count": 8,
+          "top1_count": 3,
+          "top5_count": 6,
+          "top1": 0.375,
+          "top5": 0.75,
+          "mrr": 0.5104166666666666,
+          "candidate_availability": 0.75,
+          "gold_coverage": 0.75,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 2,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 800,
+            "p50_ns": 2100,
+            "p95_ns": 3200,
+            "p99_ns": 11300,
+            "max_ns": 38300
+          }
+        },
+        "held-study": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 6300,
+            "p95_ns": 7000,
+            "p99_ns": 21900,
+            "max_ns": 22600
+          }
+        },
+        "held-weather": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 8800,
+            "p95_ns": 13800,
+            "p99_ns": 25000,
+            "max_ns": 61000
+          }
+        },
+        "held-women": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 1900,
+            "p95_ns": 2000,
+            "p99_ns": 2000,
+            "max_ns": 2000
+          }
+        },
+        "held-workdigits": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 100,
+            "p95_ns": 100,
+            "p99_ns": 100,
+            "max_ns": 100
+          }
+        },
+        "held-xi": {
+          "count": 4,
+          "top1_count": 1,
+          "top5_count": 4,
+          "top1": 0.25,
+          "top5": 1.0,
+          "mrr": 0.625,
+          "candidate_availability": 1.0,
+          "gold_coverage": 1.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 400,
+            "p50_ns": 2100,
+            "p95_ns": 3200,
+            "p99_ns": 17900,
+            "max_ns": 25900
+          }
+        },
+        "held-yun": {
+          "count": 3,
+          "top1_count": 2,
+          "top5_count": 2,
+          "top1": 0.6666666666666666,
+          "top5": 0.6666666666666666,
+          "mrr": 0.6666666666666666,
+          "candidate_availability": 0.6666666666666666,
+          "gold_coverage": 0.6666666666666666,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 1,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 300,
+            "p50_ns": 1400,
+            "p95_ns": 2600,
+            "p99_ns": 16700,
+            "max_ns": 17400
+          }
+        },
+        "held-zhong": {
+          "count": 10,
+          "top1_count": 7,
+          "top5_count": 7,
+          "top1": 0.7,
+          "top5": 0.7,
+          "mrr": 0.7,
+          "candidate_availability": 0.7,
+          "gold_coverage": 0.7,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 3,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 1000,
+            "p50_ns": 1700,
+            "p95_ns": 2900,
+            "p99_ns": 4400,
+            "max_ns": 33800
+          }
+        }
+      }
+    },
+    "frequency-only-ablation-v1": {
+      "all": {
+        "count": 83,
+        "top1_count": 39,
+        "top5_count": 48,
+        "top1": 0.46987951807228917,
+        "top5": 0.5783132530120482,
+        "mrr": 0.5170682730923695,
+        "candidate_availability": 0.5783132530120482,
+        "gold_coverage": 0.5783132530120482,
+        "errors": 1,
+        "correction": {
+          "capability": false,
+          "required": 15,
+          "attempts": 0,
+          "correct": 0,
+          "precision": null,
+          "recall": 0.0
+        },
+        "latency": {
+          "samples": 8300,
+          "p50_ns": 1800,
+          "p95_ns": 5700,
+          "p99_ns": 14700,
+          "max_ns": 106800
+        }
+      },
+      "lexicon_known": {
+        "count": 66,
+        "top1_count": 39,
+        "top5_count": 48,
+        "top1": 0.5909090909090909,
+        "top5": 0.7272727272727273,
+        "mrr": 0.6502525252525252,
+        "candidate_availability": 0.7272727272727273,
+        "gold_coverage": 0.7272727272727273,
+        "errors": 0,
+        "correction": {
+          "capability": false,
+          "required": 15,
+          "attempts": 0,
+          "correct": 0,
+          "precision": null,
+          "recall": 0.0
+        },
+        "latency": {
+          "samples": 6600,
+          "p50_ns": 1700,
+          "p95_ns": 3200,
+          "p99_ns": 10300,
+          "max_ns": 106800
+        }
+      },
+      "by_split": {
+        "dev": {
+          "count": 16,
+          "top1_count": 8,
+          "top5_count": 11,
+          "top1": 0.5,
+          "top5": 0.6875,
+          "mrr": 0.59375,
+          "candidate_availability": 0.6875,
+          "gold_coverage": 0.6875,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 3,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 1600,
+            "p50_ns": 2200,
+            "p95_ns": 4700,
+            "p99_ns": 16300,
+            "max_ns": 71400
+          }
+        },
+        "heldout": {
+          "count": 67,
+          "top1_count": 31,
+          "top5_count": 37,
+          "top1": 0.4626865671641791,
+          "top5": 0.5522388059701493,
+          "mrr": 0.4987562189054726,
+          "candidate_availability": 0.5522388059701493,
+          "gold_coverage": 0.5522388059701493,
+          "errors": 1,
+          "correction": {
+            "capability": false,
+            "required": 12,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 6700,
+            "p50_ns": 1700,
+            "p95_ns": 5800,
+            "p99_ns": 14300,
+            "max_ns": 106800
+          }
+        }
+      },
+      "by_category": {
+        "ambiguity": {
+          "count": 4,
+          "top1_count": 2,
+          "top5_count": 2,
+          "top1": 0.5,
+          "top5": 0.5,
+          "mrr": 0.5,
+          "candidate_availability": 0.5,
+          "gold_coverage": 0.5,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 400,
+            "p50_ns": 3900,
+            "p95_ns": 7800,
+            "p99_ns": 18600,
+            "max_ns": 30700
+          }
+        },
+        "common": {
+          "count": 12,
+          "top1_count": 12,
+          "top5_count": 12,
+          "top1": 1.0,
+          "top5": 1.0,
+          "mrr": 1.0,
+          "candidate_availability": 1.0,
+          "gold_coverage": 1.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 1200,
+            "p50_ns": 1900,
+            "p95_ns": 2900,
+            "p99_ns": 8700,
+            "max_ns": 18100
+          }
+        },
+        "context": {
+          "count": 6,
+          "top1_count": 0,
+          "top5_count": 6,
+          "top1": 0.0,
+          "top5": 1.0,
+          "mrr": 0.40277777777777773,
+          "candidate_availability": 1.0,
+          "gold_coverage": 1.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 600,
+            "p50_ns": 2200,
+            "p95_ns": 2700,
+            "p99_ns": 17100,
+            "max_ns": 18300
+          }
+        },
+        "correction": {
+          "count": 15,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 15,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 1500,
+            "p50_ns": 1300,
+            "p95_ns": 3000,
+            "p99_ns": 3100,
+            "max_ns": 18200
+          }
+        },
+        "extension": {
+          "count": 2,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 200,
+            "p50_ns": 400,
+            "p95_ns": 600,
+            "p99_ns": 700,
+            "max_ns": 700
+          }
+        },
+        "homophone": {
+          "count": 2,
+          "top1_count": 2,
+          "top5_count": 2,
+          "top1": 1.0,
+          "top5": 1.0,
+          "mrr": 1.0,
+          "candidate_availability": 1.0,
+          "gold_coverage": 1.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 200,
+            "p50_ns": 1900,
+            "p95_ns": 2100,
+            "p99_ns": 8900,
+            "max_ns": 10800
+          }
+        },
+        "long": {
+          "count": 4,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 1,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 400,
+            "p50_ns": 5900,
+            "p95_ns": 14700,
+            "p99_ns": 25000,
+            "max_ns": 47500
+          }
+        },
+        "mixed": {
+          "count": 2,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 200,
+            "p50_ns": 100,
+            "p95_ns": 100,
+            "p99_ns": 100,
+            "max_ns": 200
+          }
+        },
+        "oov": {
+          "count": 2,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 200,
+            "p50_ns": 2000,
+            "p95_ns": 2100,
+            "p99_ns": 2200,
+            "max_ns": 2200
+          }
+        },
+        "phrase": {
+          "count": 9,
+          "top1_count": 5,
+          "top5_count": 5,
+          "top1": 0.5555555555555556,
+          "top5": 0.5555555555555556,
+          "mrr": 0.5555555555555556,
+          "candidate_availability": 0.5555555555555556,
+          "gold_coverage": 0.5555555555555556,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 900,
+            "p50_ns": 2500,
+            "p95_ns": 6500,
+            "p99_ns": 19600,
+            "max_ns": 71400
+          }
+        },
+        "prefix": {
+          "count": 21,
+          "top1_count": 18,
+          "top5_count": 21,
+          "top1": 0.8571428571428571,
+          "top5": 1.0,
+          "mrr": 0.9285714285714286,
+          "candidate_availability": 1.0,
+          "gold_coverage": 1.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 2100,
+            "p50_ns": 1600,
+            "p95_ns": 3500,
+            "p99_ns": 11100,
+            "max_ns": 106800
+          }
+        },
+        "umlaut": {
+          "count": 4,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 400,
+            "p50_ns": 100,
+            "p95_ns": 1400,
+            "p99_ns": 1400,
+            "max_ns": 1400
+          }
+        }
+      },
+      "by_group": {
+        "dev-guo": {
+          "count": 5,
+          "top1_count": 2,
+          "top5_count": 3,
+          "top1": 0.4,
+          "top5": 0.6,
+          "mrr": 0.5,
+          "candidate_availability": 0.6,
+          "gold_coverage": 0.6,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 1,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 500,
+            "p50_ns": 2000,
+            "p95_ns": 3000,
+            "p99_ns": 10000,
+            "max_ns": 18100
+          }
+        },
+        "dev-hao": {
+          "count": 5,
+          "top1_count": 2,
+          "top5_count": 3,
+          "top1": 0.4,
+          "top5": 0.6,
+          "mrr": 0.5,
+          "candidate_availability": 0.6,
+          "gold_coverage": 0.6,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 1,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 500,
+            "p50_ns": 2200,
+            "p95_ns": 6800,
+            "p99_ns": 21800,
+            "max_ns": 71400
+          }
+        },
+        "dev-jie": {
+          "count": 2,
+          "top1_count": 1,
+          "top5_count": 2,
+          "top1": 0.5,
+          "top5": 1.0,
+          "mrr": 0.75,
+          "candidate_availability": 1.0,
+          "gold_coverage": 1.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 200,
+            "p50_ns": 1700,
+            "p95_ns": 2100,
+            "p99_ns": 2300,
+            "max_ns": 2600
+          }
+        },
+        "dev-xuexi": {
+          "count": 4,
+          "top1_count": 3,
+          "top5_count": 3,
+          "top1": 0.75,
+          "top5": 0.75,
+          "mrr": 0.75,
+          "candidate_availability": 0.75,
+          "gold_coverage": 0.75,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 1,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 400,
+            "p50_ns": 2700,
+            "p95_ns": 3400,
+            "p99_ns": 16300,
+            "max_ns": 20600
+          }
+        },
+        "held-an": {
+          "count": 3,
+          "top1_count": 2,
+          "top5_count": 2,
+          "top1": 0.6666666666666666,
+          "top5": 0.6666666666666666,
+          "mrr": 0.6666666666666666,
+          "candidate_availability": 0.6666666666666666,
+          "gold_coverage": 0.6666666666666666,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 1,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 300,
+            "p50_ns": 1200,
+            "p95_ns": 1500,
+            "p99_ns": 1500,
+            "max_ns": 1600
+          }
+        },
+        "held-beijing": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 2100,
+            "p95_ns": 2200,
+            "p99_ns": 2200,
+            "max_ns": 2200
+          }
+        },
+        "held-branddigits": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 100,
+            "p95_ns": 100,
+            "p99_ns": 100,
+            "max_ns": 200
+          }
+        },
+        "held-can": {
+          "count": 4,
+          "top1_count": 3,
+          "top5_count": 3,
+          "top1": 0.75,
+          "top5": 0.75,
+          "mrr": 0.75,
+          "candidate_availability": 0.75,
+          "gold_coverage": 0.75,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 1,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 400,
+            "p50_ns": 1300,
+            "p95_ns": 1600,
+            "p99_ns": 1700,
+            "max_ns": 14700
+          }
+        },
+        "held-city": {
+          "count": 2,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 200,
+            "p50_ns": 4300,
+            "p95_ns": 8800,
+            "p99_ns": 18600,
+            "max_ns": 23200
+          }
+        },
+        "held-fuzzy": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 600,
+            "p95_ns": 700,
+            "p99_ns": 700,
+            "max_ns": 700
+          }
+        },
+        "held-gongzuo": {
+          "count": 5,
+          "top1_count": 4,
+          "top5_count": 4,
+          "top1": 0.8,
+          "top5": 0.8,
+          "mrr": 0.8,
+          "candidate_availability": 0.8,
+          "gold_coverage": 0.8,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 1,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 500,
+            "p50_ns": 2400,
+            "p95_ns": 4100,
+            "p99_ns": 15400,
+            "max_ns": 95600
+          }
+        },
+        "held-greeting": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 5700,
+            "p95_ns": 5900,
+            "p99_ns": 5900,
+            "max_ns": 5900
+          }
+        },
+        "held-jian": {
+          "count": 3,
+          "top1_count": 2,
+          "top5_count": 2,
+          "top1": 0.6666666666666666,
+          "top5": 0.6666666666666666,
+          "mrr": 0.6666666666666666,
+          "candidate_availability": 0.6666666666666666,
+          "gold_coverage": 0.6666666666666666,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 1,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 300,
+            "p50_ns": 1800,
+            "p95_ns": 3000,
+            "p99_ns": 3000,
+            "max_ns": 18300
+          }
+        },
+        "held-jianpin": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 300,
+            "p95_ns": 400,
+            "p99_ns": 400,
+            "max_ns": 400
+          }
+        },
+        "held-kao": {
+          "count": 3,
+          "top1_count": 2,
+          "top5_count": 2,
+          "top1": 0.6666666666666666,
+          "top5": 0.6666666666666666,
+          "mrr": 0.6666666666666666,
+          "candidate_availability": 0.6666666666666666,
+          "gold_coverage": 0.6666666666666666,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 1,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 300,
+            "p50_ns": 1600,
+            "p95_ns": 2400,
+            "p99_ns": 2700,
+            "max_ns": 18200
+          }
+        },
+        "held-lu": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 100,
+            "p95_ns": 100,
+            "p99_ns": 100,
+            "max_ns": 100
+          }
+        },
+        "held-lve": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 1300,
+            "p95_ns": 1400,
+            "p99_ns": 1400,
+            "max_ns": 1400
+          }
+        },
+        "held-lvxing": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 2200,
+            "p95_ns": 2400,
+            "p99_ns": 16900,
+            "max_ns": 17900
+          }
+        },
+        "held-nin": {
+          "count": 1,
+          "top1_count": 1,
+          "top5_count": 1,
+          "top1": 1.0,
+          "top5": 1.0,
+          "mrr": 1.0,
+          "candidate_availability": 1.0,
+          "gold_coverage": 1.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 1900,
+            "p95_ns": 2100,
+            "p99_ns": 2200,
+            "max_ns": 2400
+          }
+        },
+        "held-ning": {
+          "count": 1,
+          "top1_count": 1,
+          "top5_count": 1,
+          "top1": 1.0,
+          "top5": 1.0,
+          "mrr": 1.0,
+          "candidate_availability": 1.0,
+          "gold_coverage": 1.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 1900,
+            "p95_ns": 2000,
+            "p99_ns": 10200,
+            "max_ns": 10800
+          }
+        },
+        "held-nuxing": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 100,
+            "p95_ns": 100,
+            "p99_ns": 100,
+            "max_ns": 100
+          }
+        },
+        "held-nve": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 1400,
+            "p95_ns": 1400,
+            "p99_ns": 1400,
+            "max_ns": 1400
+          }
+        },
+        "held-nvren": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 1900,
+            "p95_ns": 2000,
+            "p99_ns": 7900,
+            "max_ns": 10700
+          }
+        },
+        "held-overlimit": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 1,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 100,
+            "p95_ns": 100,
+            "p99_ns": 100,
+            "max_ns": 100
+          }
+        },
+        "held-ren": {
+          "count": 4,
+          "top1_count": 3,
+          "top5_count": 3,
+          "top1": 0.75,
+          "top5": 0.75,
+          "mrr": 0.75,
+          "candidate_availability": 0.75,
+          "gold_coverage": 0.75,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 1,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 400,
+            "p50_ns": 1000,
+            "p95_ns": 1800,
+            "p99_ns": 16200,
+            "max_ns": 17900
+          }
+        },
+        "held-shi": {
+          "count": 8,
+          "top1_count": 3,
+          "top5_count": 6,
+          "top1": 0.375,
+          "top5": 0.75,
+          "mrr": 0.5104166666666666,
+          "candidate_availability": 0.75,
+          "gold_coverage": 0.75,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 2,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 800,
+            "p50_ns": 2100,
+            "p95_ns": 3200,
+            "p99_ns": 15100,
+            "max_ns": 106800
+          }
+        },
+        "held-study": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 6600,
+            "p95_ns": 14900,
+            "p99_ns": 27500,
+            "max_ns": 47500
+          }
+        },
+        "held-weather": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 9300,
+            "p95_ns": 19300,
+            "p99_ns": 39600,
+            "max_ns": 43100
+          }
+        },
+        "held-women": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 1900,
+            "p95_ns": 2000,
+            "p99_ns": 2000,
+            "max_ns": 2000
+          }
+        },
+        "held-workdigits": {
+          "count": 1,
+          "top1_count": 0,
+          "top5_count": 0,
+          "top1": 0.0,
+          "top5": 0.0,
+          "mrr": 0.0,
+          "candidate_availability": 0.0,
+          "gold_coverage": 0.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 100,
+            "p50_ns": 100,
+            "p95_ns": 100,
+            "p99_ns": 100,
+            "max_ns": 100
+          }
+        },
+        "held-xi": {
+          "count": 4,
+          "top1_count": 1,
+          "top5_count": 4,
+          "top1": 0.25,
+          "top5": 1.0,
+          "mrr": 0.5833333333333334,
+          "candidate_availability": 1.0,
+          "gold_coverage": 1.0,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 0,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": null
+          },
+          "latency": {
+            "samples": 400,
+            "p50_ns": 2200,
+            "p95_ns": 5000,
+            "p99_ns": 17400,
+            "max_ns": 18300
+          }
+        },
+        "held-yun": {
+          "count": 3,
+          "top1_count": 2,
+          "top5_count": 2,
+          "top1": 0.6666666666666666,
+          "top5": 0.6666666666666666,
+          "mrr": 0.6666666666666666,
+          "candidate_availability": 0.6666666666666666,
+          "gold_coverage": 0.6666666666666666,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 1,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 300,
+            "p50_ns": 1300,
+            "p95_ns": 1600,
+            "p99_ns": 2200,
+            "max_ns": 16500
+          }
+        },
+        "held-zhong": {
+          "count": 10,
+          "top1_count": 7,
+          "top5_count": 7,
+          "top1": 0.7,
+          "top5": 0.7,
+          "mrr": 0.7,
+          "candidate_availability": 0.7,
+          "gold_coverage": 0.7,
+          "errors": 0,
+          "correction": {
+            "capability": false,
+            "required": 3,
+            "attempts": 0,
+            "correct": 0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "latency": {
+            "samples": 1000,
+            "p50_ns": 1700,
+            "p95_ns": 2900,
+            "p99_ns": 5100,
+            "max_ns": 20500
+          }
+        }
+      }
+    }
+  },
+  "case_comparison": [
+    {
+      "id": "dev-001",
+      "split": "dev",
+      "category": "common",
+      "input": "hao",
+      "context": "-",
+      "gold": "好",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "好",
+        "号",
+        "浩",
+        "毫"
+      ],
+      "ablation_candidates": [
+        "好",
+        "号",
+        "浩",
+        "毫"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "dev-002",
+      "split": "dev",
+      "category": "context",
+      "input": "hao",
+      "context": "编号是什么",
+      "gold": "号",
+      "production_rank": 2,
+      "ablation_rank": 2,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "好",
+        "号",
+        "浩",
+        "毫"
+      ],
+      "ablation_candidates": [
+        "好",
+        "号",
+        "浩",
+        "毫"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "dev-003",
+      "split": "dev",
+      "category": "prefix",
+      "input": "ha",
+      "context": "-",
+      "gold": "好",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "好",
+        "号",
+        "浩",
+        "毫"
+      ],
+      "ablation_candidates": [
+        "好",
+        "号",
+        "浩",
+        "毫"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "dev-004",
+      "split": "dev",
+      "category": "correction",
+      "input": "haoo",
+      "context": "-",
+      "gold": "好",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "dev-005",
+      "split": "dev",
+      "category": "phrase",
+      "input": "haohao",
+      "context": "-",
+      "gold": "好好",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "dev-006",
+      "split": "dev",
+      "category": "common",
+      "input": "guo",
+      "context": "-",
+      "gold": "国",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "国",
+        "过",
+        "果",
+        "锅"
+      ],
+      "ablation_candidates": [
+        "国",
+        "过",
+        "果",
+        "锅"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "dev-007",
+      "split": "dev",
+      "category": "context",
+      "input": "guo",
+      "context": "曾经经历",
+      "gold": "过",
+      "production_rank": 2,
+      "ablation_rank": 2,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "国",
+        "过",
+        "果",
+        "锅"
+      ],
+      "ablation_candidates": [
+        "国",
+        "过",
+        "果",
+        "锅"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "dev-008",
+      "split": "dev",
+      "category": "prefix",
+      "input": "gu",
+      "context": "-",
+      "gold": "国",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "国",
+        "过",
+        "果",
+        "锅"
+      ],
+      "ablation_candidates": [
+        "国",
+        "过",
+        "果",
+        "锅"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "dev-009",
+      "split": "dev",
+      "category": "correction",
+      "input": "gou",
+      "context": "国家",
+      "gold": "国",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "dev-010",
+      "split": "dev",
+      "category": "phrase",
+      "input": "guozi",
+      "context": "-",
+      "gold": "果子",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "dev-011",
+      "split": "dev",
+      "category": "phrase",
+      "input": "xuexi",
+      "context": "-",
+      "gold": "学习",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "学习"
+      ],
+      "ablation_candidates": [
+        "学习"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "dev-012",
+      "split": "dev",
+      "category": "prefix",
+      "input": "xuex",
+      "context": "-",
+      "gold": "学习",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "学习"
+      ],
+      "ablation_candidates": [
+        "学习"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "dev-013",
+      "split": "dev",
+      "category": "correction",
+      "input": "xuei",
+      "context": "-",
+      "gold": "学习",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "dev-014",
+      "split": "dev",
+      "category": "ambiguity",
+      "input": "xue'xi",
+      "context": "-",
+      "gold": "学习",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "学习"
+      ],
+      "ablation_candidates": [
+        "学习"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "dev-015",
+      "split": "dev",
+      "category": "common",
+      "input": "jie",
+      "context": "-",
+      "gold": "界",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "界",
+        "解"
+      ],
+      "ablation_candidates": [
+        "界",
+        "解"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "dev-016",
+      "split": "dev",
+      "category": "prefix",
+      "input": "ji",
+      "context": "-",
+      "gold": "界",
+      "production_rank": 2,
+      "ablation_rank": 2,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "笺",
+        "界",
+        "解"
+      ],
+      "ablation_candidates": [
+        "笺",
+        "界",
+        "解"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-001",
+      "split": "heldout",
+      "category": "common",
+      "input": "zhong",
+      "context": "-",
+      "gold": "中",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "中",
+        "重",
+        "钟",
+        "种"
+      ],
+      "ablation_candidates": [
+        "中",
+        "重",
+        "钟",
+        "种"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-002",
+      "split": "heldout",
+      "category": "phrase",
+      "input": "zhongwen",
+      "context": "-",
+      "gold": "中文",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "中文"
+      ],
+      "ablation_candidates": [
+        "中文"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-003",
+      "split": "heldout",
+      "category": "phrase",
+      "input": "zhongxin",
+      "context": "-",
+      "gold": "中心",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "中心"
+      ],
+      "ablation_candidates": [
+        "中心"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-004",
+      "split": "heldout",
+      "category": "phrase",
+      "input": "zhonghua",
+      "context": "-",
+      "gold": "中华",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "中华"
+      ],
+      "ablation_candidates": [
+        "中华"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-005",
+      "split": "heldout",
+      "category": "prefix",
+      "input": "zhongw",
+      "context": "-",
+      "gold": "中文",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "中文"
+      ],
+      "ablation_candidates": [
+        "中文"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-006",
+      "split": "heldout",
+      "category": "prefix",
+      "input": "zhongx",
+      "context": "-",
+      "gold": "中心",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "中心"
+      ],
+      "ablation_candidates": [
+        "中心"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-007",
+      "split": "heldout",
+      "category": "prefix",
+      "input": "zhongh",
+      "context": "-",
+      "gold": "中华",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "中华"
+      ],
+      "ablation_candidates": [
+        "中华"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-008",
+      "split": "heldout",
+      "category": "correction",
+      "input": "zhonggng",
+      "context": "-",
+      "gold": "中",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-009",
+      "split": "heldout",
+      "category": "correction",
+      "input": "zhonggou",
+      "context": "-",
+      "gold": "中国",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-010",
+      "split": "heldout",
+      "category": "correction",
+      "input": "zhonguowen",
+      "context": "-",
+      "gold": "中文",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-011",
+      "split": "heldout",
+      "category": "common",
+      "input": "shi",
+      "context": "-",
+      "gold": "是",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "是",
+        "时",
+        "事",
+        "市",
+        "十",
+        "使",
+        "世"
+      ],
+      "ablation_candidates": [
+        "是",
+        "时",
+        "事",
+        "市",
+        "十",
+        "使",
+        "世"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-012",
+      "split": "heldout",
+      "category": "context",
+      "input": "shi",
+      "context": "现在什么时候",
+      "gold": "时",
+      "production_rank": 2,
+      "ablation_rank": 2,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "是",
+        "时",
+        "事",
+        "市",
+        "十",
+        "使",
+        "世"
+      ],
+      "ablation_candidates": [
+        "是",
+        "时",
+        "事",
+        "市",
+        "十",
+        "使",
+        "世"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-013",
+      "split": "heldout",
+      "category": "context",
+      "input": "shi",
+      "context": "办理什么事情",
+      "gold": "事",
+      "production_rank": 3,
+      "ablation_rank": 3,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "是",
+        "时",
+        "事",
+        "市",
+        "十",
+        "使",
+        "世"
+      ],
+      "ablation_candidates": [
+        "是",
+        "时",
+        "事",
+        "市",
+        "十",
+        "使",
+        "世"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-014",
+      "split": "heldout",
+      "category": "context",
+      "input": "shi",
+      "context": "居住在哪座城市",
+      "gold": "市",
+      "production_rank": 4,
+      "ablation_rank": 4,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "是",
+        "时",
+        "事",
+        "市",
+        "十",
+        "使",
+        "世"
+      ],
+      "ablation_candidates": [
+        "是",
+        "时",
+        "事",
+        "市",
+        "十",
+        "使",
+        "世"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-015",
+      "split": "heldout",
+      "category": "prefix",
+      "input": "sh",
+      "context": "-",
+      "gold": "是",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "是",
+        "时",
+        "事",
+        "市",
+        "十",
+        "使",
+        "世"
+      ],
+      "ablation_candidates": [
+        "是",
+        "时",
+        "事",
+        "市",
+        "十",
+        "使",
+        "世"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-016",
+      "split": "heldout",
+      "category": "prefix",
+      "input": "shij",
+      "context": "-",
+      "gold": "世界",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "世界"
+      ],
+      "ablation_candidates": [
+        "世界"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-017",
+      "split": "heldout",
+      "category": "correction",
+      "input": "shjie",
+      "context": "-",
+      "gold": "世界",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-018",
+      "split": "heldout",
+      "category": "correction",
+      "input": "shijiee",
+      "context": "-",
+      "gold": "世界",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-019",
+      "split": "heldout",
+      "category": "common",
+      "input": "Xi",
+      "context": "-",
+      "gold": "西",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": true,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "西",
+        "希",
+        "先",
+        "线",
+        "县",
+        "现"
+      ],
+      "ablation_candidates": [
+        "西",
+        "先",
+        "希",
+        "线",
+        "县",
+        "现"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-020",
+      "split": "heldout",
+      "category": "context",
+      "input": "xi",
+      "context": "表达希望",
+      "gold": "希",
+      "production_rank": 2,
+      "ablation_rank": 3,
+      "rank_gain_ablation": -1,
+      "candidate_order_changed": true,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "西",
+        "希",
+        "先",
+        "线",
+        "县",
+        "现"
+      ],
+      "ablation_candidates": [
+        "西",
+        "先",
+        "希",
+        "线",
+        "县",
+        "现"
+      ],
+      "gold_rank_comparison": "ablation_regressed"
+    },
+    {
+      "id": "held-021",
+      "split": "heldout",
+      "category": "prefix",
+      "input": "x",
+      "context": "-",
+      "gold": "先",
+      "production_rank": 2,
+      "ablation_rank": 2,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "西",
+        "先",
+        "希",
+        "线",
+        "县",
+        "现"
+      ],
+      "ablation_candidates": [
+        "西",
+        "先",
+        "希",
+        "线",
+        "县",
+        "现"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-022",
+      "split": "heldout",
+      "category": "prefix",
+      "input": "xia",
+      "context": "-",
+      "gold": "先",
+      "production_rank": 2,
+      "ablation_rank": 2,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "西安",
+        "先",
+        "线",
+        "县",
+        "现"
+      ],
+      "ablation_candidates": [
+        "西安",
+        "先",
+        "线",
+        "县",
+        "现"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-023",
+      "split": "heldout",
+      "category": "ambiguity",
+      "input": "xianyang",
+      "context": "-",
+      "gold": "咸阳",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-024",
+      "split": "heldout",
+      "category": "ambiguity",
+      "input": "xingan",
+      "context": "-",
+      "gold": "兴安",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-025",
+      "split": "heldout",
+      "category": "common",
+      "input": "an",
+      "context": "-",
+      "gold": "安",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "安"
+      ],
+      "ablation_candidates": [
+        "安"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-026",
+      "split": "heldout",
+      "category": "prefix",
+      "input": "a",
+      "context": "-",
+      "gold": "安",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "安"
+      ],
+      "ablation_candidates": [
+        "安"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-027",
+      "split": "heldout",
+      "category": "correction",
+      "input": "gan",
+      "context": "-",
+      "gold": "安",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-028",
+      "split": "heldout",
+      "category": "common",
+      "input": "can",
+      "context": "-",
+      "gold": "参",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "参"
+      ],
+      "ablation_candidates": [
+        "参"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-029",
+      "split": "heldout",
+      "category": "prefix",
+      "input": "c",
+      "context": "-",
+      "gold": "参",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "参"
+      ],
+      "ablation_candidates": [
+        "参"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-030",
+      "split": "heldout",
+      "category": "prefix",
+      "input": "ca",
+      "context": "-",
+      "gold": "参",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "参"
+      ],
+      "ablation_candidates": [
+        "参"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-031",
+      "split": "heldout",
+      "category": "correction",
+      "input": "cao",
+      "context": "-",
+      "gold": "参",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-032",
+      "split": "heldout",
+      "category": "common",
+      "input": "kao",
+      "context": "-",
+      "gold": "考",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "考"
+      ],
+      "ablation_candidates": [
+        "考"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-033",
+      "split": "heldout",
+      "category": "prefix",
+      "input": "ka",
+      "context": "-",
+      "gold": "考",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "考"
+      ],
+      "ablation_candidates": [
+        "考"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-034",
+      "split": "heldout",
+      "category": "correction",
+      "input": "kaoo",
+      "context": "-",
+      "gold": "考",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-035",
+      "split": "heldout",
+      "category": "common",
+      "input": "ren",
+      "context": "-",
+      "gold": "人",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "人"
+      ],
+      "ablation_candidates": [
+        "人"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-036",
+      "split": "heldout",
+      "category": "prefix",
+      "input": "re",
+      "context": "-",
+      "gold": "人",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "人"
+      ],
+      "ablation_candidates": [
+        "人"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-037",
+      "split": "heldout",
+      "category": "prefix",
+      "input": "r",
+      "context": "-",
+      "gold": "人",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "人"
+      ],
+      "ablation_candidates": [
+        "人"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-038",
+      "split": "heldout",
+      "category": "correction",
+      "input": "rng",
+      "context": "-",
+      "gold": "人",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-039",
+      "split": "heldout",
+      "category": "phrase",
+      "input": "gongzuo",
+      "context": "-",
+      "gold": "工作",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "工作"
+      ],
+      "ablation_candidates": [
+        "工作"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-040",
+      "split": "heldout",
+      "category": "prefix",
+      "input": "gongz",
+      "context": "-",
+      "gold": "工作",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "工作"
+      ],
+      "ablation_candidates": [
+        "工作"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-041",
+      "split": "heldout",
+      "category": "prefix",
+      "input": "gongzu",
+      "context": "-",
+      "gold": "工作",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "工作"
+      ],
+      "ablation_candidates": [
+        "工作"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-042",
+      "split": "heldout",
+      "category": "correction",
+      "input": "gongzou",
+      "context": "-",
+      "gold": "工作",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-043",
+      "split": "heldout",
+      "category": "ambiguity",
+      "input": "gong'zuo",
+      "context": "-",
+      "gold": "工作",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "工作"
+      ],
+      "ablation_candidates": [
+        "工作"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-044",
+      "split": "heldout",
+      "category": "common",
+      "input": "yun",
+      "context": "-",
+      "gold": "云",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "云"
+      ],
+      "ablation_candidates": [
+        "云"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-045",
+      "split": "heldout",
+      "category": "prefix",
+      "input": "yu",
+      "context": "-",
+      "gold": "云",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "云"
+      ],
+      "ablation_candidates": [
+        "云"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-046",
+      "split": "heldout",
+      "category": "correction",
+      "input": "yunn",
+      "context": "-",
+      "gold": "云",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-047",
+      "split": "heldout",
+      "category": "common",
+      "input": "jian",
+      "context": "-",
+      "gold": "笺",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "笺"
+      ],
+      "ablation_candidates": [
+        "笺"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-048",
+      "split": "heldout",
+      "category": "prefix",
+      "input": "jia",
+      "context": "-",
+      "gold": "笺",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "笺"
+      ],
+      "ablation_candidates": [
+        "笺"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-049",
+      "split": "heldout",
+      "category": "correction",
+      "input": "jain",
+      "context": "-",
+      "gold": "笺",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-050",
+      "split": "heldout",
+      "category": "homophone",
+      "input": "nin",
+      "context": "-",
+      "gold": "您",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "您",
+        "宁",
+        "凝"
+      ],
+      "ablation_candidates": [
+        "您",
+        "宁",
+        "凝"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-051",
+      "split": "heldout",
+      "category": "homophone",
+      "input": "ning",
+      "context": "-",
+      "gold": "宁",
+      "production_rank": 1,
+      "ablation_rank": 1,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [
+        "宁",
+        "凝"
+      ],
+      "ablation_candidates": [
+        "宁",
+        "凝"
+      ],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-052",
+      "split": "heldout",
+      "category": "phrase",
+      "input": "nvren",
+      "context": "-",
+      "gold": "女人",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-053",
+      "split": "heldout",
+      "category": "phrase",
+      "input": "lvxing",
+      "context": "-",
+      "gold": "旅行",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-054",
+      "split": "heldout",
+      "category": "umlaut",
+      "input": "lve",
+      "context": "-",
+      "gold": "略",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-055",
+      "split": "heldout",
+      "category": "umlaut",
+      "input": "nve",
+      "context": "-",
+      "gold": "虐",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-056",
+      "split": "heldout",
+      "category": "umlaut",
+      "input": "lü",
+      "context": "-",
+      "gold": "绿",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-057",
+      "split": "heldout",
+      "category": "umlaut",
+      "input": "nüxing",
+      "context": "-",
+      "gold": "女性",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-058",
+      "split": "heldout",
+      "category": "oov",
+      "input": "women",
+      "context": "-",
+      "gold": "我们",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-059",
+      "split": "heldout",
+      "category": "oov",
+      "input": "beijing",
+      "context": "-",
+      "gold": "北京",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-060",
+      "split": "heldout",
+      "category": "long",
+      "input": "jintiantiqihenhao",
+      "context": "-",
+      "gold": "今天天气很好",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-061",
+      "split": "heldout",
+      "category": "long",
+      "input": "wozaixuexizhongwen",
+      "context": "-",
+      "gold": "我在学习中文",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-062",
+      "split": "heldout",
+      "category": "long",
+      "input": "nihaoshijie",
+      "context": "-",
+      "gold": "你好世界",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-063",
+      "split": "heldout",
+      "category": "mixed",
+      "input": "cloudleaf2026",
+      "context": "-",
+      "gold": "云笺2026",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-064",
+      "split": "heldout",
+      "category": "mixed",
+      "input": "gongzuo2026",
+      "context": "-",
+      "gold": "工作2026",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-065",
+      "split": "heldout",
+      "category": "extension",
+      "input": "zg",
+      "context": "-",
+      "gold": "中国",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-066",
+      "split": "heldout",
+      "category": "extension",
+      "input": "si",
+      "context": "-",
+      "gold": "是",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    },
+    {
+      "id": "held-067",
+      "split": "heldout",
+      "category": "long",
+      "input": "zhongwenzhongwenzhongwenzhongwenzhongwenzhongwenzhongwenzhongwenzhongwenzhongwen",
+      "context": "-",
+      "gold": "中文中文中文中文中文中文中文中文中文中文",
+      "production_rank": 0,
+      "ablation_rank": 0,
+      "rank_gain_ablation": 0,
+      "candidate_order_changed": false,
+      "added_by_ablation": [],
+      "removed_by_ablation": [],
+      "production_candidates": [],
+      "ablation_candidates": [],
+      "gold_rank_comparison": "same_gold_rank"
+    }
+  ]
+}

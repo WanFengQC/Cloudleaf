@@ -2,7 +2,21 @@
 
 云笺的目标是算法完善、功能完整、响应流畅、翻译可靠、可长期维护的正式跨平台输入法。当前已有可独立测试的 M1/M2 Rust 原型；完整产品按 [v2 路线图](docs/roadmap.md)推进 Windows、核心算法和正式数据三个方向，再集成双语翻译与多平台。
 
-当前边界：TSF、原生候选窗口、生产词库、整句候选/语言模型、纠错/学习和翻译尚未实现。64条手写词典及 CLI 演示不代表最终产品能力。最终50项可追踪能力见[产品范围](docs/product-scope.md)，近期CL-001..006状态见[执行记录](docs/cl001-cl006-progress.md)。
+当前边界：正式 TSF 适配及真实应用验收未完成，生产词库、整句候选/语言模型、纠错/学习和翻译尚未实现。64条手写词典及 CLI 演示不代表最终产品能力。最终50项可追踪能力见[产品范围](docs/product-scope.md)，近期CL-001..006状态见[执行记录](docs/cl001-cl006-progress.md)。
+
+CL-007 独立开发分支已加入 TSF 原生服务、候选 UI、显式管理工具，以及有界原生事件 ownership、独立 watchdog、用户显式恢复与 COM/Win32 故障注入；尚未注册、激活或完成真实应用验收，不能作为可发布输入法使用。同步 barrier、异步事件和仍未关闭的资源/宿主风险见[原生实现约定](docs/cl007-implementation.md)及[可靠性约定](docs/cl007-async-ownership-v1.md)。
+
+Round 5新增提前全局登记的监测worker回收及异常预算持续占用下的健康会话验证，详见[v5设计](docs/cl007-fault-isolation-v5.md)和[Round 5原始证据与阻塞](docs/reports/cl007/round5-isolation-status.md)。未析构Host/外部COM仍保活计费，真实应用和8小时/24小时压力尚未验收。
+
+Round 6补齐流式原始事件/资源、周期检查点和严格身份的新段续跑，新增8h/24h专用压力档；实际只完成短档正常/中断/续跑/失败验证。详见[本轮设计](docs/cl007-round6-isolation-and-soak.md)与[原始证据及准入阻塞](docs/reports/cl007/round6-soak-status.md)。可运行长期档不等于已完成长期验收，系统输入法仍不注册/激活。
+
+Round 7增加隔离环境/执行批准的只读长测预检，以及原始逐键、周期与最终分母一致性核验；无批准材料时8h/24h拒绝启动，短档不受影响。七类生命周期故障、部署恢复边界和待执行清单见[Round 7可靠性约定](docs/cl007-round7-reliability.md)。生产COM、预算和Unknown语义未改变。
+
+Round 8交付[外部执行与恢复清单](docs/cl007-round8-external-acceptance.md)、待填环境/应用矩阵和只读资源趋势报告器。`python scripts/report_windows_soak.py --run-dir <原始run目录> --output <全新报告JSON>`逐segment核原件身份、采样时基和趋势，不拼接连续时长，也不授予长期或真实TSF验收。当前环境和授权未准备，实际仅重放R7短迹，无新长测或系统操作。
+
+Round 9增加[材料准入约定](docs/cl007-round9-admission.md)：`python scripts/check_windows_soak_admission.py --request docs/acceptance/cl007-round9-environment.json --output <全新报告JSON>`无需native binary即可只读核缺件；pending环境明确exit2。长期runner批准还须绑定环境请求SHA、实际回滚和执行授权文件、版本/架构及允许档位，旧仅字符串批准不足；同一用户可兼任负责人/执行者，材料一致性不代表人签或实际恢复已核验。R8矩阵保留，R9人工记录模板保持未执行。
+
+Round 10的[执行身份绑定](docs/cl007-round10-execution-binding.md)要求实际执行授权schema2绑定完整运行identity摘要，更新外层批准不能复用旧授权。只读checker分列材料一致与执行身份已核；无实际identity仍`ready=false`。新pending模板和[真实应用执行步骤](docs/acceptance/cl007-round10-application-steps.md)不授予长测或TSF授权，历史材料保持。
 
 ## 环境
 
@@ -31,6 +45,8 @@ cargo clippy --workspace --all-targets --locked --offline -- -D warnings
 cargo test --workspace --all-targets --locked --offline
 cargo test --workspace --doc --locked --offline
 python scripts/check_workspace.py
+cargo install cargo-audit --version 0.22.2 --locked
+python scripts/audit_windows_dependencies.py --output .local/windows-dependency-audit.json
 ```
 
 工具链首次安装需要下载。M1/M2核心没有外部 Rust 库依赖；后续平台分支通过精确审计政策登记依赖，首次locked fetch后离线构建和测试，核心输入始终离线运行。CI 对 Windows/Linux 执行同一套检查并上传报告；M1/M2检查点 `26b5e45` 已在两个平台真实通过，见[基线与CI记录](docs/reports/cl001-cl002-baseline.md)。原型本地数据见[历史验收报告](docs/reports/m1-m2-validation.md)。

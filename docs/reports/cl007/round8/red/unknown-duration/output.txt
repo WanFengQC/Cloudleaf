@@ -1,0 +1,18 @@
+test_actual_interruption_and_resume_stay_separate_with_partial_denominator (test_windows_soak_report.SoakReportTests.test_actual_interruption_and_resume_stay_separate_with_partial_denominator) ... FAIL
+test_actual_short_evidence_reconstructs_original_stdout_and_never_accepts_long_test (test_windows_soak_report.SoakReportTests.test_actual_short_evidence_reconstructs_original_stdout_and_never_accepts_long_test) ... ok
+test_changed_sample_bytes_and_nonmonotonic_times_remain_invalid (test_windows_soak_report.SoakReportTests.test_changed_sample_bytes_and_nonmonotonic_times_remain_invalid) ... ok
+test_native_duration_comes_from_raw_final_not_a_changed_summary_snapshot (test_windows_soak_report.SoakReportTests.test_native_duration_comes_from_raw_final_not_a_changed_summary_snapshot) ... ok
+test_resource_slope_units_and_single_sample_are_descriptive_only (test_windows_soak_report.SoakReportTests.test_resource_slope_units_and_single_sample_are_descriptive_only) ... ok
+
+======================================================================
+FAIL: test_actual_interruption_and_resume_stay_separate_with_partial_denominator (test_windows_soak_report.SoakReportTests.test_actual_interruption_and_resume_stay_separate_with_partial_denominator)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl007-windows\Cloudleaf\tests\test_windows_soak_report.py", line 39, in test_actual_interruption_and_resume_stay_separate_with_partial_denominator
+    self.assertIsNone(first['native_steady_seconds'])
+AssertionError: 0.0 is not None
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.157s
+
+FAILED (failures=1)

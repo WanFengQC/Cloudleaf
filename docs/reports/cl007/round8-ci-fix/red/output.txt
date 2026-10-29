@@ -1,0 +1,19 @@
+test_actual_interruption_and_resume_stay_separate_with_partial_denominator (test_windows_soak_report.SoakReportTests.test_actual_interruption_and_resume_stay_separate_with_partial_denominator) ... ok
+test_actual_short_evidence_reconstructs_original_stdout_and_never_accepts_long_test (test_windows_soak_report.SoakReportTests.test_actual_short_evidence_reconstructs_original_stdout_and_never_accepts_long_test) ... ok
+test_changed_sample_bytes_and_nonmonotonic_times_remain_invalid (test_windows_soak_report.SoakReportTests.test_changed_sample_bytes_and_nonmonotonic_times_remain_invalid) ... ok
+test_crlf_checkout_recovers_only_exactly_matching_jsonl_originals (test_windows_soak_report.SoakReportTests.test_crlf_checkout_recovers_only_exactly_matching_jsonl_originals) ... FAIL
+test_native_duration_comes_from_raw_final_not_a_changed_summary_snapshot (test_windows_soak_report.SoakReportTests.test_native_duration_comes_from_raw_final_not_a_changed_summary_snapshot) ... ok
+test_resource_slope_units_and_single_sample_are_descriptive_only (test_windows_soak_report.SoakReportTests.test_resource_slope_units_and_single_sample_are_descriptive_only) ... ok
+
+======================================================================
+FAIL: test_crlf_checkout_recovers_only_exactly_matching_jsonl_originals (test_windows_soak_report.SoakReportTests.test_crlf_checkout_recovers_only_exactly_matching_jsonl_originals)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl007-windows\Cloudleaf\tests\test_windows_soak_report.py", line 28, in test_crlf_checkout_recovers_only_exactly_matching_jsonl_originals
+    self.assertTrue(result['evidence_integrity_verified'], result['issues'])
+AssertionError: False is not true : ['原件SHA不符:checkpoints.jsonl', '原件SHA不符:events.jsonl', '原件SHA不符:samples.jsonl']
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.243s
+
+FAILED (failures=1)

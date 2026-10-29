@@ -1,0 +1,160 @@
+{
+  "implementation_commit": "4b9cd0ef82d2e7d273451b2def3ca8703dca91f3",
+  "checks": [
+    {
+      "name": "python-version",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "--version"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.01982329999736976,
+      "bytes": 16,
+      "stdout_sha256": "6a5d9f6462ca5dfc6788cfd216ba579fffd7875776ab9d9b35659be78858f73a",
+      "stdout_file": "python-version.log"
+    },
+    {
+      "name": "python-regression",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.8130974000014248,
+      "bytes": 5715,
+      "stdout_sha256": "ab52d1af0d3b3173e6ef52a491f7afe69c5fedd7614f5ea6dc8a7f740dff1fa6",
+      "stdout_file": "python-regression.log"
+    },
+    {
+      "name": "resource-audit",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/check_workspace.py"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.36101229999621864,
+      "bytes": 260,
+      "stdout_sha256": "84764b7ede0dec1c5c82d530cc642ab6dec6612f2193b7ca173fb26e87358bf4",
+      "stdout_file": "resource-audit.log"
+    },
+    {
+      "name": "fmt",
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.6209011000028113,
+      "bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_file": "fmt.log"
+    },
+    {
+      "name": "diff",
+      "command": [
+        "C:\\Program Files\\Git\\cmd\\git.EXE",
+        "diff",
+        "--check"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.09494239999912679,
+      "bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_file": "diff.log"
+    },
+    {
+      "name": "complete",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/report_windows_soak.py",
+        "--run-dir",
+        "docs/reports/cl007/round7/complete",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\.local\\round8-validation\\complete.json"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.17749929999990854,
+      "bytes": 93,
+      "stdout_sha256": "c0e76bc1fb2789a7660470951488e65c56ee3febda86a582ed36fa075690f30d",
+      "stdout_file": "complete.log"
+    },
+    {
+      "name": "resumed",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/report_windows_soak.py",
+        "--run-dir",
+        "docs/reports/cl007/round7/resumed",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\.local\\round8-validation\\resumed.json"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.19723979999980656,
+      "bytes": 93,
+      "stdout_sha256": "1c697cbd4608e256a1ad319686ccbfa8bb22da1e4a929335b0b12e3c5e988be5",
+      "stdout_file": "resumed.log"
+    },
+    {
+      "name": "injected-failure",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/report_windows_soak.py",
+        "--run-dir",
+        "docs/reports/cl007/round7/injected-failure",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\.local\\round8-validation\\injected-failure.json"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 0.17707199999858858,
+      "bytes": 93,
+      "stdout_sha256": "c0e76bc1fb2789a7660470951488e65c56ee3febda86a582ed36fa075690f30d",
+      "stdout_file": "injected-failure.log"
+    },
+    {
+      "name": "existing-output-refused",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/report_windows_soak.py",
+        "--run-dir",
+        "docs/reports/cl007/round7/injected-failure",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\.local\\round8-validation\\injected-failure.json"
+      ],
+      "returncode": 2,
+      "expected_returncode": 2,
+      "seconds": 0.14766170000075363,
+      "bytes": 145,
+      "stdout_sha256": "4623c8043bebdd56ca634cf163dbfada199f67be2893c2f990b42327489ad936",
+      "stdout_file": "existing-output-refused.log"
+    }
+  ]
+}

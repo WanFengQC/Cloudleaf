@@ -1,0 +1,1244 @@
+﻿2026-10-29T16:35:50.3613382Z Current runner version: '2.338.0'
+2026-10-29T16:35:50.3653146Z ##[group]Runner Image Provisioner
+2026-10-29T16:35:50.3654494Z Hosted Compute Agent
+2026-10-29T16:35:50.3655498Z Version: 20261021.618
+2026-10-29T16:35:50.3656533Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-29T16:35:50.3657702Z Build Date: 2026-10-21T00:45:21Z
+2026-10-29T16:35:50.3658991Z Worker ID: {344c7ff2-fa14-4eed-bcb1-e7b5f033aeb6}
+2026-10-29T16:35:50.3660271Z Region: eastus
+2026-10-29T16:35:50.3661221Z Cloud: Azure
+2026-10-29T16:35:50.3662160Z ##[endgroup]
+2026-10-29T16:35:50.3664537Z ##[group]Operating System
+2026-10-29T16:35:50.3665834Z Microsoft Windows Server 2025
+2026-10-29T16:35:50.3666940Z 10.0.26100
+2026-10-29T16:35:50.3667860Z Datacenter
+2026-10-29T16:35:50.3669060Z ##[endgroup]
+2026-10-29T16:35:50.3669946Z ##[group]Runner Image
+2026-10-29T16:35:50.3670976Z Image: windows-2025-vs2026
+2026-10-29T16:35:50.3672110Z Version: 20261021.278.1
+2026-10-29T16:35:50.3674939Z Included Software: https://github.com/actions/runner-images/blob/win25-vs2026/20261021.278/images/windows/Windows2025-VS2026-Readme.md
+2026-10-29T16:35:50.3678086Z Image Release: https://github.com/actions/runner-images/releases/tag/win25-vs2026%2F20261021.278
+2026-10-29T16:35:50.3679952Z ##[endgroup]
+2026-10-29T16:35:50.3681850Z ##[group]GITHUB_TOKEN Permissions
+2026-10-29T16:35:50.3684491Z Contents: read
+2026-10-29T16:35:50.3685521Z Metadata: read
+2026-10-29T16:35:50.3686568Z ##[endgroup]
+2026-10-29T16:35:50.3690209Z Secret source: Actions
+2026-10-29T16:35:50.3691717Z Cache mode: write
+2026-10-29T16:35:50.3692933Z Prepare workflow directory
+2026-10-29T16:35:50.4138838Z Prepare all required actions
+2026-10-29T16:35:50.4187895Z Getting action download info
+2026-10-29T16:35:50.5876130Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-29T16:35:50.7260617Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-29T16:35:50.8818538Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-29T16:35:51.2346351Z Complete job name: core (windows-latest)
+2026-10-29T16:35:51.4176036Z ##[group]Run actions/checkout@v4
+2026-10-29T16:35:51.4177300Z with:
+2026-10-29T16:35:51.4177779Z   repository: WanFengQC/Cloudleaf
+2026-10-29T16:35:51.4182369Z   token: ***
+2026-10-29T16:35:51.4182822Z   ssh-strict: true
+2026-10-29T16:35:51.4183249Z   ssh-user: git
+2026-10-29T16:35:51.4183673Z   persist-credentials: true
+2026-10-29T16:35:51.4184142Z   clean: true
+2026-10-29T16:35:51.4184565Z   sparse-checkout-cone-mode: true
+2026-10-29T16:35:51.4185070Z   fetch-depth: 1
+2026-10-29T16:35:51.4185483Z   fetch-tags: false
+2026-10-29T16:35:51.4186807Z   show-progress: true
+2026-10-29T16:35:51.4187474Z   lfs: false
+2026-10-29T16:35:51.4188033Z   submodules: false
+2026-10-29T16:35:51.4188719Z   set-safe-directory: true
+2026-10-29T16:35:51.4189563Z   allow-unsafe-pr-checkout: false
+2026-10-29T16:35:51.4190847Z env:
+2026-10-29T16:35:51.4191449Z   PYTHONUTF8: 1
+2026-10-29T16:35:51.4192060Z   PYTHONIOENCODING: utf-8
+2026-10-29T16:35:51.4192752Z ##[endgroup]
+2026-10-29T16:35:51.5728297Z Syncing repository: WanFengQC/Cloudleaf
+2026-10-29T16:35:51.5730972Z ##[group]Getting Git version info
+2026-10-29T16:35:51.5731918Z Working directory is 'D:\a\Cloudleaf\Cloudleaf'
+2026-10-29T16:35:51.6741525Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-29T16:35:52.0033030Z git version 2.56.0.windows.2
+2026-10-29T16:35:52.0087752Z ##[endgroup]
+2026-10-29T16:35:52.0107804Z Temporarily overriding HOME='D:\a\_temp\ecf388d6-ff30-4618-8e4a-432dc3f4a982' before making global git config changes
+2026-10-29T16:35:52.0109744Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-29T16:35:52.0118816Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\Cloudleaf\Cloudleaf
+2026-10-29T16:35:52.0807568Z Deleting the contents of 'D:\a\Cloudleaf\Cloudleaf'
+2026-10-29T16:35:52.0815996Z ##[group]Initializing the repository
+2026-10-29T16:35:52.0825534Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\Cloudleaf\Cloudleaf
+2026-10-29T16:35:52.1870350Z Initialized empty Git repository in D:/a/Cloudleaf/Cloudleaf/.git/
+2026-10-29T16:35:52.1936491Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/WanFengQC/Cloudleaf
+2026-10-29T16:35:52.2701539Z ##[endgroup]
+2026-10-29T16:35:52.2702167Z ##[group]Disabling automatic garbage collection
+2026-10-29T16:35:52.2713013Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2026-10-29T16:35:52.3097403Z ##[endgroup]
+2026-10-29T16:35:52.3097986Z ##[group]Setting up auth
+2026-10-29T16:35:52.3109870Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-29T16:35:52.3504831Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-29T16:35:53.8267749Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-29T16:35:53.8621015Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-29T16:35:54.4537795Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-29T16:35:54.4951384Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-29T16:35:55.1085240Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2026-10-29T16:35:55.1509064Z ##[endgroup]
+2026-10-29T16:35:55.1510421Z ##[group]Fetching the repository
+2026-10-29T16:35:55.1531888Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +05dd085e691d2f3b6d801185e7cc8083ab7c3a3d:refs/remotes/origin/codex/cl007-windows
+2026-10-29T16:35:56.5912799Z From https://github.com/WanFengQC/Cloudleaf
+2026-10-29T16:35:56.5914582Z  * [new ref]         05dd085e691d2f3b6d801185e7cc8083ab7c3a3d -> origin/codex/cl007-windows
+2026-10-29T16:35:56.5968738Z ##[endgroup]
+2026-10-29T16:35:56.5969420Z ##[group]Determining the checkout info
+2026-10-29T16:35:56.5973003Z ##[endgroup]
+2026-10-29T16:35:56.5990800Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2026-10-29T16:35:56.6610132Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2026-10-29T16:35:56.7098367Z ##[group]Checking out the ref
+2026-10-29T16:35:56.7110597Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force -B codex/cl007-windows refs/remotes/origin/codex/cl007-windows
+2026-10-29T16:35:56.9717305Z Switched to a new branch 'codex/cl007-windows'
+2026-10-29T16:35:56.9742774Z branch 'codex/cl007-windows' set up to track 'origin/codex/cl007-windows'.
+2026-10-29T16:35:56.9799467Z ##[endgroup]
+2026-10-29T16:35:57.0316446Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2026-10-29T16:35:57.0693799Z 05dd085e691d2f3b6d801185e7cc8083ab7c3a3d
+2026-10-29T16:35:57.1188771Z ##[group]Run actions/setup-python@v5
+2026-10-29T16:35:57.1189140Z with:
+2026-10-29T16:35:57.1189338Z   python-version: 3.12
+2026-10-29T16:35:57.1189566Z   check-latest: false
+2026-10-29T16:35:57.1192013Z   token: ***
+2026-10-29T16:35:57.1192225Z   update-environment: true
+2026-10-29T16:35:57.1192459Z   allow-prereleases: false
+2026-10-29T16:35:57.1192667Z   freethreaded: false
+2026-10-29T16:35:57.1192852Z env:
+2026-10-29T16:35:57.1193015Z   PYTHONUTF8: 1
+2026-10-29T16:35:57.1193210Z   PYTHONIOENCODING: utf-8
+2026-10-29T16:35:57.1194311Z ##[endgroup]
+2026-10-29T16:35:57.3053817Z ##[group]Installed versions
+2026-10-29T16:35:57.3212112Z (node:1796) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-29T16:35:57.3213354Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-29T16:35:57.3214206Z Successfully set up CPython (3.12.10)
+2026-10-29T16:35:57.3215197Z ##[endgroup]
+2026-10-29T16:35:57.3552380Z ##[group]Run rustup toolchain install 1.90.0 --profile minimal --component clippy --component rustfmt
+2026-10-29T16:35:57.3553285Z [36;1mrustup toolchain install 1.90.0 --profile minimal --component clippy --component rustfmt[0m
+2026-10-29T16:35:57.4313809Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-29T16:35:57.4314284Z env:
+2026-10-29T16:35:57.4314529Z   PYTHONUTF8: 1
+2026-10-29T16:35:57.4314832Z   PYTHONIOENCODING: utf-8
+2026-10-29T16:35:57.4315233Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:35:57.4315884Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-10-29T16:35:57.4316477Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:35:57.4317014Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:35:57.4317542Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:35:57.4318010Z ##[endgroup]
+2026-10-29T16:35:58.4991562Z info: syncing channel updates for 1.90.0-x86_64-pc-windows-msvc
+2026-10-29T16:35:58.9973845Z info: latest update on 2025-09-18 for version 1.90.0 (1159e78c4 2025-09-14)
+2026-10-29T16:35:59.0070234Z info: downloading 5 components
+2026-10-29T16:36:08.8056074Z
+2026-10-29T16:36:08.8389656Z   1.90.0-x86_64-pc-windows-msvc installed - rustc 1.90.0 (1159e78c4 2025-09-14)
+2026-10-29T16:36:08.8390226Z
+2026-10-29T16:36:08.9960433Z ##[group]Run cargo fetch --locked
+2026-10-29T16:36:08.9960814Z [36;1mcargo fetch --locked[0m
+2026-10-29T16:36:09.0042837Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-29T16:36:09.0043208Z env:
+2026-10-29T16:36:09.0043387Z   PYTHONUTF8: 1
+2026-10-29T16:36:09.0043581Z   PYTHONIOENCODING: utf-8
+2026-10-29T16:36:09.0043887Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:36:09.0044348Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-10-29T16:36:09.0044806Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:36:09.0045206Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:36:09.0045596Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:36:09.0045902Z ##[endgroup]
+2026-10-29T16:36:09.9438178Z     Updating crates.io index
+2026-10-29T16:36:10.2473437Z  Downloading crates ...
+2026-10-29T16:36:10.3569194Z   Downloaded windows-link v0.2.1
+2026-10-29T16:36:10.3709096Z   Downloaded windows-threading v0.2.1
+2026-10-29T16:36:10.3813278Z   Downloaded windows-numerics v0.3.1
+2026-10-29T16:36:10.4031859Z   Downloaded windows-collections v0.3.2
+2026-10-29T16:36:10.4159420Z   Downloaded windows-future v0.3.2
+2026-10-29T16:36:10.4364793Z   Downloaded proc-macro2 v1.0.107
+2026-10-29T16:36:10.4701408Z   Downloaded quote v1.0.47
+2026-10-29T16:36:10.5056352Z   Downloaded windows-interface v0.59.3
+2026-10-29T16:36:10.5870057Z   Downloaded windows-result v0.4.1
+2026-10-29T16:36:10.6072262Z   Downloaded unicode-ident v1.0.27
+2026-10-29T16:36:10.6351340Z   Downloaded windows-core v0.62.2
+2026-10-29T16:36:10.6791939Z   Downloaded windows-implement v0.60.2
+2026-10-29T16:36:10.6908776Z   Downloaded windows-strings v0.5.1
+2026-10-29T16:36:10.7185857Z   Downloaded syn v2.0.119
+2026-10-29T16:36:10.8693982Z   Downloaded windows v0.62.2
+2026-10-29T16:36:13.0064386Z ##[group]Run cargo fmt --all --check
+2026-10-29T16:36:13.0064736Z [36;1mcargo fmt --all --check[0m
+2026-10-29T16:36:13.0144079Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-29T16:36:13.0144674Z env:
+2026-10-29T16:36:13.0144852Z   PYTHONUTF8: 1
+2026-10-29T16:36:13.0145045Z   PYTHONIOENCODING: utf-8
+2026-10-29T16:36:13.0145356Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:36:13.0145829Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-10-29T16:36:13.0146284Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:36:13.0146696Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:36:13.0147093Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:36:13.0147408Z ##[endgroup]
+2026-10-29T16:36:14.4142942Z ##[group]Run cargo clippy --workspace --all-targets --locked --offline -- -D warnings
+2026-10-29T16:36:14.4143636Z [36;1mcargo clippy --workspace --all-targets --locked --offline -- -D warnings[0m
+2026-10-29T16:36:14.4239395Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-29T16:36:14.4239783Z env:
+2026-10-29T16:36:14.4239960Z   PYTHONUTF8: 1
+2026-10-29T16:36:14.4240150Z   PYTHONIOENCODING: utf-8
+2026-10-29T16:36:14.4240455Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:36:14.4240916Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-10-29T16:36:14.4241379Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:36:14.4241783Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:36:14.4242204Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:36:14.4242529Z ##[endgroup]
+2026-10-29T16:36:15.5287861Z     Checking cloudleaf-types v0.1.0 (D:\a\Cloudleaf\Cloudleaf\crates\cloudleaf-types)
+2026-10-29T16:36:15.5289701Z    Compiling proc-macro2 v1.0.107
+2026-10-29T16:36:15.5290267Z    Compiling unicode-ident v1.0.27
+2026-10-29T16:36:15.5290758Z    Compiling quote v1.0.47
+2026-10-29T16:36:15.6914558Z     Checking windows-link v0.2.1
+2026-10-29T16:36:15.7554144Z     Checking cloudleaf-pinyin v0.1.0 (D:\a\Cloudleaf\Cloudleaf\crates\cloudleaf-pinyin)
+2026-10-29T16:36:15.7787164Z     Checking windows-result v0.4.1
+2026-10-29T16:36:15.9133622Z     Checking cloudleaf-dictionary v0.1.0 (D:\a\Cloudleaf\Cloudleaf\crates\cloudleaf-dictionary)
+2026-10-29T16:36:15.9223944Z     Checking windows-strings v0.5.1
+2026-10-29T16:36:16.0705919Z     Checking cloudleaf-candidate v0.1.0 (D:\a\Cloudleaf\Cloudleaf\crates\cloudleaf-candidate)
+2026-10-29T16:36:16.0854175Z     Checking windows-threading v0.2.1
+2026-10-29T16:36:16.1581283Z     Checking cloudleaf-input v0.1.0 (D:\a\Cloudleaf\Cloudleaf\crates\cloudleaf-input)
+2026-10-29T16:36:16.3075211Z     Checking cloudleaf-cli v0.1.0 (D:\a\Cloudleaf\Cloudleaf\apps\cloudleaf-cli)
+2026-10-29T16:36:18.5526725Z    Compiling syn v2.0.119
+2026-10-29T16:36:21.7864081Z    Compiling windows-implement v0.60.2
+2026-10-29T16:36:21.7865963Z    Compiling windows-interface v0.59.3
+2026-10-29T16:36:22.5526272Z     Checking windows-core v0.62.2
+2026-10-29T16:36:22.8633259Z     Checking windows-future v0.3.2
+2026-10-29T16:36:22.8633827Z     Checking windows-collections v0.3.2
+2026-10-29T16:36:22.8634558Z     Checking windows-numerics v0.3.1
+2026-10-29T16:36:23.3932029Z     Checking windows v0.62.2
+2026-10-29T16:36:35.6944939Z     Checking cloudleaf-windows-ime v0.1.0 (D:\a\Cloudleaf\Cloudleaf\apps\windows-ime)
+2026-10-29T16:36:38.7088419Z     Finished `dev` profile [unoptimized + debuginfo] target(s) in 23.30s
+2026-10-29T16:36:38.8610879Z ##[group]Run cargo test --workspace --all-targets --locked --offline
+2026-10-29T16:36:38.8611490Z [36;1mcargo test --workspace --all-targets --locked --offline[0m
+2026-10-29T16:36:38.8685695Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-29T16:36:38.8686049Z env:
+2026-10-29T16:36:38.8686228Z   PYTHONUTF8: 1
+2026-10-29T16:36:38.8686443Z   PYTHONIOENCODING: utf-8
+2026-10-29T16:36:38.8686742Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:36:38.8687421Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-10-29T16:36:38.8687893Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:36:38.8688292Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:36:38.8688687Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:36:38.8689000Z ##[endgroup]
+2026-10-29T16:36:39.3310507Z    Compiling cloudleaf-types v0.1.0 (D:\a\Cloudleaf\Cloudleaf\crates\cloudleaf-types)
+2026-10-29T16:36:39.3324282Z    Compiling windows-link v0.2.1
+2026-10-29T16:36:39.3735131Z    Compiling windows-strings v0.5.1
+2026-10-29T16:36:39.3936934Z    Compiling windows-result v0.4.1
+2026-10-29T16:36:39.6260370Z    Compiling cloudleaf-pinyin v0.1.0 (D:\a\Cloudleaf\Cloudleaf\crates\cloudleaf-pinyin)
+2026-10-29T16:36:39.8331526Z    Compiling windows-core v0.62.2
+2026-10-29T16:36:39.9603140Z    Compiling cloudleaf-dictionary v0.1.0 (D:\a\Cloudleaf\Cloudleaf\crates\cloudleaf-dictionary)
+2026-10-29T16:36:39.9993484Z    Compiling windows-threading v0.2.1
+2026-10-29T16:36:40.7593210Z    Compiling cloudleaf-candidate v0.1.0 (D:\a\Cloudleaf\Cloudleaf\crates\cloudleaf-candidate)
+2026-10-29T16:36:40.8663913Z    Compiling windows-future v0.3.2
+2026-10-29T16:36:41.2737583Z    Compiling cloudleaf-input v0.1.0 (D:\a\Cloudleaf\Cloudleaf\crates\cloudleaf-input)
+2026-10-29T16:36:41.5067479Z    Compiling windows-numerics v0.3.1
+2026-10-29T16:36:41.8000239Z    Compiling windows-collections v0.3.2
+2026-10-29T16:36:41.8285728Z    Compiling cloudleaf-cli v0.1.0 (D:\a\Cloudleaf\Cloudleaf\apps\cloudleaf-cli)
+2026-10-29T16:36:42.6061375Z    Compiling windows v0.62.2
+2026-10-29T16:36:59.1564015Z    Compiling cloudleaf-windows-ime v0.1.0 (D:\a\Cloudleaf\Cloudleaf\apps\windows-ime)
+2026-10-29T16:37:06.3181639Z     Finished `test` profile [unoptimized + debuginfo] target(s) in 27.10s
+2026-10-29T16:37:06.3226650Z      Running unittests src\lib.rs (target\debug\deps\cloudleaf_candidate-1b859b2ce2488501.exe)
+2026-10-29T16:37:06.3347531Z
+2026-10-29T16:37:06.3348003Z running 10 tests
+2026-10-29T16:37:06.3365730Z test tests::exact_matches_precede_higher_frequency_prefix_matches ... ok
+2026-10-29T16:37:06.3366987Z test tests::duplicate_text_across_pronunciations_uses_the_best_match ... ok
+2026-10-29T16:37:06.3367837Z test tests::annotations_do_not_change_ranking ... ok
+2026-10-29T16:37:06.3368697Z test tests::bucket_limits_preserve_global_top_k_despite_cross_bucket_duplicates ... ok
+2026-10-29T16:37:06.3374097Z test tests::ordering_is_stable_when_rows_are_reordered ... ok
+2026-10-29T16:37:06.3378893Z test tests::tied_frequency_prefers_longer_text_then_id ... ok
+2026-10-29T16:37:06.3386989Z test tests::limits_bound_output_and_keep_best_unique_candidates ... ok
+2026-10-29T16:37:06.3387902Z test tests::prototype_generates_words_and_keeps_annotations_separate ... ok
+2026-10-29T16:37:06.3396076Z test tests::unknown_invalid_empty_inputs_and_waiting_boundaries_have_no_candidates ... ok
+2026-10-29T16:37:06.3399313Z test tests::large_matching_bucket_cannot_exceed_the_public_candidate_limit ... ok
+2026-10-29T16:37:06.3399913Z
+2026-10-29T16:37:06.3400207Z test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+2026-10-29T16:37:06.3400575Z
+2026-10-29T16:37:06.3423139Z      Running unittests src\main.rs (target\debug\deps\cloudleaf_cli-d7edcf75ce8be503.exe)
+2026-10-29T16:37:06.3536126Z
+2026-10-29T16:37:06.3539085Z running 0 tests
+2026-10-29T16:37:06.3539344Z
+2026-10-29T16:37:06.3539806Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-29T16:37:06.3540433Z
+2026-10-29T16:37:06.3558693Z      Running unittests src\bin\evaluate.rs (target\debug\deps\cloudleaf_evaluate-6b8661e5248d7704.exe)
+2026-10-29T16:37:06.3675696Z
+2026-10-29T16:37:06.3676178Z running 2 tests
+2026-10-29T16:37:06.3690386Z test tests::removing_exact_priority_changes_the_synthetic_control ... ok
+2026-10-29T16:37:06.3695929Z test tests::ablation_keeps_duplicate_texts_stable_across_parse_paths ... ok
+2026-10-29T16:37:06.3696435Z
+2026-10-29T16:37:06.3697395Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-29T16:37:06.3697753Z
+2026-10-29T16:37:06.3716962Z      Running unittests src\lib.rs (target\debug\deps\cloudleaf_dictionary-97d5d1931c5db13c.exe)
+2026-10-29T16:37:06.3831216Z
+2026-10-29T16:37:06.3831675Z running 7 tests
+2026-10-29T16:37:06.3838281Z test tests::missing_or_unknown_versions_and_invalid_header_are_rejected ... ok
+2026-10-29T16:37:06.3845394Z test tests::limited_queries_preserve_best_unique_texts ... ok
+2026-10-29T16:37:06.3847240Z test tests::empty_dictionary_and_crlf_files_are_supported ... ok
+2026-10-29T16:37:06.3848020Z test tests::corrupt_rows_are_never_silently_skipped ... ok
+2026-10-29T16:37:06.3854649Z test tests::only_the_last_syllable_may_be_a_prefix ... ok
+2026-10-29T16:37:06.3861699Z test tests::prototype_is_valid_and_queries_use_the_whole_pronunciation ... ok
+2026-10-29T16:37:06.3886215Z test tests::size_and_field_limits_are_enforced ... ok
+2026-10-29T16:37:06.3886473Z
+2026-10-29T16:37:06.3886942Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+2026-10-29T16:37:06.3887292Z
+2026-10-29T16:37:06.3909753Z      Running unittests src\lib.rs (target\debug\deps\cloudleaf_input-70eb31a13f379e46.exe)
+2026-10-29T16:37:06.4018208Z
+2026-10-29T16:37:06.4018652Z running 17 tests
+2026-10-29T16:37:06.4033115Z test tests::activation_is_required_and_idempotent ... ok
+2026-10-29T16:37:06.4037170Z test tests::cursor_edits_and_backspace_operate_before_the_cursor ... ok
+2026-10-29T16:37:06.4042734Z test tests::english_mode_and_idle_system_keys_are_passed_through ... ok
+2026-10-29T16:37:06.4046820Z test tests::cancel_focus_loss_deactivation_and_mode_switch_clear_old_context ... ok
+2026-10-29T16:37:06.4048753Z test tests::exhausted_revision_or_commit_ids_are_not_reused ... ok
+2026-10-29T16:37:06.4052090Z test tests::failed_commit_preserves_selection_and_complete_failed_request ... ok
+2026-10-29T16:37:06.4053088Z test tests::deterministic_mixed_events_preserve_state_invariants ... ok
+2026-10-29T16:37:06.4059732Z test tests::navigation_crosses_pages_and_clamps_at_both_ends ... ok
+2026-10-29T16:37:06.4060672Z test tests::punctuation_only_failure_remains_recoverable_until_explicit_cancel ... ok
+2026-10-29T16:37:06.4068478Z test tests::no_dictionary_or_no_match_falls_back_to_exact_raw_input ... ok
+2026-10-29T16:37:06.4072961Z test tests::selection_and_page_numbering_are_bounded_to_current_page ... ok
+2026-10-29T16:37:06.4074851Z test tests::overlong_input_and_control_character_do_not_mutate_composition ... ok
+2026-10-29T16:37:06.4077930Z test tests::punctuation_uses_selected_candidate_and_unknown_unicode_keeps_raw ... ok
+2026-10-29T16:37:06.4082570Z test tests::space_and_enter_commit_once_without_extra_text_or_annotation ... ok
+2026-10-29T16:37:06.4083554Z test tests::text_change_resets_highlight_and_page_to_current_candidates ... ok
+2026-10-29T16:37:06.4084888Z test tests::stale_confirmation_cannot_clear_new_composition_or_new_request ... ok
+2026-10-29T16:37:06.4092017Z test tests::unavailable_digit_and_zero_preserve_raw_text_and_character ... ok
+2026-10-29T16:37:06.4092598Z
+2026-10-29T16:37:06.4093920Z test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+2026-10-29T16:37:06.4094297Z
+2026-10-29T16:37:06.4116575Z      Running tests\corpus.rs (target\debug\deps\corpus-b5144bc9ef7c773d.exe)
+2026-10-29T16:37:06.4227578Z
+2026-10-29T16:37:06.4228185Z running 1 test
+2026-10-29T16:37:06.4590747Z test fixed_input_corpus_and_candidate_ranking ... ok
+2026-10-29T16:37:06.4591510Z
+2026-10-29T16:37:06.4591780Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+2026-10-29T16:37:06.4592147Z
+2026-10-29T16:37:06.4612890Z      Running tests\platform_contract.rs (target\debug\deps\platform_contract-e8cb9aa6bb34ac95.exe)
+2026-10-29T16:37:06.4728352Z
+2026-10-29T16:37:06.4728808Z running 9 tests
+2026-10-29T16:37:06.4765789Z test known_failure_retains_full_text_and_requires_explicit_new_request ... ok
+2026-10-29T16:37:06.4768751Z test delayed_commit_serializes_owned_input_and_resumes_in_original_order ... ok
+2026-10-29T16:37:06.4769810Z test native_probe_is_read_only_and_shortcuts_never_become_characters ... ok
+2026-10-29T16:37:06.4771179Z test duplicate_native_callback_does_not_repeat_input_or_commit ... ok
+2026-10-29T16:37:06.4782084Z test queue_bound_preserves_owned_events_and_focus_cancellation_invalidates_frames ... ok
+2026-10-29T16:37:06.4791031Z test unknown_outcome_does_not_become_retryable_failure_or_clear_new_context ... ok
+2026-10-29T16:37:06.4793738Z test old_instance_ack_is_rejected_even_when_request_ids_collide ... ok
+2026-10-29T16:37:06.4803305Z test utf16_offsets_and_submission_text_do_not_include_annotations ... ok
+2026-10-29T16:37:06.4815342Z test rejected_queue_event_keeps_its_sequence_until_caller_retries ... ok
+2026-10-29T16:37:06.4815910Z
+2026-10-29T16:37:06.4817018Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+2026-10-29T16:37:06.4817607Z
+2026-10-29T16:37:06.4839576Z      Running tests\platform_contract_v2.rs (target\debug\deps\platform_contract_v2-de9c169bdbc916a0.exe)
+2026-10-29T16:37:06.4954223Z
+2026-10-29T16:37:06.4954830Z running 4 tests
+2026-10-29T16:37:06.4961424Z test utf16_offsets_reject_split_characters_and_count_surrogate_pairs ... ok
+2026-10-29T16:37:06.4979362Z test candidate_selection_requires_current_revision_and_id ... ok
+2026-10-29T16:37:06.4980973Z test configurable_pages_obey_candidate_budget_and_current_page_digits ... ok
+2026-10-29T16:37:06.7089543Z test readonly_prediction_matches_dispatch_in_all_input_states ... ok
+2026-10-29T16:37:06.7090104Z
+2026-10-29T16:37:06.7090531Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+2026-10-29T16:37:06.7090936Z
+2026-10-29T16:37:06.7112640Z      Running unittests src\lib.rs (target\debug\deps\cloudleaf_pinyin-6d9594f965da5b78.exe)
+2026-10-29T16:37:06.7226708Z
+2026-10-29T16:37:06.7227127Z running 9 tests
+2026-10-29T16:37:06.7238294Z test tests::continuous_pinyin_and_uppercase_are_supported ... ok
+2026-10-29T16:37:06.7239152Z test tests::deleting_a_prefix_recomputes_the_segmentation ... ok
+2026-10-29T16:37:06.7243345Z test tests::invalid_input_is_never_silently_truncated ... ok
+2026-10-29T16:37:06.7244166Z test tests::explicit_separator_prevents_syllable_merging ... ok
+2026-10-29T16:37:06.7248350Z test tests::keyboard_umlaut_spelling_is_supported ... ok
+2026-10-29T16:37:06.7251534Z test tests::six_letter_syllables_and_standard_ju_qu_xu_spelling_work ... ok
+2026-10-29T16:37:06.7252747Z test tests::ambiguous_paths_have_a_stable_order ... ok
+2026-10-29T16:37:06.7253400Z test tests::trailing_partial_syllable_is_preserved ... ok
+2026-10-29T16:37:06.7315256Z test tests::ambiguous_long_input_is_bounded_and_covers_every_letter ... ok
+2026-10-29T16:37:06.7315803Z
+2026-10-29T16:37:06.7316492Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+2026-10-29T16:37:06.7316919Z
+2026-10-29T16:37:06.7337599Z      Running unittests src\lib.rs (target\debug\deps\cloudleaf_types-1b7cfb7fea61cc5d.exe)
+2026-10-29T16:37:06.7448961Z
+2026-10-29T16:37:06.7449405Z running 1 test
+2026-10-29T16:37:06.7453083Z test tests::error_has_stable_code_and_location ... ok
+2026-10-29T16:37:06.7453924Z
+2026-10-29T16:37:06.7454297Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-29T16:37:06.7454736Z
+2026-10-29T16:37:06.7472910Z      Running unittests src\lib.rs (target\debug\deps\cloudleaf_windows_ime-074298fd7fbc2509.exe)
+2026-10-29T16:37:06.7627358Z
+2026-10-29T16:37:06.7627910Z running 99 tests
+2026-10-29T16:37:06.7637083Z test native::budget::tests::overflow_and_zero_cost_never_create_a_global_token ... ok
+2026-10-29T16:37:06.7638547Z test native::budget::tests::every_limit_rejects_without_changing_existing_reservations ... ok
+2026-10-29T16:37:06.7652128Z test native::budget::tests::read_only_hint_is_not_a_reservation_or_a_guarantee ... ok
+2026-10-29T16:37:06.7653485Z test native::budget::tests::shared_token_preserves_cost_until_last_owner_explicitly_releases_it ... ok
+2026-10-29T16:37:06.7665281Z test native::budget::tests::epoch_capacity_pressure_records_real_token_size_and_fails_closed ... ok
+2026-10-29T16:37:06.7690325Z test native::candidate::tests::application_owned_ui_can_query_page_count_before_allocating_indices ... ok
+2026-10-29T16:37:06.7721623Z test native::candidate::tests::failed_begin_or_class_registration_balances_only_successful_begin ... ok
+2026-10-29T16:37:06.7726561Z test native::keys::tests::repeat_bit_is_not_an_event_identity_and_merged_repeats_are_not_partly_consumed ... ok
+2026-10-29T16:37:06.7730850Z test native::owner_cleanup::tests::actual_wait_access_failure_proves_neither_owner_nor_exit ... ok
+2026-10-29T16:37:06.7739767Z test native::owner_cleanup::tests::current_thread_is_owner_but_cross_thread_observer_is_not ... ok
+2026-10-29T16:37:06.7750351Z test native::owner_cleanup::tests::duplicate_proves_original_os_thread_exit_after_join ... ok
+2026-10-29T16:37:06.7757042Z test native::candidate::tests::end_element_failure_does_not_keep_native_window_or_class_alive ... ok
+2026-10-29T16:37:06.7768398Z test native::owner_cleanup::tests::duplicate_remains_valid_after_rust_join_handle_is_dropped ... ok
+2026-10-29T16:37:06.7773199Z test native::ownership::tests::fifo_preserves_distinct_identical_native_messages_and_rejects_duplicate_callbacks ... ok
+2026-10-29T16:37:06.7781406Z test native::ownership::tests::isolate_preserves_identity_order_raw_repeat_and_known_unwritten_material ... ok
+2026-10-29T16:37:06.7786477Z test native::ownership::tests::passthrough_shortcut_merged_repeat_and_core_error_are_not_owned ... ok
+2026-10-29T16:37:06.7794537Z test native::ownership::tests::queue_full_rejects_new_ownership_without_overwriting_or_advancing_watermark ... ok
+2026-10-29T16:37:06.7799421Z test native::ownership::tests::uncertain_recovery_does_not_label_planned_commit_as_unapplied ... ok
+2026-10-29T16:37:06.7805425Z test native::ownership::tests::writing_and_unknown_never_become_not_applied_or_automatically_restart ... ok
+2026-10-29T16:37:06.8416457Z test native::owner_cleanup::tests::repeated_owner_receipts_keep_live_and_exited_proofs_distinct ... ok
+2026-10-29T16:37:06.8476771Z test native::candidate::tests::externally_destroyed_candidate_releases_class_and_ends_element_once ... ok
+2026-10-29T16:37:06.8808268Z test native::budget::tests::concurrent_acquisition_never_exceeds_any_dimension_and_releases_all_tokens ... ok
+2026-10-29T16:37:07.2017419Z test native::recovery::tests::failed_clear_keeps_display_token_after_source_was_explicitly_discarded ... ok
+2026-10-29T16:37:07.2481566Z test native::recovery::tests::failed_cleanup_notice_is_bounded_and_destroyed_broker_is_repaired_only_by_owner ... ok
+2026-10-29T16:37:07.3276039Z test native::recovery::tests::failed_main_creation_does_not_leave_a_claim_that_blocks_source_reopen ... ok
+2026-10-29T16:37:07.3541376Z test native::recovery::tests::late_transfer_keeps_source_epoch_after_host_has_already_invalidated ... ok
+2026-10-29T16:37:07.4515882Z test native::recovery::tests::offer_hides_previous_display_and_separates_epochs_without_changing_new_context ... ok
+2026-10-29T16:37:07.5477525Z test native::recovery::tests::one_locked_snapshot_binds_text_and_tokens_across_real_owner_updates_and_clear ... ok
+2026-10-29T16:37:07.5792437Z test native::recovery::tests::partial_window_class_failure_balances_registered_classes_and_module_leases ... ok
+2026-10-29T16:37:07.6488062Z test native::recovery::tests::material_budget_rejects_new_context_without_overwriting_unreleased_records ... ok
+2026-10-29T16:37:07.7532302Z test native::recovery::tests::retired_recovery_remains_accessible_after_host_release_until_explicit_close ... ok
+2026-10-29T16:37:07.7944658Z test native::recovery::tests::physical_sta_exit_keeps_data_reachable_from_new_explicit_entry_but_pins_unfinished_owner ... ok
+2026-10-29T16:37:07.7948353Z test native::registration::tests::malformed_snapshot_rejected ... ok
+2026-10-29T16:37:07.7953557Z test native::registration::tests::session_snapshot_roundtrip_preserves_full_identity ... ok
+2026-10-29T16:37:07.8197199Z test native::service::lifecycle_review_tests::lifecycle_review_factory_lock_and_reference_lease_are_balanced ... ok
+2026-10-29T16:37:07.8440973Z test native::recovery::tests::actual_class_unregister_failure_pins_userdata_and_host_budget_until_admission_stops ... ok
+2026-10-29T16:37:07.8443998Z test native::service::lifecycle_review_tests::lifecycle_review_real_dll_loader_no_registration ... ignored, 须显式提供已构建的真实 DLL；独立假 manager 仅测装载退出，不注册或激活系统输入法
+2026-10-29T16:37:07.8741978Z test native::recovery::tests::unload_other_thread_requests_owner_without_destroying_or_waiting_for_message_pump ... ok
+2026-10-29T16:37:07.9737933Z test native::service::lifecycle_review_tests::lifecycle_review_partial_activation_failure_rolls_back_only_completed_steps ... ok
+2026-10-29T16:37:07.9786812Z test native::session::render_tests::native_async_partial_write_is_unknown_with_no_automatic_retry ... ok
+2026-10-29T16:37:07.9853513Z test native::session::render_tests::native_barrier_rejection_preserves_owned_events_and_does_not_fake_enter ... ok
+2026-10-29T16:37:08.0073389Z test native::service::lifecycle_review_tests::lifecycle_review_unadvise_failure_defangs_host_and_pins_dll_until_external_release ... ok
+2026-10-29T16:37:08.0151350Z test native::session::render_tests::native_empty_delete_end_reentrant_focus_preserves_the_new_context_composition ... ok
+2026-10-29T16:37:08.0191561Z test native::session::render_tests::native_empty_delete_reentrant_focus_cannot_end_or_erase_the_new_context_again ... ok
+2026-10-29T16:37:08.0281483Z test native::session::render_tests::native_end_edit_uses_client_write_ownership_true_false_and_error_without_reading_text ... ok
+2026-10-29T16:37:08.0332364Z test native::session::render_tests::native_external_edit_invalidates_scope_and_old_composition_without_erasing_host_text ... ok
+2026-10-29T16:37:08.0391133Z test native::session::render_tests::native_owned_fifo_drains_before_second_space_native_command_and_rejects_late_callback ... ok
+2026-10-29T16:37:08.0614518Z test native::session::render_tests::native_probe_is_readonly_and_queue_full_does_not_take_new_key ... ok
+2026-10-29T16:37:08.0665768Z test native::session::render_tests::native_semantic_comparison_only_excludes_revision_and_commit_id ... ok
+2026-10-29T16:37:08.0734612Z test native::session::render_tests::native_sync_fallback_async_select_cancel_and_next_commit_keep_projection_semantics ... ok
+2026-10-29T16:37:08.0820895Z test native::session::render_tests::native_unknown_and_focus_reset_do_not_require_shadow_ids_to_equal_actual_ids ... ok
+2026-10-29T16:37:08.1258966Z test native::recovery::tests::destroyed_main_reopens_from_broker_without_losing_or_duplicating_unknown_material ... ok
+2026-10-29T16:37:08.3954146Z test native::service::lifecycle_review_tests::lifecycle_review_repeated_activate_deactivate_releases_manager_and_sinks ... ok
+2026-10-29T16:37:08.4457887Z test native::session::render_tests::native_watchdog_peer_failure_stops_admission_and_notifies_the_real_sta_window ... ok
+2026-10-29T16:37:08.4470721Z test native::session::render_tests::review_async_callback_keeps_host_alive_until_callback_is_released ... ok
+2026-10-29T16:37:08.4487537Z test native::session::render_tests::review_candidate_sync_lock_rejection_preserves_frame_and_original_key ... ok
+2026-10-29T16:37:08.4506414Z test native::session::render_tests::review_distinct_keyedits_preserve_legal_auto_repeat ... ok
+2026-10-29T16:37:08.4521190Z test native::session::render_tests::review_duplicate_edit_and_stale_candidate_do_not_repeat_commit_or_ack ... ok
+2026-10-29T16:37:08.4533486Z test native::session::render_tests::review_duplicate_keyedit_executes_once ... ok
+2026-10-29T16:37:08.4546431Z test native::session::render_tests::review_expired_layout_retains_owned_queue_without_writing ... ok
+2026-10-29T16:37:08.4612116Z test native::session::render_tests::review_production_commit_stages ... ok
+2026-10-29T16:37:08.4635481Z test native::session::render_tests::review_rejected_sync_callback_cannot_later_consume_native_key_or_candidate ... ok
+2026-10-29T16:37:08.4650829Z test native::session::render_tests::review_rejected_sync_cleanup_cannot_erase_later_native_text ... ok
+2026-10-29T16:37:08.4664623Z test native::session::render_tests::review_settext_reentrant_focus_preserves_written_commit ... ok
+2026-10-29T16:37:08.6489675Z test native::session::render_tests::native_empty_composition_delete_has_the_same_unknown_boundary_as_nonempty_writes ... ok
+2026-10-29T16:37:08.7346567Z test native::session::render_tests::native_watchdog_failed_notification_is_bounded_and_next_sta_entry_recovers_ownership ... ok
+2026-10-29T16:37:08.7920727Z test native::session::render_tests::round3_sync_candidate_unknown_retains_reserved_material_and_applied_releases_it ... ok
+2026-10-29T16:37:08.8417132Z test native::session::render_tests::round3_expired_scope_sync_native_unknown_preserves_true_envelope_after_stop_and_new_view ... ok
+2026-10-29T16:37:08.8606468Z test native::session::render_tests::round4_expired_scope_with_full_ownership_rejects_before_barrier_or_write ... ok
+2026-10-29T16:37:09.0025699Z test native::session::render_tests::native_watchdog_without_more_input_notifies_sta_and_seals_the_late_callback ... ok
+2026-10-29T16:37:09.1886610Z test native::session::render_tests::round4_abrupt_settext_exit_preserves_flight_without_drop_or_retry ... ok
+2026-10-29T16:37:09.2222862Z test native::session::render_tests::round4_physical_sta_exit_releases_receipt_but_preserves_unknown_until_new_sta_discards ... ok
+2026-10-29T16:37:09.3553782Z test native::session::render_tests::round3_cross_instance_budget_rejects_async_sync_and_candidate_before_ownership ... ok
+2026-10-29T16:37:09.3557631Z test native::session::render_tests::simulated_com_diagnostic_benchmark ... ignored, 模拟 COM 机制诊断；显式使用 release 与 ignored 参数运行，不是真实 Windows 应用基准
+2026-10-29T16:37:09.3604900Z test native::session::tests::duplicate_layout_callback_is_not_a_second_dispatch ... ok
+2026-10-29T16:37:09.3610689Z test native::session::tests::expired_async_cleanup_does_not_touch_or_end_old_composition ... ok
+2026-10-29T16:37:09.3637709Z test native::session::tests::expired_layout_callback_quarantines_without_running_queued_operations ... ok
+2026-10-29T16:37:09.3663435Z test native::session::tests::focus_loss_during_uncertain_commit_only_ends_old_composition ... ok
+2026-10-29T16:37:09.3693702Z test native::session::tests::late_edit_does_not_clear_new_epoch_queue_or_schedule ... ok
+2026-10-29T16:37:09.3711600Z test native::session::tests::layout_queue_overflow_reports_failure_and_quarantines_without_dropping_owned_work ... ok
+2026-10-29T16:37:09.3733957Z test native::session::tests::missing_input_scope_fails_closed_without_consuming_key ... ok
+2026-10-29T16:37:09.3749671Z test native::session::tests::readonly_write_callback_does_not_consume_or_mutate_core ... ok
+2026-10-29T16:37:09.3770160Z test native::session::tests::reentrant_candidate_abort_is_queued_even_while_rendering ... ok
+2026-10-29T16:37:09.3788516Z test native::session::tests::rejected_candidate_lock_keeps_revision_text_and_candidates_for_retry ... ok
+2026-10-29T16:37:09.3860351Z test native::session::tests::rejected_sync_lock_preserves_core_queue_and_original_key ... ok
+2026-10-29T16:37:09.3895210Z test native::session::tests::sync_callback_object_is_used_once_even_if_first_scope_check_rejects ... ok
+2026-10-29T16:37:09.3898445Z test native::session::tests::unknown_cleanup_never_obtains_or_erases_text_range ... ok
+2026-10-29T16:37:09.3918270Z test native::session::tests::unknown_marker_is_consumed_even_without_composition ... ok
+2026-10-29T16:37:09.3983941Z test native::watchdog::tests::completion_is_owner_proof_after_os_thread_handles_signal ... ok
+2026-10-29T16:37:09.4309761Z test native::watchdog::tests::independent_detection_needs_no_sta_message_or_input ... ok
+2026-10-29T16:37:09.4629122Z test native::watchdog::tests::locked_or_constructing_task_remains_pinned_until_exclusive_completed_cleanup ... ok
+2026-10-29T16:37:09.4630522Z test native::session::render_tests::round5_external_com_references_pin_old_host_without_polluting_new_context ... ok
+2026-10-29T16:37:09.4753485Z test native::watchdog::tests::partial_worker_start_failure_is_retired_and_does_not_poison_future_monitors ... ok
+2026-10-29T16:37:09.4816272Z test native::watchdog::tests::registration_failure_creates_no_unreachable_worker_and_future_start_succeeds ... ok
+2026-10-29T16:37:09.4876103Z test native::watchdog::tests::worker_shutdown_releases_module_leases_without_blocking_sta ... ok
+2026-10-29T16:37:09.5261670Z test native::watchdog::tests::writing_timeout_is_unknown_and_cannot_be_confirmed_or_retried ... ok
+2026-10-29T16:37:09.7254031Z test native::watchdog::tests::observer_detects_failed_primary_monitor_and_disables_admission ... ok
+2026-10-29T16:37:11.2373432Z test native::session::render_tests::round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session ... ok
+2026-10-29T16:37:11.3439880Z test native::session::render_tests::round4_multista_unknown_exit_and_class_failure_recover_for_twenty_rounds ... ok
+2026-10-29T16:37:11.3440908Z
+2026-10-29T16:37:11.3441212Z test result: ok. 97 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 4.58s
+2026-10-29T16:37:11.3441790Z
+2026-10-29T16:37:11.3473158Z      Running unittests src\main.rs (target\debug\deps\cloudleaf_ime-112401b36aea8943.exe)
+2026-10-29T16:37:11.3580006Z
+2026-10-29T16:37:11.3580441Z running 0 tests
+2026-10-29T16:37:11.3580626Z
+2026-10-29T16:37:11.3580917Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-29T16:37:11.3581288Z
+2026-10-29T16:37:11.4902112Z ##[group]Run cargo test --workspace --doc --locked --offline
+2026-10-29T16:37:11.4902651Z [36;1mcargo test --workspace --doc --locked --offline[0m
+2026-10-29T16:37:11.4976820Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-29T16:37:11.4977169Z env:
+2026-10-29T16:37:11.4977351Z   PYTHONUTF8: 1
+2026-10-29T16:37:11.4977557Z   PYTHONIOENCODING: utf-8
+2026-10-29T16:37:11.4977865Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:37:11.4978325Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-10-29T16:37:11.4978772Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:37:11.4979177Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:37:11.4979588Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:37:11.4979921Z ##[endgroup]
+2026-10-29T16:37:11.8978352Z     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.04s
+2026-10-29T16:37:11.9001878Z    Doc-tests cloudleaf_candidate
+2026-10-29T16:37:11.9441383Z
+2026-10-29T16:37:11.9441582Z running 0 tests
+2026-10-29T16:37:11.9441835Z
+2026-10-29T16:37:11.9442262Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-29T16:37:11.9442838Z
+2026-10-29T16:37:11.9517018Z    Doc-tests cloudleaf_dictionary
+2026-10-29T16:37:11.9935800Z
+2026-10-29T16:37:11.9936324Z running 0 tests
+2026-10-29T16:37:11.9936805Z
+2026-10-29T16:37:11.9938294Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-29T16:37:11.9938997Z
+2026-10-29T16:37:12.0010931Z    Doc-tests cloudleaf_input
+2026-10-29T16:37:12.0444051Z
+2026-10-29T16:37:12.0444749Z running 0 tests
+2026-10-29T16:37:12.0445344Z
+2026-10-29T16:37:12.0445884Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-29T16:37:12.0446633Z
+2026-10-29T16:37:12.0520568Z    Doc-tests cloudleaf_pinyin
+2026-10-29T16:37:12.0903774Z
+2026-10-29T16:37:12.0904369Z running 0 tests
+2026-10-29T16:37:12.0904921Z
+2026-10-29T16:37:12.0905864Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-29T16:37:12.0906481Z
+2026-10-29T16:37:12.0977925Z    Doc-tests cloudleaf_types
+2026-10-29T16:37:12.1375694Z
+2026-10-29T16:37:12.1376341Z running 0 tests
+2026-10-29T16:37:12.1376610Z
+2026-10-29T16:37:12.1377138Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-29T16:37:12.1377619Z
+2026-10-29T16:37:12.1447422Z    Doc-tests cloudleaf_windows_ime
+2026-10-29T16:37:12.4848868Z
+2026-10-29T16:37:12.4849374Z running 0 tests
+2026-10-29T16:37:12.4849879Z
+2026-10-29T16:37:12.4850709Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-29T16:37:12.4851303Z
+2026-10-29T16:37:12.6482420Z ##[group]Run python scripts/check_workspace.py
+2026-10-29T16:37:12.6482955Z [36;1mpython scripts/check_workspace.py[0m
+2026-10-29T16:37:12.6556630Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-29T16:37:12.6557093Z env:
+2026-10-29T16:37:12.6557426Z   PYTHONUTF8: 1
+2026-10-29T16:37:12.6557716Z   PYTHONIOENCODING: utf-8
+2026-10-29T16:37:12.6558113Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:37:12.6558674Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-10-29T16:37:12.6559210Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:37:12.6569450Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:37:12.6570016Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:37:12.6570460Z ##[endgroup]
+2026-10-29T16:37:14.3992472Z 资源已验证：tests/evaluation/algorithm-v1.tsv (83 条)
+2026-10-29T16:37:14.3993254Z 资源已验证：tests/fixtures/input-v1.tsv (41 条)
+2026-10-29T16:37:14.3993795Z 资源已验证：data/dictionaries/prototype.tsv (64 条)
+2026-10-29T16:37:14.3994594Z workspace 已验证：7 个crate，15 个已登记外部Rust依赖，MSRV 1.90.0
+2026-10-29T16:37:14.5407387Z ##[group]Run cargo install cargo-audit --version 0.22.2 --locked
+2026-10-29T16:37:14.5407968Z [36;1mcargo install cargo-audit --version 0.22.2 --locked[0m
+2026-10-29T16:37:14.5481162Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-29T16:37:14.5481524Z env:
+2026-10-29T16:37:14.5481700Z   PYTHONUTF8: 1
+2026-10-29T16:37:14.5481898Z   PYTHONIOENCODING: utf-8
+2026-10-29T16:37:14.5482204Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:37:14.5482656Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-10-29T16:37:14.5483123Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:37:14.5483523Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:37:14.5483914Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:37:14.5484219Z ##[endgroup]
+2026-10-29T16:37:14.9062775Z     Updating crates.io index
+2026-10-29T16:37:14.9373582Z  Downloading crates ...
+2026-10-29T16:37:15.0509800Z   Downloaded cargo-audit v0.22.2
+2026-10-29T16:37:15.2202606Z   Installing cargo-audit v0.22.2
+2026-10-29T16:37:15.2285254Z     Updating crates.io index
+2026-10-29T16:37:18.0885372Z     Updating crates.io index
+2026-10-29T16:37:18.4646990Z  Downloading crates ...
+2026-10-29T16:37:18.5932630Z   Downloaded anstyle-wincon v3.0.11
+2026-10-29T16:37:18.6610459Z   Downloaded idna_adapter v1.2.1
+2026-10-29T16:37:18.6969741Z   Downloaded powerfmt v0.2.0
+2026-10-29T16:37:18.7837183Z   Downloaded ppv-lite86 v0.2.21
+2026-10-29T16:37:18.8626480Z   Downloaded rand_core v0.9.5
+2026-10-29T16:37:18.9579977Z   Downloaded prodash v31.0.0
+2026-10-29T16:37:19.2025767Z   Downloaded sync_wrapper v1.0.2
+2026-10-29T16:37:19.2340264Z   Downloaded termcolor v1.4.1
+2026-10-29T16:37:19.2822815Z   Downloaded zerovec-derive v0.11.3
+2026-10-29T16:37:19.3934653Z   Downloaded zmij v1.0.21
+2026-10-29T16:37:19.5810717Z   Downloaded zeroize v1.8.2
+2026-10-29T16:37:19.6174111Z   Downloaded tracing-core v0.1.36
+2026-10-29T16:37:19.6727839Z   Downloaded tame-index v0.26.3
+2026-10-29T16:37:19.8571315Z   Downloaded quinn-proto v0.11.14
+2026-10-29T16:37:19.9677832Z   Downloaded syn v2.0.117
+2026-10-29T16:37:20.5367393Z   Downloaded toml v1.1.2+spec-1.1.0
+2026-10-29T16:37:20.7849251Z   Downloaded sha1-checked v0.10.0
+2026-10-29T16:37:21.0766374Z   Downloaded zlib-rs v0.6.3
+2026-10-29T16:37:21.1413387Z   Downloaded zerotrie v0.2.4
+2026-10-29T16:37:21.1961074Z   Downloaded url v2.5.8
+2026-10-29T16:37:21.2273481Z   Downloaded zerovec v0.11.6
+2026-10-29T16:37:21.3218627Z   Downloaded zerocopy v0.8.48
+2026-10-29T16:37:21.7005239Z   Downloaded serde v1.0.228
+2026-10-29T16:37:21.7383636Z   Downloaded regex v1.12.3
+2026-10-29T16:37:21.8024344Z   Downloaded winnow v1.0.2
+2026-10-29T16:37:21.9208580Z   Downloaded winnow v0.7.15
+2026-10-29T16:37:22.0579728Z   Downloaded serde_json v1.0.149
+2026-10-29T16:37:23.2776956Z   Downloaded wasmparser v0.247.0
+2026-10-29T16:37:23.3573910Z   Downloaded rustls v0.23.40
+2026-10-29T16:37:23.4792521Z   Downloaded regex-syntax v0.8.10
+2026-10-29T16:37:23.6319257Z   Downloaded typenum v1.20.0
+2026-10-29T16:37:23.6605326Z   Downloaded tower v0.5.3
+2026-10-29T16:37:23.7868757Z   Downloaded unicode-normalization v0.1.25
+2026-10-29T16:37:23.8169954Z   Downloaded tokio-util v0.7.18
+2026-10-29T16:37:23.9154285Z   Downloaded tower-http v0.6.10
+2026-10-29T16:37:24.0373326Z   Downloaded reqwest v0.13.3
+2026-10-29T16:37:24.0947415Z   Downloaded tracing-subscriber v0.3.23
+2026-10-29T16:37:24.1680057Z   Downloaded time v0.3.47
+2026-10-29T16:37:24.2997344Z   Downloaded regex-automata v0.4.14
+2026-10-29T16:37:24.3927314Z   Downloaded rustsec v0.33.0
+2026-10-29T16:37:24.4497276Z   Downloaded rustls-webpki v0.103.13
+2026-10-29T16:37:24.4798683Z   Downloaded rayon-core v1.13.0
+2026-10-29T16:37:24.5194893Z   Downloaded wasmparser v0.207.0
+2026-10-29T16:37:24.5736867Z   Downloaded toml v0.9.12+spec-1.1.0
+2026-10-29T16:37:24.6122747Z   Downloaded tinyvec v1.11.0
+2026-10-29T16:37:24.6362413Z   Downloaded unicode-ident v1.0.24
+2026-10-29T16:37:24.6622925Z   Downloaded twox-hash v2.1.2
+2026-10-29T16:37:24.6875304Z   Downloaded tracing v0.1.44
+2026-10-29T16:37:24.7702779Z   Downloaded tracing-log v0.2.0
+2026-10-29T16:37:24.7820124Z   Downloaded tracing-attributes v0.1.31
+2026-10-29T16:37:24.8081266Z   Downloaded toml_writer v1.1.1+spec-1.1.0
+2026-10-29T16:37:24.8189014Z   Downloaded toml_parser v1.1.2+spec-1.1.0
+2026-10-29T16:37:24.8384797Z   Downloaded toml_datetime v1.1.1+spec-1.1.0
+2026-10-29T16:37:24.8524047Z   Downloaded toml_datetime v0.7.5+spec-1.1.0
+2026-10-29T16:37:24.8641192Z   Downloaded toml-span v0.7.1
+2026-10-29T16:37:24.8832504Z   Downloaded tokio-rustls v0.26.4
+2026-10-29T16:37:25.5079593Z   Downloaded tinystr v0.8.3
+2026-10-29T16:37:25.5553485Z   Downloaded time-macros v0.2.27
+2026-10-29T16:37:25.5778979Z   Downloaded thread_local v1.1.9
+2026-10-29T16:37:25.6096460Z   Downloaded thiserror-impl v2.0.18
+2026-10-29T16:37:25.6245764Z   Downloaded thiserror v2.0.18
+2026-10-29T16:37:25.7088785Z   Downloaded zerofrom v0.1.7
+2026-10-29T16:37:25.7227959Z   Downloaded windows_x86_64_msvc v0.53.1
+2026-10-29T16:37:25.7470484Z   Downloaded yoke v0.8.2
+2026-10-29T16:37:25.7633349Z   Downloaded windows-targets v0.53.5
+2026-10-29T16:37:25.7717379Z   Downloaded winapi-util v0.1.11
+2026-10-29T16:37:25.7846956Z   Downloaded want v0.3.1
+2026-10-29T16:37:25.7928786Z   Downloaded walkdir v2.5.0
+2026-10-29T16:37:25.8081008Z   Downloaded wait-timeout v0.2.1
+2026-10-29T16:37:25.8213623Z   Downloaded utf8parse v0.2.2
+2026-10-29T16:37:25.8301398Z   Downloaded utf8_iter v1.0.4
+2026-10-29T16:37:25.8400671Z   Downloaded tokio v1.52.3
+2026-10-29T16:37:26.5809407Z   Downloaded untrusted v0.9.0
+2026-10-29T16:37:26.6009768Z   Downloaded unicode-bom v2.0.3
+2026-10-29T16:37:26.6142800Z   Downloaded try-lock v0.2.5
+2026-10-29T16:37:26.6229557Z   Downloaded tower-service v0.3.3
+2026-10-29T16:37:26.6313126Z   Downloaded tower-layer v0.3.3
+2026-10-29T16:37:26.6413736Z   Downloaded topological-sort v0.2.2
+2026-10-29T16:37:26.6512279Z   Downloaded tinyvec_macros v0.1.1
+2026-10-29T16:37:26.6600054Z   Downloaded time-core v0.1.8
+2026-10-29T16:37:26.6690656Z   Downloaded serde_derive v1.0.228
+2026-10-29T16:37:26.7014689Z   Downloaded serde_core v1.0.228
+2026-10-29T16:37:26.7321833Z   Downloaded semver v1.0.28
+2026-10-29T16:37:26.7591950Z   Downloaded rustls-platform-verifier v0.7.0
+2026-10-29T16:37:26.7984088Z   Downloaded winapi v0.3.9
+2026-10-29T16:37:27.0951323Z   Downloaded rustls-pki-types v1.14.1
+2026-10-29T16:37:27.1256243Z   Downloaded rustc-demangle v0.1.27
+2026-10-29T16:37:27.1401108Z   Downloaded rand v0.9.4
+2026-10-29T16:37:27.1774629Z   Downloaded quinn v0.11.9
+2026-10-29T16:37:27.2062622Z   Downloaded petgraph v0.8.3
+2026-10-29T16:37:27.3476826Z   Downloaded jiff v0.2.28
+2026-10-29T16:37:27.4533150Z   Downloaded zerofrom-derive v0.1.7
+2026-10-29T16:37:27.4622798Z   Downloaded yoke-derive v0.8.2
+2026-10-29T16:37:27.4718065Z   Downloaded writeable v0.6.3
+2026-10-29T16:37:27.4947367Z   Downloaded version_check v0.9.5
+2026-10-29T16:37:27.5068988Z   Downloaded uluru v3.1.0
+2026-10-29T16:37:27.5141658Z   Downloaded sha1 v0.10.6
+2026-10-29T16:37:27.5276795Z   Downloaded serde_spanned v1.1.1
+2026-10-29T16:37:27.5363734Z   Downloaded secrecy v0.10.3
+2026-10-29T16:37:27.5443962Z   Downloaded scopeguard v1.2.0
+2026-10-29T16:37:27.5553988Z   Downloaded same-file v1.0.6
+2026-10-29T16:37:27.5671753Z   Downloaded rustversion v1.0.22
+2026-10-29T16:37:27.5995786Z   Downloaded rustc-stable-hash v0.1.2
+2026-10-29T16:37:27.6188984Z   Downloaded rustc-hash v2.1.2
+2026-10-29T16:37:27.6303827Z   Downloaded rayon v1.12.0
+2026-10-29T16:37:28.2636663Z   Downloaded libc v0.2.186
+2026-10-29T16:37:28.5778456Z   Downloaded encoding_rs v0.8.35
+2026-10-29T16:37:28.6708047Z   Downloaded tempfile v3.27.0
+2026-10-29T16:37:28.6943466Z   Downloaded synstructure v0.13.2
+2026-10-29T16:37:28.7024197Z   Downloaded strsim v0.11.1
+2026-10-29T16:37:28.7155985Z   Downloaded static_assertions v1.1.0
+2026-10-29T16:37:28.7303766Z   Downloaded socket2 v0.6.3
+2026-10-29T16:37:28.7447742Z   Downloaded smol_str v0.3.2
+2026-10-29T16:37:28.7617366Z   Downloaded smallvec v1.15.1
+2026-10-29T16:37:28.7839409Z   Downloaded slab v0.4.12
+2026-10-29T16:37:28.7962325Z   Downloaded simd-adler32 v0.3.9
+2026-10-29T16:37:28.8176924Z   Downloaded ring v0.17.14
+2026-10-29T16:37:29.4791475Z   Downloaded shlex v1.3.0
+2026-10-29T16:37:29.4905810Z   Downloaded shell-words v1.1.1
+2026-10-29T16:37:29.5016678Z   Downloaded sharded-slab v0.1.7
+2026-10-29T16:37:29.5330910Z   Downloaded subtle v2.6.1
+2026-10-29T16:37:29.5430545Z   Downloaded stable_deref_trait v1.2.1
+2026-10-29T16:37:29.5511268Z   Downloaded object v0.39.1
+2026-10-29T16:37:29.6515127Z   Downloaded gix v0.84.0
+2026-10-29T16:37:29.8180117Z   Downloaded color-eyre v0.6.5
+2026-10-29T16:37:29.8608485Z   Downloaded bstr v1.12.1
+2026-10-29T16:37:29.9198000Z   Downloaded mio v1.2.0
+2026-10-29T16:37:29.9766028Z   Downloaded memchr v2.8.0
+2026-10-29T16:37:30.0205851Z   Downloaded jiff-static v0.2.28
+2026-10-29T16:37:30.0409102Z   Downloaded indexmap v2.14.0
+2026-10-29T16:37:30.0752888Z   Downloaded idna v1.1.0
+2026-10-29T16:37:30.0956458Z   Downloaded icu_properties_data v2.1.2
+2026-10-29T16:37:30.2253481Z   Downloaded icu_normalizer v2.1.1
+2026-10-29T16:37:30.2550764Z   Downloaded icu_locale_core v2.1.1
+2026-10-29T16:37:30.3309026Z   Downloaded hyper v1.9.0
+2026-10-29T16:37:30.8775211Z   Downloaded hashbrown v0.17.1
+2026-10-29T16:37:30.9180883Z   Downloaded hashbrown v0.16.1
+2026-10-29T16:37:30.9539257Z   Downloaded hashbrown v0.15.5
+2026-10-29T16:37:30.9932063Z   Downloaded h2 v0.4.14
+2026-10-29T16:37:31.0550572Z   Downloaded gix-ref v0.64.0
+2026-10-29T16:37:31.0970764Z   Downloaded gix-config v0.57.0
+2026-10-29T16:37:31.1373685Z   Downloaded futures-util v0.3.32
+2026-10-29T16:37:31.3070758Z   Downloaded clap_builder v4.6.0
+2026-10-29T16:37:31.3958555Z   Downloaded cc v1.2.62
+2026-10-29T16:37:31.4195743Z   Downloaded base64 v0.22.1
+2026-10-29T16:37:31.4536200Z   Downloaded backtrace v0.3.76
+2026-10-29T16:37:31.5084553Z   Downloaded rand_chacha v0.9.0
+2026-10-29T16:37:31.5219117Z   Downloaded quote v1.0.45
+2026-10-29T16:37:31.5520463Z   Downloaded quitters v0.1.0
+2026-10-29T16:37:31.5602361Z   Downloaded windows-sys v0.60.2
+2026-10-29T16:37:32.4326590Z   Downloaded quinn-udp v0.5.14
+2026-10-29T16:37:32.4498996Z   Downloaded proc-macro2 v1.0.106
+2026-10-29T16:37:32.4779458Z   Downloaded platforms v3.10.0
+2026-10-29T16:37:32.4934289Z   Downloaded parking_lot_core v0.9.12
+2026-10-29T16:37:32.5142576Z   Downloaded windows-sys v0.61.2
+2026-10-29T16:37:32.8379475Z   Downloaded parking_lot v0.12.5
+2026-10-29T16:37:32.8599090Z   Downloaded nu-ansi-term v0.50.3
+2026-10-29T16:37:32.8836353Z   Downloaded miniz_oxide v0.8.9
+2026-10-29T16:37:32.9090939Z   Downloaded log v0.4.29
+2026-10-29T16:37:32.9276548Z   Downloaded lock_api v0.4.14
+2026-10-29T16:37:32.9371542Z   Downloaded litemap v0.8.2
+2026-10-29T16:37:32.9642539Z   Downloaded jiff-tzdb v0.1.6
+2026-10-29T16:37:32.9742698Z   Downloaded icu_properties v2.1.2
+2026-10-29T16:37:32.9917593Z   Downloaded icu_normalizer_data v2.1.1
+2026-10-29T16:37:33.0107588Z   Downloaded icu_collections v2.1.1
+2026-10-29T16:37:33.0752605Z   Downloaded hyper-util v0.1.20
+2026-10-29T16:37:33.2172286Z   Downloaded httparse v1.10.1
+2026-10-29T16:37:33.5366606Z   Downloaded http v1.4.0
+2026-10-29T16:37:33.5676731Z   Downloaded heapless v0.8.0
+2026-10-29T16:37:33.5980218Z   Downloaded gix-worktree-state v0.31.0
+2026-10-29T16:37:33.6087187Z   Downloaded gix-url v0.36.1
+2026-10-29T16:37:33.6212332Z   Downloaded gix-traverse v0.58.0
+2026-10-29T16:37:33.6356171Z   Downloaded gix-transport v0.57.1
+2026-10-29T16:37:33.6711065Z   Downloaded gix-protocol v0.62.0
+2026-10-29T16:37:33.7028221Z   Downloaded gix-pathspec v0.18.1
+2026-10-29T16:37:33.7158046Z   Downloaded gix-packetline v0.21.4
+2026-10-29T16:37:33.7352867Z   Downloaded gix-pack v0.71.0
+2026-10-29T16:37:33.8041904Z   Downloaded gix-object v0.61.0
+2026-10-29T16:37:33.8328967Z   Downloaded gix-lock v23.0.0
+2026-10-29T16:37:33.8427475Z   Downloaded gix-index v0.52.0
+2026-10-29T16:37:33.8825099Z   Downloaded gix-diff v0.64.0
+2026-10-29T16:37:33.9082210Z   Downloaded getrandom v0.4.2
+2026-10-29T16:37:33.9509948Z   Downloaded getrandom v0.3.4
+2026-10-29T16:37:33.9878765Z   Downloaded getrandom v0.2.17
+2026-10-29T16:37:34.0169960Z   Downloaded foldhash v0.1.5
+2026-10-29T16:37:34.0292921Z   Downloaded find-msvc-tools v0.1.9
+2026-10-29T16:37:34.0465202Z   Downloaded eyre v0.6.12
+2026-10-29T16:37:34.0827331Z   Downloaded either v1.15.0
+2026-10-29T16:37:34.0974172Z   Downloaded aws-lc-sys v0.40.0
+2026-10-29T16:37:36.7218582Z   Downloaded cvss v2.2.0
+2026-10-29T16:37:36.8214785Z   Downloaded crossbeam-epoch v0.9.18
+2026-10-29T16:37:36.8425606Z   Downloaded crossbeam-channel v0.5.15
+2026-10-29T16:37:36.8791363Z   Downloaded crc32fast v1.5.0
+2026-10-29T16:37:36.8964237Z   Downloaded clap_derive v4.6.1
+2026-10-29T16:37:36.9153797Z   Downloaded clap v4.6.1
+2026-10-29T16:37:37.0287908Z   Downloaded cargo-lock v11.0.1
+2026-10-29T16:37:37.0630722Z   Downloaded borsh v1.6.1
+2026-10-29T16:37:37.1409919Z   Downloaded aws-lc-rs v1.16.3
+2026-10-29T16:37:37.2427472Z   Downloaded async-compression v0.4.42
+2026-10-29T16:37:37.6796392Z   Downloaded arc-swap v1.9.1
+2026-10-29T16:37:37.7192227Z   Downloaded aho-corasick v1.1.4
+2026-10-29T16:37:37.7597366Z   Downloaded pin-project-lite v0.2.17
+2026-10-29T16:37:37.8294593Z   Downloaded owo-colors v4.3.0
+2026-10-29T16:37:37.8468670Z   Downloaded once_cell_polyfill v1.70.2
+2026-10-29T16:37:37.8558840Z   Downloaded once_cell v1.21.4
+2026-10-29T16:37:37.9012934Z   Downloaded nonempty v0.12.0
+2026-10-29T16:37:37.9121424Z   Downloaded memmap2 v0.9.10
+2026-10-29T16:37:37.9296061Z   Downloaded maybe-async v0.2.10
+2026-10-29T16:37:37.9580799Z   Downloaded lru-slab v0.1.2
+2026-10-29T16:37:37.9659286Z   Downloaded lazy_static v1.5.0
+2026-10-29T16:37:37.9834761Z   Downloaded kstring v2.0.2
+2026-10-29T16:37:37.9994598Z   Downloaded jiff-tzdb-platform v0.1.3
+2026-10-29T16:37:38.0073607Z   Downloaded ipnet v2.12.0
+2026-10-29T16:37:38.0235195Z   Downloaded icu_provider v2.1.1
+2026-10-29T16:37:38.0447554Z   Downloaded hyper-rustls v0.27.9
+2026-10-29T16:37:38.0710785Z   Downloaded http-body-util v0.1.3
+2026-10-29T16:37:38.0928297Z   Downloaded http-body v1.0.1
+2026-10-29T16:37:38.1019269Z   Downloaded home v0.5.12
+2026-10-29T16:37:38.1107824Z   Downloaded heck v0.5.0
+2026-10-29T16:37:38.1258814Z   Downloaded hash32 v0.3.1
+2026-10-29T16:37:38.1396321Z   Downloaded gix-worktree v0.53.0
+2026-10-29T16:37:38.1521070Z   Downloaded gix-validate v0.11.2
+2026-10-29T16:37:38.1659187Z   Downloaded gix-utils v0.3.3
+2026-10-29T16:37:38.1754757Z   Downloaded gix-trace v0.1.20
+2026-10-29T16:37:38.1857889Z   Downloaded gix-tempfile v23.0.0
+2026-10-29T16:37:38.1961263Z   Downloaded gix-submodule v0.31.0
+2026-10-29T16:37:38.2058634Z   Downloaded gix-shallow v0.12.1
+2026-10-29T16:37:38.2135522Z   Downloaded gix-sec v0.14.1
+2026-10-29T16:37:38.2229953Z   Downloaded gix-quote v0.7.2
+2026-10-29T16:37:38.2318520Z   Downloaded gix-prompt v0.15.1
+2026-10-29T16:37:38.2408565Z   Downloaded gix-path v0.12.1
+2026-10-29T16:37:38.2588791Z   Downloaded gix-odb v0.81.0
+2026-10-29T16:37:38.2868278Z   Downloaded gix-hashtable v0.15.1
+2026-10-29T16:37:38.2947057Z   Downloaded gix-filter v0.31.0
+2026-10-29T16:37:38.3149663Z   Downloaded gix-features v0.48.1
+2026-10-29T16:37:38.3412067Z   Downloaded gix-error v0.2.4
+2026-10-29T16:37:38.3542790Z   Downloaded gix-date v0.15.4
+2026-10-29T16:37:38.3674277Z   Downloaded gix-credentials v0.38.1
+2026-10-29T16:37:38.3811115Z   Downloaded gix-bitmap v0.3.2
+2026-10-29T16:37:38.3891471Z   Downloaded gix-attributes v0.33.1
+2026-10-29T16:37:38.4039133Z   Downloaded gix-actor v0.41.1
+2026-10-29T16:37:38.4137931Z   Downloaded generic-array v0.14.7
+2026-10-29T16:37:38.4338391Z   Downloaded futures-sink v0.3.32
+2026-10-29T16:37:38.4417088Z   Downloaded futures-channel v0.3.32
+2026-10-29T16:37:38.4610676Z   Downloaded fs_extra v1.3.0
+2026-10-29T16:37:38.4718764Z   Downloaded fs-err v3.3.0
+2026-10-29T16:37:38.4925054Z   Downloaded form_urlencoded v1.2.2
+2026-10-29T16:37:38.5004784Z   Downloaded flate2 v1.1.9
+2026-10-29T16:37:38.5563551Z   Downloaded filetime v0.2.28
+2026-10-29T16:37:38.5732368Z   Downloaded fastrand v2.4.1
+2026-10-29T16:37:38.5869892Z   Downloaded displaydoc v0.2.5
+2026-10-29T16:37:38.6222440Z   Downloaded crypto-common v0.1.7
+2026-10-29T16:37:39.1419031Z   Downloaded crossbeam-utils v0.8.21
+2026-10-29T16:37:39.3134751Z   Downloaded crossbeam-deque v0.8.6
+2026-10-29T16:37:39.3340740Z   Downloaded cpufeatures v0.2.17
+2026-10-29T16:37:39.3558416Z   Downloaded compression-core v0.4.32
+2026-10-29T16:37:39.3815397Z   Downloaded compression-codecs v0.4.38
+2026-10-29T16:37:39.4356823Z   Downloaded colorchoice v1.0.5
+2026-10-29T16:37:39.4745306Z   Downloaded clru v0.6.3
+2026-10-29T16:37:39.4877059Z   Downloaded clap_lex v1.1.0
+2026-10-29T16:37:39.5018811Z   Downloaded cfg_aliases v0.2.1
+2026-10-29T16:37:39.5187897Z   Downloaded cfg-if v1.0.4
+2026-10-29T16:37:39.5416949Z   Downloaded canonical-path v2.0.2
+2026-10-29T16:37:39.5539800Z   Downloaded block-buffer v0.10.4
+2026-10-29T16:37:39.5687749Z   Downloaded auditable-info v0.10.0
+2026-10-29T16:37:39.5809415Z   Downloaded atomic-waker v1.1.2
+2026-10-29T16:37:39.5971208Z   Downloaded anstyle-query v1.1.5
+2026-10-29T16:37:39.6333366Z   Downloaded anstyle-parse v1.0.0
+2026-10-29T16:37:39.6645453Z   Downloaded anstyle v1.0.14
+2026-10-29T16:37:39.6869343Z   Downloaded potential_utf v0.1.5
+2026-10-29T16:37:39.7568295Z   Downloaded percent-encoding v2.3.2
+2026-10-29T16:37:39.7920993Z   Downloaded num-conv v0.2.1
+2026-10-29T16:37:39.8277835Z   Downloaded mime v0.3.17
+2026-10-29T16:37:39.8587844Z   Downloaded matchers v0.2.0
+2026-10-29T16:37:39.8687098Z   Downloaded jobserver v0.1.34
+2026-10-29T16:37:40.0087718Z   Downloaded itoa v1.0.18
+2026-10-29T16:37:40.0446942Z   Downloaded is_terminal_polyfill v1.70.2
+2026-10-29T16:37:40.1021970Z   Downloaded io-close v0.3.7
+2026-10-29T16:37:40.1340990Z   Downloaded indenter v0.3.4
+2026-10-29T16:37:40.2845452Z   Downloaded ident_case v1.0.1
+2026-10-29T16:37:40.3253031Z   Downloaded gix-worktree-stream v0.33.0
+2026-10-29T16:37:40.3875731Z   Downloaded gix-revwalk v0.32.0
+2026-10-29T16:37:40.4139241Z   Downloaded gix-revision v0.46.0
+2026-10-29T16:37:40.4478804Z   Downloaded gix-negotiate v0.32.0
+2026-10-29T16:37:40.4773159Z   Downloaded gix-hash v0.25.1
+2026-10-29T16:37:40.5351283Z   Downloaded gix-glob v0.26.1
+2026-10-29T16:37:40.5668215Z   Downloaded gix-fs v0.21.2
+2026-10-29T16:37:40.6170416Z   Downloaded gix-discover v0.52.0
+2026-10-29T16:37:40.7181521Z   Downloaded gix-config-value v0.18.1
+2026-10-29T16:37:40.7537698Z   Downloaded gix-command v0.9.1
+2026-10-29T16:37:40.7805475Z   Downloaded gix-chunk v0.7.2
+2026-10-29T16:37:40.8102018Z   Downloaded futures-task v0.3.32
+2026-10-29T16:37:40.8949315Z   Downloaded futures-io v0.3.32
+2026-10-29T16:37:40.9303783Z   Downloaded futures-core v0.3.32
+2026-10-29T16:37:40.9630024Z   Downloaded fnv v1.0.7
+2026-10-29T16:37:40.9849070Z   Downloaded fixedbitset v0.5.7
+2026-10-29T16:37:41.0183694Z   Downloaded faster-hex v0.10.0
+2026-10-29T16:37:41.0470052Z   Downloaded equivalent v1.0.2
+2026-10-29T16:37:41.0754381Z   Downloaded dunce v1.0.5
+2026-10-29T16:37:41.1056565Z   Downloaded display-error-chain v0.2.2
+2026-10-29T16:37:41.1361962Z   Downloaded digest v0.10.7
+2026-10-29T16:37:41.1926832Z   Downloaded cmake v0.1.58
+2026-10-29T16:37:41.2214597Z   Downloaded camino v1.2.2
+2026-10-29T16:37:41.2558931Z   Downloaded byteorder v1.5.0
+2026-10-29T16:37:41.2826216Z   Downloaded bitflags v2.11.1
+2026-10-29T16:37:41.4568867Z   Downloaded autocfg v1.5.0
+2026-10-29T16:37:41.6414771Z   Downloaded auditable-serde v0.9.0
+2026-10-29T16:37:41.6715440Z   Downloaded auditable-extract v0.3.5
+2026-10-29T16:37:41.6986130Z   Downloaded arrayvec v0.7.6
+2026-10-29T16:37:42.2027166Z   Downloaded allocator-api2 v0.2.21
+2026-10-29T16:37:42.2890908Z   Downloaded abscissa_derive v0.9.0
+2026-10-29T16:37:42.3204412Z   Downloaded abscissa_core v0.9.0
+2026-10-29T16:37:42.4030795Z   Downloaded gix-refspec v0.42.0
+2026-10-29T16:37:42.4768141Z   Downloaded gix-ignore v0.21.1
+2026-10-29T16:37:42.5083081Z   Downloaded gix-commitgraph v0.37.1
+2026-10-29T16:37:42.5639000Z   Downloaded foldhash v0.2.0
+2026-10-29T16:37:42.5887813Z   Downloaded deranged v0.5.8
+2026-10-29T16:37:42.6145233Z   Downloaded bytes v1.11.1
+2026-10-29T16:37:42.7102120Z   Downloaded binfarce v0.2.1
+2026-10-29T16:37:42.7532334Z   Downloaded adler2 v2.0.1
+2026-10-29T16:37:42.7664082Z   Downloaded anstream v1.0.0
+2026-10-29T16:37:43.5198874Z    Compiling proc-macro2 v1.0.106
+2026-10-29T16:37:43.5199494Z    Compiling unicode-ident v1.0.24
+2026-10-29T16:37:43.5201525Z    Compiling quote v1.0.45
+2026-10-29T16:37:43.5202477Z    Compiling windows-link v0.2.1
+2026-10-29T16:37:43.6785742Z    Compiling memchr v2.8.0
+2026-10-29T16:37:43.6853148Z    Compiling windows-sys v0.61.2
+2026-10-29T16:37:43.9857298Z    Compiling regex-syntax v0.8.10
+2026-10-29T16:37:45.7524343Z    Compiling syn v2.0.117
+2026-10-29T16:37:46.1649784Z    Compiling aho-corasick v1.1.4
+2026-10-29T16:37:55.8066755Z    Compiling regex-automata v0.4.14
+2026-10-29T16:37:57.9374204Z    Compiling cfg-if v1.0.4
+2026-10-29T16:37:58.0177001Z    Compiling once_cell v1.21.4
+2026-10-29T16:37:58.6033437Z    Compiling smallvec v1.15.1
+2026-10-29T16:37:59.2863341Z    Compiling bytes v1.11.1
+2026-10-29T16:37:59.7896088Z    Compiling stable_deref_trait v1.2.1
+2026-10-29T16:37:59.9696031Z    Compiling thiserror v2.0.18
+2026-10-29T16:38:01.0633620Z    Compiling thiserror-impl v2.0.18
+2026-10-29T16:38:01.4118805Z    Compiling bstr v1.12.1
+2026-10-29T16:38:02.1025487Z    Compiling crc32fast v1.5.0
+2026-10-29T16:38:02.7475458Z    Compiling crossbeam-utils v0.8.21
+2026-10-29T16:38:03.7202258Z    Compiling gix-trace v0.1.20
+2026-10-29T16:38:04.8277030Z    Compiling gix-validate v0.11.2
+2026-10-29T16:38:04.8922929Z    Compiling tinyvec_macros v0.1.1
+2026-10-29T16:38:05.1954414Z    Compiling tinyvec v1.11.0
+2026-10-29T16:38:05.2973776Z    Compiling gix-path v0.12.1
+2026-10-29T16:38:07.0137539Z    Compiling fastrand v2.4.1
+2026-10-29T16:38:08.1263900Z    Compiling unicode-normalization v0.1.25
+2026-10-29T16:38:08.5712074Z    Compiling itoa v1.0.18
+2026-10-29T16:38:08.6474648Z    Compiling winapi-util v0.1.11
+2026-10-29T16:38:09.0652756Z    Compiling gix-utils v0.3.3
+2026-10-29T16:38:09.1397175Z    Compiling parking_lot_core v0.9.12
+2026-10-29T16:38:09.3337733Z    Compiling scopeguard v1.2.0
+2026-10-29T16:38:09.5209967Z    Compiling lock_api v0.4.14
+2026-10-29T16:38:09.8742158Z    Compiling parking_lot v0.12.5
+2026-10-29T16:38:10.1410217Z    Compiling same-file v1.0.6
+2026-10-29T16:38:10.3840667Z    Compiling crossbeam-channel v0.5.15
+2026-10-29T16:38:11.2515989Z    Compiling foldhash v0.2.0
+2026-10-29T16:38:11.6362772Z    Compiling equivalent v1.0.2
+2026-10-29T16:38:11.7205624Z    Compiling allocator-api2 v0.2.21
+2026-10-29T16:38:11.7343933Z    Compiling walkdir v2.5.0
+2026-10-29T16:38:12.0680547Z    Compiling prodash v31.0.0
+2026-10-29T16:38:12.4027663Z    Compiling zlib-rs v0.6.3
+2026-10-29T16:38:13.5564281Z    Compiling gix-error v0.2.4
+2026-10-29T16:38:14.5175226Z    Compiling version_check v0.9.5
+2026-10-29T16:38:15.0414518Z    Compiling generic-array v0.14.7
+2026-10-29T16:38:15.3223206Z    Compiling hashbrown v0.17.1
+2026-10-29T16:38:16.6398918Z    Compiling gix-features v0.48.1
+2026-10-29T16:38:16.7353795Z    Compiling bitflags v2.11.1
+2026-10-29T16:38:17.4157915Z    Compiling typenum v1.20.0
+2026-10-29T16:38:19.8862523Z    Compiling heapless v0.8.0
+2026-10-29T16:38:19.9026538Z    Compiling byteorder v1.5.0
+2026-10-29T16:38:20.2250858Z    Compiling serde_core v1.0.228
+2026-10-29T16:38:20.4460300Z    Compiling hash32 v0.3.1
+2026-10-29T16:38:21.4370695Z    Compiling block-buffer v0.10.4
+2026-10-29T16:38:21.7516860Z    Compiling crypto-common v0.1.7
+2026-10-29T16:38:21.8507283Z    Compiling digest v0.10.7
+2026-10-29T16:38:21.9047991Z    Compiling faster-hex v0.10.0
+2026-10-29T16:38:22.2093220Z    Compiling synstructure v0.13.2
+2026-10-29T16:38:22.8593863Z    Compiling cpufeatures v0.2.17
+2026-10-29T16:38:22.9791872Z    Compiling jiff-tzdb v0.1.6
+2026-10-29T16:38:23.2776067Z    Compiling jiff-tzdb-platform v0.1.3
+2026-10-29T16:38:23.3531852Z    Compiling sha1 v0.10.6
+2026-10-29T16:38:23.3810763Z    Compiling jiff v0.2.28
+2026-10-29T16:38:24.0334860Z    Compiling sha1-checked v0.10.0
+2026-10-29T16:38:25.1985235Z    Compiling gix-hash v0.25.1
+2026-10-29T16:38:25.5763095Z    Compiling zerofrom-derive v0.1.7
+2026-10-29T16:38:26.4635930Z    Compiling getrandom v0.3.4
+2026-10-29T16:38:27.0285627Z    Compiling yoke-derive v0.8.2
+2026-10-29T16:38:27.8263741Z    Compiling zerofrom v0.1.7
+2026-10-29T16:38:28.0890118Z    Compiling pin-project-lite v0.2.17
+2026-10-29T16:38:28.3671558Z    Compiling gix-hashtable v0.15.1
+2026-10-29T16:38:28.5982752Z    Compiling jobserver v0.1.34
+2026-10-29T16:38:28.9201953Z    Compiling yoke v0.8.2
+2026-10-29T16:38:29.0437045Z    Compiling zerovec-derive v0.11.3
+2026-10-29T16:38:29.2078564Z    Compiling shlex v1.3.0
+2026-10-29T16:38:29.4471825Z    Compiling find-msvc-tools v0.1.9
+2026-10-29T16:38:30.8129113Z    Compiling gix-date v0.15.4
+2026-10-29T16:38:30.9514763Z    Compiling zerovec v0.11.6
+2026-10-29T16:38:32.0065598Z    Compiling gix-actor v0.41.1
+2026-10-29T16:38:32.8738636Z    Compiling gix-object v0.61.0
+2026-10-29T16:38:33.8764625Z    Compiling cc v1.2.62
+2026-10-29T16:38:35.9172323Z    Compiling displaydoc v0.2.5
+2026-10-29T16:38:36.6550505Z    Compiling getrandom v0.4.2
+2026-10-29T16:38:36.9987525Z    Compiling serde v1.0.228
+2026-10-29T16:38:37.0302508Z    Compiling memmap2 v0.9.10
+2026-10-29T16:38:37.5259190Z    Compiling cmake v0.1.58
+2026-10-29T16:38:37.5358054Z    Compiling serde_derive v1.0.228
+2026-10-29T16:38:38.1246032Z    Compiling fs_extra v1.3.0
+2026-10-29T16:38:38.5788565Z    Compiling dunce v1.0.5
+2026-10-29T16:38:38.7554793Z    Compiling futures-core v0.3.32
+2026-10-29T16:38:38.8385790Z    Compiling aws-lc-sys v0.40.0
+2026-10-29T16:38:39.1170067Z    Compiling socket2 v0.6.3
+2026-10-29T16:38:40.4146268Z    Compiling mio v1.2.0
+2026-10-29T16:38:43.3900668Z    Compiling tokio v1.52.3
+2026-10-29T16:38:43.9222820Z    Compiling tempfile v3.27.0
+2026-10-29T16:38:45.5440503Z    Compiling tinystr v0.8.3
+2026-10-29T16:38:45.8524591Z    Compiling gix-fs v0.21.2
+2026-10-29T16:38:47.2524986Z    Compiling gix-chunk v0.7.2
+2026-10-29T16:38:47.7096407Z    Compiling zeroize v1.8.2
+2026-10-29T16:38:47.9367682Z    Compiling writeable v0.6.3
+2026-10-29T16:38:48.2818063Z    Compiling percent-encoding v2.3.2
+2026-10-29T16:38:48.6617471Z    Compiling litemap v0.8.2
+2026-10-29T16:38:48.9825335Z    Compiling futures-sink v0.3.32
+2026-10-29T16:38:49.0946635Z    Compiling icu_locale_core v2.1.1
+2026-10-29T16:38:49.9664986Z    Compiling gix-tempfile v23.0.0
+2026-10-29T16:38:51.6220374Z    Compiling zerotrie v0.2.4
+2026-10-29T16:38:52.4348649Z    Compiling potential_utf v0.1.5
+2026-10-29T16:38:52.6580140Z    Compiling gix-quote v0.7.2
+2026-10-29T16:38:53.3422098Z    Compiling tracing-core v0.1.36
+2026-10-29T16:38:54.3003895Z    Compiling aws-lc-rs v1.16.3
+2026-10-29T16:38:54.6355569Z    Compiling icu_properties_data v2.1.2
+2026-10-29T16:38:54.8936485Z    Compiling nonempty v0.12.0
+2026-10-29T16:38:55.1834790Z    Compiling icu_normalizer_data v2.1.1
+2026-10-29T16:38:55.4134032Z    Compiling icu_collections v2.1.1
+2026-10-29T16:38:55.4763275Z    Compiling icu_provider v2.1.1
+2026-10-29T16:38:56.1060458Z    Compiling http v1.4.0
+2026-10-29T16:38:56.6678813Z    Compiling tracing-attributes v0.1.31
+2026-10-29T16:38:58.8784108Z    Compiling fnv v1.0.7
+2026-10-29T16:38:58.9788349Z    Compiling slab v0.4.12
+2026-10-29T16:38:59.2686012Z    Compiling tracing v0.1.44
+2026-10-29T16:39:00.0068161Z    Compiling gix-commitgraph v0.37.1
+2026-10-29T16:39:00.2019214Z    Compiling gix-glob v0.26.1
+2026-10-29T16:39:01.5709361Z    Compiling indexmap v2.14.0
+2026-10-29T16:39:01.6961806Z    Compiling simd-adler32 v0.3.9
+2026-10-29T16:39:01.9999583Z    Compiling adler2 v2.0.1
+2026-10-29T16:39:02.2044253Z    Compiling miniz_oxide v0.8.9
+2026-10-29T16:39:02.9662318Z    Compiling gix-revwalk v0.32.0
+2026-10-29T16:39:03.4679926Z    Compiling icu_properties v2.1.2
+2026-10-29T16:39:03.8648287Z    Compiling icu_normalizer v2.1.1
+2026-10-29T16:39:05.3097978Z    Compiling http-body v1.0.1
+2026-10-29T16:39:05.4930197Z    Compiling gix-lock v23.0.0
+2026-10-29T16:39:06.4186531Z    Compiling tokio-util v0.7.18
+2026-10-29T16:39:06.7517942Z    Compiling rustls-pki-types v1.14.1
+2026-10-29T16:39:06.7559015Z    Compiling httparse v1.10.1
+2026-10-29T16:39:07.2071611Z    Compiling untrusted v0.9.0
+2026-10-29T16:39:07.3426163Z    Compiling futures-io v0.3.32
+2026-10-29T16:39:07.6021160Z    Compiling rustls v0.23.40
+2026-10-29T16:39:07.8789744Z    Compiling futures-task v0.3.32
+2026-10-29T16:39:08.0798011Z    Compiling futures-util v0.3.32
+2026-10-29T16:39:08.4066290Z    Compiling idna_adapter v1.2.1
+2026-10-29T16:39:08.4169791Z    Compiling libc v0.2.186
+2026-10-29T16:39:08.5527198Z    Compiling utf8_iter v1.0.4
+2026-10-29T16:39:08.7588393Z    Compiling unicode-bom v2.0.3
+2026-10-29T16:39:08.9287659Z    Compiling tower-service v0.3.3
+2026-10-29T16:39:09.0352061Z    Compiling log v0.4.29
+2026-10-29T16:39:09.0507021Z    Compiling atomic-waker v1.1.2
+2026-10-29T16:39:09.1887467Z    Compiling subtle v2.6.1
+2026-10-29T16:39:09.4416877Z    Compiling try-lock v0.2.5
+2026-10-29T16:39:09.4438979Z    Compiling h2 v0.4.14
+2026-10-29T16:39:09.5511515Z    Compiling want v0.3.1
+2026-10-29T16:39:09.8164534Z    Compiling idna v1.1.0
+2026-10-29T16:39:13.4973566Z    Compiling flate2 v1.1.9
+2026-10-29T16:39:14.4637588Z    Compiling futures-channel v0.3.32
+2026-10-29T16:39:14.5391222Z    Compiling form_urlencoded v1.2.2
+2026-10-29T16:39:14.7914893Z    Compiling gix-config-value v0.18.1
+2026-10-29T16:39:14.9376087Z    Compiling static_assertions v1.1.0
+2026-10-29T16:39:15.0139589Z    Compiling compression-core v0.4.32
+2026-10-29T16:39:15.2135866Z    Compiling shell-words v1.1.1
+2026-10-29T16:39:15.5914684Z    Compiling gix-command v0.9.1
+2026-10-29T16:39:16.3258352Z    Compiling compression-codecs v0.4.38
+2026-10-29T16:39:16.9641961Z    Compiling kstring v2.0.2
+2026-10-29T16:39:16.9774823Z    Compiling hyper v1.9.0
+2026-10-29T16:39:17.2655740Z    Compiling url v2.5.8
+2026-10-29T16:39:22.7130406Z    Compiling sync_wrapper v1.0.2
+2026-10-29T16:39:22.8232985Z    Compiling gix-sec v0.14.1
+2026-10-29T16:39:22.8726018Z    Compiling encoding_rs v0.8.35
+2026-10-29T16:39:23.9701592Z    Compiling tower-layer v0.3.3
+2026-10-29T16:39:24.3111752Z    Compiling ipnet v2.12.0
+2026-10-29T16:39:24.8523693Z    Compiling base64 v0.22.1
+2026-10-29T16:39:25.7441065Z    Compiling hyper-util v0.1.20
+2026-10-29T16:39:27.0253239Z    Compiling tower v0.5.3
+2026-10-29T16:39:28.0391952Z    Compiling gix-attributes v0.33.1
+2026-10-29T16:39:31.1532778Z    Compiling async-compression v0.4.42
+2026-10-29T16:39:32.0267856Z    Compiling http-body-util v0.1.3
+2026-10-29T16:39:32.4640158Z    Compiling semver v1.0.28
+2026-10-29T16:39:33.2892501Z    Compiling zmij v1.0.21
+2026-10-29T16:39:33.3951780Z    Compiling rustversion v1.0.22
+2026-10-29T16:39:33.6900946Z    Compiling tower-http v0.6.10
+2026-10-29T16:39:33.7821336Z    Compiling gix-ref v0.64.0
+2026-10-29T16:39:33.9160844Z    Compiling gix-url v0.36.1
+2026-10-29T16:39:35.2184003Z    Compiling gix-packetline v0.21.4
+2026-10-29T16:39:35.9029853Z    Compiling serde_json v1.0.149
+2026-10-29T16:39:36.1226486Z    Compiling winnow v1.0.2
+2026-10-29T16:39:36.7372797Z    Compiling mime v0.3.17
+2026-10-29T16:39:36.8360894Z    Compiling winapi v0.3.9
+2026-10-29T16:39:37.5151861Z    Compiling toml_parser v1.1.2+spec-1.1.0
+2026-10-29T16:39:39.1873487Z    Compiling gix-prompt v0.15.1
+2026-10-29T16:39:39.5666217Z    Compiling gix-revision v0.46.0
+2026-10-29T16:39:40.3390388Z    Compiling gix-traverse v0.58.0
+2026-10-29T16:39:42.2285892Z    Compiling serde_spanned v1.1.1
+2026-10-29T16:39:42.3975397Z    Compiling gix-bitmap v0.3.2
+2026-10-29T16:39:43.0823062Z    Compiling hashbrown v0.16.1
+2026-10-29T16:39:44.3155848Z    Compiling crossbeam-epoch v0.9.18
+2026-10-29T16:39:44.5551013Z    Compiling filetime v0.2.28
+2026-10-29T16:39:44.7635950Z    Compiling anstyle v1.0.14
+2026-10-29T16:39:45.1210766Z    Compiling toml_writer v1.1.1+spec-1.1.0
+2026-10-29T16:39:45.1241290Z    Compiling utf8parse v0.2.2
+2026-10-29T16:39:45.2325571Z    Compiling autocfg v1.5.0
+2026-10-29T16:39:45.2712660Z    Compiling rayon-core v1.13.0
+2026-10-29T16:39:45.5566116Z    Compiling once_cell_polyfill v1.70.2
+2026-10-29T16:39:45.6319517Z    Compiling arrayvec v0.7.6
+2026-10-29T16:39:45.8007251Z    Compiling anstyle-wincon v3.0.11
+2026-10-29T16:39:45.8927909Z    Compiling fs-err v3.3.0
+2026-10-29T16:39:45.9907670Z    Compiling uluru v3.1.0
+2026-10-29T16:39:46.1764260Z    Compiling anstyle-parse v1.0.0
+2026-10-29T16:39:46.1849756Z    Compiling crossbeam-deque v0.8.6
+2026-10-29T16:39:46.4564907Z    Compiling gix-index v0.52.0
+2026-10-29T16:39:46.4715027Z    Compiling clru v0.6.3
+2026-10-29T16:39:46.5167983Z    Compiling gix-refspec v0.42.0
+2026-10-29T16:39:46.8756838Z    Compiling gix-credentials v0.38.1
+2026-10-29T16:39:51.2236653Z    Compiling arc-swap v1.9.1
+2026-10-29T16:39:54.5714641Z    Compiling gix-ignore v0.21.1
+2026-10-29T16:39:55.0806597Z    Compiling toml_datetime v0.7.5+spec-1.1.0
+2026-10-29T16:39:55.5163119Z    Compiling anstyle-query v1.1.5
+2026-10-29T16:39:55.7453406Z    Compiling is_terminal_polyfill v1.70.2
+2026-10-29T16:39:55.7949414Z    Compiling colorchoice v1.0.5
+2026-10-29T16:39:55.8444916Z    Compiling eyre v0.6.12
+2026-10-29T16:39:55.9347579Z    Compiling foldhash v0.1.5
+2026-10-29T16:39:56.2120984Z    Compiling owo-colors v4.3.0
+2026-10-29T16:39:56.2971204Z    Compiling camino v1.2.2
+2026-10-29T16:39:56.5258438Z    Compiling winnow v0.7.15
+2026-10-29T16:39:57.6179722Z    Compiling hashbrown v0.15.5
+2026-10-29T16:39:57.6510058Z    Compiling anstream v1.0.0
+2026-10-29T16:39:58.7185030Z    Compiling gix-worktree v0.53.0
+2026-10-29T16:39:58.7684739Z    Compiling io-close v0.3.7
+2026-10-29T16:39:58.9561990Z    Compiling gix-pack v0.71.0
+2026-10-29T16:39:59.6207144Z    Compiling toml v0.9.12+spec-1.1.0
+2026-10-29T16:40:04.4728732Z    Compiling gix-filter v0.31.0
+2026-10-29T16:40:08.0378568Z    Compiling gix-config v0.57.0
+2026-10-29T16:40:09.6392660Z    Compiling gix-pathspec v0.18.1
+2026-10-29T16:40:12.9249349Z    Compiling gix-shallow v0.12.1
+2026-10-29T16:40:16.1281252Z    Compiling gix-negotiate v0.32.0
+2026-10-29T16:40:16.1339703Z    Compiling wasmparser v0.207.0
+2026-10-29T16:40:20.3955309Z    Compiling regex v1.12.3
+2026-10-29T16:40:23.2991719Z    Compiling maybe-async v0.2.10
+2026-10-29T16:40:24.0806405Z    Compiling indenter v0.3.4
+2026-10-29T16:40:24.2218691Z    Compiling rustc-demangle v0.1.27
+2026-10-29T16:40:24.4854649Z    Compiling either v1.15.0
+2026-10-29T16:40:24.7908788Z    Compiling topological-sort v0.2.2
+2026-10-29T16:40:24.9562901Z    Compiling fixedbitset v0.5.7
+2026-10-29T16:40:25.8733471Z    Compiling lazy_static v1.5.0
+2026-10-29T16:40:25.9746053Z    Compiling clap_lex v1.1.0
+2026-10-29T16:40:26.6022130Z    Compiling strsim v0.11.1
+2026-10-29T16:40:26.9042925Z    Compiling heck v0.5.0
+2026-10-29T16:40:27.3394587Z    Compiling powerfmt v0.2.0
+2026-10-29T16:40:27.6969026Z    Compiling binfarce v0.2.1
+2026-10-29T16:40:28.2194705Z    Compiling deranged v0.5.8
+2026-10-29T16:40:29.4170011Z    Compiling auditable-extract v0.3.5
+2026-10-29T16:40:30.6044051Z    Compiling clap_derive v4.6.1
+2026-10-29T16:40:32.0556177Z    Compiling clap_builder v4.6.0
+2026-10-29T16:40:33.6276571Z    Compiling gix-discover v0.52.0
+2026-10-29T16:40:34.6862292Z    Compiling sharded-slab v0.1.7
+2026-10-29T16:40:35.8427151Z    Compiling petgraph v0.8.3
+2026-10-29T16:40:36.5755052Z    Compiling auditable-serde v0.9.0
+2026-10-29T16:40:39.3227458Z    Compiling rayon v1.12.0
+2026-10-29T16:40:40.8155503Z    Compiling backtrace v0.3.76
+2026-10-29T16:40:43.2438890Z    Compiling gix-submodule v0.31.0
+2026-10-29T16:40:43.9472874Z    Compiling gix-worktree-state v0.31.0
+2026-10-29T16:40:46.1119410Z    Compiling gix-odb v0.81.0
+2026-10-29T16:40:50.2892107Z    Compiling tracing-log v0.2.0
+2026-10-29T16:40:50.8562271Z    Compiling smol_str v0.3.2
+2026-10-29T16:40:51.3173023Z    Compiling gix-diff v0.64.0
+2026-10-29T16:40:51.7871491Z    Compiling toml_datetime v1.1.1+spec-1.1.0
+2026-10-29T16:40:52.4132476Z    Compiling matchers v0.2.0
+2026-10-29T16:40:52.6036456Z    Compiling toml-span v0.7.1
+2026-10-29T16:40:56.5443358Z    Compiling thread_local v1.1.9
+2026-10-29T16:40:57.0042800Z    Compiling nu-ansi-term v0.50.3
+2026-10-29T16:40:58.0005819Z    Compiling num-conv v0.2.1
+2026-10-29T16:40:58.1976947Z    Compiling rustc-stable-hash v0.1.2
+2026-10-29T16:40:58.4725237Z    Compiling object v0.39.1
+2026-10-29T16:40:58.5593478Z    Compiling time-core v0.1.8
+2026-10-29T16:40:58.7715998Z    Compiling ident_case v1.0.1
+2026-10-29T16:40:58.7964755Z    Compiling twox-hash v2.1.2
+2026-10-29T16:40:58.8771782Z    Compiling abscissa_derive v0.9.0
+2026-10-29T16:40:59.0051400Z    Compiling time v0.3.47
+2026-10-29T16:40:59.5717555Z    Compiling tracing-subscriber v0.3.23
+2026-10-29T16:41:00.0670298Z    Compiling toml v1.1.2+spec-1.1.0
+2026-10-29T16:41:05.8966078Z    Compiling color-eyre v0.6.5
+2026-10-29T16:41:08.7328365Z    Compiling cargo-lock v11.0.1
+2026-10-29T16:41:09.7370873Z    Compiling auditable-info v0.10.0
+2026-10-29T16:41:11.8463990Z    Compiling clap v4.6.1
+2026-10-29T16:41:12.2581118Z    Compiling quitters v0.1.0
+2026-10-29T16:41:13.3695887Z    Compiling secrecy v0.10.3
+2026-10-29T16:41:13.5505367Z    Compiling cvss v2.2.0
+2026-10-29T16:41:13.7536998Z    Compiling platforms v3.10.0
+2026-10-29T16:41:14.5925374Z    Compiling wasmparser v0.247.0
+2026-10-29T16:41:18.2811553Z    Compiling termcolor v1.4.1
+2026-10-29T16:41:19.4481024Z    Compiling home v0.5.12
+2026-10-29T16:41:19.7477343Z    Compiling canonical-path v2.0.2
+2026-10-29T16:41:20.0927313Z    Compiling wait-timeout v0.2.1
+2026-10-29T16:41:20.2095088Z    Compiling abscissa_core v0.9.0
+2026-10-29T16:41:28.7279705Z    Compiling display-error-chain v0.2.2
+2026-10-29T16:41:49.8087199Z    Compiling rustls-webpki v0.103.13
+2026-10-29T16:41:55.5567709Z    Compiling tokio-rustls v0.26.4
+2026-10-29T16:41:55.5568585Z    Compiling rustls-platform-verifier v0.7.0
+2026-10-29T16:41:55.9816203Z    Compiling hyper-rustls v0.27.9
+2026-10-29T16:41:56.6102172Z    Compiling reqwest v0.13.3
+2026-10-29T16:42:00.2381274Z    Compiling gix-transport v0.57.1
+2026-10-29T16:42:13.0251431Z    Compiling gix-protocol v0.62.0
+2026-10-29T16:42:15.3253908Z    Compiling gix v0.84.0
+2026-10-29T16:42:15.7280983Z    Compiling tame-index v0.26.3
+2026-10-29T16:42:29.8070396Z    Compiling rustsec v0.33.0
+2026-10-29T16:42:33.3523622Z    Compiling cargo-audit v0.22.2
+2026-10-29T16:43:17.7106267Z     Finished `release` profile [optimized] target(s) in 6m 02s
+2026-10-29T16:43:17.7512467Z   Installing C:\Users\runneradmin\.cargo\bin\cargo-audit.exe
+2026-10-29T16:43:17.7519450Z    Installed package `cargo-audit v0.22.2` (executable `cargo-audit.exe`)
+2026-10-29T16:43:18.7883365Z ##[group]Run python scripts/audit_windows_dependencies.py --output .local/windows-dependency-audit.json
+2026-10-29T16:43:18.7884266Z [36;1mpython scripts/audit_windows_dependencies.py --output .local/windows-dependency-audit.json[0m
+2026-10-29T16:43:18.7962439Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-29T16:43:18.7962853Z env:
+2026-10-29T16:43:18.7963086Z   PYTHONUTF8: 1
+2026-10-29T16:43:18.7963374Z   PYTHONIOENCODING: utf-8
+2026-10-29T16:43:18.7963748Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:43:18.7964260Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-10-29T16:43:18.7964789Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:43:18.7965272Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:43:18.7965746Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:43:18.7966196Z ##[endgroup]
+2026-10-29T16:43:25.5644920Z {"verified": true, "package_count": 15, "database": {"advisory-count": 1386, "last-commit": "ee1a49a2769a24a596afc1c20cb33748d2769586", "last-updated": "2026-10-29T15:05:38+01:00"}, "lock_sha256": "3c021bd45f9ff3dd89776deccc2f80d8f9b18401abdc1eaeb531ce92c072c042"}
+2026-10-29T16:43:25.7282463Z ##[group]Run python -m unittest discover -s tests -p "test_*.py"
+2026-10-29T16:43:25.7283130Z [36;1mpython -m unittest discover -s tests -p "test_*.py"[0m
+2026-10-29T16:43:25.7367778Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-29T16:43:25.7368182Z env:
+2026-10-29T16:43:25.7368801Z   PYTHONUTF8: 1
+2026-10-29T16:43:25.7369193Z   PYTHONIOENCODING: utf-8
+2026-10-29T16:43:25.7369842Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:43:25.7370760Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-10-29T16:43:25.7371717Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:43:25.7372496Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:43:25.7373269Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-29T16:43:25.7373651Z ##[endgroup]
+2026-10-29T16:43:27.3700025Z .............FF...............
+2026-10-29T16:43:27.3700782Z ======================================================================
+2026-10-29T16:43:27.3702403Z FAIL: test_actual_interruption_and_resume_stay_separate_with_partial_denominator (test_windows_soak_report.SoakReportTests.test_actual_interruption_and_resume_stay_separate_with_partial_denominator)
+2026-10-29T16:43:27.3704122Z ----------------------------------------------------------------------
+2026-10-29T16:43:27.3717435Z Traceback (most recent call last):
+2026-10-29T16:43:27.3725355Z   File "D:\a\Cloudleaf\Cloudleaf\tests\test_windows_soak_report.py", line 35, in test_actual_interruption_and_resume_stay_separate_with_partial_denominator
+2026-10-29T16:43:27.3726552Z     self.assertTrue(first['evidence_integrity_verified'], first['issues'])
+2026-10-29T16:43:27.3728009Z AssertionError: False is not true : ['原件SHA不符:checkpoints.jsonl', '原件SHA不符:events.jsonl', '原件SHA不符:samples.jsonl']
+2026-10-29T16:43:27.3728527Z
+2026-10-29T16:43:27.3728671Z ======================================================================
+2026-10-29T16:43:27.3729652Z FAIL: test_actual_short_evidence_reconstructs_original_stdout_and_never_accepts_long_test (test_windows_soak_report.SoakReportTests.test_actual_short_evidence_reconstructs_original_stdout_and_never_accepts_long_test)
+2026-10-29T16:43:27.3730684Z ----------------------------------------------------------------------
+2026-10-29T16:43:27.3731081Z Traceback (most recent call last):
+2026-10-29T16:43:27.3731878Z   File "D:\a\Cloudleaf\Cloudleaf\tests\test_windows_soak_report.py", line 22, in test_actual_short_evidence_reconstructs_original_stdout_and_never_accepts_long_test
+2026-10-29T16:43:27.3732739Z     self.assertTrue(segment['evidence_integrity_verified'], segment['issues'])
+2026-10-29T16:43:27.3733527Z AssertionError: False is not true : ['原件SHA不符:checkpoints.jsonl', '原件SHA不符:events.jsonl', '原件SHA不符:samples.jsonl']
+2026-10-29T16:43:27.3734007Z
+2026-10-29T16:43:27.3734188Z ----------------------------------------------------------------------
+2026-10-29T16:43:27.3734565Z Ran 30 tests in 0.281s
+2026-10-29T16:43:27.3734789Z
+2026-10-29T16:43:27.3734916Z FAILED (failures=2)
+2026-10-29T16:43:27.3735369Z 资源已验证：data/words.jsonl (2 条)
+2026-10-29T16:43:27.4990591Z ##[error]Process completed with exit code 1.
+2026-10-29T16:43:27.5276733Z Post job cleanup.
+2026-10-29T16:43:27.7337276Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-29T16:43:27.7729598Z git version 2.56.0.windows.2
+2026-10-29T16:43:27.7817965Z Temporarily overriding HOME='D:\a\_temp\2adf7ff5-2a92-49d9-9ae3-13463a51d4fb' before making global git config changes
+2026-10-29T16:43:27.7819293Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-29T16:43:27.7832050Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\Cloudleaf\Cloudleaf
+2026-10-29T16:43:27.8321488Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-29T16:43:27.8717326Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-29T16:43:28.4518565Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-29T16:43:28.4866564Z http.https://github.com/.extraheader
+2026-10-29T16:43:28.4913161Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+2026-10-29T16:43:28.5310434Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-29T16:43:29.0870959Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-29T16:43:29.1255524Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-29T16:43:29.7189939Z Cleaning up orphan processes
+2026-10-29T16:43:29.7402961Z Terminate orphan process: pid (7816) (vctip)
+2026-10-29T16:43:29.7525680Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

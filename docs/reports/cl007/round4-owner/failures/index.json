@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "preparation_failures_are_not_product_acceptance": true,
+  "entries": [
+    {
+      "path": "abrupt-first-assertion.txt",
+      "stage": "uncommitted preparation over 9a3712b",
+      "failure": "wrong new-test expectation: epoch token still strongly owned by undropped Host",
+      "correction_commit": "78f08be96edcc2d5e03169b75c1850308f293cd6",
+      "existing_assertions_weakened": false
+    },
+    {
+      "path": "fault-mode-collision.txt",
+      "stage": "uncommitted preparation over 9a3712b",
+      "failure": "new ExitThread mode10 collided with historical EndComposition reentry mode10; COM cannot-unwind panic",
+      "correction_commit": "78f08be96edcc2d5e03169b75c1850308f293cd6",
+      "existing_assertions_weakened": false
+    },
+    {
+      "path": "pre-freeze-workspace.txt",
+      "stage": "uncommitted preparation over 9a3712b",
+      "failure": "old R3 batches=0 failed: dead reader displayed token had not been reaped on explicit source discard",
+      "correction_commit": "78f08be96edcc2d5e03169b75c1850308f293cd6",
+      "existing_assertions_weakened": false
+    },
+    {
+      "path": "checkpoint-78f08be/workspace-tests.txt",
+      "implementation_commit": "78f08be96edcc2d5e03169b75c1850308f293cd6",
+      "failure": "old full-queue rejection failed when scope expired; barrier drained before capacity gate",
+      "design_commit": "b4555cc6f0452abe9b30ed709d5ba5de48e516cc",
+      "correction_commit": "5c0ba9d651038eca5b3fcb53dba3f6835cf13a0c",
+      "existing_assertions_weakened": false
+    },
+    {
+      "path": "initial-package-command.txt",
+      "stage": "engineering command preparation",
+      "failure": "wrong package name cloudleaf-windows instead of cloudleaf-windows-ime",
+      "product_test_executed": false
+    },
+    {
+      "path": "diagnostic-shell-quote.txt",
+      "stage": "engineering command preparation",
+      "failure": "PowerShell quoting parser rejected generation command before tests",
+      "product_test_executed": false
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "implementation_commit": "271704e2db80f556fec477e4523e71456e42c632",
+  "source_sha256": "ad8760e1fc7dc56f9af924c37095bf61aa137852462768a560a7fa15e82bf193",
+  "source_fingerprint_schema": "cloudleaf-source-v3",
+  "tool_sha256": "03bf9ecc4359b265ae42d498197bfd6d9358ded091cffb0002993da4adea2b35",
+  "test_binary_sha256": "c7fe4b34c197871bb8d02acb37a005f93ac658800712a015a544312a7e54a0b6",
+  "data_sha256": {
+    "data/dictionaries/prototype.tsv": "d4a87e958b23097253a4601b9ae373f02964e3e37729bb7f560e20835d5bb5f0",
+    "tests/fixtures/input-v1.tsv": "5fc0d0baf3e1d9082974d87292fb565a64b0ecca42d573a4dc4e354f8f64d7e0",
+    "tests/evaluation/algorithm-v1.tsv": "d8bf45fcb578db3c7ed1a2d7cce5c5e98f126de70dcfe3cfe69eb4becc0618fb"
+  },
+  "environment": {
+    "os": "Windows-11-10.0.26300-SP0",
+    "machine": "AMD64",
+    "cpu": "11th Gen Intel(R) Core(TM) i5-11400 @ 2.60GHz",
+    "logical_cpus": 12,
+    "physical_memory_bytes": 34110734336
+  },
+  "rust_passed": 157,
+  "python_passed": 21,
+  "default_ignored": 2,
+  "baseline": "7f581dfca43515105fca918ffd79e55f315f7729",
+  "historical_reports_unchanged": 242,
+  "long_8h_executed": false,
+  "long_24h_executed": false,
+  "real_application_acceptance": false,
+  "system_registration_executed": false,
+  "system_activation_executed": false,
+  "production_com_reclamation_changed": false,
+  "scope": "durable diagnostic controller and cfg(test) native host; no production lifecycle relaxation",
+  "failures": [
+    {
+      "commit": "f5ff615eeff4eac6f6736459bb6ccd95763f0b95",
+      "path": "red/python-red.raw.json",
+      "exit_code": 1,
+      "result": "five missing-feature tests fail on exact old runner"
+    },
+    {
+      "rust_host_commit": "f5ff615eeff4eac6f6736459bb6ccd95763f0b95",
+      "runner_identity": "red/host-red-identity.json",
+      "path": "red/host-unsupported/segment-0001/stdout.raw.json",
+      "child_exit": 101,
+      "runner_exit": 1,
+      "result": "actual old Rust host rejects diagnostic=1; runner was uncommitted draft and identity is separate"
+    }
+  ]
+}

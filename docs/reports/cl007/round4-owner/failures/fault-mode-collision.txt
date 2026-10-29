@@ -1,0 +1,117 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.05s
+     Running unittests src\lib.rs (target\debug\deps\cloudleaf_windows_ime-074298fd7fbc2509.exe)
+
+running 1 test
+
+thread 'native::session::render_tests::native_empty_delete_end_reentrant_focus_preserves_the_new_context_composition' panicked at apps\windows-ime\src\..\..\..\adapters\windows\render_tests.rs:1121:64:
+called `Option::unwrap()` on a `None` value
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'native::session::render_tests::native_empty_delete_end_reentrant_focus_preserves_the_new_context_composition' panicked at library\core\src\panicking.rs:225:5:
+panic in a function that cannot unwind
+stack backtrace:
+   0:     0x7ff6c8cfe782 - std::backtrace_rs::backtrace::win64::trace
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\std\src\..\..\backtrace\src\backtrace\win64.rs:85
+   1:     0x7ff6c8cfe782 - std::backtrace_rs::backtrace::trace_unsynchronized
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\std\src\..\..\backtrace\src\backtrace\mod.rs:66
+   2:     0x7ff6c8cfe782 - std::sys::backtrace::_print_fmt
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\std\src\sys\backtrace.rs:66
+   3:     0x7ff6c8cfe782 - std::sys::backtrace::impl$0::print::impl$0::fmt
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\std\src\sys\backtrace.rs:39
+   4:     0x7ff6c8d1b7cb - core::fmt::rt::Argument::fmt
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\core\src\fmt\rt.rs:173
+   5:     0x7ff6c8d1b7cb - core::fmt::write
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\core\src\fmt\mod.rs:1468
+   6:     0x7ff6c8cfa0a7 - std::io::default_write_fmt
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\std\src\io\mod.rs:639
+   7:     0x7ff6c8cfa0a7 - std::io::Write::write_fmt<std::sys::stdio::windows::Stderr>
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\std\src\io\mod.rs:1954
+   8:     0x7ff6c8cfe5c5 - std::sys::backtrace::BacktraceLock::print
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\std\src\sys\backtrace.rs:42
+   9:     0x7ff6c8d023f9 - std::panicking::default_hook::closure$0
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\std\src\panicking.rs:300
+  10:     0x7ff6c8d0216f - std::panicking::default_hook
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\std\src\panicking.rs:327
+  11:     0x7ff6c8d02ebb - std::panicking::rust_panic_with_hook
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\std\src\panicking.rs:833
+  12:     0x7ff6c8d02d12 - std::panicking::begin_panic_handler::closure$0
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\std\src\panicking.rs:699
+  13:     0x7ff6c8cff52f - std::sys::backtrace::__rust_end_short_backtrace<std::panicking::begin_panic_handler::closure_env$0,never$>
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\std\src\sys\backtrace.rs:174
+  14:     0x7ff6c8d0295e - std::panicking::begin_panic_handler
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\std\src\panicking.rs:697
+  15:     0x7ff6c8d245b5 - core::panicking::panic_nounwind_fmt
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\core\src\intrinsics\mod.rs:2367
+  16:     0x7ff6c8d24663 - core::panicking::panic_nounwind
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\core\src\panicking.rs:225
+  17:     0x7ff6c8d247ea - core::panicking::panic_cannot_unwind
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\core\src\panicking.rs:346
+  18:     0x7ff6c8b2dbd6 - windows::Win32::UI::TextServices::impl$410::new::SetText<cloudleaf_windows_ime::native::session::render_tests::Range_Impl,-1>
+                               at C:\Users\EDY\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\windows-0.62.2\src\Windows\Win32\UI\TextServices\mod.rs:11832
+  19:     0x7ffac5a0bb00 - _CxxFrameHandler3
+  20:     0x7ffac59f33c7 - is_exception_typeof
+  21:     0x7ffaf2344646 - RtlCaptureContext2
+  22:     0x7ff6c8b2db86 - windows::Win32::UI::TextServices::impl$410::new::SetText<cloudleaf_windows_ime::native::session::render_tests::Range_Impl,-1>
+                               at C:\Users\EDY\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\windows-0.62.2\src\Windows\Win32\UI\TextServices\mod.rs:11835
+  23:     0x7ff6c8cd4d31 - windows::Win32::UI::TextServices::ITfRange::SetText
+                               at C:\Users\EDY\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\windows-0.62.2\src\Windows\Win32\UI\TextServices\mod.rs:11643
+  24:     0x7ff6c8be0478 - cloudleaf_windows_ime::native::session::impl$3::render::closure$2
+                               at C:\Users\EDY\.codex\worktrees\cl007-windows\Cloudleaf\adapters\windows\session.rs:1385
+  25:     0x7ff6c8b6b726 - cloudleaf_windows_ime::native::session::Host::render
+                               at C:\Users\EDY\.codex\worktrees\cl007-windows\Cloudleaf\adapters\windows\session.rs:1470
+  26:     0x7ff6c8b68ee8 - cloudleaf_windows_ime::native::session::Host::run
+                               at C:\Users\EDY\.codex\worktrees\cl007-windows\Cloudleaf\adapters\windows\session.rs:1186
+  27:     0x7ff6c8be2a35 - cloudleaf_windows_ime::native::session::impl$6::DoEditSession::closure$0
+                               at C:\Users\EDY\.codex\worktrees\cl007-windows\Cloudleaf\adapters\windows\session.rs:1656
+  28:     0x7ff6c8c27373 - core::panic::unwind_safe::impl$25::call_once<enum2$<core::result::Result<tuple$<>,windows_result::error::Error> >,cloudleaf_windows_ime::native::session::impl$6::DoEditSession::closure_env$0>
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588\library\core\src\panic\unwind_safe.rs:272
+  29:     0x7ff6c8bc1a11 - std::panicking::catch_unwind::do_call<core::panic::unwind_safe::AssertUnwindSafe<cloudleaf_windows_ime::native::session::impl$6::DoEditSession::closure_env$0>,enum2$<core::result::Result<tuple$<>,windows_result::error::Error> > >
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588\library\std\src\panicking.rs:589
+  30:     0x7ff6c8afb5d3 - std::panic::catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<cloudleaf_windows_ime::native::candidate::window_proc::closure_env$0>,enum2$<core::result::Result<windows::Win32::Foundation::LRESULT,windows_result::error::Error> > >
+  31:     0x7ff6c8afa3d7 - std::panicking::catch_unwind
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588\library\std\src\panicking.rs:552
+  32:     0x7ff6c8afa3d7 - std::panic::catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<cloudleaf_windows_ime::native::session::impl$6::DoEditSession::closure_env$0>,enum2$<core::result::Result<tuple$<>,windows_result::error::Error> > >
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588\library\std\src\panic.rs:359
+  33:     0x7ff6c8c1b1f3 - cloudleaf_windows_ime::native::boundary<tuple$<>,cloudleaf_windows_ime::native::session::impl$6::DoEditSession::closure_env$0>
+                               at C:\Users\EDY\.codex\worktrees\cl007-windows\Cloudleaf\adapters\windows\mod.rs:20
+  34:     0x7ff6c8b6cb37 - cloudleaf_windows_ime::native::session::impl$6::DoEditSession
+                               at C:\Users\EDY\.codex\worktrees\cl007-windows\Cloudleaf\adapters\windows\session.rs:1637
+  35:     0x7ff6c8b3478e - windows::Win32::UI::TextServices::impl$222::new::DoEditSession<cloudleaf_windows_ime::native::session::NativeDrain_Impl,-1>
+                               at C:\Users\EDY\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\windows-0.62.2\src\Windows\Win32\UI\TextServices\mod.rs:7237
+  36:     0x7ff6c8cd49ab - windows::Win32::UI::TextServices::ITfEditSession::DoEditSession
+                               at C:\Users\EDY\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\windows-0.62.2\src\Windows\Win32\UI\TextServices\mod.rs:7220
+  37:     0x7ff6c8bed5da - cloudleaf_windows_ime::native::session::render_tests::drain
+                               at C:\Users\EDY\.codex\worktrees\cl007-windows\Cloudleaf\adapters\windows\render_tests.rs:1079
+  38:     0x7ff6c8c01185 - cloudleaf_windows_ime::native::session::render_tests::native_empty_delete_end_reentrant_focus_preserves_the_new_context_composition
+                               at C:\Users\EDY\.codex\worktrees\cl007-windows\Cloudleaf\adapters\windows\render_tests.rs:1025
+  39:     0x7ff6c8b87448 - cloudleaf_windows_ime::native::session::render_tests::native_empty_delete_end_reentrant_focus_preserves_the_new_context_composition::closure$0
+                               at C:\Users\EDY\.codex\worktrees\cl007-windows\Cloudleaf\adapters\windows\render_tests.rs:1019
+  40:     0x7ff6c8b8b082 - core::ops::function::FnOnce::call_once<cloudleaf_windows_ime::native::session::render_tests::native_empty_delete_end_reentrant_focus_preserves_the_new_context_composition::closure_env$0,tuple$<> >
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588\library\core\src\ops\function.rs:253
+  41:     0x7ff6c8c74b90 - core::ops::function::FnOnce::call_once
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\core\src\ops\function.rs:253
+  42:     0x7ff6c8c74b90 - test::__rust_begin_short_backtrace<enum2$<core::result::Result<tuple$<>,alloc::string::String> >,enum2$<core::result::Result<tuple$<>,alloc::string::String> > (*)()>
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\test\src\lib.rs:648
+  43:     0x7ff6c8c73473 - test::run_test_in_process
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\test\src\lib.rs:671
+  44:     0x7ff6c8c73473 - test::run_test::closure$0
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\test\src\lib.rs:592
+  45:     0x7ff6c8c2df8c - test::run_test::closure$1
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\test\src\lib.rs:622
+  46:     0x7ff6c8c2df8c - std::sys::backtrace::__rust_begin_short_backtrace<test::run_test::closure_env$1,tuple$<> >
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\std\src\sys\backtrace.rs:158
+  47:     0x7ff6c8c323fd - core::ops::function::FnOnce::call_once<std::thread::impl$0::spawn_unchecked_::closure_env$1<test::run_test::closure_env$1,tuple$<> >,tuple$<> >
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\core\src\ops\function.rs:253
+  48:     0x7ff6c8d059dd - alloc::boxed::impl$28::call_once
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\alloc\src\boxed.rs:1971
+  49:     0x7ff6c8d059dd - alloc::boxed::impl$28::call_once
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\alloc\src\boxed.rs:1971
+  50:     0x7ff6c8d059dd - std::sys::pal::windows::thread::impl$0::new::thread_start
+                               at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\std\src\sys\pal\windows\thread.rs:60
+  51:     0x7ffaf17ddda7 - BaseThreadInitThunk
+  52:     0x7ffaf229ee4c - RtlUserThreadStart
+thread caused non-unwinding panic. aborting.
+error: test failed, to rerun pass `-p cloudleaf-windows-ime --lib`
+
+Caused by:
+  process didn't exit successfully: `C:\Users\EDY\.codex\worktrees\cl007-windows\Cloudleaf\target\debug\deps\cloudleaf_windows_ime-074298fd7fbc2509.exe native_empty_delete_end_reentrant_focus_preserves_the_new_context_composition --nocapture` (exit code: 0xc0000409, STATUS_STACK_BUFFER_OVERRUN)

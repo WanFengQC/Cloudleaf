@@ -1,0 +1,50 @@
+EEEEE
+======================================================================
+ERROR: test_checkpoint_preserves_jsonl_prefix_and_rejects_changed_identity (test_windows_stress.StressEvidenceTests.test_checkpoint_preserves_jsonl_prefix_and_rejects_changed_identity)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl007-windows\Cloudleaf\tests\test_windows_stress.py", line 38, in test_checkpoint_preserves_jsonl_prefix_and_rejects_changed_identity
+    journal = STRESS.Journal(folder)
+              ^^^^^^^^^^^^^^
+AttributeError: module 'windows_stress' has no attribute 'Journal'
+
+======================================================================
+ERROR: test_diagnostic_is_explicit_and_cannot_claim_long_acceptance (test_windows_stress.StressEvidenceTests.test_diagnostic_is_explicit_and_cannot_claim_long_acceptance)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl007-windows\Cloudleaf\tests\test_windows_stress.py", line 29, in test_diagnostic_is_explicit_and_cannot_claim_long_acceptance
+    value = STRESS.configuration('diagnostic', 2, 10, .1, .05)
+            ^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'windows_stress' has no attribute 'configuration'
+
+======================================================================
+ERROR: test_long_profiles_are_exact_contiguous_durations_and_bounded_still_compatible (test_windows_stress.StressEvidenceTests.test_long_profiles_are_exact_contiguous_durations_and_bounded_still_compatible)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl007-windows\Cloudleaf\tests\test_windows_stress.py", line 20, in test_long_profiles_are_exact_contiguous_durations_and_bounded_still_compatible
+    self.assertEqual(STRESS.configuration('8h', None, None, 60, 1)['seconds'], 28800)
+                     ^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'windows_stress' has no attribute 'configuration'
+
+======================================================================
+ERROR: test_process_identity_refuses_live_child_and_recognizes_its_actual_exit (test_windows_stress.StressEvidenceTests.test_process_identity_refuses_live_child_and_recognizes_its_actual_exit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl007-windows\Cloudleaf\tests\test_windows_stress.py", line 67, in test_process_identity_refuses_live_child_and_recognizes_its_actual_exit
+    identity = STRESS.process_identity(process)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'windows_stress' has no attribute 'process_identity'
+
+======================================================================
+ERROR: test_raw_latency_distributions_keep_event_denominator_and_unknown_counts (test_windows_stress.StressEvidenceTests.test_raw_latency_distributions_keep_event_denominator_and_unknown_counts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl007-windows\Cloudleaf\tests\test_windows_stress.py", line 53, in test_raw_latency_distributions_keep_event_denominator_and_unknown_counts
+    journal = STRESS.Journal(Path(temporary))
+              ^^^^^^^^^^^^^^
+AttributeError: module 'windows_stress' has no attribute 'Journal'
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.020s
+
+FAILED (errors=5)

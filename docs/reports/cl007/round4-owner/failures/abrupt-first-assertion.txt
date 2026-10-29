@@ -1,0 +1,36 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.05s
+     Running unittests src\lib.rs (target\debug\deps\cloudleaf_windows_ime-074298fd7fbc2509.exe)
+
+running 1 test
+
+thread 'native::session::render_tests::round4_abrupt_settext_exit_preserves_flight_without_drop_or_retry' panicked at apps\windows-ime\src\..\..\..\adapters\windows\recovery.rs:1041:5:
+
+running 1 test
+test native::session::render_tests::round4_abrupt_settext_exit_preserves_flight_without_drop_or_retry ... FAILED
+
+failures:
+
+failures:
+    native::session::render_tests::round4_abrupt_settext_exit_preserves_flight_without_drop_or_retry
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 93 filtered out; finished in 0.06s
+
+
+
+thread 'native::session::render_tests::round4_abrupt_settext_exit_preserves_flight_without_drop_or_retry' panicked at apps\windows-ime\src\..\..\..\adapters\windows\render_tests.rs:142:9:
+assertion `left == right` failed
+  left: 1
+ right: 0
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test native::session::render_tests::round4_abrupt_settext_exit_preserves_flight_without_drop_or_retry ... FAILED
+
+failures:
+
+failures:
+    native::session::render_tests::round4_abrupt_settext_exit_preserves_flight_without_drop_or_retry
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 93 filtered out; finished in 0.09s
+
+error: test failed, to rerun pass `-p cloudleaf-windows-ime --lib`

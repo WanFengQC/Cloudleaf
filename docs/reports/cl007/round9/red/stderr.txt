@@ -1,0 +1,23 @@
+test_checkpoint_preserves_jsonl_prefix_and_rejects_changed_identity (test_windows_stress.StressEvidenceTests.test_checkpoint_preserves_jsonl_prefix_and_rejects_changed_identity) ... ok
+test_complete_trace_keeps_denominator_but_missing_final_is_partial (test_windows_stress.StressEvidenceTests.test_complete_trace_keeps_denominator_but_missing_final_is_partial) ... ok
+test_diagnostic_is_explicit_and_cannot_claim_long_acceptance (test_windows_stress.StressEvidenceTests.test_diagnostic_is_explicit_and_cannot_claim_long_acceptance) ... ok
+test_duplicate_sequence_or_changed_context_is_retained_as_trace_error (test_windows_stress.StressEvidenceTests.test_duplicate_sequence_or_changed_context_is_retained_as_trace_error) ... ok
+test_long_profiles_are_exact_contiguous_durations_and_bounded_still_compatible (test_windows_stress.StressEvidenceTests.test_long_profiles_are_exact_contiguous_durations_and_bounded_still_compatible) ... ok
+test_long_run_admission_requires_explicit_matching_isolated_approval (test_windows_stress.StressEvidenceTests.test_long_run_admission_requires_explicit_matching_isolated_approval) ... ok
+test_process_identity_refuses_live_child_and_recognizes_its_actual_exit (test_windows_stress.StressEvidenceTests.test_process_identity_refuses_live_child_and_recognizes_its_actual_exit) ... ok
+test_raw_latency_distributions_keep_event_denominator_and_unknown_counts (test_windows_stress.StressEvidenceTests.test_raw_latency_distributions_keep_event_denominator_and_unknown_counts) ... ok
+test_string_only_approval_cannot_replace_actual_environment_and_authorization_materials (test_windows_stress.StressEvidenceTests.test_string_only_approval_cannot_replace_actual_environment_and_authorization_materials) ... FAIL
+test_valid_json_missing_key_or_cycle_cannot_be_complete_evidence (test_windows_stress.StressEvidenceTests.test_valid_json_missing_key_or_cycle_cannot_be_complete_evidence) ... ok
+
+======================================================================
+FAIL: test_string_only_approval_cannot_replace_actual_environment_and_authorization_materials (test_windows_stress.StressEvidenceTests.test_string_only_approval_cannot_replace_actual_environment_and_authorization_materials)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl007-windows\Cloudleaf\tests\test_windows_stress.py", line 133, in test_string_only_approval_cannot_replace_actual_environment_and_authorization_materials
+    self.assertFalse(STRESS.execution_preflight(identity, approval)['ready'])
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.088s
+
+FAILED (failures=1)

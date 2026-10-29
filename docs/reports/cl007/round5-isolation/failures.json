@@ -1,0 +1,27 @@
+[
+  {
+    "implementation_commit": "c03e3c6962f592e8d9abbda3ffc4eb8651379613",
+    "path": "earlier-checkpoints/round5-red/output.raw.json",
+    "failure": "32 abnormal owners orphaned stopped worker handles; healthy session 33 exhausted 32 monitor slots",
+    "exit_code": 101,
+    "fix_commit": "088bf9c5e7811d6b16728a5b377d14a3e91ac59c"
+  },
+  {
+    "implementation_commit": "ad45bfe0d7ce0ec1d7b91f366e4e5c402dc4026e",
+    "path": "earlier-checkpoints/round5-validation-final/workspace-tests.raw.json",
+    "exit_code": 101,
+    "failure": "R4 expected failed cleanup attempts after one zero-wait reap; actual completion not yet observed",
+    "fix_commit": "9ba0ea2",
+    "original_assertions_preserved": true
+  },
+  {
+    "implementation_commit": "9ba0ea20dbc086370ab47995f15afc7c7de3d93d",
+    "path": "earlier-checkpoints/round5-validation-9ba0ea2/workspace-tests.raw.json",
+    "exit_code": 101,
+    "failure": "old queue-capacity test saw overflow true; intermediate queue lengths were not captured",
+    "inference": "100ms scope expiry during pre-full filling can flush queue; actual full32 remains rejected before scope branch",
+    "fix_commit": "519ea587fe5a0fe56cb2a5ebc239832a118f692a",
+    "original_assertions_preserved": true,
+    "added_assertion": "every fill increases actual owned length by one; scope explicitly valid per input"
+  }
+]

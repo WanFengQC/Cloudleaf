@@ -1,0 +1,10 @@
+case_id	application_category	scenario	expected_behavior	environment_id	application_version	operator_id	authorization_reference	input_text	actual_result	evidence_path	reviewer_id	status
+APP-01	记事本	全拼/选词/标点/退格/取消	实际上屏与真人按键轨迹逐项一致；注释不入正文									pending
+APP-02	浏览器文本框	多控件焦点切换及迟到提交	旧上下文不能修改新控件；未知结果不重放									pending
+APP-03	浏览器地址栏	快捷键/自动连发与导航	系统快捷键透传，合法连发逐次处理									pending
+APP-04	办公软件	长段编辑/选区/多文档	组合及最终文本不丢字、不重复；旧文档隔离									pending
+APP-05	多行编辑器	回车/中间编辑/连续退格	编辑边界和提交次序与真实操作一致									pending
+APP-06	只读和密码控件	禁止编辑/敏感上下文	不写入只读内容；不记录敏感输入历史									pending
+APP-07	权限切换	普通/管理员应用间切换	按批准的位数权限矩阵验证接管和释放									pending
+APP-08	多屏DPI	移动窗口/缩放/失焦收起	候选定位和焦点正确，不夺取应用焦点									pending
+APP-09	故障恢复	写入前失败/写后Unknown/owner异常	保留已知恢复材料；不自动重试Unknown或跨线程释放									pending

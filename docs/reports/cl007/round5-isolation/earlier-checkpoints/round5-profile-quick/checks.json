@@ -1,0 +1,36 @@
+[
+  {
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "cloudleaf-windows-ime",
+      "--lib",
+      "round5_",
+      "--locked",
+      "--offline",
+      "--",
+      "--nocapture",
+      "--test-threads=1"
+    ],
+    "exit_code": 0,
+    "seconds": 5.759860599995591
+  },
+  {
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "cloudleaf-windows-ime",
+      "--lib",
+      "watchdog::tests",
+      "--locked",
+      "--offline",
+      "--",
+      "--nocapture",
+      "--test-threads=1"
+    ],
+    "exit_code": 0,
+    "seconds": 0.6623612999974284
+  }
+]

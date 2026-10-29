@@ -1,0 +1,139 @@
+{
+  "schema_version": 2,
+  "command": [
+    "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\target\\release\\deps\\cloudleaf_windows_ime-bc46e0fa3eb0a77d.exe",
+    "native::session::render_tests::round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session",
+    "--exact",
+    "--nocapture",
+    "--test-threads=1"
+  ],
+  "explicit_configuration": {
+    "profile": "diagnostic",
+    "seconds": 4,
+    "cycle_ms": 50,
+    "checkpoint_seconds": 0.1,
+    "sample_seconds": 0.05,
+    "long_profile": false
+  },
+  "runner": {
+    "pid": 41992,
+    "created": 134377615838753367
+  },
+  "child": {
+    "pid": 41532,
+    "created": 134377615843049311
+  },
+  "exit_code": 0,
+  "interrupted": false,
+  "timeout": false,
+  "wall_seconds": 6.204546200002369,
+  "mechanism_passed": true,
+  "continuous_long_profile_completed": false,
+  "samples": null,
+  "events": null,
+  "latest_events": {
+    "r5-abrupt-owner-occupied": {
+      "experiment": "r5-abrupt-owner-occupied",
+      "owners": 32,
+      "fixed_bytes": 118838080,
+      "text_bytes": 41943040,
+      "global_fixed_limit": 134217728
+    },
+    "r6-owned-key": {
+      "experiment": "r6-owned-key",
+      "cycle": 80,
+      "instance": 33,
+      "epoch": 1,
+      "sequence": 480,
+      "vk": 32,
+      "lparam": 1,
+      "admission_ns": 14900,
+      "commit_complete_ns": 91000
+    },
+    "r6-cycle": {
+      "experiment": "r6-cycle",
+      "cycle": 80,
+      "healthy_writes": 480,
+      "hosts": 33,
+      "batches": 32,
+      "fixed_bytes": 118958850,
+      "text_bytes": 41943040,
+      "host_rc_strong_count": 1,
+      "module_leases": 132,
+      "module_locks": 0,
+      "own_iunknown_addref_return": 4,
+      "own_iunknown_release_return": 3,
+      "external_com_reference_count": null,
+      "fifo_and_budget_verified": true
+    },
+    "r5-pinned-availability": {
+      "experiment": "r5-pinned-availability",
+      "faulted_owners": 32,
+      "healthy_cycles": 80,
+      "healthy_writes": 480,
+      "unknown_replays": 0,
+      "remaining_hosts": 32,
+      "remaining_batches": 32,
+      "pinned_budget_unchanged": true,
+      "steady_elapsed_ns": 4032951200,
+      "elapsed_ns": 5619577300,
+      "registered": false
+    }
+  },
+  "sampling_errors": [],
+  "output_errors": [],
+  "sampled_peak": {
+    "handles": 145,
+    "threads": 7,
+    "working_set_bytes": 15192064,
+    "private_commit_bytes": 6066176
+  },
+  "final_memory": {
+    "working_set_bytes": 32768,
+    "os_peak_working_set_bytes": 15806464,
+    "private_commit_bytes": 77824
+  },
+  "latency": {
+    "events": 480,
+    "admission_ns": {
+      "p50": 29100,
+      "p95": 208200,
+      "p99": 515300,
+      "max": 911400
+    },
+    "commit_complete_ns": {
+      "p50": 172000,
+      "p95": 581200,
+      "p99": 1039700,
+      "max": 1424500
+    },
+    "raw_errors": [],
+    "cycles": 80,
+    "final_records": 1,
+    "trace_complete": true,
+    "external_com_reference_count": null,
+    "scope": "own diagnostic native FIFO; commit latency ends at cycle drain, not real TSF latency"
+  },
+  "recovery": {
+    "expected_unknown_materials": 32,
+    "verified": 32,
+    "success_rate": 1.0,
+    "automatic_replays": 0
+  },
+  "external_com_reference_count": null,
+  "real_application_acceptance": false,
+  "system_registration_executed": false,
+  "long_term_production_reliability_accepted": false,
+  "files_sha256": {
+    "checkpoint.json": "dc210b363d880bdf8861ca08e136a15620b60ee414072da6b26e38a6055e142b",
+    "checkpoints.jsonl": "6b32a39380a0cbbfe9d68242952b70a2759599a9ef85eded4beabc5ad95ff5f1",
+    "events.jsonl": "6f55480e2e00c8512a19cfe21dd2f1178edb7484b1d54430afc57804d6d126cc",
+    "samples.jsonl": "9ccfd98d75d84ecff1ce3c88b8678c2a7041071d8ba473be899cbdea1b19f80c",
+    "stdout.txt": "508bf70ce3f50126e8f217957da3be5d6e1974ee965f88ac81841e95abbedbd9"
+  },
+  "limitations": [
+    "only owned diagnostic process; raw sampling peaks are not exact RSS bounds",
+    "new segments restart independent sessions; elapsed time never joins across segments",
+    "Rc/Lease counts and paired own-IUnknown returns are separate from global COM reference count"
+  ]
+}

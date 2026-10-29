@@ -1,0 +1,36 @@
+
+running 1 test
+test native::session::render_tests::round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session ... {"experiment":"r5-abrupt-owner-occupied","owners":32,"fixed_bytes":118838080,"text_bytes":41943040,"global_fixed_limit":134217728}
+{"experiment":"r6-owned-key","cycle":1,"instance":33,"epoch":1,"sequence":1,"vk":78,"lparam":1,"admission_ns":103100,"commit_complete_ns":338300}
+{"experiment":"r6-owned-key","cycle":1,"instance":33,"epoch":1,"sequence":2,"vk":73,"lparam":1,"admission_ns":51200,"commit_complete_ns":233900}
+{"experiment":"r6-owned-key","cycle":1,"instance":33,"epoch":1,"sequence":3,"vk":72,"lparam":1,"admission_ns":23600,"commit_complete_ns":181400}
+{"experiment":"r6-owned-key","cycle":1,"instance":33,"epoch":1,"sequence":4,"vk":65,"lparam":1,"admission_ns":23600,"commit_complete_ns":157600}
+{"experiment":"r6-owned-key","cycle":1,"instance":33,"epoch":1,"sequence":5,"vk":79,"lparam":1,"admission_ns":23700,"commit_complete_ns":133800}
+{"experiment":"r6-owned-key","cycle":1,"instance":33,"epoch":1,"sequence":6,"vk":32,"lparam":1,"admission_ns":18300,"commit_complete_ns":110000}
+{"experiment":"r6-cycle","cycle":1,"healthy_writes":6,"hosts":33,"batches":32,"fixed_bytes":118958850,"text_bytes":41943040,"host_rc_strong_count":1,"module_leases":132,"module_locks":0,"own_iunknown_addref_return":4,"own_iunknown_release_return":3,"external_com_reference_count":null,"fifo_and_budget_verified":true}
+{"experiment":"r6-owned-key","cycle":2,"instance":33,"epoch":1,"sequence":7,"vk":78,"lparam":1,"admission_ns":71500,"commit_complete_ns":260200}
+{"experiment":"r6-owned-key","cycle":2,"instance":33,"epoch":1,"sequence":8,"vk":73,"lparam":1,"admission_ns":29600,"commit_complete_ns":187700}
+{"experiment":"r6-owned-key","cycle":2,"instance":33,"epoch":1,"sequence":9,"vk":72,"lparam":1,"admission_ns":21300,"commit_complete_ns":157200}
+{"experiment":"r6-owned-key","cycle":2,"instance":33,"epoch":1,"sequence":10,"vk":65,"lparam":1,"admission_ns":21400,"commit_complete_ns":135700}
+{"experiment":"r6-owned-key","cycle":2,"instance":33,"epoch":1,"sequence":11,"vk":79,"lparam":1,"admission_ns":22200,"commit_complete_ns":114200}
+{"experiment":"r6-owned-key","cycle":2,"instance":33,"epoch":1,"sequence":12,"vk":32,"lparam":1,"admission_ns":17100,"commit_complete_ns":91900}
+{"experiment":"r6-cycle","cycle":2,"healthy_writes":12,"hosts":33,"batches":32,"fixed_bytes":118958850,"text_bytes":41943040,"host_rc_strong_count":1,"module_leases":132,"module_locks":0,"own_iunknown_addref_return":4,"own_iunknown_release_return":3,"external_com_reference_count":null,"fifo_and_budget_verified":true}
+{"experiment":"r6-owned-key","cycle":3,"instance":33,"epoch":1,"sequence":13,"vk":78,"lparam":1,"admission_ns":123200,"commit_complete_ns":354000}
+{"experiment":"r6-owned-key","cycle":3,"instance":33,"epoch":1,"sequence":14,"vk":73,"lparam":1,"admission_ns":30500,"commit_complete_ns":229900}
+{"experiment":"r6-owned-key","cycle":3,"instance":33,"epoch":1,"sequence":15,"vk":72,"lparam":1,"admission_ns":20800,"commit_complete_ns":198500}
+{"experiment":"r6-owned-key","cycle":3,"instance":33,"epoch":1,"sequence":16,"vk":65,"lparam":1,"admission_ns":20000,"commit_complete_ns":177600}
+{"experiment":"r6-owned-key","cycle":3,"instance":33,"epoch":1,"sequence":17,"vk":79,"lparam":1,"admission_ns":21200,"commit_complete_ns":157400}
+{"experiment":"r6-owned-key","cycle":3,"instance":33,"epoch":1,"sequence":18,"vk":32,"lparam":1,"admission_ns":14500,"commit_complete_ns":136100}
+{"experiment":"r6-cycle","cycle":3,"healthy_writes":18,"hosts":33,"batches":32,"fixed_bytes":118958850,"text_bytes":41943040,"host_rc_strong_count":1,"module_leases":132,"module_locks":0,"own_iunknown_addref_return":4,"own_iunknown_release_return":3,"external_com_reference_count":null,"fifo_and_budget_verified":true}
+
+thread 'native::session::render_tests::round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session' panicked at apps\windows-ime\src\..\..\..\adapters\windows\render_tests.rs:326:9:
+显式短档故障注入
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    native::session::render_tests::round5_abrupt_owner_workers_reclaim_slots_before_healthy_fifo_session
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 98 filtered out; finished in 1.54s

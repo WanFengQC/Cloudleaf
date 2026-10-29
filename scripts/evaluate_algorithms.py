@@ -142,7 +142,7 @@ def read_results(path: Path, dataset: list[dict]) -> list[dict]:
 
 def source_sha256() -> str:
     paths = [ROOT / "Cargo.toml", ROOT / "Cargo.lock", ROOT / "rust-toolchain.toml"]
-    for folder, pattern in [("crates", "*.rs"), ("crates", "Cargo.toml"), ("apps", "*.rs"),
+    for folder, pattern in [("crates", "*.rs"), ("adapters", "*.rs"), ("crates", "Cargo.toml"), ("apps", "*.rs"),
                             ("apps", "Cargo.toml"), ("scripts", "*.py"), ("tests", "*.py"), ("tests", "*.tsv"), ("data", "*.tsv")]:
         paths.extend((ROOT / folder).rglob(pattern))
     digest = hashlib.sha256()
@@ -231,7 +231,7 @@ def run() -> None:
         raise ValueError("构建或评估期间源码变化，拒绝生成来源错配报告")
     rows = read_results(raw, dataset)
     provenance = {"measured_at_utc": datetime.now(timezone.utc).isoformat(), "source_sha256": before,
-                  "source_fingerprint_schema": "cloudleaf-source-v2",
+                  "source_fingerprint_schema": "cloudleaf-source-v3",
                   "dataset_sha256": hashlib.sha256(DATASET.read_bytes()).hexdigest(),
                   "binary_sha256": hashlib.sha256(binary.read_bytes()).hexdigest(),
                   "dictionary_sha256": hashlib.sha256((ROOT / "data/dictionaries/prototype.tsv").read_bytes()).hexdigest(),
