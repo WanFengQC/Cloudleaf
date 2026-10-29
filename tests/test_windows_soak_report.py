@@ -16,6 +16,26 @@ EVIDENCE = ROOT / 'docs/reports/cl007/round7'
 
 
 class SoakReportTests(unittest.TestCase):
+    def test_crlf_checkout_recovers_only_exactly_matching_jsonl_originals(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            copied = Path(temporary) / 'run'
+            shutil.copytree(EVIDENCE / 'complete', copied)
+            names = ['checkpoints.jsonl', 'events.jsonl', 'samples.jsonl']
+            for name in names:
+                path = copied / 'segment-0001' / name
+                path.write_bytes(path.read_bytes().replace(b'\r\n', b'\n').replace(b'\n', b'\r\n'))
+            result = REPORT.report_run(copied)['segments'][0]
+            self.assertTrue(result['evidence_integrity_verified'], result['issues'])
+            for name in names:
+                file = result['files'][name]
+                self.assertEqual(file['original_resolution'], 'exact-sha-crlf-to-lf')
+                self.assertNotEqual(file['physical_sha256'], file['resolved_original_sha256'])
+            path = copied / 'segment-0001/samples.jsonl'
+            path.write_bytes(path.read_bytes().replace(b'"handles": 50', b'"handles": 51', 1))
+            invalid = REPORT.report_run(copied)['segments'][0]
+            self.assertFalse(invalid['evidence_integrity_verified'])
+            self.assertTrue(any('SHA' in issue for issue in invalid['issues']))
+
     def test_actual_short_evidence_reconstructs_original_stdout_and_never_accepts_long_test(self):
         report = REPORT.report_run(EVIDENCE / 'complete')
         segment = report['segments'][0]

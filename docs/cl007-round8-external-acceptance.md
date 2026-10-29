@@ -42,3 +42,9 @@ python scripts/stress_windows_faults.py --test-binary <目标VM实际release测�
 连续8h/24h、可靠性和部署恢复门禁完成后，才可另行申请隔离环境TSF注册/实际应用验收。注册前必须固定签名/位数/CLSID/profile及备份/撤销方案并人工批准。应用矩阵至少覆盖记事本、浏览器文本框/地址栏、办公软件、多行编辑器、只读/密码控件、管理员切换、多屏DPI；每项原始输入、选词/取消/退格/失焦/异常提交结果均由真人记录，不用工程host、静态检查或CI代替。
 
 当前环境负责人、VM/快照、授权及真人审阅记录均缺，8h/24h与真实应用保持未执行。模板见`docs/acceptance/cl007-round8-environment.json`和`cl007-round8-application-matrix.tsv`。
+
+## Windows checkout 的字节解释修订
+
+`05dd085` 的 push CI `40913130729` 在 Windows 出现真实反例：Git checkout 将 `checkpoints.jsonl/events.jsonl/samples.jsonl` 的 LF 转成 CRLF，Linux 同提交通过，Windows 30 项 Python 中两项因物理 SHA 不符失败。只读报告器此前仅处理 stdout 的显式原文封装，缺少已发布 JSONL 的 checkout 解释。
+
+固定五文件中的上述三个 JSONL 若物理 SHA 不匹配已记录 SHA，只尝试一次 CRLF→LF；只有转换结果精确匹配原记录 SHA 才解释为 checkout 换行。物理 SHA/字节数始终保留，重建 SHA/字节数及转换类型另列。未给预期 SHA、其他文件、字节改动或转换后仍不符均不借此接纳；不改变数据内容、历史证据或 runner。新增真实 checkout 形状回归并保留旧实现失败原文，原非单调/损坏回归保留。
