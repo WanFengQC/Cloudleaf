@@ -70,6 +70,19 @@ class SoakReportTests(unittest.TestCase):
             self.assertEqual(result['raw_sample_records'], 39)
             self.assertFalse(result['candidate_contiguous_long_record_for_external_review'])
 
+    def test_native_duration_comes_from_raw_final_not_a_changed_summary_snapshot(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            copied = Path(temporary) / 'run'
+            shutil.copytree(EVIDENCE / 'complete', copied)
+            path = copied / 'segment-0001/summary.json'
+            value = json.loads(path.read_text(encoding='utf-8'))
+            value['latest_events']['r5-pinned-availability']['steady_elapsed_ns'] = 10_000_000_000
+            path.write_text(json.dumps(value), encoding='utf-8')
+            result = REPORT.report_run(copied)['segments'][0]
+            self.assertLess(result['native_steady_seconds'], 5)
+            self.assertFalse(result['evidence_integrity_verified'])
+            self.assertTrue(any('final' in issue for issue in result['issues']))
+
 
 if __name__ == '__main__':
     unittest.main()
