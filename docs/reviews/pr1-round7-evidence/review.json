@@ -1,0 +1,878 @@
+{
+  "main_sha": "a564fd47b0f054ff360592af3ccb8d744021160f",
+  "reviewed_round6_shared_sha": "c48584d411eceb82dcc6b8a30df9a33d9e995762",
+  "checked_shared_head": "4f19e96ad37c5c0dfb4877286f073f3f6fabe23f",
+  "scope": "Complete Git path inventory and patch identity; executable/API diff reviewed directly; generated histories are hashed, not independently language-validated",
+  "full_patch_bytes": 2337028,
+  "full_patch_sha256": "acb699f358a0e5c88aed846af4eab5084a85f4a8bd47fc6901cb73c850306628",
+  "changes": [
+    {
+      "status": "M",
+      "path": ".github/workflows/ci.yml",
+      "git_blob_sha1": "6eb7c146682a2a8b38be80f06a8d02bd4bddd215",
+      "bytes": 1674,
+      "sha256": "30bf90a39913b3ec690c3eeb7e8e09a2ef3ecc80892214783a4e8cb078783dd0"
+    },
+    {
+      "status": "M",
+      "path": "README.md",
+      "git_blob_sha1": "065587c44bb71927e3a09306c5b89c3836ae762b",
+      "bytes": 5804,
+      "sha256": "f90331a7cd923bacd63e26283b9eeb7a0a40da07159a45bfe82d8a5c61311571"
+    },
+    {
+      "status": "A",
+      "path": "config/audits/core.json",
+      "git_blob_sha1": "b2f206edc7d5e01528faad838829246e1127192f",
+      "bytes": 624,
+      "sha256": "0fb724e5cb5774e02ce20ca3b55fc43b683675a12a1d8c0cac1078ba2403626a"
+    },
+    {
+      "status": "M",
+      "path": "crates/cloudleaf-input/src/lib.rs",
+      "git_blob_sha1": "ae704e7affd9d267328e778b27872195755c8f9e",
+      "bytes": 38578,
+      "sha256": "603fffb48ecf1a67b718e3e828f0bf99ffb84d90ded55c06512be3d194b34424"
+    },
+    {
+      "status": "A",
+      "path": "crates/cloudleaf-input/tests/platform_contract_v2.rs",
+      "git_blob_sha1": "0aab5e9b92e0a23a252cf5316d67203700f067e3",
+      "bytes": 5845,
+      "sha256": "2efb0f0abbee4ee966a9e64637e36f832f8861f33f73cc6373d32f447fe51f2e"
+    },
+    {
+      "status": "A",
+      "path": "crates/cloudleaf-input/tests/round6_shared_review.rs",
+      "git_blob_sha1": "62b954e4ae08595da76b15382fe5a9c5b79e3236",
+      "bytes": 7810,
+      "sha256": "88844989b51852059fb2e193e4ad74fd23dd620b5b5dcc4c26e0aceb9b63a964"
+    },
+    {
+      "status": "M",
+      "path": "crates/cloudleaf-types/src/lib.rs",
+      "git_blob_sha1": "2a35eec1d787deb979e096b62c834244c4723505",
+      "bytes": 4324,
+      "sha256": "515aa8f576349dda013fed13bdcdb2cf5996492794f74d4d8ee46f291a6b7045"
+    },
+    {
+      "status": "A",
+      "path": "docs/cl007-009-execution-plan.md",
+      "git_blob_sha1": "5a5a1c0ae56e8c493a1389cf3683e7de1c46932b",
+      "bytes": 7353,
+      "sha256": "798c84fa3241663f01c6247c2bf8f498640c98bbc92be0331b2c348b54da14ed"
+    },
+    {
+      "status": "A",
+      "path": "docs/cl007-009-round4-plan.md",
+      "git_blob_sha1": "c2f84e5cdc45d5c9d7a66191e6ae27cc151c6961",
+      "bytes": 5168,
+      "sha256": "2fefcf509969d22169e6dee75955c96bf77b62f7c50ff545267e601fe48b2793"
+    },
+    {
+      "status": "A",
+      "path": "docs/cl007-009-round5-plan.md",
+      "git_blob_sha1": "f46787ff52bac3ec423804b264cac383dfbf84e3",
+      "bytes": 5905,
+      "sha256": "f4c8b812c697a509e2fdfcf8cf1101eb335247821a91791580bffda8580288e6"
+    },
+    {
+      "status": "A",
+      "path": "docs/cl007-009-round6-plan.md",
+      "git_blob_sha1": "011e88f142615593774502690c31b99aa91b494b",
+      "bytes": 6242,
+      "sha256": "c2393027eec38038cfc9c829c4f0896228865b4b44e453eb1ee5aa8a8818f41a"
+    },
+    {
+      "status": "A",
+      "path": "docs/core-platform-contract-v2.md",
+      "git_blob_sha1": "3754db1ecda96581806e654107c88fb3e6831cff",
+      "bytes": 2149,
+      "sha256": "96d915ec77c9a3cd5d33e38ce4c6b3dcfd371989a4537aa8a637a5cfe4b7dcec"
+    },
+    {
+      "status": "A",
+      "path": "docs/dependency-audit-policy.md",
+      "git_blob_sha1": "557088ae686034f15eafafd1e3627f03a0bc0128",
+      "bytes": 1796,
+      "sha256": "a2181399442caa7d369f45f39f2cf36d34900eb279c7e9d51594248ad8773f1a"
+    },
+    {
+      "status": "A",
+      "path": "docs/lexicon-v2.md",
+      "git_blob_sha1": "deaac3f6ca7ccaa56cc3ba73458302050a208197",
+      "bytes": 2065,
+      "sha256": "8ee3a05efcbaeb012889c2dce4fd7cbbbf35089616703646e768e061a9e2f061"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-ci.json",
+      "git_blob_sha1": "484519285108dc733cd9926f18f2eda66d489309",
+      "bytes": 46565,
+      "sha256": "a77bd9cbccb00c8ccd5ba24bd9c106ad00c409e944f50fb1c62e5dcefc0e32b7"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-review-status.md",
+      "git_blob_sha1": "c9b76de255191abb3a314d0a9d25c1a215eb8102",
+      "bytes": 6343,
+      "sha256": "214da66f7dd3ddc8114d2f18e0a59b43666389865338ec925d12694cd6f5c32c"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round2-ci.json",
+      "git_blob_sha1": "5793e4ad7d0b41c2c2746efe9a8c4179c434c3c8",
+      "bytes": 46887,
+      "sha256": "8e6ef4e4d6a11f81dae509f553e8bf842b6279456d76505a3bcacc30197cc20d"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round2-status.md",
+      "git_blob_sha1": "3cded66138277e7a3425074c014389a7b45c30e0",
+      "bytes": 9097,
+      "sha256": "64868dd5ab8c8344fb65bf950d043c2f5ad68a03e88d638f29343a344182f84c"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round3-ci.json",
+      "git_blob_sha1": "b207a73b47b8e3136a31527a68e370b9d62e3b8a",
+      "bytes": 143464,
+      "sha256": "bb9dc149d76833ef1eb54d7bb74be894542841dc4c5d5c64ad616fe2901442e9"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round3-status.md",
+      "git_blob_sha1": "b0bd395160ab8b4014c12217e54692281dc3f18b",
+      "bytes": 12929,
+      "sha256": "372b37377d877d31dee5c9bcc241a245caf03a6db70aa161a210718c72cc6eb7"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round4-ci.json",
+      "git_blob_sha1": "640a645c1d6eb0de8e590c53637caca36aed3ba2",
+      "bytes": 84580,
+      "sha256": "a23888614043b9305e1778fa3a4ceb7b0f2adf7600d4d6af2968fe3854c23d94"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round4-shared/.gitattributes",
+      "git_blob_sha1": "fcadb2cf97913f58a2523f535336e725c6b59d1f",
+      "bytes": 14,
+      "sha256": "a79691a93b46e49ce460c26ef22afcc03d6eca1e63bf2edbc20e96159510f6c9"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round4-shared/audit_round4_direction_artifacts.py",
+      "git_blob_sha1": "bdce9ed6dc11e6cb54d5a021637d27dec8dce543",
+      "bytes": 3303,
+      "sha256": "38abbaeae1c79e4d90fbf48c25212e5557365b942ef0593c241954468e41b8e6"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round4-shared/check_round4_preservation.py",
+      "git_blob_sha1": "ba1e086f6aabf0492a10128b6942d077f9833c30",
+      "bytes": 2395,
+      "sha256": "109221071e4f74c00fe003fb1372ca9de8f34244b8f9b35e13a87df0383cdfb4"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round4-shared/command-01.log",
+      "git_blob_sha1": "de51b023e80930d825ff2b092b8561f0a3da8e89",
+      "bytes": 36,
+      "sha256": "3397f54a03033c1b027496d83acc64e8f3ceeb4017e0575150f78726edce8a1a"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round4-shared/command-02.log",
+      "git_blob_sha1": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round4-shared/command-03.log",
+      "git_blob_sha1": "5f64dcf23b573c46b3d3ee61879629b56638a2e6",
+      "bytes": 167,
+      "sha256": "d16c31a566945c2df1a2e1d4b5ba329910a71618a2bc0eeea9be219ae6d33631"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round4-shared/command-04.log",
+      "git_blob_sha1": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round4-shared/command-05.log",
+      "git_blob_sha1": "9004d5c7c976a1c9951d658f1c9de7d758af6b8c",
+      "bytes": 72,
+      "sha256": "beed191cf5cd39a57477a6d66e9acb53f3b4efe7566a30e0ada805357a0fe6ff"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round4-shared/command-06.log",
+      "git_blob_sha1": "42c8d0418e164af36090645ab5094860c693879a",
+      "bytes": 6438,
+      "sha256": "6fdc6f52b8b697a13605164568a31a7aa945c6f49655cb3f64a5cebc2c9a4b15"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round4-shared/command-07.log",
+      "git_blob_sha1": "4903c89f36996f26dad961b46e573f3769e25b9a",
+      "bytes": 792,
+      "sha256": "3caffecb4324404e1aadbcf734d20edc5c4947b0d493da99d599759cf72de99e"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round4-shared/command-08.log",
+      "git_blob_sha1": "0184884070a2ba5cce91b63b527456e21c708c05",
+      "bytes": 255,
+      "sha256": "b6f062f51a4f32b87b341169f4fc8df28f97096676c0887b755640a6446e2159"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round4-shared/command-09.log",
+      "git_blob_sha1": "2f6433176ab0f30ccfe697dec067196c88b3e2f4",
+      "bytes": 156,
+      "sha256": "ed1e9b5a603b166e79db70b854518abc07d632da711e39e823ea1d7a82acd2f6"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round4-shared/command-10.log",
+      "git_blob_sha1": "c287bcfdbae41e765786528da229632a87c1d681",
+      "bytes": 1335,
+      "sha256": "2b85571a5da82220e1bc634f53e1f85f9b15cf3fdb09c8ed2d88efa56cad35ff"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round4-shared/command-11.log",
+      "git_blob_sha1": "82317733089dc9d113d43a25715dd9a3ad216a41",
+      "bytes": 2557,
+      "sha256": "b0ca1d83a4d67efe513715a706753b750d7e0a0b7d893fedeb8c79c5ac0ec5cb"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round4-shared/command-12.log",
+      "git_blob_sha1": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round4-shared/direction-artifacts.json",
+      "git_blob_sha1": "4c2baf97245c0ca79209b1eb97d0245e38b24b61",
+      "bytes": 2364,
+      "sha256": "28a8c2d2921acdcc377121787cebe88e4378ee2d59dc1d58e48944c2fbc54f3b"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round4-shared/performance.json",
+      "git_blob_sha1": "c287bcfdbae41e765786528da229632a87c1d681",
+      "bytes": 1335,
+      "sha256": "2b85571a5da82220e1bc634f53e1f85f9b15cf3fdb09c8ed2d88efa56cad35ff"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round4-shared/preservation.json",
+      "git_blob_sha1": "a2147c65452ef5b5edc47836b98b5fd530ede39f",
+      "bytes": 3413,
+      "sha256": "887ad313678ae46b77b8d52f39a9cd52d73d50c9091793f879772f48c7ffabee"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round4-shared/provenance.json",
+      "git_blob_sha1": "aea7338acb49df0e5eb63748ed19badeb5f2b503",
+      "bytes": 7194,
+      "sha256": "e272193b1d25247a5aa851f2e3e5196ea1c15ec40f5cc0bec405b83eb1f67939"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round4-shared/publication-whitespace-failure.json",
+      "git_blob_sha1": "552500a86b3fd3e0ac68ca6c2efc73eb3b76cea2",
+      "bytes": 438,
+      "sha256": "5bbc301fb969f2067df8c2b83555c926913f1383546bf857c246774491e13cd7"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round4-shared/raw-logs.json",
+      "git_blob_sha1": "3e3c38f6dd86802721b908c550337fc757b56674",
+      "bytes": 16914,
+      "sha256": "ef989961f9c91edac40e1b71c25c1414cd62f5b17582fd4d2503ac289cdd55e2"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round4-shared/round4-root-harness-failures.log",
+      "git_blob_sha1": "7425b3b06a06b2040a8d15584ed080d8e94e7a36",
+      "bytes": 2111,
+      "sha256": "c4f7a55770920dd604e494e425fa585dd170d1c9d10f845fa9766a7af75f74ab"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round4-shared/validation.json",
+      "git_blob_sha1": "3064ca2e4e8aac85b828c981b9480414dea21339",
+      "bytes": 4574,
+      "sha256": "61909180a0bc058e19fbcd604fb3f74e5c5e8ca84cd760c846584d06b2fef624"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round4-status.md",
+      "git_blob_sha1": "1113bb5f588776e94718241743f1724aebe8cae7",
+      "bytes": 13627,
+      "sha256": "f57253966abb2ea1d33ed5efd39cd4ed515c1fee14503159ea457c59ed3044a4"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round5-ci.json",
+      "git_blob_sha1": "73cd56ba4044217387b1faefdc5420ea45ee0f27",
+      "bytes": 92251,
+      "sha256": "225c46700af5cd7356cc6014255627f24412a2bb20c737c4f191dc253e47235d"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round5-shared/algorithm-v1/case-comparison.tsv",
+      "git_blob_sha1": "d680f2ea9498894c08bdc351221fc81f50de7f9f",
+      "bytes": 7104,
+      "sha256": "973fa37b9ae60cfb63e067718ec2c39ec1f9d9ceee3b0ca6f480dfde991547a2"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round5-shared/algorithm-v1/raw-results.tsv",
+      "git_blob_sha1": "8ce70f2cc87df6c6a08ff2f44c430ccd7f91a402",
+      "bytes": 94158,
+      "sha256": "0062656cb7603ee1b40bc261a9fe4ab7d571e3734ccee4a411aacad327dc3776"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round5-shared/algorithm-v1/report.md",
+      "git_blob_sha1": "d97a99862bfadf8af29a5fa6b2e3fff9ec2cf531",
+      "bytes": 9359,
+      "sha256": "98515f6a76d7ef30cce3b4017be484e7297be752fc513179f0788cf9e439cb2b"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round5-shared/algorithm-v1/summary.json",
+      "git_blob_sha1": "c4ef7f512186c45661f65dc5e1cab91dc0f7cf33",
+      "bytes": 110573,
+      "sha256": "9c773244fc5cf8403a6447230b948391de8aa66dad069aa690548840645a4612"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round5-shared/baseline-ci.json",
+      "git_blob_sha1": "0f41ffecd2ed1f0ee8996e94f43d697afa206654",
+      "bytes": 36598,
+      "sha256": "f0bf5737d6eb87d70b05c0e7e5ce3f5703854dcb77195f029ba47d00682f5497"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round5-shared/command-01.txt",
+      "git_blob_sha1": "de51b023e80930d825ff2b092b8561f0a3da8e89",
+      "bytes": 36,
+      "sha256": "3397f54a03033c1b027496d83acc64e8f3ceeb4017e0575150f78726edce8a1a"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round5-shared/command-02.txt",
+      "git_blob_sha1": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round5-shared/command-03.txt",
+      "git_blob_sha1": "6f9475a265cefd5578a8b7ebf97be61e3d2378ee",
+      "bytes": 72,
+      "sha256": "1aa6bef404dd8ffaa73d761d688d7a65439e3e099d3856b19d60cc894141c32c"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round5-shared/command-04.txt",
+      "git_blob_sha1": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round5-shared/command-05.txt",
+      "git_blob_sha1": "f0b82d4d768b54f7cc2cc13e0c9b1e1d95e1fb71",
+      "bytes": 72,
+      "sha256": "deb6cb4a6c3e79707fe01a80013f10f53ed028864b8a94992b33872d11736be8"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round5-shared/command-06.txt",
+      "git_blob_sha1": "5817463570920fc7b13f7397060a1d2f049e2119",
+      "bytes": 6438,
+      "sha256": "31d4fd66c389bf3a254f55a5198df74253f68311d5b788efd5cd2135fbd4df40"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round5-shared/command-07.txt",
+      "git_blob_sha1": "a619c55250ad18423b7d81864d226aa2f26692d5",
+      "bytes": 792,
+      "sha256": "748826c00c121dadfa797cd64abf8d34175466d54726faba62f5d36bdfa750f8"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round5-shared/command-08.txt",
+      "git_blob_sha1": "0184884070a2ba5cce91b63b527456e21c708c05",
+      "bytes": 255,
+      "sha256": "b6f062f51a4f32b87b341169f4fc8df28f97096676c0887b755640a6446e2159"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round5-shared/command-09.txt",
+      "git_blob_sha1": "0347a1ecddac3f06136f47b4d2af77c2a8ef26b9",
+      "bytes": 156,
+      "sha256": "9c24e1527f52e55b88e3cf275096c2714d24b9c4bc3c684090ae43b3198b5ae2"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round5-shared/command-10.txt",
+      "git_blob_sha1": "1fc17a7b5982e367ddb1ec9241048a2cf9ad904f",
+      "bytes": 1333,
+      "sha256": "9a610b64fe9d54487477a3a30410b3efe00172891cee2497678025a69a3fe52e"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round5-shared/command-11.txt",
+      "git_blob_sha1": "f7c8c7f4b0c005084928815743698f2aabc5e921",
+      "bytes": 2554,
+      "sha256": "94318f9032a610b6a5a85c93ed76e2596d8f6398731886335918f76c109ef202"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round5-shared/command-12.txt",
+      "git_blob_sha1": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round5-shared/direction-artifacts.json",
+      "git_blob_sha1": "063126dce154bfa4578ba7316ddb6c9837167a6e",
+      "bytes": 2267,
+      "sha256": "d6023fc461c646c7675aab6c53f8b30690182f17da40c1cc351d16c3e7da756d"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round5-shared/direction-changes.json",
+      "git_blob_sha1": "b48cbd19d6f72150be36a6dc4def52c0f8d67d3d",
+      "bytes": 48983,
+      "sha256": "d8ff6dc1d0ed034db70eba22f619d1e1318ff91d8756ffc27a413a05c6fbfe1b"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round5-shared/performance.json",
+      "git_blob_sha1": "1fc17a7b5982e367ddb1ec9241048a2cf9ad904f",
+      "bytes": 1333,
+      "sha256": "9a610b64fe9d54487477a3a30410b3efe00172891cee2497678025a69a3fe52e"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round5-shared/preservation.json",
+      "git_blob_sha1": "8db56774324f88c7bcc7462ed88a85798da1b06a",
+      "bytes": 3330,
+      "sha256": "e20ef3a71032c54cb2d4a80e16d183e66552e0b3b933a69e98940c4718c4623a"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round5-shared/provenance.json",
+      "git_blob_sha1": "eb14b0126a74da295d5f3fe8e65f6b5bb351e3c8",
+      "bytes": 5952,
+      "sha256": "cb7686aba0e1fe4a004fb0637fdb32c11f674559a53ead31895c6c422a4660de"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round5-shared/raw-artifacts.json",
+      "git_blob_sha1": "62ccec94fa4df16e7cd3cfb707c494fd4033f2df",
+      "bytes": 244636,
+      "sha256": "3d99599452fdd934f3d758e7005bb77b0813c711d31dd00f0ce588854f455e40"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round5-shared/raw-logs.json",
+      "git_blob_sha1": "d071afd0fe7896c0600efd7ac3975eeda8c208c5",
+      "bytes": 14365,
+      "sha256": "551f9f592e00ac92d3172d27270124c8991420701985f21f04b26d30d7780b95"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round5-shared/runners.json",
+      "git_blob_sha1": "e4ba44521a688c5b95b73d6c05296c18afb2dd24",
+      "bytes": 19600,
+      "sha256": "8eaf943d10041d62ed210fec86a63c8c0fcbf9d77e1ee9a70ce0bb9959ce005b"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round5-shared/validation.json",
+      "git_blob_sha1": "676ee995828aaeaf9077b03e58aab061648aa344",
+      "bytes": 3466,
+      "sha256": "584189d0b65444de1e22d72da482e9967e571f2e2c2a835f643426396789da6f"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round5-status.md",
+      "git_blob_sha1": "395048ffc474eca64888ede4e9ccbcd4eed9f21d",
+      "bytes": 13410,
+      "sha256": "3ecb8d078c6c74565e56e7222924433655b9de3779df8625d7b44d70b727fd23"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-ci.json",
+      "git_blob_sha1": "9914bbfd9c328c1d3a5554c05f1249d0c04f047e",
+      "bytes": 90374,
+      "sha256": "038d1c0040f1bc79dc47c71aedb566f01231769d49e8ca867c83fedcfaf71f0e"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/algorithm-v1/case-comparison.tsv",
+      "git_blob_sha1": "d680f2ea9498894c08bdc351221fc81f50de7f9f",
+      "bytes": 7104,
+      "sha256": "973fa37b9ae60cfb63e067718ec2c39ec1f9d9ceee3b0ca6f480dfde991547a2"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/algorithm-v1/raw-results.tsv",
+      "git_blob_sha1": "3d8057f73cfd4777c408ac709c33e9da5cee2e23",
+      "bytes": 94426,
+      "sha256": "3b72b649ce2949b9d1424bd1644f5e85e8b8a2427de59884288e221da4c7f7ad"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/algorithm-v1/report.md",
+      "git_blob_sha1": "1a58f895247c6963d806fdc24e0138d1d63c55e4",
+      "bytes": 9358,
+      "sha256": "c212acec97704bdfa8ca53ac490d9f08a2efb8b4a09f089eb1bae9edbf10ca65"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/algorithm-v1/summary.json",
+      "git_blob_sha1": "1a9947cddb13f58aede8b39838ecaa2139a23aa8",
+      "bytes": 110625,
+      "sha256": "629065869f6b6f3c61c13b7188060e282c7d4d2e23ed0b02605c2a1646c15ea1"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/baseline-ci.json",
+      "git_blob_sha1": "cdc85c694ebe443625caf74122932613572dac9f",
+      "bytes": 122467,
+      "sha256": "6ad0b375b358deb992dbc57f32c1577b69a9f6a2ed47f5c112800872977d5fec"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/command-01.txt",
+      "git_blob_sha1": "de51b023e80930d825ff2b092b8561f0a3da8e89",
+      "bytes": 36,
+      "sha256": "3397f54a03033c1b027496d83acc64e8f3ceeb4017e0575150f78726edce8a1a"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/command-02.txt",
+      "git_blob_sha1": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/command-03.txt",
+      "git_blob_sha1": "d37d9f5c87b4c0c967e07776e680262aada51c7b",
+      "bytes": 72,
+      "sha256": "92bec25ad54c650450560360480d5f94d3d8ad203f81a2c724e0c641b330bbfb"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/command-04.txt",
+      "git_blob_sha1": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/command-05.txt",
+      "git_blob_sha1": "b95b8840115227412cd6380294cfeb6c3a3d7257",
+      "bytes": 173,
+      "sha256": "86df2550c6cd733b5c9f064bd4b7747e125ee75878374c5b2b268bc9be5c5245"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/command-06.txt",
+      "git_blob_sha1": "4fe2a4d0b7931ea07444ea86444a14b479f4191f",
+      "bytes": 6992,
+      "sha256": "d035db490c4ea47780572ff725799500333d2205f4d55ba9fbc0fbdae947e621"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/command-07.txt",
+      "git_blob_sha1": "a6ce32c49c70df3e78538320417b39d4199b191b",
+      "bytes": 792,
+      "sha256": "37bebeb92d2af28dcc0ed69871ada0c1a636b142b8fd61f014605fa302122eb9"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/command-08.txt",
+      "git_blob_sha1": "0184884070a2ba5cce91b63b527456e21c708c05",
+      "bytes": 255,
+      "sha256": "b6f062f51a4f32b87b341169f4fc8df28f97096676c0887b755640a6446e2159"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/command-09.txt",
+      "git_blob_sha1": "b0aec8de7ee1e4cbcd1b367737fc3f9ec6c22e79",
+      "bytes": 156,
+      "sha256": "f6c9a7857fec1d6c2757df51a1fb54a7dc0e320e645c330644b68282644332f1"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/command-10.txt",
+      "git_blob_sha1": "1711fbb4549d6484b52c4683b3c22f7becc35006",
+      "bytes": 1335,
+      "sha256": "e38cb7b07720785a9752f594cfb3c5e7c391d42a3f5d6009a4302ea4215ebdf8"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/command-11.txt",
+      "git_blob_sha1": "5ca6a507a4b8e8f7f221863349f4414bb0b3b34d",
+      "bytes": 2554,
+      "sha256": "85d88d0ff75a5308e16560bbdc26e14b0363ed06ad3d5ab5a7122fb7dd1a31c2"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/command-12.txt",
+      "git_blob_sha1": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/direction-artifacts.json",
+      "git_blob_sha1": "c63a3f7282864419e622be6b7f255aef217bc825",
+      "bytes": 6092,
+      "sha256": "7edb5aee227cdc4c03fe99929c696079756eba42e748ba2b3dc784270ab725b6"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/direction-changes.json",
+      "git_blob_sha1": "7c3e4721d7fc1c048717431671fd736a600e35b0",
+      "bytes": 52249,
+      "sha256": "abd889eb0dc9c5d8263a581539fb00750592f7bcc48217241a3adf073fda441e"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/harness-preparation-failures.json",
+      "git_blob_sha1": "959292adf6de75b49265b8213856f46cbaf8ee3c",
+      "bytes": 3491,
+      "sha256": "fc67d5e02e32948ab742a83f6bc2d3d97ed991cc0c2ef6ca9cb904dfd3b47541"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/independent-review.json",
+      "git_blob_sha1": "297cee18fca51e95e9e00f6a618d86ead8a5d828",
+      "bytes": 88901,
+      "sha256": "f6f51e9cd5884ee6fe3dbbcf9c4ff4782f8c45655d14c074780267fe6725a0f3"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/peer-review.json",
+      "git_blob_sha1": "2994a23b0a8660ea34ee0c7d5da39ba6f4f2215c",
+      "bytes": 1360,
+      "sha256": "376ec1cdd1d9542ffce1fc655bfbee63cfb1769c90ede1ff1ad35bcf3a78e54a"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/performance.json",
+      "git_blob_sha1": "1711fbb4549d6484b52c4683b3c22f7becc35006",
+      "bytes": 1335,
+      "sha256": "e38cb7b07720785a9752f594cfb3c5e7c391d42a3f5d6009a4302ea4215ebdf8"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/preservation.json",
+      "git_blob_sha1": "1eb35bcc740769d6e185975870ef67bb1765a922",
+      "bytes": 3660,
+      "sha256": "9994d416e98a404676e45b1facb44ea90add0cdfdd041463d016b8eef83d6c10"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/provenance.json",
+      "git_blob_sha1": "e9030eda6b1b9e83a507cdc6e6d1c1322b6040c6",
+      "bytes": 5953,
+      "sha256": "119a7b528e872efa2113790b39dbc567ae340fc223aff4e1969f11dbb83efa35"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/raw-artifacts.json",
+      "git_blob_sha1": "1a0b0ea9f5af2478401eca85f0fc540e47bcfdff",
+      "bytes": 244970,
+      "sha256": "84e578ea5fe32cac202d67865915ae37ae9765fda697ca85d9f1ba81ab39141e"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/raw-logs.json",
+      "git_blob_sha1": "a3a6d600efe443ac0616e3f361e40b34f2cdc78b",
+      "bytes": 15044,
+      "sha256": "28775c7d25f2c54cc8056b1a66ef5cfa7ecf7ce734ee8e1bf8319ade02ce9db4"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/runners.json",
+      "git_blob_sha1": "7c921d26fe7dbbdca8eb78414bd44ebf6fd1f976",
+      "bytes": 39439,
+      "sha256": "31ea862eca3a0edf45344a7040873d20df2b5915cd4b0dd2d0134074685f1a98"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-shared/validation.json",
+      "git_blob_sha1": "857af9ddbfbdbd1d2d4822dd036a3d8830831e0e",
+      "bytes": 3479,
+      "sha256": "333671bafe6e06f62125bfcb2bd00a592f72d801b3e7a27c48d17e43f54f04b4"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-round6-status.md",
+      "git_blob_sha1": "e7429dc617924aad943b9e359a73b9db8f53d532",
+      "bytes": 18014,
+      "sha256": "b5123b86c95d4642c06b33ca83ae9a454d568c9f29b66caa7413749d9f18e624"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-shared/algorithm-summary.json",
+      "git_blob_sha1": "4b7417669e566ad2da43b17e26d3e6f96150bcd8",
+      "bytes": 110627,
+      "sha256": "a9094052e6af544b3c0baccd2f9385514751050d42c6a8056f0c250d85e89754"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-shared/performance-final.json",
+      "git_blob_sha1": "f762114c8364c26506f66392c4e81d5fd28e1b27",
+      "bytes": 1334,
+      "sha256": "30f1f04e56c3e134c5ff9c954dc2f5e77dc1738e73abb4f34f265dd67fcefdda"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-shared/performance.json",
+      "git_blob_sha1": "1894c4e1f228635e6099ed3ba8a5a8fb6858d6f4",
+      "bytes": 1334,
+      "sha256": "e52457f25a557747676e22b89c95672c72ea9e7cabf0c4ce8856edf7b0c69231"
+    },
+    {
+      "status": "A",
+      "path": "docs/reports/cl007-009-shared/validation.md",
+      "git_blob_sha1": "723b72b5d8c4ac6a16f3ae231fa977f1ebf44343",
+      "bytes": 4772,
+      "sha256": "5c8dda589bb4043ab026eb05a58f5f48789c4641ffc4c821bfc86cef4a2d58a7"
+    },
+    {
+      "status": "M",
+      "path": "docs/roadmap.md",
+      "git_blob_sha1": "6adb6b6137ec2eca105cbd48baa7ffefa3bd3c6b",
+      "bytes": 16114,
+      "sha256": "807d110724571e695e0074f21a4eb83f9ee484b211c7346c7e20ff54c0ff84c4"
+    },
+    {
+      "status": "A",
+      "path": "docs/shared-contract-round6-review-design.md",
+      "git_blob_sha1": "866becafd1620e4c47c79a1d189b7fc1faba5271",
+      "bytes": 2376,
+      "sha256": "64e2a9970d4eaeec729512070668f8b9ca52e3fed019595a9c46ecb12a9cbff8"
+    },
+    {
+      "status": "M",
+      "path": "scripts/check_workspace.py",
+      "git_blob_sha1": "bb52c422ab00b58bd64c0eb2f85ddc599f0bbee7",
+      "bytes": 7428,
+      "sha256": "0aca222348f248f20ff0812a3217568b23228204bee7f2080b56a3e4e5754dc2"
+    },
+    {
+      "status": "A",
+      "path": "tests/test_workspace_audit.py",
+      "git_blob_sha1": "c9bf2356f539651ee2ff5a6f87f365be45b5733e",
+      "bytes": 4531,
+      "sha256": "cb90c2d9422b9481dc4005faa154dfbf8ed218008403a63d339bb00b54a2d949"
+    }
+  ],
+  "critical_source_identities": {
+    "crates/cloudleaf-input/src/lib.rs": {
+      "git_blob_sha1": "ae704e7affd9d267328e778b27872195755c8f9e",
+      "sha256": "603fffb48ecf1a67b718e3e828f0bf99ffb84d90ded55c06512be3d194b34424"
+    },
+    "crates/cloudleaf-types/src/lib.rs": {
+      "git_blob_sha1": "2a35eec1d787deb979e096b62c834244c4723505",
+      "sha256": "515aa8f576349dda013fed13bdcdb2cf5996492794f74d4d8ee46f291a6b7045"
+    },
+    "scripts/check_workspace.py": {
+      "git_blob_sha1": "bb52c422ab00b58bd64c0eb2f85ddc599f0bbee7",
+      "sha256": "0aca222348f248f20ff0812a3217568b23228204bee7f2080b56a3e4e5754dc2"
+    },
+    "config/audits/core.json": {
+      "git_blob_sha1": "b2f206edc7d5e01528faad838829246e1127192f",
+      "sha256": "0fb724e5cb5774e02ce20ca3b55fc43b683675a12a1d8c0cac1078ba2403626a"
+    },
+    "Cargo.toml": {
+      "git_blob_sha1": "06be993aeb502d799dfbfc30288fec7688cc3ef8",
+      "sha256": "51dcc3666fb20418db112caff4be20d91e3c199dd43d5a532c08839562f99d6d"
+    },
+    "Cargo.lock": {
+      "git_blob_sha1": "1d5ab29e56c5f1d806f78e3881d2e11456078047",
+      "sha256": "f82ad4a5025849111647e3f276c50cf3897e04e57a4e094ad17a3a53d6b6662c"
+    },
+    "LICENSE": {
+      "git_blob_sha1": "db45a472fca13bc083e4c463a884e2850b6da288",
+      "sha256": "d38cf1c90bf71c4d1d794a33964a3ea30829a634033ff28add4642f59eefb334"
+    },
+    "crates/cloudleaf-input/tests/platform_contract_v2.rs": {
+      "git_blob_sha1": "0aab5e9b92e0a23a252cf5316d67203700f067e3",
+      "sha256": "2efb0f0abbee4ee966a9e64637e36f832f8861f33f73cc6373d32f447fe51f2e"
+    },
+    "crates/cloudleaf-input/tests/round6_shared_review.rs": {
+      "git_blob_sha1": "62b954e4ae08595da76b15382fe5a9c5b79e3236",
+      "sha256": "88844989b51852059fb2e193e4ad74fd23dd620b5b5dcc4c26e0aceb9b63a964"
+    }
+  },
+  "directions": [
+    {
+      "worktree": "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf",
+      "head": "7914589a03fedad0e50b0ab5598a609d450abfc2",
+      "merge_base": "9af9bc1b2ebacc3ad76124cfa39d09de8eb77bd1",
+      "shared_core_blobs": {
+        "crates/cloudleaf-input/src/lib.rs": "ae704e7affd9d267328e778b27872195755c8f9e",
+        "crates/cloudleaf-types/src/lib.rs": "2a35eec1d787deb979e096b62c834244c4723505"
+      },
+      "base_to_direction_name_status": "M\t.gitattributes\nM\t.github/workflows/ci.yml\nM\tCargo.lock\nM\tCargo.toml\nM\tREADME.md\nM\tTHIRD_PARTY_NOTICES.md\nA\tadapters/windows/budget.rs\nA\tadapters/windows/candidate.rs\nA\tadapters/windows/keys.rs\nA\tadapters/windows/lifecycle_review_tests.rs\nA\tadapters/windows/mod.rs\nA\tadapters/windows/owner_cleanup.rs\nA\tadapters/windows/ownership.rs\nA\tadapters/windows/recovery.rs\nA\tadapters/windows/registration.rs\nA\tadapters/windows/render_tests.rs\nA\tadapters/windows/service.rs\nA\tadapters/windows/session.rs\nA\tadapters/windows/session_tests.rs\nA\tadapters/windows/watchdog.rs\nA\tapps/windows-ime/Cargo.toml\nA\tapps/windows-ime/src/lib.rs\nA\tapps/windows-ime/src/main.rs\nA\tconfig/audits/windows.json\nA\tdocs/cl007-async-ownership-v1.md\nA\tdocs/cl007-fault-isolation-v5.md\nA\tdocs/cl007-implementation.md\nA\tdocs/cl007-owner-proof.md\nA\tdocs/cl007-owner-receipts-v4.md\nA\tdocs/cl007-recovery-budget.md\nA\tdocs/cl007-recovery-lifetime-v3.md\nA\tdocs/cl007-round6-isolation-and-soak.md\nA\tdocs/cl007-round7-reliability.md\nA\tdocs/reports/cl007/algorithm-summary.json\nA\tdocs/reports/cl007/artifacts.json\nA\tdocs/reports/cl007/async-ownership-status.md\nA\tdocs/reports/cl007/async-ownership/algorithm-case-comparison.tsv\nA\tdocs/reports/cl007/async-ownership/algorithm-raw-results.tsv\nA\tdocs/reports/cl007/async-ownership/algorithm-summary.json\nA\tdocs/reports/cl007/async-ownership/checksums.json\nA\tdocs/reports/cl007/async-ownership/core-performance.json\nA\tdocs/reports/cl007/async-ownership/dependency-audit.json\nA\tdocs/reports/cl007/async-ownership/evidence.json\nA\tdocs/reports/cl007/async-ownership/python-tests.txt\nA\tdocs/reports/cl007/async-ownership/real-dll-loader.txt\nA\tdocs/reports/cl007/async-ownership/simulated-com-benchmark.txt\nA\tdocs/reports/cl007/async-ownership/workspace-audit.txt\nA\tdocs/reports/cl007/async-ownership/workspace-tests.txt\nA\tdocs/reports/cl007/core-performance.json\nA\tdocs/reports/cl007/dependency-audit-final.json\nA\tdocs/reports/cl007/license-review.json\nA\tdocs/reports/cl007/native-diagnostic.json\nA\tdocs/reports/cl007/round3-recovery-status.md\nA\tdocs/reports/cl007/round3-recovery/algorithm-regression.txt\nA\tdocs/reports/cl007/round3-recovery/algorithm-v1/case-comparison.tsv\nA\tdocs/reports/cl007/round3-recovery/algorithm-v1/raw-results.tsv\nA\tdocs/reports/cl007/round3-recovery/algorithm-v1/report.md\nA\tdocs/reports/cl007/round3-recovery/algorithm-v1/summary.json\nA\tdocs/reports/cl007/round3-recovery/build-debug.txt\nA\tdocs/reports/cl007/round3-recovery/build-release.txt\nA\tdocs/reports/cl007/round3-recovery/checksums.json\nA\tdocs/reports/cl007/round3-recovery/clippy.txt\nA\tdocs/reports/cl007/round3-recovery/core-benchmark.txt\nA\tdocs/reports/cl007/round3-recovery/core-performance.json\nA\tdocs/reports/cl007/round3-recovery/dependency-audit.json\nA\tdocs/reports/cl007/round3-recovery/dependency-audit.txt\nA\tdocs/reports/cl007/round3-recovery/diagnostics.json\nA\tdocs/reports/cl007/round3-recovery/dll-identity.json\nA\tdocs/reports/cl007/round3-recovery/doc-tests.txt\nA\tdocs/reports/cl007/round3-recovery/evidence.json\nA\tdocs/reports/cl007/round3-recovery/fetch.txt\nA\tdocs/reports/cl007/round3-recovery/fmt.txt\nA\tdocs/reports/cl007/round3-recovery/initial-4mib-default-parallel-failure.txt\nA\tdocs/reports/cl007/round3-recovery/intermediate-test-preparation-failures.txt\nA\tdocs/reports/cl007/round3-recovery/native-round3.txt\nA\tdocs/reports/cl007/round3-recovery/production-pressure.txt\nA\tdocs/reports/cl007/round3-recovery/python-tests.txt\nA\tdocs/reports/cl007/round3-recovery/real-dll-loader.txt\nA\tdocs/reports/cl007/round3-recovery/recovery-fault-matrix.txt\nA\tdocs/reports/cl007/round3-recovery/resource-audit.txt\nA\tdocs/reports/cl007/round3-recovery/simulated-com-benchmark.txt\nA\tdocs/reports/cl007/round3-recovery/summary.json\nA\tdocs/reports/cl007/round3-recovery/workspace-tests.txt\nA\tdocs/reports/cl007/round4-owner-status.md\nA\tdocs/reports/cl007/round4-owner/algorithm-regression.txt\nA\tdocs/reports/cl007/round4-owner/algorithm-v1/case-comparison.tsv\nA\tdocs/reports/cl007/round4-owner/algorithm-v1/raw-results.tsv\nA\tdocs/reports/cl007/round4-owner/algorithm-v1/report.md\nA\tdocs/reports/cl007/round4-owner/algorithm-v1/summary.json\nA\tdocs/reports/cl007/round4-owner/build-debug.txt\nA\tdocs/reports/cl007/round4-owner/build-release.txt\nA\tdocs/reports/cl007/round4-owner/checksums.json\nA\tdocs/reports/cl007/round4-owner/clippy.txt\nA\tdocs/reports/cl007/round4-owner/core-benchmark.txt\nA\tdocs/reports/cl007/round4-owner/core-performance.json\nA\tdocs/reports/cl007/round4-owner/dependency-audit.json\nA\tdocs/reports/cl007/round4-owner/dependency-audit.txt\nA\tdocs/reports/cl007/round4-owner/diagnostics.json\nA\tdocs/reports/cl007/round4-owner/dll-identity.json\nA\tdocs/reports/cl007/round4-owner/doc-tests.txt\nA\tdocs/reports/cl007/round4-owner/evidence.json\nA\tdocs/reports/cl007/round4-owner/extended-owner-stress/stdout.txt\nA\tdocs/reports/cl007/round4-owner/extended-owner-stress/summary.json\nA\tdocs/reports/cl007/round4-owner/failures/abrupt-first-assertion.txt\nA\tdocs/reports/cl007/round4-owner/failures/checkpoint-78f08be/build-debug.txt\nA\tdocs/reports/cl007/round4-owner/failures/checkpoint-78f08be/clippy.txt\nA\tdocs/reports/cl007/round4-owner/failures/checkpoint-78f08be/fetch.txt\nA\tdocs/reports/cl007/round4-owner/failures/checkpoint-78f08be/fmt.txt\nA\tdocs/reports/cl007/round4-owner/failures/checkpoint-78f08be/summary.json\nA\tdocs/reports/cl007/round4-owner/failures/checkpoint-78f08be/workspace-tests.txt\nA\tdocs/reports/cl007/round4-owner/failures/diagnostic-shell-quote.txt\nA\tdocs/reports/cl007/round4-owner/failures/fault-mode-collision.txt\nA\tdocs/reports/cl007/round4-owner/failures/index.json\nA\tdocs/reports/cl007/round4-owner/failures/initial-package-command.txt\nA\tdocs/reports/cl007/round4-owner/failures/pre-freeze-workspace.txt\nA\tdocs/reports/cl007/round4-owner/fetch.txt\nA\tdocs/reports/cl007/round4-owner/fmt.txt\nA\tdocs/reports/cl007/round4-owner/history-integrity.json\nA\tdocs/reports/cl007/round4-owner/native-round3.txt\nA\tdocs/reports/cl007/round4-owner/native-round4.txt\nA\tdocs/reports/cl007/round4-owner/production-pressure.txt\nA\tdocs/reports/cl007/round4-owner/python-tests.txt\nA\tdocs/reports/cl007/round4-owner/real-dll-loader.txt\nA\tdocs/reports/cl007/round4-owner/recovery-fault-matrix.txt\nA\tdocs/reports/cl007/round4-owner/resource-audit.txt\nA\tdocs/reports/cl007/round4-owner/simulated-com-benchmark.txt\nA\tdocs/reports/cl007/round4-owner/stress-build.json\nA\tdocs/reports/cl007/round4-owner/summary.json\nA\tdocs/reports/cl007/round4-owner/workspace-tests.txt\nA\tdocs/reports/cl007/round5-isolation-status.md\nA\tdocs/reports/cl007/round5-isolation/algorithm-regression.raw.json\nA\tdocs/reports/cl007/round5-isolation/algorithm-regression.txt\nA\tdocs/reports/cl007/round5-isolation/algorithm-v1/case-comparison.tsv\nA\tdocs/reports/cl007/round5-isolation/algorithm-v1/raw-results.tsv\nA\tdocs/reports/cl007/round5-isolation/algorithm-v1/report.md\nA\tdocs/reports/cl007/round5-isolation/algorithm-v1/summary.json\nA\tdocs/reports/cl007/round5-isolation/build-debug.raw.json\nA\tdocs/reports/cl007/round5-isolation/build-debug.txt\nA\tdocs/reports/cl007/round5-isolation/build-release.raw.json\nA\tdocs/reports/cl007/round5-isolation/build-release.txt\nA\tdocs/reports/cl007/round5-isolation/checksums.json\nA\tdocs/reports/cl007/round5-isolation/clippy.raw.json\nA\tdocs/reports/cl007/round5-isolation/clippy.txt\nA\tdocs/reports/cl007/round5-isolation/core-benchmark.raw.json\nA\tdocs/reports/cl007/round5-isolation/core-benchmark.txt\nA\tdocs/reports/cl007/round5-isolation/core-performance.json\nA\tdocs/reports/cl007/round5-isolation/core-performance.original.raw.json\nA\tdocs/reports/cl007/round5-isolation/dependency-audit.json\nA\tdocs/reports/cl007/round5-isolation/dependency-audit.raw.json\nA\tdocs/reports/cl007/round5-isolation/dependency-audit.txt\nA\tdocs/reports/cl007/round5-isolation/diagnostics.json\nA\tdocs/reports/cl007/round5-isolation/diagnostics.original.raw.json\nA\tdocs/reports/cl007/round5-isolation/dll-identity.json\nA\tdocs/reports/cl007/round5-isolation/dll-identity.original.raw.json\nA\tdocs/reports/cl007/round5-isolation/doc-tests.raw.json\nA\tdocs/reports/cl007/round5-isolation/doc-tests.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-green-first/checks.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-green-first/checks.original.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-green-first/command-0.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-green-first/command-0.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-green-first/command-1.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-green-first/command-1.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-profile-quick/checks.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-profile-quick/checks.original.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-profile-quick/command-0.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-profile-quick/command-0.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-profile-quick/command-1.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-profile-quick/command-1.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-red/identity.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-red/identity.original.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-red/output.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-red/output.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-9ba0ea2/build-debug.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-9ba0ea2/build-debug.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-9ba0ea2/clippy.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-9ba0ea2/clippy.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-9ba0ea2/fetch.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-9ba0ea2/fetch.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-9ba0ea2/fmt.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-9ba0ea2/fmt.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-9ba0ea2/summary.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-9ba0ea2/summary.original.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-9ba0ea2/workspace-tests.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-9ba0ea2/workspace-tests.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/build-debug.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/build-debug.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/build-release.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/build-release.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/clippy.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/clippy.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/dependency-audit.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/dependency-audit.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/dependency-audit.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/doc-tests.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/doc-tests.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/fetch.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/fetch.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/fmt.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/fmt.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/python-tests.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/python-tests.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/resource-audit.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/resource-audit.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/summary.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/summary.original.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/workspace-tests.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/workspace-tests.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-final/build-debug.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-final/build-debug.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-final/clippy.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-final/clippy.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-final/fetch.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-final/fetch.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-final/fmt.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-final/fmt.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-final/summary.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-final/summary.original.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-final/workspace-tests.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-final/workspace-tests.txt\nA\tdocs/reports/cl007/round5-isolation/evidence.json\nA\tdocs/reports/cl007/round5-isolation/failures.json\nA\tdocs/reports/cl007/round5-isolation/fetch.raw.json\nA\tdocs/reports/cl007/round5-isolation/fetch.txt\nA\tdocs/reports/cl007/round5-isolation/fmt.raw.json\nA\tdocs/reports/cl007/round5-isolation/fmt.txt\nA\tdocs/reports/cl007/round5-isolation/history-integrity.json\nA\tdocs/reports/cl007/round5-isolation/native-round3.raw.json\nA\tdocs/reports/cl007/round5-isolation/native-round3.txt\nA\tdocs/reports/cl007/round5-isolation/native-round4.raw.json\nA\tdocs/reports/cl007/round5-isolation/native-round4.txt\nA\tdocs/reports/cl007/round5-isolation/native-round5.raw.json\nA\tdocs/reports/cl007/round5-isolation/native-round5.txt\nA\tdocs/reports/cl007/round5-isolation/pinned-owner-stress/stdout.raw.json\nA\tdocs/reports/cl007/round5-isolation/pinned-owner-stress/stdout.txt\nA\tdocs/reports/cl007/round5-isolation/pinned-owner-stress/summary.json\nA\tdocs/reports/cl007/round5-isolation/production-pressure.raw.json\nA\tdocs/reports/cl007/round5-isolation/production-pressure.txt\nA\tdocs/reports/cl007/round5-isolation/python-tests.raw.json\nA\tdocs/reports/cl007/round5-isolation/python-tests.txt\nA\tdocs/reports/cl007/round5-isolation/raw-artifacts.json\nA\tdocs/reports/cl007/round5-isolation/raw-logs.json\nA\tdocs/reports/cl007/round5-isolation/real-dll-loader.raw.json\nA\tdocs/reports/cl007/round5-isolation/real-dll-loader.txt\nA\tdocs/reports/cl007/round5-isolation/recovery-fault-matrix.raw.json\nA\tdocs/reports/cl007/round5-isolation/recovery-fault-matrix.txt\nA\tdocs/reports/cl007/round5-isolation/resource-audit.raw.json\nA\tdocs/reports/cl007/round5-isolation/resource-audit.txt\nA\tdocs/reports/cl007/round5-isolation/simulated-com-benchmark.raw.json\nA\tdocs/reports/cl007/round5-isolation/simulated-com-benchmark.txt\nA\tdocs/reports/cl007/round5-isolation/stress-build.json\nA\tdocs/reports/cl007/round5-isolation/stress-build.original.raw.json\nA\tdocs/reports/cl007/round5-isolation/summary.json\nA\tdocs/reports/cl007/round5-isolation/summary.original.raw.json\nA\tdocs/reports/cl007/round5-isolation/workspace-tests.raw.json\nA\tdocs/reports/cl007/round5-isolation/workspace-tests.txt\nA\tdocs/reports/cl007/round6-soak-status.md\nA\tdocs/reports/cl007/round6-soak/algorithm-regression.raw.json\nA\tdocs/reports/cl007/round6-soak/algorithm-regression.txt\nA\tdocs/reports/cl007/round6-soak/algorithm-v1/case-comparison.tsv\nA\tdocs/reports/cl007/round6-soak/algorithm-v1/raw-results.tsv\nA\tdocs/reports/cl007/round6-soak/algorithm-v1/report.md\nA\tdocs/reports/cl007/round6-soak/algorithm-v1/summary.json\nA\tdocs/reports/cl007/round6-soak/build-debug.raw.json\nA\tdocs/reports/cl007/round6-soak/build-debug.txt\nA\tdocs/reports/cl007/round6-soak/build-release.raw.json\nA\tdocs/reports/cl007/round6-soak/build-release.txt\nA\tdocs/reports/cl007/round6-soak/checksums.json\nA\tdocs/reports/cl007/round6-soak/clippy.raw.json\nA\tdocs/reports/cl007/round6-soak/clippy.txt\nA\tdocs/reports/cl007/round6-soak/complete/manifest.json\nA\tdocs/reports/cl007/round6-soak/complete/segment-0001/checkpoint.json\nA\tdocs/reports/cl007/round6-soak/complete/segment-0001/checkpoints.jsonl\nA\tdocs/reports/cl007/round6-soak/complete/segment-0001/events.jsonl\nA\tdocs/reports/cl007/round6-soak/complete/segment-0001/samples.jsonl\nA\tdocs/reports/cl007/round6-soak/complete/segment-0001/stdout.raw.json\nA\tdocs/reports/cl007/round6-soak/complete/segment-0001/stdout.txt\nA\tdocs/reports/cl007/round6-soak/complete/segment-0001/summary.json\nA\tdocs/reports/cl007/round6-soak/core-benchmark.raw.json\nA\tdocs/reports/cl007/round6-soak/core-benchmark.txt\nA\tdocs/reports/cl007/round6-soak/core-performance.json\nA\tdocs/reports/cl007/round6-soak/core-performance.original.raw.json\nA\tdocs/reports/cl007/round6-soak/dependency-audit.json\nA\tdocs/reports/cl007/round6-soak/dependency-audit.raw.json\nA\tdocs/reports/cl007/round6-soak/dependency-audit.txt\nA\tdocs/reports/cl007/round6-soak/diagnostics.json\nA\tdocs/reports/cl007/round6-soak/diagnostics.original.raw.json\nA\tdocs/reports/cl007/round6-soak/dll-identity.json\nA\tdocs/reports/cl007/round6-soak/dll-identity.original.raw.json\nA\tdocs/reports/cl007/round6-soak/doc-tests.raw.json\nA\tdocs/reports/cl007/round6-soak/doc-tests.txt\nA\tdocs/reports/cl007/round6-soak/evidence.json\nA\tdocs/reports/cl007/round6-soak/fetch.raw.json\nA\tdocs/reports/cl007/round6-soak/fetch.txt\nA\tdocs/reports/cl007/round6-soak/fmt.raw.json\nA\tdocs/reports/cl007/round6-soak/fmt.txt\nA\tdocs/reports/cl007/round6-soak/injected-failure/manifest.json\nA\tdocs/reports/cl007/round6-soak/injected-failure/segment-0001/checkpoint.json\nA\tdocs/reports/cl007/round6-soak/injected-failure/segment-0001/checkpoints.jsonl\nA\tdocs/reports/cl007/round6-soak/injected-failure/segment-0001/events.jsonl\nA\tdocs/reports/cl007/round6-soak/injected-failure/segment-0001/samples.jsonl\nA\tdocs/reports/cl007/round6-soak/injected-failure/segment-0001/stdout.raw.json\nA\tdocs/reports/cl007/round6-soak/injected-failure/segment-0001/stdout.txt\nA\tdocs/reports/cl007/round6-soak/injected-failure/segment-0001/summary.json\nA\tdocs/reports/cl007/round6-soak/native-round3.raw.json\nA\tdocs/reports/cl007/round6-soak/native-round3.txt\nA\tdocs/reports/cl007/round6-soak/native-round4.raw.json\nA\tdocs/reports/cl007/round6-soak/native-round4.txt\nA\tdocs/reports/cl007/round6-soak/native-round5.raw.json\nA\tdocs/reports/cl007/round6-soak/native-round5.txt\nA\tdocs/reports/cl007/round6-soak/production-pressure.raw.json\nA\tdocs/reports/cl007/round6-soak/production-pressure.txt\nA\tdocs/reports/cl007/round6-soak/python-tests.raw.json\nA\tdocs/reports/cl007/round6-soak/python-tests.txt\nA\tdocs/reports/cl007/round6-soak/raw-artifacts.json\nA\tdocs/reports/cl007/round6-soak/raw-logs.json\nA\tdocs/reports/cl007/round6-soak/real-dll-loader.raw.json\nA\tdocs/reports/cl007/round6-soak/real-dll-loader.txt\nA\tdocs/reports/cl007/round6-soak/recovery-fault-matrix.raw.json\nA\tdocs/reports/cl007/round6-soak/recovery-fault-matrix.txt\nA\tdocs/reports/cl007/round6-soak/red/host-red-identity.json\nA\tdocs/reports/cl007/round6-soak/red/host-red-output.raw.json\nA\tdocs/reports/cl007/round6-soak/red/host-red-output.txt\nA\tdocs/reports/cl007/round6-soak/red/host-unsupported/manifest.json\nA\tdocs/reports/cl007/round6-soak/red/host-unsupported/segment-0001/checkpoint.json\nA\tdocs/reports/cl007/round6-soak/red/host-unsupported/segment-0001/checkpoints.jsonl\nA\tdocs/reports/cl007/round6-soak/red/host-unsupported/segment-0001/events.jsonl\nA\tdocs/reports/cl007/round6-soak/red/host-unsupported/segment-0001/samples.jsonl\nA\tdocs/reports/cl007/round6-soak/red/host-unsupported/segment-0001/stdout.raw.json\nA\tdocs/reports/cl007/round6-soak/red/host-unsupported/segment-0001/stdout.txt\nA\tdocs/reports/cl007/round6-soak/red/host-unsupported/segment-0001/summary.json\nA\tdocs/reports/cl007/round6-soak/red/native-build.json\nA\tdocs/reports/cl007/round6-soak/red/python-red.raw.json\nA\tdocs/reports/cl007/round6-soak/red/python-red.txt\nA\tdocs/reports/cl007/round6-soak/resource-audit.raw.json\nA\tdocs/reports/cl007/round6-soak/resource-audit.txt\nA\tdocs/reports/cl007/round6-soak/resumed/manifest.json\nA\tdocs/reports/cl007/round6-soak/resumed/segment-0001/checkpoint.json\nA\tdocs/reports/cl007/round6-soak/resumed/segment-0001/checkpoints.jsonl\nA\tdocs/reports/cl007/round6-soak/resumed/segment-0001/events.jsonl\nA\tdocs/reports/cl007/round6-soak/resumed/segment-0001/samples.jsonl\nA\tdocs/reports/cl007/round6-soak/resumed/segment-0001/stdout.raw.json\nA\tdocs/reports/cl007/round6-soak/resumed/segment-0001/stdout.txt\nA\tdocs/reports/cl007/round6-soak/resumed/segment-0001/summary.json\nA\tdocs/reports/cl007/round6-soak/resumed/segment-0002/checkpoint.json\nA\tdocs/reports/cl007/round6-soak/resumed/segment-0002/checkpoints.jsonl\nA\tdocs/reports/cl007/round6-soak/resumed/segment-0002/events.jsonl\nA\tdocs/reports/cl007/round6-soak/resumed/segment-0002/samples.jsonl\nA\tdocs/reports/cl007/round6-soak/resumed/segment-0002/stdout.raw.json\nA\tdocs/reports/cl007/round6-soak/resumed/segment-0002/stdout.txt\nA\tdocs/reports/cl007/round6-soak/resumed/segment-0002/summary.json\nA\tdocs/reports/cl007/round6-soak/runner-sources.json\nA\tdocs/reports/cl007/round6-soak/simulated-com-benchmark.raw.json\nA\tdocs/reports/cl007/round6-soak/simulated-com-benchmark.txt\nA\tdocs/reports/cl007/round6-soak/soak-build.json\nA\tdocs/reports/cl007/round6-soak/soak-commands.json\nA\tdocs/reports/cl007/round6-soak/summary.json\nA\tdocs/reports/cl007/round6-soak/summary.original.raw.json\nA\tdocs/reports/cl007/round6-soak/workspace-tests.raw.json\nA\tdocs/reports/cl007/round6-soak/workspace-tests.txt\nA\tdocs/reports/cl007/rustsec-audit.json\nA\tdocs/reports/cl007/status.md\nA\tlicenses/windows/manifest.json\nA\tlicenses/windows/proc-macro2-1.0.107-LICENSE-APACHE\nA\tlicenses/windows/proc-macro2-1.0.107-LICENSE-MIT\nA\tlicenses/windows/quote-1.0.47-LICENSE-APACHE\nA\tlicenses/windows/quote-1.0.47-LICENSE-MIT\nA\tlicenses/windows/syn-2.0.119-LICENSE-APACHE\nA\tlicenses/windows/syn-2.0.119-LICENSE-MIT\nA\tlicenses/windows/unicode-ident-1.0.27-LICENSE-APACHE\nA\tlicenses/windows/unicode-ident-1.0.27-LICENSE-MIT\nA\tlicenses/windows/unicode-ident-1.0.27-LICENSE-UNICODE\nA\tlicenses/windows/windows-0.62.2-license-apache-2.0\nA\tlicenses/windows/windows-0.62.2-license-mit\nA\tlicenses/windows/windows-collections-0.3.2-license-apache-2.0\nA\tlicenses/windows/windows-collections-0.3.2-license-mit\nA\tlicenses/windows/windows-core-0.62.2-license-apache-2.0\nA\tlicenses/windows/windows-core-0.62.2-license-mit\nA\tlicenses/windows/windows-future-0.3.2-license-apache-2.0\nA\tlicenses/windows/windows-future-0.3.2-license-mit\nA\tlicenses/windows/windows-implement-0.60.2-license-apache-2.0\nA\tlicenses/windows/windows-implement-0.60.2-license-mit\nA\tlicenses/windows/windows-interface-0.59.3-license-apache-2.0\nA\tlicenses/windows/windows-interface-0.59.3-license-mit\nA\tlicenses/windows/windows-link-0.2.1-license-apache-2.0\nA\tlicenses/windows/windows-link-0.2.1-license-mit\nA\tlicenses/windows/windows-numerics-0.3.1-license-apache-2.0\nA\tlicenses/windows/windows-numerics-0.3.1-license-mit\nA\tlicenses/windows/windows-result-0.4.1-license-apache-2.0\nA\tlicenses/windows/windows-result-0.4.1-license-mit\nA\tlicenses/windows/windows-strings-0.5.1-license-apache-2.0\nA\tlicenses/windows/windows-strings-0.5.1-license-mit\nA\tlicenses/windows/windows-threading-0.2.1-license-apache-2.0\nA\tlicenses/windows/windows-threading-0.2.1-license-mit\nA\tscripts/audit_windows_dependencies.py\nM\tscripts/benchmark.py\nM\tscripts/evaluate_algorithms.py\nA\tscripts/stress_windows_faults.py\nA\tscripts/stress_windows_owner.py\nM\ttests/test_benchmark.py\nA\ttests/test_windows_dependency_audit.py\nA\ttests/test_windows_stress.py\n",
+      "shared_to_direction_name_status": "M\t.gitattributes\nM\t.github/workflows/ci.yml\nM\tCargo.lock\nM\tCargo.toml\nM\tREADME.md\nM\tTHIRD_PARTY_NOTICES.md\nA\tadapters/windows/budget.rs\nA\tadapters/windows/candidate.rs\nA\tadapters/windows/keys.rs\nA\tadapters/windows/lifecycle_review_tests.rs\nA\tadapters/windows/mod.rs\nA\tadapters/windows/owner_cleanup.rs\nA\tadapters/windows/ownership.rs\nA\tadapters/windows/recovery.rs\nA\tadapters/windows/registration.rs\nA\tadapters/windows/render_tests.rs\nA\tadapters/windows/service.rs\nA\tadapters/windows/session.rs\nA\tadapters/windows/session_tests.rs\nA\tadapters/windows/watchdog.rs\nA\tapps/windows-ime/Cargo.toml\nA\tapps/windows-ime/src/lib.rs\nA\tapps/windows-ime/src/main.rs\nA\tconfig/audits/windows.json\nD\tcrates/cloudleaf-input/tests/round6_shared_review.rs\nD\tdocs/cl007-009-round4-plan.md\nD\tdocs/cl007-009-round5-plan.md\nD\tdocs/cl007-009-round6-plan.md\nD\tdocs/cl007-009-round7-plan.md\nA\tdocs/cl007-async-ownership-v1.md\nA\tdocs/cl007-fault-isolation-v5.md\nA\tdocs/cl007-implementation.md\nA\tdocs/cl007-owner-proof.md\nA\tdocs/cl007-owner-receipts-v4.md\nA\tdocs/cl007-recovery-budget.md\nA\tdocs/cl007-recovery-lifetime-v3.md\nA\tdocs/cl007-round6-isolation-and-soak.md\nA\tdocs/cl007-round7-reliability.md\nM\tdocs/reports/cl007-009-review-status.md\nD\tdocs/reports/cl007-009-round2-ci.json\nD\tdocs/reports/cl007-009-round2-status.md\nD\tdocs/reports/cl007-009-round3-ci.json\nD\tdocs/reports/cl007-009-round3-status.md\nD\tdocs/reports/cl007-009-round4-ci.json\nD\tdocs/reports/cl007-009-round4-shared/.gitattributes\nD\tdocs/reports/cl007-009-round4-shared/audit_round4_direction_artifacts.py\nD\tdocs/reports/cl007-009-round4-shared/check_round4_preservation.py\nD\tdocs/reports/cl007-009-round4-shared/command-01.log\nD\tdocs/reports/cl007-009-round4-shared/command-03.log\nD\tdocs/reports/cl007-009-round4-shared/command-06.log\nD\tdocs/reports/cl007-009-round4-shared/command-10.log\nD\tdocs/reports/cl007-009-round4-shared/direction-artifacts.json\nD\tdocs/reports/cl007-009-round4-shared/preservation.json\nD\tdocs/reports/cl007-009-round4-shared/provenance.json\nD\tdocs/reports/cl007-009-round4-shared/publication-whitespace-failure.json\nD\tdocs/reports/cl007-009-round4-shared/raw-logs.json\nD\tdocs/reports/cl007-009-round4-shared/round4-root-harness-failures.log\nD\tdocs/reports/cl007-009-round4-shared/validation.json\nD\tdocs/reports/cl007-009-round4-status.md\nD\tdocs/reports/cl007-009-round5-ci.json\nD\tdocs/reports/cl007-009-round5-shared/algorithm-v1/raw-results.tsv\nD\tdocs/reports/cl007-009-round5-shared/baseline-ci.json\nD\tdocs/reports/cl007-009-round5-shared/command-01.txt\nD\tdocs/reports/cl007-009-round5-shared/command-06.txt\nD\tdocs/reports/cl007-009-round5-shared/command-09.txt\nD\tdocs/reports/cl007-009-round5-shared/direction-artifacts.json\nD\tdocs/reports/cl007-009-round5-shared/direction-changes.json\nD\tdocs/reports/cl007-009-round5-shared/preservation.json\nD\tdocs/reports/cl007-009-round5-shared/provenance.json\nD\tdocs/reports/cl007-009-round5-shared/raw-artifacts.json\nD\tdocs/reports/cl007-009-round5-shared/raw-logs.json\nD\tdocs/reports/cl007-009-round5-shared/runners.json\nD\tdocs/reports/cl007-009-round5-shared/validation.json\nD\tdocs/reports/cl007-009-round5-status.md\nD\tdocs/reports/cl007-009-round6-ci.json\nD\tdocs/reports/cl007-009-round6-shared/algorithm-v1/raw-results.tsv\nD\tdocs/reports/cl007-009-round6-shared/baseline-ci.json\nD\tdocs/reports/cl007-009-round6-shared/command-01.txt\nD\tdocs/reports/cl007-009-round6-shared/command-05.txt\nD\tdocs/reports/cl007-009-round6-shared/command-06.txt\nD\tdocs/reports/cl007-009-round6-shared/command-09.txt\nD\tdocs/reports/cl007-009-round6-shared/command-12.txt\nD\tdocs/reports/cl007-009-round6-shared/direction-artifacts.json\nD\tdocs/reports/cl007-009-round6-shared/direction-changes.json\nD\tdocs/reports/cl007-009-round6-shared/harness-preparation-failures.json\nD\tdocs/reports/cl007-009-round6-shared/independent-review.json\nD\tdocs/reports/cl007-009-round6-shared/peer-review.json\nD\tdocs/reports/cl007-009-round6-shared/preservation.json\nD\tdocs/reports/cl007-009-round6-shared/provenance.json\nD\tdocs/reports/cl007-009-round6-shared/raw-artifacts.json\nD\tdocs/reports/cl007-009-round6-shared/raw-logs.json\nD\tdocs/reports/cl007-009-round6-shared/runners.json\nD\tdocs/reports/cl007-009-round6-shared/validation.json\nD\tdocs/reports/cl007-009-round6-status.md\nA\tdocs/reports/cl007/algorithm-summary.json\nA\tdocs/reports/cl007/artifacts.json\nA\tdocs/reports/cl007/async-ownership-status.md\nR100\tdocs/reports/cl007-009-round5-shared/algorithm-v1/case-comparison.tsv\tdocs/reports/cl007/async-ownership/algorithm-case-comparison.tsv\nA\tdocs/reports/cl007/async-ownership/algorithm-raw-results.tsv\nA\tdocs/reports/cl007/async-ownership/algorithm-summary.json\nA\tdocs/reports/cl007/async-ownership/checksums.json\nR060\tdocs/reports/cl007-009-round4-shared/performance.json\tdocs/reports/cl007/async-ownership/core-performance.json\nA\tdocs/reports/cl007/async-ownership/dependency-audit.json\nA\tdocs/reports/cl007/async-ownership/evidence.json\nR074\tdocs/reports/cl007-009-round4-shared/command-09.log\tdocs/reports/cl007/async-ownership/python-tests.txt\nA\tdocs/reports/cl007/async-ownership/real-dll-loader.txt\nA\tdocs/reports/cl007/async-ownership/simulated-com-benchmark.txt\nR068\tdocs/reports/cl007-009-round4-shared/command-08.log\tdocs/reports/cl007/async-ownership/workspace-audit.txt\nA\tdocs/reports/cl007/async-ownership/workspace-tests.txt\nA\tdocs/reports/cl007/core-performance.json\nA\tdocs/reports/cl007/dependency-audit-final.json\nA\tdocs/reports/cl007/license-review.json\nA\tdocs/reports/cl007/native-diagnostic.json\nA\tdocs/reports/cl007/round3-recovery-status.md\nR086\tdocs/reports/cl007-009-round4-shared/command-11.log\tdocs/reports/cl007/round3-recovery/algorithm-regression.txt\nR100\tdocs/reports/cl007-009-round6-shared/algorithm-v1/case-comparison.tsv\tdocs/reports/cl007/round3-recovery/algorithm-v1/case-comparison.tsv\nA\tdocs/reports/cl007/round3-recovery/algorithm-v1/raw-results.tsv\nR087\tdocs/reports/cl007-009-round6-shared/algorithm-v1/report.md\tdocs/reports/cl007/round3-recovery/algorithm-v1/report.md\nR094\tdocs/reports/cl007-009-round5-shared/algorithm-v1/summary.json\tdocs/reports/cl007/round3-recovery/algorithm-v1/summary.json\nA\tdocs/reports/cl007/round3-recovery/build-debug.txt\nA\tdocs/reports/cl007/round3-recovery/build-release.txt\nA\tdocs/reports/cl007/round3-recovery/checksums.json\nA\tdocs/reports/cl007/round3-recovery/clippy.txt\nA\tdocs/reports/cl007/round3-recovery/core-benchmark.txt\nA\tdocs/reports/cl007/round3-recovery/core-performance.json\nA\tdocs/reports/cl007/round3-recovery/dependency-audit.json\nA\tdocs/reports/cl007/round3-recovery/dependency-audit.txt\nA\tdocs/reports/cl007/round3-recovery/diagnostics.json\nA\tdocs/reports/cl007/round3-recovery/dll-identity.json\nA\tdocs/reports/cl007/round3-recovery/doc-tests.txt\nA\tdocs/reports/cl007/round3-recovery/evidence.json\nR100\tdocs/reports/cl007-009-round4-shared/command-02.log\tdocs/reports/cl007/round3-recovery/fetch.txt\nR100\tdocs/reports/cl007-009-round4-shared/command-04.log\tdocs/reports/cl007/round3-recovery/fmt.txt\nA\tdocs/reports/cl007/round3-recovery/initial-4mib-default-parallel-failure.txt\nA\tdocs/reports/cl007/round3-recovery/intermediate-test-preparation-failures.txt\nA\tdocs/reports/cl007/round3-recovery/native-round3.txt\nA\tdocs/reports/cl007/round3-recovery/production-pressure.txt\nA\tdocs/reports/cl007/round3-recovery/python-tests.txt\nA\tdocs/reports/cl007/round3-recovery/real-dll-loader.txt\nA\tdocs/reports/cl007/round3-recovery/recovery-fault-matrix.txt\nR068\tdocs/reports/cl007-009-round5-shared/command-08.txt\tdocs/reports/cl007/round3-recovery/resource-audit.txt\nA\tdocs/reports/cl007/round3-recovery/simulated-com-benchmark.txt\nA\tdocs/reports/cl007/round3-recovery/summary.json\nA\tdocs/reports/cl007/round3-recovery/workspace-tests.txt\nA\tdocs/reports/cl007/round4-owner-status.md\nR085\tdocs/reports/cl007-009-round6-shared/command-11.txt\tdocs/reports/cl007/round4-owner/algorithm-regression.txt\nA\tdocs/reports/cl007/round4-owner/algorithm-v1/case-comparison.tsv\nA\tdocs/reports/cl007/round4-owner/algorithm-v1/raw-results.tsv\nR087\tdocs/reports/cl007-009-round5-shared/algorithm-v1/report.md\tdocs/reports/cl007/round4-owner/algorithm-v1/report.md\nR093\tdocs/reports/cl007-009-round6-shared/algorithm-v1/summary.json\tdocs/reports/cl007/round4-owner/algorithm-v1/summary.json\nA\tdocs/reports/cl007/round4-owner/build-debug.txt\nA\tdocs/reports/cl007/round4-owner/build-release.txt\nA\tdocs/reports/cl007/round4-owner/checksums.json\nA\tdocs/reports/cl007/round4-owner/clippy.txt\nA\tdocs/reports/cl007/round4-owner/core-benchmark.txt\nA\tdocs/reports/cl007/round4-owner/core-performance.json\nA\tdocs/reports/cl007/round4-owner/dependency-audit.json\nA\tdocs/reports/cl007/round4-owner/dependency-audit.txt\nA\tdocs/reports/cl007/round4-owner/diagnostics.json\nA\tdocs/reports/cl007/round4-owner/dll-identity.json\nA\tdocs/reports/cl007/round4-owner/doc-tests.txt\nA\tdocs/reports/cl007/round4-owner/evidence.json\nA\tdocs/reports/cl007/round4-owner/extended-owner-stress/stdout.txt\nA\tdocs/reports/cl007/round4-owner/extended-owner-stress/summary.json\nA\tdocs/reports/cl007/round4-owner/failures/abrupt-first-assertion.txt\nA\tdocs/reports/cl007/round4-owner/failures/checkpoint-78f08be/build-debug.txt\nR088\tdocs/reports/cl007-009-round4-shared/command-05.log\tdocs/reports/cl007/round4-owner/failures/checkpoint-78f08be/clippy.txt\nR100\tdocs/reports/cl007-009-round4-shared/command-12.log\tdocs/reports/cl007/round4-owner/failures/checkpoint-78f08be/fetch.txt\nR100\tdocs/reports/cl007-009-round5-shared/command-02.txt\tdocs/reports/cl007/round4-owner/failures/checkpoint-78f08be/fmt.txt\nA\tdocs/reports/cl007/round4-owner/failures/checkpoint-78f08be/summary.json\nA\tdocs/reports/cl007/round4-owner/failures/checkpoint-78f08be/workspace-tests.txt\nA\tdocs/reports/cl007/round4-owner/failures/diagnostic-shell-quote.txt\nA\tdocs/reports/cl007/round4-owner/failures/fault-mode-collision.txt\nA\tdocs/reports/cl007/round4-owner/failures/index.json\nA\tdocs/reports/cl007/round4-owner/failures/initial-package-command.txt\nA\tdocs/reports/cl007/round4-owner/failures/pre-freeze-workspace.txt\nR100\tdocs/reports/cl007-009-round5-shared/command-04.txt\tdocs/reports/cl007/round4-owner/fetch.txt\nR100\tdocs/reports/cl007-009-round5-shared/command-12.txt\tdocs/reports/cl007/round4-owner/fmt.txt\nA\tdocs/reports/cl007/round4-owner/history-integrity.json\nA\tdocs/reports/cl007/round4-owner/native-round3.txt\nA\tdocs/reports/cl007/round4-owner/native-round4.txt\nA\tdocs/reports/cl007/round4-owner/production-pressure.txt\nA\tdocs/reports/cl007/round4-owner/python-tests.txt\nA\tdocs/reports/cl007/round4-owner/real-dll-loader.txt\nA\tdocs/reports/cl007/round4-owner/recovery-fault-matrix.txt\nR068\tdocs/reports/cl007-009-round6-shared/command-08.txt\tdocs/reports/cl007/round4-owner/resource-audit.txt\nA\tdocs/reports/cl007/round4-owner/simulated-com-benchmark.txt\nA\tdocs/reports/cl007/round4-owner/stress-build.json\nA\tdocs/reports/cl007/round4-owner/summary.json\nA\tdocs/reports/cl007/round4-owner/workspace-tests.txt\nA\tdocs/reports/cl007/round5-isolation-status.md\nA\tdocs/reports/cl007/round5-isolation/algorithm-regression.raw.json\nR086\tdocs/reports/cl007-009-round5-shared/command-11.txt\tdocs/reports/cl007/round5-isolation/algorithm-regression.txt\nA\tdocs/reports/cl007/round5-isolation/algorithm-v1/case-comparison.tsv\nA\tdocs/reports/cl007/round5-isolation/algorithm-v1/raw-results.tsv\nA\tdocs/reports/cl007/round5-isolation/algorithm-v1/report.md\nA\tdocs/reports/cl007/round5-isolation/algorithm-v1/summary.json\nA\tdocs/reports/cl007/round5-isolation/build-debug.raw.json\nR088\tdocs/reports/cl007-009-round5-shared/command-03.txt\tdocs/reports/cl007/round5-isolation/build-debug.txt\nA\tdocs/reports/cl007/round5-isolation/build-release.raw.json\nA\tdocs/reports/cl007/round5-isolation/build-release.txt\nA\tdocs/reports/cl007/round5-isolation/checksums.json\nA\tdocs/reports/cl007/round5-isolation/clippy.raw.json\nA\tdocs/reports/cl007/round5-isolation/clippy.txt\nA\tdocs/reports/cl007/round5-isolation/core-benchmark.raw.json\nR060\tdocs/reports/cl007-009-round6-shared/command-10.txt\tdocs/reports/cl007/round5-isolation/core-benchmark.txt\nR060\tdocs/reports/cl007-009-round6-shared/performance.json\tdocs/reports/cl007/round5-isolation/core-performance.json\nA\tdocs/reports/cl007/round5-isolation/core-performance.original.raw.json\nA\tdocs/reports/cl007/round5-isolation/dependency-audit.json\nA\tdocs/reports/cl007/round5-isolation/dependency-audit.raw.json\nA\tdocs/reports/cl007/round5-isolation/dependency-audit.txt\nA\tdocs/reports/cl007/round5-isolation/diagnostics.json\nA\tdocs/reports/cl007/round5-isolation/diagnostics.original.raw.json\nA\tdocs/reports/cl007/round5-isolation/dll-identity.json\nA\tdocs/reports/cl007/round5-isolation/dll-identity.original.raw.json\nA\tdocs/reports/cl007/round5-isolation/doc-tests.raw.json\nR083\tdocs/reports/cl007-009-round4-shared/command-07.log\tdocs/reports/cl007/round5-isolation/doc-tests.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-green-first/checks.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-green-first/checks.original.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-green-first/command-0.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-green-first/command-0.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-green-first/command-1.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-green-first/command-1.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-profile-quick/checks.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-profile-quick/checks.original.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-profile-quick/command-0.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-profile-quick/command-0.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-profile-quick/command-1.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-profile-quick/command-1.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-red/identity.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-red/identity.original.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-red/output.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-red/output.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-9ba0ea2/build-debug.raw.json\nR088\tdocs/reports/cl007-009-round5-shared/command-05.txt\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-9ba0ea2/build-debug.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-9ba0ea2/clippy.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-9ba0ea2/clippy.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-9ba0ea2/fetch.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-9ba0ea2/fetch.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-9ba0ea2/fmt.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-9ba0ea2/fmt.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-9ba0ea2/summary.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-9ba0ea2/summary.original.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-9ba0ea2/workspace-tests.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-9ba0ea2/workspace-tests.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/build-debug.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/build-debug.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/build-release.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/build-release.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/clippy.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/clippy.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/dependency-audit.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/dependency-audit.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/dependency-audit.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/doc-tests.raw.json\nR083\tdocs/reports/cl007-009-round5-shared/command-07.txt\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/doc-tests.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/fetch.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/fetch.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/fmt.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/fmt.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/python-tests.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/python-tests.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/resource-audit.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/resource-audit.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/summary.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/summary.original.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/workspace-tests.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-code/workspace-tests.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-final/build-debug.raw.json\nR088\tdocs/reports/cl007-009-round6-shared/command-03.txt\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-final/build-debug.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-final/clippy.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-final/clippy.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-final/fetch.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-final/fetch.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-final/fmt.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-final/fmt.txt\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-final/summary.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-final/summary.original.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-final/workspace-tests.raw.json\nA\tdocs/reports/cl007/round5-isolation/earlier-checkpoints/round5-validation-final/workspace-tests.txt\nA\tdocs/reports/cl007/round5-isolation/evidence.json\nA\tdocs/reports/cl007/round5-isolation/failures.json\nA\tdocs/reports/cl007/round5-isolation/fetch.raw.json\nA\tdocs/reports/cl007/round5-isolation/fetch.txt\nA\tdocs/reports/cl007/round5-isolation/fmt.raw.json\nA\tdocs/reports/cl007/round5-isolation/fmt.txt\nA\tdocs/reports/cl007/round5-isolation/history-integrity.json\nA\tdocs/reports/cl007/round5-isolation/native-round3.raw.json\nA\tdocs/reports/cl007/round5-isolation/native-round3.txt\nA\tdocs/reports/cl007/round5-isolation/native-round4.raw.json\nA\tdocs/reports/cl007/round5-isolation/native-round4.txt\nA\tdocs/reports/cl007/round5-isolation/native-round5.raw.json\nA\tdocs/reports/cl007/round5-isolation/native-round5.txt\nA\tdocs/reports/cl007/round5-isolation/pinned-owner-stress/stdout.raw.json\nA\tdocs/reports/cl007/round5-isolation/pinned-owner-stress/stdout.txt\nA\tdocs/reports/cl007/round5-isolation/pinned-owner-stress/summary.json\nA\tdocs/reports/cl007/round5-isolation/production-pressure.raw.json\nA\tdocs/reports/cl007/round5-isolation/production-pressure.txt\nA\tdocs/reports/cl007/round5-isolation/python-tests.raw.json\nA\tdocs/reports/cl007/round5-isolation/python-tests.txt\nA\tdocs/reports/cl007/round5-isolation/raw-artifacts.json\nA\tdocs/reports/cl007/round5-isolation/raw-logs.json\nA\tdocs/reports/cl007/round5-isolation/real-dll-loader.raw.json\nA\tdocs/reports/cl007/round5-isolation/real-dll-loader.txt\nA\tdocs/reports/cl007/round5-isolation/recovery-fault-matrix.raw.json\nA\tdocs/reports/cl007/round5-isolation/recovery-fault-matrix.txt\nA\tdocs/reports/cl007/round5-isolation/resource-audit.raw.json\nA\tdocs/reports/cl007/round5-isolation/resource-audit.txt\nA\tdocs/reports/cl007/round5-isolation/simulated-com-benchmark.raw.json\nA\tdocs/reports/cl007/round5-isolation/simulated-com-benchmark.txt\nA\tdocs/reports/cl007/round5-isolation/stress-build.json\nA\tdocs/reports/cl007/round5-isolation/stress-build.original.raw.json\nA\tdocs/reports/cl007/round5-isolation/summary.json\nA\tdocs/reports/cl007/round5-isolation/summary.original.raw.json\nA\tdocs/reports/cl007/round5-isolation/workspace-tests.raw.json\nA\tdocs/reports/cl007/round5-isolation/workspace-tests.txt\nA\tdocs/reports/cl007/round6-soak-status.md\nA\tdocs/reports/cl007/round6-soak/algorithm-regression.raw.json\nA\tdocs/reports/cl007/round6-soak/algorithm-regression.txt\nA\tdocs/reports/cl007/round6-soak/algorithm-v1/case-comparison.tsv\nA\tdocs/reports/cl007/round6-soak/algorithm-v1/raw-results.tsv\nA\tdocs/reports/cl007/round6-soak/algorithm-v1/report.md\nA\tdocs/reports/cl007/round6-soak/algorithm-v1/summary.json\nA\tdocs/reports/cl007/round6-soak/build-debug.raw.json\nA\tdocs/reports/cl007/round6-soak/build-debug.txt\nA\tdocs/reports/cl007/round6-soak/build-release.raw.json\nA\tdocs/reports/cl007/round6-soak/build-release.txt\nA\tdocs/reports/cl007/round6-soak/checksums.json\nA\tdocs/reports/cl007/round6-soak/clippy.raw.json\nA\tdocs/reports/cl007/round6-soak/clippy.txt\nA\tdocs/reports/cl007/round6-soak/complete/manifest.json\nA\tdocs/reports/cl007/round6-soak/complete/segment-0001/checkpoint.json\nA\tdocs/reports/cl007/round6-soak/complete/segment-0001/checkpoints.jsonl\nA\tdocs/reports/cl007/round6-soak/complete/segment-0001/events.jsonl\nA\tdocs/reports/cl007/round6-soak/complete/segment-0001/samples.jsonl\nA\tdocs/reports/cl007/round6-soak/complete/segment-0001/stdout.raw.json\nA\tdocs/reports/cl007/round6-soak/complete/segment-0001/stdout.txt\nA\tdocs/reports/cl007/round6-soak/complete/segment-0001/summary.json\nA\tdocs/reports/cl007/round6-soak/core-benchmark.raw.json\nR061\tdocs/reports/cl007-009-round5-shared/command-10.txt\tdocs/reports/cl007/round6-soak/core-benchmark.txt\nR061\tdocs/reports/cl007-009-round5-shared/performance.json\tdocs/reports/cl007/round6-soak/core-performance.json\nA\tdocs/reports/cl007/round6-soak/core-performance.original.raw.json\nA\tdocs/reports/cl007/round6-soak/dependency-audit.json\nA\tdocs/reports/cl007/round6-soak/dependency-audit.raw.json\nA\tdocs/reports/cl007/round6-soak/dependency-audit.txt\nA\tdocs/reports/cl007/round6-soak/diagnostics.json\nA\tdocs/reports/cl007/round6-soak/diagnostics.original.raw.json\nA\tdocs/reports/cl007/round6-soak/dll-identity.json\nA\tdocs/reports/cl007/round6-soak/dll-identity.original.raw.json\nA\tdocs/reports/cl007/round6-soak/doc-tests.raw.json\nR083\tdocs/reports/cl007-009-round6-shared/command-07.txt\tdocs/reports/cl007/round6-soak/doc-tests.txt\nA\tdocs/reports/cl007/round6-soak/evidence.json\nA\tdocs/reports/cl007/round6-soak/fetch.raw.json\nR100\tdocs/reports/cl007-009-round6-shared/command-02.txt\tdocs/reports/cl007/round6-soak/fetch.txt\nA\tdocs/reports/cl007/round6-soak/fmt.raw.json\nR100\tdocs/reports/cl007-009-round6-shared/command-04.txt\tdocs/reports/cl007/round6-soak/fmt.txt\nA\tdocs/reports/cl007/round6-soak/injected-failure/manifest.json\nA\tdocs/reports/cl007/round6-soak/injected-failure/segment-0001/checkpoint.json\nA\tdocs/reports/cl007/round6-soak/injected-failure/segment-0001/checkpoints.jsonl\nA\tdocs/reports/cl007/round6-soak/injected-failure/segment-0001/events.jsonl\nA\tdocs/reports/cl007/round6-soak/injected-failure/segment-0001/samples.jsonl\nA\tdocs/reports/cl007/round6-soak/injected-failure/segment-0001/stdout.raw.json\nA\tdocs/reports/cl007/round6-soak/injected-failure/segment-0001/stdout.txt\nA\tdocs/reports/cl007/round6-soak/injected-failure/segment-0001/summary.json\nA\tdocs/reports/cl007/round6-soak/native-round3.raw.json\nA\tdocs/reports/cl007/round6-soak/native-round3.txt\nA\tdocs/reports/cl007/round6-soak/native-round4.raw.json\nA\tdocs/reports/cl007/round6-soak/native-round4.txt\nA\tdocs/reports/cl007/round6-soak/native-round5.raw.json\nA\tdocs/reports/cl007/round6-soak/native-round5.txt\nA\tdocs/reports/cl007/round6-soak/production-pressure.raw.json\nA\tdocs/reports/cl007/round6-soak/production-pressure.txt\nA\tdocs/reports/cl007/round6-soak/python-tests.raw.json\nA\tdocs/reports/cl007/round6-soak/python-tests.txt\nA\tdocs/reports/cl007/round6-soak/raw-artifacts.json\nA\tdocs/reports/cl007/round6-soak/raw-logs.json\nA\tdocs/reports/cl007/round6-soak/real-dll-loader.raw.json\nA\tdocs/reports/cl007/round6-soak/real-dll-loader.txt\nA\tdocs/reports/cl007/round6-soak/recovery-fault-matrix.raw.json\nA\tdocs/reports/cl007/round6-soak/recovery-fault-matrix.txt\nA\tdocs/reports/cl007/round6-soak/red/host-red-identity.json\nA\tdocs/reports/cl007/round6-soak/red/host-red-output.raw.json\nA\tdocs/reports/cl007/round6-soak/red/host-red-output.txt\nA\tdocs/reports/cl007/round6-soak/red/host-unsupported/manifest.json\nA\tdocs/reports/cl007/round6-soak/red/host-unsupported/segment-0001/checkpoint.json\nA\tdocs/reports/cl007/round6-soak/red/host-unsupported/segment-0001/checkpoints.jsonl\nA\tdocs/reports/cl007/round6-soak/red/host-unsupported/segment-0001/events.jsonl\nA\tdocs/reports/cl007/round6-soak/red/host-unsupported/segment-0001/samples.jsonl\nA\tdocs/reports/cl007/round6-soak/red/host-unsupported/segment-0001/stdout.raw.json\nA\tdocs/reports/cl007/round6-soak/red/host-unsupported/segment-0001/stdout.txt\nA\tdocs/reports/cl007/round6-soak/red/host-unsupported/segment-0001/summary.json\nA\tdocs/reports/cl007/round6-soak/red/native-build.json\nA\tdocs/reports/cl007/round6-soak/red/python-red.raw.json\nA\tdocs/reports/cl007/round6-soak/red/python-red.txt\nA\tdocs/reports/cl007/round6-soak/resource-audit.raw.json\nA\tdocs/reports/cl007/round6-soak/resource-audit.txt\nA\tdocs/reports/cl007/round6-soak/resumed/manifest.json\nA\tdocs/reports/cl007/round6-soak/resumed/segment-0001/checkpoint.json\nA\tdocs/reports/cl007/round6-soak/resumed/segment-0001/checkpoints.jsonl\nA\tdocs/reports/cl007/round6-soak/resumed/segment-0001/events.jsonl\nA\tdocs/reports/cl007/round6-soak/resumed/segment-0001/samples.jsonl\nA\tdocs/reports/cl007/round6-soak/resumed/segment-0001/stdout.raw.json\nA\tdocs/reports/cl007/round6-soak/resumed/segment-0001/stdout.txt\nA\tdocs/reports/cl007/round6-soak/resumed/segment-0001/summary.json\nA\tdocs/reports/cl007/round6-soak/resumed/segment-0002/checkpoint.json\nA\tdocs/reports/cl007/round6-soak/resumed/segment-0002/checkpoints.jsonl\nA\tdocs/reports/cl007/round6-soak/resumed/segment-0002/events.jsonl\nA\tdocs/reports/cl007/round6-soak/resumed/segment-0002/samples.jsonl\nA\tdocs/reports/cl007/round6-soak/resumed/segment-0002/stdout.raw.json\nA\tdocs/reports/cl007/round6-soak/resumed/segment-0002/stdout.txt\nA\tdocs/reports/cl007/round6-soak/resumed/segment-0002/summary.json\nA\tdocs/reports/cl007/round6-soak/runner-sources.json\nA\tdocs/reports/cl007/round6-soak/simulated-com-benchmark.raw.json\nA\tdocs/reports/cl007/round6-soak/simulated-com-benchmark.txt\nA\tdocs/reports/cl007/round6-soak/soak-build.json\nA\tdocs/reports/cl007/round6-soak/soak-commands.json\nA\tdocs/reports/cl007/round6-soak/summary.json\nA\tdocs/reports/cl007/round6-soak/summary.original.raw.json\nA\tdocs/reports/cl007/round6-soak/workspace-tests.raw.json\nA\tdocs/reports/cl007/round6-soak/workspace-tests.txt\nA\tdocs/reports/cl007/rustsec-audit.json\nA\tdocs/reports/cl007/status.md\nM\tdocs/roadmap.md\nD\tdocs/shared-contract-round6-review-design.md\nA\tlicenses/windows/manifest.json\nA\tlicenses/windows/proc-macro2-1.0.107-LICENSE-APACHE\nA\tlicenses/windows/proc-macro2-1.0.107-LICENSE-MIT\nA\tlicenses/windows/quote-1.0.47-LICENSE-APACHE\nA\tlicenses/windows/quote-1.0.47-LICENSE-MIT\nA\tlicenses/windows/syn-2.0.119-LICENSE-APACHE\nA\tlicenses/windows/syn-2.0.119-LICENSE-MIT\nA\tlicenses/windows/unicode-ident-1.0.27-LICENSE-APACHE\nA\tlicenses/windows/unicode-ident-1.0.27-LICENSE-MIT\nA\tlicenses/windows/unicode-ident-1.0.27-LICENSE-UNICODE\nA\tlicenses/windows/windows-0.62.2-license-apache-2.0\nA\tlicenses/windows/windows-0.62.2-license-mit\nA\tlicenses/windows/windows-collections-0.3.2-license-apache-2.0\nA\tlicenses/windows/windows-collections-0.3.2-license-mit\nA\tlicenses/windows/windows-core-0.62.2-license-apache-2.0\nA\tlicenses/windows/windows-core-0.62.2-license-mit\nA\tlicenses/windows/windows-future-0.3.2-license-apache-2.0\nA\tlicenses/windows/windows-future-0.3.2-license-mit\nA\tlicenses/windows/windows-implement-0.60.2-license-apache-2.0\nA\tlicenses/windows/windows-implement-0.60.2-license-mit\nA\tlicenses/windows/windows-interface-0.59.3-license-apache-2.0\nA\tlicenses/windows/windows-interface-0.59.3-license-mit\nA\tlicenses/windows/windows-link-0.2.1-license-apache-2.0\nA\tlicenses/windows/windows-link-0.2.1-license-mit\nA\tlicenses/windows/windows-numerics-0.3.1-license-apache-2.0\nA\tlicenses/windows/windows-numerics-0.3.1-license-mit\nA\tlicenses/windows/windows-result-0.4.1-license-apache-2.0\nA\tlicenses/windows/windows-result-0.4.1-license-mit\nA\tlicenses/windows/windows-strings-0.5.1-license-apache-2.0\nA\tlicenses/windows/windows-strings-0.5.1-license-mit\nA\tlicenses/windows/windows-threading-0.2.1-license-apache-2.0\nA\tlicenses/windows/windows-threading-0.2.1-license-mit\nA\tscripts/audit_windows_dependencies.py\nM\tscripts/benchmark.py\nM\tscripts/evaluate_algorithms.py\nA\tscripts/stress_windows_faults.py\nA\tscripts/stress_windows_owner.py\nM\ttests/test_benchmark.py\nA\ttests/test_windows_dependency_audit.py\nA\ttests/test_windows_stress.py\n",
+      "preview_exit": 0,
+      "preview_stdout": "8e3d488f9ce815ff680c4e80aeac0d66584b07be\n\n",
+      "preview_stderr": ""
+    },
+    {
+      "worktree": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf",
+      "head": "ba17cbf46100e96708d9790cb3dcf85f620cd706",
+      "merge_base": "9af9bc1b2ebacc3ad76124cfa39d09de8eb77bd1",
+      "shared_core_blobs": {
+        "crates/cloudleaf-input/src/lib.rs": "ae704e7affd9d267328e778b27872195755c8f9e",
+        "crates/cloudleaf-types/src/lib.rs": "2a35eec1d787deb979e096b62c834244c4723505"
+      },
+      "base_to_direction_name_status": "M\t.github/workflows/ci.yml\nM\tCargo.lock\nM\tCargo.toml\nM\tREADME.md\nM\tTHIRD_PARTY_NOTICES.md\nA\tconfig/audits/search.json\nA\tconfig/evaluation/language-readiness-v1.json\nA\tconfig/evaluation/quality-preparation-v1.json\nA\tcrates/cloudleaf-search/Cargo.toml\nA\tcrates/cloudleaf-search/examples/resource_phase_probe.rs\nA\tcrates/cloudleaf-search/examples/resource_probe.rs\nA\tcrates/cloudleaf-search/examples/search_probe.rs\nA\tcrates/cloudleaf-search/src/lattice.rs\nA\tcrates/cloudleaf-search/src/lexicon.rs\nA\tcrates/cloudleaf-search/src/lib.rs\nA\tcrates/cloudleaf-search/src/model.rs\nA\tcrates/cloudleaf-search/src/profiling.rs\nA\tcrates/cloudleaf-search/src/search.rs\nA\tcrates/cloudleaf-search/tests/profiling.rs\nA\tcrates/cloudleaf-search/tests/search_contract.rs\nA\tdata/manifests/search-cases.json\nA\tdata/manifests/search-lexicon.json\nA\tdata/manifests/search-resource-cases.json\nA\tdata/manifests/search-train.json\nA\tdocs/cl008-design.md\nA\tdocs/cl008-position-dag-design.md\nA\tdocs/cl008-real-resource-protocol.md\nA\tdocs/cl008-round3-analysis-design.md\nA\tdocs/cl008-round4-cccedict-resource.md\nA\tdocs/cl008-round4-evaluation-gates.md\nA\tdocs/cl008-round4-global-near-duplicate-groups.md\nA\tdocs/cl008-round5-profiling-design.md\nA\tdocs/cl008-round5-quality-preparation.md\nA\tdocs/cl008-round6-search-design.md\nA\tdocs/cl008-round7-design.md\nA\tdocs/reports/cl008-checks.json\nA\tdocs/reports/cl008-progress.md\nA\tdocs/reports/cl008-real/CC-BY-SA-4.0.txt\nA\tdocs/reports/cl008-real/README.md\nA\tdocs/reports/cl008-real/Unicode-3.0.txt\nA\tdocs/reports/cl008-real/mechanical-search.json\nA\tdocs/reports/cl008-real/per-case.md\nA\tdocs/reports/cl008-real/prototype-performance.json\nA\tdocs/reports/cl008-real/unihan-after.json\nA\tdocs/reports/cl008-real/unihan-before.json\nA\tdocs/reports/cl008-real/validation-db5397d-local.json\nA\tdocs/reports/cl008-real/validation.json\nA\tdocs/reports/cl008-real/wiktionary-NOTICE.txt\nA\tdocs/reports/cl008-real/wiktionary-build-manifest.json\nA\tdocs/reports/cl008-real/wiktionary-candidate-attributions.json\nA\tdocs/reports/cl008-real/wiktionary-prefix.json\nA\tdocs/reports/cl008-real/wiktionary-quality.json\nA\tdocs/reports/cl008-real/wiktionary-source-lock.json\nA\tdocs/reports/cl008-round3/.gitattributes\nA\tdocs/reports/cl008-round3/README.md\nA\tdocs/reports/cl008-round3/analysis.json\nA\tdocs/reports/cl008-round3/command-01.log\nA\tdocs/reports/cl008-round3/command-02.log\nA\tdocs/reports/cl008-round3/command-03.log\nA\tdocs/reports/cl008-round3/command-04.log\nA\tdocs/reports/cl008-round3/command-05.log\nA\tdocs/reports/cl008-round3/command-06.log\nA\tdocs/reports/cl008-round3/command-07.log\nA\tdocs/reports/cl008-round3/command-08.log\nA\tdocs/reports/cl008-round3/command-09.log\nA\tdocs/reports/cl008-round3/command-10.log\nA\tdocs/reports/cl008-round3/command-11.log\nA\tdocs/reports/cl008-round3/command-12.log\nA\tdocs/reports/cl008-round3/command-13.log\nA\tdocs/reports/cl008-round3/groups.md\nA\tdocs/reports/cl008-round3/mechanical.json\nA\tdocs/reports/cl008-round3/provenance.json\nA\tdocs/reports/cl008-round3/source-evidence-validation.json\nA\tdocs/reports/cl008-round3/unihan.json\nA\tdocs/reports/cl008-round3/validation.json\nA\tdocs/reports/cl008-round3/wiktionary.json\nA\tdocs/reports/cl008-round4-followup/.gitattributes\nA\tdocs/reports/cl008-round4-followup/README.md\nA\tdocs/reports/cl008-round4-followup/checks/command-01.log\nA\tdocs/reports/cl008-round4-followup/checks/command-02.log\nA\tdocs/reports/cl008-round4-followup/checks/command-03.log\nA\tdocs/reports/cl008-round4-followup/checks/command-04.log\nA\tdocs/reports/cl008-round4-followup/checks/command-05.log\nA\tdocs/reports/cl008-round4-followup/checks/command-06.log\nA\tdocs/reports/cl008-round4-followup/checks/command-07.log\nA\tdocs/reports/cl008-round4-followup/checks/command-08.log\nA\tdocs/reports/cl008-round4-followup/checks/command-09.log\nA\tdocs/reports/cl008-round4-followup/checks/command-10.log\nA\tdocs/reports/cl008-round4-followup/checks/language-readiness.json\nA\tdocs/reports/cl008-round4-followup/checks/validation.json\nA\tdocs/reports/cl008-round4-followup/historical-evidence-preserved.json\nA\tdocs/reports/cl008-round4-followup/provenance.json\nA\tdocs/reports/cl008-round4-followup/publication-first-attempt.json\nA\tdocs/reports/cl008-round4-followup/raw-logs.json\nA\tdocs/reports/cl008-round4-followup/regression-after-fix.json\nA\tdocs/reports/cl008-round4-followup/regression-after-fix.log\nA\tdocs/reports/cl008-round4-followup/regression-before-fix.json\nA\tdocs/reports/cl008-round4-followup/regression-before-fix.log\nA\tdocs/reports/cl008-round4/.gitattributes\nA\tdocs/reports/cl008-round4/README.md\nA\tdocs/reports/cl008-round4/cccedict-analysis.json\nA\tdocs/reports/cl008-round4/cccedict-evidence-validation.json\nA\tdocs/reports/cl008-round4/cccedict-full.json\nA\tdocs/reports/cl008-round4/cccedict-source/LICENSE.txt\nA\tdocs/reports/cl008-round4/cccedict-source/NOTICE.txt\nA\tdocs/reports/cl008-round4/cccedict-source/evidence.json\nA\tdocs/reports/cl008-round4/cccedict-source/manifest.json\nA\tdocs/reports/cl008-round4/cccedict-source/quality.json\nA\tdocs/reports/cl008-round4/cccedict-source/received-from-c.json\nA\tdocs/reports/cl008-round4/cccedict-source/source-lock.json\nA\tdocs/reports/cl008-round4/cccedict-source/upstream-documents.json\nA\tdocs/reports/cl008-round4/command-01.log\nA\tdocs/reports/cl008-round4/command-02.log\nA\tdocs/reports/cl008-round4/command-03.log\nA\tdocs/reports/cl008-round4/command-04.log\nA\tdocs/reports/cl008-round4/command-05.log\nA\tdocs/reports/cl008-round4/command-06.log\nA\tdocs/reports/cl008-round4/command-07.log\nA\tdocs/reports/cl008-round4/command-08.log\nA\tdocs/reports/cl008-round4/command-09.log\nA\tdocs/reports/cl008-round4/command-10.log\nA\tdocs/reports/cl008-round4/command-11.log\nA\tdocs/reports/cl008-round4/command-12.log\nA\tdocs/reports/cl008-round4/command-13.log\nA\tdocs/reports/cl008-round4/language-readiness.json\nA\tdocs/reports/cl008-round4/mechanical.json\nA\tdocs/reports/cl008-round4/provenance.json\nA\tdocs/reports/cl008-round4/restricted/LICENSE-1.txt\nA\tdocs/reports/cl008-round4/restricted/cases.tsv\nA\tdocs/reports/cl008-round4/restricted/restricted-runtime.tsv\nA\tdocs/reports/cl008-round4/restricted/results.json\nA\tdocs/reports/cl008-round4/restricted/source-evidence.json\nA\tdocs/reports/cl008-round4/validation.json\nA\tdocs/reports/cl008-round5/.gitattributes\nA\tdocs/reports/cl008-round5/README.md\nA\tdocs/reports/cl008-round5/cccedict-source/LICENSE.txt\nA\tdocs/reports/cl008-round5/cccedict-source/NOTICE.txt\nA\tdocs/reports/cl008-round5/cccedict-source/evidence.json\nA\tdocs/reports/cl008-round5/cccedict-source/manifest.json\nA\tdocs/reports/cl008-round5/cccedict-source/quality.json\nA\tdocs/reports/cl008-round5/cccedict-source/source-lock.json\nA\tdocs/reports/cl008-round5/checks/algorithm-v1/case-comparison.tsv\nA\tdocs/reports/cl008-round5/checks/algorithm-v1/raw-results.tsv\nA\tdocs/reports/cl008-round5/checks/algorithm-v1/report.md\nA\tdocs/reports/cl008-round5/checks/algorithm-v1/summary.json\nA\tdocs/reports/cl008-round5/checks/command-01.log\nA\tdocs/reports/cl008-round5/checks/command-02.log\nA\tdocs/reports/cl008-round5/checks/command-03.log\nA\tdocs/reports/cl008-round5/checks/command-04.log\nA\tdocs/reports/cl008-round5/checks/command-05.log\nA\tdocs/reports/cl008-round5/checks/command-06.log\nA\tdocs/reports/cl008-round5/checks/command-07.log\nA\tdocs/reports/cl008-round5/checks/command-08.log\nA\tdocs/reports/cl008-round5/checks/command-09.log\nA\tdocs/reports/cl008-round5/checks/command-10.log\nA\tdocs/reports/cl008-round5/checks/command-11.log\nA\tdocs/reports/cl008-round5/checks/command-12.log\nA\tdocs/reports/cl008-round5/checks/command-13.log\nA\tdocs/reports/cl008-round5/checks/command-14.log\nA\tdocs/reports/cl008-round5/checks/command-15.log\nA\tdocs/reports/cl008-round5/checks/language-readiness.json\nA\tdocs/reports/cl008-round5/checks/mechanical.json\nA\tdocs/reports/cl008-round5/checks/prototype-performance.json\nA\tdocs/reports/cl008-round5/checks/quality-preparation.json\nA\tdocs/reports/cl008-round5/checks/validation.json\nA\tdocs/reports/cl008-round5/failure-and-budget-index.json\nA\tdocs/reports/cl008-round5/historical-evidence-preserved.json\nA\tdocs/reports/cl008-round5/phases/beam1-stderr.txt\nA\tdocs/reports/cl008-round5/phases/beam1-stdout.json\nA\tdocs/reports/cl008-round5/phases/beam1.json\nA\tdocs/reports/cl008-round5/phases/beam64-stderr.txt\nA\tdocs/reports/cl008-round5/phases/beam64-stdout.json\nA\tdocs/reports/cl008-round5/phases/beam64.json\nA\tdocs/reports/cl008-round5/phases/beam8-stderr.txt\nA\tdocs/reports/cl008-round5/phases/beam8-stdout.json\nA\tdocs/reports/cl008-round5/phases/beam8.json\nA\tdocs/reports/cl008-round5/phases/exact-edges128-stderr.txt\nA\tdocs/reports/cl008-round5/phases/exact-edges128-stdout.json\nA\tdocs/reports/cl008-round5/phases/exact-edges128.json\nA\tdocs/reports/cl008-round5/phases/exact-expansions500-stderr.txt\nA\tdocs/reports/cl008-round5/phases/exact-expansions500-stdout.json\nA\tdocs/reports/cl008-round5/phases/exact-expansions500.json\nA\tdocs/reports/cl008-round5/phases/exact-resident128-stderr.txt\nA\tdocs/reports/cl008-round5/phases/exact-resident128-stdout.json\nA\tdocs/reports/cl008-round5/phases/exact-resident128.json\nA\tdocs/reports/cl008-round5/phases/exact-stderr.txt\nA\tdocs/reports/cl008-round5/phases/exact-stdout.json\nA\tdocs/reports/cl008-round5/phases/exact.json\nA\tdocs/reports/cl008-round5/phases/position-edges128-stderr.txt\nA\tdocs/reports/cl008-round5/phases/position-edges128-stdout.json\nA\tdocs/reports/cl008-round5/phases/position-edges128.json\nA\tdocs/reports/cl008-round5/phases/position-expansions500-stderr.txt\nA\tdocs/reports/cl008-round5/phases/position-expansions500-stdout.json\nA\tdocs/reports/cl008-round5/phases/position-expansions500.json\nA\tdocs/reports/cl008-round5/phases/position-resident128-stderr.txt\nA\tdocs/reports/cl008-round5/phases/position-resident128-stdout.json\nA\tdocs/reports/cl008-round5/phases/position-resident128.json\nA\tdocs/reports/cl008-round5/phases/position-stderr.txt\nA\tdocs/reports/cl008-round5/phases/position-stdout.json\nA\tdocs/reports/cl008-round5/phases/position.json\nA\tdocs/reports/cl008-round5/phases/reference-stderr.txt\nA\tdocs/reports/cl008-round5/phases/reference-stdout.json\nA\tdocs/reports/cl008-round5/phases/reference.json\nA\tdocs/reports/cl008-round5/phases/summary.json\nA\tdocs/reports/cl008-round5/provenance.json\nA\tdocs/reports/cl008-round5/raw-logs.json\nA\tdocs/reports/cl008-round5/red/annotation-scope-red.txt\nA\tdocs/reports/cl008-round5/red/count-units-red.txt\nA\tdocs/reports/cl008-round5/red/profile-green-first.txt\nA\tdocs/reports/cl008-round5/red/profile-red.txt\nA\tdocs/reports/cl008-round5/red/quality-red.txt\nA\tdocs/reports/cl008-round6/README.md\nA\tdocs/reports/cl008-round6/baseline/build-stderr.txt\nA\tdocs/reports/cl008-round6/baseline/build-stdout.jsonl\nA\tdocs/reports/cl008-round6/baseline/green-0.txt\nA\tdocs/reports/cl008-round6/baseline/green-1.txt\nA\tdocs/reports/cl008-round6/baseline/green.json\nA\tdocs/reports/cl008-round6/baseline/identity.json\nA\tdocs/reports/cl008-round6/cccedict-source/evidence.json\nA\tdocs/reports/cl008-round6/cccedict-source/manifest.json\nA\tdocs/reports/cl008-round6/cccedict-source/quality.json\nA\tdocs/reports/cl008-round6/cccedict-source/source-lock.json\nA\tdocs/reports/cl008-round6/checks/algorithm-v1/case-comparison.tsv\nA\tdocs/reports/cl008-round6/checks/algorithm-v1/raw-results.tsv\nA\tdocs/reports/cl008-round6/checks/algorithm-v1/report.md\nA\tdocs/reports/cl008-round6/checks/algorithm-v1/summary.json\nA\tdocs/reports/cl008-round6/checks/command-01.log\nA\tdocs/reports/cl008-round6/checks/command-02.log\nA\tdocs/reports/cl008-round6/checks/command-03.log\nA\tdocs/reports/cl008-round6/checks/command-04.log\nA\tdocs/reports/cl008-round6/checks/command-05.log\nA\tdocs/reports/cl008-round6/checks/command-06.log\nA\tdocs/reports/cl008-round6/checks/command-07.log\nA\tdocs/reports/cl008-round6/checks/command-08.log\nA\tdocs/reports/cl008-round6/checks/command-09.log\nA\tdocs/reports/cl008-round6/checks/command-10.log\nA\tdocs/reports/cl008-round6/checks/command-11.log\nA\tdocs/reports/cl008-round6/checks/command-12.log\nA\tdocs/reports/cl008-round6/checks/command-13.log\nA\tdocs/reports/cl008-round6/checks/command-14.log\nA\tdocs/reports/cl008-round6/checks/command-15.log\nA\tdocs/reports/cl008-round6/checks/language-readiness.json\nA\tdocs/reports/cl008-round6/checks/mechanical.json\nA\tdocs/reports/cl008-round6/checks/prototype-performance.json\nA\tdocs/reports/cl008-round6/checks/quality-preparation.json\nA\tdocs/reports/cl008-round6/checks/validation.json\nA\tdocs/reports/cl008-round6/checksums.json\nA\tdocs/reports/cl008-round6/failure-and-budget-index.json\nA\tdocs/reports/cl008-round6/history-preserved.json\nA\tdocs/reports/cl008-round6/matrix/beam1-after-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/beam1-after-stdout.json\nA\tdocs/reports/cl008-round6/matrix/beam1-after.json\nA\tdocs/reports/cl008-round6/matrix/beam1-before-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/beam1-before-stdout.json\nA\tdocs/reports/cl008-round6/matrix/beam1-before.json\nA\tdocs/reports/cl008-round6/matrix/beam64-after-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/beam64-after-stdout.json\nA\tdocs/reports/cl008-round6/matrix/beam64-after.json\nA\tdocs/reports/cl008-round6/matrix/beam64-before-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/beam64-before-stdout.json\nA\tdocs/reports/cl008-round6/matrix/beam64-before.json\nA\tdocs/reports/cl008-round6/matrix/beam8-after-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/beam8-after-stdout.json\nA\tdocs/reports/cl008-round6/matrix/beam8-after.json\nA\tdocs/reports/cl008-round6/matrix/beam8-before-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/beam8-before-stdout.json\nA\tdocs/reports/cl008-round6/matrix/beam8-before.json\nA\tdocs/reports/cl008-round6/matrix/exact-after-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/exact-after-stdout.json\nA\tdocs/reports/cl008-round6/matrix/exact-after.json\nA\tdocs/reports/cl008-round6/matrix/exact-before-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/exact-before-stdout.json\nA\tdocs/reports/cl008-round6/matrix/exact-before.json\nA\tdocs/reports/cl008-round6/matrix/exact-edges128-after-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/exact-edges128-after-stdout.json\nA\tdocs/reports/cl008-round6/matrix/exact-edges128-after.json\nA\tdocs/reports/cl008-round6/matrix/exact-edges128-before-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/exact-edges128-before-stdout.json\nA\tdocs/reports/cl008-round6/matrix/exact-edges128-before.json\nA\tdocs/reports/cl008-round6/matrix/exact-expansions500-after-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/exact-expansions500-after-stdout.json\nA\tdocs/reports/cl008-round6/matrix/exact-expansions500-after.json\nA\tdocs/reports/cl008-round6/matrix/exact-expansions500-before-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/exact-expansions500-before-stdout.json\nA\tdocs/reports/cl008-round6/matrix/exact-expansions500-before.json\nA\tdocs/reports/cl008-round6/matrix/exact-resident128-after-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/exact-resident128-after-stdout.json\nA\tdocs/reports/cl008-round6/matrix/exact-resident128-after.json\nA\tdocs/reports/cl008-round6/matrix/exact-resident128-before-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/exact-resident128-before-stdout.json\nA\tdocs/reports/cl008-round6/matrix/exact-resident128-before.json\nA\tdocs/reports/cl008-round6/matrix/execution.json\nA\tdocs/reports/cl008-round6/matrix/identity.json\nA\tdocs/reports/cl008-round6/matrix/partial-summary.json\nA\tdocs/reports/cl008-round6/matrix/position-after-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/position-after-stdout.json\nA\tdocs/reports/cl008-round6/matrix/position-after.json\nA\tdocs/reports/cl008-round6/matrix/position-before-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/position-before-stdout.json\nA\tdocs/reports/cl008-round6/matrix/position-before.json\nA\tdocs/reports/cl008-round6/matrix/position-edges128-after-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/position-edges128-after-stdout.json\nA\tdocs/reports/cl008-round6/matrix/position-edges128-after.json\nA\tdocs/reports/cl008-round6/matrix/position-edges128-before-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/position-edges128-before-stdout.json\nA\tdocs/reports/cl008-round6/matrix/position-edges128-before.json\nA\tdocs/reports/cl008-round6/matrix/position-expansions500-after-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/position-expansions500-after-stdout.json\nA\tdocs/reports/cl008-round6/matrix/position-expansions500-after.json\nA\tdocs/reports/cl008-round6/matrix/position-expansions500-before-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/position-expansions500-before-stdout.json\nA\tdocs/reports/cl008-round6/matrix/position-expansions500-before.json\nA\tdocs/reports/cl008-round6/matrix/position-resident128-after-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/position-resident128-after-stdout.json\nA\tdocs/reports/cl008-round6/matrix/position-resident128-after.json\nA\tdocs/reports/cl008-round6/matrix/position-resident128-before-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/position-resident128-before-stdout.json\nA\tdocs/reports/cl008-round6/matrix/position-resident128-before.json\nA\tdocs/reports/cl008-round6/matrix/reference-after-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/reference-after-stdout.json\nA\tdocs/reports/cl008-round6/matrix/reference-after.json\nA\tdocs/reports/cl008-round6/matrix/reference-before-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/reference-before-stdout.json\nA\tdocs/reports/cl008-round6/matrix/reference-before.json\nA\tdocs/reports/cl008-round6/matrix/summary.json\nA\tdocs/reports/cl008-round6/original-artifacts.json\nA\tdocs/reports/cl008-round6/original-logs.json\nA\tdocs/reports/cl008-round6/position-resource-gates.json\nA\tdocs/reports/cl008-round6/provenance.json\nA\tdocs/reports/cl008-round6/red/full-result.txt\nA\tdocs/reports/cl008-round6/red/identity.json\nA\tdocs/reports/cl008-round6/tools/publish_round6.py\nA\tdocs/reports/cl008-round6/tools/run_round6_checks.py\nA\tdocs/reports/cl008-round6/tools/run_round6_matrix.py\nA\tdocs/reports/cl008-search-mechanics-v1.json\nA\tdocs/reports/cl008-unihan-v2-load.json\nA\tscripts/analyze_search_round3.py\nA\tscripts/check_language_readiness.py\nA\tscripts/check_quality_preparation.py\nA\tscripts/evaluate_real_lexicon.py\nA\tscripts/evaluate_restricted_oracle.py\nA\tscripts/evaluate_search.py\nA\tscripts/evaluate_search_phases.py\nA\ttests/search-mechanics-v1/README.md\nA\ttests/search-mechanics-v1/cases.tsv\nA\ttests/search-mechanics-v1/lexicon.tsv\nA\ttests/search-mechanics-v1/train.tsv\nA\ttests/search-resources-v1/README.md\nA\ttests/search-resources-v1/cases.tsv\nA\ttests/test_ime_task_handoff.py\nA\ttests/test_language_readiness.py\nA\ttests/test_quality_preparation.py\nA\ttests/test_real_lexicon_evaluation.py\nA\ttests/test_restricted_oracle.py\nA\ttests/test_search_evaluation.py\nA\ttests/test_search_phases.py\nA\ttests/test_search_round3_analysis.py\n",
+      "shared_to_direction_name_status": "M\t.github/workflows/ci.yml\nM\tCargo.lock\nM\tCargo.toml\nM\tREADME.md\nM\tTHIRD_PARTY_NOTICES.md\nA\tconfig/audits/search.json\nA\tconfig/evaluation/language-readiness-v1.json\nA\tconfig/evaluation/quality-preparation-v1.json\nD\tcrates/cloudleaf-input/tests/round6_shared_review.rs\nA\tcrates/cloudleaf-search/Cargo.toml\nA\tcrates/cloudleaf-search/examples/resource_phase_probe.rs\nA\tcrates/cloudleaf-search/examples/resource_probe.rs\nA\tcrates/cloudleaf-search/examples/search_probe.rs\nA\tcrates/cloudleaf-search/src/lattice.rs\nA\tcrates/cloudleaf-search/src/lexicon.rs\nA\tcrates/cloudleaf-search/src/lib.rs\nA\tcrates/cloudleaf-search/src/model.rs\nA\tcrates/cloudleaf-search/src/profiling.rs\nA\tcrates/cloudleaf-search/src/search.rs\nA\tcrates/cloudleaf-search/tests/profiling.rs\nA\tcrates/cloudleaf-search/tests/search_contract.rs\nA\tdata/manifests/search-cases.json\nA\tdata/manifests/search-lexicon.json\nA\tdata/manifests/search-resource-cases.json\nA\tdata/manifests/search-train.json\nD\tdocs/cl007-009-round4-plan.md\nD\tdocs/cl007-009-round5-plan.md\nD\tdocs/cl007-009-round6-plan.md\nD\tdocs/cl007-009-round7-plan.md\nA\tdocs/cl008-design.md\nA\tdocs/cl008-position-dag-design.md\nA\tdocs/cl008-real-resource-protocol.md\nA\tdocs/cl008-round3-analysis-design.md\nA\tdocs/cl008-round4-cccedict-resource.md\nA\tdocs/cl008-round4-evaluation-gates.md\nA\tdocs/cl008-round4-global-near-duplicate-groups.md\nA\tdocs/cl008-round5-profiling-design.md\nA\tdocs/cl008-round5-quality-preparation.md\nA\tdocs/cl008-round6-search-design.md\nA\tdocs/cl008-round7-design.md\nM\tdocs/reports/cl007-009-review-status.md\nD\tdocs/reports/cl007-009-round2-ci.json\nD\tdocs/reports/cl007-009-round2-status.md\nD\tdocs/reports/cl007-009-round3-ci.json\nD\tdocs/reports/cl007-009-round3-status.md\nD\tdocs/reports/cl007-009-round4-ci.json\nD\tdocs/reports/cl007-009-round4-shared/.gitattributes\nD\tdocs/reports/cl007-009-round4-shared/audit_round4_direction_artifacts.py\nD\tdocs/reports/cl007-009-round4-shared/check_round4_preservation.py\nD\tdocs/reports/cl007-009-round4-shared/command-01.log\nD\tdocs/reports/cl007-009-round4-shared/command-03.log\nD\tdocs/reports/cl007-009-round4-shared/command-08.log\nD\tdocs/reports/cl007-009-round4-shared/direction-artifacts.json\nD\tdocs/reports/cl007-009-round4-shared/performance.json\nD\tdocs/reports/cl007-009-round4-shared/preservation.json\nD\tdocs/reports/cl007-009-round4-shared/provenance.json\nD\tdocs/reports/cl007-009-round4-shared/publication-whitespace-failure.json\nD\tdocs/reports/cl007-009-round4-shared/raw-logs.json\nD\tdocs/reports/cl007-009-round4-shared/round4-root-harness-failures.log\nD\tdocs/reports/cl007-009-round4-shared/validation.json\nD\tdocs/reports/cl007-009-round4-status.md\nD\tdocs/reports/cl007-009-round5-ci.json\nD\tdocs/reports/cl007-009-round5-shared/algorithm-v1/raw-results.tsv\nD\tdocs/reports/cl007-009-round5-shared/baseline-ci.json\nD\tdocs/reports/cl007-009-round5-shared/command-01.txt\nD\tdocs/reports/cl007-009-round5-shared/command-08.txt\nD\tdocs/reports/cl007-009-round5-shared/command-11.txt\nD\tdocs/reports/cl007-009-round5-shared/direction-artifacts.json\nD\tdocs/reports/cl007-009-round5-shared/direction-changes.json\nD\tdocs/reports/cl007-009-round5-shared/preservation.json\nD\tdocs/reports/cl007-009-round5-shared/provenance.json\nD\tdocs/reports/cl007-009-round5-shared/raw-artifacts.json\nD\tdocs/reports/cl007-009-round5-shared/raw-logs.json\nD\tdocs/reports/cl007-009-round5-shared/runners.json\nD\tdocs/reports/cl007-009-round5-shared/validation.json\nD\tdocs/reports/cl007-009-round5-status.md\nD\tdocs/reports/cl007-009-round6-ci.json\nD\tdocs/reports/cl007-009-round6-shared/algorithm-v1/raw-results.tsv\nD\tdocs/reports/cl007-009-round6-shared/baseline-ci.json\nD\tdocs/reports/cl007-009-round6-shared/command-01.txt\nD\tdocs/reports/cl007-009-round6-shared/command-05.txt\nD\tdocs/reports/cl007-009-round6-shared/command-08.txt\nD\tdocs/reports/cl007-009-round6-shared/command-09.txt\nD\tdocs/reports/cl007-009-round6-shared/direction-artifacts.json\nD\tdocs/reports/cl007-009-round6-shared/direction-changes.json\nD\tdocs/reports/cl007-009-round6-shared/harness-preparation-failures.json\nD\tdocs/reports/cl007-009-round6-shared/independent-review.json\nD\tdocs/reports/cl007-009-round6-shared/peer-review.json\nD\tdocs/reports/cl007-009-round6-shared/preservation.json\nD\tdocs/reports/cl007-009-round6-shared/provenance.json\nD\tdocs/reports/cl007-009-round6-shared/raw-artifacts.json\nD\tdocs/reports/cl007-009-round6-shared/raw-logs.json\nD\tdocs/reports/cl007-009-round6-shared/runners.json\nD\tdocs/reports/cl007-009-round6-shared/validation.json\nD\tdocs/reports/cl007-009-round6-status.md\nA\tdocs/reports/cl008-checks.json\nA\tdocs/reports/cl008-progress.md\nA\tdocs/reports/cl008-real/CC-BY-SA-4.0.txt\nA\tdocs/reports/cl008-real/README.md\nA\tdocs/reports/cl008-real/Unicode-3.0.txt\nA\tdocs/reports/cl008-real/mechanical-search.json\nA\tdocs/reports/cl008-real/per-case.md\nR061\tdocs/reports/cl007-009-round6-shared/command-10.txt\tdocs/reports/cl008-real/prototype-performance.json\nA\tdocs/reports/cl008-real/unihan-after.json\nA\tdocs/reports/cl008-real/unihan-before.json\nA\tdocs/reports/cl008-real/validation-db5397d-local.json\nA\tdocs/reports/cl008-real/validation.json\nA\tdocs/reports/cl008-real/wiktionary-NOTICE.txt\nA\tdocs/reports/cl008-real/wiktionary-build-manifest.json\nA\tdocs/reports/cl008-real/wiktionary-candidate-attributions.json\nA\tdocs/reports/cl008-real/wiktionary-prefix.json\nA\tdocs/reports/cl008-real/wiktionary-quality.json\nA\tdocs/reports/cl008-real/wiktionary-source-lock.json\nA\tdocs/reports/cl008-round3/.gitattributes\nA\tdocs/reports/cl008-round3/README.md\nA\tdocs/reports/cl008-round3/analysis.json\nR100\tdocs/reports/cl007-009-round4-shared/command-02.log\tdocs/reports/cl008-round3/command-01.log\nR088\tdocs/reports/cl007-009-round4-shared/command-05.log\tdocs/reports/cl008-round3/command-02.log\nR100\tdocs/reports/cl007-009-round4-shared/command-04.log\tdocs/reports/cl008-round3/command-03.log\nA\tdocs/reports/cl008-round3/command-04.log\nR074\tdocs/reports/cl007-009-round6-shared/command-06.txt\tdocs/reports/cl008-round3/command-05.log\nR083\tdocs/reports/cl007-009-round6-shared/command-07.txt\tdocs/reports/cl008-round3/command-06.log\nA\tdocs/reports/cl008-round3/command-07.log\nA\tdocs/reports/cl008-round3/command-08.log\nA\tdocs/reports/cl008-round3/command-09.log\nA\tdocs/reports/cl008-round3/command-10.log\nA\tdocs/reports/cl008-round3/command-11.log\nA\tdocs/reports/cl008-round3/command-12.log\nA\tdocs/reports/cl008-round3/command-13.log\nA\tdocs/reports/cl008-round3/groups.md\nA\tdocs/reports/cl008-round3/mechanical.json\nA\tdocs/reports/cl008-round3/provenance.json\nA\tdocs/reports/cl008-round3/source-evidence-validation.json\nA\tdocs/reports/cl008-round3/unihan.json\nA\tdocs/reports/cl008-round3/validation.json\nA\tdocs/reports/cl008-round3/wiktionary.json\nA\tdocs/reports/cl008-round4-followup/.gitattributes\nA\tdocs/reports/cl008-round4-followup/README.md\nR100\tdocs/reports/cl007-009-round4-shared/command-12.log\tdocs/reports/cl008-round4-followup/checks/command-01.log\nR088\tdocs/reports/cl007-009-round5-shared/command-03.txt\tdocs/reports/cl008-round4-followup/checks/command-02.log\nR100\tdocs/reports/cl007-009-round5-shared/command-02.txt\tdocs/reports/cl008-round4-followup/checks/command-03.log\nR088\tdocs/reports/cl007-009-round5-shared/command-05.txt\tdocs/reports/cl008-round4-followup/checks/command-04.log\nR077\tdocs/reports/cl007-009-round5-shared/command-06.txt\tdocs/reports/cl008-round4-followup/checks/command-05.log\nA\tdocs/reports/cl008-round4-followup/checks/command-06.log\nA\tdocs/reports/cl008-round4-followup/checks/command-07.log\nA\tdocs/reports/cl008-round4-followup/checks/command-08.log\nA\tdocs/reports/cl008-round4-followup/checks/command-09.log\nA\tdocs/reports/cl008-round4-followup/checks/command-10.log\nA\tdocs/reports/cl008-round4-followup/checks/language-readiness.json\nA\tdocs/reports/cl008-round4-followup/checks/validation.json\nA\tdocs/reports/cl008-round4-followup/historical-evidence-preserved.json\nA\tdocs/reports/cl008-round4-followup/provenance.json\nA\tdocs/reports/cl008-round4-followup/publication-first-attempt.json\nA\tdocs/reports/cl008-round4-followup/raw-logs.json\nA\tdocs/reports/cl008-round4-followup/regression-after-fix.json\nA\tdocs/reports/cl008-round4-followup/regression-after-fix.log\nA\tdocs/reports/cl008-round4-followup/regression-before-fix.json\nA\tdocs/reports/cl008-round4-followup/regression-before-fix.log\nA\tdocs/reports/cl008-round4/.gitattributes\nA\tdocs/reports/cl008-round4/README.md\nA\tdocs/reports/cl008-round4/cccedict-analysis.json\nA\tdocs/reports/cl008-round4/cccedict-evidence-validation.json\nA\tdocs/reports/cl008-round4/cccedict-full.json\nA\tdocs/reports/cl008-round4/cccedict-source/LICENSE.txt\nA\tdocs/reports/cl008-round4/cccedict-source/NOTICE.txt\nA\tdocs/reports/cl008-round4/cccedict-source/evidence.json\nA\tdocs/reports/cl008-round4/cccedict-source/manifest.json\nA\tdocs/reports/cl008-round4/cccedict-source/quality.json\nA\tdocs/reports/cl008-round4/cccedict-source/received-from-c.json\nA\tdocs/reports/cl008-round4/cccedict-source/source-lock.json\nA\tdocs/reports/cl008-round4/cccedict-source/upstream-documents.json\nR100\tdocs/reports/cl007-009-round5-shared/command-04.txt\tdocs/reports/cl008-round4/command-01.log\nR088\tdocs/reports/cl007-009-round6-shared/command-03.txt\tdocs/reports/cl008-round4/command-02.log\nR100\tdocs/reports/cl007-009-round5-shared/command-12.txt\tdocs/reports/cl008-round4/command-03.log\nA\tdocs/reports/cl008-round4/command-04.log\nR077\tdocs/reports/cl007-009-round4-shared/command-06.log\tdocs/reports/cl008-round4/command-05.log\nA\tdocs/reports/cl008-round4/command-06.log\nA\tdocs/reports/cl008-round4/command-07.log\nA\tdocs/reports/cl008-round4/command-08.log\nA\tdocs/reports/cl008-round4/command-09.log\nA\tdocs/reports/cl008-round4/command-10.log\nA\tdocs/reports/cl008-round4/command-11.log\nA\tdocs/reports/cl008-round4/command-12.log\nA\tdocs/reports/cl008-round4/command-13.log\nA\tdocs/reports/cl008-round4/language-readiness.json\nA\tdocs/reports/cl008-round4/mechanical.json\nA\tdocs/reports/cl008-round4/provenance.json\nA\tdocs/reports/cl008-round4/restricted/LICENSE-1.txt\nA\tdocs/reports/cl008-round4/restricted/cases.tsv\nA\tdocs/reports/cl008-round4/restricted/restricted-runtime.tsv\nA\tdocs/reports/cl008-round4/restricted/results.json\nA\tdocs/reports/cl008-round4/restricted/source-evidence.json\nA\tdocs/reports/cl008-round4/validation.json\nA\tdocs/reports/cl008-round5/.gitattributes\nA\tdocs/reports/cl008-round5/README.md\nA\tdocs/reports/cl008-round5/cccedict-source/LICENSE.txt\nA\tdocs/reports/cl008-round5/cccedict-source/NOTICE.txt\nA\tdocs/reports/cl008-round5/cccedict-source/evidence.json\nA\tdocs/reports/cl008-round5/cccedict-source/manifest.json\nA\tdocs/reports/cl008-round5/cccedict-source/quality.json\nA\tdocs/reports/cl008-round5/cccedict-source/source-lock.json\nR100\tdocs/reports/cl007-009-round5-shared/algorithm-v1/case-comparison.tsv\tdocs/reports/cl008-round5/checks/algorithm-v1/case-comparison.tsv\nA\tdocs/reports/cl008-round5/checks/algorithm-v1/raw-results.tsv\nR087\tdocs/reports/cl007-009-round6-shared/algorithm-v1/report.md\tdocs/reports/cl008-round5/checks/algorithm-v1/report.md\nR093\tdocs/reports/cl007-009-round6-shared/algorithm-v1/summary.json\tdocs/reports/cl008-round5/checks/algorithm-v1/summary.json\nA\tdocs/reports/cl008-round5/checks/command-01.log\nA\tdocs/reports/cl008-round5/checks/command-02.log\nA\tdocs/reports/cl008-round5/checks/command-03.log\nA\tdocs/reports/cl008-round5/checks/command-04.log\nA\tdocs/reports/cl008-round5/checks/command-05.log\nR083\tdocs/reports/cl007-009-round4-shared/command-07.log\tdocs/reports/cl008-round5/checks/command-06.log\nA\tdocs/reports/cl008-round5/checks/command-07.log\nR057\tdocs/reports/cl007-009-round4-shared/command-09.log\tdocs/reports/cl008-round5/checks/command-08.log\nA\tdocs/reports/cl008-round5/checks/command-09.log\nR061\tdocs/reports/cl007-009-round6-shared/performance.json\tdocs/reports/cl008-round5/checks/command-10.log\nR084\tdocs/reports/cl007-009-round4-shared/command-11.log\tdocs/reports/cl008-round5/checks/command-11.log\nA\tdocs/reports/cl008-round5/checks/command-12.log\nA\tdocs/reports/cl008-round5/checks/command-13.log\nA\tdocs/reports/cl008-round5/checks/command-14.log\nA\tdocs/reports/cl008-round5/checks/command-15.log\nA\tdocs/reports/cl008-round5/checks/language-readiness.json\nA\tdocs/reports/cl008-round5/checks/mechanical.json\nR059\tdocs/reports/cl007-009-round5-shared/command-10.txt\tdocs/reports/cl008-round5/checks/prototype-performance.json\nA\tdocs/reports/cl008-round5/checks/quality-preparation.json\nA\tdocs/reports/cl008-round5/checks/validation.json\nA\tdocs/reports/cl008-round5/failure-and-budget-index.json\nA\tdocs/reports/cl008-round5/historical-evidence-preserved.json\nA\tdocs/reports/cl008-round5/phases/beam1-stderr.txt\nA\tdocs/reports/cl008-round5/phases/beam1-stdout.json\nA\tdocs/reports/cl008-round5/phases/beam1.json\nA\tdocs/reports/cl008-round5/phases/beam64-stderr.txt\nA\tdocs/reports/cl008-round5/phases/beam64-stdout.json\nA\tdocs/reports/cl008-round5/phases/beam64.json\nA\tdocs/reports/cl008-round5/phases/beam8-stderr.txt\nA\tdocs/reports/cl008-round5/phases/beam8-stdout.json\nA\tdocs/reports/cl008-round5/phases/beam8.json\nA\tdocs/reports/cl008-round5/phases/exact-edges128-stderr.txt\nA\tdocs/reports/cl008-round5/phases/exact-edges128-stdout.json\nA\tdocs/reports/cl008-round5/phases/exact-edges128.json\nA\tdocs/reports/cl008-round5/phases/exact-expansions500-stderr.txt\nA\tdocs/reports/cl008-round5/phases/exact-expansions500-stdout.json\nA\tdocs/reports/cl008-round5/phases/exact-expansions500.json\nA\tdocs/reports/cl008-round5/phases/exact-resident128-stderr.txt\nA\tdocs/reports/cl008-round5/phases/exact-resident128-stdout.json\nA\tdocs/reports/cl008-round5/phases/exact-resident128.json\nA\tdocs/reports/cl008-round5/phases/exact-stderr.txt\nA\tdocs/reports/cl008-round5/phases/exact-stdout.json\nA\tdocs/reports/cl008-round5/phases/exact.json\nA\tdocs/reports/cl008-round5/phases/position-edges128-stderr.txt\nA\tdocs/reports/cl008-round5/phases/position-edges128-stdout.json\nA\tdocs/reports/cl008-round5/phases/position-edges128.json\nA\tdocs/reports/cl008-round5/phases/position-expansions500-stderr.txt\nA\tdocs/reports/cl008-round5/phases/position-expansions500-stdout.json\nA\tdocs/reports/cl008-round5/phases/position-expansions500.json\nA\tdocs/reports/cl008-round5/phases/position-resident128-stderr.txt\nA\tdocs/reports/cl008-round5/phases/position-resident128-stdout.json\nA\tdocs/reports/cl008-round5/phases/position-resident128.json\nA\tdocs/reports/cl008-round5/phases/position-stderr.txt\nA\tdocs/reports/cl008-round5/phases/position-stdout.json\nA\tdocs/reports/cl008-round5/phases/position.json\nA\tdocs/reports/cl008-round5/phases/reference-stderr.txt\nA\tdocs/reports/cl008-round5/phases/reference-stdout.json\nA\tdocs/reports/cl008-round5/phases/reference.json\nA\tdocs/reports/cl008-round5/phases/summary.json\nA\tdocs/reports/cl008-round5/provenance.json\nA\tdocs/reports/cl008-round5/raw-logs.json\nA\tdocs/reports/cl008-round5/red/annotation-scope-red.txt\nA\tdocs/reports/cl008-round5/red/count-units-red.txt\nA\tdocs/reports/cl008-round5/red/profile-green-first.txt\nA\tdocs/reports/cl008-round5/red/profile-red.txt\nA\tdocs/reports/cl008-round5/red/quality-red.txt\nA\tdocs/reports/cl008-round6/README.md\nA\tdocs/reports/cl008-round6/baseline/build-stderr.txt\nA\tdocs/reports/cl008-round6/baseline/build-stdout.jsonl\nA\tdocs/reports/cl008-round6/baseline/green-0.txt\nA\tdocs/reports/cl008-round6/baseline/green-1.txt\nA\tdocs/reports/cl008-round6/baseline/green.json\nA\tdocs/reports/cl008-round6/baseline/identity.json\nA\tdocs/reports/cl008-round6/cccedict-source/evidence.json\nA\tdocs/reports/cl008-round6/cccedict-source/manifest.json\nA\tdocs/reports/cl008-round6/cccedict-source/quality.json\nA\tdocs/reports/cl008-round6/cccedict-source/source-lock.json\nR100\tdocs/reports/cl007-009-round6-shared/algorithm-v1/case-comparison.tsv\tdocs/reports/cl008-round6/checks/algorithm-v1/case-comparison.tsv\nA\tdocs/reports/cl008-round6/checks/algorithm-v1/raw-results.tsv\nR088\tdocs/reports/cl007-009-round5-shared/algorithm-v1/report.md\tdocs/reports/cl008-round6/checks/algorithm-v1/report.md\nR094\tdocs/reports/cl007-009-round5-shared/algorithm-v1/summary.json\tdocs/reports/cl008-round6/checks/algorithm-v1/summary.json\nR100\tdocs/reports/cl007-009-round6-shared/command-02.txt\tdocs/reports/cl008-round6/checks/command-01.log\nA\tdocs/reports/cl008-round6/checks/command-02.log\nR100\tdocs/reports/cl007-009-round6-shared/command-04.txt\tdocs/reports/cl008-round6/checks/command-03.log\nA\tdocs/reports/cl008-round6/checks/command-04.log\nA\tdocs/reports/cl008-round6/checks/command-05.log\nR084\tdocs/reports/cl007-009-round5-shared/command-07.txt\tdocs/reports/cl008-round6/checks/command-06.log\nA\tdocs/reports/cl008-round6/checks/command-07.log\nR056\tdocs/reports/cl007-009-round5-shared/command-09.txt\tdocs/reports/cl008-round6/checks/command-08.log\nA\tdocs/reports/cl008-round6/checks/command-09.log\nR059\tdocs/reports/cl007-009-round4-shared/command-10.log\tdocs/reports/cl008-round6/checks/command-10.log\nR086\tdocs/reports/cl007-009-round6-shared/command-11.txt\tdocs/reports/cl008-round6/checks/command-11.log\nA\tdocs/reports/cl008-round6/checks/command-12.log\nA\tdocs/reports/cl008-round6/checks/command-13.log\nA\tdocs/reports/cl008-round6/checks/command-14.log\nR100\tdocs/reports/cl007-009-round6-shared/command-12.txt\tdocs/reports/cl008-round6/checks/command-15.log\nA\tdocs/reports/cl008-round6/checks/language-readiness.json\nA\tdocs/reports/cl008-round6/checks/mechanical.json\nR059\tdocs/reports/cl007-009-round5-shared/performance.json\tdocs/reports/cl008-round6/checks/prototype-performance.json\nA\tdocs/reports/cl008-round6/checks/quality-preparation.json\nA\tdocs/reports/cl008-round6/checks/validation.json\nA\tdocs/reports/cl008-round6/checksums.json\nA\tdocs/reports/cl008-round6/failure-and-budget-index.json\nA\tdocs/reports/cl008-round6/history-preserved.json\nA\tdocs/reports/cl008-round6/matrix/beam1-after-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/beam1-after-stdout.json\nA\tdocs/reports/cl008-round6/matrix/beam1-after.json\nA\tdocs/reports/cl008-round6/matrix/beam1-before-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/beam1-before-stdout.json\nA\tdocs/reports/cl008-round6/matrix/beam1-before.json\nA\tdocs/reports/cl008-round6/matrix/beam64-after-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/beam64-after-stdout.json\nA\tdocs/reports/cl008-round6/matrix/beam64-after.json\nA\tdocs/reports/cl008-round6/matrix/beam64-before-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/beam64-before-stdout.json\nA\tdocs/reports/cl008-round6/matrix/beam64-before.json\nA\tdocs/reports/cl008-round6/matrix/beam8-after-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/beam8-after-stdout.json\nA\tdocs/reports/cl008-round6/matrix/beam8-after.json\nA\tdocs/reports/cl008-round6/matrix/beam8-before-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/beam8-before-stdout.json\nA\tdocs/reports/cl008-round6/matrix/beam8-before.json\nA\tdocs/reports/cl008-round6/matrix/exact-after-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/exact-after-stdout.json\nA\tdocs/reports/cl008-round6/matrix/exact-after.json\nA\tdocs/reports/cl008-round6/matrix/exact-before-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/exact-before-stdout.json\nA\tdocs/reports/cl008-round6/matrix/exact-before.json\nA\tdocs/reports/cl008-round6/matrix/exact-edges128-after-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/exact-edges128-after-stdout.json\nA\tdocs/reports/cl008-round6/matrix/exact-edges128-after.json\nA\tdocs/reports/cl008-round6/matrix/exact-edges128-before-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/exact-edges128-before-stdout.json\nA\tdocs/reports/cl008-round6/matrix/exact-edges128-before.json\nA\tdocs/reports/cl008-round6/matrix/exact-expansions500-after-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/exact-expansions500-after-stdout.json\nA\tdocs/reports/cl008-round6/matrix/exact-expansions500-after.json\nA\tdocs/reports/cl008-round6/matrix/exact-expansions500-before-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/exact-expansions500-before-stdout.json\nA\tdocs/reports/cl008-round6/matrix/exact-expansions500-before.json\nA\tdocs/reports/cl008-round6/matrix/exact-resident128-after-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/exact-resident128-after-stdout.json\nA\tdocs/reports/cl008-round6/matrix/exact-resident128-after.json\nA\tdocs/reports/cl008-round6/matrix/exact-resident128-before-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/exact-resident128-before-stdout.json\nA\tdocs/reports/cl008-round6/matrix/exact-resident128-before.json\nA\tdocs/reports/cl008-round6/matrix/execution.json\nA\tdocs/reports/cl008-round6/matrix/identity.json\nA\tdocs/reports/cl008-round6/matrix/partial-summary.json\nA\tdocs/reports/cl008-round6/matrix/position-after-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/position-after-stdout.json\nA\tdocs/reports/cl008-round6/matrix/position-after.json\nA\tdocs/reports/cl008-round6/matrix/position-before-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/position-before-stdout.json\nA\tdocs/reports/cl008-round6/matrix/position-before.json\nA\tdocs/reports/cl008-round6/matrix/position-edges128-after-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/position-edges128-after-stdout.json\nA\tdocs/reports/cl008-round6/matrix/position-edges128-after.json\nA\tdocs/reports/cl008-round6/matrix/position-edges128-before-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/position-edges128-before-stdout.json\nA\tdocs/reports/cl008-round6/matrix/position-edges128-before.json\nA\tdocs/reports/cl008-round6/matrix/position-expansions500-after-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/position-expansions500-after-stdout.json\nA\tdocs/reports/cl008-round6/matrix/position-expansions500-after.json\nA\tdocs/reports/cl008-round6/matrix/position-expansions500-before-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/position-expansions500-before-stdout.json\nA\tdocs/reports/cl008-round6/matrix/position-expansions500-before.json\nA\tdocs/reports/cl008-round6/matrix/position-resident128-after-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/position-resident128-after-stdout.json\nA\tdocs/reports/cl008-round6/matrix/position-resident128-after.json\nA\tdocs/reports/cl008-round6/matrix/position-resident128-before-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/position-resident128-before-stdout.json\nA\tdocs/reports/cl008-round6/matrix/position-resident128-before.json\nA\tdocs/reports/cl008-round6/matrix/reference-after-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/reference-after-stdout.json\nA\tdocs/reports/cl008-round6/matrix/reference-after.json\nA\tdocs/reports/cl008-round6/matrix/reference-before-stderr.txt\nA\tdocs/reports/cl008-round6/matrix/reference-before-stdout.json\nA\tdocs/reports/cl008-round6/matrix/reference-before.json\nA\tdocs/reports/cl008-round6/matrix/summary.json\nA\tdocs/reports/cl008-round6/original-artifacts.json\nA\tdocs/reports/cl008-round6/original-logs.json\nA\tdocs/reports/cl008-round6/position-resource-gates.json\nA\tdocs/reports/cl008-round6/provenance.json\nA\tdocs/reports/cl008-round6/red/full-result.txt\nA\tdocs/reports/cl008-round6/red/identity.json\nA\tdocs/reports/cl008-round6/tools/publish_round6.py\nA\tdocs/reports/cl008-round6/tools/run_round6_checks.py\nA\tdocs/reports/cl008-round6/tools/run_round6_matrix.py\nA\tdocs/reports/cl008-search-mechanics-v1.json\nA\tdocs/reports/cl008-unihan-v2-load.json\nM\tdocs/roadmap.md\nD\tdocs/shared-contract-round6-review-design.md\nA\tscripts/analyze_search_round3.py\nA\tscripts/check_language_readiness.py\nA\tscripts/check_quality_preparation.py\nA\tscripts/evaluate_real_lexicon.py\nA\tscripts/evaluate_restricted_oracle.py\nA\tscripts/evaluate_search.py\nA\tscripts/evaluate_search_phases.py\nA\ttests/search-mechanics-v1/README.md\nA\ttests/search-mechanics-v1/cases.tsv\nA\ttests/search-mechanics-v1/lexicon.tsv\nA\ttests/search-mechanics-v1/train.tsv\nA\ttests/search-resources-v1/README.md\nA\ttests/search-resources-v1/cases.tsv\nA\ttests/test_ime_task_handoff.py\nA\ttests/test_language_readiness.py\nA\ttests/test_quality_preparation.py\nA\ttests/test_real_lexicon_evaluation.py\nA\ttests/test_restricted_oracle.py\nA\ttests/test_search_evaluation.py\nA\ttests/test_search_phases.py\nA\ttests/test_search_round3_analysis.py\n",
+      "preview_exit": 0,
+      "preview_stdout": "99bf67ea0cf01c58a8f4de5e45f3bd65a806f971\n\n",
+      "preview_stderr": ""
+    },
+    {
+      "worktree": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf",
+      "head": "5e507ebd157660ef8f10771b54b1d91cdbc5477c",
+      "merge_base": "9af9bc1b2ebacc3ad76124cfa39d09de8eb77bd1",
+      "shared_core_blobs": {
+        "crates/cloudleaf-input/src/lib.rs": "ae704e7affd9d267328e778b27872195755c8f9e",
+        "crates/cloudleaf-types/src/lib.rs": "2a35eec1d787deb979e096b62c834244c4723505"
+      },
+      "base_to_direction_name_status": "M\t.gitattributes\nM\tREADME.md\nM\tTHIRD_PARTY_NOTICES.md\nA\tconfig/audits/data.json\nA\tdata/licenses/CC-BY-SA-4.0.txt\nA\tdata/licenses/Unicode-3.0.txt\nA\tdata/manifests/data-source-review-v1.json\nA\tdata/plans/ime-annotation-round6.json\nA\tdata/plans/ime-human-gold-v1.json\nA\tdata/sources/evidence/cccedict-mirror-7019e1c/upstream-documents.json\nA\tdata/sources/locks/cccedict-20260604-mirror7019e1c.json\nA\tdata/sources/locks/unihan-17.0.0.json\nA\tdata/sources/locks/wiktionary-zh-20261001-prefix8388608.json\nA\tdata/sources/source-review.jsonl\nA\tdocs/cl009-design.md\nA\tdocs/cl009-formal-data-review.md\nA\tdocs/cl009-round4-design.md\nA\tdocs/cl009-round5-design.md\nA\tdocs/cl009-round5-frequency-and-annotation.md\nA\tdocs/cl009-round6-annotation-handoff.md\nA\tdocs/cl009-round6-design.md\nA\tdocs/cl009-round7-design.md\nA\tdocs/cl009-word-data-design.md\nA\tdocs/reports/cl009-clean-replay.md\nA\tdocs/reports/cl009-data-pipeline.md\nA\tdocs/reports/cl009-reading-audit.md\nA\tdocs/reports/cl009-round2.md\nA\tdocs/reports/cl009-round3.md\nA\tdocs/reports/cl009-round4.md\nA\tdocs/reports/cl009-round5.md\nA\tdocs/reports/cl009-round6.md\nA\tdocs/reports/cl009/baseline-algorithm-summary.json\nA\tdocs/reports/cl009/clean-replay.json\nA\tdocs/reports/cl009/index-performance.json\nA\tdocs/reports/cl009/prototype-performance.json\nA\tdocs/reports/cl009/quality.json\nA\tdocs/reports/cl009/real-acceptance.json\nA\tdocs/reports/cl009/recovery-review-after.json\nA\tdocs/reports/cl009/recovery-review-before.json\nA\tdocs/reports/cl009/recovery-review-hardlink-before.json\nA\tdocs/reports/cl009/recovery-review-pid.json\nA\tdocs/reports/cl009/release-manifest.json\nA\tdocs/reports/cl009/round2-clean-replay.json\nA\tdocs/reports/cl009/round2-core-performance.json\nA\tdocs/reports/cl009/round2-local-checks.json\nA\tdocs/reports/cl009/round2-real-interruption.json\nA\tdocs/reports/cl009/round2-source-acquisition.json\nA\tdocs/reports/cl009/round3-core-performance.json\nA\tdocs/reports/cl009/round3-local-checks.json\nA\tdocs/reports/cl009/round3-real-interruption.json\nA\tdocs/reports/cl009/round3-replay.json\nA\tdocs/reports/cl009/round4-clean-replay.json\nA\tdocs/reports/cl009/round4-closeout-audit.json\nA\tdocs/reports/cl009/round4-final-clean-replay.json\nA\tdocs/reports/cl009/round4-final-core-performance.json\nA\tdocs/reports/cl009/round4-final-local-checks.json\nA\tdocs/reports/cl009/round4-final-real-interruption.json\nA\tdocs/reports/cl009/round4-local-checks.json\nA\tdocs/reports/cl009/round4-safe-cache-copy.json\nA\tdocs/reports/cl009/round4-source-acquisition.json\nA\tdocs/reports/cl009/round4-source-review-closeout.json\nA\tdocs/reports/cl009/round5-algorithm-v1/case-comparison.tsv\nA\tdocs/reports/cl009/round5-algorithm-v1/raw-results.tsv\nA\tdocs/reports/cl009/round5-algorithm-v1/report.md\nA\tdocs/reports/cl009/round5-algorithm-v1/summary.json\nA\tdocs/reports/cl009/round5-clean-replay.json\nA\tdocs/reports/cl009/round5-core-performance.json\nA\tdocs/reports/cl009/round5-delivery-files.json\nA\tdocs/reports/cl009/round5-diagnostics.json\nA\tdocs/reports/cl009/round5-evidence-index.json\nA\tdocs/reports/cl009/round5-index-performance.json\nA\tdocs/reports/cl009/round5-isolations/README.md\nA\tdocs/reports/cl009/round5-isolations/records.jsonl\nA\tdocs/reports/cl009/round5-isolations/summary.json\nA\tdocs/reports/cl009/round5-isolations/upstream-documents.json\nA\tdocs/reports/cl009/round5-local-checks.json\nA\tdocs/reports/cl009/round5-publication-check.json\nA\tdocs/reports/cl009/round5-real-interruption.json\nA\tdocs/reports/cl009/round5-red-evidence.json\nA\tdocs/reports/cl009/round5-release-manifest.json\nA\tdocs/reports/cl009/round5-release-quality.json\nA\tdocs/reports/cl009/round5-runner-sources.json\nA\tdocs/reports/cl009/round5-source-review.json\nA\tdocs/reports/cl009/round6/algorithm-v1/case-comparison.tsv\nA\tdocs/reports/cl009/round6/algorithm-v1/raw-results.tsv\nA\tdocs/reports/cl009/round6/algorithm-v1/report.md\nA\tdocs/reports/cl009/round6/algorithm-v1/summary.json\nA\tdocs/reports/cl009/round6/checks.json\nA\tdocs/reports/cl009/round6/checksums.json\nA\tdocs/reports/cl009/round6/diagnostics.json\nA\tdocs/reports/cl009/round6/graph-audit-resource.json\nA\tdocs/reports/cl009/round6/graph-manifest.json\nA\tdocs/reports/cl009/round6/history-integrity.json\nA\tdocs/reports/cl009/round6/identity.json\nA\tdocs/reports/cl009/round6/pending-audit.json\nA\tdocs/reports/cl009/round6/prototype.json\nA\tdocs/reports/cl009/round6/provenance.json\nA\tdocs/reports/cl009/round6/raw-artifacts.json\nA\tdocs/reports/cl009/round6/red/round6-red-bound/annotation_workflow.py\nA\tdocs/reports/cl009/round6/red/round6-red-bound/annotation_workflow.txt\nA\tdocs/reports/cl009/round6/red/round6-red-bound/corpus_gate.py\nA\tdocs/reports/cl009/round6/red/round6-red-bound/corpus_gate.txt\nA\tdocs/reports/cl009/round6/red/round6-red-bound/identity.json\nA\tdocs/reports/cl009/round6/red/round6-red-source-behavior/annotation_workflow.py\nA\tdocs/reports/cl009/round6/red/round6-red-source-behavior/identity.json\nA\tdocs/reports/cl009/round6/red/round6-red-source-behavior/output.txt\nA\tdocs/reports/cl009/round6/red/round6-red-source/annotation_workflow.py\nA\tdocs/reports/cl009/round6/red/round6-red-source/identity.json\nA\tdocs/reports/cl009/round6/red/round6-red-source/output.txt\nA\tdocs/reports/cl009/round6/red/round6-red/annotation.txt\nA\tdocs/reports/cl009/round6/red/round6-red/corpus_gate.txt\nA\tdocs/reports/cl009/round6/red/round6-red/identity.json\nA\tdocs/reports/cl009/round6/red/round6-red/other-red.json\nA\tdocs/reports/cl009/round6/red/round6-red/source_assertions.txt\nA\tdocs/reports/cl009/round6/runners.json\nA\tdocs/reports/cl009/round6/wikipedia-acquisition.json\nA\tdocs/reports/cl009/round6/wikipedia-gate.json\nA\tdocs/reports/cl009/unihan-reading-audit.json\nA\tdocs/reports/cl009/validation.json\nA\ttests/test_annotation_workflow.py\nA\ttests/test_cedict_source.py\nA\ttests/test_corpus_gate.py\nA\ttests/test_data_pipeline.py\nA\ttests/test_data_recovery.py\nA\ttests/test_isolation_audit.py\nA\ttests/test_linguistic_sidecar.py\nA\ttests/test_source_assertions.py\nA\ttests/test_source_review.py\nA\ttests/test_word_source.py\nA\ttools/data_pipeline/README.md\nA\ttools/data_pipeline/__init__.py\nA\ttools/data_pipeline/__main__.py\nA\ttools/data_pipeline/annotation_workflow.py\nA\ttools/data_pipeline/audit_isolations.py\nA\ttools/data_pipeline/cedict_source.py\nA\ttools/data_pipeline/corpus_gate.py\nA\ttools/data_pipeline/filesystem.py\nA\ttools/data_pipeline/linguistic_sidecar.py\nA\ttools/data_pipeline/pipeline.py\nA\ttools/data_pipeline/prefix_snapshot.py\nA\ttools/data_pipeline/reading_audit.py\nA\ttools/data_pipeline/recovery.py\nA\ttools/data_pipeline/source_assertions.py\nA\ttools/data_pipeline/word_source.py\n",
+      "shared_to_direction_name_status": "M\t.gitattributes\nM\tREADME.md\nM\tTHIRD_PARTY_NOTICES.md\nA\tconfig/audits/data.json\nD\tcrates/cloudleaf-input/tests/round6_shared_review.rs\nA\tdata/licenses/CC-BY-SA-4.0.txt\nA\tdata/licenses/Unicode-3.0.txt\nA\tdata/manifests/data-source-review-v1.json\nA\tdata/plans/ime-annotation-round6.json\nA\tdata/plans/ime-human-gold-v1.json\nA\tdata/sources/evidence/cccedict-mirror-7019e1c/upstream-documents.json\nA\tdata/sources/locks/cccedict-20260604-mirror7019e1c.json\nA\tdata/sources/locks/unihan-17.0.0.json\nA\tdata/sources/locks/wiktionary-zh-20261001-prefix8388608.json\nA\tdata/sources/source-review.jsonl\nD\tdocs/cl007-009-round4-plan.md\nD\tdocs/cl007-009-round5-plan.md\nD\tdocs/cl007-009-round6-plan.md\nD\tdocs/cl007-009-round7-plan.md\nA\tdocs/cl009-design.md\nA\tdocs/cl009-formal-data-review.md\nA\tdocs/cl009-round4-design.md\nA\tdocs/cl009-round5-design.md\nA\tdocs/cl009-round5-frequency-and-annotation.md\nA\tdocs/cl009-round6-annotation-handoff.md\nA\tdocs/cl009-round6-design.md\nA\tdocs/cl009-round7-design.md\nA\tdocs/cl009-word-data-design.md\nM\tdocs/reports/cl007-009-review-status.md\nD\tdocs/reports/cl007-009-round2-ci.json\nD\tdocs/reports/cl007-009-round2-status.md\nD\tdocs/reports/cl007-009-round3-ci.json\nD\tdocs/reports/cl007-009-round3-status.md\nD\tdocs/reports/cl007-009-round4-ci.json\nD\tdocs/reports/cl007-009-round4-shared/.gitattributes\nD\tdocs/reports/cl007-009-round4-shared/audit_round4_direction_artifacts.py\nD\tdocs/reports/cl007-009-round4-shared/check_round4_preservation.py\nD\tdocs/reports/cl007-009-round4-shared/command-01.log\nD\tdocs/reports/cl007-009-round4-shared/command-02.log\nD\tdocs/reports/cl007-009-round4-shared/command-03.log\nD\tdocs/reports/cl007-009-round4-shared/command-04.log\nD\tdocs/reports/cl007-009-round4-shared/command-05.log\nD\tdocs/reports/cl007-009-round4-shared/command-06.log\nD\tdocs/reports/cl007-009-round4-shared/command-07.log\nD\tdocs/reports/cl007-009-round4-shared/command-08.log\nD\tdocs/reports/cl007-009-round4-shared/command-09.log\nD\tdocs/reports/cl007-009-round4-shared/command-11.log\nD\tdocs/reports/cl007-009-round4-shared/command-12.log\nD\tdocs/reports/cl007-009-round4-shared/direction-artifacts.json\nD\tdocs/reports/cl007-009-round4-shared/preservation.json\nD\tdocs/reports/cl007-009-round4-shared/provenance.json\nD\tdocs/reports/cl007-009-round4-shared/publication-whitespace-failure.json\nD\tdocs/reports/cl007-009-round4-shared/raw-logs.json\nD\tdocs/reports/cl007-009-round4-shared/round4-root-harness-failures.log\nD\tdocs/reports/cl007-009-round4-shared/validation.json\nD\tdocs/reports/cl007-009-round4-status.md\nD\tdocs/reports/cl007-009-round5-ci.json\nD\tdocs/reports/cl007-009-round5-shared/algorithm-v1/raw-results.tsv\nD\tdocs/reports/cl007-009-round5-shared/baseline-ci.json\nD\tdocs/reports/cl007-009-round5-shared/command-01.txt\nD\tdocs/reports/cl007-009-round5-shared/command-02.txt\nD\tdocs/reports/cl007-009-round5-shared/command-03.txt\nD\tdocs/reports/cl007-009-round5-shared/command-04.txt\nD\tdocs/reports/cl007-009-round5-shared/command-05.txt\nD\tdocs/reports/cl007-009-round5-shared/command-06.txt\nD\tdocs/reports/cl007-009-round5-shared/command-07.txt\nD\tdocs/reports/cl007-009-round5-shared/command-08.txt\nD\tdocs/reports/cl007-009-round5-shared/command-09.txt\nD\tdocs/reports/cl007-009-round5-shared/command-11.txt\nD\tdocs/reports/cl007-009-round5-shared/command-12.txt\nD\tdocs/reports/cl007-009-round5-shared/direction-artifacts.json\nD\tdocs/reports/cl007-009-round5-shared/direction-changes.json\nD\tdocs/reports/cl007-009-round5-shared/preservation.json\nD\tdocs/reports/cl007-009-round5-shared/provenance.json\nD\tdocs/reports/cl007-009-round5-shared/raw-artifacts.json\nD\tdocs/reports/cl007-009-round5-shared/raw-logs.json\nD\tdocs/reports/cl007-009-round5-shared/runners.json\nD\tdocs/reports/cl007-009-round5-shared/validation.json\nD\tdocs/reports/cl007-009-round5-status.md\nD\tdocs/reports/cl007-009-round6-ci.json\nD\tdocs/reports/cl007-009-round6-shared/algorithm-v1/raw-results.tsv\nD\tdocs/reports/cl007-009-round6-shared/baseline-ci.json\nD\tdocs/reports/cl007-009-round6-shared/command-01.txt\nD\tdocs/reports/cl007-009-round6-shared/command-02.txt\nD\tdocs/reports/cl007-009-round6-shared/command-03.txt\nD\tdocs/reports/cl007-009-round6-shared/command-04.txt\nD\tdocs/reports/cl007-009-round6-shared/command-05.txt\nD\tdocs/reports/cl007-009-round6-shared/command-06.txt\nD\tdocs/reports/cl007-009-round6-shared/command-07.txt\nD\tdocs/reports/cl007-009-round6-shared/command-08.txt\nD\tdocs/reports/cl007-009-round6-shared/command-09.txt\nD\tdocs/reports/cl007-009-round6-shared/command-11.txt\nD\tdocs/reports/cl007-009-round6-shared/command-12.txt\nD\tdocs/reports/cl007-009-round6-shared/direction-artifacts.json\nD\tdocs/reports/cl007-009-round6-shared/direction-changes.json\nD\tdocs/reports/cl007-009-round6-shared/harness-preparation-failures.json\nD\tdocs/reports/cl007-009-round6-shared/independent-review.json\nD\tdocs/reports/cl007-009-round6-shared/peer-review.json\nD\tdocs/reports/cl007-009-round6-shared/preservation.json\nD\tdocs/reports/cl007-009-round6-shared/provenance.json\nD\tdocs/reports/cl007-009-round6-shared/raw-artifacts.json\nD\tdocs/reports/cl007-009-round6-shared/raw-logs.json\nD\tdocs/reports/cl007-009-round6-shared/runners.json\nD\tdocs/reports/cl007-009-round6-shared/validation.json\nD\tdocs/reports/cl007-009-round6-status.md\nA\tdocs/reports/cl009-clean-replay.md\nA\tdocs/reports/cl009-data-pipeline.md\nA\tdocs/reports/cl009-reading-audit.md\nA\tdocs/reports/cl009-round2.md\nA\tdocs/reports/cl009-round3.md\nA\tdocs/reports/cl009-round4.md\nA\tdocs/reports/cl009-round5.md\nA\tdocs/reports/cl009-round6.md\nR094\tdocs/reports/cl007-009-round5-shared/algorithm-v1/summary.json\tdocs/reports/cl009/baseline-algorithm-summary.json\nA\tdocs/reports/cl009/clean-replay.json\nA\tdocs/reports/cl009/index-performance.json\nR059\tdocs/reports/cl007-009-round4-shared/command-10.log\tdocs/reports/cl009/prototype-performance.json\nA\tdocs/reports/cl009/quality.json\nA\tdocs/reports/cl009/real-acceptance.json\nA\tdocs/reports/cl009/recovery-review-after.json\nA\tdocs/reports/cl009/recovery-review-before.json\nA\tdocs/reports/cl009/recovery-review-hardlink-before.json\nA\tdocs/reports/cl009/recovery-review-pid.json\nA\tdocs/reports/cl009/release-manifest.json\nA\tdocs/reports/cl009/round2-clean-replay.json\nR060\tdocs/reports/cl007-009-round4-shared/performance.json\tdocs/reports/cl009/round2-core-performance.json\nA\tdocs/reports/cl009/round2-local-checks.json\nA\tdocs/reports/cl009/round2-real-interruption.json\nA\tdocs/reports/cl009/round2-source-acquisition.json\nR062\tdocs/reports/cl007-009-round5-shared/command-10.txt\tdocs/reports/cl009/round3-core-performance.json\nA\tdocs/reports/cl009/round3-local-checks.json\nA\tdocs/reports/cl009/round3-real-interruption.json\nA\tdocs/reports/cl009/round3-replay.json\nA\tdocs/reports/cl009/round4-clean-replay.json\nA\tdocs/reports/cl009/round4-closeout-audit.json\nA\tdocs/reports/cl009/round4-final-clean-replay.json\nR065\tdocs/reports/cl007-009-round6-shared/command-10.txt\tdocs/reports/cl009/round4-final-core-performance.json\nA\tdocs/reports/cl009/round4-final-local-checks.json\nA\tdocs/reports/cl009/round4-final-real-interruption.json\nA\tdocs/reports/cl009/round4-local-checks.json\nA\tdocs/reports/cl009/round4-safe-cache-copy.json\nA\tdocs/reports/cl009/round4-source-acquisition.json\nA\tdocs/reports/cl009/round4-source-review-closeout.json\nR100\tdocs/reports/cl007-009-round5-shared/algorithm-v1/case-comparison.tsv\tdocs/reports/cl009/round5-algorithm-v1/case-comparison.tsv\nA\tdocs/reports/cl009/round5-algorithm-v1/raw-results.tsv\nR088\tdocs/reports/cl007-009-round6-shared/algorithm-v1/report.md\tdocs/reports/cl009/round5-algorithm-v1/report.md\nR094\tdocs/reports/cl007-009-round6-shared/algorithm-v1/summary.json\tdocs/reports/cl009/round5-algorithm-v1/summary.json\nA\tdocs/reports/cl009/round5-clean-replay.json\nR064\tdocs/reports/cl007-009-round6-shared/performance.json\tdocs/reports/cl009/round5-core-performance.json\nA\tdocs/reports/cl009/round5-delivery-files.json\nA\tdocs/reports/cl009/round5-diagnostics.json\nA\tdocs/reports/cl009/round5-evidence-index.json\nA\tdocs/reports/cl009/round5-index-performance.json\nA\tdocs/reports/cl009/round5-isolations/README.md\nA\tdocs/reports/cl009/round5-isolations/records.jsonl\nA\tdocs/reports/cl009/round5-isolations/summary.json\nA\tdocs/reports/cl009/round5-isolations/upstream-documents.json\nA\tdocs/reports/cl009/round5-local-checks.json\nA\tdocs/reports/cl009/round5-publication-check.json\nA\tdocs/reports/cl009/round5-real-interruption.json\nA\tdocs/reports/cl009/round5-red-evidence.json\nA\tdocs/reports/cl009/round5-release-manifest.json\nA\tdocs/reports/cl009/round5-release-quality.json\nA\tdocs/reports/cl009/round5-runner-sources.json\nA\tdocs/reports/cl009/round5-source-review.json\nR100\tdocs/reports/cl007-009-round6-shared/algorithm-v1/case-comparison.tsv\tdocs/reports/cl009/round6/algorithm-v1/case-comparison.tsv\nA\tdocs/reports/cl009/round6/algorithm-v1/raw-results.tsv\nR087\tdocs/reports/cl007-009-round5-shared/algorithm-v1/report.md\tdocs/reports/cl009/round6/algorithm-v1/report.md\nA\tdocs/reports/cl009/round6/algorithm-v1/summary.json\nA\tdocs/reports/cl009/round6/checks.json\nA\tdocs/reports/cl009/round6/checksums.json\nA\tdocs/reports/cl009/round6/diagnostics.json\nA\tdocs/reports/cl009/round6/graph-audit-resource.json\nA\tdocs/reports/cl009/round6/graph-manifest.json\nA\tdocs/reports/cl009/round6/history-integrity.json\nA\tdocs/reports/cl009/round6/identity.json\nA\tdocs/reports/cl009/round6/pending-audit.json\nR062\tdocs/reports/cl007-009-round5-shared/performance.json\tdocs/reports/cl009/round6/prototype.json\nA\tdocs/reports/cl009/round6/provenance.json\nA\tdocs/reports/cl009/round6/raw-artifacts.json\nA\tdocs/reports/cl009/round6/red/round6-red-bound/annotation_workflow.py\nA\tdocs/reports/cl009/round6/red/round6-red-bound/annotation_workflow.txt\nA\tdocs/reports/cl009/round6/red/round6-red-bound/corpus_gate.py\nA\tdocs/reports/cl009/round6/red/round6-red-bound/corpus_gate.txt\nA\tdocs/reports/cl009/round6/red/round6-red-bound/identity.json\nA\tdocs/reports/cl009/round6/red/round6-red-source-behavior/annotation_workflow.py\nA\tdocs/reports/cl009/round6/red/round6-red-source-behavior/identity.json\nA\tdocs/reports/cl009/round6/red/round6-red-source-behavior/output.txt\nA\tdocs/reports/cl009/round6/red/round6-red-source/annotation_workflow.py\nA\tdocs/reports/cl009/round6/red/round6-red-source/identity.json\nA\tdocs/reports/cl009/round6/red/round6-red-source/output.txt\nA\tdocs/reports/cl009/round6/red/round6-red/annotation.txt\nA\tdocs/reports/cl009/round6/red/round6-red/corpus_gate.txt\nA\tdocs/reports/cl009/round6/red/round6-red/identity.json\nA\tdocs/reports/cl009/round6/red/round6-red/other-red.json\nA\tdocs/reports/cl009/round6/red/round6-red/source_assertions.txt\nA\tdocs/reports/cl009/round6/runners.json\nA\tdocs/reports/cl009/round6/wikipedia-acquisition.json\nA\tdocs/reports/cl009/round6/wikipedia-gate.json\nA\tdocs/reports/cl009/unihan-reading-audit.json\nA\tdocs/reports/cl009/validation.json\nM\tdocs/roadmap.md\nD\tdocs/shared-contract-round6-review-design.md\nA\ttests/test_annotation_workflow.py\nA\ttests/test_cedict_source.py\nA\ttests/test_corpus_gate.py\nA\ttests/test_data_pipeline.py\nA\ttests/test_data_recovery.py\nA\ttests/test_isolation_audit.py\nA\ttests/test_linguistic_sidecar.py\nA\ttests/test_source_assertions.py\nA\ttests/test_source_review.py\nA\ttests/test_word_source.py\nA\ttools/data_pipeline/README.md\nA\ttools/data_pipeline/__init__.py\nA\ttools/data_pipeline/__main__.py\nA\ttools/data_pipeline/annotation_workflow.py\nA\ttools/data_pipeline/audit_isolations.py\nA\ttools/data_pipeline/cedict_source.py\nA\ttools/data_pipeline/corpus_gate.py\nA\ttools/data_pipeline/filesystem.py\nA\ttools/data_pipeline/linguistic_sidecar.py\nA\ttools/data_pipeline/pipeline.py\nA\ttools/data_pipeline/prefix_snapshot.py\nA\ttools/data_pipeline/reading_audit.py\nA\ttools/data_pipeline/recovery.py\nA\ttools/data_pipeline/source_assertions.py\nA\ttools/data_pipeline/word_source.py\n",
+      "preview_exit": 0,
+      "preview_stdout": "cf2a5d67587fdfa5c9530cc3cdcb6cad56192fbc\n\n",
+      "preview_stderr": ""
+    }
+  ],
+  "new_shared_production_changes": [],
+  "preview_is_integration_acceptance": false
+}

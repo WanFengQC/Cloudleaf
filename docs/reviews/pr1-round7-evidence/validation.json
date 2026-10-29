@@ -1,0 +1,176 @@
+{
+  "checked_head": "4f19e96ad37c5c0dfb4877286f073f3f6fabe23f",
+  "source_implementation": "ce2c16e8f53da9913f2624675c7807d07c044877",
+  "runner_sha256": "f85f9cc0e3cf8e208c52381a047f188ddaba7165fed0ddb593d14670eaf21003",
+  "checks": [
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\rustc.EXE",
+        "--version"
+      ],
+      "returncode": 0,
+      "seconds": 2.393468499998562,
+      "log": "command-01.log",
+      "bytes": 36,
+      "sha256": "3397f54a03033c1b027496d83acc64e8f3ceeb4017e0575150f78726edce8a1a"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "--version"
+      ],
+      "returncode": 0,
+      "seconds": 0.02092419999826234,
+      "log": "command-02.log",
+      "bytes": 16,
+      "sha256": "6a5d9f6462ca5dfc6788cfd216ba579fffd7875776ab9d9b35659be78858f73a"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "fetch",
+        "--locked"
+      ],
+      "returncode": 0,
+      "seconds": 0.5482430000047316,
+      "log": "command-03.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "build",
+        "--workspace",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 0.8380027000021073,
+      "log": "command-04.log",
+      "bytes": 72,
+      "sha256": "c54bca416b8a09e3c2018b0ada16771065b3b9b5469242539af42bc53077e2cf"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "returncode": 0,
+      "seconds": 1.3945387999992818,
+      "log": "command-05.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "returncode": 0,
+      "seconds": 1.3358831000005011,
+      "log": "command-06.log",
+      "bytes": 72,
+      "sha256": "d9533554809e0846c6113df1671caf5d74f2a7b9763b0232786a0b652704164a"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "test",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 3.8232448999988264,
+      "log": "command-07.log",
+      "bytes": 6993,
+      "sha256": "456d60d2740cc183a91a905022c3840bcf84ed66b5e6f303a7a6c44ea124705e"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "test",
+        "--workspace",
+        "--doc",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 1.16537149999931,
+      "log": "command-08.log",
+      "bytes": 793,
+      "sha256": "63275d222af0471737912e121b2468c7795cd8bcf5bcdfb290a4591d6b604254"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "build",
+        "--workspace",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 0.5229170000020531,
+      "log": "command-09.log",
+      "bytes": 62,
+      "sha256": "d6f14fa414f78cc9fa069b992a2381a482fd9b613d9c0482bf01a39931f158e1"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/check_workspace.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.4493326999945566,
+      "log": "command-10.log",
+      "bytes": 259,
+      "sha256": "4b7019865a497453c476782a0aacb9de7d425e4c54076063107d959f3bcd3467"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "returncode": 0,
+      "seconds": 0.5226747000051546,
+      "log": "command-11.log",
+      "bytes": 2709,
+      "sha256": "7dd2774c7ab812e7fb0e2d2a293c0243a2462810259731630c7f64772032958b"
+    },
+    {
+      "command": [
+        "C:\\Program Files\\Git\\cmd\\git.EXE",
+        "diff",
+        "--check"
+      ],
+      "returncode": 0,
+      "seconds": 0.07938019999710377,
+      "log": "command-12.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

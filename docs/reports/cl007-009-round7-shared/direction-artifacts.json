@@ -1,0 +1,367 @@
+{
+  "schema_version": 1,
+  "audited_at_utc": "2026-10-29T16:06:54.940805+00:00",
+  "scope": "Read-only Git-object and retained local artifact audit; no test/build/benchmark/download reruns.",
+  "cl007": {
+    "manifest_sha256": "1348ebbf6239f51d998a6b0c21d3ae0fc173273c10d9cca4bb8a5a87b25a54f3",
+    "git_blobs_verified": 117,
+    "delivery_head": "fa4f1fab93394f115d3a987a7f0201b8662c08cf",
+    "implementation": "e50c1d88b34fbf824cd46d1f22c2035700cc75cf",
+    "source_sha256": "dad282f1abd9085f418569b99647e297380ef8a1fdfe9b1faf90617a74de6aa5",
+    "source_files_verified": 51,
+    "git_source_sha256": "18f48c72c3b856e8fbf66cf862435d5752ff30fb23de52cbbdbf76c94f279cda",
+    "source_worktree_crlf_vs_git_lf_paths": [
+      "apps/windows-ime/Cargo.toml"
+    ],
+    "raw_log_originals_verified": 34,
+    "raw_artifact_originals_verified": 43,
+    "raw_envelopes_verified": 36,
+    "additional_original_artifact_envelopes": 2,
+    "unique_original_paths_verified": 77,
+    "actual_test_exe": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\target\\release\\deps\\cloudleaf_windows_ime-bc46e0fa3eb0a77d.exe",
+      "sha256": "c7fe4b34c197871bb8d02acb37a005f93ac658800712a015a544312a7e54a0b6",
+      "bytes": 1881088
+    },
+    "actual_dll": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\target\\release\\cloudleaf_windows_ime.dll",
+      "sha256": "204fbb8ee725562a449ba6bcac730ab113944350e92c7a2d6ddd97fd6e73b552",
+      "bytes": 599552
+    },
+    "checks_recorded_passed": 10,
+    "diagnostics_recorded_expected": 18,
+    "short_exit_codes": {
+      "complete": 0,
+      "interrupted": 130,
+      "resumed": 0,
+      "injected-failure": 1
+    },
+    "segments": {
+      "complete/segment-0001": {
+        "exit_code": 0,
+        "interrupted": false,
+        "mechanism_passed": true,
+        "wall_seconds": 6.204546200002369,
+        "continuous_long_profile_completed": false
+      },
+      "resumed/segment-0001": {
+        "exit_code": 1,
+        "interrupted": true,
+        "mechanism_passed": false,
+        "wall_seconds": 2.585295299999416,
+        "continuous_long_profile_completed": false
+      },
+      "resumed/segment-0002": {
+        "exit_code": 0,
+        "interrupted": false,
+        "mechanism_passed": true,
+        "wall_seconds": 6.263456900000165,
+        "continuous_long_profile_completed": false
+      },
+      "injected-failure/segment-0001": {
+        "exit_code": 101,
+        "interrupted": false,
+        "mechanism_passed": false,
+        "wall_seconds": 1.6810363000040525,
+        "continuous_long_profile_completed": false
+      }
+    },
+    "long_profiles_refused": {
+      "8h": [
+        {
+          "name": "preflight-8h",
+          "exit_code": 2,
+          "output_directory_absent": "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\.local\\round7-validation\\not-started-8h"
+        },
+        {
+          "name": "guard-8h",
+          "exit_code": 2,
+          "output_directory_absent": "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\.local\\round7-validation\\not-started-8h"
+        }
+      ],
+      "24h": [
+        {
+          "name": "preflight-24h",
+          "exit_code": 2,
+          "output_directory_absent": "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\.local\\round7-validation\\not-started-24h"
+        },
+        {
+          "name": "guard-24h",
+          "exit_code": 2,
+          "output_directory_absent": "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\.local\\round7-validation\\not-started-24h"
+        }
+      ]
+    },
+    "corrupted_owned_trace_copies_rejected": [
+      {
+        "name": "missing-key",
+        "sha256": "40612ed9b3b4020ec6cdcb899a5f7559d169aea90570d99fe997d4a3c4536d53",
+        "old_raw_errors": 0,
+        "new_raw_errors": 560,
+        "trace_complete": false
+      },
+      {
+        "name": "missing-cycle",
+        "sha256": "e150d7395ae3f6b23f97fd6bd77d77c60fb220fd3591898f9b6721ec14491cb3",
+        "old_raw_errors": 0,
+        "new_raw_errors": 80,
+        "trace_complete": false
+      },
+      {
+        "name": "duplicate-sequence",
+        "sha256": "1cee5f19d05a4f73865ff5678bca393460fcc7285f199019d5f2b22bac306237",
+        "old_raw_errors": 0,
+        "new_raw_errors": 1,
+        "trace_complete": false
+      },
+      {
+        "name": "changed-context",
+        "sha256": "8f395edf76f2a6413be3ad541e438c461ba783343235239c5632c0cd6ac8a972",
+        "old_raw_errors": 0,
+        "new_raw_errors": 1,
+        "trace_complete": false
+      },
+      {
+        "name": "wrong-key",
+        "sha256": "e1a9215b25be545bc8c6c9e03751921a573a773b9ac93e296b1e03bc1cc7d131",
+        "old_raw_errors": 0,
+        "new_raw_errors": 1,
+        "trace_complete": false
+      }
+    ],
+    "historical_reports_unchanged": 346,
+    "runner_originals_verified": 5,
+    "preserved_red_failure": {
+      "head": "7914589a03fedad0e50b0ab5598a609d450abfc2",
+      "exit_code": 1
+    },
+    "closing_shell_failure_preserved": {
+      "scope": "publication preparation, separate from the frozen full check run",
+      "original_shell_command": "python -X utf8 .local/verify_round7_publication.py; python -X utf8 scripts/check_workspace.py; git diff --cached --check; git diff --name-only caefb7f HEAD -- adapters/windows crates apps Cargo.toml Cargo.lock; git status --porcelain=v1 | Measure-Object -Line",
+      "shell_exit_code": 0,
+      "individual_audit_exit_code_observed": null,
+      "tool_returned_audit_text": "工程审计失败：[WinError 2] 系统找不到指定的文件。\n",
+      "identity_limit": "Original subprocess bytes were not separately captured; this records tool-returned text, not a claimed original raw byte hash.",
+      "cause": "Standalone closing shell did not prepend .cargo/bin; the full frozen checks used the explicit environment and passed.",
+      "resolution": "Do not infer success from the later shell command exit code; rerun this audit independently with explicit PATH and preserve raw output.",
+      "rerun": {
+        "command": [
+          "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+          "-X",
+          "utf8",
+          "scripts/check_workspace.py"
+        ],
+        "returncode": 0,
+        "path_prepended": "C:\\Users\\EDY\\.cargo\\bin",
+        "stdout_utf8": "资源已验证：tests/evaluation/algorithm-v1.tsv (83 条)\r\n资源已验证：tests/fixtures/input-v1.tsv (41 条)\r\n资源已验证：data/dictionaries/prototype.tsv (64 条)\r\nworkspace 已验证：7 个crate，15 个已登记外部Rust依赖，MSRV 1.90.0\r\n"
+      }
+    },
+    "long_8h_executed": false,
+    "long_24h_executed": false,
+    "real_application_accepted": false,
+    "system_registration_executed": false,
+    "limitations": [
+      "短档是自有诊断进程机制证据，不是真实TSF、全局COM引用或生产长期验收。",
+      "source-v3按列出的源码范围和工作区原字节计算，含adapters；Git对象与记录的工作区指纹不同，逐路径已证明仅CRLF/LF差异。",
+      "长档拒绝与目录当前不存在可核；隔离环境和授权声明未被独立证明。",
+      "损坏轨迹为已采集工程轨迹的刻意损坏副本，不是真实输入丢失。",
+      "未重跑测试、性能、构建；记录退出码和失败原件均原样保留。"
+    ]
+  },
+  "cl009": {
+    "manifest_sha256": "7d54d7a0593d2c7d2a7340ee219f92228dbf14788959d33fb28ff7e3c966156c",
+    "git_blobs_verified": 37,
+    "delivery_head": "3d573384ce1f31e437bdb4e7dc109cf438c261f4",
+    "implementation": "e96ed5dc96c6cc0446f3446838fab9305047c1bc",
+    "raw_originals_reconstructed_and_local_compared": 33,
+    "archive": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round7-diagnostics-e96ed5d\\source.zip",
+      "sha256": "f180b3d0d7007114d51e6c96427120131fc1f4f8e2d08537e681c752774593ad",
+      "bytes": 945855
+    },
+    "archive_files_compared_to_implementation_git": 221,
+    "archive_crlf_vs_git_lf_paths": [
+      ".editorconfig",
+      ".gitattributes",
+      ".gitignore",
+      "LICENSE",
+      "docs/reports/cl009/round6/red/round6-red-bound/annotation_workflow.txt",
+      "docs/reports/cl009/round6/red/round6-red-bound/corpus_gate.txt",
+      "docs/reports/cl009/round6/red/round6-red-source-behavior/output.txt",
+      "docs/reports/cl009/round6/red/round6-red-source/output.txt",
+      "docs/reports/cl009/round6/red/round6-red/annotation.txt",
+      "docs/reports/cl009/round6/red/round6-red/corpus_gate.txt",
+      "docs/reports/cl009/round6/red/round6-red/source_assertions.txt"
+    ],
+    "matrix_original_bytes_identical": true,
+    "matrix_original_bytes": 23295,
+    "matrix_original_sha256": "b9a6b8425799e2b7ddaabba9585c8a883f1a9eab96650a0b527957551445cd61",
+    "matrix_sources": 9,
+    "matrix_evidence_git_files_verified": 9,
+    "unchanged_old_package_files": 9,
+    "pending_tasks": 12,
+    "actual_refusal_exit_codes": {
+      "pending-audit": 2,
+      "pending-freeze": 1,
+      "wikipedia-gate": 2
+    },
+    "freeze_directory_absent": true,
+    "language_metrics": {
+      "top1": null,
+      "top5": null,
+      "mrr": null
+    },
+    "corpus_statistics": {
+      "token_frequency": null,
+      "document_frequency": null,
+      "zipf": null
+    },
+    "checks_recorded_passed": 11,
+    "diagnostics_recorded_expected": 6,
+    "actual_core_exe": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\target\\release\\cloudleaf-cli.exe",
+      "sha256": "d53f54a25bd6b4fb8c114a06966010d4b98bf0597efb7e9c5e897e96c59e5b80",
+      "bytes": 347136
+    },
+    "runner_originals_verified": 3,
+    "preserved_red_failures": [
+      {
+        "head": "65a5d7537a2963e6edcefd748b34fd8d73076f1e",
+        "exit_code": 1,
+        "output_sha256": "78924dfe91b378c7c1ccad4347da820da26eff8fb9d702dae36b6eb49258e54a"
+      },
+      {
+        "head": "5e507ebd157660ef8f10771b54b1d91cdbc5477c",
+        "exit_code": 1,
+        "output_sha256": "16dae17c12c469c7f0f7ceccbd950d960686cf36907fdd982b1937ab86575b60"
+      }
+    ],
+    "historical_reports_unchanged": 114,
+    "real_human_gold_delivered": false,
+    "formal_semantic_sidecar_delivered": false,
+    "limitations": [
+      "来源矩阵重放既有声明和固定文件身份，不能独立证明许可、来源或真人真实性。",
+      "source.zip原字节SHA与Git逐文件核验分开记录；列出的归档文件仅有CRLF/LF差异，不能声称归档与Git整包原字节相同。",
+      "双构建字节一致只证明本次固定输入矩阵输出相同，不能证明现代频率、统计真实性或语言质量。",
+      "12项仍pending；实际拒绝为2/1/2，未取得人工gold或正式语义侧包。",
+      "没有重新下载源、重跑构建、测试或性能；原始失败日志与null指标保留。"
+    ]
+  },
+  "cl008": {
+    "manifest_sha256": "a16807b3cad89570e8e940f7aa25d9285fe6be771db4b7b7030900538d32e740",
+    "git_blobs_verified": 77,
+    "delivery_head": "b4b5fb7f812c56f73a132cd9f16045b58a3121c2",
+    "implementation": "2a2bd9a7ea9df73b647ccdba609d9aae8f0ad935",
+    "source_sha256": "a43ca914bc624ca0839e62644866e7442093c36c5507b83f4e1f67542022b76d",
+    "source_fingerprint_schema": "cloudleaf-source-v2",
+    "source_files_verified": 61,
+    "git_source_sha256": "a43ca914bc624ca0839e62644866e7442093c36c5507b83f4e1f67542022b76d",
+    "source_worktree_crlf_vs_git_lf_paths": [],
+    "original_envelopes_reconstructed_and_local_compared": {
+      "original-logs.json": 35,
+      "original-artifacts.json": 2
+    },
+    "provenance_original_files_compared": 71,
+    "actual_phase_exe": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\target\\release\\examples\\resource_phase_probe.exe",
+      "sha256": "e2737975ae1d3305af7f3c0d6fd32422eda7151bbbec7f887d37a53e493f363c",
+      "bytes": 373248
+    },
+    "phase_schema_version": 2,
+    "phase_local_configuration_files_verified": {
+      "reference": {
+        "sha256": "7533f047ce0326c4f6d04aecb960aaa24d5494686800dccb9a730eef901c2220",
+        "bytes": 218982
+      },
+      "exact": {
+        "sha256": "4ce247098cf16ab32f9945bc0c7edfdf6a87211bdaff7c3fdd5fcfbeab857fe4",
+        "bytes": 186574
+      },
+      "beam1": {
+        "sha256": "88f7c77876cecbc937010c4c19cf7353f38f0c601ae54fe942e3e12b73a128dd",
+        "bytes": 215340
+      },
+      "beam8": {
+        "sha256": "a8a4ac72c500bca6b12581ee7fa69c33a20da07ca6ed6a62ded7e11ef7aaa817",
+        "bytes": 214908
+      },
+      "beam64": {
+        "sha256": "3d475764672400428cc999fe757957bd7e148dd409a1edaf708ea4731b798623",
+        "bytes": 216009
+      },
+      "exact-edges128": {
+        "sha256": "ab34a9ab1c72f7809e102d5db02aa5b70f8642569f2ba6080ae846de03a5f833",
+        "bytes": 155607
+      },
+      "exact-expansions500": {
+        "sha256": "20b07cdf0b578186e942055e5d32abbb52ab56cc695674000db91cad6cdd799f",
+        "bytes": 139015
+      },
+      "exact-resident128": {
+        "sha256": "291c8b980c6def5a5874add6d00637a0ad946d7c25b759d488bdb4c4e88a041f",
+        "bytes": 138020
+      },
+      "position": {
+        "sha256": "efb1b5636b6ea7d25381af4dee73aa53b57ebb93a4a7567b1a62d08c92da25dc",
+        "bytes": 213809
+      },
+      "position-edges128": {
+        "sha256": "f6e2c5d1d4650b1e463da3c4a354744e60419121dc08adf1c8a7f4044fd87d06",
+        "bytes": 154825
+      },
+      "position-expansions500": {
+        "sha256": "474f1991dab9a1eff30f9cec6b7385b2f4b8cffe9ffa4d057e5becce8bba70cc",
+        "bytes": 138948
+      },
+      "position-resident128": {
+        "sha256": "6864d7f47a988ab4731eae88f9e8872aa7bc84624f30bf4e2b83cfef36369751",
+        "bytes": 213494
+      }
+    },
+    "plain_profile_equal_pairs": 2880,
+    "full_r6_result_json_and_debug_equal_cases": 288,
+    "samples_per_case": 10,
+    "warmup_per_case": 3,
+    "failure_budget_index_retained": 175,
+    "checks_recorded_expected": 17,
+    "formal_gate_recorded_exit_codes": [
+      2,
+      2,
+      2
+    ],
+    "recorded_rust_tests": 81,
+    "recorded_python_tests": 76,
+    "historical_reports_unchanged": 319,
+    "preserved_red_failures": [
+      {
+        "name": "fallback",
+        "exit_code": 1
+      },
+      {
+        "name": "task-handoff",
+        "exit_code": 1
+      },
+      {
+        "name": "scoring",
+        "exit_code": 101
+      }
+    ],
+    "language_metrics": {
+      "top1": null,
+      "top5": null,
+      "mrr": null
+    },
+    "single_algorithm_allocation_live_rss_measured": false,
+    "limitations": [
+      "2880对与288例是固定工程样例和真实词条规模的机制/行为对照，不是正式语言质量。",
+      "source-v2范围不含adapters，按工作区字节计算；原件与Git发布件分别校验；日志展示件还去行尾空白和末尾空行，不冒称字节相同。",
+      "阶段scoring/bucket_sort_dedup嵌套在traversal，不得相加或相减伪造独立CPU成本。",
+      "每例n=10不能证明稳定P99或与Round6 n=30直接比较收益，未测单算法allocation/live/RSS。",
+      "三个正式门禁仍exit2且Top1/Top5/MRR为null，默认核心未替换。"
+    ]
+  },
+  "findings": [],
+  "limitations": [
+    "字节/身份链核验不等于独立证明运行环境、人员授权、真实TSF、生产可靠性或正式语言质量。"
+  ]
+}
