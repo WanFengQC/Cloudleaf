@@ -186,12 +186,14 @@ def report_segment(folder, identity):
     final = finals[-1] if finals else {}
     if summary and summary.get('latest_events', {}).get('r5-pinned-availability', {}) != final:
         issues.append('summary final快照与原始事件不一致')
-    native_seconds = final.get('steady_elapsed_ns', 0) / 1_000_000_000
+    native_ns = final.get('steady_elapsed_ns')
+    native_seconds = native_ns / 1_000_000_000 if native_ns is not None else None
     config = identity['configuration']
     candidate = bool(summary and not issues and config['long_profile'] and summary['mechanism_passed']
                      and summary['continuous_long_profile_completed'] and latency and latency['trace_complete']
                      and len(samples) >= 2 and last_time >= config['seconds']
-                     and native_seconds >= config['seconds'] and identity.get('execution_approval_sha256'))
+                     and native_seconds is not None and native_seconds >= config['seconds']
+                     and identity.get('execution_approval_sha256'))
     return {'segment': folder.name, 'files': files, 'summary_present': summary is not None,
             'evidence_integrity_verified': summary is not None and not issues, 'issues': issues,
             'raw_sample_records': len(raw.get('samples.jsonl', b'').splitlines()),
