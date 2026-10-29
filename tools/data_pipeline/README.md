@@ -106,6 +106,14 @@ python -m tools.data_pipeline.corpus_gate --revision <固定官方API响应> --p
 
 缺rights/作者历史/提取/分词证据时准入exit2、token/DF/Zipf均null；现有生产包、解析/发布/回滚和输入核心不变。所有工具只在离线工程路径调用，无实时输入依赖。
 
+## Round 9：固定Ngrams原件只读分析
+
+```text
+python -m tools.data_pipeline.ngram_analysis --source .local/round8-ngram-acquisition/1-00000-of-00001.gz --totalcounts .local/round8-ngram-acquisition/totalcounts-1 --output .local/round9-ngram-analysis.json
+```
+
+仅接受R8固定两个SHA；无网络、不改输入、不覆盖输出。完整扫描核CRC，逐年原字段、标签形态、异常全分母和有限原行SHA例子见新报告；诊断异常退出2而不删除后续记录。标签不是POS事实，field3和不是去重DF，全部field2合计不是覆盖率。缺失不补0、production=false、正式token/DF/Zipf和语言指标null。派生统计按原编纂CC BY3保留署名/许可/修改说明，代码许可另计；不授权原书全文。详细语义推断与采用阻断见[设计](../../docs/cl009-round9-ngram-analysis.md)。
+
 ## Round 7：来源矩阵和审核失效
 
 ```text
