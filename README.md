@@ -12,6 +12,8 @@ Round 6补齐流式原始事件/资源、周期检查点和严格身份的新段
 
 Round 7增加隔离环境/执行批准的只读长测预检，以及原始逐键、周期与最终分母一致性核验；无批准材料时8h/24h拒绝启动，短档不受影响。七类生命周期故障、部署恢复边界和待执行清单见[Round 7可靠性约定](docs/cl007-round7-reliability.md)。生产COM、预算和Unknown语义未改变。
 
+Round 8交付[外部执行与恢复清单](docs/cl007-round8-external-acceptance.md)、待填环境/应用矩阵和只读资源趋势报告器。`python scripts/report_windows_soak.py --run-dir <原始run目录> --output <全新报告JSON>`逐segment核原件身份、采样时基和趋势，不拼接连续时长，也不授予长期或真实TSF验收。当前环境和授权未准备，实际仅重放R7短迹，无新长测或系统操作。
+
 ## 环境
 
 - Git。
