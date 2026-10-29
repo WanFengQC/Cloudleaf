@@ -72,6 +72,18 @@ class EvidenceTests(unittest.TestCase):
 
 
 class ComparisonTests(unittest.TestCase):
+    def test_budget_cannot_claim_complete_and_changed_input_cannot_be_paired(self):
+        value = self.case()
+        value['statistics']['budget'] = 'Expansions'
+        runs = {'reference': {'cases': [value]}, 'exact': {'cases': [self.case()]}}
+        with self.assertRaises(ValueError):
+            MODULE.compare(runs, [{'id': 'a'}])
+        value = self.case()
+        value.update(input='other', family='fixture', kind='fixture')
+        runs = {'reference': {'cases': [value]}, 'exact': {'cases': [value]}}
+        with self.assertRaises(ValueError):
+            MODULE.compare(runs, [{'id': 'a', 'input': 'a', 'family': 'fixture', 'kind': 'fixture'}])
+
     def case(self, name="a", candidates=None, guaranteed=True):
         return {"id": name, "status": "ok", "candidates": candidates or [], "guaranteed": guaranteed,
                 "whole_entry_candidates": [], "fallback_preserved": True, "waiting": False,
