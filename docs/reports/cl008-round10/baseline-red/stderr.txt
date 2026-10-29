@@ -1,0 +1,44 @@
+test_release_host_replays_full_paths_unknown_and_rejected_inputs (test_real_lexicon_evaluation.ActualProbeTests.test_release_host_replays_full_paths_unknown_and_rejected_inputs) ... ERROR
+test_budget_cannot_claim_complete_and_changed_input_cannot_be_paired (test_real_lexicon_evaluation.ComparisonTests.test_budget_cannot_claim_complete_and_changed_input_cannot_be_paired) ... FAIL
+test_complete_reference_difference_fails_but_budget_is_not_oracle (test_real_lexicon_evaluation.ComparisonTests.test_complete_reference_difference_fails_but_budget_is_not_oracle) ... ok
+test_missing_or_duplicate_case_never_disappears_from_denominator (test_real_lexicon_evaluation.ComparisonTests.test_missing_or_duplicate_case_never_disappears_from_denominator) ... ok
+test_position_mismatch_fails_against_complete_exact_when_reference_is_partial (test_real_lexicon_evaluation.ComparisonTests.test_position_mismatch_fails_against_complete_exact_when_reference_is_partial) ... ok
+test_reports_added_lost_and_ranking_separately (test_real_lexicon_evaluation.ComparisonTests.test_reports_added_lost_and_ranking_separately) ... ok
+test_truncated_whole_entry_delta_is_never_claimed_valid (test_real_lexicon_evaluation.ComparisonTests.test_truncated_whole_entry_delta_is_never_claimed_valid) ... ok
+test_evidence_checks_every_file_and_retains_unknown (test_real_lexicon_evaluation.EvidenceTests.test_evidence_checks_every_file_and_retains_unknown) ... ok
+test_rejects_synthetic_unapproved_unmapped_and_zero_filled_data (test_real_lexicon_evaluation.EvidenceTests.test_rejects_synthetic_unapproved_unmapped_and_zero_filled_data) ... ok
+test_resource_probe_has_no_gold_or_train_test_claim (test_real_lexicon_evaluation.EvidenceTests.test_resource_probe_has_no_gold_or_train_test_claim) ... ok
+
+======================================================================
+ERROR: test_release_host_replays_full_paths_unknown_and_rejected_inputs (test_real_lexicon_evaluation.ActualProbeTests.test_release_host_replays_full_paths_unknown_and_rejected_inputs)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_real_lexicon_evaluation.py", line 142, in test_release_host_replays_full_paths_unknown_and_rejected_inputs
+    binary = MODULE.build_host()
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\scripts\evaluate_real_lexicon.py", line 120, in build_host
+    build = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, encoding="utf-8")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EDY\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EDY\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "C:\Users\EDY\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1538, in _execute_child
+    hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [WinError 2] 系统找不到指定的文件。
+
+======================================================================
+FAIL: test_budget_cannot_claim_complete_and_changed_input_cannot_be_paired (test_real_lexicon_evaluation.ComparisonTests.test_budget_cannot_claim_complete_and_changed_input_cannot_be_paired)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_real_lexicon_evaluation.py", line 79, in test_budget_cannot_claim_complete_and_changed_input_cannot_be_paired
+    with self.assertRaises(ValueError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.134s
+
+FAILED (failures=1, errors=1)

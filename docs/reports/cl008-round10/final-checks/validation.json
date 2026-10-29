@@ -1,0 +1,179 @@
+{
+  "checked_head": "f478c66c52eac7e43afe85bc7e5cfe96e2e51254",
+  "at_utc": "2026-10-29T18:35:34.337570+00:00",
+  "runner_sha256": "fd78958b44b54dbfa283acfe6f14c5936d78eb8f6e73c11e31d500827efeeb9f",
+  "checks": [
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\rustc.EXE",
+        "--version"
+      ],
+      "returncode": 0,
+      "seconds": 0.14793970000027912,
+      "stdout_file": "command-01-stdout.txt",
+      "stdout_sha256": "3397f54a03033c1b027496d83acc64e8f3ceeb4017e0575150f78726edce8a1a",
+      "stderr_file": "command-01-stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Program Files\\Git\\cmd\\git.EXE",
+        "diff",
+        "--check"
+      ],
+      "returncode": 0,
+      "seconds": 0.0969284000020707,
+      "stdout_file": "command-02-stdout.txt",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_file": "command-02-stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Program Files\\Git\\cmd\\git.EXE",
+        "status",
+        "--short"
+      ],
+      "returncode": 0,
+      "seconds": 0.0892491999984486,
+      "stdout_file": "command-03-stdout.txt",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_file": "command-03-stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "returncode": 0,
+      "seconds": 0.5415208999984316,
+      "stdout_file": "command-04-stdout.txt",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_file": "command-04-stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "returncode": 0,
+      "seconds": 0.6400114999996731,
+      "stdout_file": "command-05-stdout.txt",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_file": "command-05-stderr.txt",
+      "stderr_sha256": "0b53209db424367e80c52cd8cde8b75e37af110438a0efde777104a1463956de"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "test",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 2.9508836999957566,
+      "stdout_file": "command-06-stdout.txt",
+      "stdout_sha256": "2533407ca642064d59442c2a1574e991a882197dff325554cd0b374be73fc5ab",
+      "stderr_file": "command-06-stderr.txt",
+      "stderr_sha256": "1163551a6174b36505b4766e40f74feb001cf03a408801c6c5ac7066e8397c94"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "test",
+        "--workspace",
+        "--doc",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 0.7967462000015075,
+      "stdout_file": "command-07-stdout.txt",
+      "stdout_sha256": "88605fcde34d35afd53808b1d5e2253ccbdcbbf80f59515b05e2b9c5226303c7",
+      "stderr_file": "command-07-stderr.txt",
+      "stderr_sha256": "1cdb3d5cfa35e62db703a5b098506930d99c3f572e00dd74aeb60223e8f50a71"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "build",
+        "--workspace",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 0.17912670000077924,
+      "stdout_file": "command-08-stdout.txt",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_file": "command-08-stderr.txt",
+      "stderr_sha256": "9576f1f7e73fc2bb1ec2336aae60cb485c591eadc60a1b998573411c34057e08"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/check_workspace.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.3180322999978671,
+      "stdout_file": "command-09-stdout.txt",
+      "stdout_sha256": "0bb7250cb2c233d5b261d9c9e4fde6ba7950b04fe59aafcd4e302c2c3c4728bf",
+      "stderr_file": "command-09-stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "returncode": 0,
+      "seconds": 8.905851299998176,
+      "stdout_file": "command-10-stdout.txt",
+      "stdout_sha256": "48be988b8690832fbca5f54416fb88c67689df1d115b004b069ab54531c44f66",
+      "stderr_file": "command-10-stderr.txt",
+      "stderr_sha256": "0c0f16ec36a025de250cca0b0642b9611c790893fd18000e6f0126e91f8f4bc1"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/check_search_resources.py",
+        "--evidence",
+        ".local/real-lexicon/cccedict-round4-evidence.json",
+        "--output",
+        ".local/round10-final-resource-matrix"
+      ],
+      "returncode": 0,
+      "seconds": 24.49008860000322,
+      "stdout_file": "command-11-stdout.txt",
+      "stdout_sha256": "bea8504b9b349f4c77f418b0108751f88df734b824e51ae9adb897b42b954182",
+      "stderr_file": "command-11-stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}
