@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "encoding": "UTF-8; encode text without newline translation to restore original bytes",
+  "logs": [
+    {
+      "path": "checks/command-01.log",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-01.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "text": ""
+    },
+    {
+      "path": "checks/command-02.log",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-02.log",
+      "sha256": "3e43b255d4b20a7b309afeb5012d5088aa471e53c75606d9df8a98bab335f40e",
+      "text": "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.52s\n"
+    },
+    {
+      "path": "checks/command-03.log",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-03.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "text": ""
+    },
+    {
+      "path": "checks/command-04.log",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-04.log",
+      "sha256": "3e43b255d4b20a7b309afeb5012d5088aa471e53c75606d9df8a98bab335f40e",
+      "text": "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.52s\n"
+    },
+    {
+      "path": "checks/command-05.log",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-05.log",
+      "sha256": "00f1d73a1939fabef122deb6278c13f223729cfa11dda42d17fed10298cb7bd9",
+      "text": "    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.27s\n     Running unittests src\\lib.rs (target\\debug\\deps\\cloudleaf_candidate-1b859b2ce2488501.exe)\n\nrunning 10 tests\ntest tests::annotations_do_not_change_ranking ... ok\ntest tests::tied_frequency_prefers_longer_text_then_id ... ok\ntest tests::ordering_is_stable_when_rows_are_reordered ... ok\ntest tests::duplicate_text_across_pronunciations_uses_the_best_match ... ok\ntest tests::exact_matches_precede_higher_frequency_prefix_matches ... ok\ntest tests::bucket_limits_preserve_global_top_k_despite_cross_bucket_duplicates ... ok\ntest tests::limits_bound_output_and_keep_best_unique_candidates ... ok\ntest tests::unknown_invalid_empty_inputs_and_waiting_boundaries_have_no_candidates ... ok\ntest tests::prototype_generates_words_and_keeps_annotations_separate ... ok\ntest tests::large_matching_bucket_cannot_exceed_the_public_candidate_limit ... ok\n\ntest result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n     Running unittests src\\main.rs (target\\debug\\deps\\cloudleaf_cli-d7edcf75ce8be503.exe)\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n     Running unittests src\\bin\\evaluate.rs (target\\debug\\deps\\cloudleaf_evaluate-6b8661e5248d7704.exe)\n\nrunning 2 tests\ntest tests::removing_exact_priority_changes_the_synthetic_control ... ok\ntest tests::ablation_keeps_duplicate_texts_stable_across_parse_paths ... ok\n\ntest result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n     Running unittests src\\lib.rs (target\\debug\\deps\\cloudleaf_dictionary-97d5d1931c5db13c.exe)\n\nrunning 7 tests\ntest tests::missing_or_unknown_versions_and_invalid_header_are_rejected ... ok\ntest tests::empty_dictionary_and_crlf_files_are_supported ... ok\ntest tests::limited_queries_preserve_best_unique_texts ... ok\ntest tests::corrupt_rows_are_never_silently_skipped ... ok\ntest tests::only_the_last_syllable_may_be_a_prefix ... ok\ntest tests::prototype_is_valid_and_queries_use_the_whole_pronunciation ... ok\ntest tests::size_and_field_limits_are_enforced ... ok\n\ntest result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s\n\n     Running unittests src\\lib.rs (target\\debug\\deps\\cloudleaf_input-70eb31a13f379e46.exe)\n\nrunning 17 tests\ntest tests::activation_is_required_and_idempotent ... ok\ntest tests::punctuation_only_failure_remains_recoverable_until_explicit_cancel ... ok\ntest tests::failed_commit_preserves_selection_and_complete_failed_request ... ok\ntest tests::cursor_edits_and_backspace_operate_before_the_cursor ... ok\ntest tests::navigation_crosses_pages_and_clamps_at_both_ends ... ok\ntest tests::exhausted_revision_or_commit_ids_are_not_reused ... ok\ntest tests::english_mode_and_idle_system_keys_are_passed_through ... ok\ntest tests::punctuation_uses_selected_candidate_and_unknown_unicode_keeps_raw ... ok\ntest tests::cancel_focus_loss_deactivation_and_mode_switch_clear_old_context ... ok\ntest tests::no_dictionary_or_no_match_falls_back_to_exact_raw_input ... ok\ntest tests::selection_and_page_numbering_are_bounded_to_current_page ... ok\ntest tests::stale_confirmation_cannot_clear_new_composition_or_new_request ... ok\ntest tests::text_change_resets_highlight_and_page_to_current_candidates ... ok\ntest tests::space_and_enter_commit_once_without_extra_text_or_annotation ... ok\ntest tests::overlong_input_and_control_character_do_not_mutate_composition ... ok\ntest tests::deterministic_mixed_events_preserve_state_invariants ... ok\ntest tests::unavailable_digit_and_zero_preserve_raw_text_and_character ... ok\n\ntest result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n     Running tests\\corpus.rs (target\\debug\\deps\\corpus-b5144bc9ef7c773d.exe)\n\nrunning 1 test\ntest fixed_input_corpus_and_candidate_ranking ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s\n\n     Running tests\\platform_contract.rs (target\\debug\\deps\\platform_contract-e8cb9aa6bb34ac95.exe)\n\nrunning 9 tests\ntest native_probe_is_read_only_and_shortcuts_never_become_characters ... ok\ntest queue_bound_preserves_owned_events_and_focus_cancellation_invalidates_frames ... ok\ntest utf16_offsets_and_submission_text_do_not_include_annotations ... ok\ntest delayed_commit_serializes_owned_input_and_resumes_in_original_order ... ok\ntest duplicate_native_callback_does_not_repeat_input_or_commit ... ok\ntest known_failure_retains_full_text_and_requires_explicit_new_request ... ok\ntest unknown_outcome_does_not_become_retryable_failure_or_clear_new_context ... ok\ntest old_instance_ack_is_rejected_even_when_request_ids_collide ... ok\ntest rejected_queue_event_keeps_its_sequence_until_caller_retries ... ok\n\ntest result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s\n\n     Running tests\\platform_contract_v2.rs (target\\debug\\deps\\platform_contract_v2-de9c169bdbc916a0.exe)\n\nrunning 4 tests\ntest utf16_offsets_reject_split_characters_and_count_surrogate_pairs ... ok\ntest candidate_selection_requires_current_revision_and_id ... ok\ntest configurable_pages_obey_candidate_budget_and_current_page_digits ... ok\ntest readonly_prediction_matches_dispatch_in_all_input_states ... ok\n\ntest result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s\n\n     Running unittests src\\lib.rs (target\\debug\\deps\\cloudleaf_pinyin-6d9594f965da5b78.exe)\n\nrunning 9 tests\ntest tests::invalid_input_is_never_silently_truncated ... ok\ntest tests::keyboard_umlaut_spelling_is_supported ... ok\ntest tests::explicit_separator_prevents_syllable_merging ... ok\ntest tests::trailing_partial_syllable_is_preserved ... ok\ntest tests::continuous_pinyin_and_uppercase_are_supported ... ok\ntest tests::deleting_a_prefix_recomputes_the_segmentation ... ok\ntest tests::six_letter_syllables_and_standard_ju_qu_xu_spelling_work ... ok\ntest tests::ambiguous_paths_have_a_stable_order ... ok\ntest tests::ambiguous_long_input_is_bounded_and_covers_every_letter ... ok\n\ntest result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s\n\n     Running unittests src\\lib.rs (target\\debug\\deps\\cloudleaf_search-3634ab27c777b10d.exe)\n\nrunning 1 test\ntest model::tests::integer_log_is_monotone_and_exact_at_powers ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n     Running tests\\profiling.rs (target\\debug\\deps\\profiling-4ac8a294a9271235.exe)\n\nrunning 3 tests\ntest configuration_and_model_failures_retain_the_actual_attempted_phase ... ok\ntest nested_sort_is_observed_even_on_reference_budget_failure_and_beam_pruning ... ok\ntest profiled_query_preserves_all_results_and_incomplete_budgets ... ok\n\ntest result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n     Running tests\\search_contract.rs (target\\debug\\deps\\search_contract-40be5d70b918624e.exe)\n\nrunning 13 tests\ntest invalid_limits_and_models_fail_before_search ... ok\ntest nullable_frequency_and_legacy_manual_are_preserved ... ok\ntest prefix_cannot_invent_future_syllables_and_oov_never_disappears ... ok\ntest lattice_is_bound_to_original_lexicon ... ok\ntest rejects_malformed_records_without_echoing_them ... ok\ntest explicit_boundaries_and_utf8_spans_cover_every_raw_byte ... ok\ntest budgets_are_explicit_and_resident_high_water_includes_active_and_clone ... ok\ntest position_state_merging_preserves_id_ties_across_duplicate_text_splits ... ok\ntest position_states_reject_history_scores_and_bound_extreme_addition ... ok\ntest bigram_future_can_defeat_narrow_beam_and_context_is_only_finite_pool ... ok\ntest no_inherited_thirty_two_parse_limit ... ok\ntest all_reference_paths_match_exact_kbest_with_text_duplicates_and_fixed_seed_inputs ... ok\ntest load_limits_are_explicit_and_v2_can_exceed_legacy_entry_limit ... ok\n\ntest result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.09s\n\n     Running unittests examples\\resource_phase_probe.rs (target\\debug\\examples\\resource_phase_probe-ace46641929ee712.exe)\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n     Running unittests examples\\resource_probe.rs (target\\debug\\examples\\resource_probe-57a965b9662559e4.exe)\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n     Running unittests examples\\search_probe.rs (target\\debug\\examples\\search_probe-65e8423dee404a5c.exe)\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n     Running unittests src\\lib.rs (target\\debug\\deps\\cloudleaf_types-1b7cfb7fea61cc5d.exe)\n\nrunning 1 test\ntest tests::error_has_stable_code_and_location ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n"
+    },
+    {
+      "path": "checks/command-06.log",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-06.log",
+      "sha256": "760b0ed2f0c87ad9a64ae7372bfa1f8af197efccad598fd4ece846186880b7d8",
+      "text": "    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.04s\n   Doc-tests cloudleaf_candidate\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n   Doc-tests cloudleaf_dictionary\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n   Doc-tests cloudleaf_input\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n   Doc-tests cloudleaf_pinyin\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n   Doc-tests cloudleaf_search\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n   Doc-tests cloudleaf_types\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n"
+    },
+    {
+      "path": "checks/command-07.log",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-07.log",
+      "sha256": "0bb7250cb2c233d5b261d9c9e4fde6ba7950b04fe59aafcd4e302c2c3c4728bf",
+      "text": "资源已验证：tests/evaluation/algorithm-v1.tsv (83 条)\r\n资源已验证：tests/fixtures/input-v1.tsv (41 条)\r\n资源已验证：data/dictionaries/prototype.tsv (64 条)\r\n资源已验证：tests/search-mechanics-v1/cases.tsv (13 条)\r\n资源已验证：tests/search-mechanics-v1/lexicon.tsv (13 条)\r\n资源已验证：tests/search-resources-v1/cases.tsv (24 条)\r\n资源已验证：tests/search-mechanics-v1/train.tsv (3 条)\r\nworkspace 已验证：7 个crate，0 个已登记外部Rust依赖，MSRV 1.90.0\r\n"
+    },
+    {
+      "path": "checks/command-08.log",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-08.log",
+      "sha256": "c8dc611f3038806fcb27b6acc63190f4df9812a57bc45679553238cc84d08f23",
+      "text": ".................................................................\r\n----------------------------------------------------------------------\r\nRan 65 tests in 8.169s\r\n\r\nOK\r\n资源已验证：data/words.jsonl (2 条)\r\n"
+    },
+    {
+      "path": "checks/command-09.log",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-09.log",
+      "sha256": "403998d7813def59ff54ef8942a37a928b6a42f3aea6f4660bbd1cdb0d4ebac8",
+      "text": "    Finished `release` profile [optimized] target(s) in 0.26s\n"
+    },
+    {
+      "path": "checks/command-10.log",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-10.log",
+      "sha256": "2fcf79e4b121d94f0b2d932a203e6141a7843155075c2a6ed2c8c34a60dc3fc9",
+      "text": "{\r\n  \"schema\": 1,\r\n  \"iterations\": 1000,\r\n  \"dictionary_entries\": 64,\r\n  \"dictionary_bytes\": 3435,\r\n  \"candidate_limit\": 50,\r\n  \"cold_load_and_nihao_sequence_ns\": 328100,\r\n  \"event\": {\r\n    \"samples\": 79000,\r\n    \"p50_ns\": 2000,\r\n    \"p95_ns\": 5000,\r\n    \"p99_ns\": 11600,\r\n    \"max_ns\": 207800\r\n  },\r\n  \"dictionary_query\": {\r\n    \"samples\": 11000,\r\n    \"p50_ns\": 500,\r\n    \"p95_ns\": 1400,\r\n    \"p99_ns\": 1800,\r\n    \"max_ns\": 47500\r\n  },\r\n  \"environment\": {\r\n    \"os\": \"Windows-11-10.0.26300-SP0\",\r\n    \"machine\": \"AMD64\",\r\n    \"cpu\": \"11th Gen Intel(R) Core(TM) i5-11400 @ 2.60GHz\",\r\n    \"logical_cpus\": 12,\r\n    \"physical_memory_bytes\": 34110734336\r\n  },\r\n  \"rustc\": \"rustc 1.90.0 (1159e78c4 2025-09-14)\",\r\n  \"git_head\": \"292cbd06614c376dbd1b8cc0a8172e099590e4db\",\r\n  \"source_sha256\": \"b62f6f8bcb6420bbb4a0ee8ba0cab64d413b8b0e8176325c5d075a8ec3ccb1ef\",\r\n  \"source_fingerprint_schema\": \"cloudleaf-source-v2\",\r\n  \"binary_sha256\": \"a3f5652c86888dfea8288329af3cc08bbc14239c1a280b2111e1a6b0148435f6\",\r\n  \"measured_at_utc\": \"2026-10-28T12:38:15.905535+00:00\",\r\n  \"build_profile\": \"release\",\r\n  \"peak_process_memory_bytes\": 6029312,\r\n  \"memory_method\": \"Windows GetProcessMemoryInfo.PeakWorkingSetSize\",\r\n  \"limitations\": \"64 条手工原型词典；空闲/当前背景负载未控制；进程内存包含运行时和样本数组；不含 TSF/UI；不是生产词库成绩。\"\r\n}\r\n"
+    },
+    {
+      "path": "checks/command-11.log",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-11.log",
+      "sha256": "cf115c59c35dfbb2423d1182cd51f6cc3d68cb41afddd79543b8354bb3b3bf68",
+      "text": "完成 83 条样例、两个排序方案，每例预热 20 次、正式测量 100 次。\n{\r\n  \"production-rules-v1\": {\r\n    \"dev\": {\r\n      \"count\": 16,\r\n      \"top1_count\": 8,\r\n      \"top5_count\": 11,\r\n      \"top1\": 0.5,\r\n      \"top5\": 0.6875,\r\n      \"mrr\": 0.59375,\r\n      \"candidate_availability\": 0.6875,\r\n      \"gold_coverage\": 0.6875,\r\n      \"errors\": 0,\r\n      \"correction\": {\r\n        \"capability\": false,\r\n        \"required\": 3,\r\n        \"attempts\": 0,\r\n        \"correct\": 0,\r\n        \"precision\": null,\r\n        \"recall\": 0.0\r\n      },\r\n      \"latency\": {\r\n        \"samples\": 1600,\r\n        \"p50_ns\": 2200,\r\n        \"p95_ns\": 4100,\r\n        \"p99_ns\": 4800,\r\n        \"max_ns\": 23800\r\n      }\r\n    },\r\n    \"heldout\": {\r\n      \"count\": 67,\r\n      \"top1_count\": 31,\r\n      \"top5_count\": 37,\r\n      \"top1\": 0.4626865671641791,\r\n      \"top5\": 0.5522388059701493,\r\n      \"mrr\": 0.5012437810945274,\r\n      \"candidate_availability\": 0.5522388059701493,\r\n      \"gold_coverage\": 0.5522388059701493,\r\n      \"errors\": 1,\r\n      \"correction\": {\r\n        \"capability\": false,\r\n        \"required\": 12,\r\n        \"attempts\": 0,\r\n        \"correct\": 0,\r\n        \"precision\": null,\r\n        \"recall\": 0.0\r\n      },\r\n      \"latency\": {\r\n        \"samples\": 6700,\r\n        \"p50_ns\": 2000,\r\n        \"p95_ns\": 6400,\r\n        \"p99_ns\": 10000,\r\n        \"max_ns\": 323100\r\n      }\r\n    }\r\n  },\r\n  \"frequency-only-ablation-v1\": {\r\n    \"dev\": {\r\n      \"count\": 16,\r\n      \"top1_count\": 8,\r\n      \"top5_count\": 11,\r\n      \"top1\": 0.5,\r\n      \"top5\": 0.6875,\r\n      \"mrr\": 0.59375,\r\n      \"candidate_availability\": 0.6875,\r\n      \"gold_coverage\": 0.6875,\r\n      \"errors\": 0,\r\n      \"correction\": {\r\n        \"capability\": false,\r\n        \"required\": 3,\r\n        \"attempts\": 0,\r\n        \"correct\": 0,\r\n        \"precision\": null,\r\n        \"recall\": 0.0\r\n      },\r\n      \"latency\": {\r\n        \"samples\": 1600,\r\n        \"p50_ns\": 2200,\r\n        \"p95_ns\": 4000,\r\n        \"p99_ns\": 6800,\r\n        \"max_ns\": 29900\r\n      }\r\n    },\r\n    \"heldout\": {\r\n      \"count\": 67,\r\n      \"top1_count\": 31,\r\n      \"top5_count\": 37,\r\n      \"top1\": 0.4626865671641791,\r\n      \"top5\": 0.5522388059701493,\r\n      \"mrr\": 0.4987562189054726,\r\n      \"candidate_availability\": 0.5522388059701493,\r\n      \"gold_coverage\": 0.5522388059701493,\r\n      \"errors\": 1,\r\n      \"correction\": {\r\n        \"capability\": false,\r\n        \"required\": 12,\r\n        \"attempts\": 0,\r\n        \"correct\": 0,\r\n        \"precision\": null,\r\n        \"recall\": 0.0\r\n      },\r\n      \"latency\": {\r\n        \"samples\": 6700,\r\n        \"p50_ns\": 1900,\r\n        \"p95_ns\": 6900,\r\n        \"p99_ns\": 16400,\r\n        \"max_ns\": 251100\r\n      }\r\n    }\r\n  }\r\n}\r\n"
+    },
+    {
+      "path": "checks/command-12.log",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-12.log",
+      "sha256": "84322717f7d9dbc9123af13b06fff43bf51c719a85221ab85755fa5837cf52bb",
+      "text": "{\"output\": \"C:\\\\Users\\\\EDY\\\\.codex\\\\worktrees\\\\cl008-search\\\\Cloudleaf\\\\.local\\\\cl008-round5-checks-292cbd0\\\\mechanical.json\", \"comparisons\": {\"exact-structural\": {\"reference_different_cases\": [], \"total_cases\": 13}, \"beam64-structural\": {\"reference_different_cases\": [], \"total_cases\": 13}, \"beam1-structural\": {\"reference_different_cases\": [\"dev-boundary\", \"test-composition\", \"test-beam-loss\", \"test-repeat\"], \"total_cases\": 13}, \"exact-weighted\": {\"reference_different_cases\": [], \"total_cases\": 13}, \"beam64-weighted\": {\"reference_different_cases\": [], \"total_cases\": 13}, \"beam1-weighted\": {\"reference_different_cases\": [\"dev-boundary\", \"test-composition\", \"test-beam-loss\", \"test-repeat\"], \"total_cases\": 13}, \"exact-bigram\": {\"reference_different_cases\": [], \"total_cases\": 13}, \"beam64-bigram\": {\"reference_different_cases\": [], \"total_cases\": 13}, \"beam1-bigram\": {\"reference_different_cases\": [\"dev-boundary\", \"test-ambiguous\", \"test-composition\", \"test-beam-loss\", \"test-repeat\"], \"total_cases\": 13}, \"exact-context\": {\"reference_different_cases\": [], \"total_cases\": 13}, \"beam64-context\": {\"reference_different_cases\": [], \"total_cases\": 13}, \"beam1-context\": {\"reference_different_cases\": [\"dev-boundary\", \"test-ambiguous\", \"test-composition\", \"test-beam-loss\", \"test-repeat\"], \"total_cases\": 13}}, \"language_accuracy_valid\": false}\r\n"
+    },
+    {
+      "path": "checks/command-13.log",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-13.log",
+      "sha256": "5a46b0a0a58135a68475044301a3f8ef5ac960470a077a00fa3b4874ee53cf58",
+      "text": "{\"output\": \"C:\\\\Users\\\\EDY\\\\.codex\\\\worktrees\\\\cl008-search\\\\Cloudleaf\\\\.local\\\\cl008-round5-checks-292cbd0\\\\language-readiness.json\", \"prerequisites_ready\": false, \"issues\": [{\"section\": \"sources\", \"reason\": \"缺少独立评估语料或词库来源批准\"}, {\"section\": \"gold\", \"reason\": \"缺少已核验的独立人工gold来源\"}, {\"section\": \"split_isolation\", \"reason\": \"文件描述或SHA缺失\"}, {\"section\": \"heldout_seal\", \"reason\": \"heldout未封存/已打开/保管者与评估者未分离\"}, {\"section\": \"parameter_freeze\", \"reason\": \"'sealed_at'\"}]}\r\n"
+    },
+    {
+      "path": "checks/command-14.log",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-14.log",
+      "sha256": "4573adbd46817b5eced62fd70cedd230ea9f90fb8a2eadd1d1534e1c1c4aee79",
+      "text": "{\"output\": \"C:\\\\Users\\\\EDY\\\\.codex\\\\worktrees\\\\cl008-search\\\\Cloudleaf\\\\.local\\\\cl008-round5-checks-292cbd0\\\\quality-preparation.json\", \"prerequisites_ready\": false, \"preparation_issues\": [\"缺少独立评估语料或词库来源批准\"]}\r\n"
+    },
+    {
+      "path": "checks/command-15.log",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-checks-292cbd0\\command-15.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "text": ""
+    },
+    {
+      "path": "phases/beam1-stderr.txt",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-phases-292cbd0\\beam1-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "text": ""
+    },
+    {
+      "path": "phases/beam64-stderr.txt",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-phases-292cbd0\\beam64-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "text": ""
+    },
+    {
+      "path": "phases/beam8-stderr.txt",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-phases-292cbd0\\beam8-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "text": ""
+    },
+    {
+      "path": "phases/exact-edges128-stderr.txt",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-phases-292cbd0\\exact-edges128-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "text": ""
+    },
+    {
+      "path": "phases/exact-expansions500-stderr.txt",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-phases-292cbd0\\exact-expansions500-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "text": ""
+    },
+    {
+      "path": "phases/exact-resident128-stderr.txt",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-phases-292cbd0\\exact-resident128-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "text": ""
+    },
+    {
+      "path": "phases/exact-stderr.txt",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-phases-292cbd0\\exact-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "text": ""
+    },
+    {
+      "path": "phases/position-edges128-stderr.txt",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-phases-292cbd0\\position-edges128-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "text": ""
+    },
+    {
+      "path": "phases/position-expansions500-stderr.txt",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-phases-292cbd0\\position-expansions500-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "text": ""
+    },
+    {
+      "path": "phases/position-resident128-stderr.txt",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-phases-292cbd0\\position-resident128-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "text": ""
+    },
+    {
+      "path": "phases/position-stderr.txt",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-phases-292cbd0\\position-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "text": ""
+    },
+    {
+      "path": "phases/reference-stderr.txt",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\cl008-round5-phases-292cbd0\\reference-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "text": ""
+    },
+    {
+      "path": "red/annotation-scope-red.txt",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round5-before\\annotation-scope-red.txt",
+      "sha256": "6ae14955ce51d9395d82cdc5abe9b0f4738c775164c1055228efee6e5d3ff007",
+      "text": ".F..F.\r\n======================================================================\r\nFAIL: test_rehashed_review_covering_only_one_source_cannot_cover_all_sources (test_quality_preparation.PreparationTests.test_rehashed_review_covering_only_one_source_cannot_cover_all_sources)\r\n----------------------------------------------------------------------\r\nTraceback (most recent call last):\r\n  File \"C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\tests\\test_quality_preparation.py\", line 89, in test_rehashed_review_covering_only_one_source_cannot_cover_all_sources\r\n    with self.assertRaisesRegex(ValueError, '标注review.*覆盖'):\r\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nAssertionError: ValueError not raised\r\n\r\n======================================================================\r\nFAIL: test_source_annotation_binding_drift_is_rejected (test_quality_preparation.PreparationTests.test_source_annotation_binding_drift_is_rejected)\r\n----------------------------------------------------------------------\r\nTraceback (most recent call last):\r\n  File \"C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\tests\\test_quality_preparation.py\", line 96, in test_source_annotation_binding_drift_is_rejected\r\n    with self.assertRaisesRegex(ValueError, '标注'):\r\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nAssertionError: ValueError not raised\r\n\r\n----------------------------------------------------------------------\r\nRan 6 tests in 0.139s\r\n\r\nFAILED (failures=2)\r\n"
+    },
+    {
+      "path": "red/count-units-red.txt",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round5-before\\count-units-red.txt",
+      "sha256": "507a1e83872c329b413df346fc90ca552f65b9573dcc29bb9a9447b23382946f",
+      "text": ".F.....\r\n======================================================================\r\nFAIL: test_budget_and_rejected_remain_in_full_denominator (test_search_phases.PhaseTests.test_budget_and_rejected_remain_in_full_denominator)\r\n----------------------------------------------------------------------\r\nTraceback (most recent call last):\r\n  File \"C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\tests\\test_search_phases.py\", line 91, in test_budget_and_rejected_remain_in_full_denominator\r\n    self.assertNotIn('p95_ns', result['clock_reads'])\r\nAssertionError: 'p95_ns' unexpectedly found in {'samples': 2, 'p50_ns': 4, 'p95_ns': 16, 'p99_ns': 16, 'max_ns': 16}\r\n\r\n----------------------------------------------------------------------\r\nRan 7 tests in 0.638s\r\n\r\nFAILED (failures=1)\r\n"
+    },
+    {
+      "path": "red/profile-green-first.txt",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round5-before\\profile-green-first.txt",
+      "sha256": "c2660bc114f44a735f5fdab2e8f7c98863cc1710b301fb12f70a1aaa46134996",
+      "text": "   Compiling cloudleaf-search v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\crates\\cloudleaf-search)\r\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.43s\r\n     Running tests\\profiling.rs (target\\debug\\deps\\profiling-4ac8a294a9271235.exe)\r\n\r\nrunning 2 tests\r\ntest nested_sort_is_observed_even_on_reference_budget_failure_and_beam_pruning ... ok\r\ntest profiled_query_preserves_all_results_and_incomplete_budgets ... ok\r\n\r\ntest result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s\r\n\r\n"
+    },
+    {
+      "path": "red/profile-red.txt",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round5-before\\profile-red.txt",
+      "sha256": "e42424545a0b19ec7d26b7d37fcb91630d215093da56aaaa503c7cf8e4df42bc",
+      "text": "   Compiling cloudleaf-search v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\crates\\cloudleaf-search)\r\nerror[E0432]: unresolved imports `cloudleaf_search::Phase`, `cloudleaf_search::profile_query`\r\n --> crates\\cloudleaf-search\\tests\\profiling.rs:2:47\r\n  |\r\n2 |     Budget, Config, Lattice, Lexicon, Method, Phase, Ranker, profile_query, search_graph,\r\n  |                                               ^^^^^          ^^^^^^^^^^^^^ no `profile_query` in the root\r\n  |                                               |\r\n  |                                               no `Phase` in the root\r\n\r\nFor more information about this error, try `rustc --explain E0432`.\r\nerror: could not compile `cloudleaf-search` (test \"profiling\") due to 1 previous error\r\n"
+    },
+    {
+      "path": "red/quality-red.txt",
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round5-before\\quality-red.txt",
+      "sha256": "cf591af455c007538e2ff7575e97e7fe534ca561d8711236ffa48705767d69fc",
+      "text": "E\r\n======================================================================\r\nERROR: test_quality_preparation (unittest.loader._FailedTest.test_quality_preparation)\r\n----------------------------------------------------------------------\r\nImportError: Failed to import test module: test_quality_preparation\r\nTraceback (most recent call last):\r\n  File \"C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\unittest\\loader.py\", line 396, in _find_test_path\r\n    module = self._get_module_from_name(name)\r\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\unittest\\loader.py\", line 339, in _get_module_from_name\r\n    __import__(name)\r\n  File \"C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\tests\\test_quality_preparation.py\", line 14, in <module>\r\n    SPEC.loader.exec_module(MODULE)\r\n  File \"<frozen importlib._bootstrap_external>\", line 995, in exec_module\r\n  File \"<frozen importlib._bootstrap_external>\", line 1132, in get_code\r\n  File \"<frozen importlib._bootstrap_external>\", line 1190, in get_data\r\nFileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\Users\\\\EDY\\\\.codex\\\\worktrees\\\\cl008-search\\\\Cloudleaf\\\\scripts\\\\check_quality_preparation.py'\r\n\r\n\r\n----------------------------------------------------------------------\r\nRan 1 test in 0.000s\r\n\r\nFAILED (errors=1)\r\n"
+    }
+  ]
+}

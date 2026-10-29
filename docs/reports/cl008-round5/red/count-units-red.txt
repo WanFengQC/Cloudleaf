@@ -1,0 +1,13 @@
+.F.....
+======================================================================
+FAIL: test_budget_and_rejected_remain_in_full_denominator (test_search_phases.PhaseTests.test_budget_and_rejected_remain_in_full_denominator)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_search_phases.py", line 91, in test_budget_and_rejected_remain_in_full_denominator
+    self.assertNotIn('p95_ns', result['clock_reads'])
+AssertionError: 'p95_ns' unexpectedly found in {'samples': 2, 'p50_ns': 4, 'p95_ns': 16, 'p99_ns': 16, 'max_ns': 16}
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.638s
+
+FAILED (failures=1)

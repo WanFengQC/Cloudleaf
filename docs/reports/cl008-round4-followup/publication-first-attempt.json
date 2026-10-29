@@ -1,0 +1,13 @@
+{
+  "kind": "publication-helper failure, not implementation or test failure",
+  "observed_exit_code": 1,
+  "command": [
+    "python",
+    ".local/publish_round4_followup.py"
+  ],
+  "traceback": "Traceback (most recent call last):\n  File 'C:\\\\Users\\\\EDY\\\\.codex\\\\worktrees\\\\cl008-search\\\\Cloudleaf\\\\.local\\\\publish_round4_followup.py', line 62, in <module>\n    assert len(history) == 33\n           ^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "cause": "33 evidence files plus README.md and .gitattributes equals 35 tracked files; counting assertion omitted the two auxiliary files",
+  "resolution": "check all 35 tracked original Git blobs and retain identity of all 33 evidence files",
+  "evidence_source": "captured functions.exec command result; not regenerated stderr",
+  "new_source_unchanged": true
+}

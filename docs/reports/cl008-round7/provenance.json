@@ -1,0 +1,452 @@
+{
+  "implementation_commit": "2a2bd9a7ea9df73b647ccdba609d9aae8f0ad935",
+  "source_sha256": "a43ca914bc624ca0839e62644866e7442093c36c5507b83f4e1f67542022b76d",
+  "source_fingerprint_schema": "cloudleaf-source-v2",
+  "phase_schema_version": 2,
+  "binary_sha256": "e2737975ae1d3305af7f3c0d6fd32422eda7151bbbec7f887d37a53e493f363c",
+  "runtime_sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+  "cases_sha256": "124177ad89496ed2507c0726e211ea488693d6825b41b8d55c3af751ee7f3207",
+  "tool_files_sha256": {
+    "scripts/check_language_readiness.py": "19a06ddead687d94b9acf8af79ed09e9c655ce7e61ed023b3cf8e24228d3d9c9",
+    "scripts/check_ime_task_handoff.py": "cd010b12f6f8e20fe51c5e857b7a2e8aa46a3dc39c2079d2239045ba6c6b5bc3",
+    "scripts/evaluate_search_phases.py": "3e90dc4ef6832e1e52e36df48dca732a8f872fcf8fc6c5c0179e4e7ea9b793f2",
+    "tests/test_ime_task_handoff.py": "40ca255e777380025df571ac31b02fa6cc8fd37a6bebf10a5dadfdf640bcd28c"
+  },
+  "publication": {
+    "checks/algorithm-v1/case-comparison.tsv": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\algorithm-v1\\case-comparison.tsv",
+      "original_sha256": "973fa37b9ae60cfb63e067718ec2c39ec1f9d9ceee3b0ca6f480dfde991547a2",
+      "original_bytes": 7104,
+      "publication_sha256": "973fa37b9ae60cfb63e067718ec2c39ec1f9d9ceee3b0ca6f480dfde991547a2"
+    },
+    "checks/algorithm-v1/raw-results.tsv": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\algorithm-v1\\raw-results.tsv",
+      "original_sha256": "c26a381e5767c91512015624afd8e0c0ac57527ce8cc154e4759e6eb548cdd0a",
+      "original_bytes": 94297,
+      "publication_sha256": "c26a381e5767c91512015624afd8e0c0ac57527ce8cc154e4759e6eb548cdd0a"
+    },
+    "checks/algorithm-v1/report.md": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\algorithm-v1\\report.md",
+      "original_sha256": "6d005f10b0e28c169f73e9f26b11128c26960a1ae13bab03ed61f5edf29e0cf3",
+      "original_bytes": 9359,
+      "publication_sha256": "6d005f10b0e28c169f73e9f26b11128c26960a1ae13bab03ed61f5edf29e0cf3"
+    },
+    "checks/algorithm-v1/summary.json": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\algorithm-v1\\summary.json",
+      "original_sha256": "3c3401f78c1e5658600b1081cc88f5f4c4bdb67ce55aab1d9d9a3663242cbfb1",
+      "original_bytes": 110584,
+      "publication_sha256": "3c3401f78c1e5658600b1081cc88f5f4c4bdb67ce55aab1d9d9a3663242cbfb1"
+    },
+    "checks/command-01.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\command-01.txt",
+      "original_sha256": "3397f54a03033c1b027496d83acc64e8f3ceeb4017e0575150f78726edce8a1a",
+      "original_bytes": 36,
+      "publication_sha256": "3397f54a03033c1b027496d83acc64e8f3ceeb4017e0575150f78726edce8a1a"
+    },
+    "checks/command-02.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\command-02.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "publication_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "checks/command-03.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\command-03.txt",
+      "original_sha256": "54d32f1312e9ec321c58af432997bfe3bae5b14322fc06e68fd35a1f2f0e6519",
+      "original_bytes": 72,
+      "publication_sha256": "54d32f1312e9ec321c58af432997bfe3bae5b14322fc06e68fd35a1f2f0e6519"
+    },
+    "checks/command-04.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\command-04.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "publication_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "checks/command-05.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\command-05.txt",
+      "original_sha256": "33196c4f9f46bf2cb41f08b0206b6f9a07455a0af86df9e1e5c6136859b21487",
+      "original_bytes": 188,
+      "publication_sha256": "33196c4f9f46bf2cb41f08b0206b6f9a07455a0af86df9e1e5c6136859b21487"
+    },
+    "checks/command-06.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\command-06.txt",
+      "original_sha256": "73e9e19f324c881eb784a3c9e7da239c487213c860ff0ff9a52349d515ea591c",
+      "original_bytes": 9426,
+      "publication_sha256": "c5acde454d9109b6f2136a9237c5427f4b100c25cd6267af22e893a5b3741b30"
+    },
+    "checks/command-07.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\command-07.txt",
+      "original_sha256": "12b6bffe6732d2ca22f487697d272183a4bb05a396a6471d790b69d8c318b23c",
+      "original_bytes": 936,
+      "publication_sha256": "54a5566681a2e209913388190b8527cd7122d9ff8f1a4823061e971f962d5b5c"
+    },
+    "checks/command-08.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\command-08.txt",
+      "original_sha256": "d1235ea4563620b53ef5bdd2da5f595fec9d54f9efb48376378c20547dd95e57",
+      "original_bytes": 62,
+      "publication_sha256": "d1235ea4563620b53ef5bdd2da5f595fec9d54f9efb48376378c20547dd95e57"
+    },
+    "checks/command-09.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\command-09.txt",
+      "original_sha256": "0bb7250cb2c233d5b261d9c9e4fde6ba7950b04fe59aafcd4e302c2c3c4728bf",
+      "original_bytes": 516,
+      "publication_sha256": "6ad36ae402da4ec38c3c568ed6870234412850f26a91aad7f82e37cbe855288d"
+    },
+    "checks/command-10.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\command-10.txt",
+      "original_sha256": "7a072ff186ab0191cd185f857b07df6622e6024c21dea851d51de8c44fd590bb",
+      "original_bytes": 13897,
+      "publication_sha256": "87fc04456736002e524bf07ddf1fecae03cce3eb8defbcf02a50063a347274ee"
+    },
+    "checks/command-11.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\command-11.txt",
+      "original_sha256": "21321877cb1ea2e18f4a71d952f3f432d02bbe9827c46f66f58877890bd9f6ba",
+      "original_bytes": 1341,
+      "publication_sha256": "5bf2893978d1cf12286c018ab29c96cbf9b9d04790c393cbb9f0e35acf2d2f45"
+    },
+    "checks/command-12.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\command-12.txt",
+      "original_sha256": "5c475eaa5e6774980e5558c99766a15af31dd57d8c85ac1b911b4291912d439f",
+      "original_bytes": 1374,
+      "publication_sha256": "c19782fc98d612b6d8947186bb96ecdff88d012a7a21f14572bc34d830cc4fd1"
+    },
+    "checks/command-13.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\command-13.txt",
+      "original_sha256": "4fa9873cbcb08a67f33d25f29b4aca2673d5962110238938486f8ad9db01a3ee",
+      "original_bytes": 2664,
+      "publication_sha256": "fbd9c0605d0d96a8c03bf33093c08c89baa373e31f7db854851f14de29b1de6c"
+    },
+    "checks/command-14.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\command-14.txt",
+      "original_sha256": "b0602ad5af366f0094e1310c1641ef27aae7aa983edb124982ca71ea272ddee5",
+      "original_bytes": 558,
+      "publication_sha256": "425a9b368457438404f41dcc64645c6368791de5b905e7d0d8790a5b821aa5c1"
+    },
+    "checks/command-15.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\command-15.txt",
+      "original_sha256": "93b3bf54bab626907125dfbc249dd8d8c106c7e8b068f41e0b222fe44ff1cfc2",
+      "original_bytes": 234,
+      "publication_sha256": "9668338152299a0452a5a8cb7f69570e78e5aa55cc1bd540ad49e8c51174dcf5"
+    },
+    "checks/command-16.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\command-16.txt",
+      "original_sha256": "bff18186e516ebe700cf478a7807d711642a835a386e27012a202096c1cdd9de",
+      "original_bytes": 93,
+      "publication_sha256": "2aef3fde49a9acfbf261a59ed23c7bab32b1ed81acca029729b619cec3a3642a"
+    },
+    "checks/command-17.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\command-17.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "publication_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "checks/ime-task-handoff.json": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\ime-task-handoff.json",
+      "original_sha256": "a693479df9e3d03ba3a10c519edf674fb7cbf7cce739f75572a04f29c2b2e90c",
+      "original_bytes": 2840,
+      "publication_sha256": "a693479df9e3d03ba3a10c519edf674fb7cbf7cce739f75572a04f29c2b2e90c"
+    },
+    "checks/language-readiness.json": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\language-readiness.json",
+      "original_sha256": "584f434b0410ea7f695c206858b57309830cbbdf29d3ba65fc32eb5fe98785d8",
+      "original_bytes": 1890,
+      "publication_sha256": "584f434b0410ea7f695c206858b57309830cbbdf29d3ba65fc32eb5fe98785d8"
+    },
+    "checks/mechanics.json": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\mechanics.json",
+      "original_sha256": "36b41dd8a92eceb100ee3b674f56a22b409dc9d8c7ccc3d151f081fd3287b542",
+      "original_bytes": 790176,
+      "publication_sha256": "72cdfdd25a78ab71a0fc90b6866fb015f4bf059366ce634cd8eef9dec49a8336"
+    },
+    "checks/prototype.json": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\prototype.json",
+      "original_sha256": "5c475eaa5e6774980e5558c99766a15af31dd57d8c85ac1b911b4291912d439f",
+      "original_bytes": 1374,
+      "publication_sha256": "c19782fc98d612b6d8947186bb96ecdff88d012a7a21f14572bc34d830cc4fd1"
+    },
+    "checks/quality-preparation.json": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\quality-preparation.json",
+      "original_sha256": "d5d5964206628f2d5f15a3c46a2244b862272791e3022c4a4ff356897bf92922",
+      "original_bytes": 2755,
+      "publication_sha256": "d5d5964206628f2d5f15a3c46a2244b862272791e3022c4a4ff356897bf92922"
+    },
+    "checks/validation.json": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-checks-2a2bd9a\\validation.json",
+      "original_sha256": "1946737ec7378131b9840b7904187b48b6cfab6ce1f98a563013986c441521fc",
+      "original_bytes": 8228,
+      "publication_sha256": "1946737ec7378131b9840b7904187b48b6cfab6ce1f98a563013986c441521fc"
+    },
+    "red/fallback.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-red-complete\\fallback.txt",
+      "original_sha256": "5e567790b72772aa26c0a5302455db3ba4f1c6341b3a30d4158d11ecd53264df",
+      "original_bytes": 3012,
+      "publication_sha256": "0e7f804395b200972c4f5e4d8dc83975434efbab7667f68d791e6b2e7aa5cd1a"
+    },
+    "red/identity.json": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-red-complete\\identity.json",
+      "original_sha256": "bc0777a7806ceddc1603b2108efe9136713ef56edf42061086fe44f69ef215e6",
+      "original_bytes": 1443,
+      "publication_sha256": "bc0777a7806ceddc1603b2108efe9136713ef56edf42061086fe44f69ef215e6"
+    },
+    "red/scoring.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-red-complete\\scoring.txt",
+      "original_sha256": "35fc25a8085413a29e824af256f24edf11dcb5584a53f516f6e9b4e3259d8a0e",
+      "original_bytes": 997,
+      "publication_sha256": "35fc25a8085413a29e824af256f24edf11dcb5584a53f516f6e9b4e3259d8a0e"
+    },
+    "red/task-handoff.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-red-complete\\task-handoff.txt",
+      "original_sha256": "eef401e2d03c803c8cf47f45e2082ecd3f19292bad8d847684f4a380a11c6c6c",
+      "original_bytes": 1416,
+      "publication_sha256": "0e785066c3a4c864490165707b2c77f21a4f4f5d03fa0c22d123c26964ffbd18"
+    },
+    "phases/identity.json": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-phases-2a2bd9a\\identity.json",
+      "original_sha256": "f0e533a1b1d44bf33601ebc16778969874f783af2c1ea0e6e5345eb7310f5b94",
+      "original_bytes": 930,
+      "publication_sha256": "f0e533a1b1d44bf33601ebc16778969874f783af2c1ea0e6e5345eb7310f5b94"
+    },
+    "phases/comparison.json": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-phases-2a2bd9a\\comparison.json",
+      "original_sha256": "1e5f02e331667885cd62e5f8f3e640d6fec127c09bc729fbf81d30b8920a5d1a",
+      "original_bytes": 1830746,
+      "publication_sha256": "1e5f02e331667885cd62e5f8f3e640d6fec127c09bc729fbf81d30b8920a5d1a"
+    },
+    "phases/command.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-phases-2a2bd9a\\command.txt",
+      "original_sha256": "23571e5a14ffef9550f9a91d5acb0c59a70f183acb996b82b07fb3447418a454",
+      "original_bytes": 1300,
+      "publication_sha256": "2e8defcbcc453c27d108bae65a6935d53a72d27b6f032f368c0cffe7f975a8ac"
+    },
+    "phases/matrix/beam1-stderr.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-phases-2a2bd9a\\matrix\\beam1-stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "publication_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "phases/matrix/beam1-stdout.json": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-phases-2a2bd9a\\matrix\\beam1-stdout.json",
+      "original_sha256": "1f0114af89c1d0309e4700508c6d937d6e49b43bf1b69b2c7db1f170c2cc0e07",
+      "original_bytes": 214722,
+      "publication_sha256": "1f0114af89c1d0309e4700508c6d937d6e49b43bf1b69b2c7db1f170c2cc0e07"
+    },
+    "phases/matrix/beam64-stderr.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-phases-2a2bd9a\\matrix\\beam64-stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "publication_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "phases/matrix/beam64-stdout.json": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-phases-2a2bd9a\\matrix\\beam64-stdout.json",
+      "original_sha256": "b92e2c2b8ada25c489ac461a219c77bf5cb07507e45a8d809dcd17671d14ec24",
+      "original_bytes": 215389,
+      "publication_sha256": "b92e2c2b8ada25c489ac461a219c77bf5cb07507e45a8d809dcd17671d14ec24"
+    },
+    "phases/matrix/beam8-stderr.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-phases-2a2bd9a\\matrix\\beam8-stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "publication_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "phases/matrix/beam8-stdout.json": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-phases-2a2bd9a\\matrix\\beam8-stdout.json",
+      "original_sha256": "60c813bb009699498f805887f543aa3c2f405e7b8349d54ff5391c2b0cd77060",
+      "original_bytes": 214290,
+      "publication_sha256": "60c813bb009699498f805887f543aa3c2f405e7b8349d54ff5391c2b0cd77060"
+    },
+    "phases/matrix/exact-edges128-stderr.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-phases-2a2bd9a\\matrix\\exact-edges128-stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "publication_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "phases/matrix/exact-edges128-stdout.json": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-phases-2a2bd9a\\matrix\\exact-edges128-stdout.json",
+      "original_sha256": "8c55edbc981196a8130f36bd5f983a7e3b794572fbefd10be92083a8b7a41522",
+      "original_bytes": 154989,
+      "publication_sha256": "8c55edbc981196a8130f36bd5f983a7e3b794572fbefd10be92083a8b7a41522"
+    },
+    "phases/matrix/exact-expansions500-stderr.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-phases-2a2bd9a\\matrix\\exact-expansions500-stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "publication_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "phases/matrix/exact-expansions500-stdout.json": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-phases-2a2bd9a\\matrix\\exact-expansions500-stdout.json",
+      "original_sha256": "81587eb3243bdf205eb6633c23d510d2d11528d78b1d412bfd8c8966e290ec51",
+      "original_bytes": 138399,
+      "publication_sha256": "81587eb3243bdf205eb6633c23d510d2d11528d78b1d412bfd8c8966e290ec51"
+    },
+    "phases/matrix/exact-resident128-stderr.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-phases-2a2bd9a\\matrix\\exact-resident128-stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "publication_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "phases/matrix/exact-resident128-stdout.json": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-phases-2a2bd9a\\matrix\\exact-resident128-stdout.json",
+      "original_sha256": "306027e63f711918db055aed97a83736e5899c327d22ed24a8b0698a7ea9546b",
+      "original_bytes": 137402,
+      "publication_sha256": "306027e63f711918db055aed97a83736e5899c327d22ed24a8b0698a7ea9546b"
+    },
+    "phases/matrix/exact-stderr.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-phases-2a2bd9a\\matrix\\exact-stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "publication_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "phases/matrix/exact-stdout.json": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-phases-2a2bd9a\\matrix\\exact-stdout.json",
+      "original_sha256": "515cfd6967553c75b87f910a58b98fbf589017729daadb5b7b1c1e7a836075cd",
+      "original_bytes": 185952,
+      "publication_sha256": "515cfd6967553c75b87f910a58b98fbf589017729daadb5b7b1c1e7a836075cd"
+    },
+    "phases/matrix/position-edges128-stderr.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-phases-2a2bd9a\\matrix\\position-edges128-stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "publication_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "phases/matrix/position-edges128-stdout.json": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-phases-2a2bd9a\\matrix\\position-edges128-stdout.json",
+      "original_sha256": "2fc833794abc533a66e4a75b82032a8036b1dae8a555c4a76c6b9d898cc692bb",
+      "original_bytes": 154201,
+      "publication_sha256": "2fc833794abc533a66e4a75b82032a8036b1dae8a555c4a76c6b9d898cc692bb"
+    },
+    "phases/matrix/position-expansions500-stderr.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-phases-2a2bd9a\\matrix\\position-expansions500-stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "publication_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "phases/matrix/position-expansions500-stdout.json": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-phases-2a2bd9a\\matrix\\position-expansions500-stdout.json",
+      "original_sha256": "fb4c8579a310758313d4c4649e84b92e7862f2d78b42bea1ab8fc29ccea23c1e",
+      "original_bytes": 138326,
+      "publication_sha256": "fb4c8579a310758313d4c4649e84b92e7862f2d78b42bea1ab8fc29ccea23c1e"
+    },
+    "phases/matrix/position-resident128-stderr.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-phases-2a2bd9a\\matrix\\position-resident128-stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "publication_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "phases/matrix/position-resident128-stdout.json": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-phases-2a2bd9a\\matrix\\position-resident128-stdout.json",
+      "original_sha256": "3cdbc0ca4b4685dae72b1b258548656b25560177cbc710369967c6f6ed8d6d4e",
+      "original_bytes": 212870,
+      "publication_sha256": "3cdbc0ca4b4685dae72b1b258548656b25560177cbc710369967c6f6ed8d6d4e"
+    },
+    "phases/matrix/position-stderr.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-phases-2a2bd9a\\matrix\\position-stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "publication_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "phases/matrix/position-stdout.json": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-phases-2a2bd9a\\matrix\\position-stdout.json",
+      "original_sha256": "a2161f3f4080a8ef6bba88846a5449e042db10f1a14f69d814693decddaa1ce0",
+      "original_bytes": 213181,
+      "publication_sha256": "a2161f3f4080a8ef6bba88846a5449e042db10f1a14f69d814693decddaa1ce0"
+    },
+    "phases/matrix/reference-stderr.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-phases-2a2bd9a\\matrix\\reference-stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "publication_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "phases/matrix/reference-stdout.json": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-phases-2a2bd9a\\matrix\\reference-stdout.json",
+      "original_sha256": "04c04a454cd99a9f203b978c372757496e160c20e78d854eb1b22c75603b69e6",
+      "original_bytes": 218352,
+      "publication_sha256": "04c04a454cd99a9f203b978c372757496e160c20e78d854eb1b22c75603b69e6"
+    },
+    "phases/matrix/summary.json": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-phases-2a2bd9a\\matrix\\summary.json",
+      "original_sha256": "8b7a5bbb3fbc9a9eb36b10e08188de2cf2077d1c918afcd4267c1e79b0e7e55e",
+      "original_bytes": 211133,
+      "publication_sha256": "8b7a5bbb3fbc9a9eb36b10e08188de2cf2077d1c918afcd4267c1e79b0e7e55e"
+    },
+    "cccedict-source/LICENSE.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\real-lexicon\\cccedict-round4-2401b16\\LICENSE.txt",
+      "original_sha256": "28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5",
+      "original_bytes": 20138,
+      "publication_sha256": "23ee78c8bae49cf08ea2f0c84945c66b987ebe4520881fb51b3dad4fb43d07c2"
+    },
+    "cccedict-source/NOTICE.txt": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\real-lexicon\\cccedict-round4-2401b16\\NOTICE.txt",
+      "original_sha256": "df5e0dfcac5f0e30cecc109d3dc810b0d22bf79634bb6d3cc7990fb74aea1c48",
+      "original_bytes": 1147,
+      "publication_sha256": "df5e0dfcac5f0e30cecc109d3dc810b0d22bf79634bb6d3cc7990fb74aea1c48"
+    },
+    "cccedict-source/source-lock.json": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\real-lexicon\\cccedict-round4-2401b16\\source-lock.json",
+      "original_sha256": "a7cbdd759ae2487ce238aea8a2d43eeef3248a1a124004def9ad35764e58bd57",
+      "original_bytes": 3496,
+      "publication_sha256": "a7cbdd759ae2487ce238aea8a2d43eeef3248a1a124004def9ad35764e58bd57"
+    },
+    "cccedict-source/manifest.json": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\real-lexicon\\cccedict-round4-2401b16\\manifest.json",
+      "original_sha256": "85b6f837e0644716605f9458a59ebbc3044ed2b03a1c6d26f497ac2fa5993de2",
+      "original_bytes": 5540,
+      "publication_sha256": "85b6f837e0644716605f9458a59ebbc3044ed2b03a1c6d26f497ac2fa5993de2"
+    },
+    "cccedict-source/quality.json": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\real-lexicon\\cccedict-round4-2401b16\\quality.json",
+      "original_sha256": "94955df94c7735930e2c09f19b54eaa460ba27bccb3c484b17a03df5ec34fb48",
+      "original_bytes": 1739,
+      "publication_sha256": "94955df94c7735930e2c09f19b54eaa460ba27bccb3c484b17a03df5ec34fb48"
+    },
+    "cccedict-source/evidence.json": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\real-lexicon\\cccedict-round4-evidence.json",
+      "original_sha256": "536e1617a96ebb1a3e6eb7b751867ec789a9be0b4ae3fea98aaf8534854ff2d2",
+      "original_bytes": 3830,
+      "publication_sha256": "536e1617a96ebb1a3e6eb7b751867ec789a9be0b4ae3fea98aaf8534854ff2d2"
+    },
+    "tools/run_round7_checks.py": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\run_round7_checks.py",
+      "original_sha256": "adcc9ef54f0cb22ffc6792a7a25a1877ba8e027ab474b451b425b0d290950438",
+      "original_bytes": 3465,
+      "publication_sha256": "adcc9ef54f0cb22ffc6792a7a25a1877ba8e027ab474b451b425b0d290950438"
+    },
+    "tools/run_round7_phases.py": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\run_round7_phases.py",
+      "original_sha256": "b0b0da90e0c871b995e1bd3f9cd482806aa90614d7661431c8d48a908b84adb7",
+      "original_bytes": 4516,
+      "publication_sha256": "b0b0da90e0c871b995e1bd3f9cd482806aa90614d7661431c8d48a908b84adb7"
+    },
+    "tools/run_round7_red.py": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\run_round7_red.py",
+      "original_sha256": "9e082d57a579473f62d6a5dd31a42d3936eeb2097c7b3c474ab1222d311398ec",
+      "original_bytes": 1599,
+      "publication_sha256": "9e082d57a579473f62d6a5dd31a42d3936eeb2097c7b3c474ab1222d311398ec"
+    },
+    "tools/audit_round7_handoff_compat.py": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\audit_round7_handoff_compat.py",
+      "original_sha256": "710ff9f7f89c67dcf1228121f0c40d4f45de426c73cdae2506aaf8038190b9d1",
+      "original_bytes": 1982,
+      "publication_sha256": "710ff9f7f89c67dcf1228121f0c40d4f45de426c73cdae2506aaf8038190b9d1"
+    },
+    "tools/publish_round7.py": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\publish_round7.py",
+      "original_sha256": "80700a8db77289b7f52e446ce2db7a085b32473868949f029eec2712c80c97e2",
+      "original_bytes": 7234,
+      "publication_sha256": "80700a8db77289b7f52e446ce2db7a085b32473868949f029eec2712c80c97e2"
+    },
+    "handoff-compat.json": {
+      "original_path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round7-handoff-compat.json",
+      "original_sha256": "5a5aa8c156c943d729aa199a8b72710ccb33f4d79c738a8db535026b17bdf908",
+      "original_bytes": 705,
+      "publication_sha256": "5a5aa8c156c943d729aa199a8b72710ccb33f4d79c738a8db535026b17bdf908"
+    }
+  },
+  "historical_reports_unchanged": 319,
+  "old_core_changed": [],
+  "rust_tests": 81,
+  "python_tests": 76,
+  "checks": 17,
+  "raw_log_count": 35,
+  "raw_artifact_count": 2,
+  "language_accuracy_valid": false,
+  "single_algorithm_allocation_live_rss_measured": false
+}

@@ -1,0 +1,160 @@
+
+running 10 tests
+test tests::tied_frequency_prefers_longer_text_then_id ... ok
+test tests::duplicate_text_across_pronunciations_uses_the_best_match ... ok
+test tests::exact_matches_precede_higher_frequency_prefix_matches ... ok
+test tests::annotations_do_not_change_ranking ... ok
+test tests::ordering_is_stable_when_rows_are_reordered ... ok
+test tests::bucket_limits_preserve_global_top_k_despite_cross_bucket_duplicates ... ok
+test tests::unknown_invalid_empty_inputs_and_waiting_boundaries_have_no_candidates ... ok
+test tests::prototype_generates_words_and_keeps_annotations_separate ... ok
+test tests::limits_bound_output_and_keep_best_unique_candidates ... ok
+test tests::large_matching_bucket_cannot_exceed_the_public_candidate_limit ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 2 tests
+test tests::removing_exact_priority_changes_the_synthetic_control ... ok
+test tests::ablation_keeps_duplicate_texts_stable_across_parse_paths ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 7 tests
+test tests::missing_or_unknown_versions_and_invalid_header_are_rejected ... ok
+test tests::empty_dictionary_and_crlf_files_are_supported ... ok
+test tests::limited_queries_preserve_best_unique_texts ... ok
+test tests::corrupt_rows_are_never_silently_skipped ... ok
+test tests::prototype_is_valid_and_queries_use_the_whole_pronunciation ... ok
+test tests::only_the_last_syllable_may_be_a_prefix ... ok
+test tests::size_and_field_limits_are_enforced ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 17 tests
+test tests::activation_is_required_and_idempotent ... ok
+test tests::punctuation_only_failure_remains_recoverable_until_explicit_cancel ... ok
+test tests::failed_commit_preserves_selection_and_complete_failed_request ... ok
+test tests::cursor_edits_and_backspace_operate_before_the_cursor ... ok
+test tests::english_mode_and_idle_system_keys_are_passed_through ... ok
+test tests::navigation_crosses_pages_and_clamps_at_both_ends ... ok
+test tests::exhausted_revision_or_commit_ids_are_not_reused ... ok
+test tests::punctuation_uses_selected_candidate_and_unknown_unicode_keeps_raw ... ok
+test tests::cancel_focus_loss_deactivation_and_mode_switch_clear_old_context ... ok
+test tests::no_dictionary_or_no_match_falls_back_to_exact_raw_input ... ok
+test tests::text_change_resets_highlight_and_page_to_current_candidates ... ok
+test tests::stale_confirmation_cannot_clear_new_composition_or_new_request ... ok
+test tests::overlong_input_and_control_character_do_not_mutate_composition ... ok
+test tests::selection_and_page_numbering_are_bounded_to_current_page ... ok
+test tests::deterministic_mixed_events_preserve_state_invariants ... ok
+test tests::space_and_enter_commit_once_without_extra_text_or_annotation ... ok
+test tests::unavailable_digit_and_zero_preserve_raw_text_and_character ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 1 test
+test fixed_input_corpus_and_candidate_ranking ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+
+running 9 tests
+test native_probe_is_read_only_and_shortcuts_never_become_characters ... ok
+test queue_bound_preserves_owned_events_and_focus_cancellation_invalidates_frames ... ok
+test duplicate_native_callback_does_not_repeat_input_or_commit ... ok
+test utf16_offsets_and_submission_text_do_not_include_annotations ... ok
+test delayed_commit_serializes_owned_input_and_resumes_in_original_order ... ok
+test unknown_outcome_does_not_become_retryable_failure_or_clear_new_context ... ok
+test known_failure_retains_full_text_and_requires_explicit_new_request ... ok
+test old_instance_ack_is_rejected_even_when_request_ids_collide ... ok
+test rejected_queue_event_keeps_its_sequence_until_caller_retries ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 4 tests
+test utf16_offsets_reject_split_characters_and_count_surrogate_pairs ... ok
+test configurable_pages_obey_candidate_budget_and_current_page_digits ... ok
+test candidate_selection_requires_current_revision_and_id ... ok
+test readonly_prediction_matches_dispatch_in_all_input_states ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+
+
+running 9 tests
+test tests::keyboard_umlaut_spelling_is_supported ... ok
+test tests::continuous_pinyin_and_uppercase_are_supported ... ok
+test tests::invalid_input_is_never_silently_truncated ... ok
+test tests::trailing_partial_syllable_is_preserved ... ok
+test tests::explicit_separator_prevents_syllable_merging ... ok
+test tests::deleting_a_prefix_recomputes_the_segmentation ... ok
+test tests::six_letter_syllables_and_standard_ju_qu_xu_spelling_work ... ok
+test tests::ambiguous_paths_have_a_stable_order ... ok
+test tests::ambiguous_long_input_is_bounded_and_covers_every_letter ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 3 tests
+test search::bucket_regression::same_text_keeps_strict_best_and_equal_first_edges ... ok
+test search::bucket_regression::different_text_equal_order_is_stable_and_truncation_follows_order ... ok
+test model::tests::integer_log_is_monotone_and_exact_at_powers ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 5 tests
+test configuration_and_model_failures_retain_the_actual_attempted_phase ... ok
+test nested_sort_is_observed_even_on_reference_budget_failure_and_beam_pruning ... ok
+test scoring_is_an_explicit_nested_observation_without_changing_complete_results ... ok
+test scoring_calls_distinguish_extension_and_eos_and_all_rankers_keep_results ... ok
+test profiled_query_preserves_all_results_and_incomplete_budgets ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 13 tests
+test nullable_frequency_and_legacy_manual_are_preserved ... ok
+test prefix_cannot_invent_future_syllables_and_oov_never_disappears ... ok
+test invalid_limits_and_models_fail_before_search ... ok
+test lattice_is_bound_to_original_lexicon ... ok
+test explicit_boundaries_and_utf8_spans_cover_every_raw_byte ... ok
+test rejects_malformed_records_without_echoing_them ... ok
+test budgets_are_explicit_and_resident_high_water_includes_active_and_clone ... ok
+test position_state_merging_preserves_id_ties_across_duplicate_text_splits ... ok
+test position_states_reject_history_scores_and_bound_extreme_addition ... ok
+test bigram_future_can_defeat_narrow_beam_and_context_is_only_finite_pool ... ok
+test no_inherited_thirty_two_parse_limit ... ok
+test all_reference_paths_match_exact_kbest_with_text_duplicates_and_fixed_seed_inputs ... ok
+test load_limits_are_explicit_and_v2_can_exceed_legacy_entry_limit ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.99s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 1 test
+test tests::error_has_stable_code_and_location ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

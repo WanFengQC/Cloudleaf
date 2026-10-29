@@ -1,0 +1,36 @@
+test_non_ok_prediction_cannot_claim_lost_raw_fallback_is_ready (test_language_readiness.ReadinessTests.test_non_ok_prediction_cannot_claim_lost_raw_fallback_is_ready) ...
+  test_non_ok_prediction_cannot_claim_lost_raw_fallback_is_ready (test_language_readiness.ReadinessTests.test_non_ok_prediction_cannot_claim_lost_raw_fallback_is_ready) (status='budget') ... FAIL
+  test_non_ok_prediction_cannot_claim_lost_raw_fallback_is_ready (test_language_readiness.ReadinessTests.test_non_ok_prediction_cannot_claim_lost_raw_fallback_is_ready) (status='rejected') ... FAIL
+  test_non_ok_prediction_cannot_claim_lost_raw_fallback_is_ready (test_language_readiness.ReadinessTests.test_non_ok_prediction_cannot_claim_lost_raw_fallback_is_ready) (status='unsupported') ... FAIL
+
+======================================================================
+FAIL: test_non_ok_prediction_cannot_claim_lost_raw_fallback_is_ready (test_language_readiness.ReadinessTests.test_non_ok_prediction_cannot_claim_lost_raw_fallback_is_ready) (status='budget')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_language_readiness.py", line 193, in test_non_ok_prediction_cannot_claim_lost_raw_fallback_is_ready
+    with self.assertRaisesRegex(ValueError, '原文回退'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_non_ok_prediction_cannot_claim_lost_raw_fallback_is_ready (test_language_readiness.ReadinessTests.test_non_ok_prediction_cannot_claim_lost_raw_fallback_is_ready) (status='rejected')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_language_readiness.py", line 193, in test_non_ok_prediction_cannot_claim_lost_raw_fallback_is_ready
+    with self.assertRaisesRegex(ValueError, '原文回退'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_non_ok_prediction_cannot_claim_lost_raw_fallback_is_ready (test_language_readiness.ReadinessTests.test_non_ok_prediction_cannot_claim_lost_raw_fallback_is_ready) (status='unsupported')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_language_readiness.py", line 193, in test_non_ok_prediction_cannot_claim_lost_raw_fallback_is_ready
+    with self.assertRaisesRegex(ValueError, '原文回退'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 1 test in 0.385s
+
+FAILED (failures=3)

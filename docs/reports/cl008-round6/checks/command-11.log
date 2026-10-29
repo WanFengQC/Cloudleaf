@@ -1,0 +1,111 @@
+完成 83 条样例、两个排序方案，每例预热 20 次、正式测量 100 次。
+{
+  "production-rules-v1": {
+    "dev": {
+      "count": 16,
+      "top1_count": 8,
+      "top5_count": 11,
+      "top1": 0.5,
+      "top5": 0.6875,
+      "mrr": 0.59375,
+      "candidate_availability": 0.6875,
+      "gold_coverage": 0.6875,
+      "errors": 0,
+      "correction": {
+        "capability": false,
+        "required": 3,
+        "attempts": 0,
+        "correct": 0,
+        "precision": null,
+        "recall": 0.0
+      },
+      "latency": {
+        "samples": 1600,
+        "p50_ns": 2200,
+        "p95_ns": 3800,
+        "p99_ns": 10300,
+        "max_ns": 26000
+      }
+    },
+    "heldout": {
+      "count": 67,
+      "top1_count": 31,
+      "top5_count": 37,
+      "top1": 0.4626865671641791,
+      "top5": 0.5522388059701493,
+      "mrr": 0.5012437810945274,
+      "candidate_availability": 0.5522388059701493,
+      "gold_coverage": 0.5522388059701493,
+      "errors": 1,
+      "correction": {
+        "capability": false,
+        "required": 12,
+        "attempts": 0,
+        "correct": 0,
+        "precision": null,
+        "recall": 0.0
+      },
+      "latency": {
+        "samples": 6700,
+        "p50_ns": 1600,
+        "p95_ns": 5800,
+        "p99_ns": 9400,
+        "max_ns": 38800
+      }
+    }
+  },
+  "frequency-only-ablation-v1": {
+    "dev": {
+      "count": 16,
+      "top1_count": 8,
+      "top5_count": 11,
+      "top1": 0.5,
+      "top5": 0.6875,
+      "mrr": 0.59375,
+      "candidate_availability": 0.6875,
+      "gold_coverage": 0.6875,
+      "errors": 0,
+      "correction": {
+        "capability": false,
+        "required": 3,
+        "attempts": 0,
+        "correct": 0,
+        "precision": null,
+        "recall": 0.0
+      },
+      "latency": {
+        "samples": 1600,
+        "p50_ns": 2200,
+        "p95_ns": 3800,
+        "p99_ns": 12800,
+        "max_ns": 41500
+      }
+    },
+    "heldout": {
+      "count": 67,
+      "top1_count": 31,
+      "top5_count": 37,
+      "top1": 0.4626865671641791,
+      "top5": 0.5522388059701493,
+      "mrr": 0.4987562189054726,
+      "candidate_availability": 0.5522388059701493,
+      "gold_coverage": 0.5522388059701493,
+      "errors": 1,
+      "correction": {
+        "capability": false,
+        "required": 12,
+        "attempts": 0,
+        "correct": 0,
+        "precision": null,
+        "recall": 0.0
+      },
+      "latency": {
+        "samples": 6700,
+        "p50_ns": 1600,
+        "p95_ns": 5900,
+        "p99_ns": 12100,
+        "max_ns": 53300
+      }
+    }
+  }
+}

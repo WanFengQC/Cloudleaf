@@ -1,0 +1,1483 @@
+{
+  "schema_version": 1,
+  "implementation_commit": "292cbd06614c376dbd1b8cc0a8172e099590e4db",
+  "source_sha256": "b62f6f8bcb6420bbb4a0ee8ba0cab64d413b8b0e8176325c5d075a8ec3ccb1ef",
+  "runtime_sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+  "configurations": {
+    "reference": {
+      "raw_path": "phases/reference.json",
+      "raw_sha256": "c4e6fcd9305406c2062f710115e035979896ae126925a500d00de77322f4fee1",
+      "cases": [
+        {
+          "id": "word-beijing",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-renmin",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-xuexi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-dianzi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-jisuanji",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-ruanjian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-shurufa",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "boundary-xian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "ambiguous-xian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "sentence-woxuexi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "sentence-jintian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "sentence-beijing",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "long-xian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "long-shi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "invalid-punctuation",
+          "status": "rejected",
+          "error_kind": "InvalidInput",
+          "budget": null,
+          "beam_pruned": null,
+          "samples": 30
+        },
+        {
+          "id": "invalid-separator",
+          "status": "rejected",
+          "error_kind": "InvalidInput",
+          "budget": null,
+          "beam_pruned": null,
+          "samples": 30
+        }
+      ]
+    },
+    "exact": {
+      "raw_path": "phases/exact.json",
+      "raw_sha256": "e04433c6e074657d7a8f177b5dd38a76ae3c22c3af04631b2993f92d06e71da6",
+      "cases": [
+        {
+          "id": "word-xuexi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-jisuanji",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-ruanjian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "sentence-beijing",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "long-xian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "long-shi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "invalid-punctuation",
+          "status": "rejected",
+          "error_kind": "InvalidInput",
+          "budget": null,
+          "beam_pruned": null,
+          "samples": 30
+        },
+        {
+          "id": "invalid-separator",
+          "status": "rejected",
+          "error_kind": "InvalidInput",
+          "budget": null,
+          "beam_pruned": null,
+          "samples": 30
+        }
+      ]
+    },
+    "beam1": {
+      "raw_path": "phases/beam1.json",
+      "raw_sha256": "dde9ff444773f4f3354bdcb5379119b9d67c169b7969f7dbe5ff70ae04065ef2",
+      "cases": [
+        {
+          "id": "word-zhongguo",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 112,
+          "samples": 30
+        },
+        {
+          "id": "word-beijing",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 294,
+          "samples": 30
+        },
+        {
+          "id": "word-renmin",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 92,
+          "samples": 30
+        },
+        {
+          "id": "word-xuexi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 172,
+          "samples": 30
+        },
+        {
+          "id": "word-dianzi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 169,
+          "samples": 30
+        },
+        {
+          "id": "word-jisuanji",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 298,
+          "samples": 30
+        },
+        {
+          "id": "word-ruanjian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 368,
+          "samples": 30
+        },
+        {
+          "id": "word-shurufa",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 111,
+          "samples": 30
+        },
+        {
+          "id": "boundary-xian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 190,
+          "samples": 30
+        },
+        {
+          "id": "ambiguous-xian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 225,
+          "samples": 30
+        },
+        {
+          "id": "prefix-zhongg",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 35,
+          "samples": 30
+        },
+        {
+          "id": "sentence-woxuexi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 414,
+          "samples": 30
+        },
+        {
+          "id": "sentence-jintian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 744,
+          "samples": 30
+        },
+        {
+          "id": "sentence-beijing",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 812,
+          "samples": 30
+        },
+        {
+          "id": "long-xian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 2119,
+          "samples": 30
+        },
+        {
+          "id": "long-shi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 973,
+          "samples": 30
+        },
+        {
+          "id": "invalid-punctuation",
+          "status": "rejected",
+          "error_kind": "InvalidInput",
+          "budget": null,
+          "beam_pruned": null,
+          "samples": 30
+        },
+        {
+          "id": "invalid-separator",
+          "status": "rejected",
+          "error_kind": "InvalidInput",
+          "budget": null,
+          "beam_pruned": null,
+          "samples": 30
+        }
+      ]
+    },
+    "beam8": {
+      "raw_path": "phases/beam8.json",
+      "raw_sha256": "094ed31b2af9ec8646a39e07400a89053566240dd7e4bc3f28c85a6b79d42fc0",
+      "cases": [
+        {
+          "id": "word-zhongguo",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 402,
+          "samples": 30
+        },
+        {
+          "id": "word-beijing",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 1285,
+          "samples": 30
+        },
+        {
+          "id": "word-renmin",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 302,
+          "samples": 30
+        },
+        {
+          "id": "word-xuexi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 434,
+          "samples": 30
+        },
+        {
+          "id": "word-dianzi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 328,
+          "samples": 30
+        },
+        {
+          "id": "word-jisuanji",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 670,
+          "samples": 30
+        },
+        {
+          "id": "word-ruanjian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 1641,
+          "samples": 30
+        },
+        {
+          "id": "word-shurufa",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 229,
+          "samples": 30
+        },
+        {
+          "id": "boundary-xian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 220,
+          "samples": 30
+        },
+        {
+          "id": "ambiguous-xian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 255,
+          "samples": 30
+        },
+        {
+          "id": "prefix-zhongg",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 28,
+          "samples": 30
+        },
+        {
+          "id": "sentence-woxuexi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 1963,
+          "samples": 30
+        },
+        {
+          "id": "sentence-jintian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 2668,
+          "samples": 30
+        },
+        {
+          "id": "sentence-beijing",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 3941,
+          "samples": 30
+        },
+        {
+          "id": "long-xian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 9220,
+          "samples": 30
+        },
+        {
+          "id": "long-shi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 4268,
+          "samples": 30
+        },
+        {
+          "id": "invalid-punctuation",
+          "status": "rejected",
+          "error_kind": "InvalidInput",
+          "budget": null,
+          "beam_pruned": null,
+          "samples": 30
+        },
+        {
+          "id": "invalid-separator",
+          "status": "rejected",
+          "error_kind": "InvalidInput",
+          "budget": null,
+          "beam_pruned": null,
+          "samples": 30
+        }
+      ]
+    },
+    "beam64": {
+      "raw_path": "phases/beam64.json",
+      "raw_sha256": "c20a8e08098fa98ec5a482b0b68924cada704411e859f6c72c977b92549a4908",
+      "cases": [
+        {
+          "id": "word-zhongguo",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 318,
+          "samples": 30
+        },
+        {
+          "id": "word-beijing",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 1140,
+          "samples": 30
+        },
+        {
+          "id": "word-renmin",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 221,
+          "samples": 30
+        },
+        {
+          "id": "word-xuexi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 322,
+          "samples": 30
+        },
+        {
+          "id": "word-dianzi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 168,
+          "samples": 30
+        },
+        {
+          "id": "word-jisuanji",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 455,
+          "samples": 30
+        },
+        {
+          "id": "word-ruanjian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 1401,
+          "samples": 30
+        },
+        {
+          "id": "word-shurufa",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 117,
+          "samples": 30
+        },
+        {
+          "id": "boundary-xian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 117,
+          "samples": 30
+        },
+        {
+          "id": "ambiguous-xian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 143,
+          "samples": 30
+        },
+        {
+          "id": "sentence-woxuexi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 1724,
+          "samples": 30
+        },
+        {
+          "id": "sentence-jintian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 2084,
+          "samples": 30
+        },
+        {
+          "id": "sentence-beijing",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 3478,
+          "samples": 30
+        },
+        {
+          "id": "long-xian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 8268,
+          "samples": 30
+        },
+        {
+          "id": "long-shi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": null,
+          "beam_pruned": 3876,
+          "samples": 30
+        },
+        {
+          "id": "invalid-punctuation",
+          "status": "rejected",
+          "error_kind": "InvalidInput",
+          "budget": null,
+          "beam_pruned": null,
+          "samples": 30
+        },
+        {
+          "id": "invalid-separator",
+          "status": "rejected",
+          "error_kind": "InvalidInput",
+          "budget": null,
+          "beam_pruned": null,
+          "samples": 30
+        }
+      ]
+    },
+    "exact-edges128": {
+      "raw_path": "phases/exact-edges128.json",
+      "raw_sha256": "b49b67d0b785d758924d4b9b582edb907461f5004c4112a6762acddf64c89c15",
+      "cases": [
+        {
+          "id": "short-zhong",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-zhongguo",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-beijing",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-renmin",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-xuexi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-dianzi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-jisuanji",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-ruanjian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-shurufa",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "boundary-xian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "ambiguous-xian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "prefix-zhongg",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "sentence-woxuexi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "sentence-jintian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "sentence-beijing",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "long-xian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "long-shi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "unknown-zzzz",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "invalid-punctuation",
+          "status": "rejected",
+          "error_kind": "InvalidInput",
+          "budget": null,
+          "beam_pruned": null,
+          "samples": 30
+        },
+        {
+          "id": "invalid-separator",
+          "status": "rejected",
+          "error_kind": "InvalidInput",
+          "budget": null,
+          "beam_pruned": null,
+          "samples": 30
+        }
+      ]
+    },
+    "exact-expansions500": {
+      "raw_path": "phases/exact-expansions500.json",
+      "raw_sha256": "6df15f4f68362eaeda7bb083aa9de31a9c65cf65be7084984d8664b83b464241",
+      "cases": [
+        {
+          "id": "word-zhongguo",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-beijing",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-renmin",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-xuexi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-dianzi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-jisuanji",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-ruanjian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-shurufa",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "boundary-xian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "ambiguous-xian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "prefix-zhongg",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "sentence-woxuexi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "sentence-jintian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "sentence-beijing",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "long-xian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "long-shi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "invalid-punctuation",
+          "status": "rejected",
+          "error_kind": "InvalidInput",
+          "budget": null,
+          "beam_pruned": null,
+          "samples": 30
+        },
+        {
+          "id": "invalid-separator",
+          "status": "rejected",
+          "error_kind": "InvalidInput",
+          "budget": null,
+          "beam_pruned": null,
+          "samples": 30
+        }
+      ]
+    },
+    "exact-resident128": {
+      "raw_path": "phases/exact-resident128.json",
+      "raw_sha256": "9ad33af8fcf3b7da9d261bc59f3313dcb2a80b7381d78253447421691730e875",
+      "cases": [
+        {
+          "id": "word-zhongguo",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "ResidentPaths",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-beijing",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "ResidentPaths",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-renmin",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "ResidentPaths",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-xuexi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "ResidentPaths",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-dianzi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "ResidentPaths",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-jisuanji",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "ResidentPaths",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-ruanjian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "ResidentPaths",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-shurufa",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "ResidentPaths",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "boundary-xian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "ResidentPaths",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "ambiguous-xian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "ResidentPaths",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "prefix-zhongg",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "ResidentPaths",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "sentence-woxuexi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "ResidentPaths",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "sentence-jintian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "ResidentPaths",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "sentence-beijing",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "ResidentPaths",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "long-xian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "ResidentPaths",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "long-shi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "ResidentPaths",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "invalid-punctuation",
+          "status": "rejected",
+          "error_kind": "InvalidInput",
+          "budget": null,
+          "beam_pruned": null,
+          "samples": 30
+        },
+        {
+          "id": "invalid-separator",
+          "status": "rejected",
+          "error_kind": "InvalidInput",
+          "budget": null,
+          "beam_pruned": null,
+          "samples": 30
+        }
+      ]
+    },
+    "position": {
+      "raw_path": "phases/position.json",
+      "raw_sha256": "685d7602bc7e97a2d50d228ecfa5d104e2642fe7fb64b3c547773bfb77fd76c1",
+      "cases": [
+        {
+          "id": "invalid-punctuation",
+          "status": "rejected",
+          "error_kind": "InvalidInput",
+          "budget": null,
+          "beam_pruned": null,
+          "samples": 30
+        },
+        {
+          "id": "invalid-separator",
+          "status": "rejected",
+          "error_kind": "InvalidInput",
+          "budget": null,
+          "beam_pruned": null,
+          "samples": 30
+        }
+      ]
+    },
+    "position-edges128": {
+      "raw_path": "phases/position-edges128.json",
+      "raw_sha256": "07ff6c2ab91986f8bea562a3610736e9cdfd04619341e6c891662541bcd7c86a",
+      "cases": [
+        {
+          "id": "short-zhong",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-zhongguo",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-beijing",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-renmin",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-xuexi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-dianzi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-jisuanji",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-ruanjian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-shurufa",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "boundary-xian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "ambiguous-xian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "prefix-zhongg",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "sentence-woxuexi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "sentence-jintian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "sentence-beijing",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "long-xian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "long-shi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "unknown-zzzz",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "GraphEdges",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "invalid-punctuation",
+          "status": "rejected",
+          "error_kind": "InvalidInput",
+          "budget": null,
+          "beam_pruned": null,
+          "samples": 30
+        },
+        {
+          "id": "invalid-separator",
+          "status": "rejected",
+          "error_kind": "InvalidInput",
+          "budget": null,
+          "beam_pruned": null,
+          "samples": 30
+        }
+      ]
+    },
+    "position-expansions500": {
+      "raw_path": "phases/position-expansions500.json",
+      "raw_sha256": "4af6bfd593c49214bf26077808467309a45586735e03a80e2d0f6d2fc8a2b87b",
+      "cases": [
+        {
+          "id": "word-zhongguo",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-beijing",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-renmin",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-xuexi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-dianzi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-jisuanji",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-ruanjian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "word-shurufa",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "boundary-xian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "ambiguous-xian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "prefix-zhongg",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "sentence-woxuexi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "sentence-jintian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "sentence-beijing",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "long-xian",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "long-shi",
+          "status": "ok",
+          "error_kind": null,
+          "budget": "Expansions",
+          "beam_pruned": 0,
+          "samples": 30
+        },
+        {
+          "id": "invalid-punctuation",
+          "status": "rejected",
+          "error_kind": "InvalidInput",
+          "budget": null,
+          "beam_pruned": null,
+          "samples": 30
+        },
+        {
+          "id": "invalid-separator",
+          "status": "rejected",
+          "error_kind": "InvalidInput",
+          "budget": null,
+          "beam_pruned": null,
+          "samples": 30
+        }
+      ]
+    },
+    "position-resident128": {
+      "raw_path": "phases/position-resident128.json",
+      "raw_sha256": "9c6b21f78a8a4e2674fc68f40538680f788455e581d7568ca3c6d56d8fb84adc",
+      "cases": [
+        {
+          "id": "invalid-punctuation",
+          "status": "rejected",
+          "error_kind": "InvalidInput",
+          "budget": null,
+          "beam_pruned": null,
+          "samples": 30
+        },
+        {
+          "id": "invalid-separator",
+          "status": "rejected",
+          "error_kind": "InvalidInput",
+          "budget": null,
+          "beam_pruned": null,
+          "samples": 30
+        }
+      ]
+    }
+  },
+  "behavior_mismatch_cases": [],
+  "language_accuracy_valid": false,
+  "note": "这里只索引原报告中已有的拒绝/预算/剪枝；它们均保留全部样本和完整原结果。剪枝不是非法输入错误，全部不作语言准确率。"
+}

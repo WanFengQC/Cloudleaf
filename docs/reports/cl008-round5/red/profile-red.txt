@@ -1,0 +1,11 @@
+   Compiling cloudleaf-search v0.1.0 (C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\crates\cloudleaf-search)
+error[E0432]: unresolved imports `cloudleaf_search::Phase`, `cloudleaf_search::profile_query`
+ --> crates\cloudleaf-search\tests\profiling.rs:2:47
+  |
+2 |     Budget, Config, Lattice, Lexicon, Method, Phase, Ranker, profile_query, search_graph,
+  |                                               ^^^^^          ^^^^^^^^^^^^^ no `profile_query` in the root
+  |                                               |
+  |                                               no `Phase` in the root
+
+For more information about this error, try `rustc --explain E0432`.
+error: could not compile `cloudleaf-search` (test "profiling") due to 1 previous error

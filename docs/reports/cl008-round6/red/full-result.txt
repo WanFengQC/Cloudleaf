@@ -1,0 +1,14 @@
+E.......
+======================================================================
+ERROR: test_actual_host_preserves_full_result_for_cross_version_comparison (test_search_phases.ActualProfileTests.test_actual_host_preserves_full_result_for_cross_version_comparison)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl008-search\Cloudleaf\tests\test_search_phases.py", line 129, in test_actual_host_preserves_full_result_for_cross_version_comparison
+    self.assertIn('edge_indices:', observed['cases'][0]['result_debug'])
+                                   ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+KeyError: 'result_debug'
+
+----------------------------------------------------------------------
+Ran 8 tests in 16.847s
+
+FAILED (errors=1)

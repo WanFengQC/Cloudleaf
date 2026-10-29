@@ -1,0 +1,20 @@
+{
+  "actual_terminal_preparation_failures": [
+    {
+      "command_kind": "inline Python shell edit",
+      "observed_error": "SyntaxError: unterminated string literal",
+      "file_changed": false
+    },
+    {
+      "command_kind": "bare cargo targeted invocation",
+      "observed_error": "cargo not recognized / Python WinError 2",
+      "production_failure": false
+    },
+    {
+      "command_kind": "first targeted runner bare executable resolution",
+      "observed_error": "FileNotFoundError: [WinError 2]",
+      "production_failure": false
+    }
+  ],
+  "scope": "These are honest terminal-output descriptions, not original subprocess byte captures. Final runners resolve each executable explicitly; all actual captured originals are in raw-artifacts.json."
+}

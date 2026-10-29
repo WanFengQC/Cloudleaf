@@ -1,0 +1,59 @@
+[
+  {
+    "command": [
+      "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+      "fmt",
+      "--all"
+    ],
+    "returncode": 0,
+    "seconds": 0.5223287000044365
+  },
+  {
+    "command": [
+      "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "-X",
+      "utf8",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_real_lexicon_evaluation.py",
+      "-v"
+    ],
+    "returncode": 0,
+    "seconds": 4.587385600003472
+  },
+  {
+    "command": [
+      "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "-X",
+      "utf8",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_search_resources.py",
+      "-v"
+    ],
+    "returncode": 0,
+    "seconds": 0.1554392000034568
+  },
+  {
+    "command": [
+      "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+      "test",
+      "-p",
+      "cloudleaf-search",
+      "--test",
+      "resource_contract",
+      "--locked",
+      "--offline"
+    ],
+    "returncode": 0,
+    "seconds": 0.7877385999963735
+  }
+]

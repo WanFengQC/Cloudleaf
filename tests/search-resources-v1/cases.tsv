@@ -1,0 +1,26 @@
+# cloudleaf-search-resource-cases-v1
+id	family	input	kind
+empty	empty		empty
+short-shi	shi	shi	short
+short-zhong	zhong	zhong	short
+short-lv	lv	lü	unicode
+word-zhongguo	zhongguo	zhongguo	word
+word-beijing	beijing	beijing	word
+word-renmin	renmin	renmin	word
+word-xuexi	xuexi	xuexi	word
+word-dianzi	dianzi	dianzi	word
+word-jisuanji	jisuanji	jisuanji	word
+word-ruanjian	ruanjian	ruanjian	word
+word-shurufa	shurufa	shurufa	word
+boundary-xian	xian	xi'an	boundary
+ambiguous-xian	xian	xian	ambiguity
+prefix-zhongg	zhongguo	zhongg	prefix
+waiting-zhong	zhong	zhong'	waiting
+sentence-woxuexi	sentence-study	woxuexizhongwen	sentence
+sentence-jintian	sentence-weather	jintiantianqihenhao	sentence
+sentence-beijing	sentence-location	woxiangqubeijing	sentence
+long-xian	long-xian	xianxianxianxianxianxian	long-ambiguity
+long-shi	long-shi	shishishishishishishishi	long-ambiguity
+unknown-zzzz	unknown	zzzz	unmatched
+invalid-punctuation	invalid	ni,hao	invalid
+invalid-separator	invalid	'ni	invalid

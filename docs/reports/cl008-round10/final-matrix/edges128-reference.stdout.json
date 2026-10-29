@@ -1,0 +1,1786 @@
+{
+  "format": "cloudleaf-search-resource-observation-v2",
+  "configuration": {
+    "method": "reference",
+    "beam_width": 8,
+    "max_edges": 128,
+    "max_expansions": 200000,
+    "max_resident_paths": 50000,
+    "max_input_bytes": 512,
+    "max_letters": 256,
+    "output_k": 5,
+    "context_pool": 20,
+    "ranker": "Structural"
+  },
+  "language_accuracy_valid": false,
+  "frequency_feature_enabled": false,
+  "language_model_loaded": false,
+  "lexicon_entries": 123544,
+  "trie_nodes": 298032,
+  "load_ns": 411982900,
+  "missing_frequencies": 123544,
+  "iterations_per_case": 5,
+  "warmup_per_case": 1,
+  "cases": [
+    {
+      "id": "empty",
+      "family": "empty",
+      "input": "",
+      "kind": "empty",
+      "raw_fallback": "",
+      "samples_ns": [
+        800,
+        200,
+        500,
+        100,
+        200
+      ],
+      "p50_ns": 200,
+      "p95_ns": 800,
+      "p99_ns": 800,
+      "max_ns": 800,
+      "status": "ok",
+      "candidates": [],
+      "whole_entry_candidates": [],
+      "whole_entry_complete": true,
+      "fallback_preserved": true,
+      "waiting": false,
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 0,
+        "expansions": 0,
+        "resident_high_water": 0,
+        "beam_pruned": 0,
+        "budget": null
+      }
+    },
+    {
+      "id": "short-shi",
+      "family": "shi",
+      "input": "shi",
+      "kind": "short",
+      "raw_fallback": "shi",
+      "samples_ns": [
+        29100,
+        27900,
+        26800,
+        29300,
+        28900
+      ],
+      "p50_ns": 28900,
+      "p95_ns": 29300,
+      "p99_ns": 29300,
+      "max_ns": 29300,
+      "status": "ok",
+      "candidates": [
+        {
+          "text": "莳",
+          "score": -100,
+          "ids": [
+            "entry:00760e82259c979492b698936c140b08"
+          ],
+          "records": [
+            {
+              "id": "entry:00760e82259c979492b698936c140b08",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:e190504f4320434a61e45dff9d66a265",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "澨",
+          "score": -100,
+          "ids": [
+            "entry:04e11f4bd4004ba0b7e76721942fe54e"
+          ],
+          "records": [
+            {
+              "id": "entry:04e11f4bd4004ba0b7e76721942fe54e",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:862cc023d8878965534b6ac46608bec7",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "鼭",
+          "score": -100,
+          "ids": [
+            "entry:050bfb8a6547a29dac5ec0d4f5a8f12d"
+          ],
+          "records": [
+            {
+              "id": "entry:050bfb8a6547a29dac5ec0d4f5a8f12d",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:3990dc35132ec0b264c4959769492113",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "匙",
+          "score": -100,
+          "ids": [
+            "entry:08d59b651207b1fc61f85a1bd51701bf"
+          ],
+          "records": [
+            {
+              "id": "entry:08d59b651207b1fc61f85a1bd51701bf",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:d5cb83d5a1486197e507217fab71c334",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "誓",
+          "score": -100,
+          "ids": [
+            "entry:0906042ea5e4b26168482e0df68a9c55"
+          ],
+          "records": [
+            {
+              "id": "entry:0906042ea5e4b26168482e0df68a9c55",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:61b102ba052f16973946c3969a6ecc9b",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        }
+      ],
+      "whole_entry_candidates": [
+        "莳",
+        "澨",
+        "鼭",
+        "匙",
+        "誓"
+      ],
+      "whole_entry_complete": true,
+      "fallback_preserved": true,
+      "waiting": false,
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 117,
+        "expansions": 117,
+        "resident_high_water": 118,
+        "beam_pruned": 0,
+        "budget": null
+      }
+    },
+    {
+      "id": "short-zhong",
+      "family": "zhong",
+      "input": "zhong",
+      "kind": "short",
+      "raw_fallback": "zhong",
+      "samples_ns": [
+        11800,
+        11200,
+        10900,
+        10800,
+        10700
+      ],
+      "p50_ns": 10900,
+      "p95_ns": 11800,
+      "p99_ns": 11800,
+      "max_ns": 11800,
+      "status": "ok",
+      "candidates": [
+        {
+          "text": "中",
+          "score": -100,
+          "ids": [
+            "entry:07ce77a1db3405136caed18a8c02fe7e"
+          ],
+          "records": [
+            {
+              "id": "entry:07ce77a1db3405136caed18a8c02fe7e",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:4ae5850e48bf09112a2a5e81c3e1b0cb",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "忠",
+          "score": -100,
+          "ids": [
+            "entry:0afbd3a05617d9a257e66a258d221093"
+          ],
+          "records": [
+            {
+              "id": "entry:0afbd3a05617d9a257e66a258d221093",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:732cdafa72cf15546a3ee4e5001a2a48",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "仲",
+          "score": -100,
+          "ids": [
+            "entry:0e9a26e5740541ca2f5f90220312e132"
+          ],
+          "records": [
+            {
+              "id": "entry:0e9a26e5740541ca2f5f90220312e132",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:13da32aec57432f0dcc0f5c93de9f582",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "彸",
+          "score": -100,
+          "ids": [
+            "entry:11040918c9d5db57b7ebdc788ac090bd"
+          ],
+          "records": [
+            {
+              "id": "entry:11040918c9d5db57b7ebdc788ac090bd",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:4616a19e2982bf0dc7429403e7f9d406",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "终",
+          "score": -100,
+          "ids": [
+            "entry:11c192568f3d75c920c32d521c3f462d"
+          ],
+          "records": [
+            {
+              "id": "entry:11c192568f3d75c920c32d521c3f462d",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:efea8bcc94c5066038fd250f0157e274",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        }
+      ],
+      "whole_entry_candidates": [
+        "中",
+        "忠",
+        "仲",
+        "彸",
+        "终"
+      ],
+      "whole_entry_complete": false,
+      "fallback_preserved": true,
+      "waiting": false,
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 128,
+        "expansions": 36,
+        "resident_high_water": 37,
+        "beam_pruned": 0,
+        "budget": "GraphEdges"
+      }
+    },
+    {
+      "id": "short-lv",
+      "family": "lv",
+      "input": "lü",
+      "kind": "unicode",
+      "raw_fallback": "lü",
+      "samples_ns": [
+        11000,
+        10800,
+        11500,
+        10600,
+        28200
+      ],
+      "p50_ns": 11000,
+      "p95_ns": 28200,
+      "p99_ns": 28200,
+      "max_ns": 28200,
+      "status": "ok",
+      "candidates": [
+        {
+          "text": "梠",
+          "score": -100,
+          "ids": [
+            "entry:05ff1efb7ed5032d6f10ad06e79eb9c7"
+          ],
+          "records": [
+            {
+              "id": "entry:05ff1efb7ed5032d6f10ad06e79eb9c7",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:cc0b4d0ddfe3cb2f7b8ec3ea52f6ea37",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "稆",
+          "score": -100,
+          "ids": [
+            "entry:077079112ad926737ae0be727252de14"
+          ],
+          "records": [
+            {
+              "id": "entry:077079112ad926737ae0be727252de14",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:7873ce41f5051e4258866e35e25aa677",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "履",
+          "score": -100,
+          "ids": [
+            "entry:18fdf2f24284fffb99deb2064fc169fd"
+          ],
+          "records": [
+            {
+              "id": "entry:18fdf2f24284fffb99deb2064fc169fd",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:1bc84cd7bbb2700a87a33eb23b68a9ca",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "鑢",
+          "score": -100,
+          "ids": [
+            "entry:2cd1937677ddea89174e05cba1684fd2"
+          ],
+          "records": [
+            {
+              "id": "entry:2cd1937677ddea89174e05cba1684fd2",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:f89962159b1080a48b545ab825e089b6",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "氯",
+          "score": -100,
+          "ids": [
+            "entry:2f9ae1ceea688914152d7edef2ef9a7e"
+          ],
+          "records": [
+            {
+              "id": "entry:2f9ae1ceea688914152d7edef2ef9a7e",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:bfc9b3b393e0977a3a4209fb7eafb260",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        }
+      ],
+      "whole_entry_candidates": [
+        "梠",
+        "稆",
+        "履",
+        "鑢",
+        "氯"
+      ],
+      "whole_entry_complete": true,
+      "fallback_preserved": true,
+      "waiting": false,
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 41,
+        "expansions": 41,
+        "resident_high_water": 42,
+        "beam_pruned": 0,
+        "budget": null
+      }
+    },
+    {
+      "id": "word-zhongguo",
+      "family": "zhongguo",
+      "input": "zhongguo",
+      "kind": "word",
+      "raw_fallback": "zhongguo",
+      "samples_ns": [
+        827500,
+        712700,
+        772600,
+        608900,
+        370300
+      ],
+      "p50_ns": 712700,
+      "p95_ns": 827500,
+      "p99_ns": 827500,
+      "max_ns": 827500,
+      "status": "ok",
+      "candidates": [
+        {
+          "text": "中国",
+          "score": -100,
+          "ids": [
+            "entry:5af919e4418f70f92f18bc7f98469172"
+          ],
+          "records": [
+            {
+              "id": "entry:5af919e4418f70f92f18bc7f98469172",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:5188e5415e2cee9bd11fbbab100e1370",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        }
+      ],
+      "whole_entry_candidates": [
+        "中国"
+      ],
+      "whole_entry_complete": false,
+      "fallback_preserved": true,
+      "waiting": false,
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 128,
+        "expansions": 1263,
+        "resident_high_water": 71,
+        "beam_pruned": 0,
+        "budget": "GraphEdges"
+      }
+    },
+    {
+      "id": "word-beijing",
+      "family": "beijing",
+      "input": "beijing",
+      "kind": "word",
+      "raw_fallback": "beijing",
+      "samples_ns": [
+        74300,
+        73000,
+        74200,
+        83100,
+        72100
+      ],
+      "p50_ns": 74200,
+      "p95_ns": 83100,
+      "p99_ns": 83100,
+      "max_ns": 83100,
+      "status": "ok",
+      "candidates": [
+        {
+          "text": "背景",
+          "score": -100,
+          "ids": [
+            "entry:22b44fe797c73646aac1879bbabc91f5"
+          ],
+          "records": [
+            {
+              "id": "entry:22b44fe797c73646aac1879bbabc91f5",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:c69689ccfb9e9c7c21b50a889bef3411",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "北京",
+          "score": -100,
+          "ids": [
+            "entry:4a1a21408f726c2425ed9ac475e5de84"
+          ],
+          "records": [
+            {
+              "id": "entry:4a1a21408f726c2425ed9ac475e5de84",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:2a74b235a43e563de1e8c3d3c1f49096",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        }
+      ],
+      "whole_entry_candidates": [
+        "背景",
+        "北京"
+      ],
+      "whole_entry_complete": false,
+      "fallback_preserved": true,
+      "waiting": false,
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 128,
+        "expansions": 251,
+        "resident_high_water": 48,
+        "beam_pruned": 0,
+        "budget": "GraphEdges"
+      }
+    },
+    {
+      "id": "word-renmin",
+      "family": "renmin",
+      "input": "renmin",
+      "kind": "word",
+      "raw_fallback": "renmin",
+      "samples_ns": [
+        89500,
+        89500,
+        89400,
+        90300,
+        91200
+      ],
+      "p50_ns": 89500,
+      "p95_ns": 91200,
+      "p99_ns": 91200,
+      "max_ns": 91200,
+      "status": "ok",
+      "candidates": [
+        {
+          "text": "人民",
+          "score": -100,
+          "ids": [
+            "entry:65cc8dd8d602d8f19b5fc8eed3db8a58"
+          ],
+          "records": [
+            {
+              "id": "entry:65cc8dd8d602d8f19b5fc8eed3db8a58",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:86da9aa8fb60754635c8cd4c9b7c4503",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "认命",
+          "score": -400,
+          "ids": [
+            "entry:25f7c80070471d44e05c7c7a23c85ccf"
+          ],
+          "records": [
+            {
+              "id": "entry:25f7c80070471d44e05c7c7a23c85ccf",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:c07102cad22e3d4c3a89af9e821be140",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 1,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "人名",
+          "score": -400,
+          "ids": [
+            "entry:2aa543ed656f6cd7314e6bdc2ae46dfe"
+          ],
+          "records": [
+            {
+              "id": "entry:2aa543ed656f6cd7314e6bdc2ae46dfe",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:f42ce4c33826a01790a814ce1fdfbfc4",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 1,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "任命",
+          "score": -400,
+          "ids": [
+            "entry:301ff6c8de7e3b8b7caf55764a832571"
+          ],
+          "records": [
+            {
+              "id": "entry:301ff6c8de7e3b8b7caf55764a832571",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:bff7599604604d4bcecd49d95df2ed3a",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 1,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "人命",
+          "score": -400,
+          "ids": [
+            "entry:4263181d64c696febe728c4e723f8062"
+          ],
+          "records": [
+            {
+              "id": "entry:4263181d64c696febe728c4e723f8062",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:08ca2e82453009d6fba64c927674ce7a",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 1,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        }
+      ],
+      "whole_entry_candidates": [
+        "人民",
+        "认命",
+        "人名",
+        "任命",
+        "人命"
+      ],
+      "whole_entry_complete": false,
+      "fallback_preserved": true,
+      "waiting": false,
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 128,
+        "expansions": 308,
+        "resident_high_water": 51,
+        "beam_pruned": 0,
+        "budget": "GraphEdges"
+      }
+    },
+    {
+      "id": "word-xuexi",
+      "family": "xuexi",
+      "input": "xuexi",
+      "kind": "word",
+      "raw_fallback": "xuexi",
+      "samples_ns": [
+        252700,
+        247200,
+        537200,
+        274100,
+        244000
+      ],
+      "p50_ns": 252700,
+      "p95_ns": 537200,
+      "p99_ns": 537200,
+      "max_ns": 537200,
+      "status": "ok",
+      "candidates": [
+        {
+          "text": "谑戏",
+          "score": -100,
+          "ids": [
+            "entry:9226ee7840db320aa2421582eea447cb"
+          ],
+          "records": [
+            {
+              "id": "entry:9226ee7840db320aa2421582eea447cb",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:98451bbf954b3c3270a207b96b2c0aa1",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "学习",
+          "score": -100,
+          "ids": [
+            "entry:e565b5313a9aa6feba06cf44b63bd29c"
+          ],
+          "records": [
+            {
+              "id": "entry:e565b5313a9aa6feba06cf44b63bd29c",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:b4e58144870de53ef171cb6eb04ee067",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "血洗",
+          "score": -100,
+          "ids": [
+            "entry:e79a9f91afb7ea521560feefa28bbc81"
+          ],
+          "records": [
+            {
+              "id": "entry:e79a9f91afb7ea521560feefa28bbc81",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:df270e560b2cdc370c2050d045961b56",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "学校",
+          "score": -400,
+          "ids": [
+            "entry:02b5aca33976e1e32d540fdd8ce0d3fa"
+          ],
+          "records": [
+            {
+              "id": "entry:02b5aca33976e1e32d540fdd8ce0d3fa",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:69d6859ba345debe20cdb334eb925025",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 1,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "雪鸮",
+          "score": -400,
+          "ids": [
+            "entry:195b13cf415cc181f96e54622a54e58f"
+          ],
+          "records": [
+            {
+              "id": "entry:195b13cf415cc181f96e54622a54e58f",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:50271f9307db560f0160f97a3e118c97",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 1,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        }
+      ],
+      "whole_entry_candidates": [
+        "谑戏",
+        "学习",
+        "血洗",
+        "学校",
+        "雪鸮"
+      ],
+      "whole_entry_complete": false,
+      "fallback_preserved": true,
+      "waiting": false,
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 128,
+        "expansions": 884,
+        "resident_high_water": 120,
+        "beam_pruned": 0,
+        "budget": "GraphEdges"
+      }
+    },
+    {
+      "id": "word-dianzi",
+      "family": "dianzi",
+      "input": "dianzi",
+      "kind": "word",
+      "raw_fallback": "dianzi",
+      "samples_ns": [
+        23300,
+        22700,
+        21900,
+        22100,
+        21500
+      ],
+      "p50_ns": 22100,
+      "p95_ns": 23300,
+      "p99_ns": 23300,
+      "max_ns": 23300,
+      "status": "ok",
+      "candidates": [
+        {
+          "text": "点字",
+          "score": -100,
+          "ids": [
+            "entry:219bd44be89c5978a6c96a7e6d022aec"
+          ],
+          "records": [
+            {
+              "id": "entry:219bd44be89c5978a6c96a7e6d022aec",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:a91a834078b7b55f73f658ebaea980a0",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        }
+      ],
+      "whole_entry_candidates": [
+        "点字"
+      ],
+      "whole_entry_complete": false,
+      "fallback_preserved": true,
+      "waiting": false,
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 128,
+        "expansions": 128,
+        "resident_high_water": 129,
+        "beam_pruned": 0,
+        "budget": "GraphEdges"
+      }
+    },
+    {
+      "id": "word-jisuanji",
+      "family": "jisuanji",
+      "input": "jisuanji",
+      "kind": "word",
+      "raw_fallback": "jisuanji",
+      "samples_ns": [
+        20800,
+        20400,
+        20700,
+        20700,
+        20500
+      ],
+      "p50_ns": 20700,
+      "p95_ns": 20800,
+      "p99_ns": 20800,
+      "max_ns": 20800,
+      "status": "ok",
+      "candidates": [],
+      "whole_entry_candidates": [],
+      "whole_entry_complete": false,
+      "fallback_preserved": true,
+      "waiting": false,
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 128,
+        "expansions": 128,
+        "resident_high_water": 129,
+        "beam_pruned": 0,
+        "budget": "GraphEdges"
+      }
+    },
+    {
+      "id": "word-ruanjian",
+      "family": "ruanjian",
+      "input": "ruanjian",
+      "kind": "word",
+      "raw_fallback": "ruanjian",
+      "samples_ns": [
+        10042500,
+        11729600,
+        10028800,
+        8802600,
+        11905400
+      ],
+      "p50_ns": 10042500,
+      "p95_ns": 11905400,
+      "p99_ns": 11905400,
+      "max_ns": 11905400,
+      "status": "ok",
+      "candidates": [
+        {
+          "text": "软件",
+          "score": -100,
+          "ids": [
+            "entry:222d6c1a20c05f07c23a35a0633e25e9"
+          ],
+          "records": [
+            {
+              "id": "entry:222d6c1a20c05f07c23a35a0633e25e9",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:605bd4f3f1320c2a24a5f29783bc11b6",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "蓐安检",
+          "score": -200,
+          "ids": [
+            "entry:019e87984d4b4cffe4b1c03aae6dd544",
+            "entry:102ca1661cc517b03ec39ee46cd036bf"
+          ],
+          "records": [
+            {
+              "id": "entry:019e87984d4b4cffe4b1c03aae6dd544",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:e85b0a8aad3425604933a3e95fcb528d",
+              "license_id": "CC-BY-SA-4.0"
+            },
+            {
+              "id": "entry:102ca1661cc517b03ec39ee46cd036bf",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:cd1dd37e1c8d64394a9793493d2b24d4",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 2,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 2,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "蓐暗箭",
+          "score": -200,
+          "ids": [
+            "entry:019e87984d4b4cffe4b1c03aae6dd544",
+            "entry:70c9b41052a7f1fd6c75674d3a1abdaf"
+          ],
+          "records": [
+            {
+              "id": "entry:019e87984d4b4cffe4b1c03aae6dd544",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:e85b0a8aad3425604933a3e95fcb528d",
+              "license_id": "CC-BY-SA-4.0"
+            },
+            {
+              "id": "entry:70c9b41052a7f1fd6c75674d3a1abdaf",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:7ce107836dbd418406f5358b2790a365",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 2,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 2,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "蓐案件",
+          "score": -200,
+          "ids": [
+            "entry:019e87984d4b4cffe4b1c03aae6dd544",
+            "entry:7de72690b3cc74e9588ede1fa49e902f"
+          ],
+          "records": [
+            {
+              "id": "entry:019e87984d4b4cffe4b1c03aae6dd544",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:e85b0a8aad3425604933a3e95fcb528d",
+              "license_id": "CC-BY-SA-4.0"
+            },
+            {
+              "id": "entry:7de72690b3cc74e9588ede1fa49e902f",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:49422deabda84e1e72098a0989892f7c",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 2,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 2,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "蓐鞍鞯",
+          "score": -200,
+          "ids": [
+            "entry:019e87984d4b4cffe4b1c03aae6dd544",
+            "entry:aab7051534c0d0fee8b029a0310e5daa"
+          ],
+          "records": [
+            {
+              "id": "entry:019e87984d4b4cffe4b1c03aae6dd544",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:e85b0a8aad3425604933a3e95fcb528d",
+              "license_id": "CC-BY-SA-4.0"
+            },
+            {
+              "id": "entry:aab7051534c0d0fee8b029a0310e5daa",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:f4b08553405743c0ee3965227992d128",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 2,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 2,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        }
+      ],
+      "whole_entry_candidates": [
+        "软件"
+      ],
+      "whole_entry_complete": false,
+      "fallback_preserved": true,
+      "waiting": false,
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 128,
+        "expansions": 30270,
+        "resident_high_water": 107,
+        "beam_pruned": 0,
+        "budget": "GraphEdges"
+      }
+    },
+    {
+      "id": "word-shurufa",
+      "family": "shurufa",
+      "input": "shurufa",
+      "kind": "word",
+      "raw_fallback": "shurufa",
+      "samples_ns": [
+        32500,
+        44900,
+        30400,
+        31700,
+        28200
+      ],
+      "p50_ns": 31700,
+      "p95_ns": 44900,
+      "p99_ns": 44900,
+      "max_ns": 44900,
+      "status": "ok",
+      "candidates": [
+        {
+          "text": "输入法",
+          "score": -100,
+          "ids": [
+            "entry:3761a544f03fd543abb93f9acd7d36ea"
+          ],
+          "records": [
+            {
+              "id": "entry:3761a544f03fd543abb93f9acd7d36ea",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:ca9bbcbb4015f61535040015546b0eff",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 0,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        }
+      ],
+      "whole_entry_candidates": [
+        "输入法"
+      ],
+      "whole_entry_complete": false,
+      "fallback_preserved": true,
+      "waiting": false,
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 128,
+        "expansions": 81,
+        "resident_high_water": 82,
+        "beam_pruned": 0,
+        "budget": "GraphEdges"
+      }
+    },
+    {
+      "id": "boundary-xian",
+      "family": "xian",
+      "input": "xi'an",
+      "kind": "boundary",
+      "raw_fallback": "xi'an",
+      "samples_ns": [
+        37000,
+        35900,
+        40000,
+        39100,
+        36300
+      ],
+      "p50_ns": 37000,
+      "p95_ns": 40000,
+      "p99_ns": 40000,
+      "max_ns": 40000,
+      "status": "ok",
+      "candidates": [],
+      "whole_entry_candidates": [],
+      "whole_entry_complete": false,
+      "fallback_preserved": true,
+      "waiting": false,
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 128,
+        "expansions": 128,
+        "resident_high_water": 129,
+        "beam_pruned": 0,
+        "budget": "GraphEdges"
+      }
+    },
+    {
+      "id": "ambiguous-xian",
+      "family": "xian",
+      "input": "xian",
+      "kind": "ambiguity",
+      "raw_fallback": "xian",
+      "samples_ns": [
+        35400,
+        34700,
+        34800,
+        28800,
+        20800
+      ],
+      "p50_ns": 34700,
+      "p95_ns": 35400,
+      "p99_ns": 35400,
+      "max_ns": 35400,
+      "status": "ok",
+      "candidates": [],
+      "whole_entry_candidates": [],
+      "whole_entry_complete": false,
+      "fallback_preserved": true,
+      "waiting": false,
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 128,
+        "expansions": 128,
+        "resident_high_water": 129,
+        "beam_pruned": 0,
+        "budget": "GraphEdges"
+      }
+    },
+    {
+      "id": "prefix-zhongg",
+      "family": "zhongguo",
+      "input": "zhongg",
+      "kind": "prefix",
+      "raw_fallback": "zhongg",
+      "samples_ns": [
+        235300,
+        238000,
+        236700,
+        236800,
+        292800
+      ],
+      "p50_ns": 236800,
+      "p95_ns": 292800,
+      "p99_ns": 292800,
+      "max_ns": 292800,
+      "status": "ok",
+      "candidates": [
+        {
+          "text": "中古",
+          "score": -400,
+          "ids": [
+            "entry:2fef76eca7568f5cb9c3a38c951bf654"
+          ],
+          "records": [
+            {
+              "id": "entry:2fef76eca7568f5cb9c3a38c951bf654",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:c7af3e7531a6594f3b1ec0b86eada1e2",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 1,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "重工",
+          "score": -400,
+          "ids": [
+            "entry:5a7106877d9d4dbc260c9c25f1249d9c"
+          ],
+          "records": [
+            {
+              "id": "entry:5a7106877d9d4dbc260c9c25f1249d9c",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:88e62d679243af4cd112b6258c7129eb",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 1,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "中国",
+          "score": -400,
+          "ids": [
+            "entry:5af919e4418f70f92f18bc7f98469172"
+          ],
+          "records": [
+            {
+              "id": "entry:5af919e4418f70f92f18bc7f98469172",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:5188e5415e2cee9bd11fbbab100e1370",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 1,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "忠告",
+          "score": -400,
+          "ids": [
+            "entry:681dd510871389588d9d3a1107d23319"
+          ],
+          "records": [
+            {
+              "id": "entry:681dd510871389588d9d3a1107d23319",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:c173798892204810db5fc12826ef83f7",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 1,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        },
+        {
+          "text": "中隔",
+          "score": -400,
+          "ids": [
+            "entry:79b8e910f58951cdebe9bc13b0289e90"
+          ],
+          "records": [
+            {
+              "id": "entry:79b8e910f58951cdebe9bc13b0289e90",
+              "source": "cccedict:mirror-20260604",
+              "source_record_id": "cedict-v1:7c28a719553e9d8c1e3bdf9a8a7fd160",
+              "license_id": "CC-BY-SA-4.0"
+            }
+          ],
+          "features": {
+            "words": 1,
+            "prefixes": 1,
+            "frequency_units": 0,
+            "missing_frequencies": 1,
+            "bigram_units": 0,
+            "context_units": 0
+          }
+        }
+      ],
+      "whole_entry_candidates": [
+        "中古",
+        "重工",
+        "中国",
+        "忠告",
+        "中隔"
+      ],
+      "whole_entry_complete": false,
+      "fallback_preserved": true,
+      "waiting": false,
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 128,
+        "expansions": 766,
+        "resident_high_water": 61,
+        "beam_pruned": 0,
+        "budget": "GraphEdges"
+      }
+    },
+    {
+      "id": "waiting-zhong",
+      "family": "zhong",
+      "input": "zhong'",
+      "kind": "waiting",
+      "raw_fallback": "zhong'",
+      "samples_ns": [
+        1000,
+        500,
+        600,
+        600,
+        500
+      ],
+      "p50_ns": 600,
+      "p95_ns": 1000,
+      "p99_ns": 1000,
+      "max_ns": 1000,
+      "status": "ok",
+      "candidates": [],
+      "whole_entry_candidates": [],
+      "whole_entry_complete": true,
+      "fallback_preserved": true,
+      "waiting": true,
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 0,
+        "expansions": 0,
+        "resident_high_water": 0,
+        "beam_pruned": 0,
+        "budget": null
+      }
+    },
+    {
+      "id": "sentence-woxuexi",
+      "family": "sentence-study",
+      "input": "woxuexizhongwen",
+      "kind": "sentence",
+      "raw_fallback": "woxuexizhongwen",
+      "samples_ns": [
+        624100,
+        636100,
+        668800,
+        622200,
+        700500
+      ],
+      "p50_ns": 636100,
+      "p95_ns": 700500,
+      "p99_ns": 700500,
+      "max_ns": 700500,
+      "status": "ok",
+      "candidates": [],
+      "whole_entry_candidates": [],
+      "whole_entry_complete": false,
+      "fallback_preserved": true,
+      "waiting": false,
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 128,
+        "expansions": 2277,
+        "resident_high_water": 121,
+        "beam_pruned": 0,
+        "budget": "GraphEdges"
+      }
+    },
+    {
+      "id": "sentence-jintian",
+      "family": "sentence-weather",
+      "input": "jintiantianqihenhao",
+      "kind": "sentence",
+      "raw_fallback": "jintiantianqihenhao",
+      "samples_ns": [
+        20900,
+        25600,
+        20300,
+        20300,
+        20300
+      ],
+      "p50_ns": 20300,
+      "p95_ns": 25600,
+      "p99_ns": 25600,
+      "max_ns": 25600,
+      "status": "ok",
+      "candidates": [],
+      "whole_entry_candidates": [],
+      "whole_entry_complete": false,
+      "fallback_preserved": true,
+      "waiting": false,
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 128,
+        "expansions": 128,
+        "resident_high_water": 129,
+        "beam_pruned": 0,
+        "budget": "GraphEdges"
+      }
+    },
+    {
+      "id": "sentence-beijing",
+      "family": "sentence-location",
+      "input": "woxiangqubeijing",
+      "kind": "sentence",
+      "raw_fallback": "woxiangqubeijing",
+      "samples_ns": [
+        636700,
+        743000,
+        679300,
+        692600,
+        640900
+      ],
+      "p50_ns": 679300,
+      "p95_ns": 743000,
+      "p99_ns": 743000,
+      "max_ns": 743000,
+      "status": "ok",
+      "candidates": [],
+      "whole_entry_candidates": [],
+      "whole_entry_complete": false,
+      "fallback_preserved": true,
+      "waiting": false,
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 128,
+        "expansions": 2277,
+        "resident_high_water": 121,
+        "beam_pruned": 0,
+        "budget": "GraphEdges"
+      }
+    },
+    {
+      "id": "long-xian",
+      "family": "long-xian",
+      "input": "xianxianxianxianxianxian",
+      "kind": "long-ambiguity",
+      "raw_fallback": "xianxianxianxianxianxian",
+      "samples_ns": [
+        49200,
+        32300,
+        36500,
+        51900,
+        39000
+      ],
+      "p50_ns": 39000,
+      "p95_ns": 51900,
+      "p99_ns": 51900,
+      "max_ns": 51900,
+      "status": "ok",
+      "candidates": [],
+      "whole_entry_candidates": [],
+      "whole_entry_complete": false,
+      "fallback_preserved": true,
+      "waiting": false,
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 128,
+        "expansions": 128,
+        "resident_high_water": 129,
+        "beam_pruned": 0,
+        "budget": "GraphEdges"
+      }
+    },
+    {
+      "id": "long-shi",
+      "family": "long-shi",
+      "input": "shishishishishishishishi",
+      "kind": "long-ambiguity",
+      "raw_fallback": "shishishishishishishishi",
+      "samples_ns": [
+        36400,
+        37500,
+        35800,
+        36500,
+        21500
+      ],
+      "p50_ns": 36400,
+      "p95_ns": 37500,
+      "p99_ns": 37500,
+      "max_ns": 37500,
+      "status": "ok",
+      "candidates": [],
+      "whole_entry_candidates": [],
+      "whole_entry_complete": false,
+      "fallback_preserved": true,
+      "waiting": false,
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 128,
+        "expansions": 128,
+        "resident_high_water": 129,
+        "beam_pruned": 0,
+        "budget": "GraphEdges"
+      }
+    },
+    {
+      "id": "unknown-zzzz",
+      "family": "unknown",
+      "input": "zzzz",
+      "kind": "unmatched",
+      "raw_fallback": "zzzz",
+      "samples_ns": [
+        2200,
+        2000,
+        2000,
+        2400,
+        2000
+      ],
+      "p50_ns": 2000,
+      "p95_ns": 2400,
+      "p99_ns": 2400,
+      "max_ns": 2400,
+      "status": "ok",
+      "candidates": [],
+      "whole_entry_candidates": [],
+      "whole_entry_complete": false,
+      "fallback_preserved": true,
+      "waiting": false,
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 128,
+        "expansions": 0,
+        "resident_high_water": 1,
+        "beam_pruned": 0,
+        "budget": "GraphEdges"
+      }
+    },
+    {
+      "id": "invalid-punctuation",
+      "family": "invalid",
+      "input": "ni,hao",
+      "kind": "invalid",
+      "raw_fallback": "ni,hao",
+      "samples_ns": [
+        200,
+        200,
+        200,
+        200,
+        100
+      ],
+      "p50_ns": 200,
+      "p95_ns": 200,
+      "p99_ns": 200,
+      "max_ns": 200,
+      "status": "rejected",
+      "error_kind": "InvalidInput",
+      "candidates": [],
+      "whole_entry_candidates": [],
+      "whole_entry_complete": false,
+      "guaranteed": false,
+      "fallback_preserved": true
+    },
+    {
+      "id": "invalid-separator",
+      "family": "invalid",
+      "input": "'ni",
+      "kind": "invalid",
+      "raw_fallback": "'ni",
+      "samples_ns": [
+        100,
+        100,
+        100,
+        100,
+        100
+      ],
+      "p50_ns": 100,
+      "p95_ns": 100,
+      "p99_ns": 100,
+      "max_ns": 100,
+      "status": "rejected",
+      "error_kind": "InvalidInput",
+      "candidates": [],
+      "whole_entry_candidates": [],
+      "whole_entry_complete": false,
+      "guaranteed": false,
+      "fallback_preserved": true
+    }
+  ]
+}
