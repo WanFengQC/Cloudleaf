@@ -124,6 +124,14 @@ class StressEvidenceTests(unittest.TestCase):
         approval['isolated_windows_environment'] = False
         self.assertFalse(STRESS.execution_preflight(identity, approval)['ready'])
 
+    def test_string_only_approval_cannot_replace_actual_environment_and_authorization_materials(self):
+        identity = {'configuration': STRESS.configuration('8h', None, None, 60, 1),
+                    'implementation_commit': 'fixture', 'environment': {'machine_id_sha256': 'fixture'}}
+        approval = {'status': 'approved', 'isolated_windows_environment': True, 'environment_id': 'test-vm',
+                    'operator': 'fixture-operator', 'snapshot': 'fixture-snapshot', 'rollback_plan': 'fixture-rollback',
+                    'authorization_reference': 'fixture-only-not-real-approval', 'identity': identity}
+        self.assertFalse(STRESS.execution_preflight(identity, approval)['ready'])
+
     @unittest.skipUnless(os.name == 'nt', '需要真实Windows进程句柄')
     def test_process_identity_refuses_live_child_and_recognizes_its_actual_exit(self):
         process = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(30)'])
