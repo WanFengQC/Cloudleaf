@@ -1,0 +1,20 @@
+{
+  "command": [
+    "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "-X",
+    "utf8",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-p",
+    "test_semantic_bundle_recovery.py",
+    "-k",
+    "initial_lock",
+    "-v"
+  ],
+  "returncode": 1,
+  "head": "822a5e6fd0061bc65bdf60ba651da9add1cf5842",
+  "reason": "First publication child exits while holding lock, no current pointer: recovery without policy mutated store instead of refusing"
+}

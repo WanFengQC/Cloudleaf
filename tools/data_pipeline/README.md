@@ -125,6 +125,10 @@ python -m tools.data_pipeline.source_review --output <全新矩阵JSON>
 人工任务的两review及生效仲裁现在还必须提供`review_binding_sha256=sha256(canonical({protocol_sha256,preprocessing_sha256,lineage_audit_sha256}))`，冻结manifest记录binding schema1。任一处理/来源家族协议变更使旧审核失效；旧R6审核缺字段须重新审核，不能自动迁移。任务摘要和family-index八字段保持，但B仍需显式核对新审核版本，不能凭相同形状放行。
 
 [Round 7设计](../../docs/cl009-round7-design.md)和[正式频率/语义发布前契约](../../docs/cl009-round7-semantic-release.md)列明当前类型侧包与正式发布的差距。没有真实人工/授权/频率、内容绑定审核和可信发布清单时，不存在可批准的production语义侧包或独立gold。
+# Round 10独立语义bundle
+
+`python -m tools.data_pipeline.semantic_bundle --help`提供候选build/verify与受显式外部可信审批清单约束的activate/rollback/recover。旧词典schema2默认API保持，新sidecar不进入当前输入引擎。pending内容可读但生产拒绝；当前真实20项仍pending。操作、审批文件边界及签名尚未实现的限制见[说明](../../docs/acceptance/cl009-round10/README.md)和[实测报告](../../docs/reports/cl009-round10-status.md)。
+
 # Round 9固定Ngrams只读诊断
 
 新增`python -m tools.data_pipeline.ngram_analysis --source <R8固定gz> --totalcounts <R8固定totalcounts> --output <新报告路径>`，仅接受固定SHA，完整CRC后输出原字段/年份/缺项与异常分母。不会下载、构建词频或批准production；输出拒绝覆盖，异常/partial返回2并保留报告。统计解释和限制见[设计](../../docs/cl009-round9-ngram-analysis.md)及[实测报告](../../docs/reports/cl009-round9-status.md)。
