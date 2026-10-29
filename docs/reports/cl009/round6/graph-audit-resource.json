@@ -1,0 +1,30 @@
+{
+  "implementation_commit": "cdc73515ad5356844f1df4fc3ee30194c5a15ab6",
+  "source_pointer_records_checked": 591,
+  "source_senses_checked": 887,
+  "directed_source_translations_checked": 241,
+  "both_lookup_indexes_checked": true,
+  "language_truth_independently_verified": false,
+  "resource_run": {
+    "command": [
+      "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "-I",
+      "-X",
+      "utf8",
+      "-c",
+      "import sys,json,time;from pathlib import Path\nsys.path.insert(0,sys.argv[1])\nfrom tools.data_pipeline.source_assertions import build\nfrom tools.data_pipeline.__main__ import peak_memory_bytes\nstart=time.perf_counter()\nresult=build(Path(sys.argv[2]),json.loads(Path(sys.argv[3]).read_text(encoding='utf-8')),Path(sys.argv[4]))\nprint(json.dumps({'build_seconds':time.perf_counter()-start,'peak_process_working_set_bytes':peak_memory_bytes(),'source_graph':result},ensure_ascii=False))\n",
+      "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round6-diagnostics-cdc7351\\checkout",
+      "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\data-sources\\zhwiktionary-prefix-8388608.jsonl",
+      "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\data\\sources\\locks\\wiktionary-zh-20261001-prefix8388608.json",
+      "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round6-diagnostics-cdc7351\\graph-resource"
+    ],
+    "returncode": 0,
+    "stdout": "{\"build_seconds\": 0.8948114000086207, \"peak_process_working_set_bytes\": 130834432, \"source_graph\": {\"format\": \"cloudleaf-source-assertions-v1\", \"research_only\": true, \"production_language_validated\": false, \"source_sha256\": \"ca4df3453261f9f12f1223deb11a26d979078ea6e1af870b44da2d3dcf4e2998\", \"source_lock_canonical_sha256\": \"46fb6ac082320c6fa48d72a5ff9258eb00c947d8f31d5c0d4f70ed84a98354ce\", \"source_lines\": 66593, \"entries\": 591, \"senses\": 887, \"translations\": 241, \"quarantined_entries\": 18, \"outside_scope\": 65873, \"missing_explicit_pinyin\": 111, \"tool_sha256\": \"b2ed0f923c40458e2e738b3d22fd09d991d020610e014c96e46a4374f5aee018\", \"builder_files_sha256\": {\"source_assertions.py\": \"b2ed0f923c40458e2e738b3d22fd09d991d020610e014c96e46a4374f5aee018\", \"annotation_workflow.py\": \"6f65e3b0384fcd6b44851a2b8946eee786c78e6578cdc91306f7201efb15937c\", \"word_source.py\": \"1d6d785da2b43895128c42b36e5f2997b1db872a466a86a45bab6961451dcd04\", \"pipeline.py\": \"e842232af7a4d8b5547a19fb27d6a4d5f84fc391d651d3e0a3c20946a457d841\"}, \"files_sha256\": {\"assertions.jsonl\": \"1979ad15a351339edfccd492c154b41007f15f8fc590d4ec8ca53b199795430b\", \"lookup.json\": \"5403311f125de0e8468576519bcced614d2785084cbfb09f856310558806e04b\", \"quarantined.jsonl\": \"a6dd716109840739cb26771af860c6382dc1c17cf625a0d2589ef4249ce00824\", \"upstream-documents.json\": \"81b759acfdbbc78a498d38d95b396549ffb1552a7cc973b6193dc553a17f7544\"}, \"limitations\": [\"固定片段未验证完整gzip/CRC或所有页面例外；原始义项/翻译标签未人工审读或对齐，不是正式双语词库。\"]}}\r\n",
+    "stderr": "",
+    "wall_seconds": 1.230528799991589
+  },
+  "python_executable_sha256": "4d6f5f81a4bca11191c4c7c6b43632694d0a4ce74e068619d8fdc161d469859a",
+  "limitations": [
+    "OS进程峰值含完整原件/行数组/图/序列化，不是单算法live内存或TSF性能。"
+  ]
+}

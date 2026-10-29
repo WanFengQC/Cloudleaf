@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "source_id": "google-books-ngrams-zh2019",
+  "review_status": "bulk-license-evidence-located-data-not-acquired",
+  "production_approved": false,
+  "corpus_version": "googlebooks-chi-sim-20200217",
+  "license_id": "CC-BY-3.0",
+  "license_statement_source": "https://storage.googleapis.com/books/ngrams/books/20200217/chi_sim/chi_sim-1-ngrams_exports.html",
+  "primary_documents": [
+    {
+      "id": "info",
+      "requested_url": "https://books.google.com/ngrams/info",
+      "final_url": "https://books.google.com/ngrams/info",
+      "retrieved_at_utc": "2026-10-29T16:24:02.948482+00:00",
+      "status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 482739,
+      "sha256": "a6be62ab51663f1fed92b8e2f865b0382e80ed02b13fdd6a15731dcddaffb886",
+      "etag": null,
+      "last_modified": null,
+      "cap_bytes": 6291456
+    },
+    {
+      "id": "datasets",
+      "requested_url": "https://books.google.com/ngrams/datasets",
+      "final_url": "https://storage.googleapis.com/books/ngrams/books/datasetsv3.html",
+      "retrieved_at_utc": "2026-10-29T16:24:28.266592+00:00",
+      "status": 200,
+      "content_type": "text/html",
+      "bytes": 5220205,
+      "sha256": "b2f66a50d5713f91e181c8b5f685e03c9ceda80c2ce9ab7d69083d69a0f4bf50",
+      "etag": "\"ee5f37c8305a57899b5c88c5bf3fbe1f\"",
+      "last_modified": "Fri, 11 Jul 2025 16:03:15 GMT",
+      "cap_bytes": 6291456
+    },
+    {
+      "id": "chinese-1gram-index",
+      "requested_url": "https://storage.googleapis.com/books/ngrams/books/20200217/chi_sim/chi_sim-1-ngrams_exports.html",
+      "final_url": "https://storage.googleapis.com/books/ngrams/books/20200217/chi_sim/chi_sim-1-ngrams_exports.html",
+      "retrieved_at_utc": "2026-10-29T16:25:41.009144+00:00",
+      "status": 200,
+      "content_type": "text/html",
+      "bytes": 2875,
+      "sha256": "cd676d9817f7cc9ceb515f4610e01574c1e7d06e32127e0ea23a91772a701f17",
+      "etag": "\"af0f4b3b2ceb8a77313c59057435cee2\"",
+      "last_modified": "Mon, 30 Nov 2020 18:03:44 GMT",
+      "cap_bytes": 1048576
+    },
+    {
+      "id": "cc-by-3.0",
+      "requested_url": "https://creativecommons.org/licenses/by/3.0/legalcode.txt",
+      "final_url": "https://creativecommons.org/licenses/by/3.0/legalcode.txt",
+      "retrieved_at_utc": "2026-10-29T16:25:41.569585+00:00",
+      "status": 200,
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 19467,
+      "sha256": "e6bc9e9c474700b708f568bac9e5a8a9bcb2b1dad53442f5ba449fcb848b8e76",
+      "etag": "W/\"4c0b-6051c4db542f3-gzip\"",
+      "last_modified": "Mon, 11 Sep 2023 21:49:41 GMT",
+      "cap_bytes": 1048576
+    }
+  ],
+  "data_HEAD_only": [
+    {
+      "id": "onegram",
+      "method": "HEAD",
+      "requested_url": "https://storage.googleapis.com/books/ngrams/books/20200217/chi_sim/1-00000-of-00001.gz",
+      "final_url": "https://storage.googleapis.com/books/ngrams/books/20200217/chi_sim/1-00000-of-00001.gz",
+      "retrieved_at_utc": "2026-10-29T16:31:04.755980+00:00",
+      "status": 200,
+      "content_length": "60833224",
+      "etag": "\"8374329dff334bdeee820558eb562cc6\"",
+      "last_modified": "Fri, 13 Mar 2020 21:59:53 GMT",
+      "content_type": "application/octet-stream",
+      "body_bytes_read": 0,
+      "sha256": null,
+      "gzip_crc_verified": false
+    },
+    {
+      "id": "totalcounts",
+      "method": "HEAD",
+      "requested_url": "https://storage.googleapis.com/books/ngrams/books/20200217/chi_sim/totalcounts-1",
+      "final_url": "https://storage.googleapis.com/books/ngrams/books/20200217/chi_sim/totalcounts-1",
+      "retrieved_at_utc": "2026-10-29T16:31:05.151926+00:00",
+      "status": 200,
+      "content_length": "7479",
+      "etag": "\"7d4ee80d7fd8d29cd9c49dcb39772241\"",
+      "last_modified": "Tue, 14 Jul 2020 16:50:45 GMT",
+      "content_type": "application/octet-stream",
+      "body_bytes_read": 0,
+      "sha256": null,
+      "gzip_crc_verified": false
+    }
+  ],
+  "data_partitions_downloaded": false,
+  "token_frequency": null,
+  "document_frequency": null,
+  "zipf": null,
+  "remaining": [
+    "Fixed raw partition SHA and gzip CRC",
+    "Actual v3 line/denominator protocol",
+    "2019 cutoff resolution: FAQ book threshold versus v1/v2 landing occurrence wording",
+    "Extraction/versioned tokenizer and dataset period",
+    "Approved acquisition and production review",
+    "Independent representativeness and language evaluation"
+  ]
+}

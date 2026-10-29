@@ -1,0 +1,20 @@
+test_all_anomalies_keep_later_rows_and_full_denominators (test_ngram_analysis.NgramAnalysisTests.test_all_anomalies_keep_later_rows_and_full_denominators) ... ERROR
+test_cli_never_overwrites_report_and_pins_actual_r8_data (test_ngram_analysis.NgramAnalysisTests.test_cli_never_overwrites_report_and_pins_actual_r8_data) ... ok
+test_complete_v3_and_shape_groups_are_descriptive_only (test_ngram_analysis.NgramAnalysisTests.test_complete_v3_and_shape_groups_are_descriptive_only) ... ok
+test_examples_are_limited_but_total_errors_are_not (test_ngram_analysis.NgramAnalysisTests.test_examples_are_limited_but_total_errors_are_not) ... ok
+test_totals_bad_records_and_non_ascii_or_negative_numbers_are_counted (test_ngram_analysis.NgramAnalysisTests.test_totals_bad_records_and_non_ascii_or_negative_numbers_are_counted) ... ok
+test_wrong_identity_blocks_scan_and_corrupt_crc_is_partial (test_ngram_analysis.NgramAnalysisTests.test_wrong_identity_blocks_scan_and_corrupt_crc_is_partial) ... ok
+
+======================================================================
+ERROR: test_all_anomalies_keep_later_rows_and_full_denominators (test_ngram_analysis.NgramAnalysisTests.test_all_anomalies_keep_later_rows_and_full_denominators)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tests\test_ngram_analysis.py", line 61, in test_all_anomalies_keep_later_rows_and_full_denominators
+    self.assertEqual(result['counts']['triplet_fields'], 7)
+                     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+KeyError: 'triplet_fields'
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.565s
+
+FAILED (errors=1)

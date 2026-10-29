@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "implementation_commit": "6d3d4e1ac717ad96de8c839ee9857c3629ebecbc",
+  "starting_baseline": "81d85ad414b3ecae6af9573b881acbd9dfa56037",
+  "source_archive_sha256": "88800d4be792a239b5ca84fe13637c94907f0bfce39d9b7b4fa9ab83cd05ddcf",
+  "source_sha256": "fff8763673740aecbbe4c7f414445171ef4a70e55eac3ceee364e4f9c7cc766a",
+  "release_files": {
+    "LICENSE.txt": {
+      "bytes": 20138,
+      "sha256": "28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5"
+    },
+    "NOTICE.txt": {
+      "bytes": 1147,
+      "sha256": "df5e0dfcac5f0e30cecc109d3dc810b0d22bf79634bb6d3cc7990fb74aea1c48"
+    },
+    "index.json": {
+      "bytes": 13028916,
+      "sha256": "982c7ae244497d7f3cd68165e17f383655fe4c98470be5503182b6387011012e"
+    },
+    "manifest.json": {
+      "bytes": 5720,
+      "sha256": "5971456293a4e868ae6372d9d928f3ad9edef4429ec0ba233eba8a5424ba77d5"
+    },
+    "quality.json": {
+      "bytes": 1739,
+      "sha256": "94955df94c7735930e2c09f19b54eaa460ba27bccb3c484b17a03df5ec34fb48"
+    },
+    "records.jsonl": {
+      "bytes": 77117585,
+      "sha256": "168f4579a7d72c87c41a9b2bde0d5f65f1537c65b64e107ea60bbf409f7fd072"
+    },
+    "rejected.jsonl": {
+      "bytes": 307494,
+      "sha256": "6c8b786912f4495b87064655b4f9f18369b1d7c94cea699e58f50c96afc8d0e8"
+    },
+    "runtime.tsv": {
+      "bytes": 23602173,
+      "sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+    },
+    "source-lock.json": {
+      "bytes": 3496,
+      "sha256": "a7cbdd759ae2487ce238aea8a2d43eeef3248a1a124004def9ad35764e58bd57"
+    }
+  },
+  "historical_report_files_unchanged": 56,
+  "frozen_releases": [
+    {
+      "implementation": "2401b16",
+      "all_nine_frozen_files_preserved": true,
+      "changed_files_in_new_implementation": [
+        "manifest.json"
+      ]
+    },
+    {
+      "implementation": "0dee2e2",
+      "all_nine_frozen_files_preserved": true,
+      "changed_files_in_new_implementation": [
+        "manifest.json"
+      ]
+    }
+  ],
+  "current_release_double_build_verified": true,
+  "seven_interruption_stores_and_user_probe_verified": true,
+  "source_metadata_successes": 9,
+  "source_metadata_failures": 2,
+  "readme_checks": {
+    "commands": 9,
+    "rust_tests": 60,
+    "python_tests": 69,
+    "all_passed": true
+  },
+  "source_identity_note": "The source ZIP is a git archive of the exact implementation. Later changes in this direction only publish documentation/evidence; remote CI must be checked for the exact pushed review commit.",
+  "formal_language_metrics": {
+    "top1": null,
+    "top5": null,
+    "mrr": null
+  },
+  "formal_gold_delivered": false,
+  "formal_frequency_delivered": false
+}

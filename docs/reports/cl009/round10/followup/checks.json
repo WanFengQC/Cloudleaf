@@ -1,0 +1,39 @@
+{
+  "checked_head": "2472dffc854a5a0db511757949c4c11e6867c769",
+  "started_at_utc": "2026-10-29T18:19:47.313143+00:00",
+  "runner_sha256": "6d36b9ff5c2e1b551a343df31594b5a4ef3f28c13e343f904d7237db7286cc1f",
+  "preparation_fix": "Local demo now inserts repository root into sys.path; previous failed stdout/stderr/checks retained.",
+  "checks": [
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        ".local/demonstrate_round10_pending.py"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 74.2422460999951,
+      "stdout_sha256": "ed62ede039cfb0aa53b83dfd12edc17e567c43ccaa0879e815db3cc671de4fe2",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "-m",
+        "tools.data_pipeline.annotation_workflow",
+        "--packet",
+        "data/plans/ime-annotation-round6.json",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round10-data-followup\\pending-annotations.json"
+      ],
+      "returncode": 2,
+      "expected_returncode": 2,
+      "seconds": 0.22003259999473812,
+      "stdout_sha256": "1a6d72f25cee45328047d687ffcf21ab45b76f14f1583a81ce10ffeed9b26e3b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

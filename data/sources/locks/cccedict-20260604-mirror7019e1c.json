@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "source_id": "cccedict:mirror-20260604",
+  "version": "2026-06-04T08:02:31Z-mirror7019e1c",
+  "format": "cedict-zip-v1",
+  "source_member": "cedict_ts.u8",
+  "url": "https://raw.githubusercontent.com/poliwhirl555/cc-canto-cedict-jsons/7019e1c3ec3de3a44b165b15177ce2bb39a026d3/cedict_1_0_ts_utf-8_mdbg_2026-06-04_21%3A48_GMT.zip",
+  "source_page": "https://github.com/poliwhirl555/cc-canto-cedict-jsons/tree/7019e1c3ec3de3a44b165b15177ce2bb39a026d3",
+  "specification_url": "https://cc-cedict.org/wiki/syntax_v1",
+  "sha256": "fff8763673740aecbbe4c7f414445171ef4a70e55eac3ceee364e4f9c7cc766a",
+  "bytes": 3975327,
+  "expanded_bytes": 9867130,
+  "expanded_sha256": "9a3a8627c39701ecbd10246647f759f737ccd560cdbd29ef50bed8244e9ebd03",
+  "zip_full_crc_verified": true,
+  "source_header": {
+    "version": "1",
+    "subversion": "0",
+    "format": "ts",
+    "charset": "UTF-8",
+    "entries": "125012",
+    "publisher": "MDBG",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "date": "2026-06-04T08:02:31Z",
+    "time": "1780560151"
+  },
+  "license_id": "CC-BY-SA-4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "license_file": "data/licenses/CC-BY-SA-4.0.txt",
+  "license_sha256": "28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5",
+  "attribution": "CC-CEDICT contributors; published by MDBG; referenced CEDICT copyright (C) 1997, 1998 Paul Andrew Denisowski. Licensed redistribution of raw ZIP by Lester Lin (poliwhirl555/cc-canto-cedict-jsons), fixed commit 7019e1c3ec3de3a44b165b15177ce2bb39a026d3. CC-CEDICT editor contributors: Matic Kavcic, Richard Warmington, Julien Baley, Yves Candau, feilipu and anonymous editors. No CC-Canto data or mirror parser code included.",
+  "review_status": "approved",
+  "reviewed_on": "2026-10-23",
+  "automated_download_allowed": true,
+  "approved_scope": "Licensed full fixed CC-CEDICT mirror archive and derived word/pronunciation/gloss data; not independent language quality acceptance.",
+  "acquisition": "Single public immutable GitHub raw ZIP file explicitly redistributed under CC BY-SA4; no automated MDBG query/API/export access. Mirror authenticity is not a publisher signature.",
+  "mirror_repository": "poliwhirl555/cc-canto-cedict-jsons",
+  "mirror_commit": "7019e1c3ec3de3a44b165b15177ce2bb39a026d3",
+  "mirror_evidence": {
+    "data/sources/evidence/cccedict-mirror-7019e1c/upstream-documents.json": "9572c28d6cac908b2b66567420c893ce5e1b27e95fbee52e605374620e9a9267"
+  },
+  "transformations": "Validate ZIP CRC, sole ordinary member and exact header/count/UTF-8/plaintext hash. Preserve original forms, reading, English raw senses and source line. Project supported v1 tone-number syllables to existing inventory; isolate unsupported/mixed readings, budgets and conflicts; merge exact duplicate evidence. Stable source identity excludes mutable English senses. No word frequency/POS inference; no automatic script conversion.",
+  "limitations": [
+    "Full fixed mirror archive, not current official latest release and not publisher-signed.",
+    "Descriptive dictionary with raw English senses; no complete POS, modern frequency, bilingual sense alignment or independent language-accuracy proof.",
+    "Unsupported syllables, r5, non-pinyin and mixed tokens remain isolated; production parser inventory unchanged.",
+    "No heldout annotations or dictionary-derived gold. All missing frequency remains null/unknown."
+  ],
+  "redistribution": {
+    "commercial_use": true,
+    "modified_data": true,
+    "retain_attribution_and_license": true,
+    "describe_modifications": true,
+    "share_alike": true,
+    "media_included": false,
+    "CC_Canto_included": false,
+    "mirror_parser_code_included": false
+  }
+}

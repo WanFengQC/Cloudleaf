@@ -1,0 +1,21 @@
+test_semantic_bundle (unittest.loader._FailedTest.test_semantic_bundle) ... ERROR
+
+======================================================================
+ERROR: test_semantic_bundle (unittest.loader._FailedTest.test_semantic_bundle)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_semantic_bundle
+Traceback (most recent call last):
+  File "C:\Users\EDY\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EDY\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tests\test_semantic_bundle.py", line 11, in <module>
+    from tools.data_pipeline import semantic_bundle as s
+ImportError: cannot import name 'semantic_bundle' from 'tools.data_pipeline' (C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tools\data_pipeline\__init__.py)
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)

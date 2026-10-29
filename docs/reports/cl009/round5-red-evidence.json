@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "initial_missing_module_test_commit": "cbf0f3c19ac128150e5572555bf10b4b99422c39",
+  "initial_test_commands_and_exit_codes": {
+    "head": "cbf0f3c19ac128150e5572555bf10b4b99422c39",
+    "commands": [
+      {
+        "argv": [
+          "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests",
+          "-p",
+          "test_*sidecar.py",
+          "-v"
+        ],
+        "returncode": 1
+      },
+      {
+        "argv": [
+          "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests",
+          "-p",
+          "test_isolation_audit.py",
+          "-v"
+        ],
+        "returncode": 1
+      }
+    ]
+  },
+  "later_red_log_scope": "Genuine pre-fix terminal captures. Classification and underflow logs were captured with an uncommitted implementation; the old implementation bytes were not archived. These two logs are diagnostic history, not acceptance of a precisely reconstructed old source. Final archived implementation and tests have exact hashes in the replay report.",
+  "captures": [
+    {
+      "name": "classification-before-fix.log",
+      "bytes": 2205,
+      "sha256": "5fb5a26d71be092802406471d8bdfea32cd5e7d088e455a6da78abb72cd508f3",
+      "utf8_text": "test_archive_identity_is_checked_before_audit (test_isolation_audit.IsolationAuditTests.test_archive_identity_is_checked_before_audit) ... ok\r\ntest_bad_syntax_and_senses_are_not_called_multiple_token_gaps (test_isolation_audit.IsolationAuditTests.test_bad_syntax_and_senses_are_not_called_multiple_token_gaps) ... FAIL\r\ntest_classifications_are_shapes_and_source_expressions_not_language_proof (test_isolation_audit.IsolationAuditTests.test_classifications_are_shapes_and_source_expressions_not_language_proof) ... ok\r\ntest_conflicting_source_keys_fail_closed_outside_fixed_zero_conflict_scope (test_isolation_audit.IsolationAuditTests.test_conflicting_source_keys_fail_closed_outside_fixed_zero_conflict_scope) ... ok\r\ntest_recomputed_package_hash_cannot_hide_changed_or_missing_source_rejection (test_isolation_audit.IsolationAuditTests.test_recomputed_package_hash_cannot_hide_changed_or_missing_source_rejection) ... ok\r\ntest_source_rows_release_and_rejections_are_independently_partitioned (test_isolation_audit.IsolationAuditTests.test_source_rows_release_and_rejections_are_independently_partitioned) ... ok\r\n\r\n======================================================================\r\nFAIL: test_bad_syntax_and_senses_are_not_called_multiple_token_gaps (test_isolation_audit.IsolationAuditTests.test_bad_syntax_and_senses_are_not_called_multiple_token_gaps)\r\n----------------------------------------------------------------------\r\nTraceback (most recent call last):\r\n  File \"C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\tests\\test_isolation_audit.py\", line 80, in test_bad_syntax_and_senses_are_not_called_multiple_token_gaps\r\n    self.assertEqual([row['classification'] for row in result['records']], ['source_syntax','source_senses'])\r\nAssertionError: Lists differ: ['multiple_source_expression_gaps', 'multiple_source_expression_gaps'] != ['source_syntax', 'source_senses']\r\n\r\nFirst differing element 0:\r\n'multiple_source_expression_gaps'\r\n'source_syntax'\r\n\r\n- ['multiple_source_expression_gaps', 'multiple_source_expression_gaps']\r\n+ ['source_syntax', 'source_senses']\r\n\r\n----------------------------------------------------------------------\r\nRan 6 tests in 0.870s\r\n\r\nFAILED (failures=1)\r\n"
+    },
+    {
+      "name": "commands.json",
+      "bytes": 683,
+      "sha256": "93e5b46ba0da8995dcf965562ad7ef3b1c2cefee7f769f535eed4d6e9e2ca3f1",
+      "utf8_text": "{\r\n  \"head\": \"cbf0f3c19ac128150e5572555bf10b4b99422c39\",\r\n  \"commands\": [\r\n    {\r\n      \"argv\": [\r\n        \"C:\\\\Users\\\\EDY\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe\",\r\n        \"-m\",\r\n        \"unittest\",\r\n        \"discover\",\r\n        \"-s\",\r\n        \"tests\",\r\n        \"-p\",\r\n        \"test_*sidecar.py\",\r\n        \"-v\"\r\n      ],\r\n      \"returncode\": 1\r\n    },\r\n    {\r\n      \"argv\": [\r\n        \"C:\\\\Users\\\\EDY\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe\",\r\n        \"-m\",\r\n        \"unittest\",\r\n        \"discover\",\r\n        \"-s\",\r\n        \"tests\",\r\n        \"-p\",\r\n        \"test_isolation_audit.py\",\r\n        \"-v\"\r\n      ],\r\n      \"returncode\": 1\r\n    }\r\n  ]\r\n}\r\n"
+    },
+    {
+      "name": "isolation.log",
+      "bytes": 1160,
+      "sha256": "958c6faa1a49b52cba845d0524d096eda0e97058192b58f1061832a8131d338b",
+      "utf8_text": "test_isolation_audit (unittest.loader._FailedTest.test_isolation_audit) ... ERROR\r\n\r\n======================================================================\r\nERROR: test_isolation_audit (unittest.loader._FailedTest.test_isolation_audit)\r\n----------------------------------------------------------------------\r\nImportError: Failed to import test module: test_isolation_audit\r\nTraceback (most recent call last):\r\n  File \"C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\unittest\\loader.py\", line 396, in _find_test_path\r\n    module = self._get_module_from_name(name)\r\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\unittest\\loader.py\", line 339, in _get_module_from_name\r\n    __import__(name)\r\n  File \"C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\tests\\test_isolation_audit.py\", line 10, in <module>\r\n    from tools.data_pipeline.audit_isolations import audit_isolations, classify_token\r\nModuleNotFoundError: No module named 'tools.data_pipeline.audit_isolations'\r\n\r\n\r\n----------------------------------------------------------------------\r\nRan 1 test in 0.000s\r\n\r\nFAILED (errors=1)\r\n"
+    },
+    {
+      "name": "sidecar.log",
+      "bytes": 1165,
+      "sha256": "89f30b6b64defd89f4a9ab24f2e026a6e8c3d6fd045486ec2a85f705828d7cbe",
+      "utf8_text": "test_linguistic_sidecar (unittest.loader._FailedTest.test_linguistic_sidecar) ... ERROR\r\n\r\n======================================================================\r\nERROR: test_linguistic_sidecar (unittest.loader._FailedTest.test_linguistic_sidecar)\r\n----------------------------------------------------------------------\r\nImportError: Failed to import test module: test_linguistic_sidecar\r\nTraceback (most recent call last):\r\n  File \"C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\unittest\\loader.py\", line 396, in _find_test_path\r\n    module = self._get_module_from_name(name)\r\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\unittest\\loader.py\", line 339, in _get_module_from_name\r\n    __import__(name)\r\n  File \"C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\tests\\test_linguistic_sidecar.py\", line 6, in <module>\r\n    from tools.data_pipeline.linguistic_sidecar import validate_sidecar\r\nModuleNotFoundError: No module named 'tools.data_pipeline.linguistic_sidecar'\r\n\r\n\r\n----------------------------------------------------------------------\r\nRan 1 test in 0.000s\r\n\r\nFAILED (errors=1)\r\n"
+    },
+    {
+      "name": "underflow-before-fix.log",
+      "bytes": 2160,
+      "sha256": "fd50258fabfe3ec4259133468d751088fff952f1ff951868ad612eed097f63ae",
+      "utf8_text": "test_empty_unknown_annotations_and_observed_zero_remain_distinct (test_linguistic_sidecar.SidecarTests.test_empty_unknown_annotations_and_observed_zero_remain_distinct) ... ok\r\ntest_identity_scope_and_count_type_cannot_be_relabelled (test_linguistic_sidecar.SidecarTests.test_identity_scope_and_count_type_cannot_be_relabelled) ... ok\r\ntest_native_zipf_requires_definition_and_missing_value_cannot_be_default_zero (test_linguistic_sidecar.SidecarTests.test_native_zipf_requires_definition_and_missing_value_cannot_be_default_zero) ... ok\r\ntest_positive_count_float_underflow_is_not_an_observed_zero (test_linguistic_sidecar.SidecarTests.test_positive_count_float_underflow_is_not_an_observed_zero) ... FAIL\r\ntest_sense_translation_phrase_links_and_review_are_explicit (test_linguistic_sidecar.SidecarTests.test_sense_translation_phrase_links_and_review_are_explicit) ... ok\r\ntest_token_and_document_units_denominators_and_finite_values (test_linguistic_sidecar.SidecarTests.test_token_and_document_units_denominators_and_finite_values) ... ok\r\ntest_zipf_cannot_relabel_another_entry_corpus_source_or_preprocessing (test_linguistic_sidecar.SidecarTests.test_zipf_cannot_relabel_another_entry_corpus_source_or_preprocessing) ... ok\r\ntest_zipf_uses_positive_token_parent_and_explicit_base (test_linguistic_sidecar.SidecarTests.test_zipf_uses_positive_token_parent_and_explicit_base) ... ok\r\n\r\n======================================================================\r\nFAIL: test_positive_count_float_underflow_is_not_an_observed_zero (test_linguistic_sidecar.SidecarTests.test_positive_count_float_underflow_is_not_an_observed_zero)\r\n----------------------------------------------------------------------\r\nTraceback (most recent call last):\r\n  File \"C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\tests\\test_linguistic_sidecar.py\", line 159, in test_positive_count_float_underflow_is_not_an_observed_zero\r\n    with self.assertRaises(ValueError):self.check(item)\r\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nAssertionError: ValueError not raised\r\n\r\n----------------------------------------------------------------------\r\nRan 8 tests in 0.004s\r\n\r\nFAILED (failures=1)\r\n"
+    }
+  ]
+}

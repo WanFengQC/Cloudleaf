@@ -1,0 +1,30 @@
+{
+  "checked_head": "fc539e9f3bd97c062aaf2af8351ba8ee58d43fd0",
+  "recorded_at_utc": "2026-10-29T16:50:01.139983+00:00",
+  "checks": [
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        ".local/verify_round8_acquisition.py"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "stdout_raw_sha256": "08eb3d33df3c47f07f9dcc97c0785767d2f640b4b24703fd48437a068e1e7527",
+      "stderr_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/check_workspace.py"
+      ],
+      "returncode": 1,
+      "expected_returncode": 0,
+      "stdout_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_raw_sha256": "9debee4302ba375f02b999b14d84eb311de1542a251586693ce7ec8322f40622"
+    }
+  ]
+}

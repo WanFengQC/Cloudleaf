@@ -1,0 +1,176 @@
+{
+  "implementation_commit": "e96ed5dc96c6cc0446f3446838fab9305047c1bc",
+  "checked_at_utc": "2026-10-29T15:31:31.553208+00:00",
+  "runner_sha256": "bde296c5a384e75706c852ba09cf703c919559ddc405ca7ade8694735ed1b4bb",
+  "checks": [
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\rustc.exe",
+        "--version"
+      ],
+      "returncode": 0,
+      "seconds": 0.3772817999997642,
+      "stdout_file": "check-01-stdout.txt",
+      "stdout_sha256": "3397f54a03033c1b027496d83acc64e8f3ceeb4017e0575150f78726edce8a1a",
+      "stderr_file": "check-01-stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.exe",
+        "fetch",
+        "--locked"
+      ],
+      "returncode": 0,
+      "seconds": 0.37415860000328394,
+      "stdout_file": "check-02-stdout.txt",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_file": "check-02-stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.exe",
+        "build",
+        "--workspace",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 1.1286162999967928,
+      "stdout_file": "check-03-stdout.txt",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_file": "check-03-stderr.txt",
+      "stderr_sha256": "372ab3dffba995289430234e2ada6eea07e74abc6ea8dc5bd9b2212b33aade1e"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.exe",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "returncode": 0,
+      "seconds": 0.7252188999991631,
+      "stdout_file": "check-04-stdout.txt",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_file": "check-04-stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.exe",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "returncode": 0,
+      "seconds": 0.8995507999934489,
+      "stdout_file": "check-05-stdout.txt",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_file": "check-05-stderr.txt",
+      "stderr_sha256": "7a7c5f339ce35cb7811e73ee64d146487d7e72eb2090f8175330980b4fb58593"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.exe",
+        "test",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 2.5204784000015934,
+      "stdout_file": "check-06-stdout.txt",
+      "stdout_sha256": "808b596b12316eb40e12aa70489ccee43e2edabaa10a6b8a88075ab90fb20211",
+      "stderr_file": "check-06-stderr.txt",
+      "stderr_sha256": "03cfd7485e6cecbab4dd4bfbb4657b7219c25f10faf8f500ba2ca197ca271454"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.exe",
+        "test",
+        "--workspace",
+        "--doc",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 0.7321625999975367,
+      "stdout_file": "check-07-stdout.txt",
+      "stdout_sha256": "bb837efa38efe971f804e638272c7731bfb27c03f3ab293e679e68c728293bed",
+      "stderr_file": "check-07-stderr.txt",
+      "stderr_sha256": "5e51a31353519cb5152ef1478fa5a87bd2f55b2b0c3a7c217ac592180ad4c36e"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/check_workspace.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.37821640000038315,
+      "stdout_file": "check-08-stdout.txt",
+      "stdout_sha256": "7d7d6fe2b8aeaf0b86895ef327b72577d2dab2c4e724c90457e896d328e9be42",
+      "stderr_file": "check-08-stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "returncode": 0,
+      "seconds": 15.47982950000005,
+      "stdout_file": "check-09-stdout.txt",
+      "stdout_sha256": "48be988b8690832fbca5f54416fb88c67689df1d115b004b069ab54531c44f66",
+      "stderr_file": "check-09-stderr.txt",
+      "stderr_sha256": "90dbc7b98fc286be802d2025b0ead011692e2ee2253e2922e01bfdb51058c017"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.exe",
+        "build",
+        "--workspace",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 0.4910066999946139,
+      "stdout_file": "check-10-stdout.txt",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_file": "check-10-stderr.txt",
+      "stderr_sha256": "79ebf1c9ff5e05f48fb0c6ea52b184a87bded725e977ad03d405ba503c7f18b6"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "returncode": 0,
+      "seconds": 0.12594209999952,
+      "stdout_file": "check-11-stdout.txt",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_file": "check-11-stderr.txt",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

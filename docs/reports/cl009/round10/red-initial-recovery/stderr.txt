@@ -1,0 +1,15 @@
+test_initial_lock_crash_requires_external_policy_before_recovery_mutation (test_semantic_bundle_recovery.SemanticRecoveryTests.test_initial_lock_crash_requires_external_policy_before_recovery_mutation) ... FAIL
+
+======================================================================
+FAIL: test_initial_lock_crash_requires_external_policy_before_recovery_mutation (test_semantic_bundle_recovery.SemanticRecoveryTests.test_initial_lock_crash_requires_external_policy_before_recovery_mutation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tests\test_semantic_bundle_recovery.py", line 66, in test_initial_lock_crash_requires_external_policy_before_recovery_mutation
+    with self.assertRaisesRegex(ValueError, '策略'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 1 test in 0.592s
+
+FAILED (failures=1)

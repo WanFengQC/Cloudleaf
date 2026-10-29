@@ -1,0 +1,21 @@
+test_ngram_analysis (unittest.loader._FailedTest.test_ngram_analysis) ... ERROR
+
+======================================================================
+ERROR: test_ngram_analysis (unittest.loader._FailedTest.test_ngram_analysis)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_ngram_analysis
+Traceback (most recent call last):
+  File "C:\Users\EDY\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EDY\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tests\test_ngram_analysis.py", line 11, in <module>
+    from tools.data_pipeline.ngram_analysis import analyze
+ModuleNotFoundError: No module named 'tools.data_pipeline.ngram_analysis'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)

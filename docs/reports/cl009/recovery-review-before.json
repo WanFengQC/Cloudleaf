@@ -1,0 +1,89 @@
+{
+  "repo_head": "ca6656c893afdae9c36f1d13d8d72bde628e3eab",
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "owned_child_pid": 29124,
+  "cases": [
+    {
+      "case": "root-junction",
+      "input": "C:\\Users\\EDY\\AppData\\Local\\Temp\\cloudleaf-recovery-review-20261022-a\\root-store",
+      "resolved": "C:\\Users\\EDY\\AppData\\Local\\Temp\\cloudleaf-recovery-review-20261022-a\\root-outside",
+      "input_is_symlink": false,
+      "input_is_junction": true,
+      "recovery": {
+        "recovered": true,
+        "owner_pid": 29124,
+        "owner_status": {
+          "status": "dead",
+          "start": null
+        },
+        "current": null,
+        "quarantined": [
+          ".writer.lock"
+        ],
+        "scope": "process interruption recovery, not physical power-loss durability"
+      },
+      "error": null,
+      "physical_guard_created": true,
+      "physical_owner_lock_still_exists": false,
+      "quarantine_names": [
+        ".recovered-d3fbd5304fd2433fbd2d87f501b91f79"
+      ],
+      "user_sha_unchanged": true
+    },
+    {
+      "case": "ancestor-junction",
+      "input": "C:\\Users\\EDY\\AppData\\Local\\Temp\\cloudleaf-recovery-review-20261022-a\\ancestor-link\\store",
+      "resolved": "C:\\Users\\EDY\\AppData\\Local\\Temp\\cloudleaf-recovery-review-20261022-a\\ancestor-outside\\store",
+      "input_is_symlink": false,
+      "input_is_junction": false,
+      "recovery": {
+        "recovered": true,
+        "owner_pid": 29124,
+        "owner_status": {
+          "status": "dead",
+          "start": null
+        },
+        "current": null,
+        "quarantined": [
+          ".writer.lock"
+        ],
+        "scope": "process interruption recovery, not physical power-loss durability"
+      },
+      "error": null,
+      "physical_guard_created": true,
+      "physical_owner_lock_still_exists": false,
+      "quarantine_names": [
+        ".recovered-c8571a6b96184208b6936f095bdd015a"
+      ],
+      "user_sha_unchanged": true
+    },
+    {
+      "case": "nested-orphan-junction",
+      "input": "C:\\Users\\EDY\\AppData\\Local\\Temp\\cloudleaf-recovery-review-20261022-a\\nested-store",
+      "resolved": "C:\\Users\\EDY\\AppData\\Local\\Temp\\cloudleaf-recovery-review-20261022-a\\nested-store",
+      "input_is_symlink": false,
+      "input_is_junction": false,
+      "recovery": {
+        "recovered": true,
+        "owner_pid": 29124,
+        "owner_status": {
+          "status": "dead",
+          "start": null
+        },
+        "current": null,
+        "quarantined": [
+          ".writer.lock",
+          ".publish-stage"
+        ],
+        "scope": "process interruption recovery, not physical power-loss durability"
+      },
+      "error": null,
+      "physical_guard_created": true,
+      "physical_owner_lock_still_exists": false,
+      "quarantine_names": [
+        ".recovered-7c15cb0231c340db9906f08ae0ff7228"
+      ],
+      "user_sha_unchanged": true
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "historical_implementation_commit": "8f8fb5ae86e6d950435e603d37124470e74ac015",
+  "historical_module_git_sha256": "f8465ccf6aed44d3afc90383e93a98af1487b0160620b38047d8c9160c2c9a95",
+  "test_sha256": "82f513dfc779bab523be5d82653a4f6a7fcdc2637b6bfb4652dc98d19d73fda8",
+  "command": [
+    "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "-X",
+    "utf8",
+    "-c",
+    "\nimport importlib.util,sys,unittest\nfrom pathlib import Path\nroot,source=Path(sys.argv[1]),Path(sys.argv[2])\nsys.path.insert(0,str(root));sys.path.insert(0,str(root/'tests'))\nimport tools.data_pipeline\nname='tools.data_pipeline.semantic_bundle'\nspec=importlib.util.spec_from_file_location(name,source)\nmodule=importlib.util.module_from_spec(spec);sys.modules[name]=module\nsetattr(tools.data_pipeline,'semantic_bundle',module);spec.loader.exec_module(module)\nsuite=unittest.defaultTestLoader.loadTestsFromName('test_semantic_bundle_recovery.SemanticRecoveryTests.test_initial_lock_crash_requires_external_policy_before_recovery_mutation')\nresult=unittest.TextTestRunner(verbosity=2).run(suite)\nsys.exit(0 if result.wasSuccessful() else 1)\n",
+    "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf",
+    "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round10-semantic-recovery-commit-replay\\historical-semantic-bundle.py"
+  ],
+  "returncode": 1,
+  "scope": "Actual fixed historical module imported and executed; existing test starts its own lock-phase child, no business logic copied."
+}

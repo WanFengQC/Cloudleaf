@@ -1,0 +1,17 @@
+{
+  "previous_evidence_commit": "0ee401eba2f23343abf856017a34535da094276d",
+  "reproduced_command": [
+    "git",
+    "diff-tree",
+    "--check",
+    "72985c50904a41018058f1d05e3ce44902b58aa8",
+    "0ee401eba2f23343abf856017a34535da094276d"
+  ],
+  "returncode": 2,
+  "repaired_display_files": [
+    "validation/check-05-stdout.txt",
+    "validation/check-06-stdout.txt"
+  ],
+  "original_process_envelope_changed": false,
+  "initial_staged_failure": "Original staged check in chained shell returned2 but later commit still ran; raw process stream not separately captured, tool transcript retained."
+}

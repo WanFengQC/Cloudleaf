@@ -1,0 +1,402 @@
+{
+  "all_nine_files_identical": true,
+  "archive": {
+    "bytes": 398198,
+    "sha256": "2b4ae101c09469e3accfddf78ef4798cdf4a37657a52a2a99f425cad2b2af122"
+  },
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "archive",
+        "--format=zip",
+        "--output=C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\source.zip",
+        "2401b1640d37b17ea4112aeb51862fb0ddba41d1"
+      ],
+      "cwd": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf",
+      "elapsed_seconds": 0.1621871999996074,
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-m",
+        "venv",
+        "--without-pip",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\venv"
+      ],
+      "cwd": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf",
+      "elapsed_seconds": 0.1863167000010435,
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-I",
+        "-c",
+        "import importlib.metadata,json,sys;sys.path.insert(0,sys.argv[1]);import tools.data_pipeline.pipeline as p;print(json.dumps({'version':sys.version,'executable':sys.executable,'isolated':sys.flags.isolated,'utf8':sys.flags.utf8_mode,'pipeline':p.__file__,'distributions':[x.metadata['Name'] for x in importlib.metadata.distributions()]}))",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\checkout"
+      ],
+      "cwd": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\checkout",
+      "elapsed_seconds": 0.4329522999978508,
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"version\": \"3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]\", \"executable\": \"C:\\\\Users\\\\EDY\\\\.codex\\\\worktrees\\\\cl009-data\\\\Cloudleaf\\\\.local\\\\round4-clean-2401b16\\\\venv\\\\Scripts\\\\python.exe\", \"isolated\": 1, \"utf8\": 1, \"pipeline\": \"C:\\\\Users\\\\EDY\\\\.codex\\\\worktrees\\\\cl009-data\\\\Cloudleaf\\\\.local\\\\round4-clean-2401b16\\\\checkout\\\\tools\\\\data_pipeline\\\\pipeline.py\", \"distributions\": []}\n"
+    },
+    {
+      "argv": [
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-I",
+        "-c",
+        "import runpy,sys,urllib.request;sys.path.insert(0,sys.argv.pop(1))\ndef deny(*a,**k):raise RuntimeError('offline build forbids network')\nurllib.request.urlopen=deny\nrunpy.run_module('tools.data_pipeline',run_name='__main__')",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\checkout",
+        "build",
+        "--lock",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\checkout\\data\\sources\\locks\\cccedict-20260604-mirror7019e1c.json",
+        "--source",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-source-cedict\\cedict_1_0_ts_utf-8_mdbg_2026-06-04_21:48_GMT.zip",
+        "--license",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\checkout\\data\\licenses\\CC-BY-SA-4.0.txt",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\release-a"
+      ],
+      "cwd": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\checkout",
+      "elapsed_seconds": 24.282537999999477,
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"entries\": 123544, \"rejected\": 1468, \"build_seconds\": 24.008914799997, \"peak_process_bytes\": 1007763456}\n"
+    },
+    {
+      "argv": [
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-I",
+        "-c",
+        "import runpy,sys,urllib.request;sys.path.insert(0,sys.argv.pop(1))\ndef deny(*a,**k):raise RuntimeError('offline build forbids network')\nurllib.request.urlopen=deny\nrunpy.run_module('tools.data_pipeline',run_name='__main__')",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\checkout",
+        "verify",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\release-a"
+      ],
+      "cwd": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\checkout",
+      "elapsed_seconds": 13.900760599997739,
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"verified\": true, \"entries\": 123544, \"source\": \"cccedict:mirror-20260604\", \"source_only_statistics_rebuilt\": false}\n"
+    },
+    {
+      "argv": [
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-I",
+        "-c",
+        "import runpy,sys,urllib.request;sys.path.insert(0,sys.argv.pop(1))\ndef deny(*a,**k):raise RuntimeError('offline build forbids network')\nurllib.request.urlopen=deny\nrunpy.run_module('tools.data_pipeline',run_name='__main__')",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\checkout",
+        "build",
+        "--lock",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\checkout\\data\\sources\\locks\\cccedict-20260604-mirror7019e1c.json",
+        "--source",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-source-cedict\\cedict_1_0_ts_utf-8_mdbg_2026-06-04_21:48_GMT.zip",
+        "--license",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\checkout\\data\\licenses\\CC-BY-SA-4.0.txt",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\release-b"
+      ],
+      "cwd": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\checkout",
+      "elapsed_seconds": 24.274979199999507,
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"entries\": 123544, \"rejected\": 1468, \"build_seconds\": 24.005592499997874, \"peak_process_bytes\": 1007562752}\n"
+    },
+    {
+      "argv": [
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-I",
+        "-c",
+        "import runpy,sys,urllib.request;sys.path.insert(0,sys.argv.pop(1))\ndef deny(*a,**k):raise RuntimeError('offline build forbids network')\nurllib.request.urlopen=deny\nrunpy.run_module('tools.data_pipeline',run_name='__main__')",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\checkout",
+        "verify",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\release-b"
+      ],
+      "cwd": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\checkout",
+      "elapsed_seconds": 13.770726399998239,
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"verified\": true, \"entries\": 123544, \"source\": \"cccedict:mirror-20260604\", \"source_only_statistics_rebuilt\": false}\n"
+    },
+    {
+      "argv": [
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-I",
+        "-c",
+        "import runpy,sys,urllib.request;sys.path.insert(0,sys.argv.pop(1))\ndef deny(*a,**k):raise RuntimeError('offline build forbids network')\nurllib.request.urlopen=deny\nrunpy.run_module('tools.data_pipeline',run_name='__main__')",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\checkout",
+        "benchmark",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\release-a",
+        "--iterations",
+        "10000",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\performance.json"
+      ],
+      "cwd": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\checkout",
+      "elapsed_seconds": 13.818659300002764,
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"scope\": \"Python离线JSON索引载入和精确键查询；不是Rust候选、TSF或语言准确率\", \"python\": \"3.12.10\", \"platform\": \"Windows-11-10.0.26300-SP0\", \"machine\": \"AMD64\", \"processor\": \"Intel64 Family 6 Model 167 Stepping 1, GenuineIntel\", \"iterations\": 10000, \"index_bytes\": 13028916, \"manifest_sha256\": \"85b6f837e0644716605f9458a59ebbc3044ed2b03a1c6d26f497ac2fa5993de2\", \"builder_files_sha256\": {\"__init__.py\": \"23fe9b9d63d02a01c5401a85ad845defc688fa6db5927dc63d7ae902b4ec83d1\", \"__main__.py\": \"9fe6b7f24253eb62cb7250e40b84d557c6fc3c1b218038238ca07067a64b37e1\", \"cedict_source.py\": \"a51c445cab5144c2065865993fac78a89a431c5875f477d4e20eac18d51a43af\", \"filesystem.py\": \"3ff2533b1fdbf77fea688b45d5a44f04ba8cc7f9bd064844e823e786db8bad12\", \"pipeline.py\": \"e842232af7a4d8b5547a19fb27d6a4d5f84fc391d651d3e0a3c20946a457d841\", \"prefix_snapshot.py\": \"0f624cf0a0fa162117b4dcde7dc78e55af632104c8ae541812bc07d4ee3f0778\", \"reading_audit.py\": \"e89dba255cf4e8c5afa8c908edc01cf2d3f33d60e1187b67d1a120d382a1ce5d\", \"recovery.py\": \"5d27f4e8d0b3cdd286bc17f9efebef2f49b7dcb2984cc31c6d8c6f9a2ffbf3de\", \"word_source.py\": \"1d6d785da2b43895128c42b36e5f2997b1db872a466a86a45bab6961451dcd04\"}, \"release_builder_files_sha256\": {\"__init__.py\": \"23fe9b9d63d02a01c5401a85ad845defc688fa6db5927dc63d7ae902b4ec83d1\", \"__main__.py\": \"9fe6b7f24253eb62cb7250e40b84d557c6fc3c1b218038238ca07067a64b37e1\", \"cedict_source.py\": \"a51c445cab5144c2065865993fac78a89a431c5875f477d4e20eac18d51a43af\", \"filesystem.py\": \"3ff2533b1fdbf77fea688b45d5a44f04ba8cc7f9bd064844e823e786db8bad12\", \"pipeline.py\": \"e842232af7a4d8b5547a19fb27d6a4d5f84fc391d651d3e0a3c20946a457d841\", \"prefix_snapshot.py\": \"0f624cf0a0fa162117b4dcde7dc78e55af632104c8ae541812bc07d4ee3f0778\", \"reading_audit.py\": \"e89dba255cf4e8c5afa8c908edc01cf2d3f33d60e1187b67d1a120d382a1ce5d\", \"recovery.py\": \"5d27f4e8d0b3cdd286bc17f9efebef2f49b7dcb2984cc31c6d8c6f9a2ffbf3de\", \"word_source.py\": \"1d6d785da2b43895128c42b36e5f2997b1db872a466a86a45bab6961451dcd04\"}, \"release_builder_matches_current\": true, \"load_ms\": 206.5204, \"query_ns\": {\"p50\": 200.0, \"p95\": 500, \"p99\": 700, \"max\": 20700}, \"peak_process_bytes\": 737173504, \"memory_method\": \"OS进程峰值工作集/RSS（包括前置完整校验）\", \"result_count\": 13957, \"background_load\": \"未隔离桌面后台负载\"}\n"
+    },
+    {
+      "argv": [
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-I",
+        "-c",
+        "import runpy,sys;sys.path.insert(0,sys.argv.pop(1));runpy.run_module('unittest',run_name='__main__')",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\checkout",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "cwd": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\checkout",
+      "elapsed_seconds": 12.420300099998713,
+      "exit_code": 0,
+      "stderr": "test_actual_seed_is_group_isolated_and_does_not_reuse_regression_inputs (test_algorithm_evaluation.EvaluationIntegrityTests.test_actual_seed_is_group_isolated_and_does_not_reuse_regression_inputs) ... ok\ntest_all_misses_oov_and_unsupported_stay_in_denominator (test_algorithm_evaluation.EvaluationIntegrityTests.test_all_misses_oov_and_unsupported_stay_in_denominator) ... ok\ntest_clean_input_modification_is_a_prediction_but_never_correction_success (test_algorithm_evaluation.EvaluationIntegrityTests.test_clean_input_modification_is_a_prediction_but_never_correction_success) ... ok\ntest_distinct_context_intents_can_share_input_inside_one_split (test_algorithm_evaluation.EvaluationIntegrityTests.test_distinct_context_intents_can_share_input_inside_one_split) ... ok\ntest_equivalent_multigold_order_does_not_bypass_duplicate_check (test_algorithm_evaluation.EvaluationIntegrityTests.test_equivalent_multigold_order_does_not_bypass_duplicate_check) ... ok\ntest_family_cannot_cross_dev_and_heldout_even_with_different_inputs (test_algorithm_evaluation.EvaluationIntegrityTests.test_family_cannot_cross_dev_and_heldout_even_with_different_inputs) ... ok\ntest_historical_input_cannot_be_renamed_or_recased_into_heldout (test_algorithm_evaluation.EvaluationIntegrityTests.test_historical_input_cannot_be_renamed_or_recased_into_heldout) ... ok\ntest_no_correction_predictions_have_undefined_precision_and_zero_recall (test_algorithm_evaluation.EvaluationIntegrityTests.test_no_correction_predictions_have_undefined_precision_and_zero_recall) ... ok\ntest_percentiles_use_all_samples_and_nearest_rank (test_algorithm_evaluation.EvaluationIntegrityTests.test_percentiles_use_all_samples_and_nearest_rank) ... ok\ntest_missing_artifact_fails_instead_of_falling_back_to_stale_file (test_benchmark.ArtifactTests.test_missing_artifact_fails_instead_of_falling_back_to_stale_file) ... ok\ntest_uses_only_actual_host_executable_in_custom_directory (test_benchmark.ArtifactTests.test_uses_only_actual_host_executable_in_custom_directory) ... ok\ntest_complete_archive_unknown_language_fields_and_different_local_names (test_cedict_source.CedictSourceTests.test_complete_archive_unknown_language_fields_and_different_local_names) ... ok\ntest_derived_quality_and_source_identity_cannot_be_forged_with_new_hashes (test_cedict_source.CedictSourceTests.test_derived_quality_and_source_identity_cannot_be_forged_with_new_hashes) ... ok\ntest_duplicate_merges_evidence_conflict_isolates_every_version (test_cedict_source.CedictSourceTests.test_duplicate_merges_evidence_conflict_isolates_every_version) ... ok\ntest_header_count_plain_hash_and_archive_paths_fail_closed (test_cedict_source.CedictSourceTests.test_header_count_plain_hash_and_archive_paths_fail_closed) ... ok\ntest_meaning_correction_does_not_change_source_identity_but_reading_case_does (test_cedict_source.CedictSourceTests.test_meaning_correction_does_not_change_source_identity_but_reading_case_does) ... ok\ntest_unsupported_and_budget_are_separate_from_bad_source_rows (test_cedict_source.CedictSourceTests.test_unsupported_and_budget_are_separate_from_bad_source_rows) ... ok\ntest_archive_size_limit_and_utf8 (test_data_pipeline.PipelineTests.test_archive_size_limit_and_utf8) ... ok\ntest_archive_traversal_rejected (test_data_pipeline.PipelineTests.test_archive_traversal_rejected) ... ok\ntest_atomic_upgrade_and_rollback_preserve_user_data (test_data_pipeline.PipelineTests.test_atomic_upgrade_and_rollback_preserve_user_data) ... ok\ntest_concurrent_writer_and_pointer_traversal_fail_closed (test_data_pipeline.PipelineTests.test_concurrent_writer_and_pointer_traversal_fail_closed) ... ok\ntest_conflicts_isolated_duplicate_counted_and_bad_rows_reported (test_data_pipeline.PipelineTests.test_conflicts_isolated_duplicate_counted_and_bad_rows_reported) ... ok\ntest_corruption_detected_and_rejected_before_activation (test_data_pipeline.PipelineTests.test_corruption_detected_and_rejected_before_activation) ... ok\ntest_cross_resource_semantics_verified_even_if_hash_updated (test_data_pipeline.PipelineTests.test_cross_resource_semantics_verified_even_if_hash_updated) ... ok\ntest_damaged_rollback_target_and_replace_failure_keep_pointer (test_data_pipeline.PipelineTests.test_damaged_rollback_target_and_replace_failure_keep_pointer) ... ok\ntest_deterministic_build_and_offline (test_data_pipeline.PipelineTests.test_deterministic_build_and_offline) ... ok\ntest_hash_mismatch_fails_without_output (test_data_pipeline.PipelineTests.test_hash_mismatch_fails_without_output) ... ok\ntest_license_and_review_fail_closed (test_data_pipeline.PipelineTests.test_license_and_review_fail_closed) ... ok\ntest_local_cedict_preserves_raw_senses_and_deduplicates (test_data_pipeline.PipelineTests.test_local_cedict_preserves_raw_senses_and_deduplicates) ... ok\ntest_manifest_symlink_rejected (test_data_pipeline.PipelineTests.test_manifest_symlink_rejected) ... ok\ntest_no_automatic_cedict_or_unapproved_download (test_data_pipeline.PipelineTests.test_no_automatic_cedict_or_unapproved_download) ... ok\ntest_normalization_does_not_guess_readings (test_data_pipeline.PipelineTests.test_normalization_does_not_guess_readings) ... ok\ntest_nullable_frequency_and_rich_evidence (test_data_pipeline.PipelineTests.test_nullable_frequency_and_rich_evidence) ... ok\ntest_python_and_rust_syllable_inventory_match (test_data_pipeline.PipelineTests.test_python_and_rust_syllable_inventory_match) ... ok\ntest_rehashed_facts_projection_and_index_cannot_bypass_semantics (test_data_pipeline.PipelineTests.test_rehashed_facts_projection_and_index_cannot_bypass_semantics) ... ok\ntest_rehashed_quality_statistics_scope_and_accuracy_claim_are_verified (test_data_pipeline.PipelineTests.test_rehashed_quality_statistics_scope_and_accuracy_claim_are_verified) ... ok\ntest_wrong_complete_cached_or_copied_release_cannot_publish_invalid_pointer (test_data_pipeline.PipelineTests.test_wrong_complete_cached_or_copied_release_cannot_publish_invalid_pointer) ... ok\ntest_alive_or_wrong_owner_and_unknown_status_never_clear_lock (test_data_recovery.DataRecoveryTests.test_alive_or_wrong_owner_and_unknown_status_never_clear_lock) ... ok\ntest_atomic_pointer_never_truncates_a_hardlink_or_existing_temporary (test_data_recovery.DataRecoveryTests.test_atomic_pointer_never_truncates_a_hardlink_or_existing_temporary) ... ok\ntest_child_exit_recovery_at_copy_cache_and_pointer_boundaries (test_data_recovery.DataRecoveryTests.test_child_exit_recovery_at_copy_cache_and_pointer_boundaries) ... ok\ntest_nested_orphan_directory_link_is_rejected_before_any_recovery_mutation (test_data_recovery.DataRecoveryTests.test_nested_orphan_directory_link_is_rejected_before_any_recovery_mutation) ... ok\ntest_parent_termination_releases_os_guard_but_requires_explicit_owner_recovery (test_data_recovery.DataRecoveryTests.test_parent_termination_releases_os_guard_but_requires_explicit_owner_recovery) ... ok\ntest_parent_traversal_is_not_normalized_past_a_directory_link (test_data_recovery.DataRecoveryTests.test_parent_traversal_is_not_normalized_past_a_directory_link) ... ok\ntest_reading_audit_replays_source_without_changing_inventory (test_data_recovery.DataRecoveryTests.test_reading_audit_replays_source_without_changing_inventory) ... ok\ntest_release_directory_links_and_linked_ancestors_are_rejected (test_data_recovery.DataRecoveryTests.test_release_directory_links_and_linked_ancestors_are_rejected) ... ok\ntest_store_and_ancestor_directory_links_reject_before_guard_creation (test_data_recovery.DataRecoveryTests.test_store_and_ancestor_directory_links_reject_before_guard_creation) ... ok\ntest_store_metadata_hardlinks_are_rejected_before_guard_writes (test_data_recovery.DataRecoveryTests.test_store_metadata_hardlinks_are_rejected_before_guard_writes) ... ok\ntest_unsafe_orphan_is_rejected_before_rollback_pointer_changes (test_data_recovery.DataRecoveryTests.test_unsafe_orphan_is_rejected_before_rollback_pointer_changes) ... ok\ntest_explicit_mandarin_segmentation_preserves_boundaries_and_rejects_ambiguity (test_word_source.WordSourceTests.test_explicit_mandarin_segmentation_preserves_boundaries_and_rejects_ambiguity) ... ok\ntest_real_word_schema_preserves_languages_pos_english_and_unknown_frequency (test_word_source.WordSourceTests.test_real_word_schema_preserves_languages_pos_english_and_unknown_frequency) ... ok\ntest_research_prefix_keeps_only_complete_lines_and_locks_bytes (test_word_source.WordSourceTests.test_research_prefix_keeps_only_complete_lines_and_locks_bytes) ... ok\ntest_runtime_and_rights_isolations_are_not_source_malformations (test_word_source.WordSourceTests.test_runtime_and_rights_isolations_are_not_source_malformations) ... ok\ntest_external_packages_require_exact_version_license_and_source (test_workspace_audit.AuditTests.test_external_packages_require_exact_version_license_and_source) ... ok\ntest_policies_reject_duplicates_unreviewed_sources_and_path_escape (test_workspace_audit.AuditTests.test_policies_reject_duplicates_unreviewed_sources_and_path_escape) ... ok\ntest_resource_hash_license_count_format_and_missing_registration (test_workspace_audit.AuditTests.test_resource_hash_license_count_format_and_missing_registration) ... ok\n\n----------------------------------------------------------------------\nRan 55 tests in 11.836s\n\nOK\n",
+      "stdout": "资源已验证：data/words.jsonl (2 条)\n"
+    }
+  ],
+  "date": "2026-10-23",
+  "environment": {
+    "distributions": [],
+    "executable": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\venv\\Scripts\\python.exe",
+    "isolated": 1,
+    "pipeline": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-clean-2401b16\\checkout\\tools\\data_pipeline\\pipeline.py",
+    "utf8": 1,
+    "version": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]"
+  },
+  "implementation_commit": "2401b1640d37b17ea4112aeb51862fb0ddba41d1",
+  "network_forbidden_during_build": true,
+  "performance": {
+    "background_load": "未隔离桌面后台负载",
+    "builder_files_sha256": {
+      "__init__.py": "23fe9b9d63d02a01c5401a85ad845defc688fa6db5927dc63d7ae902b4ec83d1",
+      "__main__.py": "9fe6b7f24253eb62cb7250e40b84d557c6fc3c1b218038238ca07067a64b37e1",
+      "cedict_source.py": "a51c445cab5144c2065865993fac78a89a431c5875f477d4e20eac18d51a43af",
+      "filesystem.py": "3ff2533b1fdbf77fea688b45d5a44f04ba8cc7f9bd064844e823e786db8bad12",
+      "pipeline.py": "e842232af7a4d8b5547a19fb27d6a4d5f84fc391d651d3e0a3c20946a457d841",
+      "prefix_snapshot.py": "0f624cf0a0fa162117b4dcde7dc78e55af632104c8ae541812bc07d4ee3f0778",
+      "reading_audit.py": "e89dba255cf4e8c5afa8c908edc01cf2d3f33d60e1187b67d1a120d382a1ce5d",
+      "recovery.py": "5d27f4e8d0b3cdd286bc17f9efebef2f49b7dcb2984cc31c6d8c6f9a2ffbf3de",
+      "word_source.py": "1d6d785da2b43895128c42b36e5f2997b1db872a466a86a45bab6961451dcd04"
+    },
+    "index_bytes": 13028916,
+    "iterations": 10000,
+    "load_ms": 206.5204,
+    "machine": "AMD64",
+    "manifest_sha256": "85b6f837e0644716605f9458a59ebbc3044ed2b03a1c6d26f497ac2fa5993de2",
+    "memory_method": "OS进程峰值工作集/RSS（包括前置完整校验）",
+    "peak_process_bytes": 737173504,
+    "platform": "Windows-11-10.0.26300-SP0",
+    "processor": "Intel64 Family 6 Model 167 Stepping 1, GenuineIntel",
+    "python": "3.12.10",
+    "query_ns": {
+      "max": 20700,
+      "p50": 200.0,
+      "p95": 500,
+      "p99": 700
+    },
+    "release_builder_files_sha256": {
+      "__init__.py": "23fe9b9d63d02a01c5401a85ad845defc688fa6db5927dc63d7ae902b4ec83d1",
+      "__main__.py": "9fe6b7f24253eb62cb7250e40b84d557c6fc3c1b218038238ca07067a64b37e1",
+      "cedict_source.py": "a51c445cab5144c2065865993fac78a89a431c5875f477d4e20eac18d51a43af",
+      "filesystem.py": "3ff2533b1fdbf77fea688b45d5a44f04ba8cc7f9bd064844e823e786db8bad12",
+      "pipeline.py": "e842232af7a4d8b5547a19fb27d6a4d5f84fc391d651d3e0a3c20946a457d841",
+      "prefix_snapshot.py": "0f624cf0a0fa162117b4dcde7dc78e55af632104c8ae541812bc07d4ee3f0778",
+      "reading_audit.py": "e89dba255cf4e8c5afa8c908edc01cf2d3f33d60e1187b67d1a120d382a1ce5d",
+      "recovery.py": "5d27f4e8d0b3cdd286bc17f9efebef2f49b7dcb2984cc31c6d8c6f9a2ffbf3de",
+      "word_source.py": "1d6d785da2b43895128c42b36e5f2997b1db872a466a86a45bab6961451dcd04"
+    },
+    "release_builder_matches_current": true,
+    "result_count": 13957,
+    "scope": "Python离线JSON索引载入和精确键查询；不是Rust候选、TSF或语言准确率"
+  },
+  "python_tests": 55,
+  "quality": {
+    "counts": {
+      "accepted_multicharacter_records": 110045,
+      "accepted_multiple_senses_records": 45146,
+      "accepted_non_han_headword_records": 55,
+      "accepted_records": 123544,
+      "accepted_single_character_records": 13499,
+      "accepted_traditional_simplified_differences": 76573,
+      "accepted_uppercase_reading_records": 20598,
+      "ambiguous_runtime_readings": 0,
+      "characters_with_mandarin": 0,
+      "conflicting_characters": 0,
+      "conflicting_lexemes": 0,
+      "distinct_pinyin": 85439,
+      "distinct_texts": 119781,
+      "duplicate_property_lines": 0,
+      "duplicate_records": 0,
+      "input_reading_records": 0,
+      "malformed_or_conflicting_records": 0,
+      "missing_english_gloss": 0,
+      "missing_frequency": 123544,
+      "missing_pos": 123544,
+      "raw_lines": 125042,
+      "rejected_records": 1468,
+      "rights_or_quotation_isolations": 0,
+      "runtime_annotation_omitted_long": 241,
+      "runtime_budget_isolations": 1,
+      "selected_property_lines": 0,
+      "source_entry_lines": 125012,
+      "unsupported_runtime_readings": 1467
+    },
+    "evaluation": {
+      "accuracy_claim": false,
+      "dev": null,
+      "heldout": null,
+      "reason": "来源数据完整性检查，不是独立语言评测",
+      "train": null
+    },
+    "rejection_reasons": {
+      "cedict_runtime_budget": 1,
+      "unsupported_cedict_reading": 763,
+      "unsupported_reading": 704
+    },
+    "schema_version": 2,
+    "scope": [
+      "Full fixed mirror archive, not current official latest release and not publisher-signed.",
+      "Descriptive dictionary with raw English senses; no complete POS, modern frequency, bilingual sense alignment or independent language-accuracy proof.",
+      "Unsupported syllables, r5, non-pinyin and mixed tokens remain isolated; production parser inventory unchanged.",
+      "No heldout annotations or dictionary-derived gold. All missing frequency remains null/unknown."
+    ],
+    "source": "cccedict:mirror-20260604",
+    "source_conflicts": "词条保留来源字段差异；仅相同稳定ID合并行号证据"
+  },
+  "results": [
+    {
+      "build": {
+        "build_seconds": 24.008914799997,
+        "entries": 123544,
+        "peak_process_bytes": 1007763456,
+        "rejected": 1468
+      },
+      "files": {
+        "LICENSE.txt": {
+          "bytes": 20138,
+          "sha256": "28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5"
+        },
+        "NOTICE.txt": {
+          "bytes": 1147,
+          "sha256": "df5e0dfcac5f0e30cecc109d3dc810b0d22bf79634bb6d3cc7990fb74aea1c48"
+        },
+        "index.json": {
+          "bytes": 13028916,
+          "sha256": "982c7ae244497d7f3cd68165e17f383655fe4c98470be5503182b6387011012e"
+        },
+        "manifest.json": {
+          "bytes": 5540,
+          "sha256": "85b6f837e0644716605f9458a59ebbc3044ed2b03a1c6d26f497ac2fa5993de2"
+        },
+        "quality.json": {
+          "bytes": 1739,
+          "sha256": "94955df94c7735930e2c09f19b54eaa460ba27bccb3c484b17a03df5ec34fb48"
+        },
+        "records.jsonl": {
+          "bytes": 77117585,
+          "sha256": "168f4579a7d72c87c41a9b2bde0d5f65f1537c65b64e107ea60bbf409f7fd072"
+        },
+        "rejected.jsonl": {
+          "bytes": 307494,
+          "sha256": "6c8b786912f4495b87064655b4f9f18369b1d7c94cea699e58f50c96afc8d0e8"
+        },
+        "runtime.tsv": {
+          "bytes": 23602173,
+          "sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+        },
+        "source-lock.json": {
+          "bytes": 3496,
+          "sha256": "a7cbdd759ae2487ce238aea8a2d43eeef3248a1a124004def9ad35764e58bd57"
+        }
+      },
+      "verify": {
+        "entries": 123544,
+        "source": "cccedict:mirror-20260604",
+        "source_only_statistics_rebuilt": false,
+        "verified": true
+      }
+    },
+    {
+      "build": {
+        "build_seconds": 24.005592499997874,
+        "entries": 123544,
+        "peak_process_bytes": 1007562752,
+        "rejected": 1468
+      },
+      "files": {
+        "LICENSE.txt": {
+          "bytes": 20138,
+          "sha256": "28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5"
+        },
+        "NOTICE.txt": {
+          "bytes": 1147,
+          "sha256": "df5e0dfcac5f0e30cecc109d3dc810b0d22bf79634bb6d3cc7990fb74aea1c48"
+        },
+        "index.json": {
+          "bytes": 13028916,
+          "sha256": "982c7ae244497d7f3cd68165e17f383655fe4c98470be5503182b6387011012e"
+        },
+        "manifest.json": {
+          "bytes": 5540,
+          "sha256": "85b6f837e0644716605f9458a59ebbc3044ed2b03a1c6d26f497ac2fa5993de2"
+        },
+        "quality.json": {
+          "bytes": 1739,
+          "sha256": "94955df94c7735930e2c09f19b54eaa460ba27bccb3c484b17a03df5ec34fb48"
+        },
+        "records.jsonl": {
+          "bytes": 77117585,
+          "sha256": "168f4579a7d72c87c41a9b2bde0d5f65f1537c65b64e107ea60bbf409f7fd072"
+        },
+        "rejected.jsonl": {
+          "bytes": 307494,
+          "sha256": "6c8b786912f4495b87064655b4f9f18369b1d7c94cea699e58f50c96afc8d0e8"
+        },
+        "runtime.tsv": {
+          "bytes": 23602173,
+          "sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+        },
+        "source-lock.json": {
+          "bytes": 3496,
+          "sha256": "a7cbdd759ae2487ce238aea8a2d43eeef3248a1a124004def9ad35764e58bd57"
+        }
+      },
+      "verify": {
+        "entries": 123544,
+        "source": "cccedict:mirror-20260604",
+        "source_only_statistics_rebuilt": false,
+        "verified": true
+      }
+    }
+  ],
+  "schema_version": 1,
+  "scope": "full licensed CC-CEDICT fixed mirror archive; no language-accuracy acceptance",
+  "source_bytes": 3975327,
+  "source_sha256": "fff8763673740aecbbe4c7f414445171ef4a70e55eac3ceee364e4f9c7cc766a"
+}

@@ -1,0 +1,21 @@
+test_source_review (unittest.loader._FailedTest.test_source_review) ... ERROR
+
+======================================================================
+ERROR: test_source_review (unittest.loader._FailedTest.test_source_review)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_source_review
+Traceback (most recent call last):
+  File "C:\Users\EDY\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EDY\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tests\test_source_review.py", line 10, in <module>
+    from tools.data_pipeline.source_review import build_matrix
+ModuleNotFoundError: No module named 'tools.data_pipeline.source_review'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)

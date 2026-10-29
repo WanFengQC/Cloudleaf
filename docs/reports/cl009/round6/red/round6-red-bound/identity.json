@@ -1,0 +1,36 @@
+{
+  "test_head": "6b7b02b5dea0d3de97036e2bfa7d282ee81569c7",
+  "implementation": "uncommitted draft exact bytes saved beside logs",
+  "draft_tool_sha256": {
+    "annotation_workflow.py": "771f79720fae897a62388982920777dd7eedc396779fda8e6dfccce4561d8514",
+    "corpus_gate.py": "2aa09a6fae23ebedf6eda795f41a70bd63c51e0eebde8239ae9251972f496635"
+  },
+  "results": [
+    {
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_annotation_workflow.py"
+      ],
+      "returncode": 1
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_corpus_gate.py"
+      ],
+      "returncode": 1
+    }
+  ]
+}

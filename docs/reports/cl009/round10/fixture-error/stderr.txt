@@ -1,0 +1,32 @@
+test_content_source_protocol_and_migration_changes_invalidate_review (test_semantic_bundle.SemanticBundleTests.test_content_source_protocol_and_migration_changes_invalidate_review) ...
+  test_content_source_protocol_and_migration_changes_invalidate_review (test_semantic_bundle.SemanticBundleTests.test_content_source_protocol_and_migration_changes_invalidate_review) (mode='migration') ... ERROR
+test_duplicate_json_keys_and_corruption_are_rejected (test_semantic_bundle.SemanticBundleTests.test_duplicate_json_keys_and_corruption_are_rejected) ... ok
+test_legacy_schema2_verifier_and_default_activation_remain_unchanged (test_semantic_bundle.SemanticBundleTests.test_legacy_schema2_verifier_and_default_activation_remain_unchanged) ... ok
+test_missing_or_internal_policy_refuses_before_store_write (test_semantic_bundle.SemanticBundleTests.test_missing_or_internal_policy_refuses_before_store_write) ... ok
+test_pending_null_is_readable_but_never_production (test_semantic_bundle.SemanticBundleTests.test_pending_null_is_readable_but_never_production) ... ok
+test_reader_manifest_determinism_and_directed_lookup (test_semantic_bundle.SemanticBundleTests.test_reader_manifest_determinism_and_directed_lookup) ... ok
+test_strict_schema_and_orphan_references (test_semantic_bundle.SemanticBundleTests.test_strict_schema_and_orphan_references) ... ok
+test_upgrade_rollback_and_unmapped_revision (test_semantic_bundle.SemanticBundleTests.test_upgrade_rollback_and_unmapped_revision) ... ok
+
+======================================================================
+ERROR: test_content_source_protocol_and_migration_changes_invalidate_review (test_semantic_bundle.SemanticBundleTests.test_content_source_protocol_and_migration_changes_invalidate_review) (mode='migration')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tests\test_semantic_bundle.py", line 178, in test_content_source_protocol_and_migration_changes_invalidate_review
+    s.build_bundle(self.input, candidate)
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tools\data_pipeline\semantic_bundle.py", line 208, in build_bundle
+    snapshot = content_snapshot(source)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tools\data_pipeline\semantic_bundle.py", line 113, in content_snapshot
+    resources.add(checked_resource(root, document).relative_to(root).as_posix())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tools\data_pipeline\semantic_bundle.py", line 71, in checked_resource
+    require(p.digest(path.read_bytes()) == item['sha256'], '资源材料SHA不符')
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tools\data_pipeline\semantic_bundle.py", line 19, in require
+    raise ValueError(message)
+ValueError: 资源材料SHA不符
+
+----------------------------------------------------------------------
+Ran 8 tests in 5.090s
+
+FAILED (errors=1)

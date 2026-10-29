@@ -1,0 +1,226 @@
+{
+  "checked_head": "72985c50904a41018058f1d05e3ce44902b58aa8",
+  "started_at_utc": "2026-10-29T17:38:06.268907+00:00",
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "runner_sha256": "f22cb576f312975aff2a5deeef037ed80eea4b8c954e098b9410d4e18ccc3d21",
+  "analysis_return_code_contract": "0=complete without diagnostics; 2=anomalies/partial/identity refusal. Code2 is not data-quality acceptance; actual complete/CRC additionally checked.",
+  "checks": [
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "returncode": 0,
+      "expected_returncodes": [
+        0
+      ],
+      "seconds": 0.08125090000248747,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "git",
+        "status",
+        "--short"
+      ],
+      "returncode": 0,
+      "expected_returncodes": [
+        0
+      ],
+      "seconds": 0.07367369999701623,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.exe",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "returncode": 0,
+      "expected_returncodes": [
+        0
+      ],
+      "seconds": 0.44767110000248067,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.exe",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "returncode": 0,
+      "expected_returncodes": [
+        0
+      ],
+      "seconds": 0.6092056999987108,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "9d892c5778d0c975f64a671e66ea5a753502353da3addd1dfdf3825225e406a2"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.exe",
+        "test",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "expected_returncodes": [
+        0
+      ],
+      "seconds": 1.2790925000008428,
+      "stdout_sha256": "090771d9b25ca4ac8e574a00e9dc17e5e864df92be30ad00671cce5de0f10cc6",
+      "stderr_sha256": "5639f24a47f831b9bd2d88e0e454f1a91eb162b8474bf43ecd71036eb7fa59f6"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.exe",
+        "test",
+        "--workspace",
+        "--doc",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "expected_returncodes": [
+        0
+      ],
+      "seconds": 0.6879516999979387,
+      "stdout_sha256": "bb837efa38efe971f804e638272c7731bfb27c03f3ab293e679e68c728293bed",
+      "stderr_sha256": "d892bb05ded14f9be5f03926ebd215c36cd721ea367c95f7d5e3764f6b3c41c7"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.exe",
+        "build",
+        "--workspace",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "expected_returncodes": [
+        0
+      ],
+      "seconds": 0.1911432999986573,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "9576f1f7e73fc2bb1ec2336aae60cb485c591eadc60a1b998573411c34057e08"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/check_workspace.py"
+      ],
+      "returncode": 0,
+      "expected_returncodes": [
+        0
+      ],
+      "seconds": 0.33098460000474006,
+      "stdout_sha256": "7d7d6fe2b8aeaf0b86895ef327b72577d2dab2c4e724c90457e896d328e9be42",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "returncode": 0,
+      "expected_returncodes": [
+        0
+      ],
+      "seconds": 14.422186600000714,
+      "stdout_sha256": "48be988b8690832fbca5f54416fb88c67689df1d115b004b069ab54531c44f66",
+      "stderr_sha256": "29dc53e8bcb61235d2ba85fd566b37cfd7f90a2f2ad8c050fde786144bdcf366"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "-m",
+        "tools.data_pipeline.ngram_analysis",
+        "--source",
+        ".local/round8-ngram-acquisition/1-00000-of-00001.gz",
+        "--totalcounts",
+        ".local/round8-ngram-acquisition/totalcounts-1",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round9-data-checks\\analysis.json"
+      ],
+      "returncode": 0,
+      "expected_returncodes": [
+        0,
+        2
+      ],
+      "seconds": 49.42323500000202,
+      "stdout_sha256": "9fac5aadb21e16347703a29aecc13a2b2955c8a72879a67ea5cafe17325cc7f8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "-m",
+        "tools.data_pipeline.ngram_analysis",
+        "--source",
+        ".local/round8-ngram-acquisition/1-00000-of-00001.gz",
+        "--totalcounts",
+        ".local/round8-ngram-acquisition/totalcounts-1",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round9-data-checks\\analysis.json"
+      ],
+      "returncode": 2,
+      "expected_returncodes": [
+        2
+      ],
+      "seconds": 0.21211389999371022,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "9ead606058fd7b6458b591e33514fef0cd3829bad821ad766a344e20120d9203"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "-m",
+        "tools.data_pipeline.annotation_workflow",
+        "--packet",
+        "data/plans/ime-annotation-round6.json",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round9-data-checks\\pending-annotations.json"
+      ],
+      "returncode": 2,
+      "expected_returncodes": [
+        2
+      ],
+      "seconds": 0.20638460000191117,
+      "stdout_sha256": "1a6d72f25cee45328047d687ffcf21ab45b76f14f1583a81ce10ffeed9b26e3b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}
