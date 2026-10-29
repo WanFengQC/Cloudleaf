@@ -27,7 +27,7 @@ def analyze(source, totalcounts, *, expected_source_sha256=SOURCE_SHA256,
         'inputs': identities, 'expected_sha256': {'source': expected_source_sha256, 'totalcounts': expected_totalcounts_sha256},
         'integrity': {'sha256_verified': verified, 'gzip_crc_verified': False},
         'scan_completed': False, 'status': 'blocked-identity', 'fatal_error': None,
-        'counts': {'rows': 0, 'valid_triplets': 0, 'totalcounts_records': 0, 'unique_tokens': 0, 'unique_token_utf8_bytes': 0},
+        'counts': {'rows': 0, 'triplet_fields': 0, 'valid_triplets': 0, 'totalcounts_records': 0, 'unique_tokens': 0, 'unique_token_utf8_bytes': 0},
         'anomaly_counts': {}, 'anomaly_examples': {}, 'example_limit_per_type': 5,
         'totalcounts_fields': {}, 'year_fields': {}, 'shape_rows': {},
         'structural_missing_token_year_pairs': None, 'totalcounts_years_without_export_groups': [],
@@ -139,6 +139,7 @@ def scan_source(source, totals, result):
                 if not token or len(values) < 2:
                     note(result, 'malformed_row', location, raw)
                     continue
+                result['counts']['triplet_fields'] += len(values) - 1
                 if token in tokens:
                     note(result, 'duplicate_token', location, raw)
                 else:
