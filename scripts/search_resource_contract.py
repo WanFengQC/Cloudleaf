@@ -21,10 +21,14 @@ def validate_case(row, expected, configuration=None):
         raise ValueError("候选超限或正文重复")
     if row.get("raw_fallback") != expected["input"] or row.get("fallback_preserved") is not True:
         raise ValueError("原输入回退丢失")
+    if (expected["kind"] == "invalid") != (row["status"] == "rejected"):
+        raise ValueError("冻结探针的合法输入/拒绝状态不匹配")
     if row["status"] == "rejected":
-        if candidates or row.get("guaranteed") or not row.get("error_kind"):
+        if candidates or row.get("guaranteed") is not False or row.get("error_kind") != "InvalidInput":
             raise ValueError("拒绝结果不能含候选或完整性声明")
         return
+    if type(row.get("guaranteed")) is not bool or row["guaranteed"] != (budget is None and pruned == 0):
+        raise ValueError("成功结果完整性与预算/剪枝观测矛盾")
     for observed, limit in (("graph_edges", "max_edges"), ("expansions", "max_expansions"), ("resident_high_water", "max_resident_paths")):
         value = statistics[observed]
         if type(value) is not int or not 0 <= value <= configuration[limit]:
