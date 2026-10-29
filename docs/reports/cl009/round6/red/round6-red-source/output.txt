@@ -1,0 +1,82 @@
+.EEEEEEE
+======================================================================
+ERROR: test_authorization_unknown_and_dictionary_answers_are_blocked (test_annotation_workflow.AnnotationWorkflowTests.test_authorization_unknown_and_dictionary_answers_are_blocked)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tests\test_annotation_workflow.py", line 90, in test_authorization_unknown_and_dictionary_answers_are_blocked
+    value = packet()
+            ^^^^^^^^
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tests\test_annotation_workflow.py", line 33, in packet
+    from tools.data_pipeline.annotation_workflow import source_digest
+ImportError: cannot import name 'source_digest' from 'tools.data_pipeline.annotation_workflow' (C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tools\data_pipeline\annotation_workflow.py)
+
+======================================================================
+ERROR: test_disagreement_requires_bound_distinct_adjudicator (test_annotation_workflow.AnnotationWorkflowTests.test_disagreement_requires_bound_distinct_adjudicator)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tests\test_annotation_workflow.py", line 61, in test_disagreement_requires_bound_distinct_adjudicator
+    value = packet()
+            ^^^^^^^^
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tests\test_annotation_workflow.py", line 33, in packet
+    from tools.data_pipeline.annotation_workflow import source_digest
+ImportError: cannot import name 'source_digest' from 'tools.data_pipeline.annotation_workflow' (C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tools\data_pipeline\annotation_workflow.py)
+
+======================================================================
+ERROR: test_freeze_preserves_split_answer_boundary_and_refuses_overwrite (test_annotation_workflow.AnnotationWorkflowTests.test_freeze_preserves_split_answer_boundary_and_refuses_overwrite)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tests\test_annotation_workflow.py", line 109, in test_freeze_preserves_split_answer_boundary_and_refuses_overwrite
+    result = freeze(packet(), target)
+                    ^^^^^^^^
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tests\test_annotation_workflow.py", line 33, in packet
+    from tools.data_pipeline.annotation_workflow import source_digest
+ImportError: cannot import name 'source_digest' from 'tools.data_pipeline.annotation_workflow' (C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tools\data_pipeline\annotation_workflow.py)
+
+======================================================================
+ERROR: test_global_family_near_lineage_and_alias_isolation (test_annotation_workflow.AnnotationWorkflowTests.test_global_family_near_lineage_and_alias_isolation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tests\test_annotation_workflow.py", line 73, in test_global_family_near_lineage_and_alias_isolation
+    value = packet()
+            ^^^^^^^^
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tests\test_annotation_workflow.py", line 33, in packet
+    from tools.data_pipeline.annotation_workflow import source_digest
+ImportError: cannot import name 'source_digest' from 'tools.data_pipeline.annotation_workflow' (C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tools\data_pipeline\annotation_workflow.py)
+
+======================================================================
+ERROR: test_protocol_replacement_invalidates_existing_reviews (test_annotation_workflow.AnnotationWorkflowTests.test_protocol_replacement_invalidates_existing_reviews)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tests\test_annotation_workflow.py", line 95, in test_protocol_replacement_invalidates_existing_reviews
+    value = packet()
+            ^^^^^^^^
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tests\test_annotation_workflow.py", line 33, in packet
+    from tools.data_pipeline.annotation_workflow import source_digest
+ImportError: cannot import name 'source_digest' from 'tools.data_pipeline.annotation_workflow' (C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tools\data_pipeline\annotation_workflow.py)
+
+======================================================================
+ERROR: test_review_is_bound_to_annotation_and_two_independent_people (test_annotation_workflow.AnnotationWorkflowTests.test_review_is_bound_to_annotation_and_two_independent_people)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tests\test_annotation_workflow.py", line 51, in test_review_is_bound_to_annotation_and_two_independent_people
+    self.assertTrue(audit(packet())['structurally_ready'])
+                          ^^^^^^^^
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tests\test_annotation_workflow.py", line 33, in packet
+    from tools.data_pipeline.annotation_workflow import source_digest
+ImportError: cannot import name 'source_digest' from 'tools.data_pipeline.annotation_workflow' (C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tools\data_pipeline\annotation_workflow.py)
+
+======================================================================
+ERROR: test_source_or_grant_replacement_invalidates_existing_reviews (test_annotation_workflow.AnnotationWorkflowTests.test_source_or_grant_replacement_invalidates_existing_reviews)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tests\test_annotation_workflow.py", line 101, in test_source_or_grant_replacement_invalidates_existing_reviews
+    value = packet()
+            ^^^^^^^^
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tests\test_annotation_workflow.py", line 33, in packet
+    from tools.data_pipeline.annotation_workflow import source_digest
+ImportError: cannot import name 'source_digest' from 'tools.data_pipeline.annotation_workflow' (C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tools\data_pipeline\annotation_workflow.py)
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.009s
+
+FAILED (errors=7)

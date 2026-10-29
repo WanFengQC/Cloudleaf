@@ -1,0 +1,20 @@
+E
+======================================================================
+ERROR: test_source_assertions (unittest.loader._FailedTest.test_source_assertions)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_source_assertions
+Traceback (most recent call last):
+  File "C:\Users\EDY\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EDY\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tests\test_source_assertions.py", line 8, in <module>
+    from tools.data_pipeline.source_assertions import build
+ModuleNotFoundError: No module named 'tools.data_pipeline.source_assertions'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)

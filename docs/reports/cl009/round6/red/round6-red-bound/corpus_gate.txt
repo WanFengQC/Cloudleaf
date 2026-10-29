@@ -1,0 +1,13 @@
+F..
+======================================================================
+FAIL: test_claimed_hashes_without_real_bound_evidence_cannot_approve (test_corpus_gate.CorpusGateTests.test_claimed_hashes_without_real_bound_evidence_cannot_approve)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tests\test_corpus_gate.py", line 40, in test_claimed_hashes_without_real_bound_evidence_cannot_approve
+    self.assertFalse(audit_revision(value, {'page_id': 342, 'revision_id': 9}, review)['statistical_use_ready'])
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.001s
+
+FAILED (failures=1)

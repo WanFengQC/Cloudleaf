@@ -1,0 +1,13 @@
+.....F.
+======================================================================
+FAIL: test_protocol_replacement_invalidates_existing_reviews (test_annotation_workflow.AnnotationWorkflowTests.test_protocol_replacement_invalidates_existing_reviews)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\cl009-data\Cloudleaf\tests\test_annotation_workflow.py", line 91, in test_protocol_replacement_invalidates_existing_reviews
+    self.assertFalse(audit(value)['structurally_ready'])
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.042s
+
+FAILED (failures=1)

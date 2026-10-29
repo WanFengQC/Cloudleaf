@@ -1,0 +1,173 @@
+{
+  "implementation_commit": "cdc73515ad5356844f1df4fc3ee30194c5a15ab6",
+  "checked_at_utc": "2026-10-28T14:31:06.586529+00:00",
+  "runner_sha256": "71b3e3d18383fae4d32734de7ef06af7719fca242b3aae9a6a4e9520ef019dc5",
+  "checks": [
+    {
+      "name": "source-graph-a",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-I",
+        "-X",
+        "utf8",
+        "-c",
+        "import sys,runpy;sys.path.insert(0,sys.argv.pop(1));runpy.run_module(sys.argv.pop(1),run_name=\"__main__\")",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round6-diagnostics-cdc7351\\checkout",
+        "tools.data_pipeline.source_assertions",
+        "--source",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\data-sources\\zhwiktionary-prefix-8388608.jsonl",
+        "--lock",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\data\\sources\\locks\\wiktionary-zh-20261001-prefix8388608.json",
+        "--output-dir",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round6-diagnostics-cdc7351\\graph-a"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 1.277121699997224,
+      "stdout": "{\"format\": \"cloudleaf-source-assertions-v1\", \"research_only\": true, \"production_language_validated\": false, \"source_sha256\": \"ca4df3453261f9f12f1223deb11a26d979078ea6e1af870b44da2d3dcf4e2998\", \"source_lock_canonical_sha256\": \"46fb6ac082320c6fa48d72a5ff9258eb00c947d8f31d5c0d4f70ed84a98354ce\", \"source_lines\": 66593, \"entries\": 591, \"senses\": 887, \"translations\": 241, \"quarantined_entries\": 18, \"outside_scope\": 65873, \"missing_explicit_pinyin\": 111, \"tool_sha256\": \"b2ed0f923c40458e2e738b3d22fd09d991d020610e014c96e46a4374f5aee018\", \"builder_files_sha256\": {\"source_assertions.py\": \"b2ed0f923c40458e2e738b3d22fd09d991d020610e014c96e46a4374f5aee018\", \"annotation_workflow.py\": \"6f65e3b0384fcd6b44851a2b8946eee786c78e6578cdc91306f7201efb15937c\", \"word_source.py\": \"1d6d785da2b43895128c42b36e5f2997b1db872a466a86a45bab6961451dcd04\", \"pipeline.py\": \"e842232af7a4d8b5547a19fb27d6a4d5f84fc391d651d3e0a3c20946a457d841\"}, \"files_sha256\": {\"assertions.jsonl\": \"1979ad15a351339edfccd492c154b41007f15f8fc590d4ec8ca53b199795430b\", \"lookup.json\": \"5403311f125de0e8468576519bcced614d2785084cbfb09f856310558806e04b\", \"quarantined.jsonl\": \"a6dd716109840739cb26771af860c6382dc1c17cf625a0d2589ef4249ce00824\", \"upstream-documents.json\": \"81b759acfdbbc78a498d38d95b396549ffb1552a7cc973b6193dc553a17f7544\"}, \"limitations\": [\"固定片段未验证完整gzip/CRC或所有页面例外；原始义项/翻译标签未人工审读或对齐，不是正式双语词库。\"]}\r\n",
+      "stderr": ""
+    },
+    {
+      "name": "source-graph-b",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-I",
+        "-X",
+        "utf8",
+        "-c",
+        "import sys,runpy;sys.path.insert(0,sys.argv.pop(1));runpy.run_module(sys.argv.pop(1),run_name=\"__main__\")",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round6-diagnostics-cdc7351\\checkout",
+        "tools.data_pipeline.source_assertions",
+        "--source",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\data-sources\\zhwiktionary-prefix-8388608.jsonl",
+        "--lock",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\data\\sources\\locks\\wiktionary-zh-20261001-prefix8388608.json",
+        "--output-dir",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round6-diagnostics-cdc7351\\graph-b"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 1.101325799972983,
+      "stdout": "{\"format\": \"cloudleaf-source-assertions-v1\", \"research_only\": true, \"production_language_validated\": false, \"source_sha256\": \"ca4df3453261f9f12f1223deb11a26d979078ea6e1af870b44da2d3dcf4e2998\", \"source_lock_canonical_sha256\": \"46fb6ac082320c6fa48d72a5ff9258eb00c947d8f31d5c0d4f70ed84a98354ce\", \"source_lines\": 66593, \"entries\": 591, \"senses\": 887, \"translations\": 241, \"quarantined_entries\": 18, \"outside_scope\": 65873, \"missing_explicit_pinyin\": 111, \"tool_sha256\": \"b2ed0f923c40458e2e738b3d22fd09d991d020610e014c96e46a4374f5aee018\", \"builder_files_sha256\": {\"source_assertions.py\": \"b2ed0f923c40458e2e738b3d22fd09d991d020610e014c96e46a4374f5aee018\", \"annotation_workflow.py\": \"6f65e3b0384fcd6b44851a2b8946eee786c78e6578cdc91306f7201efb15937c\", \"word_source.py\": \"1d6d785da2b43895128c42b36e5f2997b1db872a466a86a45bab6961451dcd04\", \"pipeline.py\": \"e842232af7a4d8b5547a19fb27d6a4d5f84fc391d651d3e0a3c20946a457d841\"}, \"files_sha256\": {\"assertions.jsonl\": \"1979ad15a351339edfccd492c154b41007f15f8fc590d4ec8ca53b199795430b\", \"lookup.json\": \"5403311f125de0e8468576519bcced614d2785084cbfb09f856310558806e04b\", \"quarantined.jsonl\": \"a6dd716109840739cb26771af860c6382dc1c17cf625a0d2589ef4249ce00824\", \"upstream-documents.json\": \"81b759acfdbbc78a498d38d95b396549ffb1552a7cc973b6193dc553a17f7544\"}, \"limitations\": [\"固定片段未验证完整gzip/CRC或所有页面例外；原始义项/翻译标签未人工审读或对齐，不是正式双语词库。\"]}\r\n",
+      "stderr": ""
+    },
+    {
+      "name": "pending-audit",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-m",
+        "tools.data_pipeline.annotation_workflow",
+        "--packet",
+        "data/plans/ime-annotation-round6.json",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round6-diagnostics-cdc7351\\pending-audit.json"
+      ],
+      "returncode": 2,
+      "expected_returncode": 2,
+      "seconds": 0.31361589999869466,
+      "stdout": "{\"structurally_ready\": false, \"details\": null, \"issues\": [\"协议/预处理/来源家族审计SHA未交付\"], \"formal_language_ready\": false, \"human_identity_or_permission_independently_proven\": false, \"top1\": null, \"top5\": null, \"mrr\": null, \"limitations\": [\"只核对声明；不证明真人/授权/语义近重复，也不满足B正式配额、封存和参数门禁。\"]}\r\n",
+      "stderr": ""
+    },
+    {
+      "name": "pending-freeze",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-m",
+        "tools.data_pipeline.annotation_workflow",
+        "--packet",
+        "data/plans/ime-annotation-round6.json",
+        "--freeze",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round6-diagnostics-cdc7351\\pending-freeze"
+      ],
+      "returncode": 1,
+      "expected_returncode": 1,
+      "seconds": 0.3014833000197541,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\r\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\r\n  File \"<frozen runpy>\", line 88, in _run_code\r\n  File \"C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\tools\\data_pipeline\\annotation_workflow.py\", line 171, in <module>\r\n    main()\r\n  File \"C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\tools\\data_pipeline\\annotation_workflow.py\", line 159, in main\r\n    result = freeze(value, args.output)\r\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\tools\\data_pipeline\\annotation_workflow.py\", line 117, in freeze\r\n    require(checked['structurally_ready'], '; '.join(checked['issues']))\r\n  File \"C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\tools\\data_pipeline\\annotation_workflow.py\", line 33, in require\r\n    raise ValueError(message)\r\nValueError: 协议/预处理/来源家族审计SHA未交付\r\n"
+    },
+    {
+      "name": "wikipedia-gate",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-m",
+        "tools.data_pipeline.corpus_gate",
+        "--revision",
+        ".local/round6-wikipedia-acquisition/revision.utf8",
+        "--page-id",
+        "342",
+        "--revision-id",
+        "94816134",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round6-diagnostics-cdc7351\\wikipedia-gate.json"
+      ],
+      "returncode": 2,
+      "expected_returncode": 2,
+      "seconds": 0.31712839999818243,
+      "stdout": "{\"revision_identity_valid\": true, \"page_id\": 342, \"revision_id\": 94816134, \"revision_timestamp\": \"2026-10-07T07:31:16Z\", \"content_sha1\": \"a8aa38891980a843b77d0715fc69d90d23e520e2\", \"content_sha256\": \"56e173a1f64ee94c13e1061e3cc970ebe3153e75f8e8cffc50c8293073392f12\", \"content_bytes\": 10501, \"history_url\": \"https://zh.wikipedia.org/w/index.php?curid=342&action=history\", \"permalink\": \"https://zh.wikipedia.org/w/index.php?oldid=94816134\", \"statistical_use_ready\": false, \"issues\": [\"license_and_exception_review:'license_and_exception_review'\", \"attribution_history:'attribution_history'\", \"extraction_protocol:'extraction_protocol'\", \"tokenizer_protocol:'tokenizer_protocol'\", \"rights-not-approved-for-fixed-content\", \"author-history-unresolved\", \"protocol-not-frozen:extraction_protocol\", \"protocol-not-frozen:tokenizer_protocol\", \"token-unit-not-fixed\"], \"all_authors_resolved\": false, \"evidence_declarations_independently_proven\": false, \"token_frequency\": null, \"document_frequency\": null, \"zipf\": null, \"body_included_in_report\": false, \"formal_language_quality_valid\": false, \"limitations\": [\"末编辑者不是全部作者。文件声明不能证明许可/页面例外审读或分词真实性；百科不是日常输入分布。\"], \"response_sha256\": \"d0cbce6752c5971399e2176470992549bca95ee61800c5bd45f8ad507b99d70f\", \"tool_sha256\": \"c5443eaa5345236556f793846026e6e9b5d9070529de1eea41c3d35bf240e73d\"}\r\n",
+      "stderr": ""
+    },
+    {
+      "name": "old-package-verify",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-m",
+        "tools.data_pipeline",
+        "verify",
+        ".local/round5-clean-6d3d4e1/release-a"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 16.23446680000052,
+      "stdout": "{\"verified\": true, \"entries\": 123544, \"source\": \"cccedict:mirror-20260604\", \"source_only_statistics_rebuilt\": false}\r\n",
+      "stderr": ""
+    },
+    {
+      "name": "archived-python-regression",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-I",
+        "-X",
+        "utf8",
+        "-c",
+        "import sys,unittest;sys.path.insert(0,sys.argv[1]);r=unittest.TextTestRunner().run(unittest.defaultTestLoader.discover(sys.argv[1]+\"/tests\",pattern=\"test_*.py\"));sys.exit(not r.wasSuccessful())",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round6-diagnostics-cdc7351\\checkout"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 14.73615179999615,
+      "stdout": "资源已验证：data/words.jsonl (2 条)\r\n",
+      "stderr": "...................................................................................\r\n----------------------------------------------------------------------\r\nRan 83 tests in 13.907s\r\n\r\nOK\r\n"
+    },
+    {
+      "name": "prototype",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "scripts/benchmark.py",
+        "--iterations",
+        "1000",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round6-diagnostics-cdc7351\\prototype.json"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 1.1678277000028174,
+      "stdout": "{\r\n  \"schema\": 1,\r\n  \"iterations\": 1000,\r\n  \"dictionary_entries\": 64,\r\n  \"dictionary_bytes\": 3435,\r\n  \"candidate_limit\": 50,\r\n  \"cold_load_and_nihao_sequence_ns\": 272300,\r\n  \"event\": {\r\n    \"samples\": 79000,\r\n    \"p50_ns\": 2000,\r\n    \"p95_ns\": 4900,\r\n    \"p99_ns\": 10600,\r\n    \"max_ns\": 119600\r\n  },\r\n  \"dictionary_query\": {\r\n    \"samples\": 11000,\r\n    \"p50_ns\": 300,\r\n    \"p95_ns\": 600,\r\n    \"p99_ns\": 900,\r\n    \"max_ns\": 27100\r\n  },\r\n  \"environment\": {\r\n    \"os\": \"Windows-11-10.0.26300-SP0\",\r\n    \"machine\": \"AMD64\",\r\n    \"cpu\": \"11th Gen Intel(R) Core(TM) i5-11400 @ 2.60GHz\",\r\n    \"logical_cpus\": 12,\r\n    \"physical_memory_bytes\": 34110734336\r\n  },\r\n  \"rustc\": \"rustc 1.90.0 (1159e78c4 2025-09-14)\",\r\n  \"git_head\": \"cdc73515ad5356844f1df4fc3ee30194c5a15ab6\",\r\n  \"source_sha256\": \"8fb63c288fd61185bac9392d0236a9d2b5f68662978ab37469f5becca35c8dbf\",\r\n  \"source_fingerprint_schema\": \"cloudleaf-source-v2\",\r\n  \"binary_sha256\": \"d53f54a25bd6b4fb8c114a06966010d4b98bf0597efb7e9c5e897e96c59e5b80\",\r\n  \"measured_at_utc\": \"2026-10-28T14:31:42.027876+00:00\",\r\n  \"build_profile\": \"release\",\r\n  \"peak_process_memory_bytes\": 5996544,\r\n  \"memory_method\": \"Windows GetProcessMemoryInfo.PeakWorkingSetSize\",\r\n  \"limitations\": \"64 条手工原型词典；空闲/当前背景负载未控制；进程内存包含运行时和样本数组；不含 TSF/UI；不是生产词库成绩。\"\r\n}\r\n",
+      "stderr": ""
+    },
+    {
+      "name": "old-seeds",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "scripts/evaluate_algorithms.py",
+        "--output-dir",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round6-diagnostics-cdc7351\\algorithm-v1"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "seconds": 1.0507020000077318,
+      "stdout": "完成 83 条样例、两个排序方案，每例预热 20 次、正式测量 100 次。\n{\r\n  \"production-rules-v1\": {\r\n    \"dev\": {\r\n      \"count\": 16,\r\n      \"top1_count\": 8,\r\n      \"top5_count\": 11,\r\n      \"top1\": 0.5,\r\n      \"top5\": 0.6875,\r\n      \"mrr\": 0.59375,\r\n      \"candidate_availability\": 0.6875,\r\n      \"gold_coverage\": 0.6875,\r\n      \"errors\": 0,\r\n      \"correction\": {\r\n        \"capability\": false,\r\n        \"required\": 3,\r\n        \"attempts\": 0,\r\n        \"correct\": 0,\r\n        \"precision\": null,\r\n        \"recall\": 0.0\r\n      },\r\n      \"latency\": {\r\n        \"samples\": 1600,\r\n        \"p50_ns\": 2800,\r\n        \"p95_ns\": 4700,\r\n        \"p99_ns\": 16500,\r\n        \"max_ns\": 34500\r\n      }\r\n    },\r\n    \"heldout\": {\r\n      \"count\": 67,\r\n      \"top1_count\": 31,\r\n      \"top5_count\": 37,\r\n      \"top1\": 0.4626865671641791,\r\n      \"top5\": 0.5522388059701493,\r\n      \"mrr\": 0.5012437810945274,\r\n      \"candidate_availability\": 0.5522388059701493,\r\n      \"gold_coverage\": 0.5522388059701493,\r\n      \"errors\": 1,\r\n      \"correction\": {\r\n        \"capability\": false,\r\n        \"required\": 12,\r\n        \"attempts\": 0,\r\n        \"correct\": 0,\r\n        \"precision\": null,\r\n        \"recall\": 0.0\r\n      },\r\n      \"latency\": {\r\n        \"samples\": 6700,\r\n        \"p50_ns\": 1900,\r\n        \"p95_ns\": 6500,\r\n        \"p99_ns\": 16800,\r\n        \"max_ns\": 390400\r\n      }\r\n    }\r\n  },\r\n  \"frequency-only-ablation-v1\": {\r\n    \"dev\": {\r\n      \"count\": 16,\r\n      \"top1_count\": 8,\r\n      \"top5_count\": 11,\r\n      \"top1\": 0.5,\r\n      \"top5\": 0.6875,\r\n      \"mrr\": 0.59375,\r\n      \"candidate_availability\": 0.6875,\r\n      \"gold_coverage\": 0.6875,\r\n      \"errors\": 0,\r\n      \"correction\": {\r\n        \"capability\": false,\r\n        \"required\": 3,\r\n        \"attempts\": 0,\r\n        \"correct\": 0,\r\n        \"precision\": null,\r\n        \"recall\": 0.0\r\n      },\r\n      \"latency\": {\r\n        \"samples\": 1600,\r\n        \"p50_ns\": 2500,\r\n        \"p95_ns\": 5900,\r\n        \"p99_ns\": 17900,\r\n        \"max_ns\": 41400\r\n      }\r\n    },\r\n    \"heldout\": {\r\n      \"count\": 67,\r\n      \"top1_count\": 31,\r\n      \"top5_count\": 37,\r\n      \"top1\": 0.4626865671641791,\r\n      \"top5\": 0.5522388059701493,\r\n      \"mrr\": 0.4987562189054726,\r\n      \"candidate_availability\": 0.5522388059701493,\r\n      \"gold_coverage\": 0.5522388059701493,\r\n      \"errors\": 1,\r\n      \"correction\": {\r\n        \"capability\": false,\r\n        \"required\": 12,\r\n        \"attempts\": 0,\r\n        \"correct\": 0,\r\n        \"precision\": null,\r\n        \"recall\": 0.0\r\n      },\r\n      \"latency\": {\r\n        \"samples\": 6700,\r\n        \"p50_ns\": 1900,\r\n        \"p95_ns\": 6100,\r\n        \"p99_ns\": 14300,\r\n        \"max_ns\": 232400\r\n      }\r\n    }\r\n  }\r\n}\r\n",
+      "stderr": ""
+    }
+  ]
+}
