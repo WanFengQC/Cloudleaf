@@ -1,0 +1,138 @@
+{
+  "checked_at_utc": "2026-10-29T16:25:27.327518+00:00",
+  "checked_head": "a95e0bc360741d766b1e000add8ee4a7055d1d53",
+  "search_implementation": "2a2bd9a7ea9df73b647ccdba609d9aae8f0ad935",
+  "source_sha256": "a43ca914bc624ca0839e62644866e7442093c36c5507b83f4e1f67542022b76d",
+  "source_fingerprint_schema": "cloudleaf-source-v2",
+  "inputs_sha256": {
+    "config/evaluation/language-readiness-v1.json": "f8565f739865a25d789bbaf3d6a885f1877219e3ab0879f5688cf5111bde2e46",
+    "config/evaluation/quality-preparation-v1.json": "c738ee1f8149ac0f134bed9962b439164bdf71b5ab8dd784861d7352f8d189bf",
+    "config/evaluation/ime-task-handoff-v1.json": "88d16dffc95ddadcfbc7b6df63026c6fef723cade89592c98cf1d6b79bbbb2be",
+    "docs/cl008-real-resource-protocol.md": "692067c0507676bdf6c5dbe632a566e87cfcaedd6719c06bf5c75d1e5ae11e37"
+  },
+  "tools_sha256": {
+    "scripts/check_language_readiness.py": "19a06ddead687d94b9acf8af79ed09e9c655ce7e61ed023b3cf8e24228d3d9c9",
+    "scripts/check_quality_preparation.py": "b2295fb1ba37081f761745935560b674bd1c91dcb3f6f818cfb9db280d8700ff",
+    "scripts/check_ime_task_handoff.py": "cd010b12f6f8e20fe51c5e857b7a2e8aa46a3dc39c2079d2239045ba6c6b5bc3",
+    "scripts/check_workspace.py": "0aca222348f248f20ff0812a3217568b23228204bee7f2080b56a3e4e5754dc2"
+  },
+  "runner_sha256": "25c86c598ceadf8854d5a0fa1cddbf914c631394a96954308e6dd1220e39cb92",
+  "checks": [
+    {
+      "name": "base",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/check_language_readiness.py",
+        "--plan",
+        "config/evaluation/language-readiness-v1.json",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round8-gold-a95e0bc\\base.json"
+      ],
+      "expected_returncode": 2,
+      "returncode": 2,
+      "seconds": 0.19768229999317555,
+      "stdout_file": "command-01.stdout",
+      "stdout_sha256": "d78e728e7e57b7fa4abd2f740b083af347e79ea79469f2ca269115d1b075ec04",
+      "stderr_file": "command-01.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "preparation",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/check_quality_preparation.py",
+        "--plan",
+        "config/evaluation/language-readiness-v1.json",
+        "--preparation",
+        "config/evaluation/quality-preparation-v1.json",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round8-gold-a95e0bc\\preparation.json"
+      ],
+      "expected_returncode": 2,
+      "returncode": 2,
+      "seconds": 0.18954020000091987,
+      "stdout_file": "command-02.stdout",
+      "stdout_sha256": "32f514506e3948a681798824884ddc5addcdfeea4d652b5ca90eb6ec4ec395a7",
+      "stderr_file": "command-02.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "handoff",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/check_ime_task_handoff.py",
+        "--plan",
+        "config/evaluation/language-readiness-v1.json",
+        "--preparation",
+        "config/evaluation/quality-preparation-v1.json",
+        "--handoff",
+        "config/evaluation/ime-task-handoff-v1.json",
+        "--output",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\round8-gold-a95e0bc\\handoff.json"
+      ],
+      "expected_returncode": 2,
+      "returncode": 2,
+      "seconds": 0.19117109999933746,
+      "stdout_file": "command-03.stdout",
+      "stdout_sha256": "bff18186e516ebe700cf478a7807d711642a835a386e27012a202096c1cdd9de",
+      "stderr_file": "command-03.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "resource-audit",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/check_workspace.py"
+      ],
+      "expected_returncode": 0,
+      "returncode": 0,
+      "seconds": 0.3407652000023518,
+      "stdout_file": "command-04.stdout",
+      "stdout_sha256": "0bb7250cb2c233d5b261d9c9e4fde6ba7950b04fe59aafcd4e302c2c3c4728bf",
+      "stderr_file": "command-04.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "diff-check",
+      "command": [
+        "C:\\Program Files\\Git\\cmd\\git.EXE",
+        "diff",
+        "--check"
+      ],
+      "expected_returncode": 0,
+      "returncode": 0,
+      "seconds": 0.08470600000146078,
+      "stdout_file": "command-05.stdout",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_file": "command-05.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "new_production_code": false,
+  "new_test_cases": 0,
+  "not_repeated": [
+    "Rust unchanged regression already verified at Round 7 source",
+    "Search/mechanical/phase matrices",
+    "Prototype benchmark",
+    "Formal language scoring"
+  ],
+  "language_metrics": {
+    "top1": null,
+    "top5": null,
+    "mrr": null
+  },
+  "existing_phase_binary": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\target\\release\\examples\\resource_phase_probe.exe",
+    "bytes": 373248,
+    "sha256": "e2737975ae1d3305af7f3c0d6fd32422eda7151bbbec7f887d37a53e493f363c",
+    "executed_this_round": false
+  }
+}

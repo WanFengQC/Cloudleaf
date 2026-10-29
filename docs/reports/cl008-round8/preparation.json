@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "experiment": "cloudleaf-quality-preparation-report-v1",
+  "base_readiness": {
+    "schema_version": 1,
+    "experiment": "cloudleaf-language-readiness-report-v1",
+    "prerequisites_ready": false,
+    "language_accuracy_valid": false,
+    "top1": null,
+    "top5": null,
+    "mrr": null,
+    "sealed_gold_opened_by_tool": false,
+    "sections": {
+      "protocol": {
+        "passed": true,
+        "details": {
+          "protocol_sha256": "692067c0507676bdf6c5dbe632a566e87cfcaedd6719c06bf5c75d1e5ae11e37",
+          "family_ratios": [
+            70,
+            15,
+            15
+          ],
+          "minimum_heldout_families": 2000
+        }
+      },
+      "sources": {
+        "passed": false
+      },
+      "gold": {
+        "passed": false
+      },
+      "split_isolation": {
+        "passed": false
+      },
+      "heldout_seal": {
+        "passed": false
+      },
+      "parameter_freeze": {
+        "passed": false
+      }
+    },
+    "issues": [
+      {
+        "section": "sources",
+        "reason": "缺少独立评估语料或词库来源批准"
+      },
+      {
+        "section": "gold",
+        "reason": "缺少已核验的独立人工gold来源"
+      },
+      {
+        "section": "split_isolation",
+        "reason": "文件描述或SHA缺失"
+      },
+      {
+        "section": "heldout_seal",
+        "reason": "heldout未封存/已打开/保管者与评估者未分离"
+      },
+      {
+        "section": "parameter_freeze",
+        "reason": "'sealed_at'"
+      }
+    ],
+    "limitations": [
+      "只核验证据及摘要一致性，不自动证明人工标注、近重复语义、加密或保管者身份真实。",
+      "未读取封存答案、未执行语言打分；前置材料通过不等于正式质量或产品验收通过。"
+    ]
+  },
+  "preparation": {
+    "passed": false,
+    "details": null,
+    "issues": [
+      "缺少独立评估语料或词库来源批准"
+    ]
+  },
+  "prerequisites_ready": false,
+  "language_accuracy_valid": false,
+  "top1": null,
+  "top5": null,
+  "mrr": null,
+  "plan_sha256": "f8565f739865a25d789bbaf3d6a885f1877219e3ab0879f5688cf5111bde2e46",
+  "preparation_sha256": "c738ee1f8149ac0f134bed9962b439164bdf71b5ab8dd784861d7352f8d189bf",
+  "tool_sha256": "b2295fb1ba37081f761745935560b674bd1c91dcb3f6f818cfb9db280d8700ff",
+  "source_sha256": "a43ca914bc624ca0839e62644866e7442093c36c5507b83f4e1f67542022b76d",
+  "checked_at_utc": "2026-10-29T16:25:26.642883+00:00",
+  "limitations": [
+    "核对人工提供的lineage/规范段落/协议与SHA，不自动证明语义聚类、人工独立性、权限或保管者身份。",
+    "没有打开封存答案，不计算语言指标；一致的准备声明不等于真实评测或产品完成。"
+  ]
+}
