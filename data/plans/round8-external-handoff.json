@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "format": "cloudleaf-external-data-handoff-v1",
+  "status": "pending-external-materials",
+  "not_a_completed_annotation_packet": true,
+  "creates_source_approval": false,
+  "allows_automatic_publication": false,
+  "roles": {
+    "annotator_id": null,
+    "reviewer_1_id": null,
+    "reviewer_2_id": null,
+    "adjudicator_id": null,
+    "heldout_custodian_id": null
+  },
+  "role_assignment_status": "pending",
+  "independence_review_status": "pending",
+  "required_independence": [
+    "Two reviewers are distinct and neither is the task author",
+    "A required adjudicator is distinct from author and both reviewers",
+    "The heldout custodian is independent of all annotators and reviewers"
+  ],
+  "materials": {
+    "role_assignment_and_consent": {"status": "pending", "path": null, "sha256": null},
+    "ime_original_content_authorization": {"status": "pending", "path": null, "sha256": null},
+    "semantic_annotation_authorization": {"status": "pending", "path": null, "sha256": null},
+    "frequency_original_and_permission": {"status": "pending", "path": null, "sha256": null},
+    "preprocessing_protocol": {"status": "pending", "path": null, "sha256": null},
+    "global_lineage_and_semantic_duplicate_review": {"status": "pending", "path": null, "sha256": null},
+    "annotation_protocol_and_two_reviews": {"status": "pending", "path": null, "sha256": null},
+    "heldout_seal_and_access_record": {"status": "pending", "path": null, "sha256": null},
+    "publication_trust_root_and_authority": {"status": "pending", "path": null, "sha256": null}
+  },
+  "existing_ime_tasks": "data/plans/ime-annotation-round6.json",
+  "existing_independent_gold_plan": "data/plans/ime-human-gold-v1.json",
+  "existing_review_binding_contract": "docs/cl009-round7-annotation-handoff.md",
+  "semantic_review_queue": "docs/acceptance/cl009-round8/semantic-review-queue.jsonl",
+  "B_owned_context_and_seal_contract": {
+    "branch": "codex/cl008-search",
+    "path": "docs/acceptance/cl008-round8/README.md",
+    "status": "pending-real-person-content-and-custody"
+  },
+  "task_result_policy": "Do not fill intents, answers, signatures, reviewer decisions or authorization on behalf of real people",
+  "source_policy": "Existing fixed source locks retain only their original approved scope; research_only is not upgraded by this handoff",
+  "language_metrics": {"top1": null, "top5": null, "mrr": null}
+}
