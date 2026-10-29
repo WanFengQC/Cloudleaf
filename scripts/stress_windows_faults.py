@@ -17,6 +17,7 @@ import threading
 import time
 
 from benchmark import source_sha256
+from check_windows_soak_admission import check_bound_request
 
 ROOT = Path(__file__).resolve().parents[1]
 TEST = ("native::session::render_tests::"
@@ -256,7 +257,7 @@ def environment_identity():
             'python_executable_sha256': hashlib.sha256(Path(os.sys.executable).read_bytes()).hexdigest()}
 
 
-def execution_preflight(identity, approval):
+def execution_preflight(identity, approval, approval_directory=ROOT):
     required = identity['configuration']['long_profile']
     issues = []
     if required:
@@ -270,6 +271,11 @@ def execution_preflight(identity, approval):
                 issues.append('环境/负责人/快照/回滚/授权引用未齐')
             if approval.get('identity') != identity:
                 issues.append('批准记录的源码/数据/工具/二进制/配置/系统身份不一致')
+            materials = check_bound_request(approval.get('environment_request'), approval_directory, identity)
+            issues.extend(materials['issues'])
+            for key, material in [('environment_id', 'environment_id'), ('snapshot', 'snapshot_id'), ('operator', 'operator')]:
+                if materials.get(material) != approval.get(key):
+                    issues.append(f'批准记录{key}与已核环境材料不一致')
     return {'ready': not issues, 'long_run_approval_required': required, 'issues': issues,
             'identity': identity, 'declarations_independently_verified': False,
             'approval_sha256': hashlib.sha256(json.dumps(approval, sort_keys=True, ensure_ascii=False,
@@ -451,7 +457,7 @@ def main():
                     'data_sha256': hashlib.sha256((ROOT / 'data/dictionaries/prototype.tsv').read_bytes()).hexdigest(),
                     'configuration': config, 'os': platform.platform(), 'environment': environment_identity()}
         approval = json.loads(args.environment_approval.read_text(encoding='utf-8')) if args.environment_approval else None
-        preflight = execution_preflight(identity, approval)
+        preflight = execution_preflight(identity, approval, args.environment_approval.resolve().parent if args.environment_approval else ROOT)
         if args.preflight_output:
             with args.preflight_output.open('x', encoding='utf-8', newline='\n') as output:
                 json.dump(preflight, output, ensure_ascii=False, indent=2)

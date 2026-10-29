@@ -14,6 +14,8 @@ Round 7增加隔离环境/执行批准的只读长测预检，以及原始逐键
 
 Round 8交付[外部执行与恢复清单](docs/cl007-round8-external-acceptance.md)、待填环境/应用矩阵和只读资源趋势报告器。`python scripts/report_windows_soak.py --run-dir <原始run目录> --output <全新报告JSON>`逐segment核原件身份、采样时基和趋势，不拼接连续时长，也不授予长期或真实TSF验收。当前环境和授权未准备，实际仅重放R7短迹，无新长测或系统操作。
 
+Round 9增加[材料准入约定](docs/cl007-round9-admission.md)：`python scripts/check_windows_soak_admission.py --request docs/acceptance/cl007-round9-environment.json --output <全新报告JSON>`无需native binary即可只读核缺件；pending环境明确exit2。长期runner批准还须绑定环境请求SHA、实际回滚和执行授权文件、版本/架构及允许档位，旧仅字符串批准不足；同一用户可兼任负责人/执行者，材料一致性不代表人签或实际恢复已核验。R8矩阵保留，R9人工记录模板保持未执行。
+
 ## 环境
 
 - Git。

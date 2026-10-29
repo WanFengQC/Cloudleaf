@@ -8,6 +8,8 @@ import sys
 import tempfile
 import unittest
 
+from test_windows_soak_admission import prepared_request, save_material
+
 SCRIPTS = Path(__file__).resolve().parents[1] / 'scripts'
 sys.path.insert(0, str(SCRIPTS))
 SPEC = importlib.util.spec_from_file_location('windows_stress', SCRIPTS / 'stress_windows_faults.py')
@@ -110,19 +112,24 @@ class StressEvidenceTests(unittest.TestCase):
 
     def test_long_run_admission_requires_explicit_matching_isolated_approval(self):
         identity = {'configuration': STRESS.configuration('8h', None, None, 60, 1),
-                    'implementation_commit': 'fixture', 'environment': {'machine_id_sha256': 'fixture'}}
+                    'implementation_commit': 'fixture', 'environment': {'machine_id_sha256': 'fixture', 'os': 'Windows-fixture', 'architecture': 'AMD64'}}
         missing = STRESS.execution_preflight(identity, None)
         self.assertFalse(missing['ready'])
         approval = {'status': 'approved', 'isolated_windows_environment': True, 'environment_id': 'test-vm',
                     'operator': 'fixture-operator', 'snapshot': 'fixture-snapshot', 'rollback_plan': 'fixture-rollback',
                     'authorization_reference': 'fixture-only-not-real-approval', 'identity': identity}
-        approved = STRESS.execution_preflight(identity, approval)
-        self.assertTrue(approved['ready'])
-        self.assertFalse(approved['declarations_independently_verified'])
-        changed = dict(identity, implementation_commit='changed')
-        self.assertFalse(STRESS.execution_preflight(changed, approval)['ready'])
-        approval['isolated_windows_environment'] = False
-        self.assertFalse(STRESS.execution_preflight(identity, approval)['ready'])
+        with tempfile.TemporaryDirectory() as temporary:
+            folder = Path(temporary)
+            request = prepared_request(folder)
+            approval.update(environment_id=request['environment']['vm_id'], operator=request['people']['test_operator'],
+                            snapshot=request['environment']['snapshot_id'], environment_request=save_material(folder, 'request.json', request))
+            approved = STRESS.execution_preflight(identity, approval, folder)
+            self.assertTrue(approved['ready'], approved['issues'])
+            self.assertFalse(approved['declarations_independently_verified'])
+            changed = dict(identity, implementation_commit='changed')
+            self.assertFalse(STRESS.execution_preflight(changed, approval, folder)['ready'])
+            approval['isolated_windows_environment'] = False
+            self.assertFalse(STRESS.execution_preflight(identity, approval, folder)['ready'])
 
     def test_string_only_approval_cannot_replace_actual_environment_and_authorization_materials(self):
         identity = {'configuration': STRESS.configuration('8h', None, None, 60, 1),
