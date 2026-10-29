@@ -101,6 +101,8 @@ Round 7补充[任务交付与评分观测约定](docs/cl008-round7-design.md)：
 
 Round 8交付[真实人工gold外部执行包](docs/acceptance/cl008-round8/README.md)：列明单一C人员/授权入口、真实双审/仲裁和保管职责、上下文/handoff待填模板、私有明文与公共索引的边界和三个实际门禁命令。人员及授权均待定，模板不是批准包，不产生答案或签名；不重复搜索矩阵，不替换默认核心。
 
+Round 9新增[单人私有作者队列](docs/acceptance/cl008-round9/README.md)：导出未划分任务、核实际授权文件与声明、分开报告个人标注完整和当前摘要下的审核声明。工具不填身份/答案、不接受已划分包、不把不同ID证明为独立真人，正式ready始终false、指标null；旧正式三门禁和独立保管要求不变。
+
 ```text
 python scripts/check_ime_task_handoff.py --plan config/evaluation/language-readiness-v1.json --preparation config/evaluation/quality-preparation-v1.json --handoff config/evaluation/ime-task-handoff-v1.json --output .local/ime-task-handoff-new.json
 ```

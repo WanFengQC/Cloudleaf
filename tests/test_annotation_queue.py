@@ -101,15 +101,22 @@ class AnnotationQueueTests(unittest.TestCase):
 
     def test_author_reviewer_duplicate_and_empty_protocols_do_not_count_as_reviewed(self):
         original = self.complete()
-        for patch in ['same-reviewer', 'self-review', 'missing-protocol']:
+        for patch in ['same-reviewer', 'self-review', 'missing-protocol', 'null-protocol-binding']:
             queue = copy.deepcopy(original)
             task = queue['packet']['tasks'][0]
             if patch == 'same-reviewer':
                 task['reviews'][1]['reviewer_id'] = task['reviews'][0]['reviewer_id']
             elif patch == 'self-review':
                 task['reviews'][0]['reviewer_id'] = task['author_id']
-            else:
+            elif patch == 'missing-protocol':
                 queue['packet']['preprocessing_sha256'] = None
+            else:
+                implementation = module()
+                for key in implementation.handoff.BINDINGS:
+                    queue['packet'][key] = None
+                for review in task['reviews']:
+                    review['protocol_sha256'] = None
+                    review['review_binding_sha256'] = implementation.handoff.review_binding_digest(queue['packet'])
             with self.subTest(patch=patch):
                 self.assertEqual(self.report(queue)['counts']['current_review_declarations_consistent'], 0)
 
