@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "cloudleaf-windows-soak-material-check",
+  "ready": false,
+  "issues": [
+    "隔离环境请求尚未准备完成",
+    "environment.vm_id:缺少非空文本",
+    "environment.windows_version_and_build:缺少非空文本",
+    "environment.architecture:缺少非空文本",
+    "environment.snapshot_id:缺少非空文本",
+    "people.environment_owner:缺少非空文本",
+    "people.test_operator:缺少非空文本",
+    "environment.snapshot_storage_sha256:缺少快照SHA-256",
+    "restore_exercise_evidence:缺少实际path和SHA-256",
+    "execution_authorization:缺少实际path和SHA-256"
+  ],
+  "checked_files": [],
+  "declarations_independently_verified": false,
+  "child_started": false,
+  "system_operations_executed": false,
+  "is_execution_authorization": false,
+  "long_term_acceptance": false,
+  "environment_id": null,
+  "snapshot_id": null,
+  "operator": null,
+  "request_file": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl007-windows\\Cloudleaf\\docs\\acceptance\\cl007-round9-environment.json",
+    "bytes": 2160,
+    "sha256": "63f2f064dbb15c7ea28d1dc45a03ab8640c8904711ff559fe63f1d113938980b"
+  }
+}
