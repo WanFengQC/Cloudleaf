@@ -31,7 +31,10 @@ class SoakReportTests(unittest.TestCase):
                 self.assertEqual(file['original_resolution'], 'exact-sha-crlf-to-lf')
                 self.assertNotEqual(file['physical_sha256'], file['resolved_original_sha256'])
             path = copied / 'segment-0001/samples.jsonl'
-            path.write_bytes(path.read_bytes().replace(b'"handles": 50', b'"handles": 51', 1))
+            original = path.read_bytes()
+            changed = original.replace(b'\r\n', b' \r\n', 1)
+            self.assertNotEqual(original, changed)
+            path.write_bytes(changed)
             invalid = REPORT.report_run(copied)['segments'][0]
             self.assertFalse(invalid['evidence_integrity_verified'])
             self.assertTrue(any('SHA' in issue for issue in invalid['issues']))

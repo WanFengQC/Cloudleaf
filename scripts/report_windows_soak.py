@@ -54,6 +54,13 @@ def digest(data):
 def raw_file(path, expected=None):
     physical = path.read_bytes()
     raw, envelope = physical, None
+    resolution = 'physical'
+    if (expected is not None and digest(raw) != expected
+            and path.name in {'checkpoints.jsonl', 'events.jsonl', 'samples.jsonl'}):
+        candidate = physical.replace(b'\r\n', b'\n')
+        if digest(candidate) == expected:
+            raw = candidate
+            resolution = 'exact-sha-crlf-to-lf'
     if expected is not None and digest(raw) != expected and path.name == 'stdout.txt':
         candidate = path.with_suffix('.raw.json')
         if candidate.exists():
@@ -62,8 +69,10 @@ def raw_file(path, expected=None):
             if digest(raw) != value['original_sha256'] or len(raw) != value['original_bytes']:
                 raise ValueError('stdout原文封装损坏')
             envelope = {'path': str(candidate), 'sha256': digest(candidate.read_bytes())}
+            resolution = 'explicit-original-envelope'
     return raw, {'path': str(path), 'physical_bytes': len(physical), 'physical_sha256': digest(physical),
-                 'resolved_original_bytes': len(raw), 'resolved_original_sha256': digest(raw), 'original_envelope': envelope}
+                 'resolved_original_bytes': len(raw), 'resolved_original_sha256': digest(raw),
+                 'original_resolution': resolution, 'original_envelope': envelope}
 
 
 def read_rows(raw, name, issues):
