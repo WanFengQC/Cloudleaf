@@ -1,5 +1,6 @@
 use cloudleaf_search::{
-    Budget, Config, Lattice, Lexicon, Method, Phase, Ranker, profile_query, search_graph,
+    BigramModel, Budget, Config, Lattice, Lexicon, Method, Phase, Ranker, profile_query,
+    search_graph,
 };
 
 fn lexicon() -> Lexicon {
@@ -114,12 +115,66 @@ fn configuration_and_model_failures_retain_the_actual_attempted_phase() {
 #[test]
 fn scoring_is_an_explicit_nested_observation_without_changing_complete_results() {
     let lexicon = lexicon();
-    for method in [Method::Reference, Method::ExactDag, Method::PositionDag, Method::Beam] {
-        let config = Config { method, ranker: Ranker::Structural, ..Config::default() };
+    for method in [
+        Method::Reference,
+        Method::ExactDag,
+        Method::PositionDag,
+        Method::Beam,
+    ] {
+        let config = Config {
+            method,
+            ranker: Ranker::Structural,
+            ..Config::default()
+        };
         let graph = Lattice::build(&lexicon, "aaa", &config).unwrap();
         let plain = search_graph(&lexicon, &graph, &config, None, None).unwrap();
         let (profiled, profile) = profile_query(&lexicon, "aaa", &config, None, None);
         assert_eq!(profiled.unwrap().1, plain);
-        assert!(profile.measurements().any(|(phase, value)| phase.name() == "scoring" && value.calls > 0));
+        assert!(
+            profile
+                .measurements()
+                .any(|(phase, value)| phase.name() == "scoring" && value.calls > 0)
+        );
+    }
+}
+
+#[test]
+fn scoring_calls_distinguish_extension_and_eos_and_all_rankers_keep_results() {
+    let lexicon = lexicon();
+    let model = BigramModel::train(&[vec!["a".into(), "b".into()], vec!["b".into()]]).unwrap();
+    for method in [
+        Method::Reference,
+        Method::ExactDag,
+        Method::PositionDag,
+        Method::Beam,
+    ] {
+        for ranker in [
+            Ranker::Structural,
+            Ranker::Weighted,
+            Ranker::Bigram,
+            Ranker::ContextRerank,
+        ] {
+            if method == Method::PositionDag
+                && matches!(ranker, Ranker::Bigram | Ranker::ContextRerank)
+            {
+                continue;
+            }
+            let config = Config {
+                method,
+                ranker,
+                ..Config::default()
+            };
+            let graph = Lattice::build(&lexicon, "a", &config).unwrap();
+            let plain = search_graph(&lexicon, &graph, &config, Some(&model), Some("a")).unwrap();
+            let (observed, profile) =
+                profile_query(&lexicon, "a", &config, Some(&model), Some("a"));
+            assert_eq!(observed.unwrap().1, plain);
+            let eos = if method == Method::PositionDag { 0 } else { 2 };
+            assert_eq!(profile.phase(Phase::Scoring).unwrap().calls, 2 + eos);
+        }
+    }
+    for input in ["", "a'", "invalid,"] {
+        let (_, profile) = profile_query(&lexicon, input, &Config::default(), None, None);
+        assert!(profile.phase(Phase::Scoring).is_none());
     }
 }

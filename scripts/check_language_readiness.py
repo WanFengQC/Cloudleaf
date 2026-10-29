@@ -188,6 +188,7 @@ def predictions(path: Path, rows: list[dict], frozen: dict) -> dict:
         require(row.get("case_id") not in actual and row.get("case_id") in expected, "预测重复或包含冻结分母之外的案例")
         require(row.get("status") in ("ok", "rejected", "budget", "unsupported") and isinstance(row.get("candidates"), list)
                 and type(row.get("fallback_preserved")) is bool, "预测状态/原文回退/候选缺失")
+        require(row['status'] == 'ok' or row['fallback_preserved'], '错误预测未保全原文回退')
         actual.add(row["case_id"])
         statuses[row["status"]] += 1
     require(actual == expected, "预测丢失冻结heldout案例，禁止删除失败分母")

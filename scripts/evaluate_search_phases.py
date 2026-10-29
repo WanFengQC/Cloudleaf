@@ -11,7 +11,7 @@ from benchmark import ROOT, environment, source_sha256
 from evaluate_real_lexicon import CONFIGURATIONS, CASES, PROTOCOL, validate_evidence, validate_cases, sha256, measure
 from analyze_search_round3 import complete, compare_rows, quantiles
 
-PHASES = ('query_total', 'normalize', 'lattice', 'search_validate', 'traversal', 'bucket_sort_dedup',
+PHASES = ('query_total', 'normalize', 'lattice', 'search_validate', 'traversal', 'scoring', 'bucket_sort_dedup',
           'final_sort_dedup', 'context_rerank', 'materialize')
 SEMANTICS = ('status', 'error_kind', 'candidates', 'waiting', 'fallback_preserved', 'guaranteed',
              'whole_entry_candidates', 'whole_entry_complete', 'statistics')
@@ -36,6 +36,8 @@ def build_host() -> Path:
 
 
 def validate_sample(sample: dict, rejected: bool, index: int) -> None:
+    if sample.get('profile', {}).get('schema_version') != 2:
+        raise ValueError('评分阶段必须显式使用阶段schema2，不能改绑旧九阶段数据')
     if (sample.get('equal') is not True or sample.get('plain_first') != (index % 2 == 0)
             or any(type(sample.get(key)) is not int or sample[key] < 0 for key in ('plain_ns', 'profile_outer_ns'))):
         raise ValueError('样本缺失或观测改变行为/配对顺序')
@@ -171,17 +173,17 @@ def run() -> None:
     if source_sha256() != before:
         raise RuntimeError('测量期间源码改变')
     validate_evidence(args.evidence)
-    report = {'schema_version': 1, 'experiment': 'cloudleaf-search-phases-round5', 'language_accuracy_valid': False,
+    report = {'schema_version': 2, 'experiment': 'cloudleaf-search-phases-round7', 'language_accuracy_valid': False,
               'top1': None, 'top5': None, 'mrr': None, 'source_sha256': before, 'source_fingerprint_schema': 'cloudleaf-source-v2',
               'git_head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
               'binary_sha256': sha256(binary), 'runtime_sha256': sha256(runtime), 'cases_sha256': sha256(CASES),
-              'protocol_sha256': sha256(ROOT / 'docs/cl008-round5-profiling-design.md'),
+              'protocol_sha256': sha256(ROOT / 'docs/cl008-round7-design.md'),
               'original_protocol_sha256': sha256(PROTOCOL), 'historical_report_sha256': sha256(args.historical),
               'evidence_sha256': sha256(args.evidence), 'lexicon_counts': counts, 'environment': environment(),
               'measured_at_utc': datetime.now(timezone.utc).isoformat(), 'summaries': summaries,
               'historical_behavior_comparisons': historical, 'behavior_failures': failures,
               'raw_configuration_reports': {label: {'path': f'{label}.json', 'sha256': sha256(args.output_dir / f'{label}.json')} for label in runs},
-              'limitations': ['bucket_sort_dedup嵌套在traversal，query_total包含所有阶段及读钟开销；不能相加或相减伪造独立CPU成本。',
+              'limitations': ['scoring/bucket_sort_dedup嵌套在traversal，query_total包含所有阶段及读钟开销；不能相加或相减伪造独立CPU成本。',
                               '与未观测旧入口逐样本全字段比较，profile耗时不代表产品或TSF输入延迟；峰值为整个宿主进程。',
                               '实际有词库而没有独立人工gold，所有预算/非法/空结果保留，语言质量指标null。']}
     (args.output_dir / 'summary.json').write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8', newline='\n')

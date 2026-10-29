@@ -54,8 +54,10 @@ class TaskHandoffTests(unittest.TestCase):
                               'normalized_input_sha256': MODULE.base.normalized_digest(task['pinyin']), 'task_sha256': bound})
         self.metadata['task_ids'] = [row['id'] for row in self.tasks]
         self.plan = {'family_index': {'sha256': '6' * 64}}
-        self.approved = {'fixture-source': {'role': 'evaluation-corpus', 'artifact': {'sha256': '4' * 64}}}
-        self.preparation = {'sources': [{'id': 'fixture-source', 'lineage_id': 'fixture-lineage'}]}
+        self.approved = {'fixture-source': {'role': 'evaluation-corpus', 'version': 'fixture', 'artifact': {'sha256': '4' * 64}}}
+        self.preparation = {'sources': [{'id': 'fixture-source', 'lineage_id': 'fixture-lineage'}],
+                            'annotation_protocol': {'sha256': '1' * 64}, 'preprocessing': {'sha256': '2' * 64},
+                            'lineage_audit': {'sha256': '3' * 64}}
         self.context = {'schema_version': 1, 'family_index_sha256': '6' * 64,
                         'review_binding_sha256': MODULE.review_binding_digest(self.metadata),
                         'all_case_intent_groups': [{'case_id': row['case_id'], 'intent_family_id': 'intent-' + row['split']}
@@ -148,6 +150,22 @@ class TaskHandoffTests(unittest.TestCase):
         self.tasks[0]['reviews'][0]['reviewer_id'] = self.tasks[0]['author_id']
         self.refresh()
         with self.assertRaisesRegex(ValueError, '独立'):
+            self.audit()
+
+    def test_rejected_review_requires_independent_current_binding_adjudication(self):
+        self.tasks[0]['reviews'][0]['decision'] = 'reject'
+        self.refresh()
+        with self.assertRaisesRegex(ValueError, '仲裁'):
+            self.audit()
+        self.tasks[0]['adjudication'] = {'adjudicator_id': 'fixture-arbiter', 'decision': 'approve',
+                                        'annotation_sha256': self.rows[0]['task_sha256'],
+                                        'protocol_sha256': self.metadata['protocol_sha256'],
+                                        'review_binding_sha256': MODULE.review_binding_digest(self.metadata)}
+        self.refresh()
+        self.assertEqual(self.audit()['visible_tasks'], 2)
+        self.tasks[0]['adjudication']['review_binding_sha256'] = 'b' * 64
+        self.refresh()
+        with self.assertRaisesRegex(ValueError, '仲裁'):
             self.audit()
 
 

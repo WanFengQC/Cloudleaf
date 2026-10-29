@@ -19,7 +19,7 @@ def sample(rejected=False):
     phases = {name: None if name == 'context_rerank' or (rejected and name not in ('query_total', 'normalize'))
               else {'ns': 10, 'calls': 1} for name in MODULE.PHASES}
     return {'plain_ns': 50, 'profile_outer_ns': 100, 'plain_first': True, 'equal': True,
-            'profile': {'clock_reads': sum(value['calls'] * 2 for value in phases.values() if value), 'phases': phases}}
+            'profile': {'schema_version': 2, 'clock_reads': sum(value['calls'] * 2 for value in phases.values() if value), 'phases': phases}}
 
 
 class PhaseTests(unittest.TestCase):
@@ -78,6 +78,13 @@ class PhaseTests(unittest.TestCase):
                 del value['profile']['phases']['traversal']
             with self.assertRaises(ValueError):
                 MODULE.validate_sample(value, False, 0)
+
+    def test_old_nine_stage_samples_are_not_relabelled_as_scoring_schema_two(self):
+        value = sample()
+        del value['profile']['schema_version']
+        del value['profile']['phases']['scoring']
+        with self.assertRaisesRegex(ValueError, 'schema2'):
+            MODULE.validate_sample(value, False, 0)
 
     def test_budget_and_rejected_remain_in_full_denominator(self):
         cases = [{'id': name, 'input': 'a', 'family': name, 'kind': 'fixture'} for name in ['budget', 'rejected']]

@@ -66,11 +66,12 @@ struct Scorer<'a> {
 }
 
 impl Scorer<'_> {
-    fn extend(&self, path: &Path, edge_index: usize) -> Path {
+    fn extend<O: Observer>(&self, path: &Path, edge_index: usize, observer: &mut O) -> Path {
         let edge = &self.graph.edges[edge_index];
         let entry = &self.lexicon.entries[edge.entry];
         let mut next = path.clone();
         next.text.push_str(&entry.text);
+        let stamp = observer.start(Phase::Scoring);
         next.features.words += 1;
         next.score -= 100;
         if edge.kind == MatchKind::Prefix {
@@ -98,12 +99,14 @@ impl Scorer<'_> {
             next.features.bigram_units += units;
             next.score += units;
         }
+        observer.stop(Phase::Scoring, stamp);
         next.ids.push(edge.entry);
         next.edges.push(edge_index);
         next
     }
 
-    fn finish(&self, mut path: Path) -> Path {
+    fn finish<O: Observer>(&self, mut path: Path, observer: &mut O) -> Path {
+        let stamp = observer.start(Phase::Scoring);
         if let Some(model) = self
             .model
             .filter(|_| matches!(self.ranker, Ranker::Bigram | Ranker::ContextRerank))
@@ -116,6 +119,7 @@ impl Scorer<'_> {
             path.features.bigram_units += units;
             path.score += units;
         }
+        observer.stop(Phase::Scoring, stamp);
         path
     }
 }
@@ -178,7 +182,8 @@ fn reference<O: Observer>(
     while let Some((position, path)) = pending.pop() {
         if position == scorer.graph.letters.len() {
             // 参考枚举所有路径，只将已完成输出压缩为当前最佳unique top-k。
-            insert_unique(&mut complete, scorer.finish(path), k, observer);
+            let finished = scorer.finish(path, observer);
+            insert_unique(&mut complete, finished, k, observer);
             continue;
         }
         for edge in &scorer.graph.outgoing[position] {
@@ -189,7 +194,10 @@ fn reference<O: Observer>(
             if !resident_allowed(stats, pending.len() + complete.len() + 2, config) {
                 return complete;
             }
-            pending.push((scorer.graph.edges[*edge].end, scorer.extend(&path, *edge)));
+            pending.push((
+                scorer.graph.edges[*edge].end,
+                scorer.extend(&path, *edge, observer),
+            ));
         }
     }
     complete
@@ -229,7 +237,8 @@ fn dynamic<O: Observer>(
                 if !resident_allowed(stats, resident + 1, config) {
                     return Vec::new();
                 }
-                insert_unique(bucket, scorer.extend(&path, *edge_index), k, observer);
+                let next = scorer.extend(&path, *edge_index, observer);
+                insert_unique(bucket, next, k, observer);
                 resident = resident + bucket.len() - old;
             }
             resident -= 1;
@@ -240,7 +249,7 @@ fn dynamic<O: Observer>(
         .unwrap_or_default()
         .into_values()
         .flatten()
-        .map(|path| scorer.finish(path))
+        .map(|path| scorer.finish(path, observer))
         .collect()
 }
 
@@ -270,7 +279,8 @@ fn position_dynamic<O: Observer>(
                 if !resident_allowed(stats, resident + 1, config) {
                     return Vec::new();
                 }
-                insert_unique(bucket, scorer.extend(&path, *edge_index), k, observer);
+                let next = scorer.extend(&path, *edge_index, observer);
+                insert_unique(bucket, next, k, observer);
                 resident = resident + bucket.len() - old;
             }
             resident -= 1;

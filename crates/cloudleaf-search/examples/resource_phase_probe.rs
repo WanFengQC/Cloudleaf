@@ -135,13 +135,14 @@ fn profile_json(profile: &Profile) -> String {
         Phase::Lattice,
         Phase::SearchValidate,
         Phase::Traversal,
+        Phase::Scoring,
         Phase::BucketSortDedup,
         Phase::FinalSortDedup,
         Phase::ContextRerank,
         Phase::Materialize,
     ];
     format!(
-        "{{\"clock_reads\":{},\"phases\":{{{}}}}}",
+        "{{\"schema_version\":2,\"clock_reads\":{},\"phases\":{{{}}}}}",
         profile.clock_reads(),
         phases
             .iter()
@@ -260,7 +261,7 @@ fn run() -> Result<(), Box<dyn Error>> {
         output.push(format!("{{\"id\":{},\"family\":{},\"input\":{},\"kind\":{},\"samples\":[{}],\"details_ns\":{},\"result\":{},\"result_debug\":{}}}",quote(fields[0]),quote(fields[1]),quote(fields[2]),quote(fields[3]),samples.join(","),details_ns,result,quote(&full_result)));
     }
     println!(
-        "{{\"schema_version\":1,\"experiment\":\"cloudleaf-stage-profile-v1\",\"language_accuracy_valid\":false,\"lexicon_entries\":{},\"trie_nodes\":{},\"load_ns\":{},\"iterations_per_case\":{},\"warmup_per_case\":{},\"cases\":[{}]}}",
+        "{{\"schema_version\":2,\"experiment\":\"cloudleaf-stage-profile-v2\",\"language_accuracy_valid\":false,\"lexicon_entries\":{},\"trie_nodes\":{},\"load_ns\":{},\"iterations_per_case\":{},\"warmup_per_case\":{},\"cases\":[{}]}}",
         lexicon.entries().len(),
         lexicon.trie_nodes(),
         load_ns,
