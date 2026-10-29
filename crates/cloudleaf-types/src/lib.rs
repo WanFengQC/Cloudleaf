@@ -12,6 +12,8 @@ pub enum ErrorCode {
     CommitPending,
     StaleCommit,
     CommitFailed,
+    StaleCandidate,
+    UnknownCandidate,
     Io,
 }
 
@@ -78,6 +80,33 @@ pub enum Key {
     Right,
     PageUp,
     PageDown,
+}
+
+/// 只读预判不改变核心；Blocked时宿主保留原始事件并按错误恢复。
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum KeyDisposition {
+    PassThrough,
+    Handle,
+    Blocked(ErrorCode),
+}
+
+/// 原生事务的确定性由平台证明，Unknown不能映射为允许重试的失败。
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum CommitOutcome {
+    Applied,
+    NotApplied,
+    Unknown,
+}
+
+/// 显式转换文本单位，拒绝无效边界，不能把UTF-8字节当作UTF-16位置。
+pub fn utf8_to_utf16_offset(text: &str, byte_offset: usize) -> Result<usize, CoreError> {
+    if !text.is_char_boundary(byte_offset) {
+        return Err(CoreError::new(
+            ErrorCode::InvalidInput,
+            "文本偏移越界或不在字符边界",
+        ));
+    }
+    Ok(text[..byte_offset].encode_utf16().count())
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

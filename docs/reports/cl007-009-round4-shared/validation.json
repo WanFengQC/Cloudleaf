@@ -1,0 +1,147 @@
+{
+  "head": "ddf3ed6655216dee951d4d154665ae9a63763d1b",
+  "checks": [
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\rustc.EXE",
+        "--version"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.17534439999144524,
+      "log": "C:\\Users\\EDY\\WebstormProjects\\Cloudleaf\\.local\\round4-shared-final-attempt2\\command-01.log"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "fetch",
+        "--locked"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.4018103000125848,
+      "log": "C:\\Users\\EDY\\WebstormProjects\\Cloudleaf\\.local\\round4-shared-final-attempt2\\command-02.log"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "build",
+        "--workspace",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 1.5483920999977272,
+      "log": "C:\\Users\\EDY\\WebstormProjects\\Cloudleaf\\.local\\round4-shared-final-attempt2\\command-03.log"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.5270332999934908,
+      "log": "C:\\Users\\EDY\\WebstormProjects\\Cloudleaf\\.local\\round4-shared-final-attempt2\\command-04.log"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.7495995000062976,
+      "log": "C:\\Users\\EDY\\WebstormProjects\\Cloudleaf\\.local\\round4-shared-final-attempt2\\command-05.log"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "test",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 2.5642299999890383,
+      "log": "C:\\Users\\EDY\\WebstormProjects\\Cloudleaf\\.local\\round4-shared-final-attempt2\\command-06.log"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "test",
+        "--workspace",
+        "--doc",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.8307293999969261,
+      "log": "C:\\Users\\EDY\\WebstormProjects\\Cloudleaf\\.local\\round4-shared-final-attempt2\\command-07.log"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "scripts/check_workspace.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.4672310000023572,
+      "log": "C:\\Users\\EDY\\WebstormProjects\\Cloudleaf\\.local\\round4-shared-final-attempt2\\command-08.log"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.7666224999993574,
+      "log": "C:\\Users\\EDY\\WebstormProjects\\Cloudleaf\\.local\\round4-shared-final-attempt2\\command-09.log"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "scripts/benchmark.py",
+        "--iterations",
+        "1000",
+        "--output",
+        "C:\\Users\\EDY\\WebstormProjects\\Cloudleaf\\.local\\round4-shared-final-attempt2\\performance.json"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 1.770844800004852,
+      "log": "C:\\Users\\EDY\\WebstormProjects\\Cloudleaf\\.local\\round4-shared-final-attempt2\\command-10.log"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "scripts/evaluate_algorithms.py",
+        "--output-dir",
+        "C:\\Users\\EDY\\WebstormProjects\\Cloudleaf\\.local\\round4-shared-final-attempt2\\algorithm-v1"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 1.3709246999933384,
+      "log": "C:\\Users\\EDY\\WebstormProjects\\Cloudleaf\\.local\\round4-shared-final-attempt2\\command-11.log"
+    },
+    {
+      "command": [
+        "C:\\Program Files\\Git\\cmd\\git.EXE",
+        "diff",
+        "--check"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.09892969999054912,
+      "log": "C:\\Users\\EDY\\WebstormProjects\\Cloudleaf\\.local\\round4-shared-final-attempt2\\command-12.log"
+    }
+  ]
+}

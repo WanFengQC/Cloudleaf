@@ -1,0 +1,46 @@
+{
+  "files": {
+    "command-01-stderr.txt": {
+      "original_path": "C:\\Users\\EDY\\WebstormProjects\\Cloudleaf\\.local\\round9-shared-checks-initial\\command-01-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    "command-01-stdout.txt": {
+      "original_path": "C:\\Users\\EDY\\WebstormProjects\\Cloudleaf\\.local\\round9-shared-checks-initial\\command-01-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    "command-02-stderr.txt": {
+      "original_path": "C:\\Users\\EDY\\WebstormProjects\\Cloudleaf\\.local\\round9-shared-checks-initial\\command-02-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    "command-02-stdout.txt": {
+      "original_path": "C:\\Users\\EDY\\WebstormProjects\\Cloudleaf\\.local\\round9-shared-checks-initial\\command-02-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    "launch-failure.json": {
+      "original_path": "C:\\Users\\EDY\\WebstormProjects\\Cloudleaf\\.local\\round9-shared-checks-initial\\launch-failure.json",
+      "bytes": 346,
+      "sha256": "306e56c2225973b5d786dbd1ec8214ebee3facdaf9def4672a26936211a92328",
+      "utf8": "{\n  \"runner_exit_code\": 1,\n  \"failed_to_launch\": [\n    \"rustc\",\n    \"-Vv\"\n  ],\n  \"command_returncode\": null,\n  \"reason\": \"Windows CreateProcess did not resolve child env PATH for bare command\",\n  \"completed_commands\": 2,\n  \"remaining_commands_executed\": false,\n  \"raw_launch_trace_saved\": false,\n  \"trace_evidence\": \"tool execution transcript\"\n}\n"
+    },
+    "run-before-path-fix.py": {
+      "original_path": "C:\\Users\\EDY\\WebstormProjects\\Cloudleaf\\.local\\round9-shared-checks-initial\\run-before-path-fix.py",
+      "bytes": 2346,
+      "sha256": "2bd901f01ced2776a6463a3f371fdac27cff1cb76cbbb18ad76f7d94c824278f",
+      "utf8": "\"\"\"逐条保存用户要求的共享工作区检查，不复用旧返回码。\"\"\"\nfrom datetime import datetime, timezone\nimport hashlib\nimport json\nimport os\nfrom pathlib import Path\nimport subprocess\nimport sys\nimport time\n\nROOT = Path(__file__).resolve().parents[1]\nOUT = ROOT / '.local/round9-shared-checks'\nOUT.mkdir(exist_ok=False)\nenv = os.environ.copy()\nenv['PATH'] = str(Path.home() / '.cargo/bin') + os.pathsep + env['PATH']\nenv['PYTHONUTF8'] = '1'\nenv['PYTHONIOENCODING'] = 'utf-8'\ncommands = [\n    ['git', 'diff', '--check'], ['git', 'status', '--short'], ['rustc', '-Vv'], [sys.executable, '--version'],\n    ['cargo', 'fmt', '--all', '--check'],\n    ['cargo', 'clippy', '--workspace', '--all-targets', '--locked', '--offline', '--', '-D', 'warnings'],\n    ['cargo', 'test', '--workspace', '--all-targets', '--locked', '--offline'],\n    ['cargo', 'test', '--workspace', '--doc', '--locked', '--offline'],\n    ['cargo', 'build', '--workspace', '--release', '--locked', '--offline'],\n    [sys.executable, '-X', 'utf8', 'scripts/check_workspace.py'],\n    [sys.executable, '-X', 'utf8', '-m', 'unittest', 'discover', '-s', 'tests', '-p', 'test_*.py', '-v'],\n]\nreport = {'checked_head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT).decode().strip(),\n          'started_at_utc': datetime.now(timezone.utc).isoformat(), 'checks': [],\n          'runner_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}\nfor index, command in enumerate(commands, 1):\n    start = time.perf_counter()\n    result = subprocess.run(command, cwd=ROOT, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)\n    row = {'command': command, 'returncode': result.returncode, 'seconds': time.perf_counter() - start}\n    for name, raw in [('stdout', result.stdout), ('stderr', result.stderr)]:\n        path = OUT / f'command-{index:02}-{name}.txt'\n        path.write_bytes(raw)\n        row[name] = {'file': path.name, 'bytes': len(raw), 'sha256': hashlib.sha256(raw).hexdigest()}\n    report['checks'].append(row)\n    (OUT / 'validation.json').write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\\n', encoding='utf-8', newline='\\n')\n    print(json.dumps({'check': index, 'code': result.returncode, 'seconds': row['seconds']}), flush=True)\nraise SystemExit(0 if all(row['returncode'] == 0 for row in report['checks']) else 1)\n"
+    },
+    "validation.json": {
+      "original_path": "C:\\Users\\EDY\\WebstormProjects\\Cloudleaf\\.local\\round9-shared-checks-initial\\validation.json",
+      "bytes": 1220,
+      "sha256": "0e44e94f79c852f04cf2c61fb01bd5dc2ddf4d62c99fc6cb91e550ed16692b38",
+      "utf8": "{\n  \"checked_head\": \"48b122d69f1086fbc42365427e71080775db3a26\",\n  \"started_at_utc\": \"2026-10-29T17:50:42.702633+00:00\",\n  \"checks\": [\n    {\n      \"command\": [\n        \"git\",\n        \"diff\",\n        \"--check\"\n      ],\n      \"returncode\": 0,\n      \"seconds\": 0.09318989999883343,\n      \"stdout\": {\n        \"file\": \"command-01-stdout.txt\",\n        \"bytes\": 0,\n        \"sha256\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\"\n      },\n      \"stderr\": {\n        \"file\": \"command-01-stderr.txt\",\n        \"bytes\": 0,\n        \"sha256\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\"\n      }\n    },\n    {\n      \"command\": [\n        \"git\",\n        \"status\",\n        \"--short\"\n      ],\n      \"returncode\": 0,\n      \"seconds\": 0.09152370000083465,\n      \"stdout\": {\n        \"file\": \"command-02-stdout.txt\",\n        \"bytes\": 0,\n        \"sha256\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\"\n      },\n      \"stderr\": {\n        \"file\": \"command-02-stderr.txt\",\n        \"bytes\": 0,\n        \"sha256\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\"\n      }\n    }\n  ],\n  \"runner_sha256\": \"2bd901f01ced2776a6463a3f371fdac27cff1cb76cbbb18ad76f7d94c824278f\"\n}\n"
+    }
+  }
+}

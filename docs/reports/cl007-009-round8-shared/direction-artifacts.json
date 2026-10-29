@@ -1,0 +1,192 @@
+{
+  "initial_A_and_final_B": {
+    "checked_at_utc": "2026-10-29T16:46:12.371844+00:00",
+    "scope": "Independent read-only evidence audit; no human or platform acceptance",
+    "preparation_errors": [
+      {
+        "command": "inline schema inspection for A and B",
+        "returncode": 1,
+        "error": "AttributeError: 'list' object has no attribute 'keys'",
+        "resolution": "Corrected inspection expression; no input or tracked file changed",
+        "raw_process_bytes_saved": false
+      }
+    ],
+    "directions": {
+      "CL-007": {
+        "head": "05dd085e691d2f3b6d801185e7cc8083ab7c3a3d",
+        "baseline": "fa4f1fab93394f115d3a987a7f0201b8662c08cf",
+        "git_manifest_hashes_verified": 36,
+        "historical_reports_unchanged": 465,
+        "rust_production_changes": [],
+        "deleted_old_tests": [],
+        "original_envelopes": {
+          "raw-artifacts": 32
+        },
+        "native_seconds": [
+          4.0329512,
+          null,
+          4.0284962,
+          null
+        ],
+        "long_profiles_executed": false,
+        "resource_gate_passed": null,
+        "application_cases_pending": 9,
+        "actual_commands_expected_results": 9
+      },
+      "CL-008": {
+        "head": "f991a8128cd07d4af57eb773cc2e598cf7e5809a",
+        "baseline": "b4b5fb7f812c56f73a132cd9f16045b58a3121c2",
+        "git_manifest_hashes_verified": 20,
+        "historical_reports_unchanged": 398,
+        "rust_production_changes": [],
+        "deleted_old_tests": [],
+        "original_envelopes": {
+          "logs": 10,
+          "artifacts": 5
+        },
+        "formal_gate_codes": [
+          2,
+          2,
+          2
+        ],
+        "language_accuracy_valid": false,
+        "language_metrics": {
+          "top1": null,
+          "top5": null,
+          "mrr": null
+        },
+        "intake_cases_pending": 13,
+        "actual_commands_expected_results": 5
+      }
+    },
+    "failures": [],
+    "passed": true,
+    "auditor_sha256": "ebe65c47fe22b395e31f6ac95fef20e4cd0c126acd7fd7fdfbbca1aa1dd4f864"
+  },
+  "final_A": {
+    "checked_at_utc": "2026-10-29T16:51:36.756985+00:00",
+    "head": "333dc90e0985a13f75629e29599f3df1d7d951ab",
+    "previous_audit_head": "05dd085e691d2f3b6d801185e7cc8083ab7c3a3d",
+    "scope": "Read-only final Git blobs and captured originals; does not substitute for exact-head CI or external acceptance",
+    "failures": [],
+    "prior_audit_attempt": ".local/round8-independent-final-extension-attempt01.json",
+    "preparation_errors": [
+      {
+        "operation": "Get-Content docs/reports/cl007-round8-ci-fix.md",
+        "error": "Cannot find path; report is appended to cl007-round8-status.md",
+        "resolution": "Enumerated actual file paths with rg; no tracked changes",
+        "raw_process_bytes_saved": false
+      },
+      {
+        "operation": "initial independent extension audit",
+        "error": "KeyError: red/windows-ci-job.txt",
+        "resolution": "Original envelope uses .log key; inspect actual schema and correct lookup only",
+        "returncode": 1,
+        "prior_report_preserved": true
+      }
+    ],
+    "git_manifest_files": 25,
+    "raw_originals_matched": 22,
+    "runner_sources_matched": 3,
+    "previous_round8_files_unchanged": 37,
+    "historical_r7_reports_unchanged": 465,
+    "red_tests": 6,
+    "red_failures": 1,
+    "red_exit_code": 1,
+    "corrected_regression_tests": 31,
+    "corrected_exit_code": 0,
+    "actual_commands_expected_results": 9,
+    "prior_failed_push_run": 40913130729,
+    "prior_failed_push_head": "05dd085e691d2f3b6d801185e7cc8083ab7c3a3d",
+    "prior_windows_job_log_bytes": 94499,
+    "prior_windows_job_log_sha256": "51caa651592bb04e878c49d0bbc78956151cd5c0a1a703c7f05d168d91a7bb0f",
+    "production_changes": [],
+    "native_seconds": [
+      4.0329512,
+      null,
+      4.0284962,
+      null
+    ],
+    "resource_gate_passed": null,
+    "long_profiles_and_real_apps_accepted": false,
+    "passed": true,
+    "auditor_sha256": "086f36ac2f74aa304d9c876f33ad75337e170fa7036fba79542c5b9082cded18"
+  },
+  "final_C": {
+    "checked_at_utc": "2026-10-29T16:53:24.172608+00:00",
+    "head": "ef6cf16c558f5521cd776e4805068a07f15aedd2",
+    "scope": "Independent read-only Git/original-byte audit; no corpus recomputation, new download, approval, human gold, or semantic quality acceptance",
+    "failures": [],
+    "prior_attempt": ".local/round8-independent-data-extension-attempt01.json",
+    "preparation_error": {
+      "type": "TypeError",
+      "reason": "Initial audit assumed every captured stream had a local original_path; acquisition streams explicitly use subprocess.PIPE",
+      "resolution": "Verify direct-capture byte/hash and command stdout/stderr identity; compare actual local file only where original_path is present",
+      "returncode": 1
+    },
+    "git_manifest_files": {
+      "round8": 21,
+      "round8-acquisition": 12
+    },
+    "original_envelopes_matched": {
+      "round8": 18,
+      "round8-acquisition": 9,
+      "round8-acquisition-initial-check": 5,
+      "round8-acquisition-diff-failure": 9
+    },
+    "new_runner_sources_matched": 3,
+    "initial_round8_files_unchanged": 22,
+    "historical_reports_unchanged": 153,
+    "actual_source_originals_verified": [
+      {
+        "bytes": 7479,
+        "sha256": "f4a136b63419c0f34dfbfcf76f501ac80a745ad535f5cc9bda2666189a35e9f3"
+      },
+      {
+        "bytes": 60833224,
+        "sha256": "6ab29862a8c904c261bb9d5a02a342285c4dbabf79cee5c4f8818076fd44fb86"
+      }
+    ],
+    "gzip_recorded_integrity": {
+      "read_to_EOF": true,
+      "CRC_ISIZE": true,
+      "uncompressed_bytes": 195878750,
+      "records": 508674,
+      "three_numeric_fields": 19074163,
+      "independent_redecompression_executed": false
+    },
+    "preserved_failure_and_final_codes": {
+      "round8-acquisition-initial-check": [
+        0,
+        1
+      ],
+      "round8-acquisition-diff-failure": [
+        0,
+        0,
+        0,
+        2
+      ],
+      "round8-acquisition": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "production_and_old_tests_sources_locks_changes": [],
+    "C_master_unchanged_sha256": "bd0a09e748289f79d489d6eea9b88f88135542201144381e483d797901c45539",
+    "pending_real_roles": 5,
+    "pending_materials": 9,
+    "semantic_pending_source_records_checked": 20,
+    "old_package_files_verified": 9,
+    "source_status": "candidate-not-approved",
+    "product_frequency_computed": false,
+    "language_metrics": {
+      "top1": null,
+      "top5": null,
+      "mrr": null
+    },
+    "passed": true,
+    "auditor_sha256": "49217596ff0b512566fe68e28c243eaad9c6288898fb9dd0be9349a35db54b22"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "events": [
+    {
+      "operation": "read A design file by guessed name with Get-Content",
+      "returncode": 1,
+      "attempted_path": "docs/cl007-round9-admission-design.md",
+      "error": "path did not exist",
+      "resolution": "rg --files found docs/cl007-round9-admission.md; no file was changed",
+      "raw_process_bytes_saved": false,
+      "evidence_basis": "tool execution transcript"
+    },
+    {
+      "operation": "inspect A evidence schema using incorrect top-level validation.json path",
+      "returncode": 1,
+      "error": "FileNotFoundError; actual checks are validation/checks.json as direction report states",
+      "resolution": "read exact report-linked validation/checks.json",
+      "raw_process_bytes_saved": false,
+      "evidence_basis": "tool execution transcript"
+    },
+    {
+      "operation": "rg with wildcard Windows path arguments tools/data_pipeline/semantic* and release*",
+      "returncode": 1,
+      "error": "literal wildcard path rejected by rg os error123",
+      "resolution": "rg --files tools/data_pipeline then rg content on actual directory; no source changes",
+      "raw_process_bytes_saved": false,
+      "evidence_basis": "tool execution transcript"
+    }
+  ]
+}

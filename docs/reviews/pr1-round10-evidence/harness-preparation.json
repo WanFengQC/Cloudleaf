@@ -1,0 +1,21 @@
+{
+  "scope": "Preparation errors copied from tool transcript; original process byte capture was not enabled for these discovery commands",
+  "errors": [
+    {
+      "operation": "gh api run 40930353255 and gh auth status discovery",
+      "returncode": 1,
+      "error": "gh is not recognized as a cmdlet, function, script file, or executable program",
+      "raw_process_bytes_saved": false,
+      "resolution": "Reused Round 9 official GitHub API collector with existing Git credential in process memory only; no credential printed or saved. New exact C CI collected successfully."
+    },
+    {
+      "operation": "Readonly CL-008 in-progress file discovery",
+      "returncode": 1,
+      "error": "A new test file was queried before creation; later checks.json was guessed instead of actual validation.json",
+      "raw_process_bytes_saved": false,
+      "resolution": "Listed actual paths with rg --files, then used existing files. No file or test result was created to hide the missing path."
+    }
+  ],
+  "historical_errors": "Round 1-9 records unchanged; this file does not repeat or reclassify them",
+  "CI_result_inferred_from_missing_gh": false
+}

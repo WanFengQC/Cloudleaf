@@ -1,0 +1,1938 @@
+{
+  "scope": "Round 6 final direction push CI, full REST run/jobs/steps/artifact responses; shared final push is recorded after this report commit in PR #1 and local final-ci.json",
+  "A": {
+    "verified_at_utc": "2026-10-29 09:52:24 UTC",
+    "run": {
+      "id": 40705631876,
+      "name": "Core CI",
+      "node_id": "WFR_kwLOVS7Zs88AAAAJej6mhA",
+      "head_branch": "codex/cl007-windows",
+      "head_sha": "caefb7f2ac7c8584249c05359fcb174f87640886",
+      "path": ".github/workflows/ci.yml",
+      "display_title": "docs(windows): preserve Round 6 soak recovery evidence and blocked ad…",
+      "run_number": 70,
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "workflow_id": 392379355,
+      "check_suite_id": 110333762424,
+      "check_suite_node_id": "CS_kwDOVS7Zs88AAAAZsGebeA",
+      "url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/runs/40705631876",
+      "html_url": "https://github.com/WanFengQC/Cloudleaf/actions/runs/40705631876",
+      "pull_requests": [
+        {
+          "url": "https://api.github.com/repos/WanFengQC/Cloudleaf/pulls/4",
+          "id": 4963279737,
+          "number": 4,
+          "head": {
+            "ref": "codex/cl007-windows",
+            "sha": "caefb7f2ac7c8584249c05359fcb174f87640886",
+            "repo": {
+              "id": 1429133747,
+              "url": "https://api.github.com/repos/WanFengQC/Cloudleaf",
+              "name": "Cloudleaf"
+            }
+          },
+          "base": {
+            "ref": "codex/cl007-009-contracts",
+            "sha": "9af9bc1b2ebacc3ad76124cfa39d09de8eb77bd1",
+            "repo": {
+              "id": 1429133747,
+              "url": "https://api.github.com/repos/WanFengQC/Cloudleaf",
+              "name": "Cloudleaf"
+            }
+          }
+        }
+      ],
+      "created_at": "2026-10-28T14:24:35Z",
+      "updated_at": "2026-10-28T14:32:20Z",
+      "actor": {
+        "login": "WanFengQC",
+        "id": 53963743,
+        "node_id": "MDQ6VXNlcjUzOTYzNzQz",
+        "avatar_url": "https://avatars.githubusercontent.com/u/53963743?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/WanFengQC",
+        "html_url": "https://github.com/WanFengQC",
+        "followers_url": "https://api.github.com/users/WanFengQC/followers",
+        "following_url": "https://api.github.com/users/WanFengQC/following{/other_user}",
+        "gists_url": "https://api.github.com/users/WanFengQC/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/WanFengQC/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/WanFengQC/subscriptions",
+        "organizations_url": "https://api.github.com/users/WanFengQC/orgs",
+        "repos_url": "https://api.github.com/users/WanFengQC/repos",
+        "events_url": "https://api.github.com/users/WanFengQC/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/WanFengQC/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "run_attempt": 1,
+      "referenced_workflows": [],
+      "run_started_at": "2026-10-28T14:24:35Z",
+      "triggering_actor": {
+        "login": "WanFengQC",
+        "id": 53963743,
+        "node_id": "MDQ6VXNlcjUzOTYzNzQz",
+        "avatar_url": "https://avatars.githubusercontent.com/u/53963743?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/WanFengQC",
+        "html_url": "https://github.com/WanFengQC",
+        "followers_url": "https://api.github.com/users/WanFengQC/followers",
+        "following_url": "https://api.github.com/users/WanFengQC/following{/other_user}",
+        "gists_url": "https://api.github.com/users/WanFengQC/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/WanFengQC/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/WanFengQC/subscriptions",
+        "organizations_url": "https://api.github.com/users/WanFengQC/orgs",
+        "repos_url": "https://api.github.com/users/WanFengQC/repos",
+        "events_url": "https://api.github.com/users/WanFengQC/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/WanFengQC/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "jobs_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/runs/40705631876/jobs",
+      "logs_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/runs/40705631876/logs",
+      "check_suite_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/check-suites/110333762424",
+      "artifacts_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/runs/40705631876/artifacts",
+      "cancel_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/runs/40705631876/cancel",
+      "rerun_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/runs/40705631876/rerun",
+      "previous_attempt_url": null,
+      "workflow_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/workflows/392379355",
+      "head_commit": {
+        "id": "caefb7f2ac7c8584249c05359fcb174f87640886",
+        "tree_id": "21acab29757759e84dd3c82f380a24ae701bf3a7",
+        "message": "docs(windows): preserve Round 6 soak recovery evidence and blocked admission",
+        "timestamp": "2026-10-28T14:24:29Z",
+        "author": {
+          "name": "wfqc6",
+          "email": "wfqc6@hotmail.com"
+        },
+        "committer": {
+          "name": "wfqc6",
+          "email": "wfqc6@hotmail.com"
+        }
+      },
+      "repository": {
+        "id": 1429133747,
+        "node_id": "R_kgDOVS7Zsw",
+        "name": "Cloudleaf",
+        "full_name": "WanFengQC/Cloudleaf",
+        "private": false,
+        "owner": {
+          "login": "WanFengQC",
+          "id": 53963743,
+          "node_id": "MDQ6VXNlcjUzOTYzNzQz",
+          "avatar_url": "https://avatars.githubusercontent.com/u/53963743?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/WanFengQC",
+          "html_url": "https://github.com/WanFengQC",
+          "followers_url": "https://api.github.com/users/WanFengQC/followers",
+          "following_url": "https://api.github.com/users/WanFengQC/following{/other_user}",
+          "gists_url": "https://api.github.com/users/WanFengQC/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/WanFengQC/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/WanFengQC/subscriptions",
+          "organizations_url": "https://api.github.com/users/WanFengQC/orgs",
+          "repos_url": "https://api.github.com/users/WanFengQC/repos",
+          "events_url": "https://api.github.com/users/WanFengQC/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/WanFengQC/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "html_url": "https://github.com/WanFengQC/Cloudleaf",
+        "description": null,
+        "fork": false,
+        "url": "https://api.github.com/repos/WanFengQC/Cloudleaf",
+        "forks_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/forks",
+        "keys_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/keys{/key_id}",
+        "collaborators_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/collaborators{/collaborator}",
+        "teams_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/teams",
+        "hooks_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/hooks",
+        "issue_events_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/issues/events{/number}",
+        "events_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/events",
+        "assignees_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/assignees{/user}",
+        "branches_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/branches{/branch}",
+        "tags_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/tags",
+        "blobs_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/blobs{/sha}",
+        "git_tags_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/tags{/sha}",
+        "git_refs_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/refs{/sha}",
+        "trees_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/trees{/sha}",
+        "statuses_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/statuses/{sha}",
+        "languages_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/languages",
+        "stargazers_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/stargazers",
+        "contributors_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/contributors",
+        "subscribers_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/subscribers",
+        "subscription_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/subscription",
+        "commits_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/commits{/sha}",
+        "git_commits_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/commits{/sha}",
+        "comments_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/comments{/number}",
+        "issue_comment_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/issues/comments{/number}",
+        "contents_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/contents/{+path}",
+        "compare_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/compare/{base}...{head}",
+        "merges_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/merges",
+        "archive_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/{archive_format}{/ref}",
+        "downloads_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/downloads",
+        "issues_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/issues{/number}",
+        "pulls_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/pulls{/number}",
+        "milestones_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/milestones{/number}",
+        "notifications_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/notifications{?since,all,participating}",
+        "labels_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/labels{/name}",
+        "releases_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/releases{/id}",
+        "deployments_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/deployments"
+      },
+      "head_repository": {
+        "id": 1429133747,
+        "node_id": "R_kgDOVS7Zsw",
+        "name": "Cloudleaf",
+        "full_name": "WanFengQC/Cloudleaf",
+        "private": false,
+        "owner": {
+          "login": "WanFengQC",
+          "id": 53963743,
+          "node_id": "MDQ6VXNlcjUzOTYzNzQz",
+          "avatar_url": "https://avatars.githubusercontent.com/u/53963743?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/WanFengQC",
+          "html_url": "https://github.com/WanFengQC",
+          "followers_url": "https://api.github.com/users/WanFengQC/followers",
+          "following_url": "https://api.github.com/users/WanFengQC/following{/other_user}",
+          "gists_url": "https://api.github.com/users/WanFengQC/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/WanFengQC/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/WanFengQC/subscriptions",
+          "organizations_url": "https://api.github.com/users/WanFengQC/orgs",
+          "repos_url": "https://api.github.com/users/WanFengQC/repos",
+          "events_url": "https://api.github.com/users/WanFengQC/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/WanFengQC/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "html_url": "https://github.com/WanFengQC/Cloudleaf",
+        "description": null,
+        "fork": false,
+        "url": "https://api.github.com/repos/WanFengQC/Cloudleaf",
+        "forks_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/forks",
+        "keys_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/keys{/key_id}",
+        "collaborators_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/collaborators{/collaborator}",
+        "teams_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/teams",
+        "hooks_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/hooks",
+        "issue_events_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/issues/events{/number}",
+        "events_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/events",
+        "assignees_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/assignees{/user}",
+        "branches_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/branches{/branch}",
+        "tags_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/tags",
+        "blobs_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/blobs{/sha}",
+        "git_tags_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/tags{/sha}",
+        "git_refs_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/refs{/sha}",
+        "trees_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/trees{/sha}",
+        "statuses_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/statuses/{sha}",
+        "languages_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/languages",
+        "stargazers_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/stargazers",
+        "contributors_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/contributors",
+        "subscribers_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/subscribers",
+        "subscription_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/subscription",
+        "commits_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/commits{/sha}",
+        "git_commits_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/commits{/sha}",
+        "comments_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/comments{/number}",
+        "issue_comment_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/issues/comments{/number}",
+        "contents_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/contents/{+path}",
+        "compare_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/compare/{base}...{head}",
+        "merges_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/merges",
+        "archive_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/{archive_format}{/ref}",
+        "downloads_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/downloads",
+        "issues_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/issues{/number}",
+        "pulls_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/pulls{/number}",
+        "milestones_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/milestones{/number}",
+        "notifications_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/notifications{?since,all,participating}",
+        "labels_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/labels{/name}",
+        "releases_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/releases{/id}",
+        "deployments_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/deployments"
+      }
+    },
+    "jobs": {
+      "total_count": 2,
+      "jobs": [
+        {
+          "id": 122876851772,
+          "run_id": 40705631876,
+          "workflow_name": "Core CI",
+          "head_branch": "codex/cl007-windows",
+          "run_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/runs/40705631876",
+          "run_attempt": 1,
+          "node_id": "CR_kwDOVS7Zs88AAAAcnAf2PA",
+          "head_sha": "caefb7f2ac7c8584249c05359fcb174f87640886",
+          "url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/jobs/122876851772",
+          "html_url": "https://github.com/WanFengQC/Cloudleaf/actions/runs/40705631876/job/122876851772",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-28T14:24:36Z",
+          "started_at": "2026-10-28T14:24:38Z",
+          "completed_at": "2026-10-28T14:32:19Z",
+          "name": "core (windows-latest)",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-28T14:24:39Z",
+              "completed_at": "2026-10-28T14:24:40Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-28T14:24:40Z",
+              "completed_at": "2026-10-28T14:24:46Z"
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-28T14:24:46Z",
+              "completed_at": "2026-10-28T14:24:46Z"
+            },
+            {
+              "name": "Install pinned Rust",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-28T14:24:46Z",
+              "completed_at": "2026-10-28T14:24:57Z"
+            },
+            {
+              "name": "Fetch precisely locked build dependencies",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-28T14:24:57Z",
+              "completed_at": "2026-10-28T14:25:02Z"
+            },
+            {
+              "name": "Format",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-28T14:25:02Z",
+              "completed_at": "2026-10-28T14:25:04Z"
+            },
+            {
+              "name": "Lint",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-10-28T14:25:04Z",
+              "completed_at": "2026-10-28T14:25:28Z"
+            },
+            {
+              "name": "Tests and fixed input corpus",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-10-28T14:25:28Z",
+              "completed_at": "2026-10-28T14:25:59Z"
+            },
+            {
+              "name": "Documentation tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-28T14:25:59Z",
+              "completed_at": "2026-10-28T14:26:00Z"
+            },
+            {
+              "name": "Dependency, license and fixture audit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-28T14:26:00Z",
+              "completed_at": "2026-10-28T14:26:02Z"
+            },
+            {
+              "name": "Install pinned development vulnerability auditor",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-28T14:26:02Z",
+              "completed_at": "2026-10-28T14:31:56Z"
+            },
+            {
+              "name": "Exact Windows dependency licenses and RustSec audit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-10-28T14:31:56Z",
+              "completed_at": "2026-10-28T14:32:01Z"
+            },
+            {
+              "name": "Evaluation and artifact provenance tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-10-28T14:32:01Z",
+              "completed_at": "2026-10-28T14:32:03Z"
+            },
+            {
+              "name": "Benchmark smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-10-28T14:32:03Z",
+              "completed_at": "2026-10-28T14:32:09Z"
+            },
+            {
+              "name": "Algorithm baseline and ablation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15,
+              "started_at": "2026-10-28T14:32:09Z",
+              "completed_at": "2026-10-28T14:32:14Z"
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 16,
+              "started_at": "2026-10-28T14:32:14Z",
+              "completed_at": "2026-10-28T14:32:15Z"
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 31,
+              "started_at": "2026-10-28T14:32:15Z",
+              "completed_at": "2026-10-28T14:32:15Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 32,
+              "started_at": "2026-10-28T14:32:15Z",
+              "completed_at": "2026-10-28T14:32:18Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 33,
+              "started_at": "2026-10-28T14:32:18Z",
+              "completed_at": "2026-10-28T14:32:18Z"
+            }
+          ],
+          "check_run_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/check-runs/122876851772",
+          "labels": [
+            "windows-latest"
+          ],
+          "runner_id": 1000000141,
+          "runner_name": "GitHub Actions 1000000141",
+          "runner_group_id": 0,
+          "runner_group_name": "GitHub Actions"
+        },
+        {
+          "id": 122876852181,
+          "run_id": 40705631876,
+          "workflow_name": "Core CI",
+          "head_branch": "codex/cl007-windows",
+          "run_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/runs/40705631876",
+          "run_attempt": 1,
+          "node_id": "CR_kwDOVS7Zs88AAAAcnAf31Q",
+          "head_sha": "caefb7f2ac7c8584249c05359fcb174f87640886",
+          "url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/jobs/122876852181",
+          "html_url": "https://github.com/WanFengQC/Cloudleaf/actions/runs/40705631876/job/122876852181",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-28T14:24:36Z",
+          "started_at": "2026-10-28T14:24:38Z",
+          "completed_at": "2026-10-28T14:27:38Z",
+          "name": "core (ubuntu-latest)",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-28T14:24:39Z",
+              "completed_at": "2026-10-28T14:24:39Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-28T14:24:39Z",
+              "completed_at": "2026-10-28T14:24:41Z"
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-28T14:24:41Z",
+              "completed_at": "2026-10-28T14:24:41Z"
+            },
+            {
+              "name": "Install pinned Rust",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-28T14:24:41Z",
+              "completed_at": "2026-10-28T14:24:50Z"
+            },
+            {
+              "name": "Fetch precisely locked build dependencies",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-28T14:24:50Z",
+              "completed_at": "2026-10-28T14:24:51Z"
+            },
+            {
+              "name": "Format",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-28T14:24:51Z",
+              "completed_at": "2026-10-28T14:24:51Z"
+            },
+            {
+              "name": "Lint",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-10-28T14:24:51Z",
+              "completed_at": "2026-10-28T14:24:52Z"
+            },
+            {
+              "name": "Tests and fixed input corpus",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-10-28T14:24:52Z",
+              "completed_at": "2026-10-28T14:24:54Z"
+            },
+            {
+              "name": "Documentation tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-28T14:24:54Z",
+              "completed_at": "2026-10-28T14:24:54Z"
+            },
+            {
+              "name": "Dependency, license and fixture audit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-28T14:24:54Z",
+              "completed_at": "2026-10-28T14:24:55Z"
+            },
+            {
+              "name": "Install pinned development vulnerability auditor",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-28T14:24:55Z",
+              "completed_at": "2026-10-28T14:27:24Z"
+            },
+            {
+              "name": "Exact Windows dependency licenses and RustSec audit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-10-28T14:27:24Z",
+              "completed_at": "2026-10-28T14:27:27Z"
+            },
+            {
+              "name": "Evaluation and artifact provenance tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-10-28T14:27:27Z",
+              "completed_at": "2026-10-28T14:27:28Z"
+            },
+            {
+              "name": "Benchmark smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-10-28T14:27:28Z",
+              "completed_at": "2026-10-28T14:27:31Z"
+            },
+            {
+              "name": "Algorithm baseline and ablation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15,
+              "started_at": "2026-10-28T14:27:31Z",
+              "completed_at": "2026-10-28T14:27:34Z"
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 16,
+              "started_at": "2026-10-28T14:27:34Z",
+              "completed_at": "2026-10-28T14:27:36Z"
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 31,
+              "started_at": "2026-10-28T14:27:36Z",
+              "completed_at": "2026-10-28T14:27:36Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 32,
+              "started_at": "2026-10-28T14:27:36Z",
+              "completed_at": "2026-10-28T14:27:36Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 33,
+              "started_at": "2026-10-28T14:27:36Z",
+              "completed_at": "2026-10-28T14:27:36Z"
+            }
+          ],
+          "check_run_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/check-runs/122876852181",
+          "labels": [
+            "ubuntu-latest"
+          ],
+          "runner_id": 1000000142,
+          "runner_name": "GitHub Actions 1000000142",
+          "runner_group_id": 0,
+          "runner_group_name": "GitHub Actions"
+        }
+      ]
+    },
+    "artifacts": {
+      "total_count": 2,
+      "artifacts": [
+        {
+          "id": 12824178049,
+          "node_id": "MDg6QXJ0aWZhY3QxMjgyNDE3ODA0OQ==",
+          "name": "core-performance-windows-latest",
+          "size_in_bytes": 17989,
+          "url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/artifacts/12824178049",
+          "archive_download_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/artifacts/12824178049/zip",
+          "expired": false,
+          "digest": "sha256:3712c02d7a704fa7b61d7187a35d0f8be7a5ccf519ba56d9e143d5c45da90105",
+          "created_at": "2026-10-28T14:32:14Z",
+          "updated_at": "2026-10-28T14:32:14Z",
+          "expires_at": "2027-01-26T14:24:36Z",
+          "workflow_run": {
+            "id": 40705631876,
+            "repository_id": 1429133747,
+            "head_repository_id": 1429133747,
+            "head_branch": "codex/cl007-windows",
+            "head_sha": "caefb7f2ac7c8584249c05359fcb174f87640886"
+          }
+        },
+        {
+          "id": 12823167826,
+          "node_id": "MDg6QXJ0aWZhY3QxMjgyMzE2NzgyNg==",
+          "name": "core-performance-ubuntu-latest",
+          "size_in_bytes": 23710,
+          "url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/artifacts/12823167826",
+          "archive_download_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/artifacts/12823167826/zip",
+          "expired": false,
+          "digest": "sha256:b19c65c8a7363c388d845cc009e054d455767a024402733a998a4ca3bf100bd7",
+          "created_at": "2026-10-28T14:27:35Z",
+          "updated_at": "2026-10-28T14:27:35Z",
+          "expires_at": "2027-01-26T14:24:36Z",
+          "workflow_run": {
+            "id": 40705631876,
+            "repository_id": 1429133747,
+            "head_repository_id": 1429133747,
+            "head_branch": "codex/cl007-windows",
+            "head_sha": "caefb7f2ac7c8584249c05359fcb174f87640886"
+          }
+        }
+      ]
+    }
+  },
+  "B": {
+    "verified_at_utc": "2026-10-29 09:50:47 UTC",
+    "run": {
+      "id": 40706957058,
+      "name": "Core CI",
+      "node_id": "WFR_kwLOVS7Zs88AAAAJelLfAg",
+      "head_branch": "codex/cl008-search",
+      "head_sha": "417dad662bfebedf3238f909476240427cc9100b",
+      "path": ".github/workflows/ci.yml",
+      "display_title": "docs(search): preserve Round 6 complete old-new matrix and blocked qu…",
+      "run_number": 72,
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "workflow_id": 392379355,
+      "check_suite_id": 110337502599,
+      "check_suite_node_id": "CS_kwDOVS7Zs88AAAAZsKCthw",
+      "url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/runs/40706957058",
+      "html_url": "https://github.com/WanFengQC/Cloudleaf/actions/runs/40706957058",
+      "pull_requests": [
+        {
+          "url": "https://api.github.com/repos/WanFengQC/Cloudleaf/pulls/2",
+          "id": 4961699932,
+          "number": 2,
+          "head": {
+            "ref": "codex/cl008-search",
+            "sha": "417dad662bfebedf3238f909476240427cc9100b",
+            "repo": {
+              "id": 1429133747,
+              "url": "https://api.github.com/repos/WanFengQC/Cloudleaf",
+              "name": "Cloudleaf"
+            }
+          },
+          "base": {
+            "ref": "codex/cl007-009-contracts",
+            "sha": "9af9bc1b2ebacc3ad76124cfa39d09de8eb77bd1",
+            "repo": {
+              "id": 1429133747,
+              "url": "https://api.github.com/repos/WanFengQC/Cloudleaf",
+              "name": "Cloudleaf"
+            }
+          }
+        }
+      ],
+      "created_at": "2026-10-28T14:32:34Z",
+      "updated_at": "2026-10-28T14:34:06Z",
+      "actor": {
+        "login": "WanFengQC",
+        "id": 53963743,
+        "node_id": "MDQ6VXNlcjUzOTYzNzQz",
+        "avatar_url": "https://avatars.githubusercontent.com/u/53963743?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/WanFengQC",
+        "html_url": "https://github.com/WanFengQC",
+        "followers_url": "https://api.github.com/users/WanFengQC/followers",
+        "following_url": "https://api.github.com/users/WanFengQC/following{/other_user}",
+        "gists_url": "https://api.github.com/users/WanFengQC/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/WanFengQC/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/WanFengQC/subscriptions",
+        "organizations_url": "https://api.github.com/users/WanFengQC/orgs",
+        "repos_url": "https://api.github.com/users/WanFengQC/repos",
+        "events_url": "https://api.github.com/users/WanFengQC/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/WanFengQC/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "run_attempt": 1,
+      "referenced_workflows": [],
+      "run_started_at": "2026-10-28T14:32:34Z",
+      "triggering_actor": {
+        "login": "WanFengQC",
+        "id": 53963743,
+        "node_id": "MDQ6VXNlcjUzOTYzNzQz",
+        "avatar_url": "https://avatars.githubusercontent.com/u/53963743?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/WanFengQC",
+        "html_url": "https://github.com/WanFengQC",
+        "followers_url": "https://api.github.com/users/WanFengQC/followers",
+        "following_url": "https://api.github.com/users/WanFengQC/following{/other_user}",
+        "gists_url": "https://api.github.com/users/WanFengQC/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/WanFengQC/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/WanFengQC/subscriptions",
+        "organizations_url": "https://api.github.com/users/WanFengQC/orgs",
+        "repos_url": "https://api.github.com/users/WanFengQC/repos",
+        "events_url": "https://api.github.com/users/WanFengQC/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/WanFengQC/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "jobs_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/runs/40706957058/jobs",
+      "logs_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/runs/40706957058/logs",
+      "check_suite_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/check-suites/110337502599",
+      "artifacts_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/runs/40706957058/artifacts",
+      "cancel_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/runs/40706957058/cancel",
+      "rerun_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/runs/40706957058/rerun",
+      "previous_attempt_url": null,
+      "workflow_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/workflows/392379355",
+      "head_commit": {
+        "id": "417dad662bfebedf3238f909476240427cc9100b",
+        "tree_id": "1cfdb1a4416db32cac70a71562a543ed6ea6c8c3",
+        "message": "docs(search): preserve Round 6 complete old-new matrix and blocked quality evidence",
+        "timestamp": "2026-10-28T14:32:26Z",
+        "author": {
+          "name": "wfqc6",
+          "email": "wfqc6@hotmail.com"
+        },
+        "committer": {
+          "name": "wfqc6",
+          "email": "wfqc6@hotmail.com"
+        }
+      },
+      "repository": {
+        "id": 1429133747,
+        "node_id": "R_kgDOVS7Zsw",
+        "name": "Cloudleaf",
+        "full_name": "WanFengQC/Cloudleaf",
+        "private": false,
+        "owner": {
+          "login": "WanFengQC",
+          "id": 53963743,
+          "node_id": "MDQ6VXNlcjUzOTYzNzQz",
+          "avatar_url": "https://avatars.githubusercontent.com/u/53963743?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/WanFengQC",
+          "html_url": "https://github.com/WanFengQC",
+          "followers_url": "https://api.github.com/users/WanFengQC/followers",
+          "following_url": "https://api.github.com/users/WanFengQC/following{/other_user}",
+          "gists_url": "https://api.github.com/users/WanFengQC/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/WanFengQC/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/WanFengQC/subscriptions",
+          "organizations_url": "https://api.github.com/users/WanFengQC/orgs",
+          "repos_url": "https://api.github.com/users/WanFengQC/repos",
+          "events_url": "https://api.github.com/users/WanFengQC/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/WanFengQC/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "html_url": "https://github.com/WanFengQC/Cloudleaf",
+        "description": null,
+        "fork": false,
+        "url": "https://api.github.com/repos/WanFengQC/Cloudleaf",
+        "forks_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/forks",
+        "keys_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/keys{/key_id}",
+        "collaborators_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/collaborators{/collaborator}",
+        "teams_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/teams",
+        "hooks_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/hooks",
+        "issue_events_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/issues/events{/number}",
+        "events_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/events",
+        "assignees_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/assignees{/user}",
+        "branches_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/branches{/branch}",
+        "tags_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/tags",
+        "blobs_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/blobs{/sha}",
+        "git_tags_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/tags{/sha}",
+        "git_refs_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/refs{/sha}",
+        "trees_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/trees{/sha}",
+        "statuses_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/statuses/{sha}",
+        "languages_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/languages",
+        "stargazers_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/stargazers",
+        "contributors_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/contributors",
+        "subscribers_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/subscribers",
+        "subscription_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/subscription",
+        "commits_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/commits{/sha}",
+        "git_commits_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/commits{/sha}",
+        "comments_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/comments{/number}",
+        "issue_comment_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/issues/comments{/number}",
+        "contents_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/contents/{+path}",
+        "compare_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/compare/{base}...{head}",
+        "merges_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/merges",
+        "archive_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/{archive_format}{/ref}",
+        "downloads_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/downloads",
+        "issues_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/issues{/number}",
+        "pulls_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/pulls{/number}",
+        "milestones_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/milestones{/number}",
+        "notifications_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/notifications{?since,all,participating}",
+        "labels_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/labels{/name}",
+        "releases_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/releases{/id}",
+        "deployments_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/deployments"
+      },
+      "head_repository": {
+        "id": 1429133747,
+        "node_id": "R_kgDOVS7Zsw",
+        "name": "Cloudleaf",
+        "full_name": "WanFengQC/Cloudleaf",
+        "private": false,
+        "owner": {
+          "login": "WanFengQC",
+          "id": 53963743,
+          "node_id": "MDQ6VXNlcjUzOTYzNzQz",
+          "avatar_url": "https://avatars.githubusercontent.com/u/53963743?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/WanFengQC",
+          "html_url": "https://github.com/WanFengQC",
+          "followers_url": "https://api.github.com/users/WanFengQC/followers",
+          "following_url": "https://api.github.com/users/WanFengQC/following{/other_user}",
+          "gists_url": "https://api.github.com/users/WanFengQC/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/WanFengQC/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/WanFengQC/subscriptions",
+          "organizations_url": "https://api.github.com/users/WanFengQC/orgs",
+          "repos_url": "https://api.github.com/users/WanFengQC/repos",
+          "events_url": "https://api.github.com/users/WanFengQC/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/WanFengQC/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "html_url": "https://github.com/WanFengQC/Cloudleaf",
+        "description": null,
+        "fork": false,
+        "url": "https://api.github.com/repos/WanFengQC/Cloudleaf",
+        "forks_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/forks",
+        "keys_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/keys{/key_id}",
+        "collaborators_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/collaborators{/collaborator}",
+        "teams_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/teams",
+        "hooks_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/hooks",
+        "issue_events_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/issues/events{/number}",
+        "events_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/events",
+        "assignees_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/assignees{/user}",
+        "branches_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/branches{/branch}",
+        "tags_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/tags",
+        "blobs_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/blobs{/sha}",
+        "git_tags_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/tags{/sha}",
+        "git_refs_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/refs{/sha}",
+        "trees_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/trees{/sha}",
+        "statuses_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/statuses/{sha}",
+        "languages_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/languages",
+        "stargazers_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/stargazers",
+        "contributors_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/contributors",
+        "subscribers_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/subscribers",
+        "subscription_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/subscription",
+        "commits_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/commits{/sha}",
+        "git_commits_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/commits{/sha}",
+        "comments_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/comments{/number}",
+        "issue_comment_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/issues/comments{/number}",
+        "contents_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/contents/{+path}",
+        "compare_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/compare/{base}...{head}",
+        "merges_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/merges",
+        "archive_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/{archive_format}{/ref}",
+        "downloads_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/downloads",
+        "issues_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/issues{/number}",
+        "pulls_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/pulls{/number}",
+        "milestones_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/milestones{/number}",
+        "notifications_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/notifications{?since,all,participating}",
+        "labels_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/labels{/name}",
+        "releases_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/releases{/id}",
+        "deployments_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/deployments"
+      }
+    },
+    "jobs": {
+      "total_count": 2,
+      "jobs": [
+        {
+          "id": 122881548483,
+          "run_id": 40706957058,
+          "workflow_name": "Core CI",
+          "head_branch": "codex/cl008-search",
+          "run_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/runs/40706957058",
+          "run_attempt": 1,
+          "node_id": "CR_kwDOVS7Zs88AAAAcnE-gww",
+          "head_sha": "417dad662bfebedf3238f909476240427cc9100b",
+          "url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/jobs/122881548483",
+          "html_url": "https://github.com/WanFengQC/Cloudleaf/actions/runs/40706957058/job/122881548483",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-28T14:32:34Z",
+          "started_at": "2026-10-28T14:32:38Z",
+          "completed_at": "2026-10-28T14:34:05Z",
+          "name": "core (windows-latest)",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-28T14:32:39Z",
+              "completed_at": "2026-10-28T14:32:41Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-28T14:32:41Z",
+              "completed_at": "2026-10-28T14:32:50Z"
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-28T14:32:50Z",
+              "completed_at": "2026-10-28T14:32:50Z"
+            },
+            {
+              "name": "Install pinned Rust",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-28T14:32:50Z",
+              "completed_at": "2026-10-28T14:33:02Z"
+            },
+            {
+              "name": "Fetch precisely locked build dependencies",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-28T14:33:02Z",
+              "completed_at": "2026-10-28T14:33:04Z"
+            },
+            {
+              "name": "Format",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-28T14:33:04Z",
+              "completed_at": "2026-10-28T14:33:05Z"
+            },
+            {
+              "name": "Lint",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-10-28T14:33:05Z",
+              "completed_at": "2026-10-28T14:33:08Z"
+            },
+            {
+              "name": "Tests and fixed input corpus",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-10-28T14:33:08Z",
+              "completed_at": "2026-10-28T14:33:20Z"
+            },
+            {
+              "name": "Documentation tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-28T14:33:20Z",
+              "completed_at": "2026-10-28T14:33:21Z"
+            },
+            {
+              "name": "Dependency, license and fixture audit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-28T14:33:21Z",
+              "completed_at": "2026-10-28T14:33:23Z"
+            },
+            {
+              "name": "Evaluation and artifact provenance tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-28T14:33:23Z",
+              "completed_at": "2026-10-28T14:33:44Z"
+            },
+            {
+              "name": "Benchmark smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-10-28T14:33:44Z",
+              "completed_at": "2026-10-28T14:33:50Z"
+            },
+            {
+              "name": "Algorithm baseline and ablation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-10-28T14:33:50Z",
+              "completed_at": "2026-10-28T14:33:55Z"
+            },
+            {
+              "name": "Full-coverage search differential smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-10-28T14:33:55Z",
+              "completed_at": "2026-10-28T14:34:00Z"
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15,
+              "started_at": "2026-10-28T14:34:00Z",
+              "completed_at": "2026-10-28T14:34:01Z"
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 29,
+              "started_at": "2026-10-28T14:34:01Z",
+              "completed_at": "2026-10-28T14:34:01Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 30,
+              "started_at": "2026-10-28T14:34:01Z",
+              "completed_at": "2026-10-28T14:34:04Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 31,
+              "started_at": "2026-10-28T14:34:04Z",
+              "completed_at": "2026-10-28T14:34:04Z"
+            }
+          ],
+          "check_run_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/check-runs/122881548483",
+          "labels": [
+            "windows-latest"
+          ],
+          "runner_id": 1000000146,
+          "runner_name": "GitHub Actions 1000000146",
+          "runner_group_id": 0,
+          "runner_group_name": "GitHub Actions"
+        },
+        {
+          "id": 122881548746,
+          "run_id": 40706957058,
+          "workflow_name": "Core CI",
+          "head_branch": "codex/cl008-search",
+          "run_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/runs/40706957058",
+          "run_attempt": 1,
+          "node_id": "CR_kwDOVS7Zs88AAAAcnE-hyg",
+          "head_sha": "417dad662bfebedf3238f909476240427cc9100b",
+          "url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/jobs/122881548746",
+          "html_url": "https://github.com/WanFengQC/Cloudleaf/actions/runs/40706957058/job/122881548746",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-28T14:32:34Z",
+          "started_at": "2026-10-28T14:32:36Z",
+          "completed_at": "2026-10-28T14:33:29Z",
+          "name": "core (ubuntu-latest)",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-28T14:32:37Z",
+              "completed_at": "2026-10-28T14:32:38Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-28T14:32:38Z",
+              "completed_at": "2026-10-28T14:32:40Z"
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-28T14:32:40Z",
+              "completed_at": "2026-10-28T14:32:40Z"
+            },
+            {
+              "name": "Install pinned Rust",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-28T14:32:40Z",
+              "completed_at": "2026-10-28T14:32:50Z"
+            },
+            {
+              "name": "Fetch precisely locked build dependencies",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-28T14:32:50Z",
+              "completed_at": "2026-10-28T14:32:50Z"
+            },
+            {
+              "name": "Format",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-28T14:32:50Z",
+              "completed_at": "2026-10-28T14:32:50Z"
+            },
+            {
+              "name": "Lint",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-10-28T14:32:50Z",
+              "completed_at": "2026-10-28T14:32:51Z"
+            },
+            {
+              "name": "Tests and fixed input corpus",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-10-28T14:32:51Z",
+              "completed_at": "2026-10-28T14:32:57Z"
+            },
+            {
+              "name": "Documentation tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-28T14:32:57Z",
+              "completed_at": "2026-10-28T14:32:57Z"
+            },
+            {
+              "name": "Dependency, license and fixture audit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-28T14:32:57Z",
+              "completed_at": "2026-10-28T14:32:57Z"
+            },
+            {
+              "name": "Evaluation and artifact provenance tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-28T14:32:57Z",
+              "completed_at": "2026-10-28T14:33:13Z"
+            },
+            {
+              "name": "Benchmark smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-10-28T14:33:13Z",
+              "completed_at": "2026-10-28T14:33:17Z"
+            },
+            {
+              "name": "Algorithm baseline and ablation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-10-28T14:33:17Z",
+              "completed_at": "2026-10-28T14:33:21Z"
+            },
+            {
+              "name": "Full-coverage search differential smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-10-28T14:33:21Z",
+              "completed_at": "2026-10-28T14:33:25Z"
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15,
+              "started_at": "2026-10-28T14:33:25Z",
+              "completed_at": "2026-10-28T14:33:26Z"
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 29,
+              "started_at": "2026-10-28T14:33:26Z",
+              "completed_at": "2026-10-28T14:33:26Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 30,
+              "started_at": "2026-10-28T14:33:26Z",
+              "completed_at": "2026-10-28T14:33:27Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 31,
+              "started_at": "2026-10-28T14:33:27Z",
+              "completed_at": "2026-10-28T14:33:27Z"
+            }
+          ],
+          "check_run_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/check-runs/122881548746",
+          "labels": [
+            "ubuntu-latest"
+          ],
+          "runner_id": 1000000145,
+          "runner_name": "GitHub Actions 1000000145",
+          "runner_group_id": 0,
+          "runner_group_name": "GitHub Actions"
+        }
+      ]
+    },
+    "artifacts": {
+      "total_count": 2,
+      "artifacts": [
+        {
+          "id": 12824501755,
+          "node_id": "MDg6QXJ0aWZhY3QxMjgyNDUwMTc1NQ==",
+          "name": "core-performance-ubuntu-latest",
+          "size_in_bytes": 44389,
+          "url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/artifacts/12824501755",
+          "archive_download_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/artifacts/12824501755/zip",
+          "expired": false,
+          "digest": "sha256:b97fbceffe9578bd7eb4501f4d4b9f0ef96a74e1b1ad929cec20c08ca9307823",
+          "created_at": "2026-10-28T14:33:26Z",
+          "updated_at": "2026-10-28T14:33:26Z",
+          "expires_at": "2027-01-26T14:32:34Z",
+          "workflow_run": {
+            "id": 40706957058,
+            "repository_id": 1429133747,
+            "head_repository_id": 1429133747,
+            "head_branch": "codex/cl008-search",
+            "head_sha": "417dad662bfebedf3238f909476240427cc9100b"
+          }
+        },
+        {
+          "id": 12823358610,
+          "node_id": "MDg6QXJ0aWZhY3QxMjgyMzM1ODYxMA==",
+          "name": "core-performance-windows-latest",
+          "size_in_bytes": 33989,
+          "url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/artifacts/12823358610",
+          "archive_download_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/artifacts/12823358610/zip",
+          "expired": false,
+          "digest": "sha256:d09f9b3646ea8dc54a770ea960fa77293b08ed0cd461554f456b3ec02fbe051b",
+          "created_at": "2026-10-28T14:34:01Z",
+          "updated_at": "2026-10-28T14:34:01Z",
+          "expires_at": "2027-01-26T14:32:34Z",
+          "workflow_run": {
+            "id": 40706957058,
+            "repository_id": 1429133747,
+            "head_repository_id": 1429133747,
+            "head_branch": "codex/cl008-search",
+            "head_sha": "417dad662bfebedf3238f909476240427cc9100b"
+          }
+        }
+      ]
+    }
+  },
+  "C": {
+    "verified_at_utc": "2026-10-29 09:53:53 UTC",
+    "run": {
+      "id": 40852885211,
+      "name": "Core CI",
+      "node_id": "WFR_kwLOVS7Zs88AAAAJgwWO2w",
+      "head_branch": "codex/cl009-data",
+      "head_sha": "52619a963070cd74c53d0b8d76fc40bf5b7a8327",
+      "path": ".github/workflows/ci.yml",
+      "display_title": "docs(data): preserve Round 6 source and annotation gate evidence",
+      "run_number": 74,
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "workflow_id": 392379355,
+      "check_suite_id": 110735529154,
+      "check_suite_node_id": "CS_kwDOVS7Zs88AAAAZyFoUwg",
+      "url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/runs/40852885211",
+      "html_url": "https://github.com/WanFengQC/Cloudleaf/actions/runs/40852885211",
+      "pull_requests": [
+        {
+          "url": "https://api.github.com/repos/WanFengQC/Cloudleaf/pulls/3",
+          "id": 4963185235,
+          "number": 3,
+          "head": {
+            "ref": "codex/cl009-data",
+            "sha": "52619a963070cd74c53d0b8d76fc40bf5b7a8327",
+            "repo": {
+              "id": 1429133747,
+              "url": "https://api.github.com/repos/WanFengQC/Cloudleaf",
+              "name": "Cloudleaf"
+            }
+          },
+          "base": {
+            "ref": "codex/cl007-009-contracts",
+            "sha": "9af9bc1b2ebacc3ad76124cfa39d09de8eb77bd1",
+            "repo": {
+              "id": 1429133747,
+              "url": "https://api.github.com/repos/WanFengQC/Cloudleaf",
+              "name": "Cloudleaf"
+            }
+          }
+        }
+      ],
+      "created_at": "2026-10-29T09:51:17Z",
+      "updated_at": "2026-10-29T09:52:21Z",
+      "actor": {
+        "login": "WanFengQC",
+        "id": 53963743,
+        "node_id": "MDQ6VXNlcjUzOTYzNzQz",
+        "avatar_url": "https://avatars.githubusercontent.com/u/53963743?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/WanFengQC",
+        "html_url": "https://github.com/WanFengQC",
+        "followers_url": "https://api.github.com/users/WanFengQC/followers",
+        "following_url": "https://api.github.com/users/WanFengQC/following{/other_user}",
+        "gists_url": "https://api.github.com/users/WanFengQC/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/WanFengQC/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/WanFengQC/subscriptions",
+        "organizations_url": "https://api.github.com/users/WanFengQC/orgs",
+        "repos_url": "https://api.github.com/users/WanFengQC/repos",
+        "events_url": "https://api.github.com/users/WanFengQC/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/WanFengQC/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "run_attempt": 1,
+      "referenced_workflows": [],
+      "run_started_at": "2026-10-29T09:51:17Z",
+      "triggering_actor": {
+        "login": "WanFengQC",
+        "id": 53963743,
+        "node_id": "MDQ6VXNlcjUzOTYzNzQz",
+        "avatar_url": "https://avatars.githubusercontent.com/u/53963743?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/WanFengQC",
+        "html_url": "https://github.com/WanFengQC",
+        "followers_url": "https://api.github.com/users/WanFengQC/followers",
+        "following_url": "https://api.github.com/users/WanFengQC/following{/other_user}",
+        "gists_url": "https://api.github.com/users/WanFengQC/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/WanFengQC/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/WanFengQC/subscriptions",
+        "organizations_url": "https://api.github.com/users/WanFengQC/orgs",
+        "repos_url": "https://api.github.com/users/WanFengQC/repos",
+        "events_url": "https://api.github.com/users/WanFengQC/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/WanFengQC/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "jobs_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/runs/40852885211/jobs",
+      "logs_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/runs/40852885211/logs",
+      "check_suite_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/check-suites/110735529154",
+      "artifacts_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/runs/40852885211/artifacts",
+      "cancel_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/runs/40852885211/cancel",
+      "rerun_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/runs/40852885211/rerun",
+      "previous_attempt_url": null,
+      "workflow_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/workflows/392379355",
+      "head_commit": {
+        "id": "52619a963070cd74c53d0b8d76fc40bf5b7a8327",
+        "tree_id": "b8f6a48f24d815183780d255ce9d036909e63528",
+        "message": "docs(data): preserve Round 6 source and annotation gate evidence",
+        "timestamp": "2026-10-29T09:51:08Z",
+        "author": {
+          "name": "wfqc6",
+          "email": "wfqc6@hotmail.com"
+        },
+        "committer": {
+          "name": "wfqc6",
+          "email": "wfqc6@hotmail.com"
+        }
+      },
+      "repository": {
+        "id": 1429133747,
+        "node_id": "R_kgDOVS7Zsw",
+        "name": "Cloudleaf",
+        "full_name": "WanFengQC/Cloudleaf",
+        "private": false,
+        "owner": {
+          "login": "WanFengQC",
+          "id": 53963743,
+          "node_id": "MDQ6VXNlcjUzOTYzNzQz",
+          "avatar_url": "https://avatars.githubusercontent.com/u/53963743?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/WanFengQC",
+          "html_url": "https://github.com/WanFengQC",
+          "followers_url": "https://api.github.com/users/WanFengQC/followers",
+          "following_url": "https://api.github.com/users/WanFengQC/following{/other_user}",
+          "gists_url": "https://api.github.com/users/WanFengQC/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/WanFengQC/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/WanFengQC/subscriptions",
+          "organizations_url": "https://api.github.com/users/WanFengQC/orgs",
+          "repos_url": "https://api.github.com/users/WanFengQC/repos",
+          "events_url": "https://api.github.com/users/WanFengQC/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/WanFengQC/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "html_url": "https://github.com/WanFengQC/Cloudleaf",
+        "description": null,
+        "fork": false,
+        "url": "https://api.github.com/repos/WanFengQC/Cloudleaf",
+        "forks_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/forks",
+        "keys_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/keys{/key_id}",
+        "collaborators_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/collaborators{/collaborator}",
+        "teams_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/teams",
+        "hooks_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/hooks",
+        "issue_events_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/issues/events{/number}",
+        "events_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/events",
+        "assignees_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/assignees{/user}",
+        "branches_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/branches{/branch}",
+        "tags_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/tags",
+        "blobs_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/blobs{/sha}",
+        "git_tags_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/tags{/sha}",
+        "git_refs_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/refs{/sha}",
+        "trees_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/trees{/sha}",
+        "statuses_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/statuses/{sha}",
+        "languages_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/languages",
+        "stargazers_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/stargazers",
+        "contributors_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/contributors",
+        "subscribers_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/subscribers",
+        "subscription_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/subscription",
+        "commits_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/commits{/sha}",
+        "git_commits_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/commits{/sha}",
+        "comments_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/comments{/number}",
+        "issue_comment_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/issues/comments{/number}",
+        "contents_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/contents/{+path}",
+        "compare_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/compare/{base}...{head}",
+        "merges_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/merges",
+        "archive_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/{archive_format}{/ref}",
+        "downloads_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/downloads",
+        "issues_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/issues{/number}",
+        "pulls_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/pulls{/number}",
+        "milestones_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/milestones{/number}",
+        "notifications_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/notifications{?since,all,participating}",
+        "labels_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/labels{/name}",
+        "releases_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/releases{/id}",
+        "deployments_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/deployments"
+      },
+      "head_repository": {
+        "id": 1429133747,
+        "node_id": "R_kgDOVS7Zsw",
+        "name": "Cloudleaf",
+        "full_name": "WanFengQC/Cloudleaf",
+        "private": false,
+        "owner": {
+          "login": "WanFengQC",
+          "id": 53963743,
+          "node_id": "MDQ6VXNlcjUzOTYzNzQz",
+          "avatar_url": "https://avatars.githubusercontent.com/u/53963743?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/WanFengQC",
+          "html_url": "https://github.com/WanFengQC",
+          "followers_url": "https://api.github.com/users/WanFengQC/followers",
+          "following_url": "https://api.github.com/users/WanFengQC/following{/other_user}",
+          "gists_url": "https://api.github.com/users/WanFengQC/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/WanFengQC/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/WanFengQC/subscriptions",
+          "organizations_url": "https://api.github.com/users/WanFengQC/orgs",
+          "repos_url": "https://api.github.com/users/WanFengQC/repos",
+          "events_url": "https://api.github.com/users/WanFengQC/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/WanFengQC/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "html_url": "https://github.com/WanFengQC/Cloudleaf",
+        "description": null,
+        "fork": false,
+        "url": "https://api.github.com/repos/WanFengQC/Cloudleaf",
+        "forks_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/forks",
+        "keys_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/keys{/key_id}",
+        "collaborators_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/collaborators{/collaborator}",
+        "teams_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/teams",
+        "hooks_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/hooks",
+        "issue_events_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/issues/events{/number}",
+        "events_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/events",
+        "assignees_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/assignees{/user}",
+        "branches_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/branches{/branch}",
+        "tags_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/tags",
+        "blobs_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/blobs{/sha}",
+        "git_tags_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/tags{/sha}",
+        "git_refs_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/refs{/sha}",
+        "trees_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/trees{/sha}",
+        "statuses_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/statuses/{sha}",
+        "languages_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/languages",
+        "stargazers_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/stargazers",
+        "contributors_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/contributors",
+        "subscribers_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/subscribers",
+        "subscription_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/subscription",
+        "commits_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/commits{/sha}",
+        "git_commits_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/git/commits{/sha}",
+        "comments_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/comments{/number}",
+        "issue_comment_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/issues/comments{/number}",
+        "contents_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/contents/{+path}",
+        "compare_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/compare/{base}...{head}",
+        "merges_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/merges",
+        "archive_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/{archive_format}{/ref}",
+        "downloads_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/downloads",
+        "issues_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/issues{/number}",
+        "pulls_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/pulls{/number}",
+        "milestones_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/milestones{/number}",
+        "notifications_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/notifications{?since,all,participating}",
+        "labels_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/labels{/name}",
+        "releases_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/releases{/id}",
+        "deployments_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/deployments"
+      }
+    },
+    "jobs": {
+      "total_count": 2,
+      "jobs": [
+        {
+          "id": 123376494231,
+          "run_id": 40852885211,
+          "workflow_name": "Core CI",
+          "head_branch": "codex/cl009-data",
+          "run_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/runs/40852885211",
+          "run_attempt": 1,
+          "node_id": "CR_kwDOVS7Zs88AAAAcuc_mlw",
+          "head_sha": "52619a963070cd74c53d0b8d76fc40bf5b7a8327",
+          "url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/jobs/123376494231",
+          "html_url": "https://github.com/WanFengQC/Cloudleaf/actions/runs/40852885211/job/123376494231",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-29T09:51:17Z",
+          "started_at": "2026-10-29T09:51:21Z",
+          "completed_at": "2026-10-29T09:52:21Z",
+          "name": "core (windows-latest)",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-29T09:51:22Z",
+              "completed_at": "2026-10-29T09:51:24Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-29T09:51:24Z",
+              "completed_at": "2026-10-29T09:51:30Z"
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-29T09:51:30Z",
+              "completed_at": "2026-10-29T09:51:30Z"
+            },
+            {
+              "name": "Install pinned Rust",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-29T09:51:30Z",
+              "completed_at": "2026-10-29T09:51:41Z"
+            },
+            {
+              "name": "Fetch precisely locked build dependencies",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-29T09:51:41Z",
+              "completed_at": "2026-10-29T09:51:42Z"
+            },
+            {
+              "name": "Format",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-29T09:51:42Z",
+              "completed_at": "2026-10-29T09:51:44Z"
+            },
+            {
+              "name": "Lint",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-10-29T09:51:44Z",
+              "completed_at": "2026-10-29T09:51:46Z"
+            },
+            {
+              "name": "Tests and fixed input corpus",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-10-29T09:51:46Z",
+              "completed_at": "2026-10-29T09:51:52Z"
+            },
+            {
+              "name": "Documentation tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-29T09:51:52Z",
+              "completed_at": "2026-10-29T09:51:53Z"
+            },
+            {
+              "name": "Dependency, license and fixture audit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-29T09:51:53Z",
+              "completed_at": "2026-10-29T09:51:56Z"
+            },
+            {
+              "name": "Evaluation and artifact provenance tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-29T09:51:56Z",
+              "completed_at": "2026-10-29T09:52:05Z"
+            },
+            {
+              "name": "Benchmark smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-10-29T09:52:05Z",
+              "completed_at": "2026-10-29T09:52:11Z"
+            },
+            {
+              "name": "Algorithm baseline and ablation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-10-29T09:52:11Z",
+              "completed_at": "2026-10-29T09:52:15Z"
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-10-29T09:52:15Z",
+              "completed_at": "2026-10-29T09:52:17Z"
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 27,
+              "started_at": "2026-10-29T09:52:17Z",
+              "completed_at": "2026-10-29T09:52:17Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 28,
+              "started_at": "2026-10-29T09:52:17Z",
+              "completed_at": "2026-10-29T09:52:19Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 29,
+              "started_at": "2026-10-29T09:52:19Z",
+              "completed_at": "2026-10-29T09:52:19Z"
+            }
+          ],
+          "check_run_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/check-runs/123376494231",
+          "labels": [
+            "windows-latest"
+          ],
+          "runner_id": 1000000149,
+          "runner_name": "GitHub Actions 1000000149",
+          "runner_group_id": 0,
+          "runner_group_name": "GitHub Actions"
+        },
+        {
+          "id": 123376494784,
+          "run_id": 40852885211,
+          "workflow_name": "Core CI",
+          "head_branch": "codex/cl009-data",
+          "run_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/runs/40852885211",
+          "run_attempt": 1,
+          "node_id": "CR_kwDOVS7Zs88AAAAcuc_owA",
+          "head_sha": "52619a963070cd74c53d0b8d76fc40bf5b7a8327",
+          "url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/jobs/123376494784",
+          "html_url": "https://github.com/WanFengQC/Cloudleaf/actions/runs/40852885211/job/123376494784",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-29T09:51:17Z",
+          "started_at": "2026-10-29T09:51:20Z",
+          "completed_at": "2026-10-29T09:51:50Z",
+          "name": "core (ubuntu-latest)",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-29T09:51:21Z",
+              "completed_at": "2026-10-29T09:51:21Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-29T09:51:21Z",
+              "completed_at": "2026-10-29T09:51:23Z"
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-29T09:51:23Z",
+              "completed_at": "2026-10-29T09:51:23Z"
+            },
+            {
+              "name": "Install pinned Rust",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-29T09:51:23Z",
+              "completed_at": "2026-10-29T09:51:31Z"
+            },
+            {
+              "name": "Fetch precisely locked build dependencies",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-29T09:51:31Z",
+              "completed_at": "2026-10-29T09:51:32Z"
+            },
+            {
+              "name": "Format",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-29T09:51:32Z",
+              "completed_at": "2026-10-29T09:51:32Z"
+            },
+            {
+              "name": "Lint",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-10-29T09:51:32Z",
+              "completed_at": "2026-10-29T09:51:33Z"
+            },
+            {
+              "name": "Tests and fixed input corpus",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-10-29T09:51:33Z",
+              "completed_at": "2026-10-29T09:51:35Z"
+            },
+            {
+              "name": "Documentation tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-29T09:51:35Z",
+              "completed_at": "2026-10-29T09:51:35Z"
+            },
+            {
+              "name": "Dependency, license and fixture audit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-29T09:51:35Z",
+              "completed_at": "2026-10-29T09:51:36Z"
+            },
+            {
+              "name": "Evaluation and artifact provenance tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-29T09:51:36Z",
+              "completed_at": "2026-10-29T09:51:37Z"
+            },
+            {
+              "name": "Benchmark smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-10-29T09:51:37Z",
+              "completed_at": "2026-10-29T09:51:42Z"
+            },
+            {
+              "name": "Algorithm baseline and ablation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-10-29T09:51:42Z",
+              "completed_at": "2026-10-29T09:51:46Z"
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-10-29T09:51:46Z",
+              "completed_at": "2026-10-29T09:51:47Z"
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 27,
+              "started_at": "2026-10-29T09:51:47Z",
+              "completed_at": "2026-10-29T09:51:47Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 28,
+              "started_at": "2026-10-29T09:51:47Z",
+              "completed_at": "2026-10-29T09:51:48Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 29,
+              "started_at": "2026-10-29T09:51:48Z",
+              "completed_at": "2026-10-29T09:51:48Z"
+            }
+          ],
+          "check_run_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/check-runs/123376494784",
+          "labels": [
+            "ubuntu-latest"
+          ],
+          "runner_id": 1000000150,
+          "runner_name": "GitHub Actions 1000000150",
+          "runner_group_id": 0,
+          "runner_group_name": "GitHub Actions"
+        }
+      ]
+    },
+    "artifacts": {
+      "total_count": 2,
+      "artifacts": [
+        {
+          "id": 12888605025,
+          "node_id": "MDg6QXJ0aWZhY3QxMjg4ODYwNTAyNQ==",
+          "name": "core-performance-ubuntu-latest",
+          "size_in_bytes": 24081,
+          "url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/artifacts/12888605025",
+          "archive_download_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/artifacts/12888605025/zip",
+          "expired": false,
+          "digest": "sha256:981a1e8b3f351678e03df19d883b416c9b2edd5a678736be41c730cbe6155b9d",
+          "created_at": "2026-10-29T09:51:47Z",
+          "updated_at": "2026-10-29T09:51:47Z",
+          "expires_at": "2027-01-27T09:51:17Z",
+          "workflow_run": {
+            "id": 40852885211,
+            "repository_id": 1429133747,
+            "head_repository_id": 1429133747,
+            "head_branch": "codex/cl009-data",
+            "head_sha": "52619a963070cd74c53d0b8d76fc40bf5b7a8327"
+          }
+        },
+        {
+          "id": 12888231433,
+          "node_id": "MDg6QXJ0aWZhY3QxMjg4ODIzMTQzMw==",
+          "name": "core-performance-windows-latest",
+          "size_in_bytes": 16562,
+          "url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/artifacts/12888231433",
+          "archive_download_url": "https://api.github.com/repos/WanFengQC/Cloudleaf/actions/artifacts/12888231433/zip",
+          "expired": false,
+          "digest": "sha256:fc52b733b0264432a2fe94100ea14c9978c8965efd61b364544ac48c32895416",
+          "created_at": "2026-10-29T09:52:16Z",
+          "updated_at": "2026-10-29T09:52:16Z",
+          "expires_at": "2027-01-27T09:51:17Z",
+          "workflow_run": {
+            "id": 40852885211,
+            "repository_id": 1429133747,
+            "head_repository_id": 1429133747,
+            "head_branch": "codex/cl009-data",
+            "head_sha": "52619a963070cd74c53d0b8d76fc40bf5b7a8327"
+          }
+        }
+      ]
+    }
+  }
+}

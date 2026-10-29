@@ -1,0 +1,33 @@
+{
+  "scope": "Read-only Codex technical review, not human approval or independent gold review",
+  "reviewed_shared_head": "e296c300ea1b1d41c6cdc36500f690dec0906964",
+  "main_to_head_files": 206,
+  "new_reproduced_shared_P0_P1": [],
+  "tests_rerun_by_readonly_reviewer": false,
+  "critical_git_blobs": {
+    "crates/cloudleaf-input/src/lib.rs": "ae704e7affd9d267328e778b27872195755c8f9e",
+    "crates/cloudleaf-types/src/lib.rs": "2a35eec1d787deb979e096b62c834244c4723505"
+  },
+  "reviewed_code": [
+    "key_disposition",
+    "handle_key",
+    "select_candidate",
+    "begin_commit",
+    "acknowledge_commit",
+    "retry",
+    "CommitOutcome",
+    "utf8_to_utf16_offset",
+    "round6_shared_review.rs"
+  ],
+  "retained_risks": [
+    "Readonly prediction is not permanent event ownership; platform rechecks current context",
+    "Core revision and candidate ID require platform session and epoch binding",
+    "Unknown does not map to NotApplied and cannot trigger automatic retry",
+    "Escape or focus cancellation does not prove the document was not written",
+    "UTF-16 code-unit conversion guarantees scalar boundaries, not grapheme editing",
+    "Rust source contracts are not a stable cross-process ABI",
+    "Semantic external policy consistency proves neither human identity, rights nor cryptographic signature"
+  ],
+  "integration_performed": false,
+  "human_decision": "pending"
+}

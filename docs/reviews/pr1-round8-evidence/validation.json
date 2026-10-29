@@ -1,0 +1,36 @@
+{
+  "checked_head": "f90745581e5bca92de379121d4386ccf21fdb905",
+  "production_source_unchanged_from": "e359e471a66599f0fa4fdc03dd9d802a242ebc3d",
+  "checks": [
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.exe",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/check_workspace.py"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0
+    }
+  ],
+  "old_rust_or_performance_rerun": false
+}

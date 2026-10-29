@@ -1,0 +1,25 @@
+第一次历史证据核对（原始stdout/stderr摘录；报告未被改写）：
+Traceback (most recent call last):
+  File "C:\Users\EDY\WebstormProjects\Cloudleaf\.local\check_round4_preservation.py", line 26, in <module>
+    assert not changed, (root, changed)
+           ^^^^^^^^^^^
+AssertionError: (WindowsPath('C:/Users/EDY/WebstormProjects/Cloudleaf'), ['docs/reports/cl001-cl006-performance.json', 'docs/reports/cl007-009-shared/performance-final.json', 'docs/reports/cl007-009-shared/performance.json', 'docs/reports/m1-m2-validation.md', 'docs/reports/m2-candidate-ranking.md', 'docs/reports/m2-performance.json'])
+
+核对器把磁盘CRLF与Git内LF直接比对；改为逐路径Git clean后的hash-object比起始blob，并另保存磁盘资源SHA。旧报告没有改变，未跳过任何路径。
+
+第一次共享检查包装脚本（尚未执行rustc，原始stderr）：
+Traceback (most recent call last):
+  File "C:\Users\EDY\WebstormProjects\Cloudleaf\.local\check_round4_shared.py", line 32, in <module>
+    result = subprocess.run(command, cwd=ROOT, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EDY\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EDY\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "C:\Users\EDY\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1538, in _execute_child
+    hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [WinError 2] 系统找不到指定的文件。
+
+仅修改子进程env不足以令Windows包装器按新PATH查找到rustc；显式解析cargo/rustc/git绝对路径，另建attempt2目录重跑12命令全部成功。不把包装器启动失败归因为产品失败或通过。

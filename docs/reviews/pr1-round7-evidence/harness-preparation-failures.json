@@ -1,0 +1,17 @@
+{
+  "scope": "Read-only preparation errors, separate from product test failures; no repository implementation ran in rejected Python commands",
+  "failures": [
+    {
+      "operation": "Read guessed scripts/dependency_policy.py",
+      "tool_error": "Cannot find path 'C:\\Users\\EDY\\WebstormProjects\\Cloudleaf\\scripts\\dependency_policy.py' because it does not exist.",
+      "resolution": "Used rg --files and read the actual config/audits/core.json, scripts/check_workspace.py and docs/dependency-audit-policy.md. No file was created."
+    },
+    {
+      "operation": "Generate preservation helper via complex PowerShell inline Python",
+      "exit_code": 1,
+      "tool_returned_text": "  File \"<string>\", line 1\n    if\n      ^\nSyntaxError: invalid syntax\n",
+      "resolution": "Wrote explicit UTF-8 helper using apply_patch; reran full read-only preservation successfully.",
+      "identity_limit": "Original rejected inline command is in conversation tool history; no runnable historical helper file was created."
+    }
+  ]
+}
