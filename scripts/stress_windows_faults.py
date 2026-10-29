@@ -193,24 +193,89 @@ def require_dead(identity):
 
 def latency_summary(path):
     admission, complete, errors = [], [], []
+    trace = {'keys': 0, 'cycles': 0, 'finals': 0, 'identity': None}
     with path.open(encoding='utf-8', newline='') as source:
         for number, line in enumerate(source, 1):
             try:
                 row = json.loads(line)
-            except json.JSONDecodeError:
-                errors.append({'line': number, 'sha256': hashlib.sha256(line.encode('utf-8')).hexdigest()})
-                continue
-            if row.get('experiment') == 'r6-owned-key':
-                admission.append(row['admission_ns'])
-                complete.append(row['commit_complete_ns'])
+                if not isinstance(row, dict):
+                    raise ValueError('事件必须为对象')
+                if row.get('experiment') == 'r6-owned-key':
+                    if any(type(row[name]) is not int or row[name] < 0 for name in ['admission_ns', 'commit_complete_ns']):
+                        raise ValueError('延迟必须为非负整数ns')
+                    admission.append(row['admission_ns'])
+                    complete.append(row['commit_complete_ns'])
+                audit_trace_row(row, trace)
+            except (ValueError, KeyError, TypeError) as error:
+                errors.append({'line': number, 'sha256': hashlib.sha256(line.encode('utf-8')).hexdigest(),
+                               'error': str(error)})
     def quantiles(values):
         ordered = sorted(values)
         return {name: ordered[min(len(ordered) - 1, max(0, math.ceil(len(ordered) * fraction) - 1))]
                 if ordered else None for name, fraction in [('p50', .5), ('p95', .95), ('p99', .99), ('max', 1)]}
     return {'events': len(admission), 'admission_ns': quantiles(admission),
             'commit_complete_ns': quantiles(complete), 'raw_errors': errors,
+            'cycles': trace['cycles'], 'final_records': trace['finals'],
+            'trace_complete': not errors and trace['keys'] > 0 and trace['finals'] == 1
+                              and trace['keys'] == trace['cycles'] * 6,
             'external_com_reference_count': None,
             'scope': 'own diagnostic native FIFO; commit latency ends at cycle drain, not real TSF latency'}
+
+
+def audit_trace_row(row, trace):
+    kind = row.get('experiment')
+    if kind == 'r6-owned-key':
+        trace['keys'] += 1
+        number = trace['keys']
+        identity = (row['instance'], row['epoch'])
+        if trace['identity'] is None:
+            trace['identity'] = identity
+        if (trace['finals'] or identity != trace['identity'] or row['sequence'] != number
+                or row['cycle'] != (number - 1) // 6 + 1
+                or row['vk'] != [78, 73, 72, 65, 79, 32][(number - 1) % 6]):
+            raise ValueError('逐键序号/周期/会话/固定诊断键顺序不一致')
+    elif kind == 'r6-cycle':
+        trace['cycles'] += 1
+        if (trace['finals'] or row['cycle'] != trace['cycles'] or trace['keys'] != trace['cycles'] * 6
+                or row['healthy_writes'] != trace['keys'] or row['fifo_and_budget_verified'] is not True):
+            raise ValueError('周期缺键/缺周期/FIFO或写入分母不一致')
+    elif kind == 'r5-pinned-availability':
+        trace['finals'] += 1
+        if trace['keys'] or trace['cycles']:
+            if (trace['finals'] != 1 or row['healthy_cycles'] != trace['cycles']
+                    or row['healthy_writes'] != trace['keys'] or trace['keys'] != trace['cycles'] * 6
+                    or row['faulted_owners'] != 32 or row['unknown_replays'] != 0
+                    or row['remaining_hosts'] != 32 or row['remaining_batches'] != 32):
+                raise ValueError('最终记录与原始逐键/周期/未知恢复分母不一致')
+
+
+def environment_identity():
+    return {'os': platform.platform(), 'architecture': platform.machine(), 'cpu_count': os.cpu_count(),
+            'machine_id_sha256': hashlib.sha256(platform.node().encode('utf-8')).hexdigest(),
+            'python_version': platform.python_version(),
+            'python_executable_sha256': hashlib.sha256(Path(os.sys.executable).read_bytes()).hexdigest()}
+
+
+def execution_preflight(identity, approval):
+    required = identity['configuration']['long_profile']
+    issues = []
+    if required:
+        if not isinstance(approval, dict):
+            issues.append('缺少隔离Windows长测环境与执行授权记录')
+        else:
+            if approval.get('status') != 'approved' or approval.get('isolated_windows_environment') is not True:
+                issues.append('隔离环境和执行批准未确认')
+            if any(not isinstance(approval.get(name), str) or not approval[name].strip()
+                   for name in ['environment_id', 'operator', 'snapshot', 'rollback_plan', 'authorization_reference']):
+                issues.append('环境/负责人/快照/回滚/授权引用未齐')
+            if approval.get('identity') != identity:
+                issues.append('批准记录的源码/数据/工具/二进制/配置/系统身份不一致')
+    return {'ready': not issues, 'long_run_approval_required': required, 'issues': issues,
+            'identity': identity, 'declarations_independently_verified': False,
+            'approval_sha256': hashlib.sha256(json.dumps(approval, sort_keys=True, ensure_ascii=False,
+                                                       separators=(',', ':')).encode('utf-8')).hexdigest()
+                               if approval is not None else None,
+            'scope': 'owned diagnostic process only; no registration or real-host input authorization'}
 
 
 def prepare_segment(out, identity, resume):
@@ -332,6 +397,7 @@ def run_segment(segment, binary, config, interrupt_after, fail_cycle):
     latencies = latency_summary(segment / 'events.jsonl')
     passed = bool(code == 0 and not interrupted and not timed_out and not errors and not reader_errors
                   and not latencies['raw_errors'] and final and final['pinned_budget_unchanged']
+                  and (config['profile'] == 'bounded' or latencies['trace_complete'])
                   and final['steady_elapsed_ns'] >= config['seconds'] * 1_000_000_000)
     summary = {'schema_version': 2, 'command': command, 'explicit_configuration': config,
                'runner': owner, 'child': state['child'], 'exit_code': code, 'interrupted': interrupted,
@@ -368,6 +434,8 @@ def main():
     parser.add_argument('--resume', action='store_true')
     parser.add_argument('--interrupt-after', type=float)
     parser.add_argument('--inject-failure-cycle', type=int)
+    parser.add_argument('--environment-approval', type=Path)
+    parser.add_argument('--preflight-output', type=Path)
     args = parser.parse_args()
     if os.name != 'nt':
         parser.error('仅Windows自有诊断进程，不注册/激活输入法')
@@ -381,7 +449,19 @@ def main():
                     'binary_sha256': hashlib.sha256(binary.read_bytes()).hexdigest(),
                     'tool_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                     'data_sha256': hashlib.sha256((ROOT / 'data/dictionaries/prototype.tsv').read_bytes()).hexdigest(),
-                    'configuration': config, 'os': platform.platform()}
+                    'configuration': config, 'os': platform.platform(), 'environment': environment_identity()}
+        approval = json.loads(args.environment_approval.read_text(encoding='utf-8')) if args.environment_approval else None
+        preflight = execution_preflight(identity, approval)
+        if args.preflight_output:
+            with args.preflight_output.open('x', encoding='utf-8', newline='\n') as output:
+                json.dump(preflight, output, ensure_ascii=False, indent=2)
+                output.write('\n')
+            print(json.dumps({'ready': preflight['ready'], 'child_started': False,
+                              'report': str(args.preflight_output)}), flush=True)
+            return 0 if preflight['ready'] else 2
+        if not preflight['ready']:
+            raise ValueError('; '.join(preflight['issues']))
+        identity['execution_approval_sha256'] = preflight['approval_sha256']
         segment = prepare_segment(args.output_dir.resolve(), identity, args.resume)
     except (ValueError, OSError) as error:
         parser.error(str(error))

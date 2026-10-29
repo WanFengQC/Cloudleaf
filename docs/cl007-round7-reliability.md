@@ -37,3 +37,14 @@ R6成功条件只检查子进程0、最后final的时间/预算和JSON解码错�
 8h/24h分别连续28800/86400秒；固定源码/数据/工具/二进制/配置/系统身份，检查点/中断保全和新段规则不变。先验证短档与原始协议；取得隔离VM、测试账户、快照、负责人、授权记录、磁盘/电源策略及回滚演练后才可独立启动长档。当前仅交工具和待执行清单，长期实测未完成。
 
 真实TSF准入还需连续长测、完整生命周期/故障审阅、部署恢复方案和可逆注册方案（实际DLL SHA/签名/位数/CLSID/profile、注册前备份、撤销验证、具体应用版本/矩阵/负责人），再经人工批准。此文件不是执行授权；本轮不运行注册、激活、安装、卸载或真实应用注键。
+
+## 只读预检和待执行命令
+
+```text
+python scripts/stress_windows_faults.py --test-binary <实际release测试exe> --profile 8h --sample-seconds 1 --checkpoint-seconds 60 --output-dir <全新运行目录> --preflight-output <全新预检JSON>
+python scripts/stress_windows_faults.py --test-binary <实际release测试exe> --profile 24h --sample-seconds 1 --checkpoint-seconds 60 --output-dir <另一全新运行目录> --preflight-output <另一全新预检JSON>
+```
+
+没有批准记录时，两次预检均exit2，`child_started=false`，不创建运行目录。报告的`identity`包括精确commit、source-v3、数据/工具/测试exe摘要、配置、OS、架构、CPU数量、机器名摘要及Python版本/exe摘要。即使预检记录齐全，`declarations_independently_verified=false`，仍须人工核实记录中的真实环境和执行授权。
+
+未来获批记录为外部UTF-8 JSON：`status=approved`、`isolated_windows_environment=true`、`environment_id`、`operator`、`snapshot`、`rollback_plan`、`authorization_reference`和逐字段等于对应预检的`identity`。每个profile/配置必须分别批准；本轮不生成伪批准文件。人工签发后用`--environment-approval <文件>`重新预检；执行时去掉`--preflight-output`，仍保留同批准文件、实际exe和所有相同参数。运行manifest还绑定批准记录规范JSON的SHA，续跑若改变批准/环境也拒绝。预检和批准记录不授予真实TSF注册或真实宿主操作权限。
