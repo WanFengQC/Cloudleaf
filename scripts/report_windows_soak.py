@@ -172,8 +172,9 @@ def report_segment(folder, identity):
     if summary and latency and any(summary.get('latency', {}).get(name) != latency[name]
                                    for name in ['events', 'cycles', 'final_records', 'trace_complete']):
         issues.append('summary与原始按键分母不一致')
-    cycle_rows = [row for row in read_rows(raw.get('events.jsonl', b''), 'events', issues)
-                  if row.get('experiment') == 'r6-cycle']
+    observations = [row for row in read_rows(raw.get('events.jsonl', b''), 'events', issues)
+                    if row.get('experiment') in {'r6-cycle', 'r5-pinned-availability'}]
+    cycle_rows = [row for row in observations if row['experiment'] == 'r6-cycle']
     budget = {}
     for name in CYCLE_VALUES:
         values = [row[name] for row in cycle_rows if name in row]
@@ -181,7 +182,10 @@ def report_segment(folder, identity):
             issues.append(f'cycle观测值无效:{name}')
         else:
             budget[name] = metric_values(values)
-    final = summary.get('latest_events', {}).get('r5-pinned-availability', {}) if summary else {}
+    finals = [row for row in observations if row['experiment'] == 'r5-pinned-availability']
+    final = finals[-1] if finals else {}
+    if summary and summary.get('latest_events', {}).get('r5-pinned-availability', {}) != final:
+        issues.append('summary final快照与原始事件不一致')
     native_seconds = final.get('steady_elapsed_ns', 0) / 1_000_000_000
     config = identity['configuration']
     candidate = bool(summary and not issues and config['long_profile'] and summary['mechanism_passed']
