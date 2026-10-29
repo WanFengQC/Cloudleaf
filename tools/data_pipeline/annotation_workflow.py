@@ -28,6 +28,11 @@ def annotation_digest(task):
     return hashlib.sha256(canonical({key: task.get(key) for key in FIELDS})).hexdigest()
 
 
+def review_binding_digest(packet):
+    return hashlib.sha256(canonical({key: packet[key] for key in
+                                   ['protocol_sha256', 'preprocessing_sha256', 'lineage_audit_sha256']})).hexdigest()
+
+
 def require(condition, message):
     if not condition:
         raise ValueError(message)
@@ -48,6 +53,7 @@ def validate(packet):
     require(type(packet.get('synthetic')) is bool and packet.get('dictionary_derived') is False, '不得用词典派生答案替代独立人工任务')
     require(all(isinstance(packet.get(key), str) and SHA.fullmatch(packet[key]) for key in
                 ['protocol_sha256', 'preprocessing_sha256', 'lineage_audit_sha256']), '协议/预处理/来源家族审计SHA未交付')
+    binding = review_binding_digest(packet)
     require(isinstance(packet.get('custodian_id'), str) and packet['custodian_id'].strip(), '缺独立保管者')
     sources, artifacts = {}, {}
     for source in packet['sources']:
@@ -79,6 +85,7 @@ def validate(packet):
                 and len(set(reviewer_ids)) == 2 and task['author_id'] not in reviewer_ids, '作者和两位审核员必须不同')
         bound = annotation_digest(task)
         require(all(row.get('annotation_sha256') == bound and row.get('protocol_sha256') == packet['protocol_sha256']
+                    and row.get('review_binding_sha256') == binding
                     and row.get('decision') in {'approve', 'reject'} for row in reviews), '审核未绑定当前注释/协议或决议无效')
         people.update([task['author_id'], *reviewer_ids])
         if any(row['decision'] != 'approve' for row in reviews):
@@ -86,7 +93,8 @@ def validate(packet):
             arbiter = decision.get('adjudicator_id')
             require(isinstance(arbiter, str) and arbiter.strip() and arbiter not in {task['author_id'], *reviewer_ids}
                     and decision.get('decision') == 'approve' and decision.get('annotation_sha256') == bound
-                    and decision.get('protocol_sha256') == packet['protocol_sha256'], '分歧/拒绝须独立仲裁当前注释及协议')
+                    and decision.get('protocol_sha256') == packet['protocol_sha256']
+                    and decision.get('review_binding_sha256') == binding, '分歧/拒绝须独立仲裁当前注释及全部处理协议')
             people.add(arbiter)
         source = sources[task['source_id']]
         normalized = task['pinyin'].lower().replace('ü', 'v')
@@ -134,6 +142,7 @@ def freeze(packet, output):
                 'heldout_encrypted': False, 'custodian_id': packet['custodian_id'],
                 'protocol_sha256': packet['protocol_sha256'], 'preprocessing_sha256': packet['preprocessing_sha256'],
                 'lineage_audit_sha256': packet['lineage_audit_sha256'],
+                'review_binding_schema_version': 1, 'review_binding_sha256': review_binding_digest(packet),
                 'tool_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                 'files_sha256': {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in sorted(output.iterdir())},
                 'B_handoff': '仅family-index字段显式兼容；来源许可原件/审核/逐源protocol和review、2000heldout家族及70/15/15、独立加密封存和参数冻结仍须旧B门禁核验。'}

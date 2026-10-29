@@ -105,3 +105,15 @@ python -m tools.data_pipeline.corpus_gate --revision <固定官方API响应> --p
 ```
 
 缺rights/作者历史/提取/分词证据时准入exit2、token/DF/Zipf均null；现有生产包、解析/发布/回滚和输入核心不变。所有工具只在离线工程路径调用，无实时输入依赖。
+
+## Round 7：来源矩阵和审核失效
+
+```text
+python -m tools.data_pipeline.source_review --output <全新矩阵JSON>
+```
+
+矩阵逐项重放八条来源审查、三个固定锁及已选Wikipedia固定版本的R6未通过快照，核对许可文本/证据和已登记原件SHA。缺取得日期、权限、词频仍null；已有正式词条范围不变，候选和研究摘录不升级production。来源声明与现有审核结论分列，不是自动法律批准器。
+
+人工任务的两review及生效仲裁现在还必须提供`review_binding_sha256=sha256(canonical({protocol_sha256,preprocessing_sha256,lineage_audit_sha256}))`，冻结manifest记录binding schema1。任一处理/来源家族协议变更使旧审核失效；旧R6审核缺字段须重新审核，不能自动迁移。任务摘要和family-index八字段保持，但B仍需显式核对新审核版本，不能凭相同形状放行。
+
+[Round 7设计](../../docs/cl009-round7-design.md)和[正式频率/语义发布前契约](../../docs/cl009-round7-semantic-release.md)列明当前类型侧包与正式发布的差距。没有真实人工/授权/频率、内容绑定审核和可信发布清单时，不存在可批准的production语义侧包或独立gold。

@@ -5,7 +5,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from tools.data_pipeline.annotation_workflow import annotation_digest, audit, freeze, pending_packet
+from tools.data_pipeline.annotation_workflow import annotation_digest, audit, freeze, pending_packet, review_binding_digest
 
 SHA = 'a' * 64
 
@@ -35,6 +35,7 @@ def packet():
         task['source_binding_sha256'] = source_digest(value['sources'][0])
         for review in task['reviews']:
             review['annotation_sha256'] = annotation_digest(task)
+            review['review_binding_sha256'] = review_binding_digest(value)
     return value
 
 
@@ -63,7 +64,8 @@ class AnnotationWorkflowTests(unittest.TestCase):
         task['reviews'][1]['decision'] = 'reject'
         self.assertFalse(audit(value)['structurally_ready'])
         task['adjudication'] = {'adjudicator_id': 'fixture-arbiter', 'decision': 'approve',
-                                'annotation_sha256': annotation_digest(task), 'protocol_sha256': SHA}
+                                'annotation_sha256': annotation_digest(task), 'protocol_sha256': SHA,
+                                'review_binding_sha256': review_binding_digest(value)}
         self.assertTrue(audit(value)['structurally_ready'])
         task['adjudication']['adjudicator_id'] = 'fixture-a'
         self.assertFalse(audit(value)['structurally_ready'])
@@ -103,6 +105,19 @@ class AnnotationWorkflowTests(unittest.TestCase):
                 value[field] = 'b' * 64
                 self.assertFalse(audit(value)['structurally_ready'])
 
+    def test_legacy_reviews_and_unbound_adjudication_require_explicit_rereview(self):
+        value = packet()
+        value['tasks'][0]['reviews'][0].pop('review_binding_sha256')
+        self.assertFalse(audit(value)['structurally_ready'])
+        value = packet()
+        task = value['tasks'][0]
+        task['reviews'][1]['decision'] = 'reject'
+        task['adjudication'] = {'adjudicator_id': 'fixture-arbiter', 'decision': 'approve',
+                                'annotation_sha256': annotation_digest(task), 'protocol_sha256': SHA}
+        self.assertFalse(audit(value)['structurally_ready'])
+        task['adjudication']['review_binding_sha256'] = review_binding_digest(value)
+        self.assertTrue(audit(value)['structurally_ready'])
+
     def test_source_or_grant_replacement_invalidates_existing_reviews(self):
         for field in ['artifact_sha256', 'version', 'authorization']:
             value = packet()
@@ -122,6 +137,8 @@ class AnnotationWorkflowTests(unittest.TestCase):
                                           'near_duplicate_group', 'split', 'normalized_input_sha256', 'task_sha256'})
             self.assertFalse(result['formal_language_ready'])
             self.assertFalse(result['heldout_encrypted'])
+            self.assertEqual(result['review_binding_schema_version'], 1)
+            self.assertEqual(result['review_binding_sha256'], review_binding_digest(packet()))
             for path in target.iterdir():
                 if path.name != 'heldout-tasks.jsonl':
                     self.assertNotIn('自编输出2', path.read_text(encoding='utf-8'), path.name)
