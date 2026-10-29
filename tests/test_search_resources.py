@@ -46,6 +46,16 @@ class ResourceContractTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 validate_run(changed, [case], config)
 
+    def test_false_completeness_and_valid_input_rejection_cannot_skip_oracle(self):
+        case, config, row = self.fixture()
+        with self.assertRaises(ValueError):
+            validate_case({**row, "guaranteed": False}, case, config)
+        with self.assertRaises(ValueError):
+            validate_case({**row, "status": "rejected", "error_kind": "InvalidInput", "guaranteed": False}, case, config)
+        invalid = {**case, "kind": "invalid"}
+        with self.assertRaises(ValueError):
+            validate_case({**row, "kind": "invalid"}, invalid, config)
+
 
 if __name__ == "__main__":
     unittest.main()
