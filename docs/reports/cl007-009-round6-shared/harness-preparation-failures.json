@@ -1,0 +1,30 @@
+{
+  "scope": "Shared evidence-harness preparation failures, separate from product tests",
+  "identity_limit": "Helpers were uncommitted local scripts; their failed complete historical bytes were not separately archived. Do not claim exact historical implementation replay from these excerpts.",
+  "failures": [
+    {
+      "operation": "Initial JavaScript orchestration of worktree reads",
+      "execution_started": false,
+      "tool_returned_text": "Script error: SyntaxError: Unexpected string",
+      "resolution": "Corrected object argument syntax; reran all four actual worktree reads. No repository command ran in the rejected call."
+    },
+    {
+      "operation": "Generate .local/audit_round6_preservation.py via quoted PowerShell python -c",
+      "exit_code": 1,
+      "tool_returned_excerpt": "The term 'root' is not recognized as a name of a cmdlet, function, script file, or executable program.\npython.exe: can't open file '.local/audit_round6_preservation.py': [Errno 2] No such file or directory",
+      "resolution": "Wrote explicit UTF-8 helper source with apply_patch, then reran preservation checks successfully. No historical report or branch content was overwritten."
+    },
+    {
+      "command": ["python", ".local/audit_round6_artifacts.py"],
+      "exit_code": 1,
+      "tool_returned_text": "Traceback (most recent call last):\n  File \"C:\\Users\\EDY\\WebstormProjects\\Cloudleaf\\.local\\audit_round6_artifacts.py\", line 50, in <module>\n    binary = json.loads(files[prefix + 'stress-build.json'])\n                        ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nKeyError: 'docs/reports/cl007/round6-soak/stress-build.json'\n",
+      "resolution": "Inspected actual delivered paths, selected soak-build.json, reran Git blob/original byte and real binary verification successfully. The product evidence and assertions were not changed."
+    },
+    {
+      "command": ["python", "-X", "utf8", ".local/finalize_round6_shared.py"],
+      "exit_code": 1,
+      "tool_returned_text": "Exception in thread Thread-3 (_readerthread):\nTraceback (most recent call last):\n  File \"C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\threading.py\", line 1075, in _bootstrap_inner\n    self.run()\n  File \"C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\threading.py\", line 1012, in run\n    self._target(*self._args, **self._kwargs)\n  File \"C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\subprocess.py\", line 1599, in _readerthread\n    buffer.append(fh.read())\n                  ^^^^^^^^^\n  File \"<frozen codecs>\", line 322, in decode\nUnicodeDecodeError: 'utf-8' codec can't decode byte 0xd0 in position 5743: invalid continuation byte\nTraceback (most recent call last):\n  File \"C:\\Users\\EDY\\WebstormProjects\\Cloudleaf\\.local\\finalize_round6_shared.py\", line 22, in <module>\n    value = json.loads(result.stdout)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\json\\__init__.py\", line 339, in loads\n    raise TypeError(f'the JSON object must be str, bytes or bytearray, '\nTypeError: the JSON object must be str, bytes or bytearray, not NoneType\n",
+      "resolution": "The child audit Python still used the locale console encoding. Added explicit -X utf8 to both child invocations, reran both complete read-only audits and finalization successfully. Existing input JSON and original evidence were not rewritten."
+    }
+  ]
+}

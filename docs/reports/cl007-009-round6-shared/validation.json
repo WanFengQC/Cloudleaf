@@ -1,0 +1,147 @@
+{
+  "head": "ce2c16e8f53da9913f2624675c7807d07c044877",
+  "checks": [
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\rustc.EXE",
+        "--version"
+      ],
+      "returncode": 0,
+      "seconds": 0.14490859999204986,
+      "log": "command-01.log"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "fetch",
+        "--locked"
+      ],
+      "returncode": 0,
+      "seconds": 0.17967479999060743,
+      "log": "command-02.log"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "build",
+        "--workspace",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 0.6604724999924656,
+      "log": "command-03.log"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "returncode": 0,
+      "seconds": 0.6533465000102296,
+      "log": "command-04.log"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "returncode": 0,
+      "seconds": 1.3223652000015136,
+      "log": "command-05.log"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "test",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 4.472586699994281,
+      "log": "command-06.log"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "test",
+        "--workspace",
+        "--doc",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 1.0262160999991465,
+      "log": "command-07.log"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "scripts/check_workspace.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.4513730999897234,
+      "log": "command-08.log"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.5632411999977194,
+      "log": "command-09.log"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "scripts/benchmark.py",
+        "--iterations",
+        "1000",
+        "--output",
+        "C:\\Users\\EDY\\WebstormProjects\\Cloudleaf\\.local\\round6-shared-final-checks\\performance.json"
+      ],
+      "returncode": 0,
+      "seconds": 1.1983416000148281,
+      "log": "command-10.log"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "scripts/evaluate_algorithms.py",
+        "--output-dir",
+        "C:\\Users\\EDY\\WebstormProjects\\Cloudleaf\\.local\\round6-shared-final-checks\\algorithm-v1"
+      ],
+      "returncode": 0,
+      "seconds": 1.0663759000017308,
+      "log": "command-11.log"
+    },
+    {
+      "command": [
+        "C:\\Program Files\\Git\\cmd\\git.EXE",
+        "diff",
+        "--check"
+      ],
+      "returncode": 0,
+      "seconds": 0.08629289999953471,
+      "log": "command-12.log"
+    }
+  ]
+}
