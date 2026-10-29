@@ -631,22 +631,25 @@ def atomic_json(path: Path, value: dict) -> None:
         raise
 
 
-def checked_pointer(store: Path, pointer: dict) -> None:
+def checked_pointer(store: Path, pointer: dict, *, verifier=None) -> None:
     release = safe_child(store / "releases", pointer["release"])
-    verify_release(release)
+    (verifier or verify_release)(release)
     if digest((release / "manifest.json").read_bytes()) != pointer["manifest_sha256"]:
         raise ValueError("发布指针哈希错误")
 
 
-def activate(release: Path, store: Path) -> dict:
-    verify_release(release)
+def activate(release: Path, store: Path, *, verifier=None, transition=None) -> dict:
+    verify = verifier or verify_release
+    verify(release)
     release_hash = digest((release / "manifest.json").read_bytes())
     with publish_lock(store):
         current = read_json(store / "current.json") if (store / "current.json").exists() else None
         if current:
             if current.get("schema_version") != 1:
                 raise ValueError("发布指针版本错误")
-            checked_pointer(store, current["current"])
+            checked_pointer(store, current["current"], verifier=verifier)
+        if transition is not None:
+            transition(store / "releases" / current["current"]["release"] if current else None, release)
         releases = store / "releases"
         releases.mkdir(exist_ok=True)
         target = releases / release_hash
@@ -654,11 +657,11 @@ def activate(release: Path, store: Path) -> dict:
             with tempfile.TemporaryDirectory(prefix=".publish-", dir=store) as temporary:
                 staging = Path(temporary) / "release"
                 shutil.copytree(release, staging)
-                verify_release(staging)
+                verify(staging)
                 if digest((staging / "manifest.json").read_bytes()) != release_hash:
                     raise ValueError("复制的发布包清单与请求哈希不一致")
                 staging.rename(target)
-        verify_release(target)
+        verify(target)
         if digest((target / "manifest.json").read_bytes()) != release_hash:
             raise ValueError("缓存发布包清单与请求哈希不一致")
         pointer = {"release": release_hash, "manifest_sha256": release_hash}
@@ -669,13 +672,13 @@ def activate(release: Path, store: Path) -> dict:
         return state
 
 
-def rollback(store: Path) -> dict:
+def rollback(store: Path, *, verifier=None) -> dict:
     with publish_lock(store):
         current = read_json(store / "current.json")
         if current.get("schema_version") != 1 or not current.get("previous"):
             raise ValueError("没有兼容的上一版本")
         # 当前版本可以损坏；回退目标必须完整且与指针一致。
-        checked_pointer(store, current["previous"])
+        checked_pointer(store, current["previous"], verifier=verifier)
         state = {"schema_version": 1, "current": current["previous"], "previous": current["current"]}
         atomic_json(store / "current.json", state)
         return state

@@ -163,6 +163,7 @@ class SemanticBundleTests(unittest.TestCase):
         for mode in ['content', 'source', 'protocol', 'migration']:
             with self.subTest(mode=mode):
                 content = copy.deepcopy(original)
+                (self.input / 'semantics.txt').write_bytes(b'fixture-semantics\n')
                 write_content(self.input, original, {'schema_version': 1, 'from_manifest_sha256': None, 'mappings': []})
                 if mode == 'content': content['records'][0]['payload']['definition'] += 'changed'
                 elif mode == 'source': content['sources'][0]['status'] = 'research_only'

@@ -85,7 +85,7 @@ def store_guard(store: Path):
                 fcntl.flock(stream.fileno(), fcntl.LOCK_UN)
 
 
-def recover_store(store: Path, owner_pid: int, *, rollback: bool = False) -> dict:
+def recover_store(store: Path, owner_pid: int, *, rollback: bool = False, verifier=None) -> dict:
     from .pipeline import atomic_json, checked_pointer, read_json
     if type(owner_pid) is not int or owner_pid <= 0:
         raise ValueError("恢复必须指定已中断写者正PID")
@@ -128,10 +128,10 @@ def recover_store(store: Path, owner_pid: int, *, rollback: bool = False) -> dic
             if rollback:
                 if not current.get("previous"):
                     raise ValueError("没有有效回退目标")
-                checked_pointer(store, current["previous"])
+                checked_pointer(store, current["previous"], verifier=verifier)
                 recovered_pointer = {"schema_version": 1, "current": current["previous"], "previous": current["current"]}
             else:
-                checked_pointer(store, current["current"])
+                checked_pointer(store, current["current"], verifier=verifier)
         # 只移动本工具固定命名的孤儿至隔离目录，不删除缓存或用户词典。
         quarantine = store / (".recovered-" + uuid.uuid4().hex)
         for path in orphan_paths:
