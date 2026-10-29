@@ -121,7 +121,7 @@ class StressEvidenceTests(unittest.TestCase):
                     'authorization_reference': 'fixture-only-not-real-approval', 'identity': identity}
         with tempfile.TemporaryDirectory() as temporary:
             folder = Path(temporary)
-            request = prepared_request(folder)
+            request = prepared_request(folder, identity)
             approval.update(environment_id=request['environment']['vm_id'], operator=request['people']['test_operator'],
                             snapshot=request['environment']['snapshot_id'], environment_request=save_material(folder, 'request.json', request))
             approved = STRESS.execution_preflight(identity, approval, folder)
@@ -147,7 +147,7 @@ class StressEvidenceTests(unittest.TestCase):
                     'environment': {'os': 'Windows-fixture', 'architecture': 'AMD64'}}
         with tempfile.TemporaryDirectory() as temporary:
             folder = Path(temporary)
-            request = prepared_request(folder)
+            request = prepared_request(folder, identity)
             approval = {'status': 'approved', 'isolated_windows_environment': True,
                         'environment_id': request['environment']['vm_id'], 'operator': request['people']['test_operator'],
                         'snapshot': request['environment']['snapshot_id'], 'rollback_plan': 'fixture-rollback',

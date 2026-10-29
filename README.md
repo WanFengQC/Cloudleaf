@@ -16,6 +16,8 @@ Round 8交付[外部执行与恢复清单](docs/cl007-round8-external-acceptance
 
 Round 9增加[材料准入约定](docs/cl007-round9-admission.md)：`python scripts/check_windows_soak_admission.py --request docs/acceptance/cl007-round9-environment.json --output <全新报告JSON>`无需native binary即可只读核缺件；pending环境明确exit2。长期runner批准还须绑定环境请求SHA、实际回滚和执行授权文件、版本/架构及允许档位，旧仅字符串批准不足；同一用户可兼任负责人/执行者，材料一致性不代表人签或实际恢复已核验。R8矩阵保留，R9人工记录模板保持未执行。
 
+Round 10的[执行身份绑定](docs/cl007-round10-execution-binding.md)要求实际执行授权schema2绑定完整运行identity摘要，更新外层批准不能复用旧授权。只读checker分列材料一致与执行身份已核；无实际identity仍`ready=false`。新pending模板和[真实应用执行步骤](docs/acceptance/cl007-round10-application-steps.md)不授予长测或TSF授权，历史材料保持。
+
 ## 环境
 
 - Git。

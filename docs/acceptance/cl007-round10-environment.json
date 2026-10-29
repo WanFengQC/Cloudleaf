@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "kind": "cloudleaf-windows-external-acceptance-request",
+  "status": "pending",
+  "user_reported_environment_status": "not_prepared",
+  "is_execution_authorization": false,
+  "is_tsf_registration_authorization": false,
+  "environment": {
+    "vm_id": null,
+    "windows_version_and_build": null,
+    "architecture": null,
+    "test_user": null,
+    "snapshot_id": null,
+    "snapshot_storage_sha256": null,
+    "restore_exercise_evidence": {
+      "path": null,
+      "sha256": null
+    },
+    "available_disk_bytes": null,
+    "power_and_sleep_policy_evidence": null,
+    "isolation_evidence": null
+  },
+  "people": {
+    "environment_owner": null,
+    "test_operator": null,
+    "independent_observer": null,
+    "acceptance_reviewer": null
+  },
+  "identity": {
+    "checkout_commit": null,
+    "rust_version": "1.90.0",
+    "python_version": null,
+    "source_sha256": null,
+    "runner_sha256": null,
+    "test_binary_sha256": null,
+    "data_sha256": null
+  },
+  "long_profiles": [
+    {
+      "profile": "8h",
+      "required_contiguous_seconds": 28800,
+      "preflight_path": null,
+      "approval_path": null,
+      "authorization_reference": null,
+      "executed": false
+    },
+    {
+      "profile": "24h",
+      "required_contiguous_seconds": 86400,
+      "preflight_path": null,
+      "approval_path": null,
+      "authorization_reference": null,
+      "executed": false
+    }
+  ],
+  "resource_protocol": {
+    "sampling_seconds": 1,
+    "checkpoint_seconds": 60,
+    "resource_threshold_document": null,
+    "failure_stop_and_evidence_plan": null,
+    "rollback_owner_and_plan": null
+  },
+  "tsf_stage": {
+    "reliability_gate_review": null,
+    "signed_dll_sha256": null,
+    "architecture_and_profile_review": null,
+    "registration_backup_and_reversal_exercise": null,
+    "human_registration_authorization": null,
+    "executed": false
+  },
+  "signatures_and_authorization_evidence": {
+    "path": null,
+    "sha256": null
+  },
+  "notice": "Round 10待填环境请求；实际环境与授权尚未准备。实际授权须schema2并绑定完整运行identity。本表不授权执行或TSF。",
+  "execution_identity_binding": {
+    "schema_version": 2,
+    "execution_identity_sha256": null,
+    "actual_identity_report_path": null
+  }
+}

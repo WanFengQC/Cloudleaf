@@ -30,10 +30,18 @@ def main():
 
 
 def admission_report(issues, files):
-    return {'schema_version': 1, 'kind': 'cloudleaf-windows-soak-material-check', 'ready': not issues,
+    return {'schema_version': 2, 'kind': 'cloudleaf-windows-soak-material-check', 'ready': False,
+            'materials_consistent': not issues, 'execution_identity_binding_checked': False,
             'issues': issues, 'checked_files': files, 'declarations_independently_verified': False,
             'child_started': False, 'system_operations_executed': False,
             'is_execution_authorization': False, 'long_term_acceptance': False}
+
+
+def execution_identity_sha256(identity):
+    # 批准摘要在准入通过后才加入运行身份，排除它避免授权文件自引用。
+    value = {key: item for key, item in identity.items() if key != 'execution_approval_sha256'}
+    raw = json.dumps(value, sort_keys=True, ensure_ascii=False, separators=(',', ':'), allow_nan=False).encode('utf-8')
+    return hashlib.sha256(raw).hexdigest()
 
 
 def text_fields(value, names, label, issues):
@@ -105,9 +113,11 @@ def check_request(request, base, identity=None):
         timestamp(restore.get('performed_at_utc'), '恢复材料performed_at_utc', issues)
     authorization, _ = read_evidence(request.get('signatures_and_authorization_evidence'), base, 'execution_authorization', issues, files)
     if authorization is not None:
-        if (authorization.get('schema_version') != 1 or authorization.get('kind') != 'cloudleaf-windows-soak-execution-authorization'
+        if (authorization.get('schema_version') != 2 or authorization.get('kind') != 'cloudleaf-windows-soak-execution-authorization'
                 or authorization.get('status') != 'approved'):
-            issues.append('执行授权材料尚未批准')
+            issues.append('执行授权材料需schema2及实际批准，旧授权不得自动升级')
+        if not sha256_text(authorization.get('execution_identity_sha256')):
+            issues.append('执行授权缺少本次完整execution_identity_sha256')
         for key, expected in [('environment_id', environment.get('vm_id')), ('snapshot_id', environment.get('snapshot_id')),
                               ('operator', people.get('test_operator')), ('authorized_by', people.get('environment_owner'))]:
             if authorization.get(key) != expected:
@@ -116,14 +126,24 @@ def check_request(request, base, identity=None):
         profiles = authorization.get('allowed_profiles')
         if not isinstance(profiles, list) or not profiles or any(name not in ['8h', '24h'] for name in profiles):
             issues.append('执行授权allowed_profiles需要明确8h/24h范围')
-        elif identity is not None and identity['configuration']['profile'] not in profiles:
-            issues.append('本次长期档不在执行授权范围')
+    materials_consistent = not issues
+    binding_checked = identity is not None and authorization is not None
     if identity is not None:
+        if authorization is not None:
+            if authorization.get('execution_identity_sha256') != execution_identity_sha256(identity):
+                issues.append('执行授权与本次完整源码/数据/工具/二进制/配置/系统身份不一致')
+            profiles = authorization.get('allowed_profiles')
+            if isinstance(profiles, list) and identity['configuration']['profile'] not in profiles:
+                issues.append('本次长期档不在执行授权范围')
         for field, actual in [('windows_version_and_build', identity['environment']['os']),
                               ('architecture', identity['environment']['architecture'])]:
             if environment.get(field) != actual:
                 issues.append(f'environment.{field}与实际运行身份不符')
+    else:
+        issues.append('未提供本次实际运行identity，材料一致不能授予执行准入')
     result = admission_report(issues, files)
+    result.update(materials_consistent=materials_consistent, execution_identity_binding_checked=binding_checked,
+                  ready=not issues and binding_checked)
     result['environment_id'] = environment.get('vm_id')
     result['snapshot_id'] = environment.get('snapshot_id')
     result['operator'] = people.get('test_operator')
