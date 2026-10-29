@@ -1,0 +1,14 @@
+material_id	responsible_role	status	consumer	actual_file_path	actual_sha256	acceptance_condition
+roles-authorization	项目负责人和C来源审核人	pending	C主人员授权登记			真实标识与授权文件齐全且可核；不是代码自动签署
+evaluation-source	C来源审核人	pending	language-readiness sources			固定原件和许可原文与批准评估范围、商业修改分发权限逐项明确
+annotation-protocol	标注负责人	pending	preparation annotation_protocol			预登记独立人工标注规则；不从待测词典或AI生成正确答案
+preprocessing	数据负责人	pending	preparation preprocessing			共同规范化与预处理实现、配置、版本和SHA固定
+lineage-audit	来源及语义近重复审核人	pending	preparation lineage_audit			全局镜像lineage、规范unit、family及near组完成真人审核
+task-review	两名独立审核员及必要仲裁员	pending	C任务和preparation annotation_review			每任务内容来源与三协议摘要绑定；作者、审核及仲裁独立
+family-index	独立heldout保管者	pending	language-readiness family_index			八字段无答案；全局隔离且70/15/15、heldout至少2000家族不放宽
+public-metadata	独立heldout保管者	pending	handoff metadata			仅C公共来源协议和ID，不含tasks或heldout正文
+visible-tasks	标注负责人和两名审核员	pending	handoff visible_tasks train/dev			真实意图拼音答案键轨迹完整；与索引、来源及审核摘要逐项一致
+context-intent	上下文及语义审核人	pending	handoff context_review			可见上下文和所有split公共意图组由真人提供；同意图家族不跨split
+heldout-seal	独立heldout保管者	pending	language-readiness seal			独占环境中实际加密与访问控制、密文SHA及保管证明；开发者不看答案
+parameter-freeze	评估负责人	pending	language-readiness freeze			封存后固定参数源码协议二进制词库；仅train/dev调参
+independence-review	外部验收负责人	pending	正式评测放行决定			独立核授权身份、语义分组及保管；三个工具一致不等于真人审查通过

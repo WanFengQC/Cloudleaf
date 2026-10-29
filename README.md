@@ -99,6 +99,8 @@ python scripts/evaluate_restricted_oracle.py --evidence <原有Unihan证据JSON>
 
 Round 7补充[任务交付与评分观测约定](docs/cl008-round7-design.md)：只打开获批train/dev任务核C的13字段摘要、来源及三协议审核绑定；上下文和全局意图组须由独立人工交付，不打开heldout答案。旧配额、加密封存及参数冻结继续生效，实际材料缺失返回2、语言指标null。错误预测明确丢失原文回退时拒绝。阶段宿主现在使用schema2，新增嵌套scoring（特征/整数/转移及EOS，排除路径克隆/文本拼接）；默认未读钟入口和候选算法不变。旧九阶段报告仍绑定旧实现，不能重新标为本轮评分数据。
 
+Round 8交付[真实人工gold外部执行包](docs/acceptance/cl008-round8/README.md)：列明单一C人员/授权入口、真实双审/仲裁和保管职责、上下文/handoff待填模板、私有明文与公共索引的边界和三个实际门禁命令。人员及授权均待定，模板不是批准包，不产生答案或签名；不重复搜索矩阵，不替换默认核心。
+
 ```text
 python scripts/check_ime_task_handoff.py --plan config/evaluation/language-readiness-v1.json --preparation config/evaluation/quality-preparation-v1.json --handoff config/evaluation/ime-task-handoff-v1.json --output .local/ime-task-handoff-new.json
 ```
