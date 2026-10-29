@@ -26,4 +26,18 @@ context_review为schema1，绑定family_index_sha256和三协议review_binding_s
 
 若重放固定真实24探针/12配置，沿用同词库SHA/预算，以新源码/二进制和schema2单独记录。R6原样本再分析必须同时标明旧被测实现与本轮分析器，不能称新HEAD性能或单算法内存。正式语言指标无独立gold仍null。所有失败、拒绝、剪枝和超预算保留原始分母与日志。
 
+本轮评分诊断预先固定每例10个plain/profile配对、3次双入口预热，共2,880对；n=10的P99分辨率不足以证明稳定尾延迟。与R6的30次样本不做改善或资源放行比较，不改变旧5ms/10ms目标。新观测宿主每样本完整Result Eq，288个配置/案例另与R6最终完整Result Debug逐项核对；失败、剪枝和预算索引完整。
+
+## 正式算法比较的准备状态
+
+|方案|当前实现与下一前置|
+|---|---|
+|现有生产候选排序|旧原型v1要求明确词频；正式v2 unknown不能偷填0接入。需要另登记兼容适配和同数据预算协议，目前不声称已完成同数据生产基线比较。|
+|Reference/ExactDag/PositionDag/Beam|保留同图同Structural/Weighted的正确性/预算对照；Position只允许无历史评分，Beam有损完整记录。|
+|可解释加权|已有整数特征/unknown关闭机制；仍缺独立train/dev估参和正式gold。|
+|Bigram|已有预载一阶模型和穷举差分；缺合法统计训练语料、真实token单位和冻结模型。|
+|上下文重排|已有有限候选池机制；新context_review只建设人工任务格式，不制造上下文或模型；仍需独立质量比较，不能声称全空间最优。|
+
+训练只用train、参数/预算只用dev；首次正式heldout之前冻结来源家族/语义近重复/人工审核、模型及参数、源码、词库、二进制和协议。没有实物gold时各方案正式Top-1/Top-5/MRR都为null；纠错/模糊/简拼/双拼/学习/增量和默认核心接入继续未实现。
+
 实施范围：研究search/profiling/阶段宿主及对应测试；B语言readiness、任务交付工具/blocked配置/测试；本设计、README和独立Round7报告。旧协议/阈值和旧报告不改，来源正文与gold不新增到仓库；Rust/Python全套、资源审计和方向专项按精确实现执行。最终普通推送原Draft分支，新HEAD Windows/Linux push CI由共享方向核验。
