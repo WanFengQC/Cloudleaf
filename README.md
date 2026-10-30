@@ -75,6 +75,7 @@ python scripts/evaluate_algorithms.py --output-dir .local/algorithm-v1
 | `cloudleaf-input` | 输入状态、光标、选择、模式和生命周期 |
 | `cloudleaf-cli` | 测试宿主与独立基准入口 |
 | `cloudleaf-translation` | 独立后台翻译、词典检索、用户自定义 API 和确认状态机 |
+| `cloudleaf-translation-panel` | [独立 Windows 面板](apps/cloudleaf-translation-panel/README.md)、设置、系统凭据和显式剪贴板复制 |
 
 产品核心不直接写日志，不保存完整输入历史。候选注释不进入提交文本；提交失败保留请求，显式重试需要新 ID；宿主先确认提交，再派发下一事件。日志及错误规范详见[设计约定](docs/m1-m2-design.md)。
 

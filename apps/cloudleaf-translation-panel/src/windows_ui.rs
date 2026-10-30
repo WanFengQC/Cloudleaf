@@ -349,6 +349,7 @@ impl WindowState {
                 [16, 375, 600, 340],
                 false,
             );
+            SendMessageW(self.control(RESULT), EM_SETLIMITTEXT, 128 * 1024, 0);
             self.add(
                 STATUS,
                 "STATIC",
@@ -784,6 +785,11 @@ impl WindowState {
 
     unsafe fn render(&mut self) {
         unsafe {
+            let editable =
+                !self.closing && self.controller.status != crate::controller::ViewStatus::Preparing;
+            for id in PROVIDER..=RESET {
+                EnableWindow(self.control(id), i32::from(editable));
+            }
             if self.serial != self.controller.settings_serial {
                 self.serial = self.controller.settings_serial;
                 let s = &self.controller.settings;
@@ -852,18 +858,18 @@ impl WindowState {
                     },
                     0,
                 );
+                SendMessageW(
+                    self.control(DIRECTION),
+                    CB_SETCURSEL,
+                    match self.controller.direction {
+                        DirectionChoice::ChineseEnglish => 0,
+                        DirectionChoice::EnglishChinese => 1,
+                        DirectionChoice::AutoEnglish => 2,
+                        DirectionChoice::AutoChinese => 3,
+                    },
+                    0,
+                );
             }
-            SendMessageW(
-                self.control(DIRECTION),
-                CB_SETCURSEL,
-                match self.controller.direction {
-                    DirectionChoice::ChineseEnglish => 0,
-                    DirectionChoice::EnglishChinese => 1,
-                    DirectionChoice::AutoEnglish => 2,
-                    DirectionChoice::AutoChinese => 3,
-                },
-                0,
-            );
             SendMessageW(
                 self.control(CONSENT),
                 BM_SETCHECK,
@@ -906,9 +912,10 @@ impl WindowState {
                         QualityStatus::Pending => "Pending",
                     };
                     format!(
-                        "{quality}\r\n来源：{} · {:?}\r\n\r\n{}",
+                        "{quality}\r\n提供者：{} · {:?}\r\n数据来源：{}\r\n\r\n{}",
                         r.provider.id,
                         r.output.output_kind,
+                        r.output.source_ids.join(", "),
                         r.output
                             .translated_text
                             .replace("\r\n", "\n")
@@ -975,24 +982,65 @@ mod tests {
     use std::time::{Duration, Instant};
 
     struct NativeWindow(HWND);
-    impl Drop for NativeWindow { fn drop(&mut self) { unsafe { DestroyWindow(self.0); } } }
+    impl Drop for NativeWindow {
+        fn drop(&mut self) {
+            unsafe {
+                DestroyWindow(self.0);
+            }
+        }
+    }
 
     #[test]
     fn refresh_preserves_native_selection_until_the_change_notification() {
-        let directory = std::env::temp_dir().join(format!("cloudleaf-r12-native-{}",std::process::id()));
-        let mut controller = PanelController::new(directory,None,Arc::new(WindowsCredentialStore::default())).unwrap();
-        let deadline = Instant::now()+Duration::from_secs(3);
-        while controller.settings_serial==0 { controller.tick(); assert!(Instant::now()<deadline); std::thread::yield_now(); }
+        let directory =
+            std::env::temp_dir().join(format!("cloudleaf-r12-native-{}", std::process::id()));
+        let mut controller =
+            PanelController::new(directory, None, Arc::new(WindowsCredentialStore::default()))
+                .unwrap();
+        let deadline = Instant::now() + Duration::from_secs(3);
+        while controller.settings_serial == 0 {
+            controller.tick();
+            assert!(Instant::now() < deadline);
+            std::thread::yield_now();
+        }
         unsafe {
-            let window=NativeWindow(CreateWindowExW(0,wide("STATIC").as_ptr(),wide("R12 native control regression").as_ptr(),0,0,0,1120,850,null_mut(),null_mut(),GetModuleHandleW(null()),null()));
+            let window = NativeWindow(CreateWindowExW(
+                0,
+                wide("STATIC").as_ptr(),
+                wide("R12 native control regression").as_ptr(),
+                0,
+                0,
+                0,
+                1120,
+                850,
+                null_mut(),
+                null_mut(),
+                GetModuleHandleW(null()),
+                null(),
+            ));
             assert!(!window.0.is_null());
-            let mut state=WindowState{controller,controls:Vec::new(),parent:window.0,font:null_mut(),dpi:96,serial:u64::MAX,last_result:String::new(),last_status:String::new(),closing:false};
-            state.create_controls(window.0);state.render();
-            SendMessageW(state.control(DIRECTION),CB_SETCURSEL,1,0);
+            let mut state = WindowState {
+                controller,
+                controls: Vec::new(),
+                parent: window.0,
+                font: null_mut(),
+                dpi: 96,
+                serial: u64::MAX,
+                last_result: String::new(),
+                last_status: String::new(),
+                closing: false,
+            };
+            state.create_controls(window.0);
             state.render();
-            assert_eq!(SendMessageW(state.control(DIRECTION),CB_GETCURSEL,0,0),1,"刷新不能覆盖用户尚在选择的方向");
-            state.command(window.0,((CBN_SELCHANGE as usize)<<16)|DIRECTION);
-            assert_eq!(state.controller.direction,DirectionChoice::EnglishChinese);
+            SendMessageW(state.control(DIRECTION), CB_SETCURSEL, 1, 0);
+            state.render();
+            assert_eq!(
+                SendMessageW(state.control(DIRECTION), CB_GETCURSEL, 0, 0),
+                1,
+                "刷新不能覆盖用户尚在选择的方向"
+            );
+            state.command(window.0, ((CBN_SELCHANGE as usize) << 16) | DIRECTION);
+            assert_eq!(state.controller.direction, DirectionChoice::EnglishChinese);
             state.controller.begin_close();
         }
     }

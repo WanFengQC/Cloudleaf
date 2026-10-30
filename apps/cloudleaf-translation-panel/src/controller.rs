@@ -187,7 +187,7 @@ impl PanelController {
             direction: direction(self.direction),
             kind: self.kind,
             context,
-            send_authorized_to: if self.authorized {
+            send_authorized_to: if std::mem::take(&mut self.authorized) {
                 self.authorization.clone()
             } else {
                 None
@@ -245,7 +245,7 @@ impl PanelController {
         } else {
             ViewStatus::Failed
         };
-        self.error = Some(format!("{error}"));
+        self.error = Some(translation_message(error));
     }
 
     pub fn save_key(&mut self, settings: Settings, secret: Secret) -> Result<(), TranslationError> {
@@ -336,7 +336,7 @@ impl PanelController {
                     };
                     if snapshot.state.is_terminal() {
                         self.elapsed = Some(started.elapsed());
-                        self.error = snapshot.error.map(|value| value.to_string());
+                        self.error = snapshot.error.map(translation_message);
                         self.active = None;
                         if let Some(service) = &mut self.service {
                             let _ = service.forget(id);
@@ -381,7 +381,7 @@ impl PanelController {
     }
 
     pub fn platform_error(&mut self, error: PlatformError) {
-        self.error = Some(format!("系统操作失败：{error:?}，内容仍保留"));
+        self.error = Some(format!("系统操作失败：{error}。原文和译文仍保留"));
     }
 
     fn adopt(&mut self, mut value: Prepared) {
@@ -477,4 +477,22 @@ pub fn direction(value: DirectionChoice) -> TranslationDirection {
             target: Language::Chinese,
         },
     }
+}
+
+fn translation_message(error: TranslationError) -> String {
+    let message = match error {
+        TranslationError::InputTooLong => "原文超过16KiB UTF-8限制，请缩短",
+        TranslationError::InvalidInput => "请输入有效的非空文本",
+        TranslationError::OnlineNotAuthorized => "本次尚未授权发送，请确认端点并勾选发送授权",
+        TranslationError::MissingSecret => "该端点尚未保存API Key",
+        TranslationError::Busy => "设置或任务正在处理，请稍候重试",
+        TranslationError::ProviderUnavailable => "当前提供者不可用，请检查设置或安装状态",
+        TranslationError::InvalidConfig => "设置无效，请检查端点、模型与超时",
+        TranslationError::NoMatch => "研究词典没有完全匹配的词头或释义",
+        TranslationError::AuthenticationFailed => "服务拒绝凭据，请检查该端点的API Key",
+        TranslationError::Timeout => "翻译已超时，原文保留，可手动重试",
+        TranslationError::NetworkUnavailable => "网络不可用，原文保留",
+        _ => "翻译未完成，原文保留；可检查设置或手动重试",
+    };
+    format!("{message} ({error})")
 }

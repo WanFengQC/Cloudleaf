@@ -37,6 +37,13 @@ jobs:
         run: cargo test --workspace --doc --locked --offline
       - name: Release workspace build
         run: cargo build --workspace --release --locked --offline
+      - name: Upload Windows translation panel executable
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: cloudleaf-translation-panel-windows-x86_64
+          path: target/release/cloudleaf-translation-panel.exe
+          if-no-files-found: error
       - name: Dependency, license and fixture audit
         run: python scripts/check_workspace.py
       - name: Translation dependency license originals and RustSec audit

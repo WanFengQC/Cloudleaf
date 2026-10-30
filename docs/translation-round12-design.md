@@ -14,7 +14,7 @@
 
 ## 线程与生命周期
 
-窗口线程只处理控件文本、内存状态、service submit/poll/cancel 和显式剪贴板写入，不做网络/磁盘/大型 JSON 或 join。设置线程有界命令/结果队列，后台准备 provider/service 后移交给 controller；不建立第二套翻译执行器。翻译仍只由现有固定 worker 执行。
+窗口线程只处理控件文本、内存状态、service submit/poll/cancel 和显式剪贴板写入，不做网络/磁盘/大型 JSON，不等待仍运行的worker；仅在workers_finished后回收已完成handle。设置线程有界命令/结果队列，后台准备 provider/service 后移交给 controller；不建立第二套翻译执行器。翻译仍只由现有固定 worker 执行。
 
 配置替换时先取消当前任务并使上下文 epoch 失效，停止旧 service；证明原 worker 退出后才创建新 service，防止多次设置产生无限遗留 DNS/model worker。为此给原 service 增加非阻塞 `begin_shutdown`/`workers_finished`；显式 shutdown 继续 join，旧测试全部保留。等待旧 worker 期间显示重新配置/Busy，不偷偷扩预算。设置准备至多一个在途，新配置在 UI 中仍可编辑，应用时给出忙状态。
 

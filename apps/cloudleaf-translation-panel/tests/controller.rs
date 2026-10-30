@@ -90,6 +90,20 @@ fn wait(panel: &mut PanelController, predicate: impl Fn(&PanelController) -> boo
     }
 }
 
+fn start_after_queue_drains(panel: &mut PanelController) {
+    let deadline = Instant::now() + Duration::from_secs(3);
+    loop {
+        match panel.start() {
+            Ok(()) => return,
+            Err(TranslationError::Busy) => {
+                assert!(Instant::now() < deadline);
+                thread::yield_now();
+            }
+            Err(error) => panic!("unexpected request failure: {error}"),
+        }
+    }
+}
+
 #[test]
 fn actual_dictionary_roundtrip_keeps_research_status_original_and_capabilities() {
     let f = Fixture::new();
@@ -147,13 +161,13 @@ fn repeated_actions_changes_and_focus_invalidate_without_losing_input() {
     }
     assert!(p.result().is_none());
     assert_eq!(p.text, "你好🙂");
-    p.start().unwrap();
+    start_after_queue_drains(&mut p);
     p.focus(false);
     p.tick();
     assert!(p.result().is_none());
     assert_eq!(p.start(), Err(TranslationError::StaleResult));
     p.focus(true);
-    p.start().unwrap();
+    start_after_queue_drains(&mut p);
     p.mark_settings_dirty();
     assert!(p.result().is_none());
     assert_eq!(p.start(), Err(TranslationError::Busy));
@@ -261,6 +275,7 @@ fn online_requires_explicit_authorization_and_late_errors_cannot_replace_new_suc
     assert_eq!(server.requests.load(Ordering::Acquire), 0);
     p.authorized = true;
     p.start().unwrap();
+    assert!(!p.authorized, "单次发送授权在构造请求后消费");
     server.await_request(1);
     p.set_text("new request".into());
     p.authorized = true;
@@ -317,6 +332,54 @@ fn cancel_late_success_timeout_offline_and_provider_switch_are_real() {
     wait(&mut p, |p| p.status == ViewStatus::ProviderUnavailable);
     assert!(p.notice.contains("未安装"));
     assert_eq!(p.start(), Err(TranslationError::ProviderUnavailable));
+    p.begin_close();
+    wait(&mut p, PanelController::close_ready);
+}
+
+#[cfg(windows)]
+#[test]
+fn controller_key_commands_use_real_isolated_windows_credentials() {
+    use cloudleaf_translation_panel::platform::WindowsCredentialStore;
+    let f = Fixture::new();
+    let namespace = format!(
+        "Cloudleaf/TranslationPanel.Test.controller-{}-{}",
+        std::process::id(),
+        NEXT.fetch_add(1, Ordering::Relaxed)
+    );
+    let store = Arc::new(WindowsCredentialStore::new(&namespace).unwrap());
+    let mut p = PanelController::new(f.0.join("s"), None, store.clone()).unwrap();
+    wait(&mut p, |p| p.status != ViewStatus::Preparing);
+    let settings = Settings {
+        endpoint: "https://example.invalid/v1/chat/completions".into(),
+        model: "fixture".into(),
+        ..Settings::default()
+    };
+    let reference = settings.credential_reference();
+    struct Cleanup(Arc<WindowsCredentialStore>, String);
+    impl Drop for Cleanup {
+        fn drop(&mut self) {
+            let _ = self.0.delete(&self.1);
+        }
+    }
+    let _cleanup = Cleanup(store.clone(), reference.clone());
+    p.save_key(
+        settings.clone(),
+        Secret::new("isolated-controller-fixture".into()).unwrap(),
+    )
+    .unwrap();
+    wait(&mut p, |p| p.notice.contains("密钥已保存"));
+    assert_eq!(
+        store.read(&reference).unwrap().expose(),
+        "isolated-controller-fixture"
+    );
+    assert!(
+        !fs::read_to_string(f.0.join("s/settings.json"))
+            .unwrap_or_default()
+            .contains("isolated-controller-fixture")
+    );
+    p.delete_key(settings).unwrap();
+    wait(&mut p, |p| p.notice.contains("已删除"));
+    assert_eq!(store.read(&reference).unwrap_err(), PlatformError::NotFound);
     p.begin_close();
     wait(&mut p, PanelController::close_ready);
 }
