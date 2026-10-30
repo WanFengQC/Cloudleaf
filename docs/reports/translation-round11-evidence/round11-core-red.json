@@ -1,0 +1,22 @@
+{
+  "files": [
+    {
+      "path": ".local/round11-core-red/result.json",
+      "bytes": 387,
+      "sha256": "0816bd0cf15e00c8b135b49ec11f104dafee2ecf633094ec2fa1078de68045da",
+      "utf8": "{\r\n  \"command\": [\r\n    \"cargo\",\r\n    \"test\",\r\n    \"-p\",\r\n    \"cloudleaf-translation\",\r\n    \"--test\",\r\n    \"tasks\",\r\n    \"--locked\",\r\n    \"--offline\"\r\n  ],\r\n  \"returncode\": 101,\r\n  \"head\": \"020f15a1281643997cacaa6d52be9b1e4d650299\",\r\n  \"scope\": \"New API absence, not an existing input-core defect\",\r\n  \"test_sha256\": \"fe4d7ac38311d9538e56c7e2b0e9db73fa4191f5b3c224cb3f7cb6cafb25ba66\"\r\n}\r\n"
+    },
+    {
+      "path": ".local/round11-core-red/stderr.txt",
+      "bytes": 1439,
+      "sha256": "504adaacfdb142dd14fbb546677345175bec2315a3986827c7827ffebbd49cd5",
+      "utf8": "   Compiling cloudleaf-translation v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\crates\\cloudleaf-translation)\nerror[E0432]: unresolved imports `cloudleaf_translation::Language`, `cloudleaf_translation::TranslationCancellation`, `cloudleaf_translation::TranslationContext`, `cloudleaf_translation::TranslationDirection`, `cloudleaf_translation::TranslationError`, `cloudleaf_translation::TranslationKind`, `cloudleaf_translation::TranslationRequest`\n --> crates\\cloudleaf-translation\\tests\\tasks.rs:2:5\n  |\n2 |     Language, TranslationCancellation, TranslationContext, TranslationDirection, TranslationError,\n  |     ^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^ no `TranslationError` in the root\n  |     |         |                        |                   |\n  |     |         |                        |                   no `TranslationDirection` in the root\n  |     |         |                        no `TranslationContext` in the root\n  |     |         no `TranslationCancellation` in the root\n  |     no `Language` in the root\n3 |     TranslationKind, TranslationRequest,\n  |     ^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^ no `TranslationRequest` in the root\n  |     |\n  |     no `TranslationKind` in the root\n\nFor more information about this error, try `rustc --explain E0432`.\nerror: could not compile `cloudleaf-translation` (test \"tasks\") due to 1 previous error\n"
+    },
+    {
+      "path": ".local/round11-core-red/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    }
+  ]
+}

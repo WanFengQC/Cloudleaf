@@ -1,0 +1,70 @@
+{
+  "files": [
+    {
+      "path": ".local/round11-dictionary-final/01-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round11-dictionary-final/01-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round11-dictionary-final/02-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round11-dictionary-final/02-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round11-dictionary-final/03-stderr.txt",
+      "bytes": 830,
+      "sha256": "16056cfc47f2a21b8c48baf03e72189ae67994ed7dd0a6ba0137ae95c942315b",
+      "utf8": "    Checking cloudleaf-types v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\crates\\cloudleaf-types)\n    Checking cloudleaf-translation v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\crates\\cloudleaf-translation)\n    Checking cloudleaf-pinyin v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\crates\\cloudleaf-pinyin)\n    Checking cloudleaf-dictionary v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\crates\\cloudleaf-dictionary)\n    Checking cloudleaf-candidate v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\crates\\cloudleaf-candidate)\n    Checking cloudleaf-input v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\crates\\cloudleaf-input)\n    Finished `dev` profile [unoptimized + debuginfo] target(s) in 4.23s\n"
+    },
+    {
+      "path": ".local/round11-dictionary-final/03-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round11-dictionary-final/04-stderr.txt",
+      "bytes": 291,
+      "sha256": "fab6bf8efad3b19a2091b0f171c91ba169bddbf67dc768b8e643b04923eb65cf",
+      "utf8": "   Compiling cloudleaf-translation v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\crates\\cloudleaf-translation)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.46s\n     Running tests\\dictionary.rs (target\\debug\\deps\\dictionary-187387bec872925a.exe)\n"
+    },
+    {
+      "path": ".local/round11-dictionary-final/04-stdout.txt",
+      "bytes": 947,
+      "sha256": "0310d8a78c43ddc5299cb03e99167b1acda14709fcf2b7227121456113791fd3",
+      "utf8": "\nrunning 10 tests\ntest malformed_catalog_cannot_supply_a_review_binding ... ok\ntest auto_uses_explicit_lookup_direction_and_sentence_translation_is_absent ... ok\ntest exact_word_and_reverse_queries_preserve_raw_strings_and_research_quality ... ok\ntest lookup_limits_reject_instead_of_silently_dropping_sources ... ok\ntest research_and_pending_records_never_become_production_from_self_claims ... ok\ntest production_needs_actual_review_material_in_addition_to_external_policy ... ok\ntest changing_mapping_invalidates_review_even_when_external_file_hash_is_renewed ... ok\ntest explicit_directed_mapping_needs_external_current_policy_and_is_not_automatically_reversed ... ok\ntest strict_schema_identity_references_and_source_scope_are_checked_at_load ... ok\ntest actual_review_file_needs_current_independent_declarations_and_complete_denominator ... ok\n\ntest result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s\n\n"
+    },
+    {
+      "path": ".local/round11-dictionary-final/05-stderr.txt",
+      "bytes": 1109,
+      "sha256": "0abf0f2c3b57e45c57e87737c7609a02f511cdea5180b9abc66075708577a8ca",
+      "utf8": "test_bad_rows_do_not_disappear_from_denominator (test_translation_dictionary_export.TranslationDictionaryExportTests.test_bad_rows_do_not_disappear_from_denominator) ... ok\r\ntest_exact_projection_retains_license_notice_identity_and_unknown_semantics (test_translation_dictionary_export.TranslationDictionaryExportTests.test_exact_projection_retains_license_notice_identity_and_unknown_semantics) ... ok\r\ntest_hash_corruption_and_unapproved_source_fail_before_catalog_creation (test_translation_dictionary_export.TranslationDictionaryExportTests.test_hash_corruption_and_unapproved_source_fail_before_catalog_creation) ... ok\r\ntest_missing_package_cannot_be_exported (test_translation_dictionary_export.TranslationDictionaryExportTests.test_missing_package_cannot_be_exported) ... ok\r\ntest_same_fixed_input_has_identical_catalog_and_never_overwrites_output (test_translation_dictionary_export.TranslationDictionaryExportTests.test_same_fixed_input_has_identical_catalog_and_never_overwrites_output) ... ok\r\n\r\n----------------------------------------------------------------------\r\nRan 5 tests in 0.281s\r\n\r\nOK\r\n"
+    },
+    {
+      "path": ".local/round11-dictionary-final/05-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round11-dictionary-final/result.json",
+      "bytes": 3317,
+      "sha256": "b2da4fc0624196d143987adac3a6adfc30b7e9ef21734117d93179905bc4ebec",
+      "utf8": "{\r\n  \"head\": \"020f15a1281643997cacaa6d52be9b1e4d650299\",\r\n  \"checks\": [\r\n    {\r\n      \"command\": [\r\n        \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.EXE\",\r\n        \"fmt\",\r\n        \"--all\"\r\n      ],\r\n      \"returncode\": 0,\r\n      \"seconds\": 0.5428225999930874,\r\n      \"stdout\": {\r\n        \"file\": \"01-stdout.txt\",\r\n        \"bytes\": 0,\r\n        \"sha256\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\"\r\n      },\r\n      \"stderr\": {\r\n        \"file\": \"01-stderr.txt\",\r\n        \"bytes\": 0,\r\n        \"sha256\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\"\r\n      }\r\n    },\r\n    {\r\n      \"command\": [\r\n        \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.EXE\",\r\n        \"fmt\",\r\n        \"--all\",\r\n        \"--check\"\r\n      ],\r\n      \"returncode\": 0,\r\n      \"seconds\": 0.5682670999958646,\r\n      \"stdout\": {\r\n        \"file\": \"02-stdout.txt\",\r\n        \"bytes\": 0,\r\n        \"sha256\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\"\r\n      },\r\n      \"stderr\": {\r\n        \"file\": \"02-stderr.txt\",\r\n        \"bytes\": 0,\r\n        \"sha256\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\"\r\n      }\r\n    },\r\n    {\r\n      \"command\": [\r\n        \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.EXE\",\r\n        \"clippy\",\r\n        \"-p\",\r\n        \"cloudleaf-translation\",\r\n        \"--all-targets\",\r\n        \"--locked\",\r\n        \"--offline\",\r\n        \"--\",\r\n        \"-D\",\r\n        \"warnings\"\r\n      ],\r\n      \"returncode\": 0,\r\n      \"seconds\": 4.68045680000796,\r\n      \"stdout\": {\r\n        \"file\": \"03-stdout.txt\",\r\n        \"bytes\": 0,\r\n        \"sha256\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\"\r\n      },\r\n      \"stderr\": {\r\n        \"file\": \"03-stderr.txt\",\r\n        \"bytes\": 830,\r\n        \"sha256\": \"16056cfc47f2a21b8c48baf03e72189ae67994ed7dd0a6ba0137ae95c942315b\"\r\n      }\r\n    },\r\n    {\r\n      \"command\": [\r\n        \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.EXE\",\r\n        \"test\",\r\n        \"-p\",\r\n        \"cloudleaf-translation\",\r\n        \"--test\",\r\n        \"dictionary\",\r\n        \"--locked\",\r\n        \"--offline\"\r\n      ],\r\n      \"returncode\": 0,\r\n      \"seconds\": 5.022902500000782,\r\n      \"stdout\": {\r\n        \"file\": \"04-stdout.txt\",\r\n        \"bytes\": 947,\r\n        \"sha256\": \"0310d8a78c43ddc5299cb03e99167b1acda14709fcf2b7227121456113791fd3\"\r\n      },\r\n      \"stderr\": {\r\n        \"file\": \"04-stderr.txt\",\r\n        \"bytes\": 291,\r\n        \"sha256\": \"fab6bf8efad3b19a2091b0f171c91ba169bddbf67dc768b8e643b04923eb65cf\"\r\n      }\r\n    },\r\n    {\r\n      \"command\": [\r\n        \"C:\\\\Users\\\\EDY\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe\",\r\n        \"-X\",\r\n        \"utf8\",\r\n        \"-m\",\r\n        \"unittest\",\r\n        \"discover\",\r\n        \"-s\",\r\n        \"tests\",\r\n        \"-p\",\r\n        \"test_translation_dictionary_export.py\",\r\n        \"-v\"\r\n      ],\r\n      \"returncode\": 0,\r\n      \"seconds\": 0.47477110000909306,\r\n      \"stdout\": {\r\n        \"file\": \"05-stdout.txt\",\r\n        \"bytes\": 0,\r\n        \"sha256\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\"\r\n      },\r\n      \"stderr\": {\r\n        \"file\": \"05-stderr.txt\",\r\n        \"bytes\": 1109,\r\n        \"sha256\": \"0abf0f2c3b57e45c57e87737c7609a02f511cdea5180b9abc66075708577a8ca\"\r\n      }\r\n    }\r\n  ],\r\n  \"runner_sha256\": \"18ec0179b8c7b2d3c13395835ca0993c83d9633f95b0e908f65d7254ac7dde83\"\r\n}\r\n"
+    }
+  ]
+}
