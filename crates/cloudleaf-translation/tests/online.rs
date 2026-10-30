@@ -480,11 +480,11 @@ fn timeout_and_cancellation_cover_headers_and_response_body() {
         reply.delayed_body = delayed_body;
         let server = LocalServer::new(reply);
         let provider = OpenAiCompatibleProvider::new(config(&server.endpoint), store()).unwrap();
-        let short = TranslationCancellation::new(Duration::from_millis(40));
-        assert_eq!(
-            provider.translate(&request(&provider), &short),
-            Err(TranslationError::Timeout)
-        );
+        let short = TranslationCancellation::new(Duration::from_secs(1));
+        let request = request(&provider);
+        let worker = thread::spawn(move || provider.translate(&request, &short));
+        server.wait_for_request();
+        assert_eq!(worker.join().unwrap(), Err(TranslationError::Timeout));
     }
     let mut reply = Reply::json(answer("late fixture"));
     reply.delay = Duration::from_secs(2);

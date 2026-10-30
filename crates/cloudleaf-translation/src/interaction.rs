@@ -88,8 +88,13 @@ impl TranslationPanel {
     pub fn update(
         &mut self,
         task_id: TranslationTaskId,
+        originating_context: TranslationContext,
         snapshot: TaskSnapshot,
     ) -> Result<(), TranslationError> {
+        // 失败回执没有result.context，必须使用请求发起时捕获的上下文。
+        if originating_context != self.context {
+            return Err(TranslationError::StaleResult);
+        }
         let active = self.current(task_id)?;
         if self.state != TranslationPanelState::Waiting {
             return Err(TranslationError::StaleResult);

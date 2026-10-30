@@ -49,6 +49,7 @@ fn result(id: u64, request: &TranslationRequest) -> TranslationResult {
 fn ready(panel: &mut TranslationPanel, value: TranslationResult) -> Result<(), TranslationError> {
     panel.update(
         value.task_id,
+        value.context,
         TaskSnapshot {
             state: TaskState::Succeeded,
             result: Some(value),
@@ -236,7 +237,7 @@ fn actual_missing_secret_provider_failure_and_panel_cancellation_preserve_input_
         std::thread::yield_now();
     };
     assert_eq!(failed.error, Some(TranslationError::MissingSecret));
-    panel.update(id, failed).unwrap();
+    panel.update(id, request.context, failed).unwrap();
     assert_eq!(panel.state(), TranslationPanelState::Failed);
     panel.cancel();
     assert_eq!(panel.original(), request.text);
@@ -252,9 +253,18 @@ fn failure_from_an_old_service_cannot_replace_a_new_epoch_with_the_same_task_id(
     let mut next = old.clone();
     next.context.epoch += 1;
     panel.focus(next.context);
-    panel.start(TranslationTaskId(1), &next, provider()).unwrap();
-    let late = TaskSnapshot { state: TaskState::Failed, result: None, error: Some(TranslationError::ProviderUnavailable) };
-    assert_eq!(panel.update(TranslationTaskId(1), late), Err(TranslationError::StaleResult));
+    panel
+        .start(TranslationTaskId(1), &next, provider())
+        .unwrap();
+    let late = TaskSnapshot {
+        state: TaskState::Failed,
+        result: None,
+        error: Some(TranslationError::ProviderUnavailable),
+    };
+    assert_eq!(
+        panel.update(TranslationTaskId(1), old.context, late),
+        Err(TranslationError::StaleResult)
+    );
     assert_eq!(panel.state(), TranslationPanelState::Waiting);
     ready(&mut panel, result(1, &next)).unwrap();
 }
