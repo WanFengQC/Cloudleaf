@@ -228,7 +228,7 @@ unsafe extern "system" fn window_proc(
                     WM_CLOSE => {
                         state.closing = true;
                         state.controller.begin_close();
-                        SetWindowTextW(state.control(KEY), wide("").as_ptr());
+                        state.clear_password();
                         state.render();
                         return 0;
                     }
@@ -717,6 +717,7 @@ impl WindowState {
             let result = match id {
                 START => self.controller.start(),
                 CANCEL => {
+                    self.clear_password();
                     self.controller.cancel();
                     Ok(())
                 }
@@ -751,7 +752,10 @@ impl WindowState {
                 APPLY => self
                     .settings_from_controls()
                     .and_then(|s| self.controller.apply(s)),
-                RESET => self.controller.apply(Settings::default()),
+                RESET => {
+                    self.clear_password();
+                    self.controller.apply(Settings::default())
+                }
                 CACHE | NETWORK | LOOPBACK => {
                     self.controller.mark_settings_dirty();
                     Ok(())
@@ -763,8 +767,7 @@ impl WindowState {
                 SAVE_KEY => {
                     let settings = self.settings_from_controls();
                     let value = read_text(self.control(KEY), 8192);
-                    SetWindowTextW(self.control(KEY), wide("").as_ptr());
-                    SendMessageW(self.control(KEY), EM_EMPTYUNDOBUFFER, 0, 0);
+                    self.clear_password();
                     match value {
                         Ok(value) => Secret::new(value).and_then(|secret| {
                             settings.and_then(|s| self.controller.save_key(s, secret))
@@ -772,14 +775,23 @@ impl WindowState {
                         Err(e) => Err(e),
                     }
                 }
-                DELETE_KEY => self
-                    .settings_from_controls()
-                    .and_then(|s| self.controller.delete_key(s)),
+                DELETE_KEY => {
+                    self.clear_password();
+                    self.settings_from_controls()
+                        .and_then(|s| self.controller.delete_key(s))
+                }
                 _ => Ok(()),
             };
             if let Err(error) = result {
                 self.controller.record_error(error);
             }
+        }
+    }
+
+    unsafe fn clear_password(&self) {
+        unsafe {
+            SetWindowTextW(self.control(KEY), wide("").as_ptr());
+            SendMessageW(self.control(KEY), EM_EMPTYUNDOBUFFER, 0, 0);
         }
     }
 
@@ -992,20 +1004,58 @@ mod tests {
 
     #[test]
     fn cancel_and_delete_clear_unsaved_password_text() {
-        let directory = std::env::temp_dir().join(format!("cloudleaf-r12-password-{}",std::process::id()));
-        let mut controller = PanelController::new(directory,None,Arc::new(WindowsCredentialStore::default())).unwrap();
-        let deadline=Instant::now()+Duration::from_secs(3);
-        while controller.settings_serial==0 {controller.tick();assert!(Instant::now()<deadline);std::thread::yield_now();}
+        let directory =
+            std::env::temp_dir().join(format!("cloudleaf-r12-password-{}", std::process::id()));
+        let mut controller =
+            PanelController::new(directory, None, Arc::new(WindowsCredentialStore::default()))
+                .unwrap();
+        let deadline = Instant::now() + Duration::from_secs(3);
+        while controller.settings_serial == 0 {
+            controller.tick();
+            assert!(Instant::now() < deadline);
+            std::thread::yield_now();
+        }
         unsafe {
-            let window=NativeWindow(CreateWindowExW(0,wide("STATIC").as_ptr(),wide("R12 password lifecycle fixture").as_ptr(),0,0,0,1120,850,null_mut(),null_mut(),GetModuleHandleW(null()),null()));
+            let window = NativeWindow(CreateWindowExW(
+                0,
+                wide("STATIC").as_ptr(),
+                wide("R12 password lifecycle fixture").as_ptr(),
+                0,
+                0,
+                0,
+                1120,
+                850,
+                null_mut(),
+                null_mut(),
+                GetModuleHandleW(null()),
+                null(),
+            ));
             assert!(!window.0.is_null());
-            let mut state=WindowState{controller,controls:Vec::new(),parent:window.0,font:null_mut(),dpi:96,serial:u64::MAX,last_result:String::new(),last_status:String::new(),closing:false};
-            state.create_controls(window.0);state.render();
+            let mut state = WindowState {
+                controller,
+                controls: Vec::new(),
+                parent: window.0,
+                font: null_mut(),
+                dpi: 96,
+                serial: u64::MAX,
+                last_result: String::new(),
+                last_status: String::new(),
+                closing: false,
+            };
+            state.create_controls(window.0);
+            state.render();
             // endpoint为空，删除仅验证UI清理，不会访问任何生产凭据。
-            for action in [CANCEL,DELETE_KEY,RESET] {
-                SetWindowTextW(state.control(KEY),wide("unsaved-mechanism-secret").as_ptr());
-                state.command(window.0,action);
-                assert_eq!(GetWindowTextLengthW(state.control(KEY)),0,"取消、删除、重置不得保留未保存密钥");
+            for action in [CANCEL, DELETE_KEY, RESET] {
+                SetWindowTextW(
+                    state.control(KEY),
+                    wide("unsaved-mechanism-secret").as_ptr(),
+                );
+                state.command(window.0, action);
+                assert_eq!(
+                    GetWindowTextLengthW(state.control(KEY)),
+                    0,
+                    "取消、删除、重置不得保留未保存密钥"
+                );
             }
             state.controller.begin_close();
         }
