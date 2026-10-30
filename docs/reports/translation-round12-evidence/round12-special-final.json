@@ -1,0 +1,58 @@
+{
+  "files": [
+    {
+      "path": ".local/round12-special-final/0-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round12-special-final/0-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round12-special-final/1-stderr.txt",
+      "bytes": 821,
+      "sha256": "5457cd324c9f098a4986b2f3083dd37bf9403e74733d4a255e76cab939457b82",
+      "utf8": "    Checking cloudleaf-translation-panel v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\apps\\cloudleaf-translation-panel)\n    Checking cloudleaf-translation v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\crates\\cloudleaf-translation)\nerror[E0600]: cannot apply unary operator `!` to type `&mut bool`\n  --> crates\\cloudleaf-translation\\tests\\nonblocking_shutdown.rs:53:50\n   |\n53 |         drop(signal.wait_while(guard, |released| !released).unwrap());\n   |                                                  ^^^^^^^^^ cannot apply unary operator `!`\n\nFor more information about this error, try `rustc --explain E0600`.\nerror: could not compile `cloudleaf-translation` (test \"nonblocking_shutdown\") due to 1 previous error\nwarning: build failed, waiting for other jobs to finish...\n"
+    },
+    {
+      "path": ".local/round12-special-final/1-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round12-special-final/2-stderr.txt",
+      "bytes": 381,
+      "sha256": "2f6c6e183ce242d03784dcb471a3bd96009372975cef8ba8923ad1a6e588c4ff",
+      "utf8": "   Compiling cloudleaf-translation-panel v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\apps\\cloudleaf-translation-panel)\nerror: failed to remove file `C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\target\\debug\\cloudleaf-translation-panel.exe`\n\nCaused by:\n  拒绝访问。 (os error 5)\nwarning: build failed, waiting for other jobs to finish...\n"
+    },
+    {
+      "path": ".local/round12-special-final/2-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round12-special-final/3-stderr.txt",
+      "bytes": 619,
+      "sha256": "f6d55e900d3faa21f00b85aedeb865124344688ec0696f82e61ca9a4be978f8d",
+      "utf8": "   Compiling cloudleaf-translation v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\crates\\cloudleaf-translation)\nerror[E0600]: cannot apply unary operator `!` to type `&mut bool`\n  --> crates\\cloudleaf-translation\\tests\\nonblocking_shutdown.rs:53:50\n   |\n53 |         drop(signal.wait_while(guard, |released| !released).unwrap());\n   |                                                  ^^^^^^^^^ cannot apply unary operator `!`\n\nFor more information about this error, try `rustc --explain E0600`.\nerror: could not compile `cloudleaf-translation` (test \"nonblocking_shutdown\") due to 1 previous error\n"
+    },
+    {
+      "path": ".local/round12-special-final/3-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round12-special-final/results.json",
+      "bytes": 888,
+      "sha256": "bdce5897f61273c9e81125c38d8022abfd1cabf8ed916fc433e23865cd4aaf91",
+      "utf8": "[\r\n  {\r\n    \"command\": [\r\n      \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.exe\",\r\n      \"fmt\",\r\n      \"--all\"\r\n    ],\r\n    \"returncode\": 0\r\n  },\r\n  {\r\n    \"command\": [\r\n      \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.exe\",\r\n      \"clippy\",\r\n      \"--workspace\",\r\n      \"--all-targets\",\r\n      \"--locked\",\r\n      \"--offline\",\r\n      \"--\",\r\n      \"-D\",\r\n      \"warnings\"\r\n    ],\r\n    \"returncode\": 101\r\n  },\r\n  {\r\n    \"command\": [\r\n      \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.exe\",\r\n      \"test\",\r\n      \"-p\",\r\n      \"cloudleaf-translation-panel\",\r\n      \"--all-targets\",\r\n      \"--locked\",\r\n      \"--offline\"\r\n    ],\r\n    \"returncode\": 101\r\n  },\r\n  {\r\n    \"command\": [\r\n      \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.exe\",\r\n      \"test\",\r\n      \"-p\",\r\n      \"cloudleaf-translation\",\r\n      \"--test\",\r\n      \"nonblocking_shutdown\",\r\n      \"--locked\",\r\n      \"--offline\"\r\n    ],\r\n    \"returncode\": 101\r\n  }\r\n]\r\n"
+    }
+  ]
+}
