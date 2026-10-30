@@ -42,7 +42,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: cloudleaf-translation-panel-windows-x86_64
-          path: target/release/cloudleaf-translation-panel.exe
+          path: |
+            target/release/cloudleaf-translation-panel.exe
+            LICENSE
+            THIRD_PARTY_NOTICES.md
+            licenses/translation/
+            apps/cloudleaf-translation-panel/README.md
           if-no-files-found: error
       - name: Dependency, license and fixture audit
         run: python scripts/check_workspace.py

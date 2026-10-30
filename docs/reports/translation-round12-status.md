@@ -101,7 +101,7 @@ Cargo.lock SHA-256：`1d33e38816d16e3d6653f3ed066b0c5a9ac1f518ce5a116af95ba0adf7
 
 ## CI、模型和剩余门禁
 
-实现d50e41a已普通push，[push CI41096582002](https://github.com/WanFengQC/Cloudleaf/actions/runs/41096582002)执行两平台检查。workflow新增Windows release EXE上传，Linux继续跨平台核心检查。最终文档提交还须核它自己的event=push/head_sha、两job全部step、三个产物head/digest，最终结果放交付凭据与PR正文；此处不提前写CI成功。
+实现d50e41a已普通push，[push CI41096582002](https://github.com/WanFengQC/Cloudleaf/actions/runs/41096582002)执行两平台检查。首次Windows构建产物仅含EXE，后续包审阅发现缺少随包许可/使用文件，已补入项目LICENSE、THIRD_PARTY_NOTICES、全部translation许可原件及app README；旧单文件artifact不能被宣称为完整发布包。Linux继续跨平台核心检查。最终提交还须核它自己的event=push/head_sha、两job全部step、三个产物head/digest及Windows包内文件，最终结果放交付凭据与PR正文；此处不提前写CI成功。
 
 离线模型只读审查见[固定来源、许可和接入方案](../translation-offline-model-round12-review.md)。OPUS双方向/M2M100仅候选，权利原件/运行库/性能待核；NLLB非商业及用途边界不适合当前产品随包。没有下载巨型权重、引入推理运行时或伪造推理结果，面板真实显示未安装。
 
