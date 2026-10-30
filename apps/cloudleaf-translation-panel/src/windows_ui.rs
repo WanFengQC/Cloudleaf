@@ -991,6 +991,27 @@ mod tests {
     }
 
     #[test]
+    fn cancel_and_delete_clear_unsaved_password_text() {
+        let directory = std::env::temp_dir().join(format!("cloudleaf-r12-password-{}",std::process::id()));
+        let mut controller = PanelController::new(directory,None,Arc::new(WindowsCredentialStore::default())).unwrap();
+        let deadline=Instant::now()+Duration::from_secs(3);
+        while controller.settings_serial==0 {controller.tick();assert!(Instant::now()<deadline);std::thread::yield_now();}
+        unsafe {
+            let window=NativeWindow(CreateWindowExW(0,wide("STATIC").as_ptr(),wide("R12 password lifecycle fixture").as_ptr(),0,0,0,1120,850,null_mut(),null_mut(),GetModuleHandleW(null()),null()));
+            assert!(!window.0.is_null());
+            let mut state=WindowState{controller,controls:Vec::new(),parent:window.0,font:null_mut(),dpi:96,serial:u64::MAX,last_result:String::new(),last_status:String::new(),closing:false};
+            state.create_controls(window.0);state.render();
+            // endpoint为空，删除仅验证UI清理，不会访问任何生产凭据。
+            for action in [CANCEL,DELETE_KEY,RESET] {
+                SetWindowTextW(state.control(KEY),wide("unsaved-mechanism-secret").as_ptr());
+                state.command(window.0,action);
+                assert_eq!(GetWindowTextLengthW(state.control(KEY)),0,"取消、删除、重置不得保留未保存密钥");
+            }
+            state.controller.begin_close();
+        }
+    }
+
+    #[test]
     fn refresh_preserves_native_selection_until_the_change_notification() {
         let directory =
             std::env::temp_dir().join(format!("cloudleaf-r12-native-{}", std::process::id()));
