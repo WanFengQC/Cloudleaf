@@ -5,7 +5,7 @@
 ## 版本、关系与文件
 
 - 基线：`3946d22295591aa080ff7bea007f9f410b245fc0`，实际 fetch 后本地/远程一致，工作区原先干净。
-- 设计先行：`2c05aca`；原生面板/凭据/设置实现：`9e5192b`；真实控件方向复位反例：`156a602`；本轮完整被测实现 **`d50e41a36a002e9e36140a2893484c05bae89fba`**。
+- 设计先行：`2c05aca`；原生面板/凭据/设置实现：`9e5192b`；真实控件方向复位反例：`156a602`；首轮完整被测实现 `d50e41a36a002e9e36140a2893484c05bae89fba`；未保存密码残留反例 `06b0f0b`，最终完整被测实现 **`f88456bd2649cf75ddebcf12d2dd197d7b1eeeb8`**。
 - 继续原工作区 `C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf` 和分支 `codex/translation-round11`，仅普通 push 更新 [Draft PR #5](https://github.com/WanFengQC/Cloudleaf/pull/5)。本报告/证据另作文档提交；最终 HEAD 与其自己的 push CI 放在 `.local/round12-delivery-receipt.json` 及 PR 正文，不能用旧 CI 代表最终文档提交。
 - main 仍以 `a564fd47b0f054ff360592af3ccb8d744021160f` 为检查点；原四个方向不得改动。没有合并、rebase、强推、Ready、TSF 操作或8h/24h长测。
 
@@ -38,7 +38,7 @@ cloudleaf-translation-panel.exe --dictionary PATH_TO_CATALOG_JSON --settings-dir
 C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\.local\round12-build\release\cloudleaf-translation-panel.exe
 ```
 
-该实现 Release 为 **3,863,040 B**，SHA-256 **`19e3b9c2ba2803f3b2844b17164f6a6b80d105de824ae8a7989ee73ac86b6502`**。这是本机MSVC构建身份，不假定与不同环境CI字节相同。启动代码与数据路径见 app README；没有随 EXE 自动下载词典或模型。
+最终实现 Release 为 **3,863,040 B**，SHA-256 **`2ab568bb2aa331b3b5770768f2aff4b44797085904312f9935cf4a410712d9d8`**。首轮d50产物身份另保留在artifacts证据，不转绑此版本。这是本机MSVC构建身份，不假定与不同环境CI字节相同。启动代码与数据路径见 app README；没有随 EXE 自动下载词典或模型。
 
 ## 交互、线程与关闭
 
@@ -74,7 +74,7 @@ C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\.local\round12-build
 
 ## 自动化、失败与身份
 
-完整被测源码d50e41a；Windows本地12条命令分别保存原始stdout/stderr/返回码，全为0：[full记录](translation-round12-evidence/round12-full.json)。
+首轮完整被测源码d50e41a（121 Rust）见[原full记录](translation-round12-evidence/round12-full.json)。收尾审查用真实EDIT发现取消/删除/重置仍保留未保存密码文本，06b0f0b反例exit101（24 UTF16单元仍在）；修复为统一清空并清除undo，不声称擦净系统内部副本。最终被测源码f88456b的12条命令再次分别保存原始stdout/stderr/返回码，全为0：[最终full记录](translation-round12-evidence/round12-full-final.json)。
 
 ```text
 git diff --check
@@ -91,7 +91,7 @@ python scripts/evaluate_algorithms.py --output-dir REPORT_DIR
 cargo build -p cloudleaf-translation-panel --release --locked --offline --message-format=json
 ```
 
-本地**121 Rust / 22 Python passed，0 ignored**；新增19 Rust（原102保留）。Linux仅运行适用测试，不能把Windows特定测试不编译当成其通过。已覆盖真实本地TCP取消/超时/迟到成功与错误、配置切换/单次授权、离线零请求、快速请求有界拒绝、失焦/原文保留、非合作worker预算/异常线程退出、设置/凭据/原生控件及剪贴板边界。没有默认引擎替换或真实语言质量声明。
+最终本地**122 Rust / 22 Python passed，0 ignored**；新增20 Rust（原102保留）。Linux仅运行适用测试，不能把Windows特定测试不编译当成其通过。已覆盖真实本地TCP取消/超时/迟到成功与错误、配置切换/单次授权、离线零请求、快速请求有界拒绝、失焦/原文保留、非合作worker预算/异常线程退出、设置/凭据/原生控件/未保存密码清理及剪贴板边界。没有默认引擎替换或真实语言质量声明。
 
 保留的实际失败：新关闭/平台API缺失101；EnableWindow feature/import错误、测试语法/闭包解引用错误、Clippy折叠if和参数数量失败；错误断言把已禁用provider期待成OnlineNotAuthorized（原语义实际是ProviderUnavailable，保留零连接断言并纠正预期）；30次快请求后错误假设20次yield队列必空（改为验证有界Busy并在3秒内恢复，预算和失败分母保留）；真实方向复位断言101；正在运行EXE的os error5。另一次PowerShell辅助脚本生成引号解析失败及文档patch匹配失败只在会话转录，不是产品测试结果，改用文件脚本/准确patch后继续。没有删除原测试、禁用lint或放宽网络/资源门槛。
 
@@ -101,7 +101,7 @@ Cargo.lock SHA-256：`1d33e38816d16e3d6653f3ed066b0c5a9ac1f518ce5a116af95ba0adf7
 
 ## CI、模型和剩余门禁
 
-实现d50e41a已普通push，[push CI41096582002](https://github.com/WanFengQC/Cloudleaf/actions/runs/41096582002)执行两平台检查。首次Windows构建产物仅含EXE，后续包审阅发现缺少随包许可/使用文件，已补入项目LICENSE、THIRD_PARTY_NOTICES、全部translation许可原件及app README；旧单文件artifact不能被宣称为完整发布包。Linux继续跨平台核心检查。最终提交还须核它自己的event=push/head_sha、两job全部step、三个产物head/digest及Windows包内文件，最终结果放交付凭据与PR正文；此处不提前写CI成功。
+首轮d50e41a的[push CI41096582002](https://github.com/WanFengQC/Cloudleaf/actions/runs/41096582002)两平台已通过，不能转绑收尾修复。首次Windows构建产物仅含EXE，后续包审阅发现缺少随包许可/使用文件，已补入项目LICENSE、THIRD_PARTY_NOTICES、全部translation许可原件及app README；旧单文件artifact不能被宣称为完整发布包。最终实现f88456b另有[push CI41098383564](https://github.com/WanFengQC/Cloudleaf/actions/runs/41098383564)。Linux继续跨平台核心检查。最终报告提交还须核它自己的event=push/head_sha、两job全部step、三个产物head/digest及Windows包内文件，最终结果放交付凭据与PR正文；此处不提前写最终CI成功。
 
 离线模型只读审查见[固定来源、许可和接入方案](../translation-offline-model-round12-review.md)。OPUS双方向/M2M100仅候选，权利原件/运行库/性能待核；NLLB非商业及用途边界不适合当前产品随包。没有下载巨型权重、引入推理运行时或伪造推理结果，面板真实显示未安装。
 
