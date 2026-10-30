@@ -968,3 +968,32 @@ unsafe fn read_text(hwnd: HWND, limit: usize) -> Result<String, TranslationError
         value
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::time::{Duration, Instant};
+
+    struct NativeWindow(HWND);
+    impl Drop for NativeWindow { fn drop(&mut self) { unsafe { DestroyWindow(self.0); } } }
+
+    #[test]
+    fn refresh_preserves_native_selection_until_the_change_notification() {
+        let directory = std::env::temp_dir().join(format!("cloudleaf-r12-native-{}",std::process::id()));
+        let mut controller = PanelController::new(directory,None,Arc::new(WindowsCredentialStore::default())).unwrap();
+        let deadline = Instant::now()+Duration::from_secs(3);
+        while controller.settings_serial==0 { controller.tick(); assert!(Instant::now()<deadline); std::thread::yield_now(); }
+        unsafe {
+            let window=NativeWindow(CreateWindowExW(0,wide("STATIC").as_ptr(),wide("R12 native control regression").as_ptr(),0,0,0,1120,850,null_mut(),null_mut(),GetModuleHandleW(null()),null()));
+            assert!(!window.0.is_null());
+            let mut state=WindowState{controller,controls:Vec::new(),parent:window.0,font:null_mut(),dpi:96,serial:u64::MAX,last_result:String::new(),last_status:String::new(),closing:false};
+            state.create_controls(window.0);state.render();
+            SendMessageW(state.control(DIRECTION),CB_SETCURSEL,1,0);
+            state.render();
+            assert_eq!(SendMessageW(state.control(DIRECTION),CB_GETCURSEL,0,0),1,"刷新不能覆盖用户尚在选择的方向");
+            state.command(window.0,((CBN_SELCHANGE as usize)<<16)|DIRECTION);
+            assert_eq!(state.controller.direction,DirectionChoice::EnglishChinese);
+            state.controller.begin_close();
+        }
+    }
+}
