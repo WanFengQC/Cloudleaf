@@ -5,7 +5,9 @@ members = [
     "crates/cloudleaf-dictionary",
     "crates/cloudleaf-candidate",
     "crates/cloudleaf-input",
+    "crates/cloudleaf-translation",
     "apps/cloudleaf-cli",
+    "apps/cloudleaf-translation-panel",
 ]
 resolver = "3"
 
@@ -22,6 +24,7 @@ cloudleaf-pinyin = { path = "crates/cloudleaf-pinyin", version = "=0.1.0" }
 cloudleaf-dictionary = { path = "crates/cloudleaf-dictionary", version = "=0.1.0" }
 cloudleaf-candidate = { path = "crates/cloudleaf-candidate", version = "=0.1.0" }
 cloudleaf-input = { path = "crates/cloudleaf-input", version = "=0.1.0" }
+cloudleaf-translation = { path = "crates/cloudleaf-translation", version = "=0.1.0" }
 
 [workspace.lints.rust]
 unsafe_code = "forbid"

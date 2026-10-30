@@ -25,6 +25,8 @@ jobs:
         run: rustup toolchain install 1.90.0 --profile minimal --component clippy --component rustfmt
       - name: Fetch precisely locked build dependencies
         run: cargo fetch --locked
+      - name: Install pinned development vulnerability auditor
+        run: cargo install cargo-audit --version 0.22.2 --locked
       - name: Format
         run: cargo fmt --all --check
       - name: Lint
@@ -33,8 +35,24 @@ jobs:
         run: cargo test --workspace --all-targets --locked --offline
       - name: Documentation tests
         run: cargo test --workspace --doc --locked --offline
+      - name: Release workspace build
+        run: cargo build --workspace --release --locked --offline
+      - name: Upload Windows translation panel executable
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: cloudleaf-translation-panel-windows-x86_64
+          path: |
+            target/release/cloudleaf-translation-panel.exe
+            LICENSE
+            THIRD_PARTY_NOTICES.md
+            licenses/translation/
+            apps/cloudleaf-translation-panel/README.md
+          if-no-files-found: error
       - name: Dependency, license and fixture audit
         run: python scripts/check_workspace.py
+      - name: Translation dependency license originals and RustSec audit
+        run: python scripts/audit_translation_dependencies.py --output .local/translation-dependency-audit.json
       - name: Evaluation and artifact provenance tests
         run: python -m unittest discover -s tests -p "test_*.py"
       - name: Benchmark smoke
@@ -47,3 +65,4 @@ jobs:
           path: |
             .local/m2-performance.json
             .local/algorithm-v1/
+            .local/translation-dependency-audit.json

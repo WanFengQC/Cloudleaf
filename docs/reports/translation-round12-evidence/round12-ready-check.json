@@ -1,0 +1,58 @@
+{
+  "files": [
+    {
+      "path": ".local/round12-ready-check/0-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round12-ready-check/0-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round12-ready-check/1-stderr.txt",
+      "bytes": 215,
+      "sha256": "1b5dc6814aa784aaee09a6eef28020ec6e439a39722e082400c2eafaf181e9c4",
+      "utf8": "    Checking cloudleaf-translation-panel v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\apps\\cloudleaf-translation-panel)\n    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.91s\n"
+    },
+    {
+      "path": ".local/round12-ready-check/1-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round12-ready-check/2-stderr.txt",
+      "bytes": 663,
+      "sha256": "c4f5bd29ab4c1ff82893f8e02312a909dc7cf1fd66363ef7297106354afa16c7",
+      "utf8": "   Compiling cloudleaf-translation-panel v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\apps\\cloudleaf-translation-panel)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.50s\n     Running unittests src\\lib.rs (.local\\round12-build\\debug\\deps\\cloudleaf_translation_panel-8fe9c92f0c230770.exe)\n     Running unittests src\\main.rs (.local\\round12-build\\debug\\deps\\cloudleaf_translation_panel-766683d7398b0579.exe)\n     Running tests\\controller.rs (.local\\round12-build\\debug\\deps\\controller-beba09ae7179b0de.exe)\n     Running tests\\platform_settings.rs (.local\\round12-build\\debug\\deps\\platform_settings-6a587fcddf7eac10.exe)\n"
+    },
+    {
+      "path": ".local/round12-ready-check/2-stdout.txt",
+      "bytes": 1746,
+      "sha256": "0704e388b3feefa56b31afe0c6bc122b2b27379a456810c38ef61421942d782c",
+      "utf8": "\nrunning 1 test\ntest windows_ui::tests::refresh_preserves_native_selection_until_the_change_notification ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 5 tests\ntest repeated_actions_changes_and_focus_invalidate_without_losing_input ... ok\ntest actual_dictionary_roundtrip_keeps_research_status_original_and_capabilities ... ok\ntest controller_key_commands_use_real_isolated_windows_credentials ... ok\ntest online_requires_explicit_authorization_and_late_errors_cannot_replace_new_success ... ok\ntest cancel_late_success_timeout_offline_and_provider_switch_are_real ... ok\n\ntest result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.03s\n\n\nrunning 10 tests\ntest credential_namespaces_are_application_owned_and_debug_redacted ... ok\ntest clipboard_encoding_is_unicode_crlf_and_nul_terminated ... ok\ntest reference_is_endpoint_bound_and_settings_debug_excludes_content ... ok\ntest defaults_and_strict_settings_validation_never_enable_network ... ok\ntest isolated_real_windows_credential_roundtrip_update_delete_and_limit ... ok\ntest saved_settings_reload_offline_and_valid_previous_version_is_retained ... ok\ntest busy_clipboard_is_reported_without_reading_or_replacing_existing_content ... ok\ntest corrupt_real_credential_is_rejected_and_isolated_fixture_is_removed ... ok\ntest corruption_recovery_preserves_original_and_does_not_overwrite_valid_backup ... ok\ntest migration_unknown_fields_size_and_interrupted_temporary_files_are_safe ... ok\n\ntest result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s\n\n"
+    },
+    {
+      "path": ".local/round12-ready-check/3-stderr.txt",
+      "bytes": 192,
+      "sha256": "8cbeb4ca03e4cc729354f217db7da4153b66439df22defa9e06ad5c7e7689695",
+      "utf8": "    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.36s\n     Running tests\\nonblocking_shutdown.rs (.local\\round12-build\\debug\\deps\\nonblocking_shutdown-55c40b2445d198a6.exe)\n"
+    },
+    {
+      "path": ".local/round12-ready-check/3-stdout.txt",
+      "bytes": 335,
+      "sha256": "9a2e053f85590649be99356bf1e1cf1ceb55640137117afb60e48f37588b5553",
+      "utf8": "\nrunning 3 tests\ntest closing_idle_workers_is_nonblocking_and_eventually_reclaims_them ... ok\ntest noncooperative_worker_keeps_its_budget_until_real_exit ... ok\ntest provider_thread_exit_is_reported_and_shutdown_retains_the_failure ... ok\n\ntest result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n"
+    },
+    {
+      "path": ".local/round12-ready-check/results.json",
+      "bytes": 1350,
+      "sha256": "18cea61563cf30e8dc395aacf95efb3bebe6e2e58a0fbf94e84d82712547f799",
+      "utf8": "[\r\n  {\r\n    \"command\": [\r\n      \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.exe\",\r\n      \"fmt\",\r\n      \"--all\"\r\n    ],\r\n    \"returncode\": 0,\r\n    \"CARGO_TARGET_DIR\": \"C:\\\\Users\\\\EDY\\\\.codex\\\\worktrees\\\\translation-round11\\\\Cloudleaf\\\\.local\\\\round12-build\"\r\n  },\r\n  {\r\n    \"command\": [\r\n      \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.exe\",\r\n      \"clippy\",\r\n      \"--workspace\",\r\n      \"--all-targets\",\r\n      \"--locked\",\r\n      \"--offline\",\r\n      \"--\",\r\n      \"-D\",\r\n      \"warnings\"\r\n    ],\r\n    \"returncode\": 0,\r\n    \"CARGO_TARGET_DIR\": \"C:\\\\Users\\\\EDY\\\\.codex\\\\worktrees\\\\translation-round11\\\\Cloudleaf\\\\.local\\\\round12-build\"\r\n  },\r\n  {\r\n    \"command\": [\r\n      \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.exe\",\r\n      \"test\",\r\n      \"-p\",\r\n      \"cloudleaf-translation-panel\",\r\n      \"--all-targets\",\r\n      \"--locked\",\r\n      \"--offline\"\r\n    ],\r\n    \"returncode\": 0,\r\n    \"CARGO_TARGET_DIR\": \"C:\\\\Users\\\\EDY\\\\.codex\\\\worktrees\\\\translation-round11\\\\Cloudleaf\\\\.local\\\\round12-build\"\r\n  },\r\n  {\r\n    \"command\": [\r\n      \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.exe\",\r\n      \"test\",\r\n      \"-p\",\r\n      \"cloudleaf-translation\",\r\n      \"--test\",\r\n      \"nonblocking_shutdown\",\r\n      \"--locked\",\r\n      \"--offline\"\r\n    ],\r\n    \"returncode\": 0,\r\n    \"CARGO_TARGET_DIR\": \"C:\\\\Users\\\\EDY\\\\.codex\\\\worktrees\\\\translation-round11\\\\Cloudleaf\\\\.local\\\\round12-build\"\r\n  }\r\n]\r\n"
+    }
+  ]
+}

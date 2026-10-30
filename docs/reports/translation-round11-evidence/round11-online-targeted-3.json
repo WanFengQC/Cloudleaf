@@ -1,0 +1,46 @@
+{
+  "files": [
+    {
+      "path": ".local/round11-online-targeted-3/command-01-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round11-online-targeted-3/command-01-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round11-online-targeted-3/command-02-stderr.txt",
+      "bytes": 283,
+      "sha256": "0c4ed6735f84fc3027edbb26832fb15de95625b846e6772bc80fe9d0824ba103",
+      "utf8": "   Compiling cloudleaf-translation v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\crates\\cloudleaf-translation)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.81s\n     Running tests\\online.rs (target\\debug\\deps\\online-7980f2c255331009.exe)\n"
+    },
+    {
+      "path": ".local/round11-online-targeted-3/command-02-stdout.txt",
+      "bytes": 983,
+      "sha256": "c1d32950c0560315903dea7e3bbd439b0d330615834bdee163c4845cab706448",
+      "utf8": "\nrunning 11 tests\ntest input_and_wire_body_limits_reject_before_network ... ok\ntest configuration_is_explicit_and_stale_consent_does_not_follow_an_endpoint_or_model_change ... ok\ntest disabled_no_consent_missing_secret_and_offline_mode_make_zero_connections ... ok\ntest secrets_configuration_and_results_are_redacted_and_store_is_session_only ... ok\ntest a_failed_call_can_be_explicitly_requested_again_without_poisoning_the_provider ... ok\ntest explicit_user_endpoint_handles_both_directions_auto_and_unicode ... ok\ntest response_caps_cover_both_content_length_and_chunked_transfer ... ok\ntest redirect_is_not_followed_and_disconnect_is_classified ... ok\ntest status_errors_have_no_response_body_and_do_not_automatically_retry ... ok\ntest invalid_truncated_refused_and_tool_responses_never_become_translation ... ok\ntest timeout_and_cancellation_cover_headers_and_response_body ... ok\n\ntest result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s\n\n"
+    },
+    {
+      "path": ".local/round11-online-targeted-3/command-03-stderr.txt",
+      "bytes": 205,
+      "sha256": "80800843100a33ff647bdda5c7e1bc01f8640a54cdce0eeb5a219073ff3e7511",
+      "utf8": "    Checking cloudleaf-translation v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\crates\\cloudleaf-translation)\n    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.90s\n"
+    },
+    {
+      "path": ".local/round11-online-targeted-3/command-03-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round11-online-targeted-3/result.json",
+      "bytes": 2648,
+      "sha256": "d7e447a2d14828ba018d0893a345ea84979bffb22dbedd96dee3339bc8237c7a",
+      "utf8": "{\n  \"head\": \"020f15a1281643997cacaa6d52be9b1e4d650299\",\n  \"started_at_utc\": \"2026-10-30T09:28:20.447696+00:00\",\n  \"commands\": [\n    {\n      \"command\": [\n        \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.EXE\",\n        \"fmt\",\n        \"-p\",\n        \"cloudleaf-translation\"\n      ],\n      \"returncode\": 0,\n      \"seconds\": 0.45723410000209697,\n      \"stdout\": {\n        \"file\": \"command-01-stdout.txt\",\n        \"bytes\": 0,\n        \"sha256\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\"\n      },\n      \"stderr\": {\n        \"file\": \"command-01-stderr.txt\",\n        \"bytes\": 0,\n        \"sha256\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\"\n      }\n    },\n    {\n      \"command\": [\n        \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.EXE\",\n        \"test\",\n        \"-p\",\n        \"cloudleaf-translation\",\n        \"--test\",\n        \"online\",\n        \"--locked\",\n        \"--offline\"\n      ],\n      \"returncode\": 0,\n      \"seconds\": 4.550129800001741,\n      \"stdout\": {\n        \"file\": \"command-02-stdout.txt\",\n        \"bytes\": 983,\n        \"sha256\": \"c1d32950c0560315903dea7e3bbd439b0d330615834bdee163c4845cab706448\"\n      },\n      \"stderr\": {\n        \"file\": \"command-02-stderr.txt\",\n        \"bytes\": 283,\n        \"sha256\": \"0c4ed6735f84fc3027edbb26832fb15de95625b846e6772bc80fe9d0824ba103\"\n      }\n    },\n    {\n      \"command\": [\n        \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.EXE\",\n        \"clippy\",\n        \"-p\",\n        \"cloudleaf-translation\",\n        \"--all-targets\",\n        \"--locked\",\n        \"--offline\",\n        \"--\",\n        \"-D\",\n        \"warnings\"\n      ],\n      \"returncode\": 0,\n      \"seconds\": 2.238327600003686,\n      \"stdout\": {\n        \"file\": \"command-03-stdout.txt\",\n        \"bytes\": 0,\n        \"sha256\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\"\n      },\n      \"stderr\": {\n        \"file\": \"command-03-stderr.txt\",\n        \"bytes\": 205,\n        \"sha256\": \"80800843100a33ff647bdda5c7e1bc01f8640a54cdce0eeb5a219073ff3e7511\"\n      }\n    }\n  ],\n  \"runner_sha256\": \"5a012a2483cb911f054f30465269127d6a956b6f12154c8702d7c5c770634e9c\",\n  \"source_sha256\": {\n    \"crates/cloudleaf-translation/src/online.rs\": \"8b8d4d70b45a3542f6373e7869375b495c8fdaa3d7bec389d1148f202e94da75\",\n    \"crates/cloudleaf-translation/src/secret.rs\": \"5fcb61fd6f57c8c9605debc3598644deb9e42101eac1e293adc0e91665cbfa35\",\n    \"crates/cloudleaf-translation/tests/online.rs\": \"12ca4254dc2521331dd7fff9b0c927930661ebd536c2a6e5b390844949d34bac\"\n  },\n  \"initial_old_dependency_check\": \"First cargo check succeeded on prior RustSec-rejected dependency versions; tool transcript only, not original byte capture; not acceptance\"\n}\n"
+    }
+  ]
+}

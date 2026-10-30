@@ -1,0 +1,22 @@
+{
+  "files": [
+    {
+      "path": ".local/round11-archive-red/result.json",
+      "bytes": 94,
+      "sha256": "1069781ea5537e1e00f08422acc426f02fb05715e18a17ef2a4a6f87a503abeb",
+      "utf8": "{\"command\": [\"python\", \"-X\", \"utf8\", \".local/archive_round11_evidence.py\"], \"returncode\": 1}\r\n"
+    },
+    {
+      "path": ".local/round11-archive-red/stderr.txt",
+      "bytes": 323,
+      "sha256": "2e08c1a1ea66ed6dc933cff0290976f080b189e7162e6e68384c732de2cf3bd6",
+      "utf8": "Traceback (most recent call last):\r\n  File \"C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\archive_round11_evidence.py\", line 53, in <module>\r\n    for row in json.loads(path.read_text(encoding='utf-8'))['files']:\r\n               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\r\nKeyError: 'files'\r\n"
+    },
+    {
+      "path": ".local/round11-archive-red/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    }
+  ]
+}
