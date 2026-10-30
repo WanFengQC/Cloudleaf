@@ -38,9 +38,13 @@ HTTPS证书正常校验，禁止重定向/系统代理/URL userinfo/query/fragme
 
 拟精确采用缓存已有reqwest0.13.3（default-features=false，rustls-no-provider）、rustls0.23.40 ring/std/tls12、tokio1.52.3及必要serde/serde_json；最终实际lock/transitive metadata与许可证原件逐项审核并固定政策，未核者不能隐式加入。核心crate依赖closure继续不含网络库。参考[官方Chat协议](https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/create)与[固定reqwest文档](https://docs.rs/reqwest/0.13.3/reqwest/struct.ClientBuilder.html)，本轮不是官方服务接入或翻译质量证明。
 
+首次实际RustSec审计拒绝上述缓存rustls/tokio版本（4条rustls advisory及tokio unsound警告）。保留失败数据库commit与原文，实施前改为精确rustls0.23.46/tokio1.54.1并重锁/重审，不忽略警告；reqwest0.13.3无该次告警。TLS库实际默认protocol retry也显式关闭。系统DNS不能即时硬取消时保留worker直至实际退出，不通过提前drop runtime制造无限遗留DNS线程。
+
 ## 输入法交互
 
 平台无关面板保留原文、请求上下文、当前task/result version。选择词/短语或明确触发整句→等待→展示原文/译文→复制或确认。复制只是返回给平台的clipboard intent，不直接操作系统；提交只有显式确认且task/context/result version仍当前时返回commit intent，不能自动调用输入核心。取消保留原文与输入状态；失焦/新会话/新请求取消旧task并拒绝迟到结果；同结果不得重复确认。真实复制/TSF/候选UI不在本轮连接。
+
+只读复核复现：新Service的TaskId可从1重新分配，旧失败snapshot不含result.context，原update仅核ID会污染新epoch。先保留失败反例；接口改为`update(task_id, originating_context, snapshot)`，所有状态先核请求发起时捕获的context，不能由宿主用当前面板context替代来源。无需全局ID或新增线程。TaskId仍仅Service内唯一，换Service必须更换session/epoch。
 
 ## 失败测试、回归与交付
 

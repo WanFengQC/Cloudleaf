@@ -25,6 +25,8 @@ jobs:
         run: rustup toolchain install 1.90.0 --profile minimal --component clippy --component rustfmt
       - name: Fetch precisely locked build dependencies
         run: cargo fetch --locked
+      - name: Install pinned development vulnerability auditor
+        run: cargo install cargo-audit --version 0.22.2 --locked
       - name: Format
         run: cargo fmt --all --check
       - name: Lint
@@ -35,6 +37,8 @@ jobs:
         run: cargo test --workspace --doc --locked --offline
       - name: Dependency, license and fixture audit
         run: python scripts/check_workspace.py
+      - name: Translation dependency license originals and RustSec audit
+        run: python scripts/audit_translation_dependencies.py --output .local/translation-dependency-audit.json
       - name: Evaluation and artifact provenance tests
         run: python -m unittest discover -s tests -p "test_*.py"
       - name: Benchmark smoke
