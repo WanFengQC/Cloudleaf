@@ -7,8 +7,9 @@ use zeroize::Zeroize;
 pub struct Secret(Vec<u8>);
 
 impl Secret {
-    pub fn new(value: String) -> Result<Self, TranslationError> {
+    pub fn new(mut value: String) -> Result<Self, TranslationError> {
         if value.is_empty() || value.len() > 8192 || value.chars().any(char::is_control) {
+            value.zeroize();
             return Err(TranslationError::InvalidConfig);
         }
         Ok(Self(value.into_bytes()))

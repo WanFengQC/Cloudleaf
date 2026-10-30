@@ -127,6 +127,9 @@ impl TranslationService {
         provider_id: &str,
         request: TranslationRequest,
     ) -> Result<TranslationTaskId, TranslationError> {
+        if self.sender.is_none() {
+            return Err(TranslationError::ProviderUnavailable);
+        }
         request.validate(self.limits.max_input_bytes)?;
         let provider = self.registry.get(provider_id)?;
         validate_admission(&provider, &request, self.limits.offline_only)?;
@@ -298,12 +301,22 @@ impl TranslationService {
             .ok_or(TranslationError::NotFound)
     }
 
-    /// 仅后台显式调用；不合作的第三方provider无法安全强杀。
-    pub fn shutdown(mut self) -> Result<(), TranslationError> {
+    /// 仅发取消和停止接单；窗口线程可以轮询实际worker退出再回收。
+    pub fn begin_shutdown(&mut self) {
         for record in self.tasks.values() {
             record.cancellation.cancel();
         }
         self.sender = None;
+        self.clear_cache();
+    }
+
+    pub fn workers_finished(&self) -> bool {
+        self.workers.iter().all(JoinHandle::is_finished)
+    }
+
+    /// 仅后台或已证明worker退出后调用；不合作的提供者无法安全强杀。
+    pub fn shutdown(mut self) -> Result<(), TranslationError> {
+        self.begin_shutdown();
         let mut error = None;
         for worker in self.workers.drain(..) {
             if worker.join().is_err() {
