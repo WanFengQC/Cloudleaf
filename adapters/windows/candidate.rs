@@ -715,4 +715,63 @@ mod tests {
             assert!(element.GetPageIndex(&mut [], &mut count).is_err());
         }
     }
+
+    #[test]
+    fn candidate_hit_test_rejects_padding_and_unpainted_rows() {
+        let state = Rc::new(UiState::default());
+        let (host, context, _) = candidate_fixture(&state);
+        host.engine
+            .borrow_mut()
+            .handle(InputEvent::Key(Key::Char('i')));
+        let before = host.engine.borrow().frame();
+        assert!(before.candidates.len() > before.page_size);
+        assert_eq!(before.page_size, 5);
+        let mut ui = CandidateUi::new(host.clone(), context, before.clone()).unwrap();
+        ui.update(before.clone(), RECT::default()).unwrap();
+        let window = ui.view.window.get();
+        // pbShow为false，真实窗口始终隐藏；消息直接调用生产window_proc。
+        assert!(!unsafe { IsWindowVisible(window) }.as_bool());
+        for y in [154i16, 0, -1] {
+            let packed = (10u32 | ((y as u16 as u32) << 16)) as isize;
+            unsafe {
+                SendMessageW(window, WM_LBUTTONUP, Some(WPARAM(0)), Some(LPARAM(packed)));
+            }
+            assert_eq!(ui.view.selected.get(), 0, "边距不得选中隐藏候选：y={y}");
+            assert_eq!(host.engine.borrow().frame(), before);
+            assert!(host.engine.borrow().failed_commit().is_none());
+        }
+        ui.close();
+        assert_eq!(state.ended.get(), 1);
+    }
+
+    #[test]
+    fn candidate_hit_test_rejects_horizontal_margin_but_keeps_real_rows() {
+        let state = Rc::new(UiState::default());
+        let (host, context, _) = candidate_fixture(&state);
+        host.engine
+            .borrow_mut()
+            .handle(InputEvent::Key(Key::Char('i')));
+        let before = host.engine.borrow().frame();
+        assert!(before.candidates.len() > before.page_size);
+        let mut ui = CandidateUi::new(host.clone(), context, before.clone()).unwrap();
+        ui.update(before.clone(), RECT::default()).unwrap();
+        let window = ui.view.window.get();
+        assert!(!unsafe { IsWindowVisible(window) }.as_bool());
+        for x in [4i16, 352, 359] {
+            let packed = (x as u16 as u32 | (40u32 << 16)) as isize;
+            unsafe {
+                SendMessageW(window, WM_LBUTTONUP, Some(WPARAM(0)), Some(LPARAM(packed)));
+            }
+            assert_eq!(ui.view.selected.get(), 0, "横向边距不得选择：x={x}");
+            assert_eq!(host.engine.borrow().frame(), before);
+        }
+        // 可见第二行仍进入相同Finalize路径；旧故障宿主拒锁，核心保持原文。
+        unsafe {
+            SendMessageW(window, WM_LBUTTONUP, Some(WPARAM(0)), Some(LPARAM(10 | (40 << 16))));
+        }
+        assert_eq!(ui.view.selected.get(), 1);
+        assert_eq!(host.engine.borrow().frame(), before);
+        ui.close();
+        assert_eq!(state.ended.get(), 1);
+    }
 }
