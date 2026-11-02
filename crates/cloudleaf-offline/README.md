@@ -17,6 +17,8 @@ cargo run -p cloudleaf-offline --example offline_models --release --locked --off
 
 `SOURCE_FILES`包含固定config/source.spm/target.spm/vocab.json和CC-BY4原文，按源锁的相对路径放置。准备工具不联网、不覆盖输出；导入写独立内容版本目录，完整校验后重命名。更新导入新版本，切回旧catalog即可回退，不删除原件或旧版本。显式`offline_models uninstall CATALOG MANAGED_ROOT`仅删除本工具创建且仍完整的版本，存在额外文件、损坏或不符标记时拒绝，保留用户资料。没有物理断电恢复验收。
 
+中断导入可能保留以点开头的staging目录，但不会登记为Ready；下一进程使用独立staging。卸载遇到中途I/O失败可能留下不完整目录，之后自动卸载会拒绝，需人工核对处理。固定内容更新测试只覆盖清单/署名版本并存与回退，未实现任意新权重架构升级。
+
 模型内容固定为研发用途：上游模型声明CC-BY4，en→zh镜像另标Apache2，训练来源完整权利链仍unknown。文件许可、署名和哈希校验不等于生产分发或语言质量批准。输出`Translation + Generated`，不会伪装成已审读的Approved映射。
 
 ## 使用与预算

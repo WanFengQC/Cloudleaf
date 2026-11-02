@@ -37,6 +37,8 @@ jobs:
         run: cargo test --workspace --doc --locked --offline
       - name: Release workspace build
         run: cargo build --workspace --release --locked --offline
+      - name: Release offline model tools
+        run: cargo build -p cloudleaf-offline --examples --release --locked --offline
       - name: Upload Windows translation panel executable
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v4
@@ -48,6 +50,12 @@ jobs:
             THIRD_PARTY_NOTICES.md
             licenses/translation/
             apps/cloudleaf-translation-panel/README.md
+            target/release/examples/offline_models.exe
+            target/release/examples/offline_translate.exe
+            target/release/examples/offline_lifecycle.exe
+            crates/cloudleaf-offline/README.md
+            config/offline-models/
+            config/offline-runtime-source-patches.json
           if-no-files-found: error
       - name: Dependency, license and fixture audit
         run: python scripts/check_workspace.py

@@ -491,7 +491,7 @@ pub fn direction(value: DirectionChoice) -> TranslationDirection {
 
 fn translation_message(error: TranslationError) -> String {
     let message = match error {
-        TranslationError::InputTooLong => "原文超过16KiB UTF-8限制，请缩短",
+        TranslationError::InputTooLong => "原文超过字节或当前提供者token限制，请缩短",
         TranslationError::InvalidInput => "请输入有效的非空文本",
         TranslationError::OnlineNotAuthorized => "本次尚未授权发送，请确认端点并勾选发送授权",
         TranslationError::MissingSecret => "该端点尚未保存API Key",
