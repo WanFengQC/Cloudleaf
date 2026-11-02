@@ -55,3 +55,11 @@ Tokenizer使用配套source.spm/target.spm及vocab.json：SentencePiece piece经
 新增 `vendor/offline` 及单独精确源补丁清单/生成工具/审计。允许的path依赖仅这些固定原件与限定补丁，逐文件哈希约束；不放宽原registry政策到任意path。保留上游LICENSE和原件身份，现有输入核心依赖不升级。维护成本是后续升级时重核这11个修改文件，不能默认沿用安全结论。
 
 设置升至schema3并迁移schema1/2：新增独立offline_catalog，不覆盖在线model或词典路径，迁移/启动继续关闭联网。原测试仅更新当前版本期望并保留旧schema输入覆盖。模型manifest还须保留固定许可原文与署名/来源说明；目前两方向均按具体上游CC-BY4声明记录研发边界，并明确en→zh镜像标签差异。禁止管理器保留名与导入内容冲突，不允许改许可标识伪造准入。
+
+## 真实权重格式发现与转换
+
+两个经授权并实际SHA校验的原始权重以`8002`起始，是旧PyTorch序列化；真实Candle读取返回`invalid Zip archive: Could not find EOCD`，不能采用最初的直接PTH路线。改用Git外独立Python转换环境，固定官方CPU PyTorch **2.10.0+cpu** 与Safetensors **0.7.0**，`torch.load(weights_only=True, map_location="cpu")`仅处理已核SHA的两个固定原件，不接受不可信任意pickle。运行期不调用Python。
+
+转换输出Safetensors：共享词嵌入别名必须与保留的`model.shared.weight`逐值/shape/dtype一致后才移除冗余别名；其余实际参数逐张量保存，读回后核dtype/shape与原始CPU tensor的bitwise哈希。转换命令/工具版本/许可证、原件及转换后SHA与张量校验记录分开保存。模型管理入口固定转换结果身份和原件来源，不以转换成功宣称译文与其他实现或Beam相同。
+
+Rust加载使用Candle安全的buffered Safetensors路径，不调用mmap unsafe；两方向权重文件与各自tokenizer固定绑定。原PTH读取失败、二进制身份和诊断命令保留为真实失败证据。ZIP安全修补仍保留，因为Candle依赖闭包包含其archive reader，不能通过没有调用该reader而忽略依赖审计。
