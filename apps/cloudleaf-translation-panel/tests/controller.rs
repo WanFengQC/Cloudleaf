@@ -331,6 +331,10 @@ fn cancel_late_success_timeout_offline_and_provider_switch_are_real() {
     p.apply(s).unwrap();
     wait(&mut p, |p| p.status == ViewStatus::ProviderUnavailable);
     assert!(p.notice.contains("未安装"));
+    p.set_text("不可用时仍保留原文".into());
+    assert_eq!(p.status, ViewStatus::ProviderUnavailable);
+    p.set_direction(DirectionChoice::EnglishChinese);
+    assert_eq!(p.status, ViewStatus::ProviderUnavailable);
     assert_eq!(p.start(), Err(TranslationError::ProviderUnavailable));
     p.begin_close();
     wait(&mut p, PanelController::close_ready);

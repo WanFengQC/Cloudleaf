@@ -20,6 +20,8 @@
 
 原文、方向、模式、提供者、设置变化、失焦和取消均使旧 task/context 失效。所有回调使用发起时捕获的 context、任务及配置版本；失败也必须经过 TranslationPanel.update。先成功后迟到错误不能覆盖；同文本不同配置不得共享旧授权。任务终态和耗时来自真实 service snapshot / 实际 Instant，不模拟进度。
 
+11月2日Release实测补充：渲染不得通过模式回退修改controller状态或清除错误；提供者能力切换时的模式默认值由controller在adopt处理。不可用提供者在编辑原文/方向后仍须显示ProviderUnavailable，不能仅由无任务推成Idle。
+
 关闭先发取消、停止服务和设置线程，窗口通过定时器轮询最多2秒，绝不在消息线程等待 join。合作路径记录实际退出；若后台尚未退出，关闭独立进程并由操作系统回收，不能声称所有 worker 已正常 join。窗口/字体/剪贴板句柄在所属线程处理，不涉及 COM/TSF。
 
 Win32 SendMessage/SetWindowText 可同步重入：userdata 指向由 run 函数持有的 RefCell，回调 try_borrow_mut，内部程序更新通知不再次借用；在 HWND销毁回调内不释放仍被回调借用的状态。顶层 WM_ACTIVATE 而非子 EDIT 的失焦通知用于会话失效。多行 WM_SETTEXT 不保证 EN_CHANGE，因此程序清空必须显式更新 controller。

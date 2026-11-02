@@ -399,6 +399,9 @@ impl PanelController {
         self.identity = value.identity;
         self.authorization = value.authorization;
         self.capabilities = value.capabilities;
+        if !self.supports_kind(self.kind) {
+            self.kind = TranslationKind::Word;
+        }
         self.notice = value.notice;
         self.error = value.error;
         self.dirty = false;
@@ -426,7 +429,11 @@ impl PanelController {
         self.elapsed = None;
         self.error = None;
         if !self.preparing && self.closing.is_none() {
-            self.status = ViewStatus::Idle;
+            self.status = if self.available() {
+                ViewStatus::Idle
+            } else {
+                ViewStatus::ProviderUnavailable
+            };
         }
     }
 
