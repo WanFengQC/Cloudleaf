@@ -1003,6 +1003,26 @@ mod tests {
     }
 
     #[test]
+    fn rendering_unavailable_provider_preserves_status_and_error() {
+        let directory=std::env::temp_dir().join(format!("cloudleaf-r12-unavailable-{}",std::process::id()));
+        let mut controller=PanelController::new(directory,None,Arc::new(WindowsCredentialStore::default())).unwrap();
+        let deadline=Instant::now()+Duration::from_secs(3);
+        while controller.settings_serial==0 {controller.tick();assert!(Instant::now()<deadline);std::thread::yield_now();}
+        controller.kind=TranslationKind::Phrase;
+        controller.status=crate::controller::ViewStatus::ProviderUnavailable;
+        let error=controller.error.clone();
+        unsafe {
+            let window=NativeWindow(CreateWindowExW(0,wide("STATIC").as_ptr(),wide("R12 unavailable state fixture").as_ptr(),0,0,0,1120,850,null_mut(),null_mut(),GetModuleHandleW(null()),null()));
+            assert!(!window.0.is_null());
+            let mut state=WindowState{controller,controls:Vec::new(),parent:window.0,font:null_mut(),dpi:96,serial:u64::MAX,last_result:String::new(),last_status:String::new(),closing:false};
+            state.create_controls(window.0);state.render();
+            assert_eq!(state.controller.status,crate::controller::ViewStatus::ProviderUnavailable);
+            assert_eq!(state.controller.error,error,"渲染不能清除提供者错误");
+            state.controller.begin_close();
+        }
+    }
+
+    #[test]
     fn cancel_and_delete_clear_unsaved_password_text() {
         let directory =
             std::env::temp_dir().join(format!("cloudleaf-r12-password-{}", std::process::id()));
