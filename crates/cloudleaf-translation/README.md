@@ -27,7 +27,7 @@ Production 载入必须另行提供 `DictionaryTrustPolicy` 的真实路径及�
 ## 在线 API 的调用约束
 
 1. 在设置线程构造 `OpenAiCompatibleConfig`：完整 HTTPS Chat Completions URL、model、密钥引用，显式 `enabled = true`。HTTP 仅允许另行启用的字面 loopback 地址；不跟随重定向，不自动重试或跨服务回退。
-2. 将真实密钥交给 `SecretStore` 实现，配置和日志只保留引用。现有 `SessionSecretStore` 只在会话内保存并在释放 owned secret 时清零；Windows Credential Manager/macOS Keychain/Linux Secret Service 尚未实现，不能把它当作系统安全存储。
+2. 将真实密钥交给 `SecretStore` 实现，配置和日志只保留引用。`SessionSecretStore` 只在会话内保存并在释放 owned secret 时清零；[Windows 面板](../../apps/cloudleaf-translation-panel/README.md)另行实现 Windows Credential Manager 适配。macOS Keychain/Linux Secret Service 尚未实现，会话存储不能代替系统安全存储。
 3. 保存 `provider.authorization()`，注册时显式允许网络，使用同一个版本值填写 `OpenAiCompatibleConfig.config_version` 和 `TranslationProviderConfig.config_version`，创建 `offline_only = false` 的服务。只有用户明确触发翻译时才给请求设置 `send_authorized_to`。endpoint、model、密钥引用或配置变更后需重新取得授权；存在密钥不代表允许发送。
 4. `submit` 返回任务 ID，宿主捕获该请求的 context。换 service 时更换 session/epoch；任务 ID 只在 service 内唯一。向面板传回任意状态时使用 `panel.update(id, captured_context, snapshot)`，不可用当前面板 context 替代捕获值。
 5. 新请求、取消或失焦时显式取消旧任务。`Drop` 不阻塞输入线程；需要回收全部 worker 时在后台调用 `shutdown()`。不合作的提供者或系统 DNS 可能延迟实际退出，期间占用既有预算，不生成替补线程。
@@ -36,4 +36,4 @@ Production 载入必须另行提供 `DictionaryTrustPolicy` 的真实路径及�
 
 ## 尚未实现
 
-离线模型只提供元数据、能力及缺模型错误，没有授权权重或推理 backend；真实 UI、剪贴板、TSF 上屏、平台密钥存储及正式语言质量评估均未交付。新 sidecar 不改变默认输入引擎；不进入 CL-010。协议、边界及验收见 [Round 11 设计](../../docs/translation-round11-design.md)。
+离线模型只提供元数据、能力及缺模型错误，没有授权权重或推理 backend；TSF 上屏、macOS/Linux 平台密钥存储及正式语言质量评估尚未交付。独立 Windows 面板已经实现原生 UI、设置、系统凭据和显式剪贴板复制，其实际验证及未完成验收见 [Round 12 报告](../../docs/reports/translation-round12-status.md)。本 crate 继续保持平台无关，sidecar 不改变默认输入引擎；不进入 CL-010。核心协议见 [Round 11 设计](../../docs/translation-round11-design.md)。
