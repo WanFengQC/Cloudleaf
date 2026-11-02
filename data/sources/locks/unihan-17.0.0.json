@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "source_id": "unicode:unihan-17.0.0",
+  "version": "17.0.0",
+  "format": "unihan-zip",
+  "url": "https://www.unicode.org/Public/17.0.0/ucd/Unihan.zip",
+  "specification_url": "https://www.unicode.org/reports/tr38/tr38-39.html",
+  "sha256": "f7a48b2b545acfaa77b2d607ae28747404ce02baefee16396c5d2d7a8ef34b5e",
+  "bytes": 8518517,
+  "license_id": "Unicode-3.0",
+  "license_url": "https://www.unicode.org/license.txt",
+  "license_file": "data/licenses/Unicode-3.0.txt",
+  "license_sha256": "e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96",
+  "attribution": "Unicode Unihan 17.0.0. Original data copyright 1991-2025 Unicode, Inc.; accompanying Unicode License V3 copyright 1991-2026 Unicode, Inc.",
+  "review_status": "approved",
+  "reviewed_on": "2026-10-22",
+  "automated_download_allowed": true,
+  "acquisition": "Explicit official bulk archive download after source/license review; fixed original bytes cached outside Git.",
+  "transformations": "Extract kMandarin and kDefinition across all Unihan text members; preserve raw readings/glosses and evidence; remove tone marks only for runtime pinyin; no frequency/POS inference.",
+  "limitations": ["Character-level customary Mandarin readings, not complete polyphones or word/phrase pronunciations.", "English character glosses, not complete bilingual senses/POS/collocations.", "kFrequency removed since Unicode 16; frequency remains null/unknown.", "No independent language-accuracy or current frequency-distribution claim."],
+  "redistribution": {"commercial_use": true, "modified_data": true, "retain_copyright_and_permission": true, "endorsement": false}
+}
