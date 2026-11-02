@@ -63,3 +63,9 @@ Tokenizer使用配套source.spm/target.spm及vocab.json：SentencePiece piece经
 转换输出Safetensors：共享词嵌入别名必须与保留的`model.shared.weight`逐值/shape/dtype一致后才移除冗余别名；其余实际参数逐张量保存，读回后核dtype/shape与原始CPU tensor的bitwise哈希。转换命令/工具版本/许可证、原件及转换后SHA与张量校验记录分开保存。模型管理入口固定转换结果身份和原件来源，不以转换成功宣称译文与其他实现或Beam相同。
 
 Rust加载使用Candle安全的buffered Safetensors路径，不调用mmap unsafe；两方向权重文件与各自tokenizer固定绑定。原PTH读取失败、二进制身份和诊断命令保留为真实失败证据。ZIP安全修补仍保留，因为Candle依赖闭包包含其archive reader，不能通过没有调用该reader而忽略依赖审计。
+
+## 最终面板审阅与交付补充
+
+实际离线推理在不足16KiB时也会因256输入token上限返回InputTooLong。面板提示改为“字节或当前提供者token限制”，保留现有错误接口与全部预算；先用原提示的失败回归固定问题。原生多行Edit的UIA SetValue不等同于用户编辑通知，面板验收以实际键入/粘贴为准，不为工具差异修改核心状态流。
+
+CI额外构建离线管理及诊断examples，将管理程序、固定源补丁清单、模型工具说明纳入Windows研发artifact，不打包模型或用户配置。真实权重专项在本地显式执行，CI不下载权重。中断导入的staging不成为Ready；卸载中途失败可能保留不完整目录并拒绝后续自动删除，需要人工核对，不能表述为自动恢复或物理断电验收。

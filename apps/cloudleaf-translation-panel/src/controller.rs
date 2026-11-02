@@ -506,3 +506,15 @@ fn translation_message(error: TranslationError) -> String {
     };
     format!("{message} ({error})")
 }
+
+#[cfg(test)]
+mod message_tests {
+    use super::*;
+
+    #[test]
+    fn input_limit_message_covers_provider_tokens_and_bytes() {
+        let message = translation_message(TranslationError::InputTooLong);
+        assert!(message.contains("token"));
+        assert!(message.contains("字节"));
+    }
+}
