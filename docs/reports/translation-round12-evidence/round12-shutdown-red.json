@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "path": ".local/round12-shutdown-red/0-stderr.txt",
+      "bytes": 68,
+      "sha256": "fb498f98df094e42d0eaa2186c4bc1b09dfd2f2959e83241a2fad200fc5ec5c9",
+      "utf8": "     Locking 136 packages to latest Rust 1.90.0 compatible versions\n"
+    },
+    {
+      "path": ".local/round12-shutdown-red/0-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round12-shutdown-red/1-stderr.txt",
+      "bytes": 986,
+      "sha256": "602a4ca85f67b201132621f145ce560348b13ade80d24e46b2d5440c0468945e",
+      "utf8": "   Compiling cloudleaf-translation v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\crates\\cloudleaf-translation)\nerror[E0599]: no method named `begin_shutdown` found for struct `TranslationService` in the current scope\n --> crates\\cloudleaf-translation\\tests\\nonblocking_shutdown.rs:7:13\n  |\n7 |     service.begin_shutdown();\n  |             ^^^^^^^^^^^^^^\n  |\nhelp: there is a method `shutdown` with a similar name\n  |\n7 -     service.begin_shutdown();\n7 +     service.shutdown();\n  |\n\nerror[E0599]: no method named `workers_finished` found for struct `TranslationService` in the current scope\n --> crates\\cloudleaf-translation\\tests\\nonblocking_shutdown.rs:9:20\n  |\n9 |     while !service.workers_finished() {\n  |                    ^^^^^^^^^^^^^^^^ method not found in `TranslationService`\n\nFor more information about this error, try `rustc --explain E0599`.\nerror: could not compile `cloudleaf-translation` (test \"nonblocking_shutdown\") due to 2 previous errors\n"
+    },
+    {
+      "path": ".local/round12-shutdown-red/1-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round12-shutdown-red/results.json",
+      "bytes": 414,
+      "sha256": "045091f89d8f26c0aafb7556e927e554cf8e5c2b05b876cbdff8a837a13e90d1",
+      "utf8": "[\r\n  {\r\n    \"command\": [\r\n      \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.exe\",\r\n      \"generate-lockfile\",\r\n      \"--offline\"\r\n    ],\r\n    \"returncode\": 0\r\n  },\r\n  {\r\n    \"command\": [\r\n      \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.exe\",\r\n      \"test\",\r\n      \"-p\",\r\n      \"cloudleaf-translation\",\r\n      \"--test\",\r\n      \"nonblocking_shutdown\",\r\n      \"--locked\",\r\n      \"--offline\"\r\n    ],\r\n    \"returncode\": 101\r\n  }\r\n]\r\n"
+    }
+  ]
+}

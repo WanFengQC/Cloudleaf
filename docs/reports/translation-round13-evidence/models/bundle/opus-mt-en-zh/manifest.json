@@ -1,0 +1,56 @@
+{
+  "model_id": "opus-mt-en-zh",
+  "direction": "en-zh",
+  "source_url": "https://huggingface.co/Helsinki-NLP/opus-mt-en-zh",
+  "revision": "408d9bc410a388e1d9aef112a2daba955b945255",
+  "schema": 1,
+  "architecture": "marian",
+  "runtime": "candle-0.9.2-cpu",
+  "tokenizer": "sentencepiece-rs-0.2.2",
+  "license_id": "CC-BY-4.0",
+  "license_status": "research_only",
+  "files": [
+    {
+      "role": "weights",
+      "path": "model.safetensors",
+      "bytes": 312062436,
+      "sha256": "e5f4423b70cb0f5a40d38d1a2733a77cec2aa23cc0bae647985fe17f8f5fe616"
+    },
+    {
+      "role": "config",
+      "path": "config.json",
+      "bytes": 1403,
+      "sha256": "bcae8ed74fed77fb51c58462b62397fee6b1a1a34aece79183a0dd02ad329e71"
+    },
+    {
+      "role": "source_tokenizer",
+      "path": "source.spm",
+      "bytes": 806435,
+      "sha256": "5775ddc9e3ff2fae91554da56468ad35ff56edaba870fea74447bc7234bfdaa8"
+    },
+    {
+      "role": "target_tokenizer",
+      "path": "target.spm",
+      "bytes": 804600,
+      "sha256": "81dc94efa84e4025ef38d25d5d07429fe41e3eb29d44003f1db6fe98487b0052"
+    },
+    {
+      "role": "vocabulary",
+      "path": "vocab.json",
+      "bytes": 1617791,
+      "sha256": "f1832ca38f7aa158b9a944ff583e4901e6b37d9d4ad9241f03838e636e9cfb03"
+    },
+    {
+      "role": "license",
+      "path": "CC-BY-4.0.txt",
+      "bytes": 18657,
+      "sha256": "9ba9550ad48438d0836ddab3da480b3b69ffa0aac7b7878b5a0039e7ab429411"
+    },
+    {
+      "role": "notice",
+      "path": "NOTICE.txt",
+      "bytes": 841,
+      "sha256": "bbefab3f24af6005d260d93fd0758b97ea7c6e50a467b0bc308c5dd08af53b97"
+    }
+  ]
+}

@@ -7,3 +7,10 @@
 *.tsv text eol=lf
 *.json text eol=lf
 *.md text eol=lf
+licenses/translation/* -text whitespace=-blank-at-eol,-blank-at-eof
+licenses/translation/manifest.json text eol=lf whitespace=blank-at-eol,blank-at-eof
+licenses/translation/upstream-acquisition.json text eol=lf whitespace=blank-at-eol,blank-at-eof
+vendor/offline/** -text whitespace=-blank-at-eol,-blank-at-eof,-space-before-tab
+config/offline-runtime-source-patches.json -text whitespace=cr-at-eol
+tests/fixtures/translation-offline-smoke.jsonl text eol=lf
+docs/reports/translation-round13-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,-space-before-tab

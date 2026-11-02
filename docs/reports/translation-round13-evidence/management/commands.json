@@ -1,0 +1,246 @@
+[
+  {
+    "label": "source-check",
+    "command": [
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-build\\release\\examples\\offline_models.exe",
+      "check",
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-model-bundle\\catalog.json"
+    ],
+    "returncode": 0,
+    "expected_returncode": 0,
+    "seconds": 1.8292258000001311
+  },
+  {
+    "label": "import",
+    "command": [
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-build\\release\\examples\\offline_models.exe",
+      "import",
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-model-bundle\\catalog.json",
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-management\\managed"
+    ],
+    "returncode": 0,
+    "expected_returncode": 0,
+    "seconds": 1.954939800023567
+  },
+  {
+    "label": "duplicate-import",
+    "command": [
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-build\\release\\examples\\offline_models.exe",
+      "import",
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-model-bundle\\catalog.json",
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-management\\managed"
+    ],
+    "returncode": 0,
+    "expected_returncode": 0,
+    "seconds": 1.5825047999969684
+  },
+  {
+    "label": "uninstall-extra-file-refused",
+    "command": [
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-build\\release\\examples\\offline_models.exe",
+      "uninstall",
+      "\\\\?\\C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-management\\managed\\catalog-f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f\\catalog.json",
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-management\\managed"
+    ],
+    "returncode": 1,
+    "expected_returncode": 1,
+    "seconds": 0.6852062999969348
+  },
+  {
+    "label": "damaged-weights-not-ready",
+    "command": [
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-build\\release\\examples\\offline_models.exe",
+      "check",
+      "\\\\?\\C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-management\\managed\\catalog-f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f\\catalog.json"
+    ],
+    "returncode": 2,
+    "expected_returncode": 2,
+    "seconds": 0.37850329995853826
+  },
+  {
+    "label": "damaged-uninstall-refused",
+    "command": [
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-build\\release\\examples\\offline_models.exe",
+      "uninstall",
+      "\\\\?\\C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-management\\managed\\catalog-f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f\\catalog.json",
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-management\\managed"
+    ],
+    "returncode": 1,
+    "expected_returncode": 1,
+    "seconds": 0.40270780003629625
+  },
+  {
+    "label": "restored-weights-ready",
+    "command": [
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-build\\release\\examples\\offline_models.exe",
+      "check",
+      "\\\\?\\C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-management\\managed\\catalog-f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f\\catalog.json"
+    ],
+    "returncode": 0,
+    "expected_returncode": 0,
+    "seconds": 0.7947608000249602
+  },
+  {
+    "label": "missing-tokenizer-not-installed",
+    "command": [
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-build\\release\\examples\\offline_models.exe",
+      "check",
+      "\\\\?\\C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-management\\managed\\catalog-f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f\\catalog.json"
+    ],
+    "returncode": 2,
+    "expected_returncode": 2,
+    "seconds": 0.35629480000352487
+  },
+  {
+    "label": "restored-tokenizer",
+    "command": [
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-build\\release\\examples\\offline_models.exe",
+      "check",
+      "\\\\?\\C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-management\\managed\\catalog-f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f\\catalog.json"
+    ],
+    "returncode": 0,
+    "expected_returncode": 0,
+    "seconds": 0.6912600999930874
+  },
+  {
+    "label": "mismatched-pinned-file",
+    "command": [
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-build\\release\\examples\\offline_models.exe",
+      "check",
+      "\\\\?\\C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-management\\managed\\catalog-f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f\\catalog.json"
+    ],
+    "returncode": 2,
+    "expected_returncode": 2,
+    "seconds": 0.04198699997505173
+  },
+  {
+    "label": "restored-manifest",
+    "command": [
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-build\\release\\examples\\offline_models.exe",
+      "check",
+      "\\\\?\\C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-management\\managed\\catalog-f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f\\catalog.json"
+    ],
+    "returncode": 0,
+    "expected_returncode": 0,
+    "seconds": 0.6719688000157475
+  },
+  {
+    "label": "metadata-version-import",
+    "command": [
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-build\\release\\examples\\offline_models.exe",
+      "import",
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-management\\version-source\\catalog.json",
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-management\\managed"
+    ],
+    "returncode": 0,
+    "expected_returncode": 0,
+    "seconds": 2.3161577999708243
+  },
+  {
+    "label": "metadata-version-ready",
+    "command": [
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-build\\release\\examples\\offline_models.exe",
+      "check",
+      "\\\\?\\C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-management\\managed\\catalog-b9c3caf11bcc0c183ba58fd1c7382f7b92c83f8edfe74b8b31147dc1413afda1\\catalog.json"
+    ],
+    "returncode": 0,
+    "expected_returncode": 0,
+    "seconds": 0.8067326999735087
+  },
+  {
+    "label": "rollback-old-ready",
+    "command": [
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-build\\release\\examples\\offline_models.exe",
+      "check",
+      "\\\\?\\C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-management\\managed\\catalog-f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f\\catalog.json"
+    ],
+    "returncode": 0,
+    "expected_returncode": 0,
+    "seconds": 0.7481523999595083
+  },
+  {
+    "label": "uninstall-new-version",
+    "command": [
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-build\\release\\examples\\offline_models.exe",
+      "uninstall",
+      "\\\\?\\C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-management\\managed\\catalog-b9c3caf11bcc0c183ba58fd1c7382f7b92c83f8edfe74b8b31147dc1413afda1\\catalog.json",
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-management\\managed"
+    ],
+    "returncode": 0,
+    "expected_returncode": 0,
+    "seconds": 0.7865023000049405
+  },
+  {
+    "label": "actual-interrupted-import",
+    "command": [
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-build\\release\\examples\\offline_models.exe",
+      "import",
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-model-bundle\\catalog.json",
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-management\\interrupted"
+    ],
+    "returncode": 1,
+    "harness_termination": true,
+    "staging_names": [
+      ".catalog-f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f-21172"
+    ],
+    "physical_power_loss": false
+  },
+  {
+    "label": "after-interruption-new-process",
+    "command": [
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-build\\release\\examples\\offline_models.exe",
+      "import",
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-model-bundle\\catalog.json",
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-management\\interrupted"
+    ],
+    "returncode": 0,
+    "expected_returncode": 0,
+    "seconds": 1.9311841999879107
+  },
+  {
+    "label": "after-interruption-ready",
+    "command": [
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-build\\release\\examples\\offline_models.exe",
+      "check",
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-management\\interrupted\\catalog-f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f\\catalog.json"
+    ],
+    "returncode": 0,
+    "expected_returncode": 0,
+    "seconds": 1.1905866999877617
+  },
+  {
+    "label": "uninstall-recovered-version",
+    "command": [
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-build\\release\\examples\\offline_models.exe",
+      "uninstall",
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-management\\interrupted\\catalog-f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f\\catalog.json",
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-management\\interrupted"
+    ],
+    "returncode": 0,
+    "expected_returncode": 0,
+    "seconds": 0.9676593999611214
+  },
+  {
+    "label": "uninstall-old-version",
+    "command": [
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-build\\release\\examples\\offline_models.exe",
+      "uninstall",
+      "\\\\?\\C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-management\\managed\\catalog-f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f\\catalog.json",
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-management\\managed"
+    ],
+    "returncode": 0,
+    "expected_returncode": 0,
+    "seconds": 1.2355531999492086
+  },
+  {
+    "label": "source-after-uninstall",
+    "command": [
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-build\\release\\examples\\offline_models.exe",
+      "check",
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-model-bundle\\catalog.json"
+    ],
+    "returncode": 0,
+    "expected_returncode": 0,
+    "seconds": 0.9534514000406489
+  }
+]

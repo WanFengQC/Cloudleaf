@@ -1,0 +1,22 @@
+{
+  "files": [
+    {
+      "path": ".local/round12-native-selection-red/result.json",
+      "bytes": 247,
+      "sha256": "64b10e583cc70bc24142e351bb19157bfc5053f1588720e0e3398c1944bf9051",
+      "utf8": "{\r\n  \"command\": [\r\n    \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.exe\",\r\n    \"test\",\r\n    \"-p\",\r\n    \"cloudleaf-translation-panel\",\r\n    \"--lib\",\r\n    \"refresh_preserves_native_selection\",\r\n    \"--locked\",\r\n    \"--offline\"\r\n  ],\r\n  \"returncode\": 101\r\n}\r\n"
+    },
+    {
+      "path": ".local/round12-native-selection-red/stderr.txt",
+      "bytes": 392,
+      "sha256": "366071e237b4929c967812a9f2eada3d8bbd58ffc40d135465f2645c28a66d71",
+      "utf8": "   Compiling cloudleaf-translation-panel v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\apps\\cloudleaf-translation-panel)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.82s\n     Running unittests src\\lib.rs (target\\debug\\deps\\cloudleaf_translation_panel-8fe9c92f0c230770.exe)\nerror: test failed, to rerun pass `-p cloudleaf-translation-panel --lib`\n"
+    },
+    {
+      "path": ".local/round12-native-selection-red/stdout.txt",
+      "bytes": 772,
+      "sha256": "4d38033573cc7fa6a40ed1cf4302ccf51f29859e423f320bb860c404bf377bad",
+      "utf8": "\nrunning 1 test\ntest windows_ui::tests::refresh_preserves_native_selection_until_the_change_notification ... FAILED\n\nfailures:\n\n---- windows_ui::tests::refresh_preserves_native_selection_until_the_change_notification stdout ----\n\nthread 'windows_ui::tests::refresh_preserves_native_selection_until_the_change_notification' panicked at apps\\cloudleaf-translation-panel\\src\\windows_ui.rs:993:13:\nassertion `left == right` failed: 刷新不能覆盖用户尚在选择的方向\n  left: 0\n right: 1\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n\n\nfailures:\n    windows_ui::tests::refresh_preserves_native_selection_until_the_change_notification\n\ntest result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s\n\n"
+    }
+  ]
+}

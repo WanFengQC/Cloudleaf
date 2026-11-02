@@ -1,0 +1,22 @@
+{
+  "files": [
+    {
+      "path": ".local/round12-panel-first/result.json",
+      "bytes": 212,
+      "sha256": "4142d12314fcccdfa4bef8d59ad969fd53ab7de59520b0bb7708750dab5c9a2e",
+      "utf8": "{\r\n  \"command\": [\r\n    \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.exe\",\r\n    \"test\",\r\n    \"-p\",\r\n    \"cloudleaf-translation-panel\",\r\n    \"--all-targets\",\r\n    \"--locked\",\r\n    \"--offline\"\r\n  ],\r\n  \"returncode\": 101\r\n}\r\n"
+    },
+    {
+      "path": ".local/round12-panel-first/stderr.txt",
+      "bytes": 1976,
+      "sha256": "484247b5855881af573459e0a918df4c47cf29428ba01e179d777eddc0558741",
+      "utf8": "   Compiling cloudleaf-translation-panel v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\apps\\cloudleaf-translation-panel)\nwarning: unused import: `ProviderChoice`\n --> apps\\cloudleaf-translation-panel\\src\\controller.rs:2:40\n  |\n2 | use crate::settings::{DirectionChoice, ProviderChoice, Settings};\n  |                                        ^^^^^^^^^^^^^^\n  |\n  = note: `#[warn(unused_imports)]` on by default\n\nerror[E0425]: cannot find function, tuple struct or tuple variant `EnableWindow` in this scope\n   --> apps\\cloudleaf-translation-panel\\src\\windows_ui.rs:317:13\n    |\n317 |             EnableWindow(self.control(KIND), if self.controller.settings.provider==ProviderChoice::OfflineModel {0}else{1});\n    |             ^^^^^^^^^^^^ not found in this scope\n\nerror[E0425]: cannot find function, tuple struct or tuple variant `EnableWindow` in this scope\n   --> apps\\cloudleaf-translation-panel\\src\\windows_ui.rs:318:13\n    |\n318 | ...   EnableWindow(self.control(START),i32::from(!self.closing && !self.controller.dirty && self.controller.supports_kind(self.controller...\n    |       ^^^^^^^^^^^^ not found in this scope\n\nerror[E0425]: cannot find function, tuple struct or tuple variant `EnableWindow` in this scope\n   --> apps\\cloudleaf-translation-panel\\src\\windows_ui.rs:319:13\n    |\n319 |             EnableWindow(self.control(COPY),i32::from(!self.closing && self.controller.result().is_some()));\n    |             ^^^^^^^^^^^^ not found in this scope\n\nFor more information about this error, try `rustc --explain E0425`.\nwarning: `cloudleaf-translation-panel` (lib test) generated 1 warning\nerror: could not compile `cloudleaf-translation-panel` (lib test) due to 3 previous errors; 1 warning emitted\nwarning: build failed, waiting for other jobs to finish...\nwarning: `cloudleaf-translation-panel` (lib) generated 1 warning (1 duplicate)\nerror: could not compile `cloudleaf-translation-panel` (lib) due to 3 previous errors; 1 warning emitted\n"
+    },
+    {
+      "path": ".local/round12-panel-first/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    }
+  ]
+}
