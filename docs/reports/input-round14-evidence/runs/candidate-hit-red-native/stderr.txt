@@ -1,0 +1,16 @@
+warning: method `capacity_bounds` is never used
+   --> crates\cloudleaf-input\src\sentence.rs:152:19
+    |
+139 | impl SentenceBackend {
+    | -------------------- method in this implementation
+...
+152 |     pub(crate) fn capacity_bounds(&self) -> SearchCapacityBounds {
+    |                   ^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `cloudleaf-input` (lib) generated 1 warning
+   Compiling cloudleaf-windows-ime v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\apps\windows-ime)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 7.12s
+     Running unittests src\lib.rs (.local\build\debug\deps\cloudleaf_windows_ime-84ae73690c7526dc.exe)
+error: test failed, to rerun pass `-p cloudleaf-windows-ime --lib`

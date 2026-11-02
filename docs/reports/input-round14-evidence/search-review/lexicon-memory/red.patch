@@ -1,0 +1,30 @@
+--- a/crates/cloudleaf-search/src/lexicon.rs
++++ b/crates/cloudleaf-search/src/lexicon.rs
+@@ -230,3 +230,27 @@
+         self.trie.len()
+     }
+ }
++
++#[cfg(test)]
++mod compact_capacity_tests {
++    use super::*;
++
++    #[test]
++    fn loaded_immutable_index_does_not_keep_growth_slack() {
++        let syllables = ["a", "ai", "an", "ang", "ao", "ba", "bai", "ban", "bang", "bao", "bei", "ben", "beng"];
++        let mut text = "# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\n".to_owned();
++        for (index, syllable) in syllables.iter().enumerate() {
++            text.push_str(&format!("id-{index}\t{syllable} a\t词{index}\t\tunknown\t\tfixture\tid-{index}\tMIT\n"));
++        }
++        let lexicon = Lexicon::from_tsv(&text).unwrap();
++        assert_eq!(lexicon.entries.capacity(), lexicon.entries.len());
++        assert_eq!(lexicon.trie.capacity(), lexicon.trie.len());
++        for entry in &lexicon.entries {
++            assert_eq!(entry.letters.capacity(), entry.letters.len());
++        }
++        for node in &lexicon.trie {
++            assert_eq!(node.exact.capacity(), node.exact.len());
++            assert_eq!(node.prefix.capacity(), node.prefix.len());
++        }
++    }
++}

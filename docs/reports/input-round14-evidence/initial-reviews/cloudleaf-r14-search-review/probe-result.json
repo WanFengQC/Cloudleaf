@@ -1,0 +1,85 @@
+{
+  "identity": {
+    "at_utc": "2026-11-02T09:34:31.756716+00:00",
+    "head": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+    "binary_sha256": "2d143a4f642079c96fcae6a3750528a419b19c8967e492883ab0dee49eb3abff",
+    "data_sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+    "tool_sha256": "740e3aebf8ec975a7c96199b962fd6eda8b489f9855201c8839d27cacccac880",
+    "cases_sha256": "efae5cb9e8198a423c6041f2b0e56b49381427d04b9addeb6ecdbaeaef3d39d5",
+    "formal_quality_metrics": null
+  },
+  "runs": [
+    {
+      "command": [
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\target\\release\\examples\\resource_probe.exe",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\real-lexicon\\cccedict-round4-2401b16\\runtime.tsv",
+        "C:\\Users\\EDY\\.codex\\tmp\\cloudleaf-r14-search-review\\cases.tsv",
+        "reference",
+        "8",
+        "1",
+        "0",
+        "16384",
+        "200000",
+        "50000",
+        "5"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "f9bc80d624f453bfb1580db0ed5fa39479b925e7f719fe8fc0629cabbf69c9a3",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\target\\release\\examples\\resource_probe.exe",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\real-lexicon\\cccedict-round4-2401b16\\runtime.tsv",
+        "C:\\Users\\EDY\\.codex\\tmp\\cloudleaf-r14-search-review\\cases.tsv",
+        "exact",
+        "8",
+        "1",
+        "0",
+        "16384",
+        "200000",
+        "50000",
+        "5"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e75b4eac707ac960d9d0dd7d8c137d2514e3558b3e26844ff97bdffe892a3836",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\target\\release\\examples\\resource_probe.exe",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\real-lexicon\\cccedict-round4-2401b16\\runtime.tsv",
+        "C:\\Users\\EDY\\.codex\\tmp\\cloudleaf-r14-search-review\\cases.tsv",
+        "position",
+        "8",
+        "1",
+        "0",
+        "16384",
+        "200000",
+        "50000",
+        "5"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "8e3879be7cc84f2f81f8f3cc5a97aa03a10395eef378a4fb444476416c05bd23",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\target\\release\\examples\\resource_probe.exe",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl008-search\\Cloudleaf\\.local\\real-lexicon\\cccedict-round4-2401b16\\runtime.tsv",
+        "C:\\Users\\EDY\\.codex\\tmp\\cloudleaf-r14-search-review\\cases.tsv",
+        "beam",
+        "8",
+        "1",
+        "0",
+        "16384",
+        "200000",
+        "50000",
+        "5"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "3e61eb2bc14f4059a69bdaecbf67f20a801c6e84ab100d6c5a5b2a477528f284",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

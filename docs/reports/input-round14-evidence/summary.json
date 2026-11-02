@@ -1,0 +1,241 @@
+{
+  "implementation_head": "a707d20ece06196edbbed3c0bf0add995c20434e",
+  "rust_passed": 193,
+  "rust_ignored": 2,
+  "python_passed": 57,
+  "doc_test_examples": 0,
+  "full_commands": 13,
+  "real_dll_ignored_test_run_separately": {
+    "returncode": 0,
+    "cycles": 21,
+    "scope": "LoadLibrary and actual COM callbacks with fake manager; no TSF registration"
+  },
+  "source_ancestry": {
+    "base": "83a2666fa748b4ae9cba41a5880ba5353e71c9a3",
+    "direction_merge_base": "9af9bc1b2ebacc3ad76124cfa39d09de8eb77bd1"
+  },
+  "default_candidate_backend": "legacy unchanged; search explicit opt-in",
+  "real_runtime_sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+  "actual_input_trace": {
+    "command": [
+      "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\build\\release\\examples\\input_trace.exe",
+      "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+      "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+    ],
+    "returncode": 0,
+    "seconds": 0.9801110000116751,
+    "head": "a707d20ece06196edbbed3c0bf0add995c20434e",
+    "executable_sha256": "6197b6ddf1a1e34e8bbb5453d4c33d2b4404a218142335b1535800570fdc897b",
+    "events_sha256": "e087cc965bd2f6c889a84f3db89b3829ccfda452f436d7b3cf562bbb965602ad",
+    "tool_sha256": "98a066f6f320bed4c458f418055ab0a9d27b22313bac83b3e4c8f3c579ed90ad",
+    "runtime": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+      "bytes": 23602173,
+      "sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+    },
+    "sample_count": 19,
+    "resources": [
+      {
+        "seconds": 0.00942750001559034,
+        "working": 2576384,
+        "private": 380928,
+        "os_peak_working": 2576384,
+        "os_peak_pagefile": 380928
+      },
+      {
+        "seconds": 0.05982419999781996,
+        "working": 28352512,
+        "private": 24317952,
+        "os_peak_working": 28352512,
+        "os_peak_pagefile": 24342528
+      },
+      {
+        "seconds": 0.11028290004469454,
+        "working": 40062976,
+        "private": 36438016,
+        "os_peak_working": 40062976,
+        "os_peak_pagefile": 36438016
+      },
+      {
+        "seconds": 0.16049060004297644,
+        "working": 55156736,
+        "private": 58806272,
+        "os_peak_working": 60567552,
+        "os_peak_pagefile": 64774144
+      },
+      {
+        "seconds": 0.21100860001752153,
+        "working": 70037504,
+        "private": 69435392,
+        "os_peak_working": 70037504,
+        "os_peak_pagefile": 69435392
+      },
+      {
+        "seconds": 0.26185549999354407,
+        "working": 85159936,
+        "private": 95502336,
+        "os_peak_working": 92344320,
+        "os_peak_pagefile": 105009152
+      },
+      {
+        "seconds": 0.3122027000063099,
+        "working": 102359040,
+        "private": 107823104,
+        "os_peak_working": 102359040,
+        "os_peak_pagefile": 107823104
+      },
+      {
+        "seconds": 0.36268760001985356,
+        "working": 119365632,
+        "private": 120045568,
+        "os_peak_working": 119365632,
+        "os_peak_pagefile": 120045568
+      },
+      {
+        "seconds": 0.41324920003535226,
+        "working": 147537920,
+        "private": 148582400,
+        "os_peak_working": 147537920,
+        "os_peak_pagefile": 148582400
+      },
+      {
+        "seconds": 0.4638024000450969,
+        "working": 172130304,
+        "private": 174743552,
+        "os_peak_working": 172130304,
+        "os_peak_pagefile": 174743552
+      },
+      {
+        "seconds": 0.5145470999996178,
+        "working": 185470976,
+        "private": 185516032,
+        "os_peak_working": 194887680,
+        "os_peak_pagefile": 215379968
+      },
+      {
+        "seconds": 0.5648610999924131,
+        "working": 187887616,
+        "private": 188162048,
+        "os_peak_working": 194887680,
+        "os_peak_pagefile": 215379968
+      },
+      {
+        "seconds": 0.6153552000178024,
+        "working": 187887616,
+        "private": 188162048,
+        "os_peak_working": 194887680,
+        "os_peak_pagefile": 215379968
+      },
+      {
+        "seconds": 0.6658880000468343,
+        "working": 187998208,
+        "private": 188362752,
+        "os_peak_working": 194887680,
+        "os_peak_pagefile": 215379968
+      },
+      {
+        "seconds": 0.7164335999987088,
+        "working": 188063744,
+        "private": 188362752,
+        "os_peak_working": 194887680,
+        "os_peak_pagefile": 215379968
+      },
+      {
+        "seconds": 0.7672547000111081,
+        "working": 188063744,
+        "private": 188362752,
+        "os_peak_working": 194887680,
+        "os_peak_pagefile": 215379968
+      },
+      {
+        "seconds": 0.8175562000251375,
+        "working": 188063744,
+        "private": 188362752,
+        "os_peak_working": 194887680,
+        "os_peak_pagefile": 215379968
+      },
+      {
+        "seconds": 0.8680445000063628,
+        "working": 175747072,
+        "private": 176164864,
+        "os_peak_working": 194887680,
+        "os_peak_pagefile": 215379968
+      },
+      {
+        "seconds": 0.9186311000376008,
+        "working": 26886144,
+        "private": 27217920,
+        "os_peak_working": 194887680,
+        "os_peak_pagefile": 215379968
+      }
+    ],
+    "resource_scope": "whole CLI process including fixed lexicon, strings, trie, search and runtime; no single-algorithm memory claim",
+    "event_latency_ns": {
+      "n": 171,
+      "p50": 910500,
+      "p95": 6060400,
+      "p99": 9708200,
+      "max": 9946600
+    },
+    "raw_events_in_latency": true,
+    "timing_scope": "InputEngine.handle including frame clone and deterministic search; excludes stdout write, platform/UI and disk; heterogeneous engineering events, not formal latency acceptance",
+    "summary": [
+      "SUMMARY\tevents=171\tconfirmed_simulated_commits=5\tformal_metrics=null\tTSF=false"
+    ],
+    "formal_language_metrics": {
+      "top1": null,
+      "top5": null,
+      "mrr": null
+    },
+    "physical_disconnect": "not-run",
+    "TSF": false,
+    "files": {
+      "stdout.tsv": "e27b8abe26e70104b60765f544caa8399e54d94720ad5845e2b903e320099fc7",
+      "stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "binary_identities": {
+    "cloudleaf-cli.exe": {
+      "bytes": 502784,
+      "sha256": "302b684a275fdd2d41af79bb76b3c357b906a8ee8ce428cba12c20dad8d9ffab"
+    },
+    "cloudleaf-ime.exe": {
+      "bytes": 492544,
+      "sha256": "272356740eed8f7fe5d0ab98debed9da92ae31bb4350f960f7102e06a145626d"
+    },
+    "cloudleaf_windows_ime.dll": {
+      "bytes": 1007104,
+      "sha256": "c92d0d362b14cfc3075b06b7ff7baefe92ea7395d99f065d327e8912bc29e40c"
+    },
+    "examples/input_trace.exe": {
+      "bytes": 406528,
+      "sha256": "c7d356e48910a1276d0cd36212e92fa30134a78ec646825e540656ec5dfbc987"
+    },
+    "examples/resource_probe.exe": {
+      "bytes": 329216,
+      "sha256": "e7e40b2c3b04158f1b3f50ae64103c590d66e8b46f726f45042e8dea85616c0c"
+    },
+    "examples/resource_phase_probe.exe": {
+      "bytes": 374272,
+      "sha256": "9f18fd6e61b320890036007288721d0e68ca7d76c96f22cd589950888597357a"
+    }
+  },
+  "formal_language_metrics": {
+    "top1": null,
+    "top5": null,
+    "mrr": null
+  },
+  "TSF_registered_or_activated": false,
+  "CL010": "closed",
+  "status": "partial",
+  "remaining": [
+    "natural Chinese ranking",
+    "modern frequency",
+    "independent gold",
+    "search cancellation",
+    "incremental and correction/input schemes",
+    "learning/user dictionary",
+    "DPI/clipping/multi-monitor",
+    "long soak and actual TSF apps"
+  ]
+}

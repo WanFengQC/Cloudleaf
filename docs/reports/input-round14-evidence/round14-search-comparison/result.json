@@ -1,0 +1,95 @@
+{
+  "head": "a707d20ece06196edbbed3c0bf0add995c20434e",
+  "data": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+    "bytes": 23602173,
+    "sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+  },
+  "exe_sha256": "9f18fd6e61b320890036007288721d0e68ca7d76c96f22cd589950888597357a",
+  "cases_sha256": "efae5cb9e8198a423c6041f2b0e56b49381427d04b9addeb6ecdbaeaef3d39d5",
+  "tool_sha256": "fbf1e77b737490278a6acc0b95ed02b20f8b7ef71cebe6179a0f6546ba8c1ef1",
+  "commands": [
+    {
+      "method": "reference",
+      "command": [
+        "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\build\\release\\examples\\resource_phase_probe.exe",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+        "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round14-search-comparison\\cases.tsv",
+        "reference",
+        "8",
+        "3",
+        "1",
+        "16384",
+        "200000",
+        "50000",
+        "5"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "0143d87642b4f948c6ab7be218536c1738617da81e454c33cc2940613e51101e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "method": "exact",
+      "command": [
+        "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\build\\release\\examples\\resource_phase_probe.exe",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+        "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round14-search-comparison\\cases.tsv",
+        "exact",
+        "8",
+        "3",
+        "1",
+        "16384",
+        "200000",
+        "50000",
+        "5"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "75a7a0a5ada2ebadce27b262042af007dfd31161ff9f36fb2bbb4514bfb43be9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "method": "position",
+      "command": [
+        "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\build\\release\\examples\\resource_phase_probe.exe",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+        "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round14-search-comparison\\cases.tsv",
+        "position",
+        "8",
+        "3",
+        "1",
+        "16384",
+        "200000",
+        "50000",
+        "5"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "76f9fa0d5a255f6cb9a43b3fb9aa67d349df316fa12d2b2befcadf982338ed7a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "method": "beam",
+      "command": [
+        "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\build\\release\\examples\\resource_phase_probe.exe",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+        "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round14-search-comparison\\cases.tsv",
+        "beam",
+        "8",
+        "3",
+        "1",
+        "16384",
+        "200000",
+        "50000",
+        "5"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "89e4520d53fb7e196de6d055848149781ac08955a4993ef702c355c46c142894",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "paired_plain_profile": true,
+  "repeats": 3,
+  "warmups": 1,
+  "formal_language_metrics": null,
+  "phase_relation": "traversal includes nested scoring and bucket sort; do not sum all timings",
+  "memory_scope": "path/edge work counts only; no per-algorithm byte memory claim"
+}

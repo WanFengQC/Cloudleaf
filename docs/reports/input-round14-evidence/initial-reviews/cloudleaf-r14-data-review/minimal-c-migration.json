@@ -1,0 +1,335 @@
+{
+  "data_head": "3f26f34e00c0775124f87e150a021f99fb52c567",
+  "verify_cedict_runtime_minimum": [
+    "__init__",
+    "pipeline",
+    "filesystem",
+    "cedict_source"
+  ],
+  "full_existing_pipeline_publisher_cli_test_closure": [
+    "__init__",
+    "__main__",
+    "cedict_source",
+    "filesystem",
+    "pipeline",
+    "prefix_snapshot",
+    "reading_audit",
+    "recovery",
+    "word_source"
+  ],
+  "modules": [
+    {
+      "path": "tools/data_pipeline/__init__.py",
+      "bytes": 151,
+      "sha256": "23fe9b9d63d02a01c5401a85ad845defc688fa6db5927dc63d7ae902b4ec83d1",
+      "imports": [
+        {
+          "target": "pipeline",
+          "line": 3
+        }
+      ]
+    },
+    {
+      "path": "tools/data_pipeline/__main__.py",
+      "bytes": 7599,
+      "sha256": "9fe6b7f24253eb62cb7250e40b84d557c6fc3c1b218038238ca07067a64b37e1",
+      "imports": [
+        {
+          "target": "pipeline",
+          "line": 15
+        },
+        {
+          "target": "reading_audit",
+          "line": 123
+        },
+        {
+          "target": "recovery",
+          "line": 129
+        },
+        {
+          "target": "prefix_snapshot",
+          "line": 132
+        }
+      ]
+    },
+    {
+      "path": "tools/data_pipeline/cedict_source.py",
+      "bytes": 5787,
+      "sha256": "7533498d7aabdea7eb8702d042240e6654d7b40f82fc8db62b892a65956e3c92",
+      "imports": [
+        {
+          "target": "pipeline",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "tools/data_pipeline/filesystem.py",
+      "bytes": 1430,
+      "sha256": "3ff2533b1fdbf77fea688b45d5a44f04ba8cc7f9bd064844e823e786db8bad12",
+      "imports": []
+    },
+    {
+      "path": "tools/data_pipeline/pipeline.py",
+      "bytes": 39557,
+      "sha256": "41ce3ce9e92229ff0b1e6f75fb41ca6f959b389bab32042b5763d6cc1d0cfc09",
+      "imports": [
+        {
+          "target": "filesystem",
+          "line": 18
+        },
+        {
+          "target": "recovery",
+          "line": 591
+        },
+        {
+          "target": "word_source",
+          "line": 321
+        },
+        {
+          "target": "cedict_source",
+          "line": 356
+        },
+        {
+          "target": "word_source",
+          "line": 407
+        },
+        {
+          "target": "cedict_source",
+          "line": 579
+        },
+        {
+          "target": "cedict_source",
+          "line": 324
+        },
+        {
+          "target": "cedict_source",
+          "line": 477
+        }
+      ]
+    },
+    {
+      "path": "tools/data_pipeline/prefix_snapshot.py",
+      "bytes": 2901,
+      "sha256": "0f624cf0a0fa162117b4dcde7dc78e55af632104c8ae541812bc07d4ee3f0778",
+      "imports": []
+    },
+    {
+      "path": "tools/data_pipeline/reading_audit.py",
+      "bytes": 3579,
+      "sha256": "e89dba255cf4e8c5afa8c908edc01cf2d3f33d60e1187b67d1a120d382a1ce5d",
+      "imports": [
+        {
+          "target": "pipeline",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "path": "tools/data_pipeline/recovery.py",
+      "bytes": 6680,
+      "sha256": "760f106fe5fca0cbd111d366c3f83a3fdf266c9cd84992860baf33b18bffd3b9",
+      "imports": [
+        {
+          "target": "filesystem",
+          "line": 12
+        },
+        {
+          "target": "pipeline",
+          "line": 89
+        }
+      ]
+    },
+    {
+      "path": "tools/data_pipeline/word_source.py",
+      "bytes": 12906,
+      "sha256": "1d6d785da2b43895128c42b36e5f2997b1db872a466a86a45bab6961451dcd04",
+      "imports": [
+        {
+          "target": "pipeline",
+          "line": 12
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "path": "tests/test_data_pipeline.py",
+      "direct_modules": [
+        "pipeline"
+      ],
+      "module_closure": [
+        "__init__",
+        "cedict_source",
+        "filesystem",
+        "pipeline",
+        "recovery",
+        "word_source"
+      ],
+      "tests": [
+        "test_nullable_frequency_and_rich_evidence",
+        "test_deterministic_build_and_offline",
+        "test_hash_mismatch_fails_without_output",
+        "test_license_and_review_fail_closed",
+        "test_no_automatic_cedict_or_unapproved_download",
+        "test_archive_traversal_rejected",
+        "test_archive_size_limit_and_utf8",
+        "test_conflicts_isolated_duplicate_counted_and_bad_rows_reported",
+        "test_normalization_does_not_guess_readings",
+        "test_python_and_rust_syllable_inventory_match",
+        "test_local_cedict_preserves_raw_senses_and_deduplicates",
+        "test_corruption_detected_and_rejected_before_activation",
+        "test_cross_resource_semantics_verified_even_if_hash_updated",
+        "test_rehashed_facts_projection_and_index_cannot_bypass_semantics",
+        "test_manifest_symlink_rejected",
+        "test_atomic_upgrade_and_rollback_preserve_user_data",
+        "test_damaged_rollback_target_and_replace_failure_keep_pointer",
+        "test_concurrent_writer_and_pointer_traversal_fail_closed",
+        "test_wrong_complete_cached_or_copied_release_cannot_publish_invalid_pointer",
+        "test_rehashed_quality_statistics_scope_and_accuracy_claim_are_verified"
+      ],
+      "sha256": "90091da12d808c88963b5422bda5371374027c05a2efd71418c9164598051153"
+    },
+    {
+      "path": "tests/test_data_recovery.py",
+      "direct_modules": [
+        "pipeline",
+        "reading_audit",
+        "recovery"
+      ],
+      "module_closure": [
+        "__init__",
+        "cedict_source",
+        "filesystem",
+        "pipeline",
+        "reading_audit",
+        "recovery",
+        "word_source"
+      ],
+      "tests": [
+        "test_store_and_ancestor_directory_links_reject_before_guard_creation",
+        "test_parent_traversal_is_not_normalized_past_a_directory_link",
+        "test_nested_orphan_directory_link_is_rejected_before_any_recovery_mutation",
+        "test_release_directory_links_and_linked_ancestors_are_rejected",
+        "test_store_metadata_hardlinks_are_rejected_before_guard_writes",
+        "test_atomic_pointer_never_truncates_a_hardlink_or_existing_temporary",
+        "test_child_exit_recovery_at_copy_cache_and_pointer_boundaries",
+        "test_alive_or_wrong_owner_and_unknown_status_never_clear_lock",
+        "test_parent_termination_releases_os_guard_but_requires_explicit_owner_recovery",
+        "test_reading_audit_replays_source_without_changing_inventory",
+        "test_unsafe_orphan_is_rejected_before_rollback_pointer_changes"
+      ],
+      "sha256": "a48a02e2d1069d0295fb8e8baece16239f943a4226d4cffe24b070ae11b2d1cf"
+    },
+    {
+      "path": "tests/test_cedict_source.py",
+      "direct_modules": [
+        "cedict_source",
+        "pipeline"
+      ],
+      "module_closure": [
+        "__init__",
+        "cedict_source",
+        "filesystem",
+        "pipeline",
+        "recovery",
+        "word_source"
+      ],
+      "tests": [
+        "test_complete_archive_unknown_language_fields_and_different_local_names",
+        "test_meaning_correction_does_not_change_source_identity_but_reading_case_does",
+        "test_duplicate_merges_evidence_conflict_isolates_every_version",
+        "test_unsupported_and_budget_are_separate_from_bad_source_rows",
+        "test_header_count_plain_hash_and_archive_paths_fail_closed",
+        "test_derived_quality_and_source_identity_cannot_be_forged_with_new_hashes"
+      ],
+      "sha256": "f9685bc67fcfa7a4ad1bb5c16eb583585f503e62e72be41249a05c8dc4c877ce"
+    },
+    {
+      "path": "tests/test_word_source.py",
+      "direct_modules": [
+        "pipeline",
+        "prefix_snapshot",
+        "word_source"
+      ],
+      "module_closure": [
+        "__init__",
+        "cedict_source",
+        "filesystem",
+        "pipeline",
+        "prefix_snapshot",
+        "recovery",
+        "word_source"
+      ],
+      "tests": [
+        "test_explicit_mandarin_segmentation_preserves_boundaries_and_rejects_ambiguity",
+        "test_real_word_schema_preserves_languages_pos_english_and_unknown_frequency",
+        "test_research_prefix_keeps_only_complete_lines_and_locks_bytes",
+        "test_runtime_and_rights_isolations_are_not_source_malformations"
+      ],
+      "sha256": "9aacc162868a842a1e94e769e5a31f670e5d1ac45dec74b2ad9e89d36f868847"
+    }
+  ],
+  "metadata": [
+    {
+      "path": "data/licenses/CC-BY-SA-4.0.txt",
+      "bytes": 20138,
+      "sha256": "28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5"
+    },
+    {
+      "path": "data/licenses/Unicode-3.0.txt",
+      "bytes": 1995,
+      "sha256": "e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96"
+    },
+    {
+      "path": "data/sources/locks/cccedict-20260604-mirror7019e1c.json",
+      "bytes": 3757,
+      "sha256": "bd48c8ab6843cd610055b6568f1820768fdaa1b7b5659a428ac3021fc4b8bbba"
+    },
+    {
+      "path": "data/sources/locks/unihan-17.0.0.json",
+      "bytes": 1656,
+      "sha256": "01af54b80ab34ef3ec4e196560617defaf1b1a8ead436a15752a03fe115e9056"
+    },
+    {
+      "path": "data/sources/locks/wiktionary-zh-20261001-prefix8388608.json",
+      "bytes": 3586,
+      "sha256": "7d0ee32b4167bb6d45e630bd6d9e3df91bd4b51fe90a2c4d7454462f8b3075e9"
+    },
+    {
+      "path": "data/sources/evidence/cccedict-mirror-7019e1c/upstream-documents.json",
+      "bytes": 21281,
+      "sha256": "9572c28d6cac908b2b66567420c893ce5e1b27e95fbee52e605374620e9a9267"
+    },
+    {
+      "path": "data/sources/source-review.jsonl",
+      "bytes": 6613,
+      "sha256": "f141746bad3946a0c21e40b30b97631fa87bae7bcf3da38d3a08b374c205b975"
+    },
+    {
+      "path": "docs/lexicon-v2.md",
+      "bytes": 2065,
+      "sha256": "8ee3a05efcbaeb012889c2dce4fd7cbbbf35089616703646e768e061a9e2f061"
+    }
+  ],
+  "test_resource_dependencies": [
+    "crates/cloudleaf-pinyin/src/lib.rs: SYLLABLE_GROUPS (test_data_pipeline inventory equality)",
+    "temporary self-authored ZIP, JSONL and license fixtures created by tests; no downloaded production weights or data",
+    "test_data_recovery child interpreter inserts destination repository root and uses real subprocesses, OS process handles and file links"
+  ],
+  "excluded_unneeded_modules": [
+    "annotation_workflow",
+    "audit_isolations",
+    "corpus_gate",
+    "linguistic_sidecar",
+    "ngram_analysis",
+    "semantic_bundle",
+    "source_assertions",
+    "source_review"
+  ],
+  "notes": [
+    "No annotation_workflow, corpus_gate, linguistic_sidecar, semantic_bundle, source_assertions, source_review, ngram_analysis import in selected module closure",
+    "word_source/prefix_snapshot retained only because existing schema2 format support and word-source tests/CLI exist; no research_only source gets product approval",
+    "source_review.jsonl kept byte-for-byte as audit metadata; its matrix tests are not part of copied source_review module because that module is excluded"
+  ]
+}

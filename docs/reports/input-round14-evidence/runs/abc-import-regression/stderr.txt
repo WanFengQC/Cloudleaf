@@ -1,0 +1,122 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.27
+   Compiling windows-link v0.2.1
+   Compiling cloudleaf-dictionary v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-dictionary)
+   Compiling cloudleaf-pinyin v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-pinyin)
+   Compiling cloudleaf-candidate v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-candidate)
+   Compiling cloudleaf-types v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-types)
+   Compiling cloudleaf-input v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-input)
+   Compiling windows-strings v0.5.1
+error[E0432]: unresolved import `cloudleaf_input::SearchSnapshot`
+ --> crates\cloudleaf-input\tests\search_integration.rs:1:49
+  |
+1 | use cloudleaf_input::{InputConfig, InputEngine, SearchSnapshot};
+  |                                                 ^^^^^^^^^^^^^^ no `SearchSnapshot` in the root
+
+error[E0599]: no function or associated item named `with_search` found for struct `InputEngine` in the current scope
+  --> crates\cloudleaf-input\tests\search_integration.rs:19:34
+   |
+19 |     let mut value = InputEngine::with_search(snapshot(WORDS), config(), InputConfig::default()).unwrap();
+   |                                  ^^^^^^^^^^^ function or associated item not found in `InputEngine`
+   |
+note: if you're trying to build a new `InputEngine` consider using one of the following associated functions:
+      InputEngine::new
+      InputEngine::with_config
+  --> C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-input\src\lib.rs:48:5
+   |
+48 |     pub fn new(dictionary: Dictionary) -> Self {
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+52 |     pub fn with_config(dictionary: Dictionary, config: InputConfig) -> Result<Self, CoreError> {
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Compiling windows-result v0.4.1
+error[E0308]: mismatched types
+  --> crates\cloudleaf-input\tests\search_integration.rs:36:47
+   |
+36 |     assert_eq!(frame.candidates[0].frequency, None);
+   |                                               ^^^^ expected `u32`, found `Option<_>`
+   |
+   = note: expected type `u32`
+              found enum `Option<_>`
+
+error[E0599]: no method named `search_diagnostic` found for struct `InputEngine` in the current scope
+  --> crates\cloudleaf-input\tests\search_integration.rs:37:29
+   |
+37 |     let diagnostic = engine.search_diagnostic().unwrap();
+   |                             ^^^^^^^^^^^^^^^^^ method not found in `InputEngine`
+
+error[E0599]: no method named `replace_search_snapshot` found for struct `InputEngine` in the current scope
+  --> crates\cloudleaf-input\tests\search_integration.rs:61:12
+   |
+61 |     engine.replace_search_snapshot(next).unwrap();
+   |            ^^^^^^^^^^^^^^^^^^^^^^^ method not found in `InputEngine`
+
+error[E0599]: no method named `replace_search_snapshot` found for struct `InputEngine` in the current scope
+  --> crates\cloudleaf-input\tests\search_integration.rs:67:20
+   |
+67 |     assert!(engine.replace_search_snapshot(snapshot(WORDS)).is_err());
+   |                    ^^^^^^^^^^^^^^^^^^^^^^^ method not found in `InputEngine`
+
+error[E0599]: no method named `replace_search_snapshot` found for struct `InputEngine` in the current scope
+  --> crates\cloudleaf-input\tests\search_integration.rs:69:20
+   |
+69 |     assert!(engine.replace_search_snapshot(snapshot(WORDS)).is_err());
+   |                    ^^^^^^^^^^^^^^^^^^^^^^^ method not found in `InputEngine`
+
+error[E0599]: no function or associated item named `with_search` found for struct `InputEngine` in the current scope
+  --> crates\cloudleaf-input\tests\search_integration.rs:75:35
+   |
+75 |     let mut engine = InputEngine::with_search(snapshot(WORDS), cfg, InputConfig::default()).unwrap();
+   |                                   ^^^^^^^^^^^ function or associated item not found in `InputEngine`
+   |
+note: if you're trying to build a new `InputEngine` consider using one of the following associated functions:
+      InputEngine::new
+      InputEngine::with_config
+  --> C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-input\src\lib.rs:48:5
+   |
+48 |     pub fn new(dictionary: Dictionary) -> Self {
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+52 |     pub fn with_config(dictionary: Dictionary, config: InputConfig) -> Result<Self, CoreError> {
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: no function or associated item named `with_search` found for struct `InputEngine` in the current scope
+  --> crates\cloudleaf-input\tests\search_integration.rs:91:34
+   |
+91 |     let mut first = InputEngine::with_search(snapshot.clone(), config(), InputConfig::default()).unwrap();
+   |                                  ^^^^^^^^^^^ function or associated item not found in `InputEngine`
+   |
+note: if you're trying to build a new `InputEngine` consider using one of the following associated functions:
+      InputEngine::new
+      InputEngine::with_config
+  --> C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-input\src\lib.rs:48:5
+   |
+48 |     pub fn new(dictionary: Dictionary) -> Self {
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+52 |     pub fn with_config(dictionary: Dictionary, config: InputConfig) -> Result<Self, CoreError> {
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: no function or associated item named `with_search` found for struct `InputEngine` in the current scope
+  --> crates\cloudleaf-input\tests\search_integration.rs:92:35
+   |
+92 |     let mut second = InputEngine::with_search(snapshot, config(), InputConfig::default()).unwrap();
+   |                                   ^^^^^^^^^^^ function or associated item not found in `InputEngine`
+   |
+note: if you're trying to build a new `InputEngine` consider using one of the following associated functions:
+      InputEngine::new
+      InputEngine::with_config
+  --> C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-input\src\lib.rs:48:5
+   |
+48 |     pub fn new(dictionary: Dictionary) -> Self {
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+52 |     pub fn with_config(dictionary: Dictionary, config: InputConfig) -> Result<Self, CoreError> {
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Some errors have detailed explanations: E0308, E0432, E0599.
+For more information about an error, try `rustc --explain E0308`.
+error: could not compile `cloudleaf-input` (test "search_integration") due to 10 previous errors
+warning: build failed, waiting for other jobs to finish...

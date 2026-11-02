@@ -1,0 +1,20 @@
+
+running 1 test
+test native::candidate::tests::candidate_hit_test_rejects_padding_and_unpainted_rows ... FAILED
+
+failures:
+
+---- native::candidate::tests::candidate_hit_test_rejects_padding_and_unpainted_rows stdout ----
+
+thread 'native::candidate::tests::candidate_hit_test_rejects_padding_and_unpainted_rows' panicked at apps\windows-ime\src\..\..\..\adapters\windows\candidate.rs:739:13:
+assertion `left == right` failed: 边距不得选中隐藏候选：y=154
+  left: 5
+ right: 0
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    native::candidate::tests::candidate_hit_test_rejects_padding_and_unpainted_rows
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 100 filtered out; finished in 0.02s
+

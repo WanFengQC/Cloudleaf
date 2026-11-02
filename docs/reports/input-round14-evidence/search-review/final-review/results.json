@@ -1,0 +1,51 @@
+{
+  "head": "a707d20ece06196edbbed3c0bf0add995c20434e",
+  "commands": [
+    {
+      "label": "input-integration",
+      "command": [
+        "C:/Users/EDY/.cargo/bin/cargo.exe",
+        "+1.90.0",
+        "test",
+        "-p",
+        "cloudleaf-input",
+        "--test",
+        "search_integration",
+        "--locked",
+        "--offline"
+      ],
+      "cwd": "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf",
+      "returncode": 0,
+      "seconds": 0.21161009999923408,
+      "stdout_sha256": "d5afca8c8c05e9b1a79335f859b1ab30b7d4aba6b2d2406cfe825b06fdf1a7e9",
+      "stderr_sha256": "389a05ae7991d03e8caf3b0994a2ff54e46450227413332ca46789fe963e8943"
+    },
+    {
+      "label": "engine-budget-sweep",
+      "command": [
+        "C:/Users/EDY/.cargo/bin/cargo.exe",
+        "+1.90.0",
+        "run",
+        "--offline"
+      ],
+      "cwd": "C:\\Users\\EDY\\.codex\\tmp\\cloudleaf-r14-search-review\\final-review",
+      "returncode": 0,
+      "seconds": 3.6492157999891788,
+      "stdout_sha256": "f66b53076c8911268bbe69d6ef201c87981446d489e179435bf55c55770f9ce6",
+      "stderr_sha256": "36e86e63107abeba07072dfec86390f5d60479c37cbcb5782d043d8af1bc95de"
+    }
+  ],
+  "source_before": {
+    "crates/cloudleaf-input/src/lib.rs": "2f591325e2a1cd465bc45754db59d929bf9950f4df5bb7c67cc6912b859487e2",
+    "crates/cloudleaf-input/src/sentence.rs": "b232cc2ed5c2f7241d8c0a83e9901779582f436d8468f60ef2331e4e4f063901",
+    "crates/cloudleaf-search/src/lexicon.rs": "d620bc15ea7a07a515e9fb742a300491318616c7c563a11928428b89b16fb6bc",
+    "crates/cloudleaf-types/src/lib.rs": "674836819dc83c732dd48444926e32f081322b3544f32fca4b03253a98525716"
+  },
+  "source_after": {
+    "crates/cloudleaf-input/src/lib.rs": "2f591325e2a1cd465bc45754db59d929bf9950f4df5bb7c67cc6912b859487e2",
+    "crates/cloudleaf-input/src/sentence.rs": "b232cc2ed5c2f7241d8c0a83e9901779582f436d8468f60ef2331e4e4f063901",
+    "crates/cloudleaf-search/src/lexicon.rs": "d620bc15ea7a07a515e9fb742a300491318616c7c563a11928428b89b16fb6bc",
+    "crates/cloudleaf-types/src/lib.rs": "674836819dc83c732dd48444926e32f081322b3544f32fca4b03253a98525716"
+  },
+  "source_unchanged_during_check": true
+}

@@ -1,0 +1,20 @@
+
+running 1 test
+test lexicon::compact_capacity_tests::loaded_immutable_index_does_not_keep_growth_slack ... FAILED
+
+failures:
+
+---- lexicon::compact_capacity_tests::loaded_immutable_index_does_not_keep_growth_slack stdout ----
+
+thread 'lexicon::compact_capacity_tests::loaded_immutable_index_does_not_keep_growth_slack' panicked at crates\cloudleaf-search\src\lexicon.rs:246:9:
+assertion `left == right` failed
+  left: 16
+ right: 13
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    lexicon::compact_capacity_tests::loaded_immutable_index_does_not_keep_growth_slack
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.00s
+

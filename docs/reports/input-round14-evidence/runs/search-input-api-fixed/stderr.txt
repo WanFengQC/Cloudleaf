@@ -1,0 +1,15 @@
+   Compiling cloudleaf-input v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-input)
+warning: method `capacity_bounds` is never used
+   --> crates\cloudleaf-input\src\sentence.rs:152:19
+    |
+139 | impl SentenceBackend {
+    | -------------------- method in this implementation
+...
+152 |     pub(crate) fn capacity_bounds(&self) -> SearchCapacityBounds {
+    |                   ^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `cloudleaf-input` (lib) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.49s
+     Running tests\search_integration.rs (.local\build\debug\deps\search_integration-08898ee52c67c707.exe)

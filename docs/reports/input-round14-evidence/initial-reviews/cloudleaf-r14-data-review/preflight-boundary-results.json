@@ -1,0 +1,74 @@
+{
+  "tool_sha256": "9196567e317195987f26abc9b189760d81f09f142f9af51d416e60945915f3b6",
+  "results": [
+    {
+      "label": "existing-output",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\Users\\EDY\\.codex\\tmp\\cloudleaf-r14-data-review\\preflight\\scripts\\verify_input_lexicon.py",
+        "--release",
+        "C:\\Users\\EDY\\AppData\\Local\\Temp\\cloudleaf-r14-preflight-1x093qel\\release",
+        "--output",
+        "C:\\Users\\EDY\\AppData\\Local\\Temp\\cloudleaf-r14-preflight-1x093qel\\existing.json"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "输入词典预检失败：输出已存在，拒绝覆盖\r\n"
+    },
+    {
+      "label": "unreviewed-manifest",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\Users\\EDY\\.codex\\tmp\\cloudleaf-r14-data-review\\preflight\\scripts\\verify_input_lexicon.py",
+        "--release",
+        "C:\\Users\\EDY\\AppData\\Local\\Temp\\cloudleaf-r14-preflight-1x093qel\\release",
+        "--output",
+        "C:\\Users\\EDY\\AppData\\Local\\Temp\\cloudleaf-r14-preflight-1x093qel\\new.json"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "输入词典预检失败：不是本轮固定的已审词条包\r\n"
+    },
+    {
+      "label": "receipt-inside-release",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\Users\\EDY\\.codex\\tmp\\cloudleaf-r14-data-review\\preflight\\scripts\\verify_input_lexicon.py",
+        "--release",
+        "C:\\Users\\EDY\\AppData\\Local\\Temp\\cloudleaf-r14-preflight-1x093qel\\release",
+        "--output",
+        "C:\\Users\\EDY\\AppData\\Local\\Temp\\cloudleaf-r14-preflight-1x093qel\\release\\load-receipt.json"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "输入词典预检失败：加载凭据必须放在release目录之外，保留原九文件包\r\n"
+    },
+    {
+      "label": "missing-release",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\Users\\EDY\\.codex\\tmp\\cloudleaf-r14-data-review\\preflight\\scripts\\verify_input_lexicon.py",
+        "--release",
+        "C:\\Users\\EDY\\AppData\\Local\\Temp\\cloudleaf-r14-preflight-1x093qel\\missing",
+        "--output",
+        "C:\\Users\\EDY\\AppData\\Local\\Temp\\cloudleaf-r14-preflight-1x093qel\\new.json"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "输入词典预检失败：[WinError 2] 系统找不到指定的文件。: 'C:\\\\Users\\\\EDY\\\\AppData\\\\Local\\\\Temp\\\\cloudleaf-r14-preflight-1x093qel\\\\missing'\r\n"
+    }
+  ],
+  "result": "passed"
+}

@@ -1,0 +1,73 @@
+[
+  {
+    "label": "red",
+    "command": [
+      "C:/Users/EDY/.cargo/bin/cargo.exe",
+      "+1.90.0",
+      "test",
+      "--lib",
+      "loaded_immutable_index_does_not_keep_growth_slack",
+      "--offline"
+    ],
+    "returncode": 101,
+    "expected": 101,
+    "seconds": 2.612808000005316,
+    "stdout_sha256": "e6af6c58788a95ec4dd14451122f62d9182ed28ce7db9d38e78fa01671efe319",
+    "stderr_sha256": "728c19c75c06d3fc4283c07c0e8dbe656f4ceb08117c9ba32874e164f0ef89f3"
+  },
+  {
+    "label": "fixed-search-regression",
+    "command": [
+      "C:/Users/EDY/.cargo/bin/cargo.exe",
+      "+1.90.0",
+      "test",
+      "--all-targets",
+      "--locked",
+      "--offline"
+    ],
+    "returncode": 0,
+    "expected": 0,
+    "seconds": 6.011311299982481,
+    "stdout_sha256": "6e718d576af094c8b066bfe736fdcb9a1ec7f92207f5853eb13c6bf66a6a4119",
+    "stderr_sha256": "63f02ce880ca5da0e4de4077846bf57852e946a91ae398d3540f165f28ff6fa7"
+  },
+  {
+    "label": "fixed-clippy",
+    "command": [
+      "C:/Users/EDY/.cargo/bin/cargo.exe",
+      "+1.90.0",
+      "clippy",
+      "--all-targets",
+      "--locked",
+      "--offline",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "returncode": 0,
+    "expected": 0,
+    "seconds": 1.715424099995289,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "44c6343200563113b98e1fe6361cbc7920c8b67be30f97963cdb6139c970dcfd"
+  },
+  {
+    "label": "real-fixed-capacity",
+    "command": [
+      "C:/Users/EDY/.cargo/bin/cargo.exe",
+      "+1.90.0",
+      "run",
+      "--example",
+      "capacity",
+      "--release",
+      "--locked",
+      "--offline",
+      "--",
+      "C:/Users/EDY/.codex/worktrees/cl008-search/Cloudleaf/.local/real-lexicon/cccedict-round4-2401b16/runtime.tsv"
+    ],
+    "returncode": 0,
+    "expected": 0,
+    "seconds": 3.6986065999954008,
+    "stdout_sha256": "d11297485ec038a8621f11848587d16bdc0d3fa0445a62d001e867da8e6dfcaa",
+    "stderr_sha256": "379967daa63dd23fd65efd8c8fb5b3a3195913777cbcdb602de5ce2b43a4e42e"
+  }
+]
