@@ -1,0 +1,22 @@
+{
+  "files": [
+    {
+      "path": ".local/round12-unavailable-red/result.json",
+      "bytes": 234,
+      "sha256": "f57f3deb8a4b6db9ffcf097705b638805e920137bea347986d19e03dc18d2cd6",
+      "utf8": "{\r\n  \"command\": [\r\n    \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.exe\",\r\n    \"test\",\r\n    \"-p\",\r\n    \"cloudleaf-translation-panel\",\r\n    \"--lib\",\r\n    \"rendering_unavailable\",\r\n    \"--locked\",\r\n    \"--offline\"\r\n  ],\r\n  \"returncode\": 101\r\n}\r\n"
+    },
+    {
+      "path": ".local/round12-unavailable-red/stderr.txt",
+      "bytes": 407,
+      "sha256": "0f4cc668ef1d962cd771a0bfc24e33b1e67359eb7f9f2e5ef9ce9c6ebeb7abac",
+      "utf8": "   Compiling cloudleaf-translation-panel v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\apps\\cloudleaf-translation-panel)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 16.42s\n     Running unittests src\\lib.rs (.local\\round12-build\\debug\\deps\\cloudleaf_translation_panel-8fe9c92f0c230770.exe)\nerror: test failed, to rerun pass `-p cloudleaf-translation-panel --lib`\n"
+    },
+    {
+      "path": ".local/round12-unavailable-red/stdout.txt",
+      "bytes": 719,
+      "sha256": "f31dd40628d083a0553df52aad91db1d38a7431e85fb7d6989998c5eafd9b0db",
+      "utf8": "\nrunning 1 test\ntest windows_ui::tests::rendering_unavailable_provider_preserves_status_and_error ... FAILED\n\nfailures:\n\n---- windows_ui::tests::rendering_unavailable_provider_preserves_status_and_error stdout ----\n\nthread 'windows_ui::tests::rendering_unavailable_provider_preserves_status_and_error' panicked at apps\\cloudleaf-translation-panel\\src\\windows_ui.rs:1019:13:\nassertion `left == right` failed\n  left: Idle\n right: ProviderUnavailable\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n\n\nfailures:\n    windows_ui::tests::rendering_unavailable_provider_preserves_status_and_error\n\ntest result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.10s\n\n"
+    }
+  ]
+}

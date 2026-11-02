@@ -1,12 +1,18 @@
 {
   "format": "cloudleaf-round12-evidence-v1",
-  "at_utc": "2026-10-30T17:26:00.439679+00:00",
-  "implementation_commit": "f88456bd2649cf75ddebcf12d2dd197d7b1eeeb8",
+  "at_utc": "2026-11-02T01:22:24.517916+00:00",
+  "implementation_commit": "8e878a589931d392dd2fe5b77bde69498a2931f9",
   "groups": [
     {
       "file": "round12-artifacts.json",
       "bytes": 2331,
       "sha256": "1765e67c638abdc5f8cb01f54a712cb837cc7233829175e019647f47e3e6dbdf",
+      "entries": 1
+    },
+    {
+      "file": "round12-artifacts-acceptance.json",
+      "bytes": 3575,
+      "sha256": "9f058e1718cf354e3cd1be1145ce9632ecca6ee21f903ae3cf139e2ea1e66e8f",
       "entries": 1
     },
     {
@@ -17,9 +23,9 @@
     },
     {
       "file": "round12-ci.json",
-      "bytes": 51126,
-      "sha256": "3ef385bac110a88b925b26d6ecce1d4c6b305f44adf5a342587af8175ade26a0",
-      "entries": 5
+      "bytes": 102245,
+      "sha256": "b03c0c401c0ae07e77c052153c3c01de863c69915c6207c9fd8ee66b28c71d54",
+      "entries": 10
     },
     {
       "file": "round12-controller-red.json",
@@ -31,6 +37,12 @@
       "file": "round12-full.json",
       "bytes": 528828,
       "sha256": "9b40afd628874cb6e63556bcb752e52078611b3501233814a068ac1d080e35fd",
+      "entries": 32
+    },
+    {
+      "file": "round12-full-acceptance.json",
+      "bytes": 529365,
+      "sha256": "f514cce9a0e03d47056cd2589eff78a88f06a81a8450c9da0926e726d78d9f9d",
       "entries": 32
     },
     {
@@ -50,6 +62,12 @@
       "bytes": 35340,
       "sha256": "036bfc09755f89852e3e9a75e2d740510d19abd94aeb6713cf4d5f8dc61e23a8",
       "entries": 2
+    },
+    {
+      "file": "round12-gui-final.json",
+      "bytes": 1627339,
+      "sha256": "fb3bceb70dda0e58955fecd448f5a140ff0f8f016c471d59e18c02d36845e931",
+      "entries": 16
     },
     {
       "file": "round12-native-selection-final.json",
@@ -140,11 +158,25 @@
       "bytes": 10035,
       "sha256": "7fb9c98e0483225264cce33de0e3bcaed23e22fdac7ebb6c7be13e2fb05dbf75",
       "entries": 9
+    },
+    {
+      "file": "round12-unavailable-final.json",
+      "bytes": 5048,
+      "sha256": "f4b1a011493b2a4229222fbff0788a1247f854861243f3ff103c7a9df6b5d6bf",
+      "entries": 7
+    },
+    {
+      "file": "round12-unavailable-red.json",
+      "bytes": 2056,
+      "sha256": "0a5ea9ece0cc6a9be693f79e6c2ab4f5d8ecb1dbad0d7348fa463d0dab2bea11",
+      "entries": 3
     }
   ],
   "excluded_directories": [
     "round12-build",
-    "round12-gui-settings"
+    "round12-gui-settings",
+    "round12-gui-final-settings",
+    "round12-gui-accepted-settings"
   ],
   "scope": "utf8字段重新UTF8编码即原始字节；binary用base64；新代码目录不包含私人设置、密钥或模型。",
   "changed_implementation_files": [
@@ -171,8 +203,11 @@
     "docs/reports/translation-round12-evidence/execution-tools.json",
     "docs/reports/translation-round12-evidence/index.json",
     "docs/reports/translation-round12-evidence/research-query-debug.png",
+    "docs/reports/translation-round12-evidence/round12-artifacts-final.json",
     "docs/reports/translation-round12-evidence/round12-artifacts.json",
+    "docs/reports/translation-round12-evidence/round12-ci.json",
     "docs/reports/translation-round12-evidence/round12-controller-red.json",
+    "docs/reports/translation-round12-evidence/round12-full-final.json",
     "docs/reports/translation-round12-evidence/round12-full.json",
     "docs/reports/translation-round12-evidence/round12-gui-direction-red.json",
     "docs/reports/translation-round12-evidence/round12-gui-launch.json",
@@ -183,6 +218,8 @@
     "docs/reports/translation-round12-evidence/round12-panel-fourth.json",
     "docs/reports/translation-round12-evidence/round12-panel-second.json",
     "docs/reports/translation-round12-evidence/round12-panel-third.json",
+    "docs/reports/translation-round12-evidence/round12-password-final.json",
+    "docs/reports/translation-round12-evidence/round12-password-red.json",
     "docs/reports/translation-round12-evidence/round12-platform-final.json",
     "docs/reports/translation-round12-evidence/round12-platform-final2.json",
     "docs/reports/translation-round12-evidence/round12-platform-red.json",

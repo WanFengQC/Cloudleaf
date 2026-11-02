@@ -1,11 +1,11 @@
 # Round 12：Windows 原生翻译面板与安全设置
 
-2026-10-31。本轮实际交付可构建、可启动和操作的独立 Windows 面板，接入现有 TranslationService，而非另一套翻译调度器。真实桌面已观察中文研究查询、复制和方向切换；完整 GUI 验收仍为 partial：桌面外部输入中断后停止自动化，最终 Release 的全部按钮未逐项人工验收。正式语义、语言质量、模型推理与系统输入法仍未交付。
+2026-10-31工程交付，2026-11-02获用户明确授权后续验。本轮交付可构建、可启动和操作的独立 Windows 面板，复用 TranslationService。Release已实测多行中英/emoji、查询/反查、中文剪贴板回读、取消、非敏感设置保存/恢复及正常退出，且修复续验发现的不可用状态覆盖。安全设置按钮、真实在线服务及全部环境矩阵仍为partial；正式语义、语言质量、模型推理与系统输入法仍未交付。
 
 ## 版本、关系与文件
 
 - 基线：`3946d22295591aa080ff7bea007f9f410b245fc0`，实际 fetch 后本地/远程一致，工作区原先干净。
-- 设计先行：`2c05aca`；原生面板/凭据/设置实现：`9e5192b`；真实控件方向复位反例：`156a602`；首轮完整被测实现 `d50e41a36a002e9e36140a2893484c05bae89fba`；未保存密码残留反例 `06b0f0b`，最终完整被测实现 **`f88456bd2649cf75ddebcf12d2dd197d7b1eeeb8`**。
+- 设计先行：`2c05aca`；原生面板/凭据/设置实现：`9e5192b`；方向复位反例：`156a602`；首轮完整实现 `d50e41a36a002e9e36140a2893484c05bae89fba`；密码残留反例 `06b0f0b`及修复 `f88456bd2649cf75ddebcf12d2dd197d7b1eeeb8`；11月2日状态覆盖反例 `2c25056`，最新完整被测实现 **`8e878a589931d392dd2fe5b77bde69498a2931f9`**。
 - 继续原工作区 `C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf` 和分支 `codex/translation-round11`，仅普通 push 更新 [Draft PR #5](https://github.com/WanFengQC/Cloudleaf/pull/5)。本报告/证据另作文档提交；最终 HEAD 与其自己的 push CI 放在 `.local/round12-delivery-receipt.json` 及 PR 正文，不能用旧 CI 代表最终文档提交。
 - main 仍以 `a564fd47b0f054ff360592af3ccb8d744021160f` 为检查点；原四个方向不得改动。没有合并、rebase、强推、Ready、TSF 操作或8h/24h长测。
 
@@ -38,7 +38,7 @@ cloudleaf-translation-panel.exe --dictionary PATH_TO_CATALOG_JSON --settings-dir
 C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\.local\round12-build\release\cloudleaf-translation-panel.exe
 ```
 
-最终实现 Release 为 **3,863,040 B**，SHA-256 **`2ab568bb2aa331b3b5770768f2aff4b44797085904312f9935cf4a410712d9d8`**。首轮d50产物身份另保留在artifacts证据，不转绑此版本。这是本机MSVC构建身份，不假定与不同环境CI字节相同。启动代码与数据路径见 app README；没有随 EXE 自动下载词典或模型。
+最新实现 Release 为 **3,863,040 B**，SHA-256 **`e3801f80c7b001069178ebfe00fcbbe092a18be6a900b865b387b97b81d7798f`**。d50、f884产物身份分别保留，不转绑此版本。这是本机MSVC构建身份，不假定与不同环境CI字节相同。启动代码与数据路径见 app README；没有随 EXE 自动下载词典或模型。
 
 ## 交互、线程与关闭
 
@@ -60,7 +60,7 @@ C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\.local\round12-build
 
 仅点击复制才写CF_UNICODETEXT：UTF16/NUL/CRLF，先分配/锁定/填充，再打开真实窗口拥有的剪贴板；成功转交HGLOBAL，否则由guard释放。占用立即反馈，不循环等待；失败不消费结果。没有自动读取系统剪贴板、监听其他应用或自动上屏。
 
-实际GUI点击复制研究gloss已执行，原文保持；编码覆盖中英/换行/特殊字符，实际占用错误测试只持锁，不读取/清空旧剪贴板。**中文特殊字符的真实系统剪贴板粘贴回读未完成**：后续粘贴遇到外部桌面输入而中止，不拿纯编码测试冒充完整回读。
+实际GUI点击复制研究gloss，原文保持。10月31日回读曾被桌面输入中断；11月2日已在f884和最新8e878a5两版Release完成英文/中文的复制→清空自有测试文本→显式Ctrl+V闭环，最新版本回读为“你好”。程序没有自动读取旧剪贴板。中英/换行/特殊字符编码回归保留，emoji/换行的全部系统回读组合未逐项实跑；占用错误测试只持锁，不读取/清空旧内容。
 
 ## 实际 GUI 与资源证据
 
@@ -68,13 +68,21 @@ C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\.local\round12-build
 
 方向切换首次失败，实际控件被每次render的CB_SETCURSEL复位。保存旧debug EXE身份、GUI树及源码，并用真正Win32控件自动化反例验证，exit101；修复仅在载入设置时同步控件。修复后真实鼠标选择“英文→中文”保持成功。此前日志中“Direction switch invalidates…”是预期动作名称，其实际树未变化，不能当通过，已追加更正保留原文。
 
-自动化一度缺窗口geometry，重新激活/观察后恢复；随后检测外部桌面输入，停止继续操作，没有盲点/盲粘贴。复制回读、多行键入、非敏感设置按钮、GUI密钥按钮、网络同意界面及最终Release全部按钮仍未逐项验收。已向用户提出桌面控制选择，未收到回复时优先完成工程/CI。Computer Use[技能](C:/Users/EDY/.codex/plugins/cache/openai-bundled/computer-use/26.1023.51421/skills/computer-use/SKILL.md)及[安全规则](C:/Users/EDY/.codex/plugins/cache/openai-bundled/computer-use/26.1023.51421/docs/guidance.md)要求“Do not change Windows security settings, Windows privacy settings, or any in-app security or privacy settings.”，故安全设置/密钥界面的自动点击不能作为已完成；真实隔离凭据API及controller路径另已通过，不替代人工按钮验收。
+10月31日自动化曾缺窗口geometry，重观后恢复；外部桌面输入触发停止，没有盲点/盲粘贴。11月2日用户明确回复“继续窗口自动化，我暂时不操作桌面”，遂使用独立测试设置目录恢复。已补多行、复制回读、错误详情、取消、非敏感超时保存、重启恢复和提供者切换；未点击GUI密钥按钮或联网同意界面。Computer Use[技能](C:/Users/EDY/.codex/plugins/cache/openai-bundled/computer-use/26.1023.51421/skills/computer-use/SKILL.md)引用的[安全规则](C:/Users/EDY/.codex/plugins/cache/openai-bundled/computer-use/26.1023.51421/docs/guidance.md)要求“Do not change Windows security settings, Windows privacy settings, or any in-app security or privacy settings.”，故这些安全按钮保留人工验收；真实隔离凭据API及controller路径已通过，不替代人工按钮验收。
+
+续验新缺陷：f884版从词典Phrase切到未安装模型时，render调用set_kind(Word)，通过invalidate把ProviderUnavailable变成Idle并清错。实际截图和真正Win32控件反例均保留（2c25056，exit101，Idle!=ProviderUnavailable）。8e878a5将能力切换的模式回退放在controller.adopt，render不再改业务状态；不可用提供者编辑原文/方向继续保持Unavailable。最新Release实际重放该路径及继续输入均通过，[修复后截图](translation-round12-evidence/unavailable-status-corrected.png)。
+
+f884 Release（SHA2ab568…）完成混合多行和设置保存；8e878a5（SHAe3801f…）另行完成状态重放、重启恢复、词典反查及中文剪贴板回读，[最新查询实拍](translation-round12-evidence/release-query-accepted.png)。设置总超时15→20秒，保存schema2/revision2且network/cache/loopback均false，后续重启仍20秒/离线。工具UIA树和截图不是原子快照，采用后续稳定观察确认终态，不把瞬间旧树当产品状态。错误对话框索引缓存一次不可用，重新观察后用Escape正常关闭，属于工具恢复。
 
 第一测试窗口正常发出Alt+F4后进程37744已不在进程表；未取得退出码，不写成exit0。后一个debug进程43432保留供操作，文件锁导致默认目录重建失败；改用独立构建目录，没有强杀用户正在操作的窗口。一次快照 working set136,990,720B、private118,460,416B、269handles/8threads，仅描述当时debug进程，不是峰值/趋势/泄漏或长期压力结果。
+
+11月2日三个自有Release测试进程49432、49692、42584均经正常Alt+F4关闭，用提前持有的进程handle等待，分别记录exited=true、exit_code=0。它们不是旧Debug窗口；旧窗口和可能存在的用户原文未强制关闭。此证据是独立面板正常退出，不替代长期资源或TSF验收。
 
 ## 自动化、失败与身份
 
 首轮完整被测源码d50e41a（121 Rust）见[原full记录](translation-round12-evidence/round12-full.json)。收尾审查用真实EDIT发现取消/删除/重置仍保留未保存密码文本，06b0f0b反例exit101（24 UTF16单元仍在）；修复为统一清空并清除undo，不声称擦净系统内部副本。最终被测源码f88456b的12条命令再次分别保存原始stdout/stderr/返回码，全为0：[最终full记录](translation-round12-evidence/round12-full-final.json)。
+
+11月2日追加状态修复后，以最新源码8e878a5重跑同一完整12条命令，全为0：[续验full记录](translation-round12-evidence/round12-full-acceptance.json)。旧122项结果不转绑新版本。
 
 ```text
 git diff --check
@@ -91,7 +99,7 @@ python scripts/evaluate_algorithms.py --output-dir REPORT_DIR
 cargo build -p cloudleaf-translation-panel --release --locked --offline --message-format=json
 ```
 
-最终本地**122 Rust / 22 Python passed，0 ignored**；新增20 Rust（原102保留）。Linux仅运行适用测试，不能把Windows特定测试不编译当成其通过。已覆盖真实本地TCP取消/超时/迟到成功与错误、配置切换/单次授权、离线零请求、快速请求有界拒绝、失焦/原文保留、非合作worker预算/异常线程退出、设置/凭据/原生控件/未保存密码清理及剪贴板边界。没有默认引擎替换或真实语言质量声明。
+最新本地**123 Rust / 22 Python passed，0 ignored**；新增21 Rust（原102保留）。Linux仅运行适用测试，不能把Windows特定测试不编译当成其通过。已覆盖真实本地TCP取消/超时/迟到成功与错误、配置切换/单次授权、离线零请求、快速请求有界拒绝、失焦/原文保留、非合作worker预算/异常线程退出、设置/凭据/原生控件/密码清理/不可用状态和剪贴板边界。没有默认引擎替换或真实语言质量声明。
 
 保留的实际失败：新关闭/平台API缺失101；EnableWindow feature/import错误、测试语法/闭包解引用错误、Clippy折叠if和参数数量失败；错误断言把已禁用provider期待成OnlineNotAuthorized（原语义实际是ProviderUnavailable，保留零连接断言并纠正预期）；30次快请求后错误假设20次yield队列必空（改为验证有界Busy并在3秒内恢复，预算和失败分母保留）；真实方向复位断言101；正在运行EXE的os error5。另一次PowerShell辅助脚本生成引号解析失败及文档patch匹配失败只在会话转录，不是产品测试结果，改用文件脚本/准确patch后继续。没有删除原测试、禁用lint或放宽网络/资源门槛。
 
@@ -103,10 +111,12 @@ Cargo.lock SHA-256：`1d33e38816d16e3d6653f3ed066b0c5a9ac1f518ce5a116af95ba0adf7
 
 首轮d50e41a的[push CI41096582002](https://github.com/WanFengQC/Cloudleaf/actions/runs/41096582002)两平台已通过，不能转绑收尾修复。首次Windows构建产物仅含EXE，后续包审阅发现缺少随包许可/使用文件，已补入项目LICENSE、THIRD_PARTY_NOTICES、全部translation许可原件及app README；旧单文件artifact不能被宣称为完整发布包。最终实现f88456b另有[push CI41098383564](https://github.com/WanFengQC/Cloudleaf/actions/runs/41098383564)。Linux继续跨平台核心检查。最终报告提交还须核它自己的event=push/head_sha、两job全部step、三个产物head/digest及Windows包内文件，最终结果放交付凭据与PR正文；此处不提前写最终CI成功。
 
+续验基线b8523ec的[两平台CI41098785640](https://github.com/WanFengQC/Cloudleaf/actions/runs/41098785640)已成功，实际GUI仍发现上述状态错误，不能用绿色CI代替窗口验收。最新实现8e878a5另有[push CI41371267906](https://github.com/WanFengQC/Cloudleaf/actions/runs/41371267906)，其后的报告提交仍核独立最终push CI。
+
 离线模型只读审查见[固定来源、许可和接入方案](../translation-offline-model-round12-review.md)。OPUS双方向/M2M100仅候选，权利原件/运行库/性能待核；NLLB非商业及用途边界不适合当前产品随包。没有下载巨型权重、引入推理运行时或伪造推理结果，面板真实显示未安装。
 
 - **done**：真实Win32程序、现有service接入、版本设置/安全恢复、Windows凭据、显式Unicode剪贴板写入、有界任务/配置失效/错误和关闭实现、本地回归及真实窗口部分操作。
-- **partial**：GUI完整用户操作矩阵、最终Release视觉/交互、全生命周期资源趋势；模型选择只有来源研究。
+- **partial**：GUI安全设置按钮、全部DPI/屏幕/键盘组合、全部Unicode剪贴板组合、全生命周期资源趋势；主要Release操作已实测，模型选择只有来源研究。
 - **blocked / not-run**：真实离线模型权重/运行时准入、生产语义人工审读、独立gold/质量指标、真实在线服务兼容、TSF、长期压力和系统应用验收。安全设置按钮由用户人工检查；没有将技术复核当作真人批准。
 
 继续保持五PR Draft、main不合并。下一步在无桌面竞争时完成真实窗口矩阵，再分别推进授权模型和正式语言数据；本面板不等于完整输入法。**CL-010仍不放行。**
