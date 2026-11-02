@@ -7,7 +7,7 @@ use super::{
     watchdog::{Detection, Watchdog},
 };
 use cloudleaf_dictionary::{Dictionary, PROTOTYPE_TSV};
-use cloudleaf_input::InputEngine;
+use cloudleaf_input::{InputConfig, InputEngine, SearchCapacityBounds, SearchSnapshot};
 use cloudleaf_types::{
     CommitOutcome, EventResult, InputEvent, InputFrame, Key, KeyDisposition, utf8_to_utf16_offset,
 };
@@ -42,6 +42,7 @@ struct PendingWrite {
 pub(crate) struct Host {
     // 固定对象预算凭证本身持有模块租约，避免 Host 另计同一存活边界。
     recovery_budget: Arc<budget::Reservation>,
+    epoch_cost: (usize, usize),
     epoch_budget: RefCell<Option<(u64, Arc<budget::Reservation>)>>,
     pending_write: RefCell<Option<PendingWrite>>,
     pub owner: u32,
@@ -144,6 +145,56 @@ fn recovery_cost() -> (usize, usize) {
         (text, fixed)
     })
 }
+fn checked_cost(value: Option<usize>) -> Result<usize> {
+    value.ok_or_else(|| Error::new(E_FAIL, "搜索恢复容量溢出"))
+}
+
+fn search_recovery_cost(bounds: SearchCapacityBounds) -> Result<((usize, usize), usize, usize)> {
+    // 上界为有效字节/结构容量；再为String增长与每次分配留出原有保守余量。
+    let frame_bytes = checked_cost(
+        bounds
+            .max_frame_bytes
+            .checked_mul(2)
+            .and_then(|value| value.checked_add(bounds.max_candidates.checked_mul(4 * 32)?))
+            .and_then(|value| value.checked_add(128)),
+    )?;
+    let diagnostic_bytes = checked_cost(
+        bounds
+            .max_diagnostic_bytes
+            .checked_mul(2)
+            .and_then(|value| {
+                value.checked_add(
+                    bounds
+                        .max_candidates
+                        .checked_mul(bounds.max_input_bytes)?
+                        .checked_mul(4 * 32)?,
+                )
+            })
+            .and_then(|value| value.checked_add(256)),
+    )?;
+    let largest_text = bounds.max_candidate_text_bytes.max(bounds.max_input_bytes);
+    let event = checked_cost(
+        std::mem::size_of::<OwnedEvent>()
+            .checked_add(frame_bytes)
+            .and_then(|value| value.checked_add(largest_text.checked_mul(2)?))
+            .and_then(|value| value.checked_add(256)),
+    )?;
+    let fixed = checked_cost(
+        event
+            .checked_mul(QUEUE_LIMIT * 2 + 16)
+            .and_then(|value| value.checked_add(8192)),
+    )?;
+    let text = checked_cost(
+        largest_text
+            .checked_mul(2)
+            .and_then(|value| value.checked_add(1024))
+            .and_then(|value| value.checked_mul(QUEUE_LIMIT))
+            .and_then(|value| value.checked_add(4096))
+            .and_then(|value| value.checked_mul(32)),
+    )?;
+    Ok(((text, fixed), frame_bytes, diagnostic_bytes))
+}
+
 impl Host {
     pub fn new() -> Result<Shared> {
         let dictionary =
@@ -151,6 +202,45 @@ impl Host {
         let projection = InputEngine::new(dictionary.clone());
         let fixed =
             std::mem::size_of::<Self>() + super::recovery::fixed_cost() + PROTOTYPE_TSV.len() * 32;
+        Self::from_engines(
+            InputEngine::new(dictionary),
+            projection,
+            fixed,
+            recovery_cost(),
+        )
+    }
+
+    pub fn with_search(
+        snapshot: Arc<SearchSnapshot>,
+        search_config: cloudleaf_search::Config,
+        config: InputConfig,
+    ) -> Result<Shared> {
+        let dictionary_bytes = snapshot.estimated_bytes();
+        let engine = InputEngine::with_search(snapshot.clone(), search_config.clone(), config)
+            .map_err(|_| Error::new(E_FAIL, "输入搜索配置无效"))?;
+        let bounds = engine
+            .search_capacity_bounds()
+            .ok_or_else(|| Error::new(E_FAIL, "缺少搜索容量约定"))?;
+        let projection = InputEngine::with_search(snapshot, search_config, config)
+            .map_err(|_| Error::new(E_FAIL, "投影搜索配置无效"))?;
+        let (epoch_cost, frame_bytes, diagnostic_bytes) = search_recovery_cost(bounds)?;
+        // 快照与两份持久诊断按Host保守计费，事件FIFO只复制frame，不重复计诊断。
+        let fixed = checked_cost(
+            std::mem::size_of::<Self>()
+                .checked_add(super::recovery::fixed_cost())
+                .and_then(|value| value.checked_add(dictionary_bytes))
+                .and_then(|value| value.checked_add(frame_bytes.checked_mul(2)?))
+                .and_then(|value| value.checked_add(diagnostic_bytes.checked_mul(2)?)),
+        )?;
+        Self::from_engines(engine, projection, fixed, epoch_cost)
+    }
+
+    fn from_engines(
+        engine: InputEngine,
+        projection: InputEngine,
+        fixed: usize,
+        epoch_cost: (usize, usize),
+    ) -> Result<Shared> {
         if !budget::can_reserve_host(fixed) {
             return Err(Error::new(E_FAIL, "模块恢复固定对象预算已满"));
         }
@@ -159,12 +249,13 @@ impl Host {
             .ok_or_else(|| Error::new(E_FAIL, "模块恢复固定对象预算已满"))?;
         Ok(Rc::new(Self {
             recovery_budget,
+            epoch_cost,
             epoch_budget: RefCell::new(None),
             pending_write: RefCell::new(None),
             // 安全：只读取线程标识，没有外部资源。
             owner: unsafe { GetCurrentThreadId() },
             epoch: Cell::new(1),
-            engine: RefCell::new(InputEngine::new(dictionary)),
+            engine: RefCell::new(engine),
             projection: RefCell::new(projection),
             instance: NEXT_INSTANCE
                 .fetch_update(Ordering::AcqRel, Ordering::Acquire, |value| {
@@ -223,7 +314,7 @@ impl Host {
         {
             return true;
         }
-        let (text, fixed) = recovery_cost();
+        let (text, fixed) = self.epoch_cost;
         if !budget::can_reserve_batch(text, fixed) {
             return false;
         }
@@ -1874,3 +1965,7 @@ pub(crate) mod tests;
 #[cfg(test)]
 #[path = "render_tests.rs"]
 mod render_tests;
+
+#[path = "input_review.rs"]
+mod input_review;
+pub(crate) use input_review::run as review_input_host;

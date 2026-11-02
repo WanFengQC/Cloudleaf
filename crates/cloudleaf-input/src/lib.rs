@@ -1,10 +1,16 @@
 //! 平台无关输入状态机；宿主负责执行提交请求并同步确认结果。
 
+mod sentence;
+pub use sentence::{
+    EdgeSource, SearchCapacityBounds, SearchDiagnostic, SearchPath, SearchSnapshot,
+};
+
 use cloudleaf_dictionary::Dictionary;
 use cloudleaf_types::{
     Candidate, CommitRequest, CoreError, ErrorCode, EventResult, InputEvent, InputFrame, InputMode,
     InputState, Key, KeyDisposition,
 };
+use std::sync::Arc;
 
 /// 首期每页最多显示五个候选，数字快捷键按当前页编号。
 pub const DEFAULT_PAGE_SIZE: usize = 5;
@@ -30,6 +36,8 @@ impl Default for InputConfig {
 pub struct InputEngine {
     config: InputConfig,
     dictionary: Dictionary,
+    sentence: Option<sentence::SentenceBackend>,
+    search_diagnostic: Option<SearchDiagnostic>,
     state: InputState,
     mode: InputMode,
     revision: u64,
@@ -62,6 +70,8 @@ impl InputEngine {
         Ok(Self {
             config,
             dictionary,
+            sentence: None,
+            search_diagnostic: None,
             state: InputState::Inactive,
             mode: InputMode::Chinese,
             revision: 0,
@@ -74,6 +84,61 @@ impl InputEngine {
             pending_commit: None,
             failed_commit: None,
         })
+    }
+
+    /// 仅显式实验构造启用整句搜索；词典已在宿主加载阶段核验并建立索引。
+    pub fn with_search(
+        snapshot: Arc<SearchSnapshot>,
+        search_config: cloudleaf_search::Config,
+        config: InputConfig,
+    ) -> Result<Self, CoreError> {
+        if search_config.output_k > config.max_candidates {
+            return Err(CoreError::new(
+                ErrorCode::InvalidConfig,
+                "搜索候选数超过输入帧预算",
+            ));
+        }
+        let backend = sentence::SentenceBackend::new(snapshot, search_config)?;
+        let mut engine = Self::with_config(Dictionary::empty(), config)?;
+        engine.sentence = Some(backend);
+        Ok(engine)
+    }
+
+    pub fn search_diagnostic(&self) -> Option<&SearchDiagnostic> {
+        self.search_diagnostic.as_ref()
+    }
+
+    pub fn search_capacity_bounds(&self) -> Option<SearchCapacityBounds> {
+        self.sentence
+            .as_ref()
+            .map(sentence::SentenceBackend::capacity_bounds)
+    }
+
+    /// 未确定的提交先由原事务收尾，不能通过换词典解除失败保护。
+    pub fn replace_search_snapshot(
+        &mut self,
+        snapshot: Arc<SearchSnapshot>,
+    ) -> Result<(), CoreError> {
+        if self.pending_commit.is_some() || self.failed_commit.is_some() {
+            return Err(CoreError::new(
+                ErrorCode::CommitPending,
+                "当前事务未完成，不能切换词典",
+            ));
+        }
+        if self.revision == u64::MAX {
+            return Err(CoreError::new(ErrorCode::InvalidInput, "输入修订号已耗尽"));
+        }
+        let backend = self
+            .sentence
+            .as_mut()
+            .ok_or_else(|| CoreError::new(ErrorCode::InvalidConfig, "当前不是整句实验后端"))?;
+        backend.replace_snapshot(snapshot);
+        let inactive = self.state == InputState::Inactive;
+        self.refresh();
+        if inactive {
+            self.state = InputState::Inactive;
+        }
+        Ok(())
     }
 
     /// 返回独立的显示快照；候选索引指向完整候选数组。
@@ -486,16 +551,26 @@ impl InputEngine {
     }
 
     fn refresh(&mut self) {
-        self.candidates = cloudleaf_pinyin::parse(&self.preedit).map_or_else(
-            |_| Vec::new(),
-            |parsed| {
-                cloudleaf_candidate::generate(&parsed, &self.dictionary, self.config.max_candidates)
-            },
-        );
+        self.advance_revision();
+        self.candidates = if let Some(backend) = &self.sentence {
+            let (candidates, diagnostic) = backend.query(&self.preedit, self.revision);
+            self.search_diagnostic = Some(diagnostic);
+            candidates
+        } else {
+            cloudleaf_pinyin::parse(&self.preedit).map_or_else(
+                |_| Vec::new(),
+                |parsed| {
+                    cloudleaf_candidate::generate(
+                        &parsed,
+                        &self.dictionary,
+                        self.config.max_candidates,
+                    )
+                },
+            )
+        };
         self.highlighted = (!self.candidates.is_empty()).then_some(0);
         self.page_start = 0;
         self.state = self.composition_state();
-        self.advance_revision();
     }
 
     fn composition_state(&self) -> InputState {
@@ -521,6 +596,7 @@ impl InputEngine {
         self.preedit.clear();
         self.cursor = 0;
         self.candidates.clear();
+        self.search_diagnostic = None;
         self.highlighted = None;
         self.page_start = 0;
         self.pending_commit = None;
@@ -532,6 +608,9 @@ impl InputEngine {
     fn advance_revision(&mut self) {
         // handle 在进入前检查上限，每个事件至多增加一次修订号。
         self.revision += 1;
+        if let Some(diagnostic) = &mut self.search_diagnostic {
+            diagnostic.revision = self.revision;
+        }
     }
 
     fn result(

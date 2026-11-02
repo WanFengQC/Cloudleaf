@@ -39,7 +39,7 @@ pub fn generate(parsed: &ParseResult, dictionary: &Dictionary, limit: usize) -> 
             text: matched.entry.text.clone(),
             annotation: matched.entry.annotation.clone(),
             source: matched.entry.source.clone(),
-            frequency: matched.entry.frequency,
+            frequency: Some(matched.entry.frequency),
             match_kind: matched.match_kind,
         })
         .collect()

@@ -133,7 +133,8 @@ pub struct Candidate {
     pub text: String,
     pub annotation: Option<String>,
     pub source: String,
-    pub frequency: u32,
+    /// None表示没有候选整体频率观测，不等同于零频。
+    pub frequency: Option<u32>,
     pub match_kind: MatchKind,
 }
 

@@ -6,7 +6,7 @@ mod profiling;
 mod search;
 
 pub use lattice::{Edge, Lattice, MatchKind};
-pub use lexicon::{Entry, FrequencyKind, Lexicon, LoadLimits};
+pub use lexicon::{Entry, FrequencyKind, Lexicon, LexiconMemory, LoadLimits};
 pub use model::BigramModel;
 pub use profiling::{Measurement, Phase, Profile, profile_query};
 pub use search::{Candidate, Features, SearchResult, Statistics, search_graph};

@@ -372,3 +372,28 @@ fn focus_loss_during_uncertain_commit_only_ends_old_composition() {
     assert!(host.context.borrow().is_none());
     assert!(!host.unknown_text.get());
 }
+
+pub(crate) fn sentence_host(mode: u8, readonly: bool) -> Shared {
+    // 仅为组件组合/页面映射构造的原创研发fixture，不是正式语言gold。
+    const WORDS: &str = "# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\nwo\two\t我\t\tunknown\t\tcloudleaf:windows-round14-fixture\two\tMIT\nzhengzai\tzheng zai\t正在\t\tunknown\t\tcloudleaf:windows-round14-fixture\tzhengzai\tMIT\nkaifa\tkai fa\t开发\t\tunknown\t\tcloudleaf:windows-round14-fixture\tkaifa\tMIT\nyi\tyi\t一\t\tunknown\t\tcloudleaf:windows-round14-fixture\tyi\tMIT\nkuan\tkuan\t款\t\tunknown\t\tcloudleaf:windows-round14-fixture\tkuan\tMIT\nzhongwen\tzhong wen\t中文\t\tunknown\t\tcloudleaf:windows-round14-fixture\tzhongwen\tMIT\nshurufa\tshu ru fa\t输入法\t\tunknown\t\tcloudleaf:windows-round14-fixture\tshurufa\tMIT\nni0\tni\t你\t\tunknown\t\tcloudleaf:windows-round14-fixture\tni0\tMIT\nni1\tni\t倪\t\tunknown\t\tcloudleaf:windows-round14-fixture\tni1\tMIT\nni2\tni\t呢\t\tunknown\t\tcloudleaf:windows-round14-fixture\tni2\tMIT\nni3\tni\t尼\t\tunknown\t\tcloudleaf:windows-round14-fixture\tni3\tMIT\nni4\tni\t泥\t\tunknown\t\tcloudleaf:windows-round14-fixture\tni4\tMIT\nhao\thao\t好\t\tunknown\t\tcloudleaf:windows-round14-fixture\thao\tMIT\n";
+    const WORDS_SHA256: &str = "a9bf9026e0a58a2e6dfbbbe5b313b745d6c85e5e9f8f9f2f2fa04215b384a7f6";
+    let snapshot = Arc::new(SearchSnapshot::from_verified_tsv(WORDS, WORDS_SHA256).unwrap());
+    let host = Host::with_search(
+        snapshot,
+        cloudleaf_search::Config {
+            method: cloudleaf_search::Method::PositionDag,
+            ranker: cloudleaf_search::Ranker::Structural,
+            output_k: 5,
+            ..cloudleaf_search::Config::default()
+        },
+        InputConfig {
+            page_size: 2,
+            max_candidates: 5,
+        },
+    )
+    .unwrap();
+    *host.context.borrow_mut() = Some(FaultContext { mode, readonly }.into());
+    host.engine.borrow_mut().handle(InputEvent::Activate);
+    host.projection.borrow_mut().handle(InputEvent::Activate);
+    host
+}

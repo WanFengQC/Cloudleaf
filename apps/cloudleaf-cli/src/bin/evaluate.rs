@@ -170,7 +170,7 @@ fn frequency_only(parsed: &ParseResult, dictionary: &Dictionary) -> Vec<String> 
             text: entry.text.clone(),
             annotation: entry.annotation.clone(),
             source: entry.source.clone(),
-            frequency: entry.frequency,
+            frequency: Some(entry.frequency),
             match_kind,
         })
         .collect();

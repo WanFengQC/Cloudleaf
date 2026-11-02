@@ -4,6 +4,16 @@
 
 当前边界：TSF、原生候选窗口、生产词库、整句候选/语言模型、纠错/学习和翻译尚未实现。64条手写词典及 CLI 演示不代表最终产品能力。最终50项可追踪能力见[产品范围](docs/product-scope.md)，近期CL-001..006状态见[执行记录](docs/cl001-cl006-progress.md)。
 
+上段保留main历史基线。当前`codex/input-round14`为独立中文输入集成试验：复用CL-008搜索、CL-009固定已审词条和CL-007真实COM/候选窗口；默认构造仍为原型整词路径，试验须显式启用。已有代码不等于真实TSF应用或正式语言质量验收，main和原五PR不合并。
+
+```text
+python scripts/verify_input_lexicon.py --release FIXED_RELEASE --output NEW_RECEIPT.json
+cargo run -p cloudleaf-cli --release --locked --offline -- --search-lexicon FIXED_RELEASE/runtime.tsv --search-sha VERIFIED_RUNTIME_SHA --query nihao
+cargo run -p cloudleaf-windows-ime --bin cloudleaf-ime --release --locked --offline -- --review-input-host FIXED_RELEASE/runtime.tsv VERIFIED_RUNTIME_SHA
+```
+
+完整固定包在Git外，不下载新数据；凭据不是签名。第二项是真实核心候选，第三项只核Windows Host的执行/投影与恢复预算，不注册或激活TSF，也不向真实应用提交文字。原始候选有明显排序错误，词频unknown保持None，正式指标仍null。设计与完整限制见[Round14设计](docs/input-round14-design.md)。
+
 ## 环境
 
 - Git。

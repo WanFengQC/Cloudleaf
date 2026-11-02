@@ -22,15 +22,24 @@ def verify_licenses(root: Path, metadata: dict) -> list[dict]:
     members = set(metadata["workspace_members"])
     packages = [package for package in metadata["packages"] if package["id"] not in members]
     manifest = json.loads((root / "licenses/windows/manifest.json").read_text(encoding="utf-8"))
+    snapshot_manifest = root / "licenses/input-snapshot/manifest.json"
+    if snapshot_manifest.is_file():
+        manifest += json.loads(snapshot_manifest.read_text(encoding="utf-8"))
     expected_packages = {(package["name"], package["version"]) for package in packages}
     assert {(row["package"], row["version"]) for row in manifest} == expected_packages, "许可清单包集合与实际依赖不符"
     seen = set()
     result = []
     for package in packages:
-        original = Path(package["manifest_path"]).parent
-        original_files = {path.name: path for path in original.iterdir()
-                          if path.is_file() and path.name.lower().startswith("license")}
+        original = Path(package["manifest_path"]).parent.resolve()
         rows = [row for row in manifest if (row["package"], row["version"]) == (package["name"], package["version"])]
+        snapshot = all("source_relative" in row for row in rows)
+        assert snapshot or all("source_relative" not in row for row in rows), "同包许可不能混用清单格式"
+        if snapshot:
+            original_files = {path.relative_to(original).as_posix(): path for path in original.rglob("*")
+                              if path.is_file() and path.name.lower().startswith(("license", "copying", "notice"))}
+        else:
+            original_files = {path.name: path for path in original.iterdir()
+                              if path.is_file() and path.name.lower().startswith("license")}
         matched = set()
         files = []
         for row in rows:
@@ -41,9 +50,19 @@ def verify_licenses(root: Path, metadata: dict) -> list[dict]:
             copied = (root / name).resolve()
             assert copied.is_relative_to(root.resolve()) and copied.is_file(), "许可副本不存在或越界"
             assert sha256(copied) == row["sha256"], "许可副本哈希与清单不符"
-            prefix = f"{package['name']}-{package['version']}-"
-            assert copied.name.startswith(prefix), "许可副本名称与包不符"
-            source_name = copied.name.removeprefix(prefix)
+            if snapshot:
+                source_name = row["source_relative"]
+                relative = Path(source_name)
+                assert source_name and "\\" not in source_name and ":" not in source_name, "许可原件相对路径无效"
+                assert not relative.is_absolute() and ".." not in relative.parts, "许可原件相对路径越界"
+                source = (original / relative).resolve()
+                assert source.is_relative_to(original), "许可原件相对路径越界"
+                assert row["license"] == package["license"] and row["source"] == package["source"], "许可来源与实际metadata不符"
+                assert copied.stat().st_size == row["bytes"], "许可副本长度与清单不符"
+            else:
+                prefix = f"{package['name']}-{package['version']}-"
+                assert copied.name.startswith(prefix), "许可副本名称与包不符"
+                source_name = copied.name.removeprefix(prefix)
             assert source_name in original_files and source_name not in matched, "许可原件缺失或重复"
             source = original_files[source_name]
             assert source.read_bytes() == copied.read_bytes(), "许可副本与Cargo原包字节不同"
@@ -101,5 +120,5 @@ if __name__ == "__main__":
     try:
         run()
     except (AssertionError, KeyError, OSError, ValueError, subprocess.CalledProcessError) as error:
-        print(f"Windows依赖审计失败：{error}", file=sys.stderr)
+        print(f"依赖许可审计失败：{error}", file=sys.stderr)
         sys.exit(1)

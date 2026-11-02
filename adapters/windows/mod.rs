@@ -20,6 +20,18 @@ pub(crate) fn boundary<T>(f: impl FnOnce() -> Result<T>) -> Result<T> {
     catch_unwind(AssertUnwindSafe(f)).unwrap_or_else(|_| Err(Error::from_hresult(E_UNEXPECTED)))
 }
 pub fn manage(args: Vec<String>) -> Result<()> {
+    if args
+        .first()
+        .is_some_and(|value| value == "--review-input-host")
+    {
+        return match args.as_slice() {
+            [_, runtime, expected_sha256] => session::review_input_host(runtime, expected_sha256),
+            _ => Err(Error::new(
+                E_UNEXPECTED,
+                "用法：--review-input-host RUNTIME SHA256",
+            )),
+        };
+    }
     registration::manage(args)
 }
 pub use service::{DllCanUnloadNow, DllGetClassObject};

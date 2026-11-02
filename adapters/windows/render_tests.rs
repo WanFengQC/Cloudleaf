@@ -2195,3 +2195,104 @@ fn simulated_com_diagnostic_benchmark() {
         );
     }
 }
+
+#[test]
+fn round14_sentence_host_applied_once_and_unknown_never_replays_old_epoch() {
+    for unknown_after_write in [false, true] {
+        let host = super::tests::sentence_host(0, false);
+        let data = Rc::new(Data::default());
+        *data.host.borrow_mut() = Rc::downgrade(&host);
+        let context: ITfContext = Context { data: data.clone() }.into();
+        *host.context.borrow_mut() = Some(context.clone());
+        let input = "wozhengzaikaifayikuanzhongwenshurufa";
+        for ch in input.chars() {
+            assert!(host.key(Key::Char(ch)).unwrap());
+            assert!(!host.quarantined.get());
+        }
+        let frame = host.engine.borrow().frame();
+        assert_eq!(frame.preedit, input);
+        assert_eq!(text(&data), input);
+        assert_eq!(frame.candidates[0].text, "我正在开发一款中文输入法");
+        assert_eq!(frame.candidates[0].frequency, None);
+        assert!(same_semantics(
+            &EventResult {
+                handled: true,
+                frame: frame.clone(),
+                commit: None,
+                error: None
+            },
+            &EventResult {
+                handled: true,
+                frame: host.projection.borrow().frame(),
+                commit: None,
+                error: None
+            },
+        ));
+        let paths = host
+            .engine
+            .borrow()
+            .search_diagnostic()
+            .unwrap()
+            .paths
+            .clone();
+        assert_eq!(paths[0].edges.len(), 7);
+        assert_eq!(paths[0].edges.first().unwrap().raw_start, 0);
+        assert_eq!(paths[0].edges.last().unwrap().raw_end, input.len());
+        let writes_before_commit = data.writes.get();
+        // 未执行的旧上下文回调留到epoch切换后，再经真实COM vtable执行。
+        let stale: ITfEditSession = KeyEdit {
+            host: host.clone(),
+            epoch: host.epoch.get(),
+            context: context.clone(),
+            action: Operation::Key(Key::Char('x')),
+            executed: Rc::new(Cell::new(false)),
+            called: Rc::new(Cell::new(false)),
+        }
+        .into();
+        if unknown_after_write {
+            data.mode.set(2);
+        }
+        assert!(host.key(Key::Space).unwrap());
+        assert_eq!(text(&data), frame.candidates[0].text);
+        assert_eq!(data.writes.get(), writes_before_commit + 1);
+        println!(
+            "round14-search-native unknown={unknown_after_write} input={input:?} output={:?} paths={paths:?} writes={} state={:?}",
+            text(&data),
+            data.writes.get(),
+            host.engine.borrow().frame().state
+        );
+        if unknown_after_write {
+            assert!(host.quarantined.get() && host.unknown_text.get());
+            assert_eq!(
+                host.engine.borrow().frame().state,
+                cloudleaf_types::InputState::Committing
+            );
+            assert!(matches!(
+                host.engine.borrow().key_disposition(Key::Space),
+                KeyDisposition::Blocked(cloudleaf_types::ErrorCode::CommitPending)
+            ));
+            assert!(!host.key(Key::Space).unwrap());
+            data.mode.set(0);
+            host.invalidate().unwrap();
+            let invalidated = host.engine.borrow().frame();
+            let endings = data.endings.get();
+            unsafe {
+                stale.DoEditSession(7).unwrap();
+                stale.DoEditSession(7).unwrap();
+            }
+            assert_eq!(host.engine.borrow().frame(), invalidated);
+            assert_eq!(text(&data), frame.candidates[0].text);
+            assert_eq!(data.writes.get(), writes_before_commit + 1);
+            assert_eq!(data.endings.get(), endings);
+        } else {
+            assert!(!host.quarantined.get() && !host.unknown_text.get());
+            assert_eq!(
+                host.engine.borrow().frame().state,
+                cloudleaf_types::InputState::Idle
+            );
+            assert_eq!(data.endings.get(), 1);
+            assert!(!host.key(Key::Space).unwrap());
+            assert_eq!(data.writes.get(), writes_before_commit + 1);
+        }
+    }
+}

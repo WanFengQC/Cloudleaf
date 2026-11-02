@@ -6,8 +6,9 @@ use std::io::{self, BufRead};
 use std::process::ExitCode;
 
 use cloudleaf_dictionary::{Dictionary, PROTOTYPE_TSV};
-use cloudleaf_input::InputEngine;
+use cloudleaf_input::{InputConfig, InputEngine, SearchSnapshot};
 use cloudleaf_types::{InputEvent, InputFrame, InputMode, Key};
+use std::sync::Arc;
 
 fn main() -> ExitCode {
     match run() {
@@ -25,17 +26,26 @@ fn run() -> Result<(), String> {
     let mut replay = None;
     let mut dictionary_path = None;
     let mut benchmark_iterations = None;
+    let mut search_path = None;
+    let mut search_sha = None;
     while let Some(arg) = args.next() {
         match arg.as_str() {
             "--help" | "-h" => {
                 println!(
                     "Cloudleaf M2 测试宿主\n  --query <全拼>\n  --replay \"nihao <Down> <Space>\"\n  --dictionary <UTF-8 TSV>\n  --benchmark <迭代数，1..10000>\n无参数时逐行输入事件，:quit 退出。特殊键：<Space> <Enter> <Backspace> <Esc> <Left> <Right> <Up> <Down> <PageUp> <PageDown> <English> <Chinese> <Blur> <Activate> <Deactivate>。"
                 );
+                println!(
+                    "整句试验：--search-lexicon <预检runtime.tsv> --search-sha <实际SHA256>；默认仍为原型引擎。"
+                );
                 return Ok(());
             }
             "--query" => query = Some(args.next().ok_or("--query 缺少拼音")?),
             "--replay" => replay = Some(args.next().ok_or("--replay 缺少事件序列")?),
             "--dictionary" => dictionary_path = Some(args.next().ok_or("--dictionary 缺少路径")?),
+            "--search-lexicon" => {
+                search_path = Some(args.next().ok_or("--search-lexicon 缺少路径")?)
+            }
+            "--search-sha" => search_sha = Some(args.next().ok_or("--search-sha 缺少SHA")?),
             "--benchmark" => {
                 let count = args
                     .next()
@@ -50,6 +60,11 @@ fn run() -> Result<(), String> {
             _ => return Err("未知参数，使用 --help 查看用法".into()),
         }
     }
+    if search_path.is_some() != search_sha.is_some()
+        || (search_path.is_some() && dictionary_path.is_some())
+    {
+        return Err("试验搜索必须成对提供--search-lexicon和--search-sha，不能混用原型词典".into());
+    }
     if usize::from(query.is_some())
         + usize::from(replay.is_some())
         + usize::from(benchmark_iterations.is_some())
@@ -58,7 +73,7 @@ fn run() -> Result<(), String> {
         return Err("--query、--replay 与 --benchmark 只能选择一种".into());
     }
     if let Some(iterations) = benchmark_iterations {
-        if dictionary_path.is_some() {
+        if dictionary_path.is_some() || search_path.is_some() {
             return Err("固定基准只使用版本化原型词典".into());
         }
         return benchmark::run(iterations);
@@ -83,16 +98,51 @@ fn run() -> Result<(), String> {
     } else {
         Dictionary::from_tsv(PROTOTYPE_TSV).map_err(|error| error.to_string())?
     };
-    let mut engine = InputEngine::new(dictionary);
+    let mut engine = if let Some(path) = search_path {
+        let loaded = std::fs::read_to_string(path)
+            .map_err(|_| "词典文件无法读取".to_string())
+            .and_then(|text| {
+                SearchSnapshot::from_verified_tsv(&text, search_sha.as_deref().unwrap())
+                    .map_err(|error| error.to_string())
+            });
+        match loaded {
+            Ok(snapshot) => {
+                println!(
+                    "显式整句试验：snapshot={} entries={} 词频unknown保持None",
+                    snapshot.version(),
+                    snapshot.entries().len()
+                );
+                InputEngine::with_search(
+                    Arc::new(snapshot),
+                    cloudleaf_search::Config {
+                        method: cloudleaf_search::Method::PositionDag,
+                        ranker: cloudleaf_search::Ranker::Structural,
+                        output_k: 10,
+                        ..cloudleaf_search::Config::default()
+                    },
+                    InputConfig::default(),
+                )
+                .map_err(|error| error.to_string())?
+            }
+            Err(error) => {
+                eprintln!("整句词典拒绝：{error}；使用空词典保全原拼音，不混入原型人工词频。");
+                InputEngine::new(Dictionary::empty())
+            }
+        }
+    } else {
+        InputEngine::new(dictionary)
+    };
     engine.handle(InputEvent::Activate);
     if let Some(text) = query {
         for character in text.chars() {
             dispatch(&mut engine, InputEvent::Key(Key::Char(character)))?;
         }
         show_frame(&engine.frame());
+        show_search(&engine);
     } else if let Some(sequence) = replay {
         replay_sequence(&mut engine, &sequence)?;
         show_frame(&engine.frame());
+        show_search(&engine);
     } else {
         println!(
             "Cloudleaf 原型词典测试宿主；输入 nihao <Space>，:quit 退出。这里只展示核心行为，尚未接入系统输入法。"
@@ -104,9 +154,16 @@ fn run() -> Result<(), String> {
             }
             replay_sequence(&mut engine, &line)?;
             show_frame(&engine.frame());
+            show_search(&engine);
         }
     }
     Ok(())
+}
+
+fn show_search(engine: &InputEngine) {
+    if let Some(diagnostic) = engine.search_diagnostic() {
+        println!("搜索={diagnostic:?}");
+    }
 }
 
 fn replay_sequence(engine: &mut InputEngine, sequence: &str) -> Result<(), String> {

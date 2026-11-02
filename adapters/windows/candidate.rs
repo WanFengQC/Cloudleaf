@@ -396,10 +396,18 @@ unsafe extern "system" fn window_proc(window: HWND, message: u32, w: WPARAM, l: 
                     return Ok(LRESULT(MA_NOACTIVATE as isize));
                 }
                 if message == WM_LBUTTONUP {
+                    let x = (l.0 & 0xffff) as i16 as i32;
                     let y = ((l.0 >> 16) & 0xffff) as i16 as i32;
+                    let mut client = RECT::default();
+                    GetClientRect(window, &mut client)?;
+                    // 仅实际绘制的当前页行可选，边距不能映射到下一页。
+                    if x < 8 || x >= client.right.min(352) || y < 4 || y >= client.bottom {
+                        return Ok(LRESULT(0));
+                    }
                     let f = view.frame.borrow();
-                    let n = f.page_start + (y.saturating_sub(4) / 30) as usize;
-                    let valid = n < f.candidates.len();
+                    let row = ((y - 4) / 30) as usize;
+                    let n = f.page_start + row;
+                    let valid = row < f.page_size && n < f.candidates.len();
                     drop(f);
                     if valid {
                         view.selected.set(n);
@@ -767,10 +775,95 @@ mod tests {
         }
         // 可见第二行仍进入相同Finalize路径；旧故障宿主拒锁，核心保持原文。
         unsafe {
-            SendMessageW(window, WM_LBUTTONUP, Some(WPARAM(0)), Some(LPARAM(10 | (40 << 16))));
+            SendMessageW(
+                window,
+                WM_LBUTTONUP,
+                Some(WPARAM(0)),
+                Some(LPARAM(10 | (40 << 16))),
+            );
         }
         assert_eq!(ui.view.selected.get(), 1);
         assert_eq!(host.engine.borrow().frame(), before);
+        ui.close();
+        assert_eq!(state.ended.get(), 1);
+    }
+
+    #[test]
+    fn round14_search_frame_candidate_ui_keeps_order_pages_and_rejects_stale_finalize() {
+        let state = Rc::new(UiState::default());
+        let host = super::super::session::tests::sentence_host(0, false);
+        for ch in "nihao".chars() {
+            host.engine
+                .borrow_mut()
+                .handle(InputEvent::Key(Key::Char(ch)));
+        }
+        let first = host.engine.borrow().frame();
+        assert_eq!(first.candidates.len(), 5);
+        assert_eq!(first.candidates[0].text, "你好");
+        let manager: ITfThreadMgr = UiManager {
+            state: state.clone(),
+        }
+        .into();
+        *host.manager.borrow_mut() = Some(manager);
+        let context = host.context.borrow().clone().unwrap();
+        let mut ui = CandidateUi::new(host.clone(), context, first.clone()).unwrap();
+        ui.update(first.clone(), RECT::default()).unwrap();
+        let element: ITfCandidateListUIElementBehavior =
+            state.element.borrow().as_ref().unwrap().cast().unwrap();
+        // 原生COM列表消费生产搜索frame，pbShow=false，不显示或激活窗口。
+        unsafe {
+            assert!(!IsWindowVisible(ui.view.window.get()).as_bool());
+            assert_eq!(element.GetCount().unwrap(), first.candidates.len() as u32);
+            assert_eq!(
+                element.GetSelection().unwrap(),
+                first.highlighted.unwrap() as u32
+            );
+            for (index, expected) in first.candidates.iter().enumerate() {
+                assert_eq!(
+                    element.GetString(index as u32).unwrap().to_string(),
+                    expected.text
+                );
+            }
+        }
+        let paged = host
+            .engine
+            .borrow_mut()
+            .handle(InputEvent::Key(Key::PageDown))
+            .frame;
+        assert_eq!(paged.page_start, 2);
+        ui.update(paged.clone(), RECT::default()).unwrap();
+        unsafe {
+            assert_eq!(
+                element.GetSelection().unwrap(),
+                paged.highlighted.unwrap() as u32
+            );
+            assert_eq!(element.GetCurrentPage().unwrap(), 1);
+            let mut indices = [0u32; 3];
+            let mut count = 0;
+            element.GetPageIndex(&mut indices, &mut count).unwrap();
+            assert_eq!(count, 3);
+            assert_eq!(indices, [0, 2, 4]);
+        }
+        assert_eq!(ui.view.frame.borrow().candidates, paged.candidates);
+        let changed = host
+            .engine
+            .borrow_mut()
+            .handle(InputEvent::Key(Key::Left))
+            .frame;
+        assert_ne!(changed.revision, paged.revision);
+        let stale = host.engine.borrow_mut().select_candidate(
+            paged.revision,
+            &paged.candidates[paged.highlighted.unwrap()].id,
+        );
+        assert_eq!(
+            stale.error.unwrap().code,
+            cloudleaf_types::ErrorCode::StaleCandidate
+        );
+        assert!(stale.commit.is_none());
+        // 此假context拒同步锁；真实Finalize必须失败且不能提交UI缓存文字。
+        assert!(unsafe { element.Finalize() }.is_err());
+        assert_eq!(host.engine.borrow().frame(), changed);
+        assert_eq!(ui.view.frame.borrow().revision, paged.revision);
         ui.close();
         assert_eq!(state.ended.get(), 1);
     }

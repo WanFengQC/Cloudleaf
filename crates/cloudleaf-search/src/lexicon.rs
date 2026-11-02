@@ -37,6 +37,14 @@ pub struct Lexicon {
     pub(crate) trie: Vec<TrieNode>,
 }
 
+/// 固定Rust1.90容器布局的保守预估，不是RSS或allocator硬上界。
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct LexiconMemory {
+    pub owned_capacity_bytes: usize,
+    pub btree_node_estimate_bytes: usize,
+    pub total_estimated_bytes: usize,
+}
+
 /// 载入预算由宿主设定；v2默认容量不继承旧原型十万条上限。
 #[derive(Clone, Debug)]
 pub struct LoadLimits {
@@ -219,7 +227,44 @@ impl Lexicon {
             }
             trie[node].exact.push(entry_index);
         }
+        entries.shrink_to_fit();
+        trie.shrink_to_fit();
+        for entry in &mut entries {
+            entry.letters.shrink_to_fit();
+        }
+        for node in &mut trie {
+            node.exact.shrink_to_fit();
+            node.prefix.shrink_to_fit();
+        }
         Ok(Self { entries, trie })
+    }
+
+    pub fn memory_estimate(&self) -> LexiconMemory {
+        let mut owned = std::mem::size_of::<Self>()
+            + self.entries.capacity() * std::mem::size_of::<Entry>()
+            + self.trie.capacity() * std::mem::size_of::<TrieNode>();
+        let mut tree_nodes = 0;
+        for entry in &self.entries {
+            owned += entry.id.capacity()
+                + entry.pinyin.capacity()
+                + entry.text.capacity()
+                + entry.annotation.capacity()
+                + entry.source.capacity()
+                + entry.source_record_id.capacity()
+                + entry.license_id.capacity()
+                + entry.letters.capacity();
+            tree_nodes += small_btree_estimate(entry.boundaries.len(), 112, 208);
+        }
+        for node in &self.trie {
+            owned +=
+                (node.exact.capacity() + node.prefix.capacity()) * std::mem::size_of::<usize>();
+            tree_nodes += small_btree_estimate(node.next.len(), 128, 224);
+        }
+        LexiconMemory {
+            owned_capacity_bytes: owned,
+            btree_node_estimate_bytes: tree_nodes,
+            total_estimated_bytes: owned + tree_nodes,
+        }
     }
 
     pub fn entries(&self) -> &[Entry] {
@@ -231,16 +276,31 @@ impl Lexicon {
     }
 }
 
+// Rust1.90 BTree的B=6、叶最多11键，非根最少5键。已验证音节边界最多15键、
+// Trie ASCII子节点最多26键，故这里只有叶或一层内部根；按对齐上取整的节点尺寸估算。
+// 该值不含allocator私有元数据或碎片，升级工具链时须重新核对，不能当作OS硬内存限制。
+fn small_btree_estimate(keys: usize, leaf_bytes: usize, internal_bytes: usize) -> usize {
+    match keys {
+        0 => 0,
+        1..=11 => leaf_bytes,
+        _ => internal_bytes + ((keys + 1) / 6) * leaf_bytes,
+    }
+}
+
 #[cfg(test)]
 mod compact_capacity_tests {
     use super::*;
 
     #[test]
     fn loaded_immutable_index_does_not_keep_growth_slack() {
-        let syllables = ["a", "ai", "an", "ang", "ao", "ba", "bai", "ban", "bang", "bao", "bei", "ben", "beng"];
+        let syllables = [
+            "a", "ai", "an", "ang", "ao", "ba", "bai", "ban", "bang", "bao", "bei", "ben", "beng",
+        ];
         let mut text = "# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\n".to_owned();
         for (index, syllable) in syllables.iter().enumerate() {
-            text.push_str(&format!("id-{index}\t{syllable} a\t词{index}\t\tunknown\t\tfixture\tid-{index}\tMIT\n"));
+            text.push_str(&format!(
+                "id-{index}\t{syllable} a\t词{index}\t\tunknown\t\tfixture\tid-{index}\tMIT\n"
+            ));
         }
         let lexicon = Lexicon::from_tsv(&text).unwrap();
         assert_eq!(lexicon.entries.capacity(), lexicon.entries.len());
