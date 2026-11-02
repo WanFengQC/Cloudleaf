@@ -36,4 +36,4 @@ Production 载入必须另行提供 `DictionaryTrustPolicy` 的真实路径及�
 
 ## 尚未实现
 
-离线模型只提供元数据、能力及缺模型错误，没有授权权重或推理 backend；TSF 上屏、macOS/Linux 平台密钥存储及正式语言质量评估尚未交付。独立 Windows 面板已经实现原生 UI、设置、系统凭据和显式剪贴板复制，其实际验证及未完成验收见 [Round 12 报告](../../docs/reports/translation-round12-status.md)。本 crate 继续保持平台无关，sidecar 不改变默认输入引擎；不进入 CL-010。核心协议见 [Round 11 设计](../../docs/translation-round11-design.md)。
+本 crate 的 `OfflineModelProvider` 保留不可用描述器；真实 CPU 整句推理由独立的 [cloudleaf-offline](../cloudleaf-offline/README.md) 复用本服务接口实现，Windows 面板可选择固定本地模型。TSF 上屏、macOS/Linux 平台密钥存储及正式语言质量评估尚未交付。原生面板、安全设置和剪贴板的 Round 12 历史验收见 [当轮报告](../../docs/reports/translation-round12-status.md)；Round 13 的模型身份、真实输出及未完成项另行归档。本 crate 继续保持平台无关，sidecar 不改变默认输入引擎；不进入 CL-010。核心协议见 [Round 11 设计](../../docs/translation-round11-design.md)。

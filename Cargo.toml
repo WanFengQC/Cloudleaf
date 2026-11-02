@@ -11,6 +11,7 @@ members = [
     "apps/cloudleaf-translation-panel",
 ]
 resolver = "3"
+exclude = ["vendor/offline/*"]
 
 [workspace.package]
 version = "0.1.0"
@@ -37,3 +38,14 @@ all = "warn"
 [profile.release]
 lto = "thin"
 codegen-units = 1
+
+[patch.crates-io]
+candle-core = { path = "vendor/offline/candle-core" }
+gemm = { path = "vendor/offline/gemm" }
+gemm-common = { path = "vendor/offline/gemm-common" }
+gemm-f16 = { path = "vendor/offline/gemm-f16" }
+gemm-f32 = { path = "vendor/offline/gemm-f32" }
+gemm-f64 = { path = "vendor/offline/gemm-f64" }
+gemm-c32 = { path = "vendor/offline/gemm-c32" }
+gemm-c64 = { path = "vendor/offline/gemm-c64" }
+pulp = { path = "vendor/offline/pulp" }

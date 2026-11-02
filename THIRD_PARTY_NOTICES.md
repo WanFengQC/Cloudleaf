@@ -27,3 +27,11 @@ M1/M2 使用 Rust 1.90.0 标准库及 workspace 内部 crate，没有 crates.io�
 ## Round 12 原生面板
 
 新增 app 仅在 Windows 直接使用既有锁定的 windows-sys0.61.2/windows-link0.2.1，增加窗口/控件、DPI、凭据、内存、文件替换与剪贴板所需 features。无新增外部包或版本升级，MSRV1.90不变；原件已在上述242份清单中。系统字体通过 Windows 接口使用，没有复制或分发字体文件。没有引入浏览器运行时、GUI框架、模型运行库或权重；模型候选研究不是许可准入。
+
+## Round 13 离线推理
+
+独立`cloudleaf-offline`增加Candle0.9.2（MIT OR Apache-2.0）、SentencePiece-rs0.2.2（Apache-2.0）和Rayon1.11.0（MIT OR Apache-2.0）；精确77项新增包/来源见`config/audits/offline-runtime.json`，旧136包版本不变。当前总213包、382份许可原件以manifest为准，r-efi原件AUTHORS包含完整MIT条款及版权，保持原名。Candle nn/transformers等未随crate附许可的版本按固定上游VCS补齐，见`offline-upstream-acquisition.json`。没有把第三方运行时重新许可为项目MIT。
+
+九个源包的限定修补在`vendor/offline`，来源及逐文件SHA见`config/offline-runtime-source-patches.json`。ZIP升级解决真实审计失败，GEMM/Pulp仅替换已停止维护的宏依赖为pastey0.2.3（MIT OR Apache-2.0），另适配Candle三处ZIP文件名返回值；运算源码不变。原件及其许可证保留，源重建和严格审计不忽略告警。
+
+OPUS两个权重仅在用户明确授权后下载到Git外用于本地研发；不随EXE/CI包分发。原件和转换身份分别锁定，tokenizer原件不改。具体上游模型声明CC-BY4；en→zh镜像另标Apache2，差异及训练数据完整权利链unknown均保留，不能推断生产分发批准。Safetensors转换使用隔离的Torch/NumPy等开发工具，不成为应用运行时或随包依赖；完整工具版本及实际原件许可另存研发证据。Generated表示模型生成，不表示正式语言质量验收。

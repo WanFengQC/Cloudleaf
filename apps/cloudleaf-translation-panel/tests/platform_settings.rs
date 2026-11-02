@@ -41,7 +41,7 @@ impl Drop for TestDirectory {
 #[test]
 fn defaults_and_strict_settings_validation_never_enable_network() {
     let settings = Settings::default();
-    assert_eq!(settings.schema_version, 2);
+    assert_eq!(settings.schema_version, 3);
     assert_eq!(settings.revision, 1);
     assert_eq!(settings.provider, ProviderChoice::Dictionary);
     assert_eq!(settings.direction, DirectionChoice::ChineseEnglish);
@@ -167,7 +167,7 @@ fn migration_unknown_fields_size_and_interrupted_temporary_files_are_safe() {
     let encoded = serde_json::to_vec(&source).unwrap();
     std::fs::write(directory.0.join("settings.json"), &encoded).unwrap();
     let loaded = repository.load().unwrap();
-    assert_eq!(loaded.settings.schema_version, 2);
+    assert_eq!(loaded.settings.schema_version, 3);
     assert_eq!(loaded.settings.direction, DirectionChoice::EnglishChinese);
     assert!(!loaded.settings.network_enabled && !loaded.settings.allow_loopback_http);
     assert!(loaded.notice.is_some());

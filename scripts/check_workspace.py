@@ -8,6 +8,7 @@ from pathlib import Path, PurePosixPath
 import subprocess
 import sys
 import tomllib
+from check_offline_vendor import verify_offline_vendor, reviewed_local_source
 
 ROOT = Path(__file__).resolve().parents[1]
 REGISTRY = "registry+https://github.com/rust-lang/crates.io-index"
@@ -24,9 +25,10 @@ def repository_file(root: Path, name: str) -> Path:
 
 
 def load_policy(root: Path) -> dict:
+    reviewed_local = verify_offline_vendor(root) if (root / "config/offline-runtime-source-patches.json").is_file() else {}
     paths = sorted((root / "config/audits").glob("*.json"))
     assert paths, "必须提供精确审计政策"
-    combined = {"workspace_packages": set(), "external_packages": {}, "resources": {}}
+    combined = {"workspace_packages": set(), "external_packages": {}, "resources": {}, "reviewed_local_sources": reviewed_local}
     for path in paths:
         policy = json.loads(path.read_text(encoding="utf-8"))
         assert policy["schema_version"] == 1, "政策版本错误"
@@ -37,7 +39,7 @@ def load_policy(root: Path) -> dict:
         for package in policy["external_packages"]:
             assert set(package) == {"name", "version", "license", "source"}, "依赖政策字段不精确"
             assert all(isinstance(value, str) and value for value in package.values()), "依赖字段必须非空"
-            assert package["source"] == REGISTRY, "仅允许精确审核的registry包"
+            assert package["source"] == REGISTRY or package["source"] in reviewed_local.values(), "仅允许registry或逐文件核验的固定运行时原件"
             key = package["name"], package["version"]
             assert key not in combined["external_packages"], f"重复依赖声明：{key}"
             combined["external_packages"][key] = package
@@ -53,6 +55,7 @@ def load_policy(root: Path) -> dict:
 
 
 def check_packages(metadata: dict, policy: dict, version: str) -> tuple[int, int]:
+    reviewed_local = policy.get("reviewed_local_sources", {})
     members = set(metadata["workspace_members"])
     actual_members, actual_external = set(), {}
     for package in metadata["packages"]:
@@ -66,6 +69,8 @@ def check_packages(metadata: dict, policy: dict, version: str) -> tuple[int, int
             key = package["name"], package["version"]
             assert key not in actual_external, "同名同版本不能来自多个来源"
             actual_external[key] = {field: package[field] for field in ("name", "version", "license", "source")}
+            if package["source"] is None:
+                actual_external[key]["source"] = reviewed_local_source(Path(metadata["workspace_root"]), package, reviewed_local)
     assert actual_members == policy["workspace_packages"], "实际workspace成员与政策不符"
     assert actual_external == policy["external_packages"], "实际外部依赖与审核版本/许可/来源不符"
     return len(members), len(actual_external)

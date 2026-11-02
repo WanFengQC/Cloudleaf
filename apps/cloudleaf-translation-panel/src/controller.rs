@@ -71,7 +71,7 @@ impl PanelController {
             text: String::new(),
             kind: TranslationKind::Word,
             status: ViewStatus::Preparing,
-            notice: "正在后台载入设置和研究词典…".into(),
+            notice: "正在后台载入设置和本地资源…".into(),
             error: None,
             elapsed: None,
             authorized: false,
@@ -273,6 +273,9 @@ impl PanelController {
     pub fn tick(&mut self) {
         for _ in 0..8 {
             match self.setup.receiver.try_recv() {
+                Ok(SetupEvent::ModelProgress(state)) => {
+                    self.notice = format!("{state:?} · 本地模型后台准备，未调用在线服务");
+                }
                 Ok(SetupEvent::Prepared(value)) => self.adopt(*value),
                 Ok(SetupEvent::Key(outcome)) => match outcome {
                     Ok(notice) => self.notice = notice.into(),

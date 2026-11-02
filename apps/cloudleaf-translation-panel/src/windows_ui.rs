@@ -42,6 +42,7 @@ const SAVE_KEY: usize = 212;
 const DELETE_KEY: usize = 213;
 const APPLY: usize = 214;
 const RESET: usize = 215;
+const OFFLINE_CATALOG: usize = 216;
 
 struct Control {
     hwnd: HWND,
@@ -116,7 +117,7 @@ pub fn run(directory: PathBuf, dictionary: Option<PathBuf>) -> Result<(), String
             CW_USEDEFAULT,
             CW_USEDEFAULT,
             1120,
-            850,
+            920,
             null_mut(),
             null_mut(),
             instance,
@@ -133,7 +134,7 @@ pub fn run(directory: PathBuf, dictionary: Option<PathBuf>) -> Result<(), String
             0,
             0,
             1120 * dpi / 96,
-            850 * dpi / 96,
+            920 * dpi / 96,
             SWP_NOMOVE | SWP_NOZORDER,
         );
         ShowWindow(hwnd, SW_SHOW);
@@ -210,7 +211,7 @@ unsafe extern "system" fn window_proc(
                         let info = &mut *(lparam as *mut MINMAXINFO);
                         info.ptMinTrackSize = POINT {
                             x: state.scale(990),
-                            y: state.scale(790),
+                            y: state.scale(880),
                         };
                         return 0;
                     }
@@ -367,8 +368,11 @@ impl WindowState {
                 [0, 54, 400, 140],
                 true,
             );
-            for text in ["本地研究词典", "用户自定义在线 API", "离线模型（未安装）"]
-            {
+            for text in [
+                "本地研究词典",
+                "用户自定义在线 API",
+                "离线模型（本地 OPUS-MT）",
+            ] {
                 self.item(PROVIDER, text);
             }
             self.add(
@@ -390,9 +394,25 @@ impl WindowState {
             self.add(
                 0,
                 "STATIC",
-                "API 完整端点（HTTPS；不提供默认服务）",
+                "离线模型 catalog.json 路径（先用模型工具导入）",
                 0,
                 [0, 161, 400, 22],
+                true,
+            );
+            self.add(
+                OFFLINE_CATALOG,
+                "EDIT",
+                "",
+                ES_AUTOHSCROLL as u32 | WS_BORDER,
+                [0, 187, 400, 27],
+                true,
+            );
+            self.add(
+                0,
+                "STATIC",
+                "API 完整端点（HTTPS；不提供默认服务）",
+                0,
+                [0, 226, 400, 22],
                 true,
             );
             self.add(
@@ -400,16 +420,16 @@ impl WindowState {
                 "EDIT",
                 "",
                 ES_AUTOHSCROLL as u32 | WS_BORDER,
-                [0, 187, 400, 27],
+                [0, 252, 400, 27],
                 true,
             );
-            self.add(0, "STATIC", "模型名称", 0, [0, 226, 400, 22], true);
+            self.add(0, "STATIC", "模型名称", 0, [0, 291, 400, 22], true);
             self.add(
                 MODEL,
                 "EDIT",
                 "",
                 ES_AUTOHSCROLL as u32 | WS_BORDER,
-                [0, 252, 400, 27],
+                [0, 317, 400, 27],
                 true,
             );
             self.add(
@@ -417,7 +437,7 @@ impl WindowState {
                 "STATIC",
                 "连接超时(秒)                 翻译总超时(秒)",
                 0,
-                [0, 291, 400, 22],
+                [0, 356, 400, 22],
                 true,
             );
             self.add(
@@ -425,7 +445,7 @@ impl WindowState {
                 "EDIT",
                 "5",
                 ES_NUMBER as u32 | WS_BORDER,
-                [0, 317, 90, 27],
+                [0, 382, 90, 27],
                 true,
             );
             self.add(
@@ -433,14 +453,14 @@ impl WindowState {
                 "EDIT",
                 "15",
                 ES_NUMBER as u32 | WS_BORDER,
-                [210, 317, 90, 27],
+                [210, 382, 90, 27],
                 true,
             );
             for (id, text, y) in [
-                (CACHE, "启用内存缓存（不写输入历史）", 360),
-                (NETWORK, "启用联网（重启后恢复离线）", 394),
-                (LOOPBACK, "允许本机 HTTP 服务（仅 loopback）", 428),
-                (CONSENT, "允许本次发送到已应用的上方 API 端点", 462),
+                (CACHE, "启用内存缓存（不写输入历史）", 425),
+                (NETWORK, "启用联网（重启后恢复离线）", 459),
+                (LOOPBACK, "允许本机 HTTP 服务（仅 loopback）", 493),
+                (CONSENT, "允许本次发送到已应用的上方 API 端点", 527),
             ] {
                 self.add(
                     id,
@@ -456,7 +476,7 @@ impl WindowState {
                 "STATIC",
                 "API Key · 仅存 Windows 当前用户凭据管理器",
                 0,
-                [0, 505, 400, 22],
+                [0, 570, 400, 22],
                 true,
             );
             self.add(
@@ -464,7 +484,7 @@ impl WindowState {
                 "EDIT",
                 "",
                 ES_PASSWORD as u32 | ES_AUTOHSCROLL as u32 | WS_BORDER,
-                [0, 531, 400, 27],
+                [0, 596, 400, 27],
                 true,
             );
             SendMessageW(self.control(KEY), EM_SETLIMITTEXT, 8192, 0);
@@ -473,7 +493,7 @@ impl WindowState {
                 "BUTTON",
                 "保存 / 更新密钥",
                 BS_PUSHBUTTON as u32,
-                [0, 570, 160, 32],
+                [0, 635, 160, 32],
                 true,
             );
             self.add(
@@ -481,7 +501,7 @@ impl WindowState {
                 "BUTTON",
                 "删除该端点密钥",
                 BS_PUSHBUTTON as u32,
-                [175, 570, 180, 32],
+                [175, 635, 180, 32],
                 true,
             );
             self.add(
@@ -489,7 +509,7 @@ impl WindowState {
                 "BUTTON",
                 "应用并保存设置",
                 BS_PUSHBUTTON as u32,
-                [0, 624, 180, 34],
+                [0, 689, 180, 34],
                 true,
             );
             self.add(
@@ -497,15 +517,15 @@ impl WindowState {
                 "BUTTON",
                 "恢复默认设置",
                 BS_PUSHBUTTON as u32,
-                [195, 624, 180, 34],
+                [195, 689, 180, 34],
                 true,
             );
             self.add(
                 0,
                 "STATIC",
-                "本程序不向其他应用自动输入；离线模型未安装。",
+                "离线模型仅从已校验本地目录加载；不自动下载。",
                 0,
-                [0, 676, 400, 40],
+                [0, 741, 400, 40],
                 true,
             );
         }
@@ -651,6 +671,12 @@ impl WindowState {
             };
             settings.endpoint = read_text(self.control(ENDPOINT), 2048)?;
             settings.model = read_text(self.control(MODEL), 256)?;
+            let catalog = read_text(self.control(OFFLINE_CATALOG), 4096)?;
+            settings.offline_catalog = if catalog.trim().is_empty() {
+                None
+            } else {
+                Some(PathBuf::from(catalog))
+            };
             settings.connect_timeout_secs = read_text(self.control(CONNECT), 8)?
                 .parse()
                 .map_err(|_| TranslationError::InvalidConfig)?;
@@ -683,7 +709,7 @@ impl WindowState {
                 }
                 return;
             }
-            if [DICTIONARY, ENDPOINT, MODEL, CONNECT, TOTAL].contains(&id)
+            if [DICTIONARY, ENDPOINT, MODEL, CONNECT, TOTAL, OFFLINE_CATALOG].contains(&id)
                 && notification == EN_CHANGE
             {
                 self.controller.mark_settings_dirty();
@@ -799,7 +825,7 @@ impl WindowState {
         unsafe {
             let editable =
                 !self.closing && self.controller.status != crate::controller::ViewStatus::Preparing;
-            for id in PROVIDER..=RESET {
+            for id in PROVIDER..=OFFLINE_CATALOG {
                 EnableWindow(self.control(id), i32::from(editable));
             }
             if self.serial != self.controller.settings_serial {
@@ -827,6 +853,16 @@ impl WindowState {
                 );
                 SetWindowTextW(self.control(ENDPOINT), wide(&s.endpoint).as_ptr());
                 SetWindowTextW(self.control(MODEL), wide(&s.model).as_ptr());
+                SetWindowTextW(
+                    self.control(OFFLINE_CATALOG),
+                    wide(
+                        s.offline_catalog
+                            .as_ref()
+                            .and_then(|path| path.to_str())
+                            .unwrap_or(""),
+                    )
+                    .as_ptr(),
+                );
                 SetWindowTextW(
                     self.control(CONNECT),
                     wide(&s.connect_timeout_secs.to_string()).as_ptr(),
@@ -891,11 +927,7 @@ impl WindowState {
             );
             EnableWindow(
                 self.control(KIND),
-                if self.controller.settings.provider == ProviderChoice::OfflineModel {
-                    0
-                } else {
-                    1
-                },
+                i32::from(!self.closing && self.controller.available()),
             );
             EnableWindow(
                 self.control(START),
@@ -916,7 +948,7 @@ impl WindowState {
                 .map(|r| {
                     let quality = match r.output.quality {
                         QualityStatus::ResearchOnly => "ResearchOnly · 原始研究释义，非正式翻译",
-                        QualityStatus::Generated => "Generated · 在线生成，未经独立语言质量验收",
+                        QualityStatus::Generated => "Generated · 模型生成，未经独立语言质量验收",
                         QualityStatus::Approved => "Approved · 有向映射",
                         QualityStatus::Pending => "Pending",
                     };
@@ -996,6 +1028,76 @@ mod tests {
             unsafe {
                 DestroyWindow(self.0);
             }
+        }
+    }
+
+    #[test]
+    fn native_kind_control_uses_capabilities_instead_of_provider_label() {
+        let directory =
+            std::env::temp_dir().join(format!("cloudleaf-r13-mode-{}", std::process::id()));
+        let mut controller =
+            PanelController::new(directory, None, Arc::new(WindowsCredentialStore::default()))
+                .unwrap();
+        let deadline = Instant::now() + Duration::from_secs(5);
+        while controller.settings_serial == 0 {
+            controller.tick();
+            assert!(Instant::now() < deadline);
+            std::thread::yield_now();
+        }
+        controller
+            .apply(Settings {
+                provider: ProviderChoice::Online,
+                endpoint: "https://example.invalid/v1/chat/completions".into(),
+                model: "mechanism-no-network-request".into(),
+                network_enabled: true,
+                ..Settings::default()
+            })
+            .unwrap();
+        while !controller.available() {
+            controller.tick();
+            assert!(Instant::now() < deadline);
+            std::thread::yield_now();
+        }
+        // 此处只核渲染与能力契约；没有提交请求，不冒充真实离线推理。
+        controller.settings.provider = ProviderChoice::OfflineModel;
+        unsafe {
+            let window = NativeWindow(CreateWindowExW(
+                0,
+                wide("STATIC").as_ptr(),
+                wide("R13 capability fixture").as_ptr(),
+                0,
+                0,
+                0,
+                1120,
+                920,
+                null_mut(),
+                null_mut(),
+                GetModuleHandleW(null()),
+                null(),
+            ));
+            assert!(!window.0.is_null());
+            let mut state = WindowState {
+                controller,
+                controls: Vec::new(),
+                parent: window.0,
+                font: null_mut(),
+                dpi: 96,
+                serial: u64::MAX,
+                last_result: String::new(),
+                last_status: String::new(),
+                closing: false,
+            };
+            state.create_controls(window.0);
+            state.render();
+            assert_eq!(SendMessageW(state.control(KIND), CB_GETCOUNT, 0, 0), 3);
+            assert_ne!(
+                windows_sys::Win32::UI::Input::KeyboardAndMouse::IsWindowEnabled(
+                    state.control(KIND)
+                ),
+                0,
+                "具备三种任务能力时应允许选择整句模式"
+            );
+            state.controller.begin_close();
         }
     }
 

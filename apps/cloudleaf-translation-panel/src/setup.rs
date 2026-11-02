@@ -24,6 +24,7 @@ pub(crate) struct Prepared {
 }
 
 pub(crate) enum SetupEvent {
+    ModelProgress(cloudleaf_offline::ModelState),
     Prepared(Box<Prepared>),
     Key(Result<&'static str, crate::platform::PlatformError>),
 }
@@ -56,7 +57,12 @@ impl SetupHandle {
                             if dictionary.is_some() {
                                 settings.dictionary_path = dictionary;
                             }
-                            SetupEvent::Prepared(Box::new(prepare(settings, store.clone(), notice)))
+                            SetupEvent::Prepared(Box::new(prepare(
+                                settings,
+                                store.clone(),
+                                notice,
+                                &events,
+                            )))
                         }
                         SetupCommand::Prepare(settings, persist) => {
                             if settings.validate().is_err() {
@@ -74,6 +80,7 @@ impl SetupHandle {
                                     settings,
                                     store.clone(),
                                     "设置已应用".into(),
+                                    &events,
                                 )))
                             }
                         }
@@ -117,7 +124,13 @@ fn unavailable(settings: Settings, reason: &str) -> Prepared {
     }
 }
 
-fn prepare(settings: Settings, store: Arc<dyn CredentialStore>, notice: String) -> Prepared {
+fn prepare(
+    settings: Settings,
+    store: Arc<dyn CredentialStore>,
+    notice: String,
+    events: &mpsc::SyncSender<SetupEvent>,
+) -> Prepared {
+    let mut model_state = None;
     let built: Result<_, TranslationError> = (|| {
         let (provider, authorization): (Arc<dyn TranslationProvider>, _) = match settings.provider {
             ProviderChoice::Dictionary => {
@@ -153,7 +166,22 @@ fn prepare(settings: Settings, store: Arc<dyn CredentialStore>, notice: String) 
                 let authorization = provider.authorization();
                 (Arc::new(provider), Some(authorization))
             }
-            ProviderChoice::OfflineModel => return Err(TranslationError::ModelNotFound),
+            ProviderChoice::OfflineModel => {
+                let catalog = settings
+                    .offline_catalog
+                    .as_ref()
+                    .ok_or(TranslationError::ModelNotFound)?;
+                (
+                    Arc::new(cloudleaf_offline::MarianProvider::load_with_progress(
+                        catalog,
+                        |state| {
+                            model_state = Some(state);
+                            let _ = events.try_send(SetupEvent::ModelProgress(state));
+                        },
+                    )?),
+                    None,
+                )
+            }
         };
         let identity = provider.identity();
         let capabilities = provider.capabilities();
@@ -176,6 +204,11 @@ fn prepare(settings: Settings, store: Arc<dyn CredentialStore>, notice: String) 
         let service = TranslationService::new(
             registry,
             ServiceLimits {
+                workers: if settings.provider == ProviderChoice::OfflineModel {
+                    1
+                } else {
+                    2
+                },
                 offline_only: !settings.network_enabled,
                 ..ServiceLimits::default()
             },
@@ -184,22 +217,30 @@ fn prepare(settings: Settings, store: Arc<dyn CredentialStore>, notice: String) 
     })();
     match built {
         Ok((service, identity, authorization, capabilities)) => Prepared {
-            settings,
+            settings: settings.clone(),
             service: Some(service),
             identity: Some(identity),
             authorization,
             capabilities: Some(capabilities),
-            notice,
+            notice: if settings.provider == ProviderChoice::OfflineModel {
+                format!(
+                    "Loaded · 固定 OPUS-MT / Candle CPU；Generated 不代表正式语言质量。{notice}"
+                )
+            } else {
+                notice
+            },
             error: None,
         },
         Err(error) => {
             let reason = match error {
                 TranslationError::ModelNotFound => {
-                    "离线模型未安装，本程序尚无模型推理后端".to_owned()
+                    "NotInstalled · 离线模型未安装、未配置或缺文件；请选择已导入并校验的模型 catalog"
+                        .to_owned()
                 }
                 TranslationError::ProviderUnavailable => {
                     "本地研究词典未配置；请指定导出的 catalog.json 并应用设置".to_owned()
                 }
+                _ if settings.provider == ProviderChoice::OfflineModel => format!("{:?} · 离线模型不可用：{error}；请用模型检查工具核对目录", model_state.unwrap_or(cloudleaf_offline::ModelState::Failed)),
                 _ => format!("提供者不可用：{error}。请检查设置与词典文件"),
             };
             unavailable(settings, &reason)

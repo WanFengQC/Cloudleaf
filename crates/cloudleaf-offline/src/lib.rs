@@ -1,1 +1,7 @@
-//! 独立于实时输入路径的本地 Marian 模型加载与推理。
+//! 使用本地固定模型的离线整句推理，不包含网络或密钥访问。
+
+mod manager;
+mod marian;
+
+pub use manager::*;
+pub use marian::*;

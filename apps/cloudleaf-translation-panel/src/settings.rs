@@ -36,6 +36,7 @@ pub struct Settings {
     pub revision: u64,
     pub provider: ProviderChoice,
     pub dictionary_path: Option<PathBuf>,
+    pub offline_catalog: Option<PathBuf>,
     pub endpoint: String,
     pub model: String,
     pub direction: DirectionChoice,
@@ -49,10 +50,11 @@ pub struct Settings {
 impl Default for Settings {
     fn default() -> Self {
         Self {
-            schema_version: 2,
+            schema_version: 3,
             revision: 1,
             provider: ProviderChoice::Dictionary,
             dictionary_path: None,
+            offline_catalog: None,
             endpoint: String::new(),
             model: String::new(),
             direction: DirectionChoice::ChineseEnglish,
@@ -100,7 +102,7 @@ impl std::error::Error for SettingsError {}
 
 impl Settings {
     pub fn validate(&self) -> Result<(), SettingsError> {
-        if self.schema_version != 2 {
+        if self.schema_version != 3 {
             return Err(SettingsError::UnsupportedVersion);
         }
         if self.revision == 0
@@ -111,6 +113,11 @@ impl Settings {
             || self.model.len() > 256
             || self.model.chars().any(char::is_control)
             || self.dictionary_path.as_ref().is_some_and(|path| {
+                path.as_os_str().is_empty()
+                    || path.to_string_lossy().contains('\0')
+                    || path.to_string_lossy().len() > 4096
+            })
+            || self.offline_catalog.as_ref().is_some_and(|path| {
                 path.as_os_str().is_empty()
                     || path.to_string_lossy().contains('\0')
                     || path.to_string_lossy().len() > 4096
@@ -238,7 +245,7 @@ fn parse(bytes: &[u8]) -> Result<(Settings, bool), SettingsError> {
         .get("schema_version")
         .and_then(serde_json::Value::as_u64)
         .ok_or(SettingsError::InvalidData)?;
-    let migrated = version == 1;
+    let migrated = version == 1 || version == 2;
     let settings: Settings = if migrated {
         let mut defaults =
             serde_json::to_value(Settings::default()).map_err(|_| SettingsError::InvalidData)?;
@@ -246,11 +253,11 @@ fn parse(bytes: &[u8]) -> Result<(Settings, bool), SettingsError> {
         for (key, value) in value.as_object().ok_or(SettingsError::InvalidData)? {
             object.insert(key.clone(), value.clone());
         }
-        object.insert("schema_version".into(), 2.into());
+        object.insert("schema_version".into(), 3.into());
         object.insert("network_enabled".into(), false.into());
         object.insert("allow_loopback_http".into(), false.into());
         serde_json::from_value(defaults).map_err(|_| SettingsError::InvalidData)?
-    } else if version == 2 {
+    } else if version == 3 {
         serde_json::from_value(value).map_err(|_| SettingsError::InvalidData)?
     } else {
         return Err(SettingsError::UnsupportedVersion);

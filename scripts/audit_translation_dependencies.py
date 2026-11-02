@@ -22,7 +22,7 @@ def verify_licenses(root, metadata):
     verified=[]
     for package in packages:
         directory=Path(package['manifest_path']).parent
-        original={p.name:p for p in directory.iterdir() if p.is_file() and p.name.lower().startswith(('license','copying','notice','copyright','unlicense'))}
+        original={p.name:p for p in directory.iterdir() if p.is_file() and (p.name.lower().startswith(('license','copying','notice','copyright','unlicense')) or (package['name']=='r-efi' and p.name=='AUTHORS'))}
         rows=[r for r in manifest if (r['package'],r['version'])==(package['name'],package['version'])]
         matched=set()
         for row in rows:
@@ -40,7 +40,7 @@ def verify_licenses(root, metadata):
                 vcs=json.loads((directory/'.cargo_vcs_info.json').read_bytes())['git']['sha1']
                 repository=package['repository']
                 assert repository.startswith('https://github.com/') and row['vcs_commit']==vcs, '许可VCS身份不符'
-                assert row['url']==f"https://raw.githubusercontent.com/{repository.removeprefix('https://github.com/')}/{vcs}/{name}", '许可URL不符'
+                assert row['url']==f"https://raw.githubusercontent.com/{repository.removeprefix('https://github.com/').rstrip('/')}/{vcs}/{name}", '许可URL不符'
         assert matched==set(original), '没有保留全部包内许可'
         verified.append({key:package[key] for key in ['name','version','license','repository','rust_version']} | {'files':len(rows)})
     return verified

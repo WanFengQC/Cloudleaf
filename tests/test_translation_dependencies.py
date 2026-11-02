@@ -55,9 +55,9 @@ class TranslationLicenseTests(unittest.TestCase):
         import tomllib
         for path in (ROOT/'crates').glob('cloudleaf-*/Cargo.toml'):
             data=tomllib.loads(path.read_text(encoding='utf-8'))
-            if data['package']['name']=='cloudleaf-translation':
+            if data['package']['name'] in {'cloudleaf-translation', 'cloudleaf-offline'}:
                 continue
             for name,dependency in data.get('dependencies',{}).items():
                 self.assertTrue(name.startswith('cloudleaf-'),path)
-                self.assertNotEqual(name,'cloudleaf-translation',path)
+                self.assertNotIn(name,{'cloudleaf-translation', 'cloudleaf-offline'},path)
                 self.assertTrue(dependency.get('workspace'),path)
