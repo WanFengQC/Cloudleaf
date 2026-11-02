@@ -47,3 +47,11 @@ Tokenizer使用配套source.spm/target.spm及vocab.json：SentencePiece piece经
 - 纯Rust SentencePiece不是官方C++实现：需与官方实现差分，差异保留而不静默修词表。
 - CPU greedy可能较慢/质量不足：保留真实分母和资源占用，不用速度宣称正式质量。
 - 两方向实际推理、模型身份、后台面板展示和适用回归都具证据后才称工程推理路径交付；完整断网、正式质量和分发门禁分别审查。
+
+## 实测后的依赖决策修订（实现前固定）
+
+0.9.1真实RustSec失败：ZIP1.3.1命中漏洞，paste停止维护。0.11.1在Rust1.90 MSVC又真实命中CPUID调用编译错误，且扩大停止维护依赖范围。最终采用 **Candle0.9.2**，其官方Marian接口一致；核心本地源码仅将ZIP7改为已修复的**ZIP9.2.1**并适配三处文件名Result返回值。GEMM七个0.19.0 crate及pulp0.22.3仅将paste依赖替换为**pastey0.2.3**，运算.rs不变。九个固定原件共212文件约3.53MB；不是以忽略审计或伪造包名消除告警。外部独立probe的Rust1.90 locked/offline check及严格RustSec均真实返回0，真实工作区仍须重跑。
+
+新增 `vendor/offline` 及单独精确源补丁清单/生成工具/审计。允许的path依赖仅这些固定原件与限定补丁，逐文件哈希约束；不放宽原registry政策到任意path。保留上游LICENSE和原件身份，现有输入核心依赖不升级。维护成本是后续升级时重核这11个修改文件，不能默认沿用安全结论。
+
+设置升至schema3并迁移schema1/2：新增独立offline_catalog，不覆盖在线model或词典路径，迁移/启动继续关闭联网。原测试仅更新当前版本期望并保留旧schema输入覆盖。模型manifest还须保留固定许可原文与署名/来源说明；目前两方向均按具体上游CC-BY4声明记录研发边界，并明确en→zh镜像标签差异。禁止管理器保留名与导入内容冲突，不允许改许可标识伪造准入。
