@@ -1,0 +1,1190 @@
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\apps\cloudleaf-translation-panel\src\setup.rs:154:
+                 (Arc::new(provider), Some(authorization))
+             }
+             ProviderChoice::OfflineModel => {
+-                let catalog = settings.offline_catalog.as_ref().ok_or(TranslationError::ModelNotFound)?;
+-                (Arc::new(cloudleaf_offline::MarianProvider::load(catalog)?), None)
++                let catalog = settings
++                    .offline_catalog
++                    .as_ref()
++                    .ok_or(TranslationError::ModelNotFound)?;
++                (
++                    Arc::new(cloudleaf_offline::MarianProvider::load(catalog)?),
++                    None,
++                )
+             }
+         };
+         let identity = provider.identity();
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\apps\cloudleaf-translation-panel\src\setup.rs:179:
+         let service = TranslationService::new(
+             registry,
+             ServiceLimits {
+-                workers: if settings.provider == ProviderChoice::OfflineModel { 1 } else { 2 },
++                workers: if settings.provider == ProviderChoice::OfflineModel {
++                    1
++                } else {
++                    2
++                },
+                 offline_only: !settings.network_enabled,
+                 ..ServiceLimits::default()
+             },
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\apps\cloudleaf-translation-panel\src\setup.rs:194:
+             authorization,
+             capabilities: Some(capabilities),
+             notice: if settings.provider == ProviderChoice::OfflineModel {
+-                format!("Loaded · 固定 OPUS-MT / Candle CPU；Generated 不代表正式语言质量。{notice}")
+-            } else { notice },
++                format!(
++                    "Loaded · 固定 OPUS-MT / Candle CPU；Generated 不代表正式语言质量。{notice}"
++                )
++            } else {
++                notice
++            },
+             error: None,
+         },
+         Err(error) => {
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\apps\cloudleaf-translation-panel\src\setup.rs:202:
+             let reason = match error {
+                 TranslationError::ModelNotFound => {
+-                    "NotInstalled · 离线模型未配置或缺文件；请选择已导入并校验的模型 catalog".to_owned()
++                    "NotInstalled · 离线模型未配置或缺文件；请选择已导入并校验的模型 catalog"
++                        .to_owned()
+                 }
+                 TranslationError::ProviderUnavailable => {
+                     "本地研究词典未配置；请指定导出的 catalog.json 并应用设置".to_owned()
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\apps\cloudleaf-translation-panel\src\windows_ui.rs:368:
+                 [0, 54, 400, 140],
+                 true,
+             );
+-            for text in ["本地研究词典", "用户自定义在线 API", "离线模型（本地 OPUS-MT）"]
+-            {
++            for text in [
++                "本地研究词典",
++                "用户自定义在线 API",
++                "离线模型（本地 OPUS-MT）",
++            ] {
+                 self.item(PROVIDER, text);
+             }
+             self.add(
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\apps\cloudleaf-translation-panel\src\windows_ui.rs:388:
+                 [0, 122, 400, 27],
+                 true,
+             );
+-            self.add(0, "STATIC", "离线模型 catalog.json 路径（先用模型工具导入）", 0, [0, 161, 400, 22], true);
+-            self.add(OFFLINE_CATALOG, "EDIT", "", ES_AUTOHSCROLL as u32 | WS_BORDER, [0, 187, 400, 27], true);
+             self.add(
+                 0,
+                 "STATIC",
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\apps\cloudleaf-translation-panel\src\windows_ui.rs:396:
++                "离线模型 catalog.json 路径（先用模型工具导入）",
++                0,
++                [0, 161, 400, 22],
++                true,
++            );
++            self.add(
++                OFFLINE_CATALOG,
++                "EDIT",
++                "",
++                ES_AUTOHSCROLL as u32 | WS_BORDER,
++                [0, 187, 400, 27],
++                true,
++            );
++            self.add(
++                0,
++                "STATIC",
+                 "API 完整端点（HTTPS；不提供默认服务）",
+                 0,
+                 [0, 226, 400, 22],
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\apps\cloudleaf-translation-panel\src\windows_ui.rs:655:
+             settings.endpoint = read_text(self.control(ENDPOINT), 2048)?;
+             settings.model = read_text(self.control(MODEL), 256)?;
+             let catalog = read_text(self.control(OFFLINE_CATALOG), 4096)?;
+-            settings.offline_catalog = if catalog.trim().is_empty() { None } else { Some(PathBuf::from(catalog)) };
++            settings.offline_catalog = if catalog.trim().is_empty() {
++                None
++            } else {
++                Some(PathBuf::from(catalog))
++            };
+             settings.connect_timeout_secs = read_text(self.control(CONNECT), 8)?
+                 .parse()
+                 .map_err(|_| TranslationError::InvalidConfig)?;
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\apps\cloudleaf-translation-panel\src\windows_ui.rs:834:
+                 SetWindowTextW(self.control(MODEL), wide(&s.model).as_ptr());
+                 SetWindowTextW(
+                     self.control(OFFLINE_CATALOG),
+-                    wide(s.offline_catalog.as_ref().and_then(|path| path.to_str()).unwrap_or("")).as_ptr(),
++                    wide(
++                        s.offline_catalog
++                            .as_ref()
++                            .and_then(|path| path.to_str())
++                            .unwrap_or(""),
++                    )
++                    .as_ptr(),
+                 );
+                 SetWindowTextW(
+                     self.control(CONNECT),
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\apps\cloudleaf-translation-panel\tests\offline_settings.rs:3:
+ 
+ #[test]
+ fn schema2_migration_adds_no_model_and_preserves_offline_start() {
+-    let directory = std::env::temp_dir().join(format!("cloudleaf-r13-migration-{}", std::process::id()));
++    let directory =
++        std::env::temp_dir().join(format!("cloudleaf-r13-migration-{}", std::process::id()));
+     std::fs::create_dir_all(&directory).unwrap();
+     let mut value = serde_json::to_value(Settings::default()).unwrap();
+     value["schema_version"] = 2.into();
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\apps\cloudleaf-translation-panel\tests\offline_settings.rs:10:
+     value["network_enabled"] = true.into();
+     value.as_object_mut().unwrap().remove("offline_catalog");
+-    std::fs::write(directory.join("settings.json"), serde_json::to_vec(&value).unwrap()).unwrap();
++    std::fs::write(
++        directory.join("settings.json"),
++        serde_json::to_vec(&value).unwrap(),
++    )
++    .unwrap();
+     let loaded = SettingsRepository::new(directory.clone()).load().unwrap();
+     assert_eq!(loaded.settings.schema_version, 3);
+     assert!(loaded.settings.offline_catalog.is_none());
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\apps\cloudleaf-translation-panel\tests\offline_settings.rs:28:
+         ..Settings::default()
+     };
+     settings.validate().unwrap();
+-    let restored: Settings = serde_json::from_slice(&serde_json::to_vec(&settings).unwrap()).unwrap();
++    let restored: Settings =
++        serde_json::from_slice(&serde_json::to_vec(&settings).unwrap()).unwrap();
+     assert_eq!(restored, settings);
+     assert!(!restored.network_enabled);
+     assert!(!format!("{restored:?}").contains("models/catalog"));
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\examples\offline_translate.rs:8:
+     let args: Vec<_> = std::env::args().skip(1).collect();
+     if args.first().is_some_and(|value| value == "tokenize") && args.len() == 5 {
+         let prefix = (args[4] == "en-zh").then_some(">>cmn_Hans<<");
+-        let tokenizer = MarianTokenizer::from_files(Path::new(&args[1]), Path::new(&args[2]), Path::new(&args[3]), prefix)?;
++        let tokenizer = MarianTokenizer::from_files(
++            Path::new(&args[1]),
++            Path::new(&args[2]),
++            Path::new(&args[3]),
++            prefix,
++        )?;
+         for line in std::io::stdin().lock().lines() {
+             let text = line?;
+             let encoded = tokenizer.encode(&text)?;
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\examples\offline_translate.rs:16:
+         }
+         return Ok(());
+     }
+-    if args.len() != 1 { return Err("usage: offline_translate CATALOG < samples.jsonl; or tokenize SOURCE_SPM TARGET_SPM VOCAB DIRECTION".into()); }
++    if args.len() != 1 {
++        return Err("usage: offline_translate CATALOG < samples.jsonl; or tokenize SOURCE_SPM TARGET_SPM VOCAB DIRECTION".into());
++    }
+     let start = Instant::now();
+     let provider = MarianProvider::load(Path::new(&args[0]))?;
+-    println!("{}", serde_json::json!({"event":"loaded","load_ms":start.elapsed().as_millis(),"version":provider.identity().version}));
++    println!(
++        "{}",
++        serde_json::json!({"event":"loaded","load_ms":start.elapsed().as_millis(),"version":provider.identity().version})
++    );
+     for (index, line) in std::io::stdin().lock().lines().enumerate() {
+         let value: serde_json::Value = serde_json::from_str(&line?)?;
+         let text = value["text"].as_str().ok_or("missing text")?;
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\examples\offline_translate.rs:26:
+         let direction = match value["direction"].as_str() {
+-            Some("zh-en") => TranslationDirection { source: Language::Chinese, target: Language::English },
+-            Some("en-zh") => TranslationDirection { source: Language::English, target: Language::Chinese },
++            Some("zh-en") => TranslationDirection {
++                source: Language::Chinese,
++                target: Language::English,
++            },
++            Some("en-zh") => TranslationDirection {
++                source: Language::English,
++                target: Language::Chinese,
++            },
+             _ => return Err("unknown direction".into()),
+         };
+-        let cancellation = TranslationCancellation::new(Duration::from_secs(value["timeout_seconds"].as_u64().unwrap_or(120)));
+-        if value["cancel"].as_bool().unwrap_or(false) { cancellation.cancel(); }
+-        let request = TranslationRequest { text:text.into(), direction, kind:TranslationKind::Sentence,
+-            context:TranslationContext { session:1,epoch:1,input_revision:index as u64+1 },send_authorized_to:None,use_cache:false };
++        let cancellation = TranslationCancellation::new(Duration::from_secs(
++            value["timeout_seconds"].as_u64().unwrap_or(120),
++        ));
++        if value["cancel"].as_bool().unwrap_or(false) {
++            cancellation.cancel();
++        }
++        let request = TranslationRequest {
++            text: text.into(),
++            direction,
++            kind: TranslationKind::Sentence,
++            context: TranslationContext {
++                session: 1,
++                epoch: 1,
++                input_revision: index as u64 + 1,
++            },
++            send_authorized_to: None,
++            use_cache: false,
++        };
+         let start = Instant::now();
+         let record = match provider.translate_observed(&request, &cancellation) {
+-            Ok((output, stats)) => serde_json::json!({"index":index,"input":text,"direction":value["direction"],"output":output.translated_text,"quality":"Generated","stats":stats}),
+-            Err(error) => serde_json::json!({"index":index,"input":text,"direction":value["direction"],"error":error.to_string(),"elapsed_ms":start.elapsed().as_millis()}),
++            Ok((output, stats)) => {
++                serde_json::json!({"index":index,"input":text,"direction":value["direction"],"output":output.translated_text,"quality":"Generated","stats":stats})
++            }
++            Err(error) => {
++                serde_json::json!({"index":index,"input":text,"direction":value["direction"],"error":error.to_string(),"elapsed_ms":start.elapsed().as_millis()})
++            }
+         };
+         println!("{record}");
+     }
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\manager.rs:86:
+         Ok(verified) => ModelInspection {
+             state: ModelState::Ready,
+             catalog_sha256: Some(verified.sha256),
+-            models: verified.models.into_iter().map(|row| row.manifest).collect(),
++            models: verified
++                .models
++                .into_iter()
++                .map(|row| row.manifest)
++                .collect(),
+             error: None,
+         },
+         Err(error) => ModelInspection {
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\manager.rs:106:
+ pub fn import_catalog(source: &Path, managed_root: &Path) -> Result<PathBuf, TranslationError> {
+     let verified = verify_catalog(source)?;
+     fs::create_dir_all(managed_root).map_err(|_| TranslationError::ModelLoadFailed)?;
+-    let managed_root = managed_root.canonicalize().map_err(|_| TranslationError::ModelLoadFailed)?;
++    let managed_root = managed_root
++        .canonicalize()
++        .map_err(|_| TranslationError::ModelLoadFailed)?;
+     let name = format!("catalog-{}", verified.sha256);
+     let destination = managed_root.join(&name);
+     if destination.exists() {
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\manager.rs:123:
+     for model in &verified.models {
+         copy_file(&verified.root, &staging, &model.manifest_relative)?;
+         owned_paths.insert(model.manifest_relative.clone());
+-        let parent = model.manifest_relative.parent().ok_or(TranslationError::InvalidConfig)?;
++        let parent = model
++            .manifest_relative
++            .parent()
++            .ok_or(TranslationError::InvalidConfig)?;
+         for file in &model.manifest.files {
+             let relative = parent.join(&file.path);
+             copy_file(&verified.root, &staging, &relative)?;
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\manager.rs:130:
+             owned_paths.insert(relative);
+         }
+     }
+-    fs::copy(&verified.path, staging.join("catalog.json")).map_err(|_| TranslationError::ModelLoadFailed)?;
++    fs::copy(&verified.path, staging.join("catalog.json"))
++        .map_err(|_| TranslationError::ModelLoadFailed)?;
+     let staged = verify_catalog(&staging.join("catalog.json"))?;
+     if staged.sha256 != verified.sha256 {
+         return Err(TranslationError::ModelLoadFailed);
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\manager.rs:138:
+     let marker = ManagedMarker {
+         schema: 1,
+         catalog_sha256: verified.sha256,
+-        files: owned_paths.into_iter().map(|path| path.to_string_lossy().replace('\\', "/")).collect(),
++        files: owned_paths
++            .into_iter()
++            .map(|path| path.to_string_lossy().replace('\\', "/"))
++            .collect(),
+     };
+-    fs::write(staging.join(".cloudleaf-managed.json"), serde_json::to_vec_pretty(&marker).map_err(|_| TranslationError::InternalError)?)
+-        .map_err(|_| TranslationError::ModelLoadFailed)?;
++    fs::write(
++        staging.join(".cloudleaf-managed.json"),
++        serde_json::to_vec_pretty(&marker).map_err(|_| TranslationError::InternalError)?,
++    )
++    .map_err(|_| TranslationError::ModelLoadFailed)?;
+     fs::rename(staging, &destination).map_err(|_| TranslationError::ModelLoadFailed)?;
+     Ok(destination.join("catalog.json"))
+ }
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\manager.rs:149:
+ /// 只卸载本管理器导入且仍完整的版本；遇到额外文件时保留目录供用户处理。
+ pub fn uninstall_catalog(catalog: &Path, managed_root: &Path) -> Result<(), TranslationError> {
+     let verified = verify_catalog(catalog)?;
+-    let managed_root = managed_root.canonicalize().map_err(|_| TranslationError::ModelNotFound)?;
++    let managed_root = managed_root
++        .canonicalize()
++        .map_err(|_| TranslationError::ModelNotFound)?;
+     if verified.root.parent() != Some(managed_root.as_path())
+-        || verified.root.file_name().and_then(|value| value.to_str()) != Some(&format!("catalog-{}", verified.sha256))
++        || verified.root.file_name().and_then(|value| value.to_str())
++            != Some(&format!("catalog-{}", verified.sha256))
+     {
+         return Err(TranslationError::InvalidConfig);
+     }
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\manager.rs:159:
+     if marker.schema != 1 || marker.catalog_sha256 != verified.sha256 {
+         return Err(TranslationError::InvalidConfig);
+     }
+-    let mut expected = BTreeSet::from([PathBuf::from("catalog.json"), PathBuf::from(".cloudleaf-managed.json")]);
++    let mut expected = BTreeSet::from([
++        PathBuf::from("catalog.json"),
++        PathBuf::from(".cloudleaf-managed.json"),
++    ]);
+     for model in &verified.models {
+         expected.insert(model.manifest_relative.clone());
+-        let parent = model.manifest_relative.parent().ok_or(TranslationError::InvalidConfig)?;
++        let parent = model
++            .manifest_relative
++            .parent()
++            .ok_or(TranslationError::InvalidConfig)?;
+         for file in &model.manifest.files {
+             expected.insert(parent.join(&file.path));
+         }
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\manager.rs:169:
+     }
+-    let listed: BTreeSet<_> = marker.files.iter().map(|path| safe_relative(path)).collect::<Result<_, _>>()?;
+-    let marker_expected: BTreeSet<_> = expected.iter().filter(|path| **path != PathBuf::from("catalog.json") && **path != PathBuf::from(".cloudleaf-managed.json")).cloned().collect();
++    let listed: BTreeSet<_> = marker
++        .files
++        .iter()
++        .map(|path| safe_relative(path))
++        .collect::<Result<_, _>>()?;
++    let marker_expected: BTreeSet<_> = expected
++        .iter()
++        .filter(|path| {
++            **path != PathBuf::from("catalog.json")
++                && **path != PathBuf::from(".cloudleaf-managed.json")
++        })
++        .cloned()
++        .collect();
+     if listed != marker_expected || actual_files(&verified.root, &verified.root)? != expected {
+         return Err(TranslationError::InvalidConfig);
+     }
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\manager.rs:175:
+     for relative in expected {
+-        fs::remove_file(verified.root.join(relative)).map_err(|_| TranslationError::ModelLoadFailed)?;
++        fs::remove_file(verified.root.join(relative))
++            .map_err(|_| TranslationError::ModelLoadFailed)?;
+     }
+     remove_empty_directories(&verified.root)?;
+     Ok(())
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\manager.rs:188:
+ }
+ 
+ pub(crate) fn verify_catalog(path: &Path) -> Result<VerifiedCatalog, TranslationError> {
+-    let path = path.canonicalize().map_err(|_| TranslationError::ModelNotFound)?;
+-    let root = path.parent().ok_or(TranslationError::InvalidConfig)?.to_owned();
++    let path = path
++        .canonicalize()
++        .map_err(|_| TranslationError::ModelNotFound)?;
++    let root = path
++        .parent()
++        .ok_or(TranslationError::InvalidConfig)?
++        .to_owned();
+     let catalog: ModelCatalog = read_json(&path, 65536)?;
+     if catalog.schema != 1 || catalog.models.is_empty() || catalog.models.len() > 2 {
+         return Err(TranslationError::InvalidConfig);
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\manager.rs:207:
+         if !ids.insert(manifest.model_id.clone()) {
+             return Err(TranslationError::InvalidConfig);
+         }
+-        let model_root = manifest_path.parent().ok_or(TranslationError::InvalidConfig)?.to_owned();
++        let model_root = manifest_path
++            .parent()
++            .ok_or(TranslationError::InvalidConfig)?
++            .to_owned();
+         for file in &manifest.files {
+             let file_path = contained_file(&model_root, &safe_relative(&file.path)?)?;
+-            if fs::metadata(&file_path).map_err(|_| TranslationError::ModelNotFound)?.len() != file.bytes
++            if fs::metadata(&file_path)
++                .map_err(|_| TranslationError::ModelNotFound)?
++                .len()
++                != file.bytes
+                 || sha256_file(&file_path)? != file.sha256
+             {
+                 return Err(TranslationError::ModelLoadFailed);
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\manager.rs:217:
+             }
+         }
+-        models.push(VerifiedModel { manifest, root: model_root, manifest_relative: relative });
++        models.push(VerifiedModel {
++            manifest,
++            root: model_root,
++            manifest_relative: relative,
++        });
+     }
+-    Ok(VerifiedCatalog { sha256: sha256_file(&path)?, path, root, models })
++    Ok(VerifiedCatalog {
++        sha256: sha256_file(&path)?,
++        path,
++        root,
++        models,
++    })
+ }
+ 
+ fn validate_manifest(manifest: &ModelManifest) -> Result<(), TranslationError> {
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\manager.rs:227:
+         "opus-mt-zh-en" => ("zh-en", ZH_EN_REVISION),
+         _ => return Err(TranslationError::InvalidConfig),
+     };
+-    if manifest.schema != 1 || manifest.direction != expected.0 || manifest.revision != expected.1
+-        || manifest.source_url != format!("https://huggingface.co/Helsinki-NLP/{}", manifest.model_id)
+-        || manifest.architecture != "marian" || manifest.runtime != "candle-0.9.2-cpu"
+-        || manifest.tokenizer != "sentencepiece-rs-0.2.2" || manifest.license_status != "research_only"
+-        || manifest.license_id != "CC-BY-4.0" || manifest.files.len() != 7
++    if manifest.schema != 1
++        || manifest.direction != expected.0
++        || manifest.revision != expected.1
++        || manifest.source_url
++            != format!("https://huggingface.co/Helsinki-NLP/{}", manifest.model_id)
++        || manifest.architecture != "marian"
++        || manifest.runtime != "candle-0.9.2-cpu"
++        || manifest.tokenizer != "sentencepiece-rs-0.2.2"
++        || manifest.license_status != "research_only"
++        || manifest.license_id != "CC-BY-4.0"
++        || manifest.files.len() != 7
+     {
+         return Err(TranslationError::InvalidConfig);
+     }
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\manager.rs:238:
+-    let required = BTreeSet::from(["weights", "config", "source_tokenizer", "target_tokenizer", "vocabulary", "license", "notice"]);
+-    let roles: BTreeSet<_> = manifest.files.iter().map(|file| file.role.as_str()).collect();
++    let required = BTreeSet::from([
++        "weights",
++        "config",
++        "source_tokenizer",
++        "target_tokenizer",
++        "vocabulary",
++        "license",
++        "notice",
++    ]);
++    let roles: BTreeSet<_> = manifest
++        .files
++        .iter()
++        .map(|file| file.role.as_str())
++        .collect();
+     let mut paths = BTreeSet::new();
+     if roles != required || roles.len() != manifest.files.len() {
+         return Err(TranslationError::InvalidConfig);
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\manager.rs:243:
+     }
+     for file in &manifest.files {
+-        let limit = if file.role == "weights" { 400 * 1024 * 1024 } else { 16 * 1024 * 1024 };
+-        if file.bytes == 0 || file.bytes > limit || !valid_sha(&file.sha256) || !paths.insert(safe_relative(&file.path)?) {
++        let limit = if file.role == "weights" {
++            400 * 1024 * 1024
++        } else {
++            16 * 1024 * 1024
++        };
++        if file.bytes == 0
++            || file.bytes > limit
++            || !valid_sha(&file.sha256)
++            || !paths.insert(safe_relative(&file.path)?)
++        {
+             return Err(TranslationError::InvalidConfig);
+         }
+-        if file.role == "license" && file.sha256 != "9ba9550ad48438d0836ddab3da480b3b69ffa0aac7b7878b5a0039e7ab429411" {
++        if file.role == "license"
++            && file.sha256 != "9ba9550ad48438d0836ddab3da480b3b69ffa0aac7b7878b5a0039e7ab429411"
++        {
+             return Err(TranslationError::InvalidConfig);
+         }
+-        if !matches!(file.role.as_str(), "license" | "notice") && pinned_hash(&manifest.direction, &file.role) != Some(file.sha256.as_str()) {
++        if !matches!(file.role.as_str(), "license" | "notice")
++            && pinned_hash(&manifest.direction, &file.role) != Some(file.sha256.as_str())
++        {
+             return Err(TranslationError::InvalidConfig);
+         }
+     }
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\manager.rs:258:
+ 
+ fn pinned_hash(direction: &str, role: &str) -> Option<&'static str> {
+     match (direction, role) {
+-        ("en-zh", "weights") => Some("69a1d6ec829cee349360b3b677ac0aa99a7d88822d1a6578370029efffdca3f5"),
+-        ("zh-en", "weights") => Some("9d8ceb91d103ef89400c9d9d62328b4858743cf8924878aee3b8afc594242ce0"),
+-        ("en-zh", "config") => Some("bcae8ed74fed77fb51c58462b62397fee6b1a1a34aece79183a0dd02ad329e71"),
+-        ("zh-en", "config") => Some("d84104da12fa90da59acf5f0ed30428e43cc92574ad4b9dfa88f29eeeb2b0eb0"),
+-        ("en-zh", "source_tokenizer") => Some("5775ddc9e3ff2fae91554da56468ad35ff56edaba870fea74447bc7234bfdaa8"),
+-        ("en-zh", "target_tokenizer") => Some("81dc94efa84e4025ef38d25d5d07429fe41e3eb29d44003f1db6fe98487b0052"),
+-        ("zh-en", "source_tokenizer") => Some("e27a3a1b539f4959ec72ea60e453f49156289f95d4e6000b29332efc45616203"),
+-        ("zh-en", "target_tokenizer") => Some("6a881f4717cd7265f53fea54fd3dc689c767c05338fac7a4590f3088cb2d7855"),
+-        ("en-zh", "vocabulary") => Some("f1832ca38f7aa158b9a944ff583e4901e6b37d9d4ad9241f03838e636e9cfb03"),
+-        ("zh-en", "vocabulary") => Some("c0f79ee4c413ccb24cd808a0c727eec85b2130f23c82802cc1caeb07b5f0d458"),
++        ("en-zh", "weights") => {
++            Some("69a1d6ec829cee349360b3b677ac0aa99a7d88822d1a6578370029efffdca3f5")
++        }
++        ("zh-en", "weights") => {
++            Some("9d8ceb91d103ef89400c9d9d62328b4858743cf8924878aee3b8afc594242ce0")
++        }
++        ("en-zh", "config") => {
++            Some("bcae8ed74fed77fb51c58462b62397fee6b1a1a34aece79183a0dd02ad329e71")
++        }
++        ("zh-en", "config") => {
++            Some("d84104da12fa90da59acf5f0ed30428e43cc92574ad4b9dfa88f29eeeb2b0eb0")
++        }
++        ("en-zh", "source_tokenizer") => {
++            Some("5775ddc9e3ff2fae91554da56468ad35ff56edaba870fea74447bc7234bfdaa8")
++        }
++        ("en-zh", "target_tokenizer") => {
++            Some("81dc94efa84e4025ef38d25d5d07429fe41e3eb29d44003f1db6fe98487b0052")
++        }
++        ("zh-en", "source_tokenizer") => {
++            Some("e27a3a1b539f4959ec72ea60e453f49156289f95d4e6000b29332efc45616203")
++        }
++        ("zh-en", "target_tokenizer") => {
++            Some("6a881f4717cd7265f53fea54fd3dc689c767c05338fac7a4590f3088cb2d7855")
++        }
++        ("en-zh", "vocabulary") => {
++            Some("f1832ca38f7aa158b9a944ff583e4901e6b37d9d4ad9241f03838e636e9cfb03")
++        }
++        ("zh-en", "vocabulary") => {
++            Some("c0f79ee4c413ccb24cd808a0c727eec85b2130f23c82802cc1caeb07b5f0d458")
++        }
+         _ => None,
+     }
+ }
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\manager.rs:274:
+ 
+-pub(crate) fn read_json<T: serde::de::DeserializeOwned>(path: &Path, max_bytes: u64) -> Result<T, TranslationError> {
++pub(crate) fn read_json<T: serde::de::DeserializeOwned>(
++    path: &Path,
++    max_bytes: u64,
++) -> Result<T, TranslationError> {
+     let file = File::open(path).map_err(|_| TranslationError::ModelNotFound)?;
+     let mut bytes = Vec::new();
+-    file.take(max_bytes + 1).read_to_end(&mut bytes).map_err(|_| TranslationError::ModelLoadFailed)?;
++    file.take(max_bytes + 1)
++        .read_to_end(&mut bytes)
++        .map_err(|_| TranslationError::ModelLoadFailed)?;
+     if bytes.len() as u64 > max_bytes {
+         return Err(TranslationError::InvalidConfig);
+     }
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\manager.rs:287:
+     let mut context = Context::new(&SHA256);
+     let mut buffer = [0u8; 65536];
+     loop {
+-        let count = file.read(&mut buffer).map_err(|_| TranslationError::ModelLoadFailed)?;
+-        if count == 0 { break; }
++        let count = file
++            .read(&mut buffer)
++            .map_err(|_| TranslationError::ModelLoadFailed)?;
++        if count == 0 {
++            break;
++        }
+         context.update(&buffer[..count]);
+     }
+-    Ok(context.finish().as_ref().iter().map(|byte| format!("{byte:02x}")).collect())
++    Ok(context
++        .finish()
++        .as_ref()
++        .iter()
++        .map(|byte| format!("{byte:02x}"))
++        .collect())
+ }
+ 
+ fn valid_sha(value: &str) -> bool {
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\manager.rs:298:
+-    value.len() == 64 && value.bytes().all(|byte| byte.is_ascii_digit() || (b'a'..=b'f').contains(&byte))
++    value.len() == 64
++        && value
++            .bytes()
++            .all(|byte| byte.is_ascii_digit() || (b'a'..=b'f').contains(&byte))
+ }
+ 
+ fn safe_relative(value: &str) -> Result<PathBuf, TranslationError> {
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\manager.rs:303:
+         return Err(TranslationError::InvalidConfig);
+     }
+     let path = PathBuf::from(value);
+-    if path.components().any(|component| !matches!(component, Component::Normal(_)))
+-        || path.components().any(|component| matches!(component.as_os_str().to_str(), Some("catalog.json" | ".cloudleaf-managed.json"))) {
++    if path
++        .components()
++        .any(|component| !matches!(component, Component::Normal(_)))
++        || path.components().any(|component| {
++            matches!(
++                component.as_os_str().to_str(),
++                Some("catalog.json" | ".cloudleaf-managed.json")
++            )
++        })
++    {
+         return Err(TranslationError::InvalidConfig);
+     }
+     Ok(path)
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\manager.rs:311:
+ }
+ 
+ fn contained_file(root: &Path, relative: &Path) -> Result<PathBuf, TranslationError> {
+-    let path = root.join(relative).canonicalize().map_err(|_| TranslationError::ModelNotFound)?;
+-    if !path.starts_with(root) || !path.is_file() { return Err(TranslationError::InvalidConfig); }
++    let path = root
++        .join(relative)
++        .canonicalize()
++        .map_err(|_| TranslationError::ModelNotFound)?;
++    if !path.starts_with(root) || !path.is_file() {
++        return Err(TranslationError::InvalidConfig);
++    }
+     Ok(path)
+ }
+ 
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\manager.rs:319:
+ fn copy_file(source: &Path, target: &Path, relative: &Path) -> Result<(), TranslationError> {
+     let destination = target.join(relative);
+-    fs::create_dir_all(destination.parent().ok_or(TranslationError::InvalidConfig)?).map_err(|_| TranslationError::ModelLoadFailed)?;
++    fs::create_dir_all(
++        destination
++            .parent()
++            .ok_or(TranslationError::InvalidConfig)?,
++    )
++    .map_err(|_| TranslationError::ModelLoadFailed)?;
+     fs::copy(source.join(relative), destination).map_err(|_| TranslationError::ModelLoadFailed)?;
+     Ok(())
+ }
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\manager.rs:327:
+     let mut files = BTreeSet::new();
+     for entry in fs::read_dir(directory).map_err(|_| TranslationError::ModelLoadFailed)? {
+         let entry = entry.map_err(|_| TranslationError::ModelLoadFailed)?;
+-        let kind = entry.file_type().map_err(|_| TranslationError::ModelLoadFailed)?;
+-        if kind.is_symlink() { return Err(TranslationError::InvalidConfig); }
+-        if kind.is_dir() { files.extend(actual_files(root, &entry.path())?); }
+-        else { files.insert(entry.path().strip_prefix(root).map_err(|_| TranslationError::InvalidConfig)?.to_owned()); }
++        let kind = entry
++            .file_type()
++            .map_err(|_| TranslationError::ModelLoadFailed)?;
++        if kind.is_symlink() {
++            return Err(TranslationError::InvalidConfig);
++        }
++        if kind.is_dir() {
++            files.extend(actual_files(root, &entry.path())?);
++        } else {
++            files.insert(
++                entry
++                    .path()
++                    .strip_prefix(root)
++                    .map_err(|_| TranslationError::InvalidConfig)?
++                    .to_owned(),
++            );
++        }
+     }
+     Ok(files)
+ }
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\manager.rs:338:
+ fn remove_empty_directories(directory: &Path) -> Result<(), TranslationError> {
+     for entry in fs::read_dir(directory).map_err(|_| TranslationError::ModelLoadFailed)? {
+         let path = entry.map_err(|_| TranslationError::ModelLoadFailed)?.path();
+-        if path.is_dir() { remove_empty_directories(&path)?; }
++        if path.is_dir() {
++            remove_empty_directories(&path)?;
++        }
+     }
+     fs::remove_dir(directory).map_err(|_| TranslationError::ModelLoadFailed)
+ }
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\marian.rs:43:
+     ) -> Result<Self, TranslationError> {
+         let vocab: BTreeMap<String, u32> = read_json(vocabulary, 16 * 1024 * 1024)?;
+         let ids: BTreeSet<_> = vocab.values().copied().collect();
+-        if vocab.len() != 65001 || ids.len() != 65001 || ids.first() != Some(&0)
+-            || ids.last() != Some(&65000) || vocab.get("</s>") != Some(&0)
++        if vocab.len() != 65001
++            || ids.len() != 65001
++            || ids.first() != Some(&0)
++            || ids.last() != Some(&65000)
++            || vocab.get("</s>") != Some(&0)
+             || vocab.get("<pad>") != Some(&65000)
+             || target_prefix.is_some_and(|prefix| !vocab.contains_key(prefix))
+         {
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\marian.rs:52:
+         }
+         let unk = *vocab.get("<unk>").ok_or(TranslationError::InvalidConfig)?;
+         let mut inverse = vec![String::new(); vocab.len()];
+-        for (piece, id) in &vocab { inverse[*id as usize] = piece.clone(); }
+-        let source = SentencePieceProcessor::open(source).map_err(|_| TranslationError::ModelLoadFailed)?;
+-        let target = SentencePieceProcessor::open(target).map_err(|_| TranslationError::ModelLoadFailed)?;
+-        Ok(Self { source, target, vocab, inverse, prefix: target_prefix.map(str::to_owned), unk })
++        for (piece, id) in &vocab {
++            inverse[*id as usize] = piece.clone();
++        }
++        let source =
++            SentencePieceProcessor::open(source).map_err(|_| TranslationError::ModelLoadFailed)?;
++        let target =
++            SentencePieceProcessor::open(target).map_err(|_| TranslationError::ModelLoadFailed)?;
++        Ok(Self {
++            source,
++            target,
++            vocab,
++            inverse,
++            prefix: target_prefix.map(str::to_owned),
++            unk,
++        })
+     }
+ 
+     pub fn encode(&self, text: &str) -> Result<TokenizationObservation, TranslationError> {
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\marian.rs:62:
+-        let mut pieces = self.source.encode(text).map_err(|_| TranslationError::InvalidInput)?;
+-        if let Some(prefix) = &self.prefix { pieces.insert(0, prefix.clone()); }
+-        let mut ids: Vec<_> = pieces.iter().map(|piece| self.vocab.get(piece).copied().unwrap_or(self.unk)).collect();
++        let mut pieces = self
++            .source
++            .encode(text)
++            .map_err(|_| TranslationError::InvalidInput)?;
++        if let Some(prefix) = &self.prefix {
++            pieces.insert(0, prefix.clone());
++        }
++        let mut ids: Vec<_> = pieces
++            .iter()
++            .map(|piece| self.vocab.get(piece).copied().unwrap_or(self.unk))
++            .collect();
+         // Marian的网络词表与SPM内部ID不同，EOS在词表映射后补一次。
+         pieces.push("</s>".to_owned());
+         ids.push(0);
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\marian.rs:69:
+     }
+ 
+     pub fn decode(&self, ids: &[u32]) -> Result<String, TranslationError> {
+-        let pieces = ids.iter().filter(|id| **id != 0 && **id != 65000)
+-            .map(|id| self.inverse.get(*id as usize).ok_or(TranslationError::InvalidResponse))
++        let pieces = ids
++            .iter()
++            .filter(|id| **id != 0 && **id != 65000)
++            .map(|id| {
++                self.inverse
++                    .get(*id as usize)
++                    .ok_or(TranslationError::InvalidResponse)
++            })
+             .collect::<Result<Vec<_>, _>>()?;
+-        self.target.decode(&pieces).map_err(|_| TranslationError::InvalidResponse)
++        self.target
++            .decode(&pieces)
++            .map_err(|_| TranslationError::InvalidResponse)
+     }
+ }
+ 
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\marian.rs:115:
+ impl MarianProvider {
+     pub fn load(catalog_path: &Path) -> Result<Self, TranslationError> {
+         let verified = verify_catalog(catalog_path)?;
+-        let pool = ThreadPoolBuilder::new().num_threads(COMPUTE_THREADS)
++        let pool = ThreadPoolBuilder::new()
++            .num_threads(COMPUTE_THREADS)
+             .thread_name(|index| format!("cloudleaf-tensor-{index}"))
+-            .build().map_err(|_| TranslationError::ModelLoadFailed)?;
+-        let models = pool.install(|| verified.models.into_iter().map(load_model).collect::<Result<Vec<_>, _>>())?;
++            .build()
++            .map_err(|_| TranslationError::ModelLoadFailed)?;
++        let models = pool.install(|| {
++            verified
++                .models
++                .into_iter()
++                .map(load_model)
++                .collect::<Result<Vec<_>, _>>()
++        })?;
+         let directions = models.iter().map(|model| model.direction).collect();
+         Ok(Self {
+-            identity: ProviderIdentity { id: "offline-model".to_owned(), version: verified.sha256.clone() },
++            identity: ProviderIdentity {
++                id: "offline-model".to_owned(),
++                version: verified.sha256.clone(),
++            },
+             catalog_sha256: verified.sha256,
+             directions,
+             models: Mutex::new(models),
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\marian.rs:141:
+             TryLockError::Poisoned(_) => TranslationError::ProviderUnavailable,
+         })?;
+         let resident_models = models.len();
+-        let model = models.iter_mut().find(|model| model.direction == request.direction)
++        let model = models
++            .iter_mut()
++            .find(|model| model.direction == request.direction)
+             .ok_or(TranslationError::UnsupportedLanguagePair)?;
+         self.pool.install(|| {
+             model.model.reset_kv_cache();
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\marian.rs:148:
+-            let result = infer(model, request, cancellation, &self.catalog_sha256, resident_models);
++            let result = infer(
++                model,
++                request,
++                cancellation,
++                &self.catalog_sha256,
++                resident_models,
++            );
+             model.model.reset_kv_cache();
+             result
+         })
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\marian.rs:153:
+ }
+ 
+ impl TranslationProvider for MarianProvider {
+-    fn identity(&self) -> ProviderIdentity { self.identity.clone() }
++    fn identity(&self) -> ProviderIdentity {
++        self.identity.clone()
++    }
+ 
+     fn capabilities(&self) -> ProviderCapabilities {
+         ProviderCapabilities {
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\marian.rs:160:
+             directions: self.directions.clone(),
+-            kinds: vec![TranslationKind::Word, TranslationKind::Phrase, TranslationKind::Sentence],
++            kinds: vec![
++                TranslationKind::Word,
++                TranslationKind::Phrase,
++                TranslationKind::Sentence,
++            ],
+             auto_source: false,
+             network: false,
+             available: true,
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\marian.rs:165:
+         }
+     }
+ 
+-    fn translate(&self, request: &TranslationRequest, cancellation: &TranslationCancellation) -> Result<ProviderOutput, TranslationError> {
+-        self.translate_observed(request, cancellation).map(|(output, _)| output)
++    fn translate(
++        &self,
++        request: &TranslationRequest,
++        cancellation: &TranslationCancellation,
++    ) -> Result<ProviderOutput, TranslationError> {
++        self.translate_observed(request, cancellation)
++            .map(|(output, _)| output)
+     }
+ }
+ 
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\marian.rs:173:
+ fn load_model(verified: VerifiedModel) -> Result<LoadedModel, TranslationError> {
+     let started = Instant::now();
+-    let path_for = |role: &str| verified.root.join(&verified.manifest.files.iter().find(|file| file.role == role).expect("已校验角色完整").path);
++    let path_for = |role: &str| {
++        verified.root.join(
++            &verified
++                .manifest
++                .files
++                .iter()
++                .find(|file| file.role == role)
++                .expect("已校验角色完整")
++                .path,
++        )
++    };
+     let source: HfConfig = read_json(&path_for("config"), 65536)?;
+     let config = source.into_config()?;
+     let is_en_zh = verified.manifest.direction == "en-zh";
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\marian.rs:179:
+-    let tokenizer = MarianTokenizer::from_files(&path_for("source_tokenizer"), &path_for("target_tokenizer"),
+-        &path_for("vocabulary"), is_en_zh.then_some(">>cmn_Hans<<"))?;
++    let tokenizer = MarianTokenizer::from_files(
++        &path_for("source_tokenizer"),
++        &path_for("target_tokenizer"),
++        &path_for("vocabulary"),
++        is_en_zh.then_some(">>cmn_Hans<<"),
++    )?;
+     let vb = VarBuilder::from_pth(path_for("weights"), DType::F32, &Device::Cpu)
+         .map_err(|_| TranslationError::ModelLoadFailed)?;
+     let model = MTModel::new(&config, vb).map_err(|_| TranslationError::ModelLoadFailed)?;
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\marian.rs:184:
+     let direction = if is_en_zh {
+-        TranslationDirection { source: Language::English, target: Language::Chinese }
++        TranslationDirection {
++            source: Language::English,
++            target: Language::Chinese,
++        }
+     } else {
+-        TranslationDirection { source: Language::Chinese, target: Language::English }
++        TranslationDirection {
++            source: Language::Chinese,
++            target: Language::English,
++        }
+     };
+-    Ok(LoadedModel { model_id: verified.manifest.model_id, revision: verified.manifest.revision,
+-        direction, config, tokenizer, model, load_ms: started.elapsed().as_millis() as u64 })
++    Ok(LoadedModel {
++        model_id: verified.manifest.model_id,
++        revision: verified.manifest.revision,
++        direction,
++        config,
++        tokenizer,
++        model,
++        load_ms: started.elapsed().as_millis() as u64,
++    })
+ }
+ 
+ fn infer(
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\marian.rs:199:
+ ) -> Result<(ProviderOutput, InferenceStats), TranslationError> {
+     let started = Instant::now();
+     let encoded = model.tokenizer.encode(&request.text)?;
+-    if encoded.ids.len() > MAX_INPUT_TOKENS { return Err(TranslationError::InputTooLong); }
++    if encoded.ids.len() > MAX_INPUT_TOKENS {
++        return Err(TranslationError::InputTooLong);
++    }
+     cancellation.check()?;
+-    let input = Tensor::new(encoded.ids.as_slice(), &Device::Cpu).and_then(|tensor| tensor.unsqueeze(0))
++    let input = Tensor::new(encoded.ids.as_slice(), &Device::Cpu)
++        .and_then(|tensor| tensor.unsqueeze(0))
+         .map_err(|_| TranslationError::InternalError)?;
+-    let encoder = model.model.encoder().forward(&input, 0).map_err(|_| TranslationError::InternalError)?;
++    let encoder = model
++        .model
++        .encoder()
++        .forward(&input, 0)
++        .map_err(|_| TranslationError::InternalError)?;
+     cancellation.check()?;
+     let mut previous = model.config.decoder_start_token_id;
+     let mut output = Vec::new();
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\marian.rs:211:
+     let mut steps = 0;
+     for position in 0..MAX_OUTPUT_TOKENS {
+         cancellation.check()?;
+-        let input = Tensor::new(&[previous], &Device::Cpu).and_then(|tensor| tensor.unsqueeze(0))
++        let input = Tensor::new(&[previous], &Device::Cpu)
++            .and_then(|tensor| tensor.unsqueeze(0))
+             .map_err(|_| TranslationError::InternalError)?;
+-        let logits = model.model.decode(&input, &encoder, position)
+-            .and_then(|tensor| tensor.squeeze(0)).and_then(|tensor| tensor.get(0))
+-            .and_then(|tensor| tensor.to_vec1::<f32>()).map_err(|_| TranslationError::InternalError)?;
++        let logits = model
++            .model
++            .decode(&input, &encoder, position)
++            .and_then(|tensor| tensor.squeeze(0))
++            .and_then(|tensor| tensor.get(0))
++            .and_then(|tensor| tensor.to_vec1::<f32>())
++            .map_err(|_| TranslationError::InternalError)?;
+         cancellation.check()?;
+-        let next = logits.iter().enumerate().filter(|(id, value)| *id != model.config.pad_token_id as usize && value.is_finite())
+-            .max_by(|(left_id, left), (right_id, right)| left.total_cmp(right).then_with(|| right_id.cmp(left_id)))
+-            .map(|(id, _)| id as u32).ok_or(TranslationError::InvalidResponse)?;
++        let next = logits
++            .iter()
++            .enumerate()
++            .filter(|(id, value)| *id != model.config.pad_token_id as usize && value.is_finite())
++            .max_by(|(left_id, left), (right_id, right)| {
++                left.total_cmp(right).then_with(|| right_id.cmp(left_id))
++            })
++            .map(|(id, _)| id as u32)
++            .ok_or(TranslationError::InvalidResponse)?;
+         steps += 1;
+-        if next == model.config.eos_token_id { terminated = true; break; }
++        if next == model.config.eos_token_id {
++            terminated = true;
++            break;
++        }
+         output.push(next);
+         previous = next;
+     }
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\marian.rs:228:
+-    if !terminated { return Err(TranslationError::ResponseTooLarge); }
++    if !terminated {
++        return Err(TranslationError::ResponseTooLarge);
++    }
+     let translated_text = model.tokenizer.decode(&output)?;
+     cancellation.check()?;
+-    if translated_text.trim().is_empty() { return Err(TranslationError::InvalidResponse); }
+-    Ok((ProviderOutput {
+-        translated_text,
+-        resolved_source: request.direction.source,
+-        output_kind: OutputKind::Translation,
+-        quality: QualityStatus::Generated,
+-        source_ids: vec![format!("{}@{}", model.model_id, model.revision)],
+-    }, InferenceStats {
+-        model_id: model.model_id.clone(), revision: model.revision.clone(),
+-        runtime: "candle-0.9.2-cpu".to_owned(), tokenizer: "sentencepiece-rs-0.2.2".to_owned(),
+-        catalog_sha256: catalog_sha256.to_owned(), load_ms: model.load_ms,
+-        inference_ms: started.elapsed().as_millis() as u64, input_tokens: encoded.ids.len(),
+-        output_tokens: output.len(), generated_steps: steps, output_truncated: false,
+-        decoding: "greedy-pad-suppressed".to_owned(), compute_threads: COMPUTE_THREADS, resident_models,
+-    }))
++    if translated_text.trim().is_empty() {
++        return Err(TranslationError::InvalidResponse);
++    }
++    Ok((
++        ProviderOutput {
++            translated_text,
++            resolved_source: request.direction.source,
++            output_kind: OutputKind::Translation,
++            quality: QualityStatus::Generated,
++            source_ids: vec![format!("{}@{}", model.model_id, model.revision)],
++        },
++        InferenceStats {
++            model_id: model.model_id.clone(),
++            revision: model.revision.clone(),
++            runtime: "candle-0.9.2-cpu".to_owned(),
++            tokenizer: "sentencepiece-rs-0.2.2".to_owned(),
++            catalog_sha256: catalog_sha256.to_owned(),
++            load_ms: model.load_ms,
++            inference_ms: started.elapsed().as_millis() as u64,
++            input_tokens: encoded.ids.len(),
++            output_tokens: output.len(),
++            generated_steps: steps,
++            output_truncated: false,
++            decoding: "greedy-pad-suppressed".to_owned(),
++            compute_threads: COMPUTE_THREADS,
++            resident_models,
++        },
++    ))
+ }
+ 
+ #[derive(Deserialize)]
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\src\marian.rs:271:
+ 
+ impl HfConfig {
+     fn into_config(self) -> Result<Config, TranslationError> {
+-        if self.model_type != "marian" || self.vocab_size != 65001
++        if self.model_type != "marian"
++            || self.vocab_size != 65001
+             || self.decoder_vocab_size.is_some_and(|size| size != 65001)
+-            || self.max_position_embeddings != 512 || self.encoder_layers != 6 || self.decoder_layers != 6
+-            || self.encoder_attention_heads != 8 || self.decoder_attention_heads != 8
+-            || self.encoder_ffn_dim != 2048 || self.decoder_ffn_dim != 2048 || self.d_model != 512
+-            || self.decoder_start_token_id != 65000 || self.pad_token_id != 65000 || self.eos_token_id != 0
+-            || self.forced_eos_token_id != 0 || self.activation_function != "swish"
+-            || !self.use_cache || !self.is_encoder_decoder || !self.scale_embedding
++            || self.max_position_embeddings != 512
++            || self.encoder_layers != 6
++            || self.decoder_layers != 6
++            || self.encoder_attention_heads != 8
++            || self.decoder_attention_heads != 8
++            || self.encoder_ffn_dim != 2048
++            || self.decoder_ffn_dim != 2048
++            || self.d_model != 512
++            || self.decoder_start_token_id != 65000
++            || self.pad_token_id != 65000
++            || self.eos_token_id != 0
++            || self.forced_eos_token_id != 0
++            || self.activation_function != "swish"
++            || !self.use_cache
++            || !self.is_encoder_decoder
++            || !self.scale_embedding
+             || self.share_encoder_decoder_embeddings == Some(false)
+         {
+             return Err(TranslationError::InvalidConfig);
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\tests\model_admission.rs:1:
+-use cloudleaf_offline::{MarianProvider, ModelState, import_catalog, inspect_catalog, sha256_file, uninstall_catalog};
++use cloudleaf_offline::{
++    MarianProvider, ModelState, import_catalog, inspect_catalog, sha256_file, uninstall_catalog,
++};
+ use cloudleaf_translation::TranslationError;
+ use serde_json::json;
+ use std::fs;
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\tests\model_admission.rs:11:
+ 
+ impl Fixture {
+     fn new() -> Self {
+-        let path = std::env::temp_dir().join(format!("cloudleaf-offline-test-{}-{}", std::process::id(), NEXT.fetch_add(1, Ordering::Relaxed)));
++        let path = std::env::temp_dir().join(format!(
++            "cloudleaf-offline-test-{}-{}",
++            std::process::id(),
++            NEXT.fetch_add(1, Ordering::Relaxed)
++        ));
+         fs::create_dir(&path).unwrap();
+         Self(path)
+     }
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\tests\model_admission.rs:35:
+     let fixture = Fixture::new();
+     let path = fixture.0.join("missing.json");
+     assert_eq!(inspect_catalog(&path).state, ModelState::NotInstalled);
+-    assert!(matches!(MarianProvider::load(&path), Err(TranslationError::ModelNotFound)));
++    assert!(matches!(
++        MarianProvider::load(&path),
++        Err(TranslationError::ModelNotFound)
++    ));
+ }
+ 
+ #[test]
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\tests\model_admission.rs:42:
+ fn unknown_schema_empty_and_extra_fields_are_incompatible() {
+     let fixture = Fixture::new();
+-    for value in [json!({"schema":2,"models":[]}), json!({"schema":1,"models":[]}),
+-        json!({"schema":1,"models":[],"download_url":"https://example.test"})] {
++    for value in [
++        json!({"schema":2,"models":[]}),
++        json!({"schema":1,"models":[]}),
++        json!({"schema":1,"models":[],"download_url":"https://example.test"}),
++    ] {
+         let path = fixture.catalog(value);
+         assert_eq!(inspect_catalog(&path).state, ModelState::Incompatible);
+     }
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\tests\model_admission.rs:51:
+ #[test]
+ fn traversal_reference_is_rejected_before_import_and_original_is_kept() {
+     let fixture = Fixture::new();
+-    let path = fixture.catalog(json!({"schema":1,"models":[{"manifest":"../outside.json","sha256":"0".repeat(64)}]}));
++    let path = fixture.catalog(
++        json!({"schema":1,"models":[{"manifest":"../outside.json","sha256":"0".repeat(64)}]}),
++    );
+     let managed = fixture.0.join("managed");
+-    assert_eq!(import_catalog(&path, &managed), Err(TranslationError::InvalidConfig));
++    assert_eq!(
++        import_catalog(&path, &managed),
++        Err(TranslationError::InvalidConfig)
++    );
+     assert!(path.is_file());
+     assert!(!managed.exists());
+ }
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\tests\model_admission.rs:62:
+ fn modified_manifest_hash_never_becomes_ready() {
+     let fixture = Fixture::new();
+     fs::write(fixture.0.join("manifest.json"), b"{}").unwrap();
+-    let path = fixture.catalog(json!({"schema":1,"models":[{"manifest":"manifest.json","sha256":"0".repeat(64)}]}));
++    let path = fixture.catalog(
++        json!({"schema":1,"models":[{"manifest":"manifest.json","sha256":"0".repeat(64)}]}),
++    );
+     assert_eq!(inspect_catalog(&path).state, ModelState::Invalid);
+ }
+ 
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\tests\model_admission.rs:70:
+ fn arbitrary_model_identity_and_incomplete_files_are_rejected() {
+     let fixture = Fixture::new();
+     let manifest = fixture.0.join("manifest.json");
+-    fs::write(&manifest, serde_json::to_vec(&json!({"schema":1,"model_id":"not-reviewed","direction":"en-zh",
++    fs::write(
++        &manifest,
++        serde_json::to_vec(
++            &json!({"schema":1,"model_id":"not-reviewed","direction":"en-zh",
+         "source_url":"https://example.test","revision":"0".repeat(40),"architecture":"custom-code",
+         "runtime":"candle-0.9.2-cpu","tokenizer":"sentencepiece-rs-0.2.2","license_id":"Apache-2.0",
+-        "license_status":"production","files":[]})).unwrap()).unwrap();
++        "license_status":"production","files":[]}),
++        )
++        .unwrap(),
++    )
++    .unwrap();
+     let path = fixture.catalog(json!({"schema":1,"models":[{"manifest":"manifest.json","sha256":sha256_file(&manifest).unwrap()}]}));
+     assert_eq!(inspect_catalog(&path).state, ModelState::Incompatible);
+-    assert!(matches!(MarianProvider::load(&path), Err(TranslationError::InvalidConfig)));
+-    assert_eq!(uninstall_catalog(&path, &fixture.0), Err(TranslationError::InvalidConfig));
++    assert!(matches!(
++        MarianProvider::load(&path),
++        Err(TranslationError::InvalidConfig)
++    ));
++    assert_eq!(
++        uninstall_catalog(&path, &fixture.0),
++        Err(TranslationError::InvalidConfig)
++    );
+     assert!(path.is_file());
+     assert!(manifest.is_file());
+ }
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\tests\model_admission.rs:86:
+ fn oversized_metadata_is_not_parsed() {
+     let fixture = Fixture::new();
+     let path = fixture.0.join("catalog.json");
+-    fs::write(&path, vec![b' ';65537]).unwrap();
++    fs::write(&path, vec![b' '; 65537]).unwrap();
+     assert_eq!(inspect_catalog(&path).state, ModelState::Incompatible);
+ }
+ 
+Diff in \\?\C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline\tests\model_admission.rs:93:
+ #[test]
+ fn reserved_management_paths_are_rejected_at_the_import_boundary() {
+     let fixture = Fixture::new();
+-    for name in [".cloudleaf-managed.json", "catalog.json", "model/.cloudleaf-managed.json"] {
+-        let path = fixture.catalog(json!({"schema":1,"models":[{"manifest":name,"sha256":"0".repeat(64)}]}));
++    for name in [
++        ".cloudleaf-managed.json",
++        "catalog.json",
++        "model/.cloudleaf-managed.json",
++    ] {
++        let path = fixture
++            .catalog(json!({"schema":1,"models":[{"manifest":name,"sha256":"0".repeat(64)}]}));
+         assert_eq!(inspect_catalog(&path).state, ModelState::Incompatible);
+-        assert_eq!(import_catalog(&path, &fixture.0.join("managed")), Err(TranslationError::InvalidConfig));
++        assert_eq!(
++            import_catalog(&path, &fixture.0.join("managed")),
++            Err(TranslationError::InvalidConfig)
++        );
+     }
+ }
+ 

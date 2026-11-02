@@ -1,0 +1,333 @@
+[
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "returncode": 0,
+    "seconds": 0.13839629996800795,
+    "head": "1dc9fb80157afa2bfbb643ff598cffe60815dcd8",
+    "stdout": {
+      "file": "01-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "file": "01-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "command": [
+      "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+      "fmt",
+      "--all",
+      "--check"
+    ],
+    "returncode": 0,
+    "seconds": 1.2488703999551944,
+    "head": "1dc9fb80157afa2bfbb643ff598cffe60815dcd8",
+    "stdout": {
+      "file": "02-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "file": "02-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "command": [
+      "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--locked",
+      "--offline",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "returncode": 0,
+    "seconds": 5.7013930000248365,
+    "head": "1dc9fb80157afa2bfbb643ff598cffe60815dcd8",
+    "stdout": {
+      "file": "03-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "file": "03-stderr.txt",
+      "bytes": 340,
+      "sha256": "be284ed0e011dc6eb27b5ced578f75434bccf9405bb6be11b4947470432da299"
+    }
+  },
+  {
+    "command": [
+      "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+      "test",
+      "--workspace",
+      "--all-targets",
+      "--locked",
+      "--offline"
+    ],
+    "returncode": 0,
+    "seconds": 27.24048209999455,
+    "head": "1dc9fb80157afa2bfbb643ff598cffe60815dcd8",
+    "stdout": {
+      "file": "04-stdout.txt",
+      "bytes": 13319,
+      "sha256": "2cabc419af59a81432a0637077a1ae9bea82216edef6886a3f3d08223e968956"
+    },
+    "stderr": {
+      "file": "04-stderr.txt",
+      "bytes": 3578,
+      "sha256": "9c8fca309976aef1c56413fb750c0922a31d3310e3f073713f9faf2511a6704f"
+    }
+  },
+  {
+    "command": [
+      "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+      "test",
+      "--workspace",
+      "--doc",
+      "--locked",
+      "--offline"
+    ],
+    "returncode": 0,
+    "seconds": 2.140398899966385,
+    "head": "1dc9fb80157afa2bfbb643ff598cffe60815dcd8",
+    "stdout": {
+      "file": "05-stdout.txt",
+      "bytes": 904,
+      "sha256": "897d7338aec9a3098d88531af65ff62ffb04c989037dacc7052b8b7ee30a475a"
+    },
+    "stderr": {
+      "file": "05-stderr.txt",
+      "bytes": 335,
+      "sha256": "46188f226e709ecef68eb8f0850fe853fc2bf4a426510cf5e32d9989cb921ff5"
+    }
+  },
+  {
+    "command": [
+      "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+      "build",
+      "--workspace",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "returncode": 0,
+    "seconds": 52.78086090000579,
+    "head": "1dc9fb80157afa2bfbb643ff598cffe60815dcd8",
+    "stdout": {
+      "file": "06-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "file": "06-stderr.txt",
+      "bytes": 1071,
+      "sha256": "a1f9bd6667d048fc17166ab8106ee5a6623c91814687d19508fca53a0e758cc8"
+    }
+  },
+  {
+    "command": [
+      "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/check_workspace.py"
+    ],
+    "returncode": 0,
+    "seconds": 2.2410241000470705,
+    "head": "1dc9fb80157afa2bfbb643ff598cffe60815dcd8",
+    "stdout": {
+      "file": "07-stdout.txt",
+      "bytes": 261,
+      "sha256": "82e69cb4a7917e79e4a2fc8ea51bf0107274a91a7af0610aff2ea4d1fd7410b7"
+    },
+    "stderr": {
+      "file": "07-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "command": [
+      "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "-X",
+      "utf8",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_*.py",
+      "-v"
+    ],
+    "returncode": 0,
+    "seconds": 2.725146999990102,
+    "head": "1dc9fb80157afa2bfbb643ff598cffe60815dcd8",
+    "stdout": {
+      "file": "08-stdout.txt",
+      "bytes": 44,
+      "sha256": "48be988b8690832fbca5f54416fb88c67689df1d115b004b069ab54531c44f66"
+    },
+    "stderr": {
+      "file": "08-stderr.txt",
+      "bytes": 4704,
+      "sha256": "6cdad54573e759aaffdff2cc8499da1d2cb943e06df7ca5e1ca334dc2ec115ea"
+    }
+  },
+  {
+    "command": [
+      "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/audit_translation_dependencies.py",
+      "--audit-binary",
+      "C:/Users/EDY/WebstormProjects/Cloudleaf/.local/audit-tool/bin/cargo-audit.exe",
+      "--output",
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-full-acceptance\\dependency-audit.json"
+    ],
+    "returncode": 0,
+    "seconds": 11.263041900005192,
+    "head": "1dc9fb80157afa2bfbb643ff598cffe60815dcd8",
+    "stdout": {
+      "file": "09-stdout.txt",
+      "bytes": 262,
+      "sha256": "942362405a1a02a3cad34bee3526379fd290d6b3bd6dd4aeae3443048ff6f6ba"
+    },
+    "stderr": {
+      "file": "09-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "command": [
+      "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/benchmark.py",
+      "--iterations",
+      "100",
+      "--output",
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-full-acceptance\\m2-performance.json"
+    ],
+    "returncode": 0,
+    "seconds": 1.1491588999633677,
+    "head": "1dc9fb80157afa2bfbb643ff598cffe60815dcd8",
+    "stdout": {
+      "file": "10-stdout.txt",
+      "bytes": 1369,
+      "sha256": "5219e5c61e85be6242da49e4ad419fb18f47af9675b7c1e2896b519d136018d8"
+    },
+    "stderr": {
+      "file": "10-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "command": [
+      "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/evaluate_algorithms.py",
+      "--output-dir",
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-full-acceptance\\algorithm-v1"
+    ],
+    "returncode": 0,
+    "seconds": 1.1365750000113621,
+    "head": "1dc9fb80157afa2bfbb643ff598cffe60815dcd8",
+    "stdout": {
+      "file": "11-stdout.txt",
+      "bytes": 2666,
+      "sha256": "33d775e3e2e594ab24eec3745ff7e58cdf363e8274e036e2bbfa0579f81411ae"
+    },
+    "stderr": {
+      "file": "11-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "command": [
+      "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+      "build",
+      "-p",
+      "cloudleaf-translation-panel",
+      "--release",
+      "--locked",
+      "--offline",
+      "--message-format=json"
+    ],
+    "returncode": 0,
+    "seconds": 0.6727183000184596,
+    "head": "1dc9fb80157afa2bfbb643ff598cffe60815dcd8",
+    "stdout": {
+      "file": "12-stdout.txt",
+      "bytes": 191588,
+      "sha256": "d90956a0142d8b4fe691bcc9999e8151cf8dc65996f303d50ed3f4ce7cc75065"
+    },
+    "stderr": {
+      "file": "12-stderr.txt",
+      "bytes": 62,
+      "sha256": "b92218080e31569c2f44b02bdc9ace265bbfaa9b9a1c00f95177120a7f0a3237"
+    }
+  },
+  {
+    "command": [
+      "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+      "build",
+      "-p",
+      "cloudleaf-offline",
+      "--examples",
+      "--release",
+      "--locked",
+      "--offline",
+      "--message-format=json"
+    ],
+    "returncode": 0,
+    "seconds": 71.20310679997783,
+    "head": "1dc9fb80157afa2bfbb643ff598cffe60815dcd8",
+    "stdout": {
+      "file": "13-stdout.txt",
+      "bytes": 193596,
+      "sha256": "4375d068afed7dcfd736fc73443238d0a7890d8152a6a1d0d7538564b3fde6ef"
+    },
+    "stderr": {
+      "file": "13-stderr.txt",
+      "bytes": 188,
+      "sha256": "46af9f49ce49c5f0b9b556c07c49adfbc0d44cd350d2031320b1cdf552220976"
+    }
+  },
+  {
+    "command": [
+      "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/check_offline_vendor.py",
+      "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf"
+    ],
+    "returncode": 0,
+    "seconds": 0.7222630000323988,
+    "head": "1dc9fb80157afa2bfbb643ff598cffe60815dcd8",
+    "stdout": {
+      "file": "14-stdout.txt",
+      "bytes": 125,
+      "sha256": "c9a19367fb58e46223ff8062e331b5c5e6518e019df9f558750b24602eb5bda5"
+    },
+    "stderr": {
+      "file": "14-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+]

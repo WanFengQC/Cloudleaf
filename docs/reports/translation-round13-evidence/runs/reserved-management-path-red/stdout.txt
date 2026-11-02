@@ -1,0 +1,20 @@
+
+running 1 test
+test reserved_management_paths_are_rejected_at_the_import_boundary ... FAILED
+
+failures:
+
+---- reserved_management_paths_are_rejected_at_the_import_boundary stdout ----
+
+thread 'reserved_management_paths_are_rejected_at_the_import_boundary' panicked at crates\cloudleaf-offline\tests\model_admission.rs:98:9:
+assertion `left == right` failed
+  left: NotInstalled
+ right: Incompatible
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    reserved_management_paths_are_rejected_at_the_import_boundary
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.01s
+

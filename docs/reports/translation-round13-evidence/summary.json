@@ -1,0 +1,61 @@
+{
+  "implementation_head": "0b41b2578a84c09b2170f34ce38c328cda6978a3",
+  "local_checks": 14,
+  "rust_tests": 134,
+  "python_tests": 25,
+  "doc_tests": 0,
+  "gui_head": "1dc9fb80157afa2bfbb643ff598cffe60815dcd8",
+  "gui_later_source_difference": "provider limit message and CI package docs only; neural implementation unchanged",
+  "model_catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+  "runtime_lock_sha256": "6c82b7aaf5ddf7a64e82230fd3466fe2d53365d2371375561e1fb9bfde9e3106",
+  "resource": {
+    "sample_count": 31,
+    "wall_seconds": 7.9186864999937825,
+    "cpu_seconds": 9.859375,
+    "peak_sampled": {
+      "working_set": 949501952,
+      "private_commit": 952029184,
+      "threads": 8,
+      "handles": 51
+    },
+    "scope": "whole isolated process containing two models, runtime and executable; not individual model memory",
+    "long_term_growth": "not-measured"
+  },
+  "inference": {
+    "load_ms": 1333,
+    "requests": 20,
+    "latency_ms_range": [
+      73,
+      647
+    ],
+    "p95": null,
+    "cache": "disabled",
+    "quality": "Generated; no independent gold"
+  },
+  "binaries": {
+    ".local\\round13-build\\release\\cloudleaf-translation-panel.exe": {
+      "bytes": 6580224,
+      "sha256": "df92ebe73123af33fbca8196b8c66997303291d1c109c5f0e8a425746c15f78a"
+    },
+    ".local\\round13-build\\release\\examples\\offline_models.exe": {
+      "bytes": 500736,
+      "sha256": "a9513e24791e0dc6afe4561f602101af0f05cf2404ba0d7933fb2ac4450cf76e"
+    },
+    ".local\\round13-build\\release\\examples\\offline_translate.exe": {
+      "bytes": 3083776,
+      "sha256": "4d7eec11de9bfbf7289898caf7e0d0558a771b0f1dd2de392b5570445ebe855e"
+    },
+    ".local\\round13-build\\release\\examples\\offline_lifecycle.exe": {
+      "bytes": 3247104,
+      "sha256": "b49001ea8ecc8dd7d8b45d092789a4e05e997614fdb4f72321bf511551bf77f1"
+    }
+  },
+  "formal_metrics": {
+    "top1": null,
+    "top5": null,
+    "mrr": null
+  },
+  "physical_offline": "not-run",
+  "production_model_distribution": "blocked",
+  "CL010": "closed"
+}
