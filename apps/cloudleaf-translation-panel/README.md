@@ -19,10 +19,10 @@ cloudleaf-translation-panel.exe --dictionary PATH_TO_CATALOG_JSON --settings-dir
 
 默认设置目录为 `%LOCALAPPDATA%\Cloudleaf\TranslationPanel`。保存的是版本化非敏感配置；重启保持离线。提供者、模型、端点、超时和缓存修改后点击应用。准备期间暂时禁用设置编辑，原文仍保留；原文或方向变化、新请求、取消、失焦和配置应用使旧任务失效。
 
-在线 API 没有默认端点或模型。填写完整 HTTPS Chat Completions 地址及模型；密钥单独保存到 Windows 当前用户 Generic Credential，按端点隔离。密钥不写 JSON 或日志。显式启用联网并应用后，还需逐次勾选发送授权再点击开始；授权在构造该次请求时消费，密钥存在不代表允许联网。连接/总超时范围1–300秒，连接不得大于总时限。本机 HTTP 需另行允许，仅限字面 loopback；不允许 redirect、系统代理或自动重试。
+在线 API 没有默认端点或模型。填写完整 HTTPS Chat Completions 地址及模型；密钥单独保存到 Windows 当前用户 Generic Credential，按端点隔离。密钥不写 JSON 或日志。显式启用联网并应用后，还需逐次勾选发送授权再点击开始；授权在构造该次请求时消费，密钥存在不代表允许联网。在线连接超时范围1–60秒，总超时范围1–300秒，连接不得大于总时限。本机 HTTP 需另行允许，仅限字面 loopback；不允许 redirect、系统代理或自动重试。
 
 复制只在点击时写 CF_UNICODETEXT；失败不丢译文。密码框只掩码显示，保存操作后清空自有输入，不承诺Windows内部副本已全部擦除。重置设置不会自动删除已存凭据，需要针对相应端点显式删除。
 
 关闭发取消并轮询后台真实退出，窗口最多等待2秒。合作路径正常退出；不合作模型/DNS尚未退出时，独立进程退出由系统回收，不宣称所有worker已join。配置替换必须等旧worker退出，不自动增加预算。
 
-非 Windows binary 明确返回不支持，跨平台 service/settings/controller 仍参与 Linux 测试；没有明文凭据回退。模型研究、正式语义内容、真实翻译质量和 TSF 集成尚未交付。
+非 Windows binary 明确返回不支持，跨平台 service/settings/controller 仍参与 Linux 测试；没有明文凭据回退。离线模型的来源研究已交付，见[模型审查](../../docs/translation-offline-model-round12-review.md)；模型推理后端/权重、正式语义内容、真实翻译质量和 TSF 集成尚未交付。

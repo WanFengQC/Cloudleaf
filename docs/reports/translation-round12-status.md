@@ -80,7 +80,7 @@ f884 Release（SHA2ab568…）完成混合多行和设置保存；8e878a5（SHAe
 
 ## 自动化、失败与身份
 
-首轮完整被测源码d50e41a（121 Rust）见[原full记录](translation-round12-evidence/round12-full.json)。收尾审查用真实EDIT发现取消/删除/重置仍保留未保存密码文本，06b0f0b反例exit101（24 UTF16单元仍在）；修复为统一清空并清除undo，不声称擦净系统内部副本。最终被测源码f88456b的12条命令再次分别保存原始stdout/stderr/返回码，全为0：[最终full记录](translation-round12-evidence/round12-full-final.json)。
+首轮完整被测源码d50e41a（121 Rust）见[原full记录](translation-round12-evidence/round12-full.json)。收尾审查用真实EDIT发现取消/删除/重置仍保留未保存密码文本，06b0f0b反例exit101（24 UTF16单元仍在）；修复为统一清空并清除undo，不声称擦净系统内部副本。密码清理修复阶段被测源码f88456b的12条命令再次分别保存原始stdout/stderr/返回码，全为0：[最终full记录](translation-round12-evidence/round12-full-final.json)。
 
 11月2日追加状态修复后，以最新源码8e878a5重跑同一完整12条命令，全为0：[续验full记录](translation-round12-evidence/round12-full-acceptance.json)。旧122项结果不转绑新版本。
 
@@ -109,7 +109,7 @@ Cargo.lock SHA-256：`1d33e38816d16e3d6653f3ed066b0c5a9ac1f518ce5a116af95ba0adf7
 
 ## CI、模型和剩余门禁
 
-首轮d50e41a的[push CI41096582002](https://github.com/WanFengQC/Cloudleaf/actions/runs/41096582002)两平台已通过，不能转绑收尾修复。首次Windows构建产物仅含EXE，后续包审阅发现缺少随包许可/使用文件，已补入项目LICENSE、THIRD_PARTY_NOTICES、全部translation许可原件及app README；旧单文件artifact不能被宣称为完整发布包。最终实现f88456b另有[push CI41098383564](https://github.com/WanFengQC/Cloudleaf/actions/runs/41098383564)。Linux继续跨平台核心检查。最终报告提交还须核它自己的event=push/head_sha、两job全部step、三个产物head/digest及Windows包内文件，最终结果放交付凭据与PR正文；此处不提前写最终CI成功。
+首轮d50e41a的[push CI41096582002](https://github.com/WanFengQC/Cloudleaf/actions/runs/41096582002)两平台已通过，不能转绑收尾修复。首次Windows构建产物仅含EXE，后续包审阅发现缺少随包许可/使用文件，已补入项目LICENSE、THIRD_PARTY_NOTICES、全部translation许可原件及app README；旧单文件artifact不能被宣称为完整发布包。密码清理修复实现f88456b另有[push CI41098383564](https://github.com/WanFengQC/Cloudleaf/actions/runs/41098383564)。Linux继续跨平台核心检查。最终报告提交还须核它自己的event=push/head_sha、两job全部step、三个产物head/digest及Windows包内文件，最终结果放交付凭据与PR正文；此处不提前写最终CI成功。
 
 续验基线b8523ec的[两平台CI41098785640](https://github.com/WanFengQC/Cloudleaf/actions/runs/41098785640)已成功，实际GUI仍发现上述状态错误，不能用绿色CI代替窗口验收。最新实现8e878a5另有[push CI41371267906](https://github.com/WanFengQC/Cloudleaf/actions/runs/41371267906)，其后的报告提交仍核独立最终push CI。
 
