@@ -22,11 +22,16 @@ RUNTIME_SHA256 = "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f14
 SOURCE_LOCK_SHA256 = "a7cbdd759ae2487ce238aea8a2d43eeef3248a1a124004def9ad35764e58bd57"
 LICENSE_SHA256 = "28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5"
 SOURCE_SHA256 = "fff8763673740aecbbe4c7f414445171ef4a70e55eac3ceee364e4f9c7cc766a"
+SOURCE_LICENSES = (
+    ("unihan-17.0.0.json", "Unicode-3.0.txt"),
+    ("cccedict-20260604-mirror7019e1c.json", "CC-BY-SA-4.0.txt"),
+)
 
 
 def main() -> None:
     args = arguments()
     started = time.perf_counter()
+    source_licenses = verify_source_licenses(ROOT)
     release = args.release.resolve(strict=True)
     if args.output.resolve().is_relative_to(release):
         raise ValueError("加载凭据必须放在release目录之外，保留原九文件包")
@@ -37,6 +42,7 @@ def main() -> None:
     manifest = verify_release(release)
     validate_scope(manifest)
     record = receipt(release, manifest, manifest_bytes, started)
+    record["repository_source_license_sha256"] = source_licenses
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("x", encoding="utf-8", newline="\n") as output:
         json.dump(record, output, ensure_ascii=False, indent=2)
@@ -58,6 +64,17 @@ def arguments() -> argparse.Namespace:
 
 def sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+def verify_source_licenses(root: Path) -> dict[str, str]:
+    identities = {}
+    for lock_name, license_name in SOURCE_LICENSES:
+        lock = json.loads((root / "data/sources/locks" / lock_name).read_text(encoding="utf-8"))
+        actual = sha256((root / "data/licenses" / license_name).read_bytes())
+        if actual != lock["license_sha256"]:
+            raise ValueError(f"来源许可原文字节与固定锁不一致：{license_name}")
+        identities[license_name] = actual
+    return identities
 
 
 def validate_scope(manifest: dict) -> None:

@@ -10,6 +10,10 @@ import sys
 import tomllib
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from scripts.verify_input_lexicon import verify_source_licenses
+
 REGISTRY = "registry+https://github.com/rust-lang/crates.io-index"
 
 
@@ -107,6 +111,7 @@ def check_resources(root: Path, policy: dict) -> None:
 
 
 def check() -> None:
+    verify_source_licenses(ROOT)
     workspace = tomllib.loads((ROOT / "Cargo.toml").read_text(encoding="utf-8"))
     toolchain = tomllib.loads((ROOT / "rust-toolchain.toml").read_text(encoding="utf-8"))
     version = workspace["workspace"]["package"]["rust-version"]
