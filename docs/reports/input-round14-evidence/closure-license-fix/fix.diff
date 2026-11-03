@@ -1,0 +1,130 @@
+diff --git a/.gitattributes b/.gitattributes
+index b9f189a..4c0b023 100644
+--- a/.gitattributes
++++ b/.gitattributes
+@@ -10,4 +10,5 @@
+ *.md text eol=lf
+ licenses/input-snapshot/** -text whitespace=-blank-at-eol,-blank-at-eof
+ licenses/windows/* -text whitespace=-blank-at-eol,-blank-at-eof
++data/licenses/* -text whitespace=-blank-at-eol,-blank-at-eof
+ docs/reports/input-round14-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,-space-before-tab
+diff --git a/scripts/check_workspace.py b/scripts/check_workspace.py
+index bb52c42..b12318d 100644
+--- a/scripts/check_workspace.py
++++ b/scripts/check_workspace.py
+@@ -10,6 +10,10 @@ import sys
+ import tomllib
+ 
+ ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT))
++
++from scripts.verify_input_lexicon import verify_source_licenses
++
+ REGISTRY = "registry+https://github.com/rust-lang/crates.io-index"
+ 
+ 
+@@ -107,6 +111,7 @@ def check_resources(root: Path, policy: dict) -> None:
+ 
+ 
+ def check() -> None:
++    verify_source_licenses(ROOT)
+     workspace = tomllib.loads((ROOT / "Cargo.toml").read_text(encoding="utf-8"))
+     toolchain = tomllib.loads((ROOT / "rust-toolchain.toml").read_text(encoding="utf-8"))
+     version = workspace["workspace"]["package"]["rust-version"]
+diff --git a/scripts/verify_input_lexicon.py b/scripts/verify_input_lexicon.py
+index 6265528..a18b6e7 100644
+--- a/scripts/verify_input_lexicon.py
++++ b/scripts/verify_input_lexicon.py
+@@ -22,11 +22,16 @@ RUNTIME_SHA256 = "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f14
+ SOURCE_LOCK_SHA256 = "a7cbdd759ae2487ce238aea8a2d43eeef3248a1a124004def9ad35764e58bd57"
+ LICENSE_SHA256 = "28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5"
+ SOURCE_SHA256 = "fff8763673740aecbbe4c7f414445171ef4a70e55eac3ceee364e4f9c7cc766a"
++SOURCE_LICENSES = (
++    ("unihan-17.0.0.json", "Unicode-3.0.txt"),
++    ("cccedict-20260604-mirror7019e1c.json", "CC-BY-SA-4.0.txt"),
++)
+ 
+ 
+ def main() -> None:
+     args = arguments()
+     started = time.perf_counter()
++    source_licenses = verify_source_licenses(ROOT)
+     release = args.release.resolve(strict=True)
+     if args.output.resolve().is_relative_to(release):
+         raise ValueError("加载凭据必须放在release目录之外，保留原九文件包")
+@@ -37,6 +42,7 @@ def main() -> None:
+     manifest = verify_release(release)
+     validate_scope(manifest)
+     record = receipt(release, manifest, manifest_bytes, started)
++    record["repository_source_license_sha256"] = source_licenses
+     args.output.parent.mkdir(parents=True, exist_ok=True)
+     with args.output.open("x", encoding="utf-8", newline="\n") as output:
+         json.dump(record, output, ensure_ascii=False, indent=2)
+@@ -60,6 +66,17 @@ def sha256(data: bytes) -> str:
+     return hashlib.sha256(data).hexdigest()
+ 
+ 
++def verify_source_licenses(root: Path) -> dict[str, str]:
++    identities = {}
++    for lock_name, license_name in SOURCE_LICENSES:
++        lock = json.loads((root / "data/sources/locks" / lock_name).read_text(encoding="utf-8"))
++        actual = sha256((root / "data/licenses" / license_name).read_bytes())
++        if actual != lock["license_sha256"]:
++            raise ValueError(f"来源许可原文字节与固定锁不一致：{license_name}")
++        identities[license_name] = actual
++    return identities
++
++
+ def validate_scope(manifest: dict) -> None:
+     resources = manifest["resources"]
+     source = manifest["source"]
+diff --git a/tests/test_data_license_integrity.py b/tests/test_data_license_integrity.py
+index 6e11894..c899c4a 100644
+--- a/tests/test_data_license_integrity.py
++++ b/tests/test_data_license_integrity.py
+@@ -2,23 +2,40 @@
+ from pathlib import Path
+ import hashlib
+ import json
++import shutil
++import tempfile
+ import unittest
+ 
++from scripts.verify_input_lexicon import SOURCE_LICENSES, verify_source_licenses
++
+ ROOT = Path(__file__).resolve().parents[1]
+-PAIRS = [
+-    ("unihan-17.0.0.json", "Unicode-3.0.txt"),
+-    ("cccedict-20260604-mirror7019e1c.json", "CC-BY-SA-4.0.txt"),
+-]
+ 
+ 
+ class DataLicenseIntegrityTests(unittest.TestCase):
+     def test_actual_license_bytes_match_frozen_source_lock(self):
+-        for lock_name, license_name in PAIRS:
++        for lock_name, license_name in SOURCE_LICENSES:
+             with self.subTest(source=lock_name):
+                 lock = json.loads((ROOT / "data/sources/locks" / lock_name).read_text(encoding="utf-8"))
+                 actual = hashlib.sha256((ROOT / "data/licenses" / license_name).read_bytes()).hexdigest()
+                 self.assertEqual(actual, lock["license_sha256"])
+ 
++    def test_preflight_verifier_rejects_changed_original_without_rewriting_lock(self):
++        with tempfile.TemporaryDirectory() as temporary:
++            root = Path(temporary)
++            (root / "data/sources/locks").mkdir(parents=True)
++            (root / "data/licenses").mkdir(parents=True)
++            for lock_name, license_name in SOURCE_LICENSES:
++                for relative in (f"data/sources/locks/{lock_name}", f"data/licenses/{license_name}"):
++                    shutil.copyfile(ROOT / relative, root / relative)
++            self.assertEqual(len(verify_source_licenses(root)), len(SOURCE_LICENSES))
++            for _, license_name in SOURCE_LICENSES:
++                with self.subTest(license=license_name):
++                    original = (root / "data/licenses" / license_name).read_bytes()
++                    (root / "data/licenses" / license_name).write_bytes(original + b"\n")
++                    with self.assertRaisesRegex(ValueError, license_name):
++                        verify_source_licenses(root)
++                    (root / "data/licenses" / license_name).write_bytes(original)
++
+ 
+ if __name__ == "__main__":
+     unittest.main()

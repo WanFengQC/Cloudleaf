@@ -1,0 +1,30 @@
+test_actual_license_bytes_match_frozen_source_lock (test_data_license_integrity.DataLicenseIntegrityTests.test_actual_license_bytes_match_frozen_source_lock) ... 
+  test_actual_license_bytes_match_frozen_source_lock (test_data_license_integrity.DataLicenseIntegrityTests.test_actual_license_bytes_match_frozen_source_lock) (source='unihan-17.0.0.json') ... FAIL
+  test_actual_license_bytes_match_frozen_source_lock (test_data_license_integrity.DataLicenseIntegrityTests.test_actual_license_bytes_match_frozen_source_lock) (source='cccedict-20260604-mirror7019e1c.json') ... FAIL
+
+======================================================================
+FAIL: test_actual_license_bytes_match_frozen_source_lock (test_data_license_integrity.DataLicenseIntegrityTests.test_actual_license_bytes_match_frozen_source_lock) (source='unihan-17.0.0.json')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\tests\test_data_license_integrity.py", line 20, in test_actual_license_bytes_match_frozen_source_lock
+    self.assertEqual(actual, lock["license_sha256"])
+AssertionError: '8437ba5f4e4c8ae0268c3df5cf106006f2d045ff3452eedd1f27e8eb26c5f327' != 'e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96'
+- 8437ba5f4e4c8ae0268c3df5cf106006f2d045ff3452eedd1f27e8eb26c5f327
++ e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96
+
+
+======================================================================
+FAIL: test_actual_license_bytes_match_frozen_source_lock (test_data_license_integrity.DataLicenseIntegrityTests.test_actual_license_bytes_match_frozen_source_lock) (source='cccedict-20260604-mirror7019e1c.json')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\tests\test_data_license_integrity.py", line 20, in test_actual_license_bytes_match_frozen_source_lock
+    self.assertEqual(actual, lock["license_sha256"])
+AssertionError: '0bdfb0201d1803634f268cdff0993b8349d2c70e956a06dbb667c8dd65254ec5' != '28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5'
+- 0bdfb0201d1803634f268cdff0993b8349d2c70e956a06dbb667c8dd65254ec5
++ 28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.039s
+
+FAILED (failures=2)

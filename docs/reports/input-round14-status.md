@@ -136,7 +136,7 @@ Snapshot以runtime实际SHA绑定，换版本拒绝pending/failed，保留原拼
 
 34个精确外部包与73份许可原件逐字节、Git暂存字节和原Cargo包核验。原15Windows依赖保留；新增19包来自ring0.17.14仅digest闭包，包含ring引用的once_cell和fiat嵌套许可，不引入网络/翻译运行时。严格RustSec数据库/工具/Cargo.lock SHA见[审计JSON](input-round14-evidence/round14-final-dependency-audit.json)，不沿用PR5成功结论。
 
-最新实现的push CI为[41427836187](https://github.com/WanFengQC/Cloudleaf/actions/runs/41427836187)；本报告提交的最终HEAD须另核自己的Windows/Linux jobs、原始日志与artifact digest，写入本地交付回执。CI无大词典、独立gold或系统注册，不能从CI成功推断真实词典语言质量或TSF应用通过。
+原输入实现`a707d20`的push CI为[41427836187](https://github.com/WanFengQC/Cloudleaf/actions/runs/41427836187)，首次报告提交`3b7ed3e`另有[41428709888](https://github.com/WanFengQC/Cloudleaf/actions/runs/41428709888)。11月3日收尾修复及报告的最终HEAD必须另核自己的Windows/Linux jobs、原始日志与artifact digest，写入本地交付回执；前述两次成功不能代替最终提交验收。CI无大词典、独立gold或系统注册，不能从CI成功推断真实词典语言质量或TSF应用通过。
 
 ## 原始失败及修复
 
@@ -170,3 +170,18 @@ Snapshot以runtime实际SHA绑定，换版本拒绝pending/failed，保留原拼
 6. 翻译成果保持，最终整合在基础中文输入及各自验收条件成立后进行，本轮不扩张独立翻译功能。
 
 **CL-010仍阻塞。** 本轮完成的是必要工程连通与缺陷修复，不能替代A/B/C原退出条件或正式产品验收。
+
+## 2026-11-03收尾：固定数据许可原文字节完整性
+
+收尾实际核验又发现一项来源完整性缺陷：两份`data/licenses`许可在Windows工作树被Git自动转换成CRLF，SHA与固定来源锁不符；Git原始blob及外部九文件release仍正确。先提交真实失败回归`81471948c7d38c668b737deedd8cb87ed801f510`，两份原件均失败（返回码1），再提交最小修复`28dbf44587400b721ef9692033064c04c003a6c9`。没有修改来源锁、授权范围、词典内容或解析规则来接受错误字节。
+
+修改范围为`.gitattributes`、`scripts/verify_input_lexicon.py`、`scripts/check_workspace.py`和新增`tests/test_data_license_integrity.py`，设计先行记录在`docs/input-round14-design.md`。恢复C原件字节并禁止许可文件换行转换；同一个真实校验函数用于离线包预检和工作区审计。新增测试检查仓库原件，并实际损坏临时副本、确认生产预检函数拒绝。许可工作树、Git blob与C原件三者现已逐字节相同：
+
+| 原件 | SHA-256 |
+|---|---|
+| CC-BY-SA-4.0.txt | `28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5` |
+| Unicode-3.0.txt | `e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96` |
+
+精确修复提交重新执行13条独立完整回归，全部返回0：Rust193通过/2项原ignored、Python59通过、fmt/Clippy/doc/release、工作区/资源/严格依赖许可与RustSec审计、旧基准及探针构建。固定真实九文件包再次完整预检通过，仍为123544条、1468隔离，runtime SHA不变。所有命令、返回码、失败原文、工具和产物SHA另存[收尾证据](input-round14-evidence/closure-license-fix/summary.json)，原240个R14证据文件字节完整保留，R1–13未覆盖。
+
+此后Rust产品源码与`a707d20`相同，因此上面的真实输入、排序失败和性能记录仍明确归属于原测量提交/二进制，没有把重复构建当成新的语言质量测量。最终报告提交的精确push CI、artifact SHA和远程状态记录在Git外`.local/round14-delivery-receipt.json`，避免自引用提交哈希。当前结论仍为**partial**，质量、延迟、Windows真实应用及长期可靠性门禁继续关闭。
