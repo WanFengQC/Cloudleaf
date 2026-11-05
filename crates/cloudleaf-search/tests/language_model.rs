@@ -101,3 +101,17 @@ fn offline_training_roundtrips_real_bigram_counts_and_boundaries() {
     .unwrap();
     assert_eq!(exact.candidates, reference.candidates);
 }
+
+#[test]
+fn training_header_cannot_inject_unobserved_sequences() {
+    let lex = lexicon();
+    let header = format!("{}<bos>\tb\t100\nb\t<eos>\t100\n", metadata("bigram"));
+    assert!(LanguageModelSnapshot::train(&header, &lex, SHA, &[vec!["a".into()]]).is_err());
+}
+
+#[test]
+fn reader_rejects_balanced_counts_disconnected_from_sentence_boundaries() {
+    let lex = lexicon();
+    let artifact = format!("{}<bos>\ta\t1\na\t<eos>\t1\nb\tb\t100\n", metadata("bigram"));
+    assert!(LanguageModelSnapshot::from_tsv(&artifact, &lex, SHA).is_err());
+}
