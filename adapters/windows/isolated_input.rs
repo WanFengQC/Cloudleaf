@@ -8,7 +8,13 @@ use windows::Win32::{
     Foundation::*,
     Graphics::Gdi::*,
     System::LibraryLoader::GetModuleHandleW,
-    UI::{Input::{KeyboardAndMouse::*, Ime::{HIMC, IACE_CHILDREN, ImmAssociateContextEx}}, WindowsAndMessaging::*},
+    UI::{
+        Input::{
+            Ime::{HIMC, IACE_CHILDREN, ImmAssociateContextEx},
+            KeyboardAndMouse::*,
+        },
+        WindowsAndMessaging::*,
+    },
 };
 use windows_core::{PCWSTR, w};
 
@@ -52,6 +58,21 @@ impl LocalHost {
             .projection
             .borrow_mut()
             .handle(InputEvent::Activate);
+        self.retained.borrow_mut().clear();
+        Ok(())
+    }
+    fn retain(&self, material: &str) -> Result<()> {
+        let mut retained = self.retained.borrow_mut();
+        let separator = if retained.is_empty() { "" } else { "\r\n" };
+        if retained.len() + separator.len() + material.len() > 16384 {
+            self.host.quarantined.set(true);
+            return Err(Error::new(
+                E_FAIL,
+                "保全材料已满；当前组合保留，核对后再开始新会话",
+            ));
+        }
+        retained.push_str(separator);
+        retained.push_str(material);
         Ok(())
     }
     pub fn process(
@@ -67,7 +88,7 @@ impl LocalHost {
         if event == InputEvent::FocusLost {
             let raw = self.host.engine.borrow().frame().preedit;
             if !raw.is_empty() {
-                *self.retained.borrow_mut() = raw;
+                self.retain(&raw)?;
             }
         }
         let mut sample = Sample::default();
@@ -140,12 +161,12 @@ impl LocalHost {
                         });
                 }
                 CommitOutcome::Unknown => {
-                    *self.retained.borrow_mut() = format!(
-                        "拼音：{}；待核对提交：{}",
-                        actual.frame.preedit, commit.text
-                    );
                     self.host.quarantined.set(true);
                     self.host.unknown_text.set(true);
+                    self.retain(&format!(
+                        "拼音：{}；待核对提交：{}",
+                        actual.frame.preedit, commit.text
+                    ))?;
                 }
             }
         } else if !actual.handled {
@@ -170,8 +191,8 @@ impl LocalHost {
                 if document.len() <= 16384 && sink(&document) == CommitOutcome::Applied {
                     *self.document.borrow_mut() = document;
                 } else {
-                    *self.retained.borrow_mut() = format!("原生事件待核对：{event:?}");
                     self.host.quarantined.set(true);
+                    self.retain(&format!("原生事件待核对：{event:?}"))?;
                 }
             }
         }
@@ -591,28 +612,45 @@ mod tests {
         });
         type_text(&view.local, "nihao");
         let frame = view.local.host.engine.borrow().frame();
-        *view.ui.borrow_mut() = Some(CandidateUi::isolated(
-            view.local.host.clone(), frame, Rc::new(|_, _| Ok(())),
-        ).unwrap());
+        *view.ui.borrow_mut() = Some(
+            CandidateUi::isolated(view.local.host.clone(), frame, Rc::new(|_, _| Ok(()))).unwrap(),
+        );
         // 安全：隐藏窗口使用实际WndProc；只向本测试创建的父子HWND发送焦点/激活消息。
         unsafe {
             let instance = HINSTANCE(GetModuleHandleW(None).unwrap().0);
             let class = w!("CloudleafRound17ChildFocusRegression");
             let wc = WNDCLASSW {
-                lpfnWndProc: Some(window_proc), hInstance: instance,
-                lpszClassName: class, ..Default::default()
+                lpfnWndProc: Some(window_proc),
+                hInstance: instance,
+                lpszClassName: class,
+                ..Default::default()
             };
             assert_ne!(RegisterClassW(&wc), 0);
             let window = CreateWindowExW(
-                WINDOW_EX_STYLE::default(), class, w!(""), WS_OVERLAPPEDWINDOW,
-                0, 0, 770, 580, None, None, Some(instance),
+                WINDOW_EX_STYLE::default(),
+                class,
+                w!(""),
+                WS_OVERLAPPEDWINDOW,
+                0,
+                0,
+                770,
+                580,
+                None,
+                None,
+                Some(instance),
                 Some(Rc::as_ptr(&view).cast()),
-            ).unwrap();
+            )
+            .unwrap();
             SetFocus(Some(window)).unwrap();
             SetFocus(Some(view.document.get())).unwrap();
             assert_eq!(GetFocus(), view.document.get());
             assert_eq!(view.local.host.engine.borrow().frame().preedit, "nihao");
-            SendMessageW(window, WM_ACTIVATE, Some(WPARAM(WA_INACTIVE as usize)), Some(LPARAM(0)));
+            SendMessageW(
+                window,
+                WM_ACTIVATE,
+                Some(WPARAM(WA_INACTIVE as usize)),
+                Some(LPARAM(0)),
+            );
             let after = view.local.host.engine.borrow().frame();
             let retained = view.local.retained.borrow().clone();
             let candidates_closed = view.ui.borrow().is_none();
@@ -620,7 +658,10 @@ mod tests {
             let mut quit = MSG::default();
             let _ = PeekMessageW(&mut quit, None, WM_QUIT, WM_QUIT, PM_REMOVE);
             UnregisterClassW(class, Some(instance)).unwrap();
-            assert!(after.preedit.is_empty(), "整窗失活必须取消旧组合，而不是依赖父窗仍有键盘焦点");
+            assert!(
+                after.preedit.is_empty(),
+                "整窗失活必须取消旧组合，而不是依赖父窗仍有键盘焦点"
+            );
             assert_eq!(retained, "nihao");
             assert!(candidates_closed);
             assert!(view.local.document.borrow().is_empty());
@@ -632,33 +673,55 @@ mod tests {
         use windows::Win32::UI::Input::Ime::{ImmGetContext, ImmReleaseContext};
         let view = Rc::new(Window {
             local: LocalHost::new(Host::new().unwrap()).unwrap(),
-            window: Cell::new(HWND::default()), document: Cell::new(HWND::default()),
-            status: Cell::new(HWND::default()), fault: Cell::new(false),
+            window: Cell::new(HWND::default()),
+            document: Cell::new(HWND::default()),
+            status: Cell::new(HWND::default()),
+            fault: Cell::new(false),
             ui: RefCell::new(None),
         });
         // 安全：检查本测试隐藏父子窗口的上下文；不切换用户布局或其他窗口的输入法。
         unsafe {
             let instance = HINSTANCE(GetModuleHandleW(None).unwrap().0);
             let class = w!("CloudleafRound17OwnImeRegression");
-            let wc = WNDCLASSW { lpfnWndProc: Some(window_proc), hInstance: instance,
-                lpszClassName: class, ..Default::default() };
+            let wc = WNDCLASSW {
+                lpfnWndProc: Some(window_proc),
+                hInstance: instance,
+                lpszClassName: class,
+                ..Default::default()
+            };
             assert_ne!(RegisterClassW(&wc), 0);
             let window = CreateWindowExW(
-                WINDOW_EX_STYLE::default(), class, w!(""), WS_OVERLAPPEDWINDOW,
-                0, 0, 770, 580, None, None, Some(instance),
+                WINDOW_EX_STYLE::default(),
+                class,
+                w!(""),
+                WS_OVERLAPPEDWINDOW,
+                0,
+                0,
+                770,
+                580,
+                None,
+                None,
+                Some(instance),
                 Some(Rc::as_ptr(&view).cast()),
-            ).unwrap();
+            )
+            .unwrap();
             let mut inherited = Vec::new();
             for hwnd in [window, view.document.get()] {
                 let context = ImmGetContext(hwnd);
                 inherited.push(!context.is_invalid());
-                if !context.is_invalid() { assert!(ImmReleaseContext(hwnd, context).as_bool()); }
+                if !context.is_invalid() {
+                    assert!(ImmReleaseContext(hwnd, context).as_bool());
+                }
             }
             DestroyWindow(window).unwrap();
             let mut quit = MSG::default();
             let _ = PeekMessageW(&mut quit, None, WM_QUIT, WM_QUIT, PM_REMOVE);
             UnregisterClassW(class, Some(instance)).unwrap();
-            assert_eq!(inherited, [false, false], "隔离键盘入口不得再把拼音交给系统输入法");
+            assert_eq!(
+                inherited,
+                [false, false],
+                "隔离键盘入口不得再把拼音交给系统输入法"
+            );
         }
     }
 
@@ -666,22 +729,40 @@ mod tests {
     fn repeated_focus_loss_and_unknown_preserve_each_unacknowledged_raw_input() {
         let local = LocalHost::new(Host::new().unwrap()).unwrap();
         type_text(&local, "nihao");
-        local.process(InputEvent::FocusLost, None, &|_| CommitOutcome::Applied).unwrap();
+        local
+            .process(InputEvent::FocusLost, None, &|_| CommitOutcome::Applied)
+            .unwrap();
         assert!(local.retained.borrow().contains("nihao"));
-        local.process(InputEvent::Activate, None, &|_| CommitOutcome::Applied).unwrap();
+        local
+            .process(InputEvent::Activate, None, &|_| CommitOutcome::Applied)
+            .unwrap();
         type_text(&local, "zhongguo");
-        local.process(InputEvent::FocusLost, None, &|_| CommitOutcome::Applied).unwrap();
+        local
+            .process(InputEvent::FocusLost, None, &|_| CommitOutcome::Applied)
+            .unwrap();
         assert!(local.retained.borrow().contains("nihao"));
         assert!(local.retained.borrow().contains("zhongguo"));
-        local.process(InputEvent::Activate, None, &|_| CommitOutcome::Applied).unwrap();
+        local
+            .process(InputEvent::Activate, None, &|_| CommitOutcome::Applied)
+            .unwrap();
         type_text(&local, "woaini");
-        local.process(InputEvent::Key(Key::Space), None, &|_| CommitOutcome::Unknown).unwrap();
+        local
+            .process(InputEvent::Key(Key::Space), None, &|_| {
+                CommitOutcome::Unknown
+            })
+            .unwrap();
         assert!(local.host.quarantined.get());
         for raw in ["nihao", "zhongguo", "woaini"] {
-            assert!(local.retained.borrow().contains(raw), "尚未确认的旧材料不能被后续失焦或Unknown覆盖：{raw}");
+            assert!(
+                local.retained.borrow().contains(raw),
+                "尚未确认的旧材料不能被后续失焦或Unknown覆盖：{raw}"
+            );
         }
         local.reset().unwrap();
-        assert!(local.retained.borrow().is_empty(), "明确新会话才确认并清除旧保全材料");
+        assert!(
+            local.retained.borrow().is_empty(),
+            "明确新会话才确认并清除旧保全材料"
+        );
     }
 
     #[test]
@@ -700,5 +781,4 @@ mod tests {
         assert_eq!(before.preedit, "nihao");
         assert!(local.document.borrow().is_empty());
     }
-
 }
