@@ -232,11 +232,18 @@ impl SentenceBackend {
             Ranker::Bigram | Ranker::ContextRerank => language
                 .as_ref()
                 .is_some_and(|value| value.metadata().kind == "bigram"),
+            Ranker::CharacterBigram => language
+                .as_ref()
+                .is_some_and(|value| value.metadata().kind == "character_bigram"),
         };
         if !valid_model
-            || language
-                .as_ref()
-                .is_some_and(|value| value.metadata().lexicon_sha256 != snapshot.version)
+            || language.as_ref().is_some_and(|value| {
+                value.metadata().lexicon_sha256 != snapshot.version
+                    || !value
+                        .snapshot
+                        .model()
+                        .is_compatible_lexicon(&snapshot.lexicon)
+            })
             || left_word.as_ref().is_some_and(|id| {
                 config.ranker != Ranker::ContextRerank
                     || snapshot
@@ -262,11 +269,13 @@ impl SentenceBackend {
         &mut self,
         snapshot: Arc<SearchSnapshot>,
     ) -> Result<(), CoreError> {
-        if self
-            .language
-            .as_ref()
-            .is_some_and(|value| value.metadata().lexicon_sha256 != snapshot.version)
-        {
+        if self.language.as_ref().is_some_and(|value| {
+            value.metadata().lexicon_sha256 != snapshot.version
+                || !value
+                    .snapshot
+                    .model()
+                    .is_compatible_lexicon(&snapshot.lexicon)
+        }) {
             return Err(CoreError::new(
                 ErrorCode::InvalidConfig,
                 "先解除旧模型绑定，不能套用到新词典",

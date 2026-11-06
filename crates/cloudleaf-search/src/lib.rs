@@ -1,5 +1,6 @@
 //! 全输入词条格实验内核。词典与模型由宿主预加载，查询不访问外部资源。
 mod cancellation;
+mod character;
 mod lattice;
 mod lexicon;
 mod model;
@@ -76,6 +77,8 @@ pub enum Ranker {
     Weighted,
     /// 保留结构分优先，只在结构平局时比较独立研究词汇观测。
     Lexical,
+    /// 完整正文的字符生成概率；保留最后字符历史，不叠加每词结构惩罚。
+    CharacterBigram,
     Bigram,
     ContextRerank,
 }

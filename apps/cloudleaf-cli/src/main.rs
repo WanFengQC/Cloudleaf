@@ -150,6 +150,9 @@ fn run() -> Result<(), String> {
                     );
                     config.ranker = if language.metadata().kind == "lexical" {
                         cloudleaf_search::Ranker::Lexical
+                    } else if language.metadata().kind == "character_bigram" {
+                        config.method = cloudleaf_search::Method::ExactDag;
+                        cloudleaf_search::Ranker::CharacterBigram
                     } else {
                         config.method = cloudleaf_search::Method::ExactDag;
                         cloudleaf_search::Ranker::Bigram

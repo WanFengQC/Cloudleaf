@@ -47,6 +47,9 @@ fn run_options(runtime: &str, expected_sha256: &str, model: Option<(&str, &str)>
         );
         if language.metadata().kind == "lexical" {
             config.ranker = cloudleaf_search::Ranker::Lexical;
+        } else if language.metadata().kind == "character_bigram" {
+            config.ranker = cloudleaf_search::Ranker::CharacterBigram;
+            config.method = cloudleaf_search::Method::ExactDag;
         } else {
             config.ranker = cloudleaf_search::Ranker::Bigram;
             config.method = cloudleaf_search::Method::ExactDag;

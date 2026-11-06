@@ -4,7 +4,7 @@ use crate::{
     Ranker, SearchError,
 };
 use std::cmp::Ordering;
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BinaryHeap};
 
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
 pub struct Features {
@@ -17,6 +17,10 @@ pub struct Features {
     pub lexical_missing: usize,
     pub bigram_units: i64,
     pub context_units: i64,
+    pub structural_units: i64,
+    pub character_units: i64,
+    pub character_count: usize,
+    pub character_unknown: usize,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -55,6 +59,7 @@ struct Path {
     ids: Vec<usize>,
     edges: Vec<usize>,
     features: Features,
+    last_character: Option<u32>,
 }
 
 fn compare(a: &Path, b: &Path) -> Ordering {
@@ -88,11 +93,18 @@ impl Scorer<'_> {
         let entry = &self.lexicon.entries[edge.entry];
         let stamp = observer.start(Phase::Scoring);
         let mut features = path.features.clone();
-        let mut score = path.score - 100;
+        let mut score = path.score;
+        features.structural_units -= 100;
+        if self.ranker != Ranker::CharacterBigram {
+            score -= 100;
+        }
         features.words += 1;
         if edge.kind == MatchKind::Prefix {
             features.prefixes += 1;
-            score -= 300;
+            features.structural_units -= 300;
+            if self.ranker != Ranker::CharacterBigram {
+                score -= 300;
+            }
         }
         if let Some(frequency) = entry.frequency {
             let units = i64::from(63 - (u64::from(frequency) + 1).leading_zeros());
@@ -126,6 +138,20 @@ impl Scorer<'_> {
             features.bigram_units += units;
             score += units;
         }
+        let mut last_character = path.last_character;
+        if self.ranker == Ranker::CharacterBigram {
+            let model = self.model.unwrap().character.as_ref().unwrap();
+            let entry_score = model.entry(edge.entry);
+            let units = model.transition(
+                path.last_character.unwrap_or(crate::character::BOS),
+                entry_score.first,
+            ) + entry_score.internal;
+            features.character_units += units;
+            features.character_count += entry_score.characters;
+            features.character_unknown += entry_score.unknown;
+            score += units;
+            last_character = Some(entry_score.last);
+        }
         observer.stop(Phase::Scoring, stamp);
         // 满桶中严格劣于末项的扩展必被丢弃，先比较借用ID，避免复制整条路径。
         if cutoff.is_some_and(|worst| {
@@ -147,6 +173,7 @@ impl Scorer<'_> {
         let mut next = path.clone();
         next.score = score;
         next.features = features;
+        next.last_character = last_character;
         next.text.push_str(&entry.text);
         next.ids.push(edge.entry);
         next.edges.push(edge_index);
@@ -165,6 +192,17 @@ impl Scorer<'_> {
                 .map(|index| self.lexicon.entries[*index].id.as_str());
             let units = model.transition(previous, None);
             path.features.bigram_units += units;
+            path.score += units;
+        }
+        if self.ranker == Ranker::CharacterBigram {
+            let units = self
+                .model
+                .unwrap()
+                .character
+                .as_ref()
+                .unwrap()
+                .finish(path.last_character.unwrap_or(crate::character::BOS));
+            path.features.character_units += units;
             path.score += units;
         }
         observer.stop(Phase::Scoring, stamp);
@@ -264,7 +302,7 @@ fn dynamic<O: Observer>(
     k: usize,
     observer: &mut O,
 ) -> Vec<Path> {
-    // last词条是未来一阶评分的充分状态；文本去重在每个状态内进行。
+    // 词模型保留last词条；字符模型保留最后映射字符，不能按位置合并不同历史。
     let mut states: Vec<BTreeMap<Option<usize>, Vec<Path>>> =
         vec![BTreeMap::new(); scorer.graph.letters.len() + 1];
     states[0].insert(None, vec![Path::default()]);
@@ -289,7 +327,19 @@ fn dynamic<O: Observer>(
                     return Vec::new();
                 }
                 let edge = &scorer.graph.edges[*edge_index];
-                let bucket = states[edge.end].entry(Some(edge.entry)).or_default();
+                let history = if scorer.ranker == Ranker::CharacterBigram {
+                    scorer
+                        .model
+                        .unwrap()
+                        .character
+                        .as_ref()
+                        .unwrap()
+                        .entry(edge.entry)
+                        .last as usize
+                } else {
+                    edge.entry
+                };
+                let bucket = states[edge.end].entry(Some(history)).or_default();
                 let old = bucket.len();
                 if !resident_allowed(stats, resident + 1, config) {
                     return Vec::new();
@@ -353,6 +403,196 @@ fn position_dynamic<O: Observer>(
     states.pop().unwrap_or_default()
 }
 
+struct BoundedPath {
+    bound: i64,
+    best_ids: Vec<usize>,
+    order: usize,
+    position: usize,
+    path: Path,
+}
+
+impl PartialEq for BoundedPath {
+    fn eq(&self, other: &Self) -> bool {
+        self.order == other.order
+    }
+}
+impl Eq for BoundedPath {}
+impl PartialOrd for BoundedPath {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+impl Ord for BoundedPath {
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.bound
+            .cmp(&other.bound)
+            .then_with(|| other.best_ids.cmp(&self.best_ids))
+            .then_with(|| other.order.cmp(&self.order))
+    }
+}
+
+#[derive(Clone)]
+struct Suffix {
+    score: i64,
+    ids: Vec<usize>,
+}
+
+/// 精确后缀分用于有界最佳优先枚举；同分上界不能提前结束稳定ID比较。
+fn character_exact<O: Observer>(
+    scorer: &Scorer<'_>,
+    config: &Config,
+    stats: &mut Statistics,
+    k: usize,
+    observer: &mut O,
+) -> Vec<Path> {
+    let model = scorer.model.unwrap().character.as_ref().unwrap();
+    let end = scorer.graph.letters.len();
+    let mut suffix = vec![BTreeMap::<u32, Option<Suffix>>::new(); end + 1];
+    suffix[0].insert(crate::character::BOS, None);
+    let mut labels = 1;
+    for edge in &scorer.graph.edges {
+        if suffix[edge.end]
+            .insert(model.entry(edge.entry).last, None)
+            .is_none()
+        {
+            labels += 1;
+            if !resident_allowed(stats, labels + 1, config) {
+                return Vec::new();
+            }
+        }
+    }
+    for (&previous, value) in &mut suffix[end] {
+        *value = Some(Suffix {
+            score: model.finish(previous),
+            ids: Vec::new(),
+        });
+    }
+    for position in (0..end).rev() {
+        let histories: Vec<_> = suffix[position].keys().copied().collect();
+        for previous in histories {
+            let mut best: Option<Suffix> = None;
+            for edge_index in &scorer.graph.outgoing[position] {
+                if scorer.cancelled() {
+                    return Vec::new();
+                }
+                if !expand_allowed(stats, config) {
+                    return Vec::new();
+                }
+                let edge = &scorer.graph.edges[*edge_index];
+                let entry = model.entry(edge.entry);
+                if let Some(rest) = suffix[edge.end].get(&entry.last).and_then(Option::as_ref) {
+                    let stamp = observer.start(Phase::Scoring);
+                    let score =
+                        model.transition(previous, entry.first) + entry.internal + rest.score;
+                    let ids = std::iter::once(edge.entry).chain(rest.ids.iter().copied());
+                    if best.as_ref().is_none_or(|value| {
+                        score > value.score
+                            || (score == value.score
+                                && ids.clone().cmp(value.ids.iter().copied()) == Ordering::Less)
+                    }) {
+                        best = Some(Suffix {
+                            score,
+                            ids: ids.collect(),
+                        });
+                    }
+                    observer.stop(Phase::Scoring, stamp);
+                }
+            }
+            suffix[position].insert(previous, best);
+        }
+    }
+    let Some(best) = &suffix[0][&crate::character::BOS] else {
+        return Vec::new();
+    };
+    let mut pending = BinaryHeap::from([BoundedPath {
+        bound: best.score,
+        best_ids: best.ids.clone(),
+        order: 0,
+        position: 0,
+        path: Path::default(),
+    }]);
+    let mut order = 0;
+    let mut complete: Vec<Path> = Vec::new();
+    let mut seen = vec![BTreeMap::<String, Vec<usize>>::new(); end + 1];
+    seen[0].insert(String::new(), Vec::new());
+    let mut seen_count = 1;
+    while let Some(current) = pending.pop() {
+        if scorer.cancelled() {
+            return Vec::new();
+        }
+        if seen[current.position].get(&current.path.text) != Some(&current.path.ids) {
+            continue;
+        }
+        if complete.len() == k
+            && (current.bound < complete.last().unwrap().score
+                || (current.bound == complete.last().unwrap().score
+                    && current.best_ids >= complete.last().unwrap().ids))
+        {
+            break;
+        }
+        if current.position == end {
+            let finished = scorer.finish(current.path, observer);
+            insert_unique(&mut complete, finished, k, observer);
+            continue;
+        }
+        for edge_index in &scorer.graph.outgoing[current.position] {
+            if scorer.cancelled() {
+                return Vec::new();
+            }
+            if !expand_allowed(stats, config) {
+                return Vec::new();
+            }
+            let edge = &scorer.graph.edges[*edge_index];
+            let entry = model.entry(edge.entry);
+            let Some(rest) = suffix[edge.end].get(&entry.last).and_then(Option::as_ref) else {
+                continue;
+            };
+            if !resident_allowed(
+                stats,
+                labels + seen_count + pending.len() + complete.len() + 3,
+                config,
+            ) {
+                return Vec::new();
+            }
+            let next = scorer
+                .extend(&current.path, *edge_index, None, observer)
+                .unwrap();
+            let bound = next.score + rest.score;
+            if complete.len() == k && bound < complete.last().unwrap().score {
+                continue;
+            }
+            // 同位置相同正文有相同字符分和未来状态；不同词典分词只保留最优稳定ID。
+            if seen[edge.end]
+                .get(&next.text)
+                .is_some_and(|ids| ids <= &next.ids)
+            {
+                continue;
+            }
+            if seen[edge.end]
+                .insert(next.text.clone(), next.ids.clone())
+                .is_none()
+            {
+                seen_count += 1;
+            }
+            order += 1;
+            let best_ids = next
+                .ids
+                .iter()
+                .copied()
+                .chain(rest.ids.iter().copied())
+                .collect();
+            pending.push(BoundedPath {
+                bound,
+                best_ids,
+                order,
+                position: edge.end,
+                path: next,
+            });
+        }
+    }
+    complete
+}
+
 /// 在同一个只读词条图上比较搜索方法。输入/模型载入和评估IO由宿主负责。
 pub fn search_graph(
     lexicon: &Lexicon,
@@ -413,6 +653,9 @@ pub(crate) fn search_controlled_observed<O: Observer>(
             && model.is_none_or(|value| !value.has_transitions()))
             || (config.ranker == Ranker::Lexical
                 && model.is_none_or(|value| !value.has_lexical_signal()))
+            || (config.ranker == Ranker::CharacterBigram
+                && model.is_none_or(|value| !value.has_character_transitions()))
+            || model.is_some_and(|value| !value.is_compatible_lexicon(lexicon))
         {
             return Err(SearchError::new(
                 ErrorKind::InvalidModel,
@@ -463,6 +706,8 @@ pub(crate) fn search_controlled_observed<O: Observer>(
         reference(&scorer, config, &mut statistics, k, observer)
     } else if config.method == Method::PositionDag {
         position_dynamic(&scorer, config, &mut statistics, k, observer)
+    } else if config.method == Method::ExactDag && config.ranker == Ranker::CharacterBigram {
+        character_exact(&scorer, config, &mut statistics, k, observer)
     } else {
         dynamic(&scorer, config, &mut statistics, k, observer)
     };

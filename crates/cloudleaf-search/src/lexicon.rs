@@ -35,6 +35,7 @@ pub(crate) struct TrieNode {
 pub struct Lexicon {
     pub(crate) entries: Vec<Entry>,
     pub(crate) trie: Vec<TrieNode>,
+    pub(crate) identity: std::sync::Arc<()>,
 }
 
 /// 固定Rust1.90容器布局的保守预估，不是RSS或allocator硬上界。
@@ -236,11 +237,16 @@ impl Lexicon {
             node.exact.shrink_to_fit();
             node.prefix.shrink_to_fit();
         }
-        Ok(Self { entries, trie })
+        Ok(Self {
+            entries,
+            trie,
+            identity: std::sync::Arc::new(()),
+        })
     }
 
     pub fn memory_estimate(&self) -> LexiconMemory {
         let mut owned = std::mem::size_of::<Self>()
+            + 2 * std::mem::size_of::<usize>()
             + self.entries.capacity() * std::mem::size_of::<Entry>()
             + self.trie.capacity() * std::mem::size_of::<TrieNode>();
         let mut tree_nodes = 0;

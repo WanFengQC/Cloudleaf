@@ -53,7 +53,7 @@ jobs:
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v4
         with:
-          name: input-round15-windows
+          name: input-round16-windows
           path: |
             target/release/cloudleaf-cli.exe
             target/release/cloudleaf-ime.exe
@@ -64,8 +64,10 @@ jobs:
             THIRD_PARTY_NOTICES.md
             licenses/windows/
             licenses/input-snapshot/
+            licenses/input-context/
             docs/input-round14-design.md
             docs/input-round15-design.md
+            docs/input-round16-design.md
           if-no-files-found: error
       - uses: actions/upload-artifact@v4
         with:

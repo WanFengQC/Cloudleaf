@@ -152,3 +152,127 @@ fn explicit_left_context_changes_only_the_finite_bigram_pool() {
     assert!(diagnostic.finite_pool_only);
     assert_ne!(diagnostic.paths[0].features.context_units, 0);
 }
+
+#[test]
+fn character_model_switch_preserves_raw_revision_and_commit_guards() {
+    let (snapshot, lexical) = fixtures(true);
+    let text = format!(
+        "# cloudleaf-language-v1\nlexicon_sha256\t{}\nsource_sha256\t{}\nsource_id\tmechanical\nlicense_id\tMIT\ntokenization\tunicode-scalar-v1\nusage\tmechanical\nkind\tcharacter_bigram\ntraining_split\ttrain\nprevious\tnext\tcount\n<bos>\t甲\t100\n<bos>\t乙\t1\n甲\t<eos>\t100\n乙\t<eos>\t1\n",
+        snapshot.version(),
+        "a".repeat(64)
+    );
+    let language =
+        Arc::new(LanguageSnapshot::from_verified_tsv(&text, &hash(&text), &snapshot).unwrap());
+    let character = Config {
+        method: Method::ExactDag,
+        ranker: Ranker::CharacterBigram,
+        ..cfg()
+    };
+    assert!(
+        InputEngine::with_search(snapshot.clone(), character.clone(), InputConfig::default())
+            .is_err()
+    );
+    assert!(
+        InputEngine::with_language(
+            snapshot.clone(),
+            character.clone(),
+            lexical.clone(),
+            None,
+            InputConfig::default()
+        )
+        .is_err()
+    );
+    assert!(
+        InputEngine::with_language(
+            snapshot.clone(),
+            cfg(),
+            language.clone(),
+            None,
+            InputConfig::default()
+        )
+        .is_err()
+    );
+    let mut engine = InputEngine::with_language(
+        snapshot.clone(),
+        cfg(),
+        lexical.clone(),
+        None,
+        InputConfig::default(),
+    )
+    .unwrap();
+    engine.handle(InputEvent::Activate);
+    for ch in "ma".chars() {
+        engine.handle(InputEvent::Key(Key::Char(ch)));
+    }
+    let old = engine.frame();
+    assert_eq!(old.candidates[0].text, "乙");
+    engine
+        .reconfigure_search(character.clone(), Some(language.clone()), None)
+        .unwrap();
+    let new = engine.frame();
+    assert_eq!(new.preedit, old.preedit);
+    assert_eq!(new.candidates[0].text, "甲");
+    assert!(new.revision > old.revision);
+    assert_eq!(
+        engine
+            .select_candidate(old.revision, &old.candidates[0].id)
+            .error
+            .unwrap()
+            .code,
+        ErrorCode::StaleCandidate
+    );
+    let diagnostic = engine.search_diagnostic().unwrap();
+    assert_eq!(
+        diagnostic.paths[0].score,
+        diagnostic.paths[0].features.character_units
+    );
+    assert_eq!(
+        diagnostic.model_version.as_deref(),
+        Some(language.version())
+    );
+    let commit = engine.handle(InputEvent::Key(Key::Space)).commit.unwrap();
+    assert_eq!(commit.text, "甲");
+    assert!(
+        engine
+            .reconfigure_search(cfg(), Some(lexical.clone()), None)
+            .is_err()
+    );
+    engine.handle(InputEvent::CommitFailed { id: commit.id });
+    assert!(
+        engine
+            .reconfigure_search(cfg(), Some(lexical), None)
+            .is_err()
+    );
+    assert!(engine.replace_search_snapshot(snapshot).is_err());
+    assert!(
+        InputEngine::with_language(
+            fixtures(false).0,
+            character.clone(),
+            language.clone(),
+            None,
+            InputConfig::default()
+        )
+        .is_err()
+    );
+    let snapshot = engine.search_diagnostic().unwrap().snapshot_version.clone();
+    assert_eq!(snapshot, language.metadata().lexicon_sha256);
+    let snapshot = fixtures(false).0;
+    let language =
+        Arc::new(LanguageSnapshot::from_verified_tsv(&text, &hash(&text), &snapshot).unwrap());
+    let mut engine =
+        InputEngine::with_language(snapshot, character, language, None, InputConfig::default())
+            .unwrap();
+    engine.handle(InputEvent::Activate);
+    for ch in "qz".chars() {
+        engine.handle(InputEvent::Key(Key::Char(ch)));
+    }
+    assert!(engine.frame().candidates.is_empty());
+    assert_eq!(
+        engine
+            .handle(InputEvent::Key(Key::Enter))
+            .commit
+            .unwrap()
+            .text,
+        "qz"
+    );
+}

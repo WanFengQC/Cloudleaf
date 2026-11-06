@@ -2299,8 +2299,17 @@ fn round14_sentence_host_applied_once_and_unknown_never_replays_old_epoch() {
 
 #[test]
 fn round15_language_host_confirms_once_and_isolates_unknown() {
+    language_host_confirms_once_and_isolates_unknown(super::tests::language_host);
+}
+
+#[test]
+fn round16_character_host_confirms_once_and_isolates_unknown() {
+    language_host_confirms_once_and_isolates_unknown(super::tests::character_host);
+}
+
+fn language_host_confirms_once_and_isolates_unknown(make_host: fn() -> Shared) {
     for unknown in [false, true] {
-        let host = super::tests::language_host();
+        let host = make_host();
         let data = Rc::new(Data::default());
         *data.host.borrow_mut() = Rc::downgrade(&host);
         let context: ITfContext = Context { data: data.clone() }.into();

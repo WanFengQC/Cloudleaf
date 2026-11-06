@@ -39,6 +39,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         {
             "structural" => Ranker::Structural,
             "lexical" => Ranker::Lexical,
+            "character_bigram" => {
+                config.method = Method::ExactDag;
+                Ranker::CharacterBigram
+            }
             "bigram" => {
                 config.method = Method::ExactDag;
                 Ranker::Bigram

@@ -25,3 +25,6 @@ CL-009固定CC-CEDICT包保留CC-BY-SA4、来源、署名与修改说明，仅�
 只读取CL-009既有固定Google Books Chinese2019一元分区，© 2019 Google，统计编纂声明见[官方索引](https://storage.googleapis.com/books/ngrams/books/20200217/chi_sim/chi_sim-1-ngrams_exports.html)，采用[CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)。本轮派生仅严格匹配固定词典正文、合计2000–2019原field2并投影至stable entry ID；保留原件SHA、许可原文、署名与修改说明。派生TSV留Git外，不入CI包，源码和报告不包含原书文本。
 
 这仍是`research_only`、来源登记仍`candidate-not-approved`：field2解释inferred、中文分词版本/截断和现代代表性未验收，不能作为生产token frequency、DF、Zipf或词语转移；缺失不补零。Google的统计编纂许可不解除CC-CEDICT词典的CC-BY-SA4范围和义务，也不证明书籍权利链或独立语言质量。本轮未新增Rust外部依赖。
+# Round 16 本地上下文研究材料
+
+Tatoeba Mandarin Chinese官方2026-10-31周导出采用CC BY 2.0 FR，来源与条款见 https://tatoeba.org/en/downloads 、https://tatoeba.org/en/terms_of_use 和 https://creativecommons.org/licenses/by/2.0/fr/ 。本轮原件、来源/owner/句URL及确定性派生模型保留Git外，仅research_only，不随本工具包分发或自动批准用于生产。owner不保证是原作者；正式派生内容发布前仍须核实完整署名与原文权利处理。许可原文保留于`licenses/input-context/CC-BY-2.0-FR.txt`。仅处理中文文本，不含音频，不将学习例句计数称为现代词频、人工gold或输入法准确率。

@@ -399,6 +399,14 @@ pub(crate) fn sentence_host(mode: u8, readonly: bool) -> Shared {
 }
 
 pub(crate) fn language_host() -> Shared {
+    language_host_kind(false)
+}
+
+pub(crate) fn character_host() -> Shared {
+    language_host_kind(true)
+}
+
+fn language_host_kind(character: bool) -> Shared {
     // 原创组件数据只验证实际Host和语言配置，不构成人工gold。
     const WORDS: &str = "# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\na\tma\t甲\t\tunknown\t\tfixture\ta\tMIT\nb\tma\t乙\t\tunknown\t\tfixture\tb\tMIT\nc\tna\t丙\t\tunknown\t\tfixture\tc\tMIT\n";
     const MODEL: &str = "# cloudleaf-language-v1\nlexicon_sha256\t1b17bd61d0012078be97202bb09f50ef47544e0f704b96cde05d11990e9fd9cb\nsource_sha256\taaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nsource_id\tmechanical\nlicense_id\tMIT\ntokenization\tstable-ids\nusage\tmechanical\nkind\tlexical\ntraining_split\ttrain\nprevious\tnext\tcount\n<lexical>\ta\t1\n<lexical>\tb\t100\n";
@@ -409,10 +417,15 @@ pub(crate) fn language_host() -> Shared {
         )
         .unwrap(),
     );
+    const CHARACTER_MODEL: &str = "# cloudleaf-language-v1\nlexicon_sha256\t1b17bd61d0012078be97202bb09f50ef47544e0f704b96cde05d11990e9fd9cb\nsource_sha256\taaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nsource_id\tmechanical\nlicense_id\tMIT\ntokenization\tunicode-scalar-v1\nusage\tmechanical\nkind\tcharacter_bigram\ntraining_split\ttrain\nprevious\tnext\tcount\n<bos>\t甲\t1\n<bos>\t乙\t100\n甲\t<eos>\t1\n乙\t<eos>\t100\n";
     let language = Arc::new(
         cloudleaf_input::LanguageSnapshot::from_verified_tsv(
-            MODEL,
-            "690e01bac9f53c9936cb8d651cedebf065b0cf3acbe8d29b0948d6bfecad4222",
+            if character { CHARACTER_MODEL } else { MODEL },
+            if character {
+                "c4b68be440707480477542527e608f092161a88d3a63f17e6725be0bd4ee369c"
+            } else {
+                "690e01bac9f53c9936cb8d651cedebf065b0cf3acbe8d29b0948d6bfecad4222"
+            },
             &snapshot,
         )
         .unwrap(),
@@ -420,8 +433,16 @@ pub(crate) fn language_host() -> Shared {
     let host = Host::with_language(
         snapshot,
         cloudleaf_search::Config {
-            method: cloudleaf_search::Method::PositionDag,
-            ranker: cloudleaf_search::Ranker::Lexical,
+            method: if character {
+                cloudleaf_search::Method::ExactDag
+            } else {
+                cloudleaf_search::Method::PositionDag
+            },
+            ranker: if character {
+                cloudleaf_search::Ranker::CharacterBigram
+            } else {
+                cloudleaf_search::Ranker::Lexical
+            },
             ..cloudleaf_search::Config::default()
         },
         language,

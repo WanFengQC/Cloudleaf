@@ -12,16 +12,25 @@ pub struct BigramModel {
     pairs: BTreeMap<(String, String), u64>,
     totals: BTreeMap<String, u64>,
     lexical: BTreeMap<String, u64>,
+    pub(crate) character: Option<crate::character::CharacterModel>,
 }
 
 impl BigramModel {
     pub fn train(sequences: &[Vec<String>]) -> Result<Self, SearchError> {
+        Self::train_tokens(sequences, false)
+    }
+
+    fn train_tokens(sequences: &[Vec<String>], characters: bool) -> Result<Self, SearchError> {
         if sequences.len() > 100_000
             || sequences.iter().map(Vec::len).sum::<usize>() > 1_000_000
             || sequences.iter().flatten().any(|s| {
                 s.is_empty()
                     || s.len() > 128
-                    || s.starts_with('<')
+                    || if characters {
+                        s.chars().count() != 1
+                    } else {
+                        s.starts_with('<')
+                    }
                     || s.chars().any(char::is_whitespace)
             })
         {
@@ -35,6 +44,7 @@ impl BigramModel {
             pairs: BTreeMap::new(),
             totals: BTreeMap::new(),
             lexical: BTreeMap::new(),
+            character: None,
         };
         for sequence in sequences {
             let mut previous = BOS;
@@ -89,6 +99,17 @@ impl BigramModel {
         !self.lexical.is_empty()
     }
 
+    pub fn has_character_transitions(&self) -> bool {
+        self.character.is_some()
+    }
+
+    /// 字符缓存按不可变词条索引编译；新词典实例须在装载阶段重新绑定。
+    pub fn is_compatible_lexicon(&self, lexicon: &Lexicon) -> bool {
+        self.character
+            .as_ref()
+            .is_none_or(|model| std::sync::Arc::ptr_eq(&model.lexicon_identity, &lexicon.identity))
+    }
+
     /// 固定Rust1.90、BTree节点至少五项的布局估计，不是allocator硬上界。
     pub fn estimated_bytes(&self) -> usize {
         let node = |len: usize, item: usize| (len.div_ceil(5) + 1) * (32 + 12 * 8 + 11 * item);
@@ -108,6 +129,10 @@ impl BigramModel {
             )
             + node(self.totals.len(), std::mem::size_of::<(String, u64)>())
             + node(self.lexical.len(), std::mem::size_of::<(String, u64)>())
+            + self
+                .character
+                .as_ref()
+                .map_or(0, |model| model.estimated_bytes())
     }
 }
 
@@ -221,7 +246,11 @@ impl LanguageModelSnapshot {
             || metadata.lexicon_sha256 != expected_lexicon
             || metadata.training_split != "train"
             || !matches!(metadata.usage.as_str(), "mechanical" | "research_only")
-            || !matches!(metadata.kind.as_str(), "lexical" | "bigram")
+            || !matches!(
+                metadata.kind.as_str(),
+                "lexical" | "bigram" | "character_bigram"
+            )
+            || (metadata.kind == "character_bigram" && metadata.tokenization != "unicode-scalar-v1")
         {
             return Err(invalid());
         }
@@ -235,6 +264,7 @@ impl LanguageModelSnapshot {
             pairs: BTreeMap::new(),
             totals: BTreeMap::new(),
             lexical: BTreeMap::new(),
+            character: None,
         };
         let mut rows = 0;
         let mut incoming = BTreeMap::<String, u64>::new();
@@ -260,8 +290,16 @@ impl LanguageModelSnapshot {
                     return Err(invalid());
                 }
             } else {
-                if (previous != BOS && !ids.contains(previous))
-                    || (next != EOS && !ids.contains(next))
+                let known = |value: &str| {
+                    if metadata.kind == "character_bigram" {
+                        value.chars().count() == 1
+                            && !value.chars().any(|c| c.is_whitespace() || c.is_control())
+                    } else {
+                        ids.contains(value)
+                    }
+                };
+                if (previous != BOS && !known(previous))
+                    || (next != EOS && !known(next))
                     || model
                         .pairs
                         .insert((previous.into(), next.into()), count)
@@ -280,16 +318,20 @@ impl LanguageModelSnapshot {
         if rows == 0 {
             return Err(invalid());
         }
-        if metadata.kind == "bigram" {
+        if matches!(metadata.kind.as_str(), "bigram" | "character_bigram") {
             let bos = model.totals.get(BOS).copied().unwrap_or(0);
             if bos == 0
                 || bos > 100_000
                 || incoming.get(EOS).copied().unwrap_or(0) != bos
                 || model.totals.values().sum::<u64>() > 1_100_000
-                || ids.iter().any(|id| {
-                    model.totals.get(*id).copied().unwrap_or(0)
-                        != incoming.get(*id).copied().unwrap_or(0)
-                })
+                || model
+                    .vocabulary
+                    .iter()
+                    .filter(|id| id.as_str() != EOS && id.as_str() != UNK)
+                    .any(|id| {
+                        model.totals.get(id).copied().unwrap_or(0)
+                            != incoming.get(id).copied().unwrap_or(0)
+                    })
             {
                 return Err(invalid());
             }
@@ -300,6 +342,17 @@ impl LanguageModelSnapshot {
             }) {
                 return Err(invalid());
             }
+        }
+        if metadata.kind == "character_bigram" {
+            model.character = Some(crate::character::CharacterModel::from_counts(
+                &model.vocabulary,
+                &model.pairs,
+                &model.totals,
+                lexicon,
+            ));
+            model.pairs.clear();
+            model.totals.clear();
+            model.vocabulary = BTreeSet::from([EOS.into(), UNK.into()]);
         }
         Ok(Self { metadata, model })
     }
@@ -319,13 +372,19 @@ impl LanguageModelSnapshot {
                 "训练元数据不能携带计数",
             ));
         }
-        let trained = BigramModel::train(sequences)?;
+        let characters = metadata_header
+            .lines()
+            .any(|line| line == "kind\tcharacter_bigram");
+        let trained = BigramModel::train_tokens(sequences, characters)?;
         let mut payload = metadata_header.to_owned();
         for ((previous, next), count) in &trained.pairs {
             payload.push_str(&format!("{previous}\t{next}\t{count}\n"));
         }
         let snapshot = Self::from_tsv(&payload, lexicon, expected_lexicon)?;
-        if snapshot.metadata.kind != "bigram" {
+        if !matches!(
+            snapshot.metadata.kind.as_str(),
+            "bigram" | "character_bigram"
+        ) {
             return Err(SearchError::new(
                 ErrorKind::InvalidModel,
                 "训练入口只接受独立序列bigram",
@@ -355,6 +414,8 @@ impl LanguageModelSnapshot {
             for (id, count) in &self.model.lexical {
                 output.push_str(&format!("<lexical>\t{id}\t{count}\n"));
             }
+        } else if let Some(model) = &self.model.character {
+            model.write_tsv(&mut output);
         } else {
             for ((previous, next), count) in &self.model.pairs {
                 output.push_str(&format!("{previous}\t{next}\t{count}\n"));
@@ -389,7 +450,7 @@ fn reachable<'a>(
 }
 
 /// 以1024为单位的整数二进制对数；避免浮点平台舍入进入候选平局。
-fn log2_fixed(value: u64) -> i64 {
+pub(crate) fn log2_fixed(value: u64) -> i64 {
     let exponent = 63 - value.leading_zeros();
     let mut normalized = (u128::from(value) << 32) >> exponent;
     let mut fraction = 0_i64;
