@@ -473,6 +473,50 @@ mod tests {
     use cloudleaf_types::{InputEvent, Key};
     use windows_core::Ref;
 
+    #[test]
+    fn isolated_mouse_selection_can_destroy_its_candidate_window_during_callback() {
+        let host = Host::new().unwrap();
+        host.engine.borrow_mut().handle(InputEvent::Activate);
+        for ch in "nihao".chars() {
+            host.engine
+                .borrow_mut()
+                .handle(InputEvent::Key(Key::Char(ch)));
+        }
+        let frame = host.engine.borrow().frame();
+        let expected = frame.candidates[0].id.clone();
+        let revision = frame.revision;
+        let slot = Rc::new(RefCell::new(None::<CandidateUi>));
+        let released = slot.clone();
+        let calls = Rc::new(Cell::new(0));
+        let callback_calls = calls.clone();
+        let select = Rc::new(move |actual_revision, id| {
+            assert_eq!(actual_revision, revision);
+            assert_eq!(id, expected);
+            callback_calls.set(callback_calls.get() + 1);
+            // 实际隔离宿主成功提交后同步销毁候选；消息中的临时Rc必须覆盖此路径。
+            released.borrow_mut().take();
+            Ok(())
+        });
+        let ui = CandidateUi::isolated(host.clone(), frame, select).unwrap();
+        let weak = Rc::downgrade(&ui.view);
+        let window = ui.view.window.get();
+        *slot.borrow_mut() = Some(ui);
+        // 安全：只向本测试创建且未显示的普通候选窗口发送真实选择消息。
+        unsafe {
+            SendMessageW(
+                window,
+                WM_LBUTTONUP,
+                Some(WPARAM(0)),
+                Some(LPARAM(10 | (10 << 16))),
+            );
+        }
+        assert_eq!(calls.get(), 1);
+        assert!(slot.borrow().is_none());
+        assert!(weak.upgrade().is_none());
+        assert!(!unsafe { IsWindow(Some(window)) }.as_bool());
+        assert!(host.context.borrow().is_none() && host.manager.borrow().is_none());
+    }
+
     #[derive(Default)]
     struct UiState {
         begun: Cell<u32>,

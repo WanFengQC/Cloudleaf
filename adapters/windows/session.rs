@@ -2003,3 +2003,6 @@ mod render_tests;
 mod input_review;
 pub(crate) use input_review::run as review_input_host;
 pub(crate) use input_review::run_with_language as review_language_host;
+
+#[path = "isolated_input.rs"]
+mod isolated_input;
