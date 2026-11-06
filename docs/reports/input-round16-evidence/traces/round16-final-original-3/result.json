@@ -1,0 +1,140 @@
+{
+  "command": [
+    "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-baseline-build\\release\\examples\\input_trace.exe",
+    "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+    "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+  ],
+  "returncode": 0,
+  "seconds": 0.6780666999984533,
+  "variant": "original",
+  "whole_process_cpu_seconds": 0.609375,
+  "original_implementation": "5045e18981dadefd3881a05fd021b31712ac243e",
+  "worktree_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "head": "8a0838b2261d0cf74f1ae17fa028849509deedc6",
+  "executable_sha256": "87a9bc7ab9002d32e42af09a7c595139b049ca31570b6b448affb575bab6d3e9",
+  "events_sha256": "e087cc965bd2f6c889a84f3db89b3829ccfda452f436d7b3cf562bbb965602ad",
+  "tool_sha256": "79de3a2b19f0dbc99aebead1f34f0fecae22d531292ae72e72e12508bb3655fa",
+  "runtime": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+    "bytes": 23602173,
+    "sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+  },
+  "sample_count": 13,
+  "resources": [
+    {
+      "seconds": 0.009211900003720075,
+      "working": 2080768,
+      "private": 380928,
+      "os_peak_working": 2080768,
+      "os_peak_pagefile": 380928
+    },
+    {
+      "seconds": 0.059663299995008856,
+      "working": 27856896,
+      "private": 24309760,
+      "os_peak_working": 27856896,
+      "os_peak_pagefile": 24338432
+    },
+    {
+      "seconds": 0.11001590001978911,
+      "working": 40022016,
+      "private": 36802560,
+      "os_peak_working": 40022016,
+      "os_peak_pagefile": 36802560
+    },
+    {
+      "seconds": 0.16054450001684017,
+      "working": 55386112,
+      "private": 59289600,
+      "os_peak_working": 60100608,
+      "os_peak_pagefile": 64819200
+    },
+    {
+      "seconds": 0.21105240000179037,
+      "working": 71229440,
+      "private": 70529024,
+      "os_peak_working": 71229440,
+      "os_peak_pagefile": 70529024
+    },
+    {
+      "seconds": 0.26159340000594966,
+      "working": 86827008,
+      "private": 97017856,
+      "os_peak_working": 91852800,
+      "os_peak_pagefile": 105025536
+    },
+    {
+      "seconds": 0.3121326999971643,
+      "working": 104030208,
+      "private": 109334528,
+      "os_peak_working": 104030208,
+      "os_peak_pagefile": 109334528
+    },
+    {
+      "seconds": 0.3627000999986194,
+      "working": 119369728,
+      "private": 120307712,
+      "os_peak_working": 119369728,
+      "os_peak_pagefile": 120307712
+    },
+    {
+      "seconds": 0.41324240001267754,
+      "working": 149516288,
+      "private": 159670272,
+      "os_peak_working": 156639232,
+      "os_peak_pagefile": 167620608
+    },
+    {
+      "seconds": 0.4638103000179399,
+      "working": 173166592,
+      "private": 175898624,
+      "os_peak_working": 173166592,
+      "os_peak_pagefile": 175898624
+    },
+    {
+      "seconds": 0.5143614000116941,
+      "working": 185061376,
+      "private": 185606144,
+      "os_peak_working": 194449408,
+      "os_peak_pagefile": 215334912
+    },
+    {
+      "seconds": 0.5648451000161003,
+      "working": 187662336,
+      "private": 188456960,
+      "os_peak_working": 194449408,
+      "os_peak_pagefile": 215334912
+    },
+    {
+      "seconds": 0.6155538000166416,
+      "working": 100286464,
+      "private": 101642240,
+      "os_peak_working": 194449408,
+      "os_peak_pagefile": 215334912
+    }
+  ],
+  "resource_scope": "whole CLI process including fixed lexicon, strings, trie, search and runtime; no single-algorithm memory claim",
+  "event_latency_ns": {
+    "n": 171,
+    "p50": 113500,
+    "p95": 386600,
+    "p99": 800400,
+    "max": 1248100
+  },
+  "raw_events_in_latency": true,
+  "timing_scope": "InputEngine.handle including frame clone and deterministic search; excludes stdout write, platform/UI and disk; heterogeneous engineering events, not formal latency acceptance",
+  "summary": [
+    "SUMMARY\tevents=171\tconfirmed_simulated_commits=5\tformal_metrics=null\tTSF=false"
+  ],
+  "formal_language_metrics": {
+    "top1": null,
+    "top5": null,
+    "mrr": null
+  },
+  "physical_disconnect": "not-run",
+  "TSF": false,
+  "files": {
+    "stdout.tsv": "a796d106eab11f0dbaa7c33d40b4d0f8d0e8aec75895a4c45f631473460425c9",
+    "stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

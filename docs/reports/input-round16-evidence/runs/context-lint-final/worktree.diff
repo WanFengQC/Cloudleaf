@@ -1,0 +1,341 @@
+diff --git a/README.md b/README.md
+index ca50353..27d01b4 100644
+--- a/README.md
++++ b/README.md
+@@ -95,4 +95,6 @@ python scripts/evaluate_algorithms.py --output-dir .local/algorithm-v1
+ 
+ Round16另有显式`kind=character_bigram`、`tokenization=unicode-scalar-v1`：同一训练入口逐行读取未经分词的正文，使用BOS/Unicode字符/EOS实际转移的add-one定点对数概率。整条正文同分，不依赖词典切成几个词；不叠加每词结构扣分或研究一元计数。ExactDag按最后模型字符状态计算后缀最优界再有界枚举，PositionDag拒绝该历史评分，Beam仍为近似对照。模型与预载词典实例共同编译，新词典实例须在该实例上重新载入模型。原结构/词汇/词级评分和默认引擎不变。
+ 
++另有显式`kind=character_bigram_witten_bell`作为平滑对照，按实际不同后继数插值到同语料字符一元分布；没有超参数调优或heldout使用。研发比较未证明其质量优于add-one，两种模式均未获正式质量批准，不能按算法名称或历史四句通过结果默认选用。
++
+ `python scripts/prepare_context_corpus.py --source-dir FIXED_TATOEBA_CACHE --output-dir NEW_DIRECTORY`只处理本轮固定SHA的官方原件，保留来源家族、近重复、train/dev/heldout、历史目标排除与逐句署名链接；不下载、不批准生产或生成人工gold。完整原文、模型及owner记录留Git外，内部研发划分不构成独立质量评测。字符Bigram仍可能误选同音字、过度补全前缀或偏向较短正文，详见[Round16设计](docs/input-round16-design.md)。
+diff --git a/adapters/windows/input_review.rs b/adapters/windows/input_review.rs
+index a97d9d3..fb575f1 100644
+--- a/adapters/windows/input_review.rs
++++ b/adapters/windows/input_review.rs
+@@ -47,7 +47,7 @@ fn run_options(runtime: &str, expected_sha256: &str, model: Option<(&str, &str)>
+         );
+         if language.metadata().kind == "lexical" {
+             config.ranker = cloudleaf_search::Ranker::Lexical;
+-        } else if language.metadata().kind == "character_bigram" {
++        } else if language.metadata().kind.starts_with("character_bigram") {
+             config.ranker = cloudleaf_search::Ranker::CharacterBigram;
+             config.method = cloudleaf_search::Method::ExactDag;
+         } else {
+diff --git a/apps/cloudleaf-cli/src/main.rs b/apps/cloudleaf-cli/src/main.rs
+index 351ce75..ad315ff 100644
+--- a/apps/cloudleaf-cli/src/main.rs
++++ b/apps/cloudleaf-cli/src/main.rs
+@@ -150,7 +150,7 @@ fn run() -> Result<(), String> {
+                     );
+                     config.ranker = if language.metadata().kind == "lexical" {
+                         cloudleaf_search::Ranker::Lexical
+-                    } else if language.metadata().kind == "character_bigram" {
++                    } else if language.metadata().kind.starts_with("character_bigram") {
+                         config.method = cloudleaf_search::Method::ExactDag;
+                         cloudleaf_search::Ranker::CharacterBigram
+                     } else {
+diff --git a/crates/cloudleaf-input/examples/input_trace.rs b/crates/cloudleaf-input/examples/input_trace.rs
+index ba37782..c26f3c6 100644
+--- a/crates/cloudleaf-input/examples/input_trace.rs
++++ b/crates/cloudleaf-input/examples/input_trace.rs
+@@ -39,7 +39,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
+         {
+             "structural" => Ranker::Structural,
+             "lexical" => Ranker::Lexical,
+-            "character_bigram" => {
++            "character_bigram" | "character_bigram_witten_bell" => {
+                 config.method = Method::ExactDag;
+                 Ranker::CharacterBigram
+             }
+diff --git a/crates/cloudleaf-input/examples/train_language.rs b/crates/cloudleaf-input/examples/train_language.rs
+index 1b3ecbe..fa8091f 100644
+--- a/crates/cloudleaf-input/examples/train_language.rs
++++ b/crates/cloudleaf-input/examples/train_language.rs
+@@ -39,7 +39,10 @@ fn main() -> Result<(), Box<dyn Error>> {
+     let sequences: Vec<Vec<String>> = source
+         .lines()
+         .map(|line| {
+-            if header.lines().any(|line| line == "kind\tcharacter_bigram") {
++            if header
++                .lines()
++                .any(|line| line.starts_with("kind\tcharacter_bigram"))
++            {
+                 line.chars().map(|value| value.to_string()).collect()
+             } else if line.is_empty() {
+                 Vec::new()
+diff --git a/crates/cloudleaf-input/src/sentence.rs b/crates/cloudleaf-input/src/sentence.rs
+index 4bd7d3d..b33c65b 100644
+--- a/crates/cloudleaf-input/src/sentence.rs
++++ b/crates/cloudleaf-input/src/sentence.rs
+@@ -232,9 +232,12 @@ impl SentenceBackend {
+             Ranker::Bigram | Ranker::ContextRerank => language
+                 .as_ref()
+                 .is_some_and(|value| value.metadata().kind == "bigram"),
+-            Ranker::CharacterBigram => language
+-                .as_ref()
+-                .is_some_and(|value| value.metadata().kind == "character_bigram"),
++            Ranker::CharacterBigram => language.as_ref().is_some_and(|value| {
++                matches!(
++                    value.metadata().kind.as_str(),
++                    "character_bigram" | "character_bigram_witten_bell"
++                )
++            }),
+         };
+         if !valid_model
+             || language.as_ref().is_some_and(|value| {
+diff --git a/crates/cloudleaf-search/src/character.rs b/crates/cloudleaf-search/src/character.rs
+index 3ac937f..fd0ec86 100644
+--- a/crates/cloudleaf-search/src/character.rs
++++ b/crates/cloudleaf-search/src/character.rs
+@@ -29,6 +29,7 @@ pub(crate) struct CharacterModel {
+     vocabulary: Vec<u32>,
+     denominators: Vec<i64>,
+     starts: Vec<usize>,
++    unigram: Vec<i64>,
+     entries: Vec<EntryScore>,
+ }
+ 
+@@ -59,7 +60,9 @@ impl CharacterModel {
+         vocabulary: &BTreeSet<String>,
+         pairs: &BTreeMap<(String, String), u64>,
+         totals: &BTreeMap<String, u64>,
++        incoming: &BTreeMap<String, u64>,
+         lexicon: &Lexicon,
++        witten_bell: bool,
+     ) -> Self {
+         let mut vocabulary: Vec<_> = vocabulary.iter().map(|value| token(value)).collect();
+         vocabulary.sort_unstable();
+@@ -71,23 +74,53 @@ impl CharacterModel {
+                 vocabulary.binary_search(&token(value)).unwrap()
+             }
+         };
++        let mut types = BTreeMap::<&str, u64>::new();
++        for (previous, _) in pairs.keys() {
++            *types.entry(previous).or_default() += 1;
++        }
++        let total = incoming.values().sum::<u64>() + size;
++        let unigram = if witten_bell {
++            vocabulary
++                .iter()
++                .map(|value| {
++                    crate::model::log2_fixed(incoming.get(&text(*value)).copied().unwrap_or(0) + 1)
++                })
++                .collect()
++        } else {
++            Vec::new()
++        };
+         let denominators: Vec<_> = vocabulary
+             .iter()
+             .copied()
+             .chain(std::iter::once(BOS))
+             .map(|value| {
+-                crate::model::log2_fixed(totals.get(&text(value)).copied().unwrap_or(0) + size)
++                let name = text(value);
++                let count = totals.get(&name).copied().unwrap_or(0);
++                if witten_bell {
++                    let observed = types.get(name.as_str()).copied().unwrap_or(1);
++                    crate::model::log2_fixed((count + observed) * total)
++                        - crate::model::log2_fixed(observed)
++                } else {
++                    crate::model::log2_fixed(count + size)
++                }
+             })
+             .collect();
+         let mut rows: Vec<_> = pairs
+             .iter()
+             .map(|((previous, next), count)| {
+-                let previous = mapped(previous);
+-                let denominator = denominators[previous];
++                let previous_index = mapped(previous);
++                let units = if witten_bell {
++                    let observed = types[previous.as_str()];
++                    let denominator = (totals[previous] + observed) * total;
++                    let numerator = count * total + observed * (incoming[next] + 1);
++                    crate::model::log2_fixed(numerator) - crate::model::log2_fixed(denominator)
++                } else {
++                    crate::model::log2_fixed(count + 1) - denominators[previous_index]
++                };
+                 Row {
+-                    key: key(previous as u32, mapped(next) as u32),
++                    key: key(previous_index as u32, mapped(next) as u32),
+                     count: *count,
+-                    units: crate::model::log2_fixed(count + 1) - denominator,
++                    units,
+                 }
+             })
+             .collect();
+@@ -101,6 +134,7 @@ impl CharacterModel {
+             vocabulary,
+             denominators,
+             starts,
++            unigram,
+             entries: Vec::with_capacity(lexicon.entries().len()),
+         };
+         for entry in lexicon.entries() {
+@@ -147,6 +181,11 @@ impl CharacterModel {
+             rows[index].units
+         } else {
+             -self.denominators[previous]
++                + if self.unigram.is_empty() {
++                    0
++                } else {
++                    self.unigram[next as usize]
++                }
+         }
+     }
+ 
+@@ -177,6 +216,35 @@ impl CharacterModel {
+             + self.vocabulary.capacity() * std::mem::size_of::<u32>()
+             + self.denominators.capacity() * std::mem::size_of::<i64>()
+             + self.starts.capacity() * std::mem::size_of::<usize>()
++            + self.unigram.capacity() * std::mem::size_of::<i64>()
+             + self.entries.capacity() * std::mem::size_of::<EntryScore>()
+     }
+ }
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++
++    #[test]
++    fn interpolated_rows_and_unseen_history_normalize_with_fixed_point_rounding() {
++        let lexicon = Lexicon::from_tsv("# cloudleaf-dictionary-v1\nid\tpinyin\ttext\tfrequency\tannotation\tsource\na\tma\t甲\t0\t\tmechanical\n").unwrap();
++        let vocabulary = BTreeSet::from(["甲".into(), "乙".into(), "<eos>".into(), "<unk>".into()]);
++        let pairs = BTreeMap::from([
++            (("<bos>".into(), "甲".into()), 4),
++            (("<bos>".into(), "乙".into()), 2),
++            (("甲".into(), "乙".into()), 3),
++            (("甲".into(), "<eos>".into()), 1),
++            (("乙".into(), "<eos>".into()), 5),
++        ]);
++        let totals = BTreeMap::from([("<bos>".into(), 6), ("甲".into(), 4), ("乙".into(), 5)]);
++        let incoming = BTreeMap::from([("甲".into(), 4), ("乙".into(), 5), ("<eos>".into(), 6)]);
++        let model =
++            CharacterModel::from_counts(&vocabulary, &pairs, &totals, &incoming, &lexicon, true);
++        for previous in (0..model.vocabulary.len() as u32).chain(std::iter::once(BOS)) {
++            let sum: f64 = (0..model.vocabulary.len() as u32)
++                .map(|next| 2_f64.powf(model.transition(previous, next) as f64 / 1024.0))
++                .sum();
++            assert!((sum - 1.0).abs() < 0.003, "{previous}: {sum}");
++        }
++    }
++}
+diff --git a/crates/cloudleaf-search/src/model.rs b/crates/cloudleaf-search/src/model.rs
+index 9e07d92..fcc21ce 100644
+--- a/crates/cloudleaf-search/src/model.rs
++++ b/crates/cloudleaf-search/src/model.rs
+@@ -248,9 +248,10 @@ impl LanguageModelSnapshot {
+             || !matches!(metadata.usage.as_str(), "mechanical" | "research_only")
+             || !matches!(
+                 metadata.kind.as_str(),
+-                "lexical" | "bigram" | "character_bigram"
++                "lexical" | "bigram" | "character_bigram" | "character_bigram_witten_bell"
+             )
+-            || (metadata.kind == "character_bigram" && metadata.tokenization != "unicode-scalar-v1")
++            || (metadata.kind.starts_with("character_bigram")
++                && metadata.tokenization != "unicode-scalar-v1")
+         {
+             return Err(invalid());
+         }
+@@ -291,7 +292,7 @@ impl LanguageModelSnapshot {
+                 }
+             } else {
+                 let known = |value: &str| {
+-                    if metadata.kind == "character_bigram" {
++                    if metadata.kind.starts_with("character_bigram") {
+                         value.chars().count() == 1
+                             && !value.chars().any(|c| c.is_whitespace() || c.is_control())
+                     } else {
+@@ -318,7 +319,7 @@ impl LanguageModelSnapshot {
+         if rows == 0 {
+             return Err(invalid());
+         }
+-        if matches!(metadata.kind.as_str(), "bigram" | "character_bigram") {
++        if metadata.kind != "lexical" {
+             let bos = model.totals.get(BOS).copied().unwrap_or(0);
+             if bos == 0
+                 || bos > 100_000
+@@ -343,12 +344,14 @@ impl LanguageModelSnapshot {
+                 return Err(invalid());
+             }
+         }
+-        if metadata.kind == "character_bigram" {
++        if metadata.kind.starts_with("character_bigram") {
+             model.character = Some(crate::character::CharacterModel::from_counts(
+                 &model.vocabulary,
+                 &model.pairs,
+                 &model.totals,
++                &incoming,
+                 lexicon,
++                metadata.kind == "character_bigram_witten_bell",
+             ));
+             model.pairs.clear();
+             model.totals.clear();
+@@ -374,7 +377,7 @@ impl LanguageModelSnapshot {
+         }
+         let characters = metadata_header
+             .lines()
+-            .any(|line| line == "kind\tcharacter_bigram");
++            .any(|line| line.starts_with("kind\tcharacter_bigram"));
+         let trained = BigramModel::train_tokens(sequences, characters)?;
+         let mut payload = metadata_header.to_owned();
+         for ((previous, next), count) in &trained.pairs {
+@@ -383,7 +386,7 @@ impl LanguageModelSnapshot {
+         let snapshot = Self::from_tsv(&payload, lexicon, expected_lexicon)?;
+         if !matches!(
+             snapshot.metadata.kind.as_str(),
+-            "bigram" | "character_bigram"
++            "bigram" | "character_bigram" | "character_bigram_witten_bell"
+         ) {
+             return Err(SearchError::new(
+                 ErrorKind::InvalidModel,
+diff --git a/crates/cloudleaf-search/tests/character_model.rs b/crates/cloudleaf-search/tests/character_model.rs
+index 96c5568..c8c1b5f 100644
+--- a/crates/cloudleaf-search/tests/character_model.rs
++++ b/crates/cloudleaf-search/tests/character_model.rs
+@@ -265,14 +265,40 @@ fn witten_bell_backoff_is_explicit_and_still_segmentation_invariant() {
+     let mut scores = Vec::new();
+     for with_phrase in [false, true] {
+         let lex = lexicon(with_phrase);
+-        let header = metadata().replace("kind\tcharacter_bigram\n", "kind\tcharacter_bigram_witten_bell\n");
++        let header = metadata().replace(
++            "kind\tcharacter_bigram\n",
++            "kind\tcharacter_bigram_witten_bell\n",
++        );
+         let model = LanguageModelSnapshot::train(&header, &lex, SHA, &sequences()).unwrap();
+         assert_eq!(model.metadata().kind, "character_bigram_witten_bell");
+-        let cfg = Config { ranker: Ranker::CharacterBigram, ..Config::default() };
++        let cfg = Config {
++            ranker: Ranker::CharacterBigram,
++            ..Config::default()
++        };
+         let graph = Lattice::build(&lex, "mana", &cfg).unwrap();
+-        let reference = search_graph(&lex, &graph, &Config { method: Method::Reference, ..cfg.clone() }, Some(model.model()), None).unwrap();
++        let reference = search_graph(
++            &lex,
++            &graph,
++            &Config {
++                method: Method::Reference,
++                ..cfg.clone()
++            },
++            Some(model.model()),
++            None,
++        )
++        .unwrap();
+         for method in [Method::ExactDag, Method::Beam] {
+-            let result = search_graph(&lex, &graph, &Config { method, ..cfg.clone() }, Some(model.model()), None).unwrap();
++            let result = search_graph(
++                &lex,
++                &graph,
++                &Config {
++                    method,
++                    ..cfg.clone()
++                },
++                Some(model.model()),
++                None,
++            )
++            .unwrap();
+             assert_eq!(result.candidates, reference.candidates);
+         }
+         assert_eq!(reference.candidates[0].text, "乙丙");

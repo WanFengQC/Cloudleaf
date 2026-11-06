@@ -1,0 +1,718 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 7ffc950..d15465d 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -53,7 +53,7 @@ jobs:
+         if: runner.os == 'Windows'
+         uses: actions/upload-artifact@v4
+         with:
+-          name: input-round15-windows
++          name: input-round16-windows
+           path: |
+             target/release/cloudleaf-cli.exe
+             target/release/cloudleaf-ime.exe
+@@ -64,8 +64,10 @@ jobs:
+             THIRD_PARTY_NOTICES.md
+             licenses/windows/
+             licenses/input-snapshot/
++            licenses/input-context/
+             docs/input-round14-design.md
+             docs/input-round15-design.md
++            docs/input-round16-design.md
+           if-no-files-found: error
+       - uses: actions/upload-artifact@v4
+         with:
+diff --git a/README.md b/README.md
+index 23592fe..ca50353 100644
+--- a/README.md
++++ b/README.md
+@@ -92,3 +92,7 @@ python scripts/evaluate_algorithms.py --output-dir .local/algorithm-v1
+ 在预检的固定词典参数后增加`--language-model <TSV> --language-sha <SHA256>`，CLI才加载独立模型。Lexical以结构分为先、只在结构平局时比较词汇观测；Bigram使用保留上一词状态的ExactDag。模型须与完整词典SHA及stable entry ID对应，当前格式仅接收`mechanical/research_only`训练材料，不能把原始研究计数标成生产频率。默认宿主和输入引擎保持原路径。
+ 
+ 离线训练入口为`cargo run -p cloudleaf-input --example train_language --release --locked --offline -- RUNTIME RUNTIME_SHA SEQUENCES METADATA_HEADER NEW_OUTPUT`。序列原件逐行使用stable entry ID、以单个空格分词，元数据记录实际原件SHA、来源、许可、分词协议和train划分。该工具复用既有Bigram训练器、校验原件和词典身份，拒绝覆盖输出；不会生成授权、人工gold或自动启用产物。按键路径只使用预加载只读模型。格式和限制见[Round 15设计](docs/input-round15-design.md)。
++
++Round16另有显式`kind=character_bigram`、`tokenization=unicode-scalar-v1`：同一训练入口逐行读取未经分词的正文，使用BOS/Unicode字符/EOS实际转移的add-one定点对数概率。整条正文同分，不依赖词典切成几个词；不叠加每词结构扣分或研究一元计数。ExactDag按最后模型字符状态计算后缀最优界再有界枚举，PositionDag拒绝该历史评分，Beam仍为近似对照。模型与预载词典实例共同编译，新词典实例须在该实例上重新载入模型。原结构/词汇/词级评分和默认引擎不变。
++
++`python scripts/prepare_context_corpus.py --source-dir FIXED_TATOEBA_CACHE --output-dir NEW_DIRECTORY`只处理本轮固定SHA的官方原件，保留来源家族、近重复、train/dev/heldout、历史目标排除与逐句署名链接；不下载、不批准生产或生成人工gold。完整原文、模型及owner记录留Git外，内部研发划分不构成独立质量评测。字符Bigram仍可能误选同音字、过度补全前缀或偏向较短正文，详见[Round16设计](docs/input-round16-design.md)。
+diff --git a/THIRD_PARTY_NOTICES.md b/THIRD_PARTY_NOTICES.md
+index 4d7bde9..43b21e3 100644
+--- a/THIRD_PARTY_NOTICES.md
++++ b/THIRD_PARTY_NOTICES.md
+@@ -25,3 +25,7 @@ CL-009固定CC-CEDICT包保留CC-BY-SA4、来源、署名与修改说明，仅
+ 只读取CL-009既有固定Google Books Chinese2019一元分区，© 2019 Google，统计编纂声明见[官方索引](https://storage.googleapis.com/books/ngrams/books/20200217/chi_sim/chi_sim-1-ngrams_exports.html)，采用[CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)。本轮派生仅严格匹配固定词典正文、合计2000–2019原field2并投影至stable entry ID；保留原件SHA、许可原文、署名与修改说明。派生TSV留Git外，不入CI包，源码和报告不包含原书文本。
+ 
+ 这仍是`research_only`、来源登记仍`candidate-not-approved`：field2解释inferred、中文分词版本/截断和现代代表性未验收，不能作为生产token frequency、DF、Zipf或词语转移；缺失不补零。Google的统计编纂许可不解除CC-CEDICT词典的CC-BY-SA4范围和义务，也不证明书籍权利链或独立语言质量。本轮未新增Rust外部依赖。
++# Round 16 本地上下文研究材料
++
++Tatoeba Mandarin Chinese官方2026-10-31周导出采用CC BY 2.0 FR，来源与条款见 https://tatoeba.org/en/downloads 、https://tatoeba.org/en/terms_of_use 和 https://creativecommons.org/licenses/by/2.0/fr/ 。本轮原件、来源/owner/句URL及确定性派生模型保留Git外，仅research_only，不随本工具包分发或自动批准用于生产。owner不保证是原作者；正式派生内容发布前仍须核实完整署名与原文权利处理。许可原文保留于`licenses/input-context/CC-BY-2.0-FR.txt`。仅处理中文文本，不含音频，不将学习例句计数称为现代词频、人工gold或输入法准确率。
++
+diff --git a/adapters/windows/input_review.rs b/adapters/windows/input_review.rs
+index a64dd41..a97d9d3 100644
+--- a/adapters/windows/input_review.rs
++++ b/adapters/windows/input_review.rs
+@@ -47,6 +47,9 @@ fn run_options(runtime: &str, expected_sha256: &str, model: Option<(&str, &str)>
+         );
+         if language.metadata().kind == "lexical" {
+             config.ranker = cloudleaf_search::Ranker::Lexical;
++        } else if language.metadata().kind == "character_bigram" {
++            config.ranker = cloudleaf_search::Ranker::CharacterBigram;
++            config.method = cloudleaf_search::Method::ExactDag;
+         } else {
+             config.ranker = cloudleaf_search::Ranker::Bigram;
+             config.method = cloudleaf_search::Method::ExactDag;
+diff --git a/adapters/windows/render_tests.rs b/adapters/windows/render_tests.rs
+index 57f98f5..5189367 100644
+--- a/adapters/windows/render_tests.rs
++++ b/adapters/windows/render_tests.rs
+@@ -2299,8 +2299,17 @@ fn round14_sentence_host_applied_once_and_unknown_never_replays_old_epoch() {
+ 
+ #[test]
+ fn round15_language_host_confirms_once_and_isolates_unknown() {
++    language_host_confirms_once_and_isolates_unknown(super::tests::language_host);
++}
++
++#[test]
++fn round16_character_host_confirms_once_and_isolates_unknown() {
++    language_host_confirms_once_and_isolates_unknown(super::tests::character_host);
++}
++
++fn language_host_confirms_once_and_isolates_unknown(make_host: fn() -> Shared) {
+     for unknown in [false, true] {
+-        let host = super::tests::language_host();
++        let host = make_host();
+         let data = Rc::new(Data::default());
+         *data.host.borrow_mut() = Rc::downgrade(&host);
+         let context: ITfContext = Context { data: data.clone() }.into();
+diff --git a/adapters/windows/session_tests.rs b/adapters/windows/session_tests.rs
+index 44fee77..9b4787c 100644
+--- a/adapters/windows/session_tests.rs
++++ b/adapters/windows/session_tests.rs
+@@ -399,6 +399,14 @@ pub(crate) fn sentence_host(mode: u8, readonly: bool) -> Shared {
+ }
+ 
+ pub(crate) fn language_host() -> Shared {
++    language_host_kind(false)
++}
++
++pub(crate) fn character_host() -> Shared {
++    language_host_kind(true)
++}
++
++fn language_host_kind(character: bool) -> Shared {
+     // 原创组件数据只验证实际Host和语言配置，不构成人工gold。
+     const WORDS: &str = "# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\na\tma\t甲\t\tunknown\t\tfixture\ta\tMIT\nb\tma\t乙\t\tunknown\t\tfixture\tb\tMIT\nc\tna\t丙\t\tunknown\t\tfixture\tc\tMIT\n";
+     const MODEL: &str = "# cloudleaf-language-v1\nlexicon_sha256\t1b17bd61d0012078be97202bb09f50ef47544e0f704b96cde05d11990e9fd9cb\nsource_sha256\taaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nsource_id\tmechanical\nlicense_id\tMIT\ntokenization\tstable-ids\nusage\tmechanical\nkind\tlexical\ntraining_split\ttrain\nprevious\tnext\tcount\n<lexical>\ta\t1\n<lexical>\tb\t100\n";
+@@ -409,10 +417,11 @@ pub(crate) fn language_host() -> Shared {
+         )
+         .unwrap(),
+     );
++    const CHARACTER_MODEL: &str = "# cloudleaf-language-v1\nlexicon_sha256\t1b17bd61d0012078be97202bb09f50ef47544e0f704b96cde05d11990e9fd9cb\nsource_sha256\taaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nsource_id\tmechanical\nlicense_id\tMIT\ntokenization\tunicode-scalar-v1\nusage\tmechanical\nkind\tcharacter_bigram\ntraining_split\ttrain\nprevious\tnext\tcount\n<bos>\t甲\t1\n<bos>\t乙\t100\n甲\t<eos>\t1\n乙\t<eos>\t100\n";
+     let language = Arc::new(
+         cloudleaf_input::LanguageSnapshot::from_verified_tsv(
+-            MODEL,
+-            "690e01bac9f53c9936cb8d651cedebf065b0cf3acbe8d29b0948d6bfecad4222",
++            if character { CHARACTER_MODEL } else { MODEL },
++            if character { "c4b68be440707480477542527e608f092161a88d3a63f17e6725be0bd4ee369c" } else { "690e01bac9f53c9936cb8d651cedebf065b0cf3acbe8d29b0948d6bfecad4222" },
+             &snapshot,
+         )
+         .unwrap(),
+@@ -420,8 +429,8 @@ pub(crate) fn language_host() -> Shared {
+     let host = Host::with_language(
+         snapshot,
+         cloudleaf_search::Config {
+-            method: cloudleaf_search::Method::PositionDag,
+-            ranker: cloudleaf_search::Ranker::Lexical,
++            method: if character { cloudleaf_search::Method::ExactDag } else { cloudleaf_search::Method::PositionDag },
++            ranker: if character { cloudleaf_search::Ranker::CharacterBigram } else { cloudleaf_search::Ranker::Lexical },
+             ..cloudleaf_search::Config::default()
+         },
+         language,
+diff --git a/apps/cloudleaf-cli/src/main.rs b/apps/cloudleaf-cli/src/main.rs
+index dc8152b..351ce75 100644
+--- a/apps/cloudleaf-cli/src/main.rs
++++ b/apps/cloudleaf-cli/src/main.rs
+@@ -150,6 +150,9 @@ fn run() -> Result<(), String> {
+                     );
+                     config.ranker = if language.metadata().kind == "lexical" {
+                         cloudleaf_search::Ranker::Lexical
++                    } else if language.metadata().kind == "character_bigram" {
++                        config.method = cloudleaf_search::Method::ExactDag;
++                        cloudleaf_search::Ranker::CharacterBigram
+                     } else {
+                         config.method = cloudleaf_search::Method::ExactDag;
+                         cloudleaf_search::Ranker::Bigram
+diff --git a/crates/cloudleaf-input/examples/input_trace.rs b/crates/cloudleaf-input/examples/input_trace.rs
+index 3eb8fe4..ba37782 100644
+--- a/crates/cloudleaf-input/examples/input_trace.rs
++++ b/crates/cloudleaf-input/examples/input_trace.rs
+@@ -39,6 +39,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
+         {
+             "structural" => Ranker::Structural,
+             "lexical" => Ranker::Lexical,
++            "character_bigram" => {
++                config.method = Method::ExactDag;
++                Ranker::CharacterBigram
++            }
+             "bigram" => {
+                 config.method = Method::ExactDag;
+                 Ranker::Bigram
+diff --git a/crates/cloudleaf-input/examples/train_language.rs b/crates/cloudleaf-input/examples/train_language.rs
+index f9897e1..1b3ecbe 100644
+--- a/crates/cloudleaf-input/examples/train_language.rs
++++ b/crates/cloudleaf-input/examples/train_language.rs
+@@ -39,7 +39,9 @@ fn main() -> Result<(), Box<dyn Error>> {
+     let sequences: Vec<Vec<String>> = source
+         .lines()
+         .map(|line| {
+-            if line.is_empty() {
++            if header.lines().any(|line| line == "kind\tcharacter_bigram") {
++                line.chars().map(|value| value.to_string()).collect()
++            } else if line.is_empty() {
+                 Vec::new()
+             } else {
+                 line.split(' ').map(str::to_owned).collect()
+diff --git a/crates/cloudleaf-input/src/sentence.rs b/crates/cloudleaf-input/src/sentence.rs
+index 2bc8ba7..cc1cc1c 100644
+--- a/crates/cloudleaf-input/src/sentence.rs
++++ b/crates/cloudleaf-input/src/sentence.rs
+@@ -232,11 +232,15 @@ impl SentenceBackend {
+             Ranker::Bigram | Ranker::ContextRerank => language
+                 .as_ref()
+                 .is_some_and(|value| value.metadata().kind == "bigram"),
++            Ranker::CharacterBigram => language
++                .as_ref()
++                .is_some_and(|value| value.metadata().kind == "character_bigram"),
+         };
+         if !valid_model
+             || language
+                 .as_ref()
+-                .is_some_and(|value| value.metadata().lexicon_sha256 != snapshot.version)
++                .is_some_and(|value| value.metadata().lexicon_sha256 != snapshot.version
++                    || !value.snapshot.model().is_compatible_lexicon(&snapshot.lexicon))
+             || left_word.as_ref().is_some_and(|id| {
+                 config.ranker != Ranker::ContextRerank
+                     || snapshot
+@@ -265,7 +269,8 @@ impl SentenceBackend {
+         if self
+             .language
+             .as_ref()
+-            .is_some_and(|value| value.metadata().lexicon_sha256 != snapshot.version)
++            .is_some_and(|value| value.metadata().lexicon_sha256 != snapshot.version
++                || !value.snapshot.model().is_compatible_lexicon(&snapshot.lexicon))
+         {
+             return Err(CoreError::new(
+                 ErrorCode::InvalidConfig,
+diff --git a/crates/cloudleaf-input/tests/language_integration.rs b/crates/cloudleaf-input/tests/language_integration.rs
+index 222e23e..ae1c748 100644
+--- a/crates/cloudleaf-input/tests/language_integration.rs
++++ b/crates/cloudleaf-input/tests/language_integration.rs
+@@ -152,3 +152,44 @@ fn explicit_left_context_changes_only_the_finite_bigram_pool() {
+     assert!(diagnostic.finite_pool_only);
+     assert_ne!(diagnostic.paths[0].features.context_units, 0);
+ }
++
++#[test]
++fn character_model_switch_preserves_raw_revision_and_commit_guards() {
++    let (snapshot, lexical) = fixtures(true);
++    let text = format!("# cloudleaf-language-v1\nlexicon_sha256\t{}\nsource_sha256\t{}\nsource_id\tmechanical\nlicense_id\tMIT\ntokenization\tunicode-scalar-v1\nusage\tmechanical\nkind\tcharacter_bigram\ntraining_split\ttrain\nprevious\tnext\tcount\n<bos>\t甲\t100\n<bos>\t乙\t1\n甲\t<eos>\t100\n乙\t<eos>\t1\n", snapshot.version(), "a".repeat(64));
++    let language = Arc::new(LanguageSnapshot::from_verified_tsv(&text, &hash(&text), &snapshot).unwrap());
++    let character = Config { method: Method::ExactDag, ranker: Ranker::CharacterBigram, ..cfg() };
++    assert!(InputEngine::with_search(snapshot.clone(), character.clone(), InputConfig::default()).is_err());
++    assert!(InputEngine::with_language(snapshot.clone(), character.clone(), lexical.clone(), None, InputConfig::default()).is_err());
++    assert!(InputEngine::with_language(snapshot.clone(), cfg(), language.clone(), None, InputConfig::default()).is_err());
++    let mut engine = InputEngine::with_language(snapshot.clone(), cfg(), lexical.clone(), None, InputConfig::default()).unwrap();
++    engine.handle(InputEvent::Activate);
++    for ch in "ma".chars() { engine.handle(InputEvent::Key(Key::Char(ch))); }
++    let old = engine.frame();
++    assert_eq!(old.candidates[0].text, "乙");
++    engine.reconfigure_search(character.clone(), Some(language.clone()), None).unwrap();
++    let new = engine.frame();
++    assert_eq!(new.preedit, old.preedit);
++    assert_eq!(new.candidates[0].text, "甲");
++    assert!(new.revision > old.revision);
++    assert_eq!(engine.select_candidate(old.revision, &old.candidates[0].id).error.unwrap().code, ErrorCode::StaleCandidate);
++    let diagnostic = engine.search_diagnostic().unwrap();
++    assert_eq!(diagnostic.paths[0].score, diagnostic.paths[0].features.character_units);
++    assert_eq!(diagnostic.model_version.as_deref(), Some(language.version()));
++    let commit = engine.handle(InputEvent::Key(Key::Space)).commit.unwrap();
++    assert_eq!(commit.text, "甲");
++    assert!(engine.reconfigure_search(cfg(), Some(lexical.clone()), None).is_err());
++    engine.handle(InputEvent::CommitFailed { id: commit.id });
++    assert!(engine.reconfigure_search(cfg(), Some(lexical), None).is_err());
++    assert!(engine.replace_search_snapshot(snapshot).is_err());
++    assert!(InputEngine::with_language(fixtures(false).0, character.clone(), language.clone(), None, InputConfig::default()).is_err());
++    let snapshot = engine.search_diagnostic().unwrap().snapshot_version.clone();
++    assert_eq!(snapshot, language.metadata().lexicon_sha256);
++    let snapshot = fixtures(false).0;
++    let language = Arc::new(LanguageSnapshot::from_verified_tsv(&text, &hash(&text), &snapshot).unwrap());
++    let mut engine = InputEngine::with_language(snapshot, character, language, None, InputConfig::default()).unwrap();
++    engine.handle(InputEvent::Activate);
++    for ch in "qz".chars() { engine.handle(InputEvent::Key(Key::Char(ch))); }
++    assert!(engine.frame().candidates.is_empty());
++    assert_eq!(engine.handle(InputEvent::Key(Key::Enter)).commit.unwrap().text, "qz");
++}
+diff --git a/crates/cloudleaf-search/src/lexicon.rs b/crates/cloudleaf-search/src/lexicon.rs
+index d0ec6ea..67d63ba 100644
+--- a/crates/cloudleaf-search/src/lexicon.rs
++++ b/crates/cloudleaf-search/src/lexicon.rs
+@@ -35,6 +35,7 @@ pub(crate) struct TrieNode {
+ pub struct Lexicon {
+     pub(crate) entries: Vec<Entry>,
+     pub(crate) trie: Vec<TrieNode>,
++    pub(crate) identity: std::sync::Arc<()>,
+ }
+ 
+ /// 固定Rust1.90容器布局的保守预估，不是RSS或allocator硬上界。
+@@ -236,11 +237,11 @@ impl Lexicon {
+             node.exact.shrink_to_fit();
+             node.prefix.shrink_to_fit();
+         }
+-        Ok(Self { entries, trie })
++        Ok(Self { entries, trie, identity: std::sync::Arc::new(()) })
+     }
+ 
+     pub fn memory_estimate(&self) -> LexiconMemory {
+-        let mut owned = std::mem::size_of::<Self>()
++        let mut owned = std::mem::size_of::<Self>() + 2 * std::mem::size_of::<usize>()
+             + self.entries.capacity() * std::mem::size_of::<Entry>()
+             + self.trie.capacity() * std::mem::size_of::<TrieNode>();
+         let mut tree_nodes = 0;
+diff --git a/crates/cloudleaf-search/src/lib.rs b/crates/cloudleaf-search/src/lib.rs
+index 0c82357..89aba4c 100644
+--- a/crates/cloudleaf-search/src/lib.rs
++++ b/crates/cloudleaf-search/src/lib.rs
+@@ -1,5 +1,6 @@
+ //! 全输入词条格实验内核。词典与模型由宿主预加载，查询不访问外部资源。
+ mod cancellation;
++mod character;
+ mod lattice;
+ mod lexicon;
+ mod model;
+@@ -76,6 +77,8 @@ pub enum Ranker {
+     Weighted,
+     /// 保留结构分优先，只在结构平局时比较独立研究词汇观测。
+     Lexical,
++    /// 完整正文的字符生成概率；保留最后字符历史，不叠加每词结构惩罚。
++    CharacterBigram,
+     Bigram,
+     ContextRerank,
+ }
+diff --git a/crates/cloudleaf-search/src/model.rs b/crates/cloudleaf-search/src/model.rs
+index afbcacd..f5349d2 100644
+--- a/crates/cloudleaf-search/src/model.rs
++++ b/crates/cloudleaf-search/src/model.rs
+@@ -12,16 +12,21 @@ pub struct BigramModel {
+     pairs: BTreeMap<(String, String), u64>,
+     totals: BTreeMap<String, u64>,
+     lexical: BTreeMap<String, u64>,
++    pub(crate) character: Option<crate::character::CharacterModel>,
+ }
+ 
+ impl BigramModel {
+     pub fn train(sequences: &[Vec<String>]) -> Result<Self, SearchError> {
++        Self::train_tokens(sequences, false)
++    }
++
++    fn train_tokens(sequences: &[Vec<String>], characters: bool) -> Result<Self, SearchError> {
+         if sequences.len() > 100_000
+             || sequences.iter().map(Vec::len).sum::<usize>() > 1_000_000
+             || sequences.iter().flatten().any(|s| {
+                 s.is_empty()
+                     || s.len() > 128
+-                    || s.starts_with('<')
++                    || if characters { s.chars().count() != 1 } else { s.starts_with('<') }
+                     || s.chars().any(char::is_whitespace)
+             })
+         {
+@@ -35,6 +40,7 @@ impl BigramModel {
+             pairs: BTreeMap::new(),
+             totals: BTreeMap::new(),
+             lexical: BTreeMap::new(),
++            character: None,
+         };
+         for sequence in sequences {
+             let mut previous = BOS;
+@@ -89,6 +95,15 @@ impl BigramModel {
+         !self.lexical.is_empty()
+     }
+ 
++    pub fn has_character_transitions(&self) -> bool {
++        self.character.is_some()
++    }
++
++    /// 字符缓存按不可变词条索引编译；新词典实例须在装载阶段重新绑定。
++    pub fn is_compatible_lexicon(&self, lexicon: &Lexicon) -> bool {
++        self.character.as_ref().is_none_or(|model| std::sync::Arc::ptr_eq(&model.lexicon_identity, &lexicon.identity))
++    }
++
+     /// 固定Rust1.90、BTree节点至少五项的布局估计，不是allocator硬上界。
+     pub fn estimated_bytes(&self) -> usize {
+         let node = |len: usize, item: usize| (len.div_ceil(5) + 1) * (32 + 12 * 8 + 11 * item);
+@@ -108,6 +123,7 @@ impl BigramModel {
+             )
+             + node(self.totals.len(), std::mem::size_of::<(String, u64)>())
+             + node(self.lexical.len(), std::mem::size_of::<(String, u64)>())
++            + self.character.as_ref().map_or(0, |model| model.estimated_bytes())
+     }
+ }
+ 
+@@ -221,7 +237,8 @@ impl LanguageModelSnapshot {
+             || metadata.lexicon_sha256 != expected_lexicon
+             || metadata.training_split != "train"
+             || !matches!(metadata.usage.as_str(), "mechanical" | "research_only")
+-            || !matches!(metadata.kind.as_str(), "lexical" | "bigram")
++            || !matches!(metadata.kind.as_str(), "lexical" | "bigram" | "character_bigram")
++            || (metadata.kind == "character_bigram" && metadata.tokenization != "unicode-scalar-v1")
+         {
+             return Err(invalid());
+         }
+@@ -235,6 +252,7 @@ impl LanguageModelSnapshot {
+             pairs: BTreeMap::new(),
+             totals: BTreeMap::new(),
+             lexical: BTreeMap::new(),
++            character: None,
+         };
+         let mut rows = 0;
+         let mut incoming = BTreeMap::<String, u64>::new();
+@@ -260,8 +278,15 @@ impl LanguageModelSnapshot {
+                     return Err(invalid());
+                 }
+             } else {
+-                if (previous != BOS && !ids.contains(previous))
+-                    || (next != EOS && !ids.contains(next))
++                let known = |value: &str| {
++                    if metadata.kind == "character_bigram" {
++                        value.chars().count() == 1 && !value.chars().any(|c| c.is_whitespace() || c.is_control())
++                    } else {
++                        ids.contains(value)
++                    }
++                };
++                if (previous != BOS && !known(previous))
++                    || (next != EOS && !known(next))
+                     || model
+                         .pairs
+                         .insert((previous.into(), next.into()), count)
+@@ -280,15 +305,15 @@ impl LanguageModelSnapshot {
+         if rows == 0 {
+             return Err(invalid());
+         }
+-        if metadata.kind == "bigram" {
++        if matches!(metadata.kind.as_str(), "bigram" | "character_bigram") {
+             let bos = model.totals.get(BOS).copied().unwrap_or(0);
+             if bos == 0
+                 || bos > 100_000
+                 || incoming.get(EOS).copied().unwrap_or(0) != bos
+                 || model.totals.values().sum::<u64>() > 1_100_000
+-                || ids.iter().any(|id| {
+-                    model.totals.get(*id).copied().unwrap_or(0)
+-                        != incoming.get(*id).copied().unwrap_or(0)
++                || model.vocabulary.iter().filter(|id| id.as_str() != EOS && id.as_str() != UNK).any(|id| {
++                    model.totals.get(id).copied().unwrap_or(0)
++                        != incoming.get(id).copied().unwrap_or(0)
+                 })
+             {
+                 return Err(invalid());
+@@ -301,6 +326,12 @@ impl LanguageModelSnapshot {
+                 return Err(invalid());
+             }
+         }
++        if metadata.kind == "character_bigram" {
++            model.character = Some(crate::character::CharacterModel::from_counts(&model.vocabulary, &model.pairs, &model.totals, lexicon));
++            model.pairs.clear();
++            model.totals.clear();
++            model.vocabulary = BTreeSet::from([EOS.into(), UNK.into()]);
++        }
+         Ok(Self { metadata, model })
+     }
+ 
+@@ -319,13 +350,14 @@ impl LanguageModelSnapshot {
+                 "训练元数据不能携带计数",
+             ));
+         }
+-        let trained = BigramModel::train(sequences)?;
++        let characters = metadata_header.lines().any(|line| line == "kind\tcharacter_bigram");
++        let trained = BigramModel::train_tokens(sequences, characters)?;
+         let mut payload = metadata_header.to_owned();
+         for ((previous, next), count) in &trained.pairs {
+             payload.push_str(&format!("{previous}\t{next}\t{count}\n"));
+         }
+         let snapshot = Self::from_tsv(&payload, lexicon, expected_lexicon)?;
+-        if snapshot.metadata.kind != "bigram" {
++        if !matches!(snapshot.metadata.kind.as_str(), "bigram" | "character_bigram") {
+             return Err(SearchError::new(
+                 ErrorKind::InvalidModel,
+                 "训练入口只接受独立序列bigram",
+@@ -355,6 +387,8 @@ impl LanguageModelSnapshot {
+             for (id, count) in &self.model.lexical {
+                 output.push_str(&format!("<lexical>\t{id}\t{count}\n"));
+             }
++        } else if let Some(model) = &self.model.character {
++            model.write_tsv(&mut output);
+         } else {
+             for ((previous, next), count) in &self.model.pairs {
+                 output.push_str(&format!("{previous}\t{next}\t{count}\n"));
+@@ -389,7 +423,7 @@ fn reachable<'a>(
+ }
+ 
+ /// 以1024为单位的整数二进制对数；避免浮点平台舍入进入候选平局。
+-fn log2_fixed(value: u64) -> i64 {
++pub(crate) fn log2_fixed(value: u64) -> i64 {
+     let exponent = 63 - value.leading_zeros();
+     let mut normalized = (u128::from(value) << 32) >> exponent;
+     let mut fraction = 0_i64;
+diff --git a/crates/cloudleaf-search/src/search.rs b/crates/cloudleaf-search/src/search.rs
+index dc6104e..46ca023 100644
+--- a/crates/cloudleaf-search/src/search.rs
++++ b/crates/cloudleaf-search/src/search.rs
+@@ -4,7 +4,7 @@ use crate::{
+     Ranker, SearchError,
+ };
+ use std::cmp::Ordering;
+-use std::collections::BTreeMap;
++use std::collections::{BTreeMap, BinaryHeap};
+ 
+ #[derive(Clone, Debug, Default, Eq, PartialEq)]
+ pub struct Features {
+@@ -17,6 +17,10 @@ pub struct Features {
+     pub lexical_missing: usize,
+     pub bigram_units: i64,
+     pub context_units: i64,
++    pub structural_units: i64,
++    pub character_units: i64,
++    pub character_count: usize,
++    pub character_unknown: usize,
+ }
+ 
+ #[derive(Clone, Debug, Eq, PartialEq)]
+@@ -55,6 +59,7 @@ struct Path {
+     ids: Vec<usize>,
+     edges: Vec<usize>,
+     features: Features,
++    last_character: Option<u32>,
+ }
+ 
+ fn compare(a: &Path, b: &Path) -> Ordering {
+@@ -88,11 +93,18 @@ impl Scorer<'_> {
+         let entry = &self.lexicon.entries[edge.entry];
+         let stamp = observer.start(Phase::Scoring);
+         let mut features = path.features.clone();
+-        let mut score = path.score - 100;
++        let mut score = path.score;
++        features.structural_units -= 100;
++        if self.ranker != Ranker::CharacterBigram {
++            score -= 100;
++        }
+         features.words += 1;
+         if edge.kind == MatchKind::Prefix {
+             features.prefixes += 1;
+-            score -= 300;
++            features.structural_units -= 300;
++            if self.ranker != Ranker::CharacterBigram {
++                score -= 300;
++            }
+         }
+         if let Some(frequency) = entry.frequency {
+             let units = i64::from(63 - (u64::from(frequency) + 1).leading_zeros());
+@@ -126,6 +138,17 @@ impl Scorer<'_> {
+             features.bigram_units += units;
+             score += units;
+         }
++        let mut last_character = path.last_character;
++        if self.ranker == Ranker::CharacterBigram {
++            let model = self.model.unwrap().character.as_ref().unwrap();
++            let entry_score = model.entry(edge.entry);
++            let units = model.transition(path.last_character.unwrap_or(crate::character::BOS), entry_score.first) + entry_score.internal;
++            features.character_units += units;
++            features.character_count += entry_score.characters;
++            features.character_unknown += entry_score.unknown;
++            score += units;
++            last_character = Some(entry_score.last);
++        }
+         observer.stop(Phase::Scoring, stamp);
+         // 满桶中严格劣于末项的扩展必被丢弃，先比较借用ID，避免复制整条路径。
+         if cutoff.is_some_and(|worst| {
+@@ -147,6 +170,7 @@ impl Scorer<'_> {
+         let mut next = path.clone();
+         next.score = score;
+         next.features = features;
++        next.last_character = last_character;
+         next.text.push_str(&entry.text);
+         next.ids.push(edge.entry);
+         next.edges.push(edge_index);
+@@ -167,6 +191,12 @@ impl Scorer<'_> {
+             path.features.bigram_units += units;
+             path.score += units;
+         }
++        if self.ranker == Ranker::CharacterBigram {
++            let units = self.model.unwrap().character.as_ref().unwrap()
++                .finish(path.last_character.unwrap_or(crate::character::BOS));
++            path.features.character_units += units;
++            path.score += units;
++        }
+         observer.stop(Phase::Scoring, stamp);
+         path
+     }
+@@ -264,7 +294,7 @@ fn dynamic<O: Observer>(
+     k: usize,
+     observer: &mut O,
+ ) -> Vec<Path> {
+-    // last词条是未来一阶评分的充分状态；文本去重在每个状态内进行。
++    // 词模型保留last词条；字符模型保留最后映射字符，不能按位置合并不同历史。
+     let mut states: Vec<BTreeMap<Option<usize>, Vec<Path>>> =
+         vec![BTreeMap::new(); scorer.graph.letters.len() + 1];
+     states[0].insert(None, vec![Path::default()]);
+@@ -289,7 +319,12 @@ fn dynamic<O: Observer>(
+                     return Vec::new();
+                 }
+                 let edge = &scorer.graph.edges[*edge_index];
+-                let bucket = states[edge.end].entry(Some(edge.entry)).or_default();
++                let history = if scorer.ranker == Ranker::CharacterBigram {
++                    scorer.model.unwrap().character.as_ref().unwrap().entry(edge.entry).last as usize
++                } else {
++                    edge.entry
++                };
++                let bucket = states[edge.end].entry(Some(history)).or_default();
+                 let old = bucket.len();
+                 if !resident_allowed(stats, resident + 1, config) {
+                     return Vec::new();
+@@ -353,6 +388,108 @@ fn position_dynamic<O: Observer>(
+     states.pop().unwrap_or_default()
+ }
+ 
++struct BoundedPath {
++    bound: i64,
++    best_ids: Vec<usize>,
++    order: usize,
++    position: usize,
++    path: Path,
++}
++
++impl PartialEq for BoundedPath {
++    fn eq(&self, other: &Self) -> bool { self.order == other.order }
++}
++impl Eq for BoundedPath {}
++impl PartialOrd for BoundedPath {
++    fn partial_cmp(&self, other: &Self) -> Option<Ordering> { Some(self.cmp(other)) }
++}
++impl Ord for BoundedPath {
++    fn cmp(&self, other: &Self) -> Ordering {
++        self.bound.cmp(&other.bound)
++            .then_with(|| other.best_ids.cmp(&self.best_ids))
++            .then_with(|| other.order.cmp(&self.order))
++    }
++}
++
++#[derive(Clone)]
++struct Suffix {
++    score: i64,
++    ids: Vec<usize>,
++}
++
++/// 精确后缀分用于有界最佳优先枚举；同分上界不能提前结束稳定ID比较。
++fn character_exact<O: Observer>(scorer: &Scorer<'_>, config: &Config, stats: &mut Statistics, k: usize, observer: &mut O) -> Vec<Path> {
++    let model = scorer.model.unwrap().character.as_ref().unwrap();
++    let end = scorer.graph.letters.len();
++    let mut suffix = vec![BTreeMap::<u32, Option<Suffix>>::new(); end + 1];
++    suffix[0].insert(crate::character::BOS, None);
++    let mut labels = 1;
++    for edge in &scorer.graph.edges {
++        if suffix[edge.end].insert(model.entry(edge.entry).last, None).is_none() {
++            labels += 1;
++            if !resident_allowed(stats, labels + 1, config) { return Vec::new(); }
++        }
++    }
++    for (&previous, value) in &mut suffix[end] { *value = Some(Suffix { score: model.finish(previous), ids: Vec::new() }); }
++    for position in (0..end).rev() {
++        let histories: Vec<_> = suffix[position].keys().copied().collect();
++        for previous in histories {
++            let mut best: Option<Suffix> = None;
++            for edge_index in &scorer.graph.outgoing[position] {
++                if scorer.cancelled() { return Vec::new(); }
++                if !expand_allowed(stats, config) { return Vec::new(); }
++                let edge = &scorer.graph.edges[*edge_index];
++                let entry = model.entry(edge.entry);
++                if let Some(rest) = suffix[edge.end].get(&entry.last).and_then(Option::as_ref) {
++                    let stamp = observer.start(Phase::Scoring);
++                    let score = model.transition(previous, entry.first) + entry.internal + rest.score;
++                    let ids = std::iter::once(edge.entry).chain(rest.ids.iter().copied());
++                    if best.as_ref().is_none_or(|value| score > value.score || (score == value.score && ids.clone().cmp(value.ids.iter().copied()) == Ordering::Less)) {
++                        best = Some(Suffix { score, ids: ids.collect() });
++                    }
++                    observer.stop(Phase::Scoring, stamp);
++                }
++            }
++            suffix[position].insert(previous, best);
++        }
++    }
++    let Some(best) = &suffix[0][&crate::character::BOS] else { return Vec::new(); };
++    let mut pending = BinaryHeap::from([BoundedPath { bound: best.score, best_ids: best.ids.clone(), order: 0, position: 0, path: Path::default() }]);
++    let mut order = 0;
++    let mut complete: Vec<Path> = Vec::new();
++    let mut seen = vec![BTreeMap::<String, Vec<usize>>::new(); end + 1];
++    seen[0].insert(String::new(), Vec::new());
++    let mut seen_count = 1;
++    while let Some(current) = pending.pop() {
++        if scorer.cancelled() { return Vec::new(); }
++        if seen[current.position].get(&current.path.text) != Some(&current.path.ids) { continue; }
++        if complete.len() == k && (current.bound < complete.last().unwrap().score || (current.bound == complete.last().unwrap().score && current.best_ids >= complete.last().unwrap().ids)) { break; }
++        if current.position == end {
++            let finished = scorer.finish(current.path, observer);
++            insert_unique(&mut complete, finished, k, observer);
++            continue;
++        }
++        for edge_index in &scorer.graph.outgoing[current.position] {
++            if scorer.cancelled() { return Vec::new(); }
++            if !expand_allowed(stats, config) { return Vec::new(); }
++            let edge = &scorer.graph.edges[*edge_index];
++            let entry = model.entry(edge.entry);
++            let Some(rest) = suffix[edge.end].get(&entry.last).and_then(Option::as_ref) else { continue; };
++            if !resident_allowed(stats, labels + seen_count + pending.len() + complete.len() + 3, config) { return Vec::new(); }
++            let next = scorer.extend(&current.path, *edge_index, None, observer).unwrap();
++            let bound = next.score + rest.score;
++            if complete.len() == k && bound < complete.last().unwrap().score { continue; }
++            // 同位置相同正文有相同字符分和未来状态；不同词典分词只保留最优稳定ID。
++            if seen[edge.end].get(&next.text).is_some_and(|ids| ids <= &next.ids) { continue; }
++            if seen[edge.end].insert(next.text.clone(), next.ids.clone()).is_none() { seen_count += 1; }
++            order += 1;
++            let best_ids = next.ids.iter().copied().chain(rest.ids.iter().copied()).collect();
++            pending.push(BoundedPath { bound, best_ids, order, position: edge.end, path: next });
++        }
++    }
++    complete
++}
++
+ /// 在同一个只读词条图上比较搜索方法。输入/模型载入和评估IO由宿主负责。
+ pub fn search_graph(
+     lexicon: &Lexicon,
+@@ -413,6 +550,9 @@ pub(crate) fn search_controlled_observed<O: Observer>(
+             && model.is_none_or(|value| !value.has_transitions()))
+             || (config.ranker == Ranker::Lexical
+                 && model.is_none_or(|value| !value.has_lexical_signal()))
++            || (config.ranker == Ranker::CharacterBigram
++                && model.is_none_or(|value| !value.has_character_transitions()))
++            || model.is_some_and(|value| !value.is_compatible_lexicon(lexicon))
+         {
+             return Err(SearchError::new(
+                 ErrorKind::InvalidModel,
+@@ -463,6 +603,8 @@ pub(crate) fn search_controlled_observed<O: Observer>(
+         reference(&scorer, config, &mut statistics, k, observer)
+     } else if config.method == Method::PositionDag {
+         position_dynamic(&scorer, config, &mut statistics, k, observer)
++    } else if config.method == Method::ExactDag && config.ranker == Ranker::CharacterBigram {
++        character_exact(&scorer, config, &mut statistics, k, observer)
+     } else {
+         dynamic(&scorer, config, &mut statistics, k, observer)
+     };
+diff --git a/docs/input-round16-design.md b/docs/input-round16-design.md
+index 0689a67..c44c1a4 100644
+--- a/docs/input-round16-design.md
++++ b/docs/input-round16-design.md
+@@ -28,6 +28,8 @@ Reference逐路径完整枚举后比较；ExactDag/Beam新模式的充分状态
+ 
+ 首轮真实171事件中字符前向Exact达到P95 20.5748ms，复杂句耗尽200000扩展；因此字符Exact改为同一充分状态的反向DAG最优后缀分，再以该精确上界优先枚举完整路径。后缀每个状态/边评分和前向每次边扩展都消耗同一expansion预算，后缀标签与待处理路径也计入resident预算；不提高门槛。已取得K条不同正文后，仅当剩余上界严格低于第K分时结束；同分必须继续比较稳定ID，不丢弃平局最优路径。Reference保持穷举，Beam保持原前向历史桶用于独立对照。该优化不改变概率、K或词条格，不是用有限旧TopK池重排；预算失败仍非完备且不发布到输入层。
+ 
++上界还保存该最优后缀分下最小稳定ID序列，形成与最终比较一致的`(分数, 最佳完整ID序列)`界；完整排序界不可能超过当前第K条时才结束，不必枚举语言分相等但ID必落后的所有正文。相同位置/正文仅保存最小ID代表，允许更优代表重开并忽略旧堆项；去重记录也计入预算。先前未去重及仅score界的高尾/资源失败原文保留，不作为最终优化成绩。
++
+ ## 语料与评估
+ 
+ 优先查明原始发布者、许可、固定下载、作者/原文权利及资源体积，再在Git外受控下载。只有一元Google材料不能产生转移。真实文本训练前固定确定性处理、来源/句ID和划分，排除历史目标正文与保留集的重复/近重复；训练、开发、保留数据分别存档。新研发文本只作为engineering-only回归，AI推导拼音/候选不是人工gold。无独立人工gold时正式Top1/Top5/MRR均null。无法取得合格语料时如实阻塞，不编造训练句。

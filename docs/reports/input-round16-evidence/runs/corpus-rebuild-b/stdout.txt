@@ -1,0 +1,123 @@
+{
+  "created_utc": "2026-11-06T05:55:00.189336+00:00",
+  "source_family": "tatoeba-community",
+  "usage": "research_only",
+  "formal_gold": false,
+  "source_sha256": "374dc649bd61ed5597c58ad9f098edb831e7bbe4ea0831f82947bec1fe5c8bb8",
+  "source_rows": 89248,
+  "source_han_fragments": 114142,
+  "cmn_eng_dangling_links_isolated": 85,
+  "current_owners": 973,
+  "owner_is_not_guaranteed_original_author": true,
+  "individual_quarantined_rows": 699,
+  "quarantine_reason_counts_overlap": {
+    "quarantined_source_tags": 654,
+    "historical_target_substring": 43,
+    "historical_target_family": 1,
+    "privacy_or_url_shape": 4
+  },
+  "historical_direct_rows": 43,
+  "historical_families": 39,
+  "family_count": 83362,
+  "largest_family_rows": 19,
+  "near_rule": "NFKC/lower/punctuation-space-symbol stripped, >=8 scalars, set of 3-scalar shingles, exact Jaccard >= 4/5; connected components joined with original/base IDs and cmn/eng links",
+  "near_prefix_candidate_pairs": 2692,
+  "near_pairs": 176,
+  "split_rule": "sha256(cloudleaf-r16-tatoeba-family-v1: + stable minimal component node) first 64 bits mod100: train<80/dev<90/heldout>=90; fixed before model evaluation",
+  "han_ranges": [
+    [
+      13312,
+      19903
+    ],
+    [
+      19968,
+      40959
+    ],
+    [
+      63744,
+      64255
+    ],
+    [
+      131072,
+      195103
+    ],
+    [
+      196608,
+      205743
+    ]
+  ],
+  "han_fragment_min_scalars": 2,
+  "han_fragment_max_scalars": 128,
+  "training_sequence_limit": 100000,
+  "training_scalar_limit": 1000000,
+  "fragment_exclusion_reason_counts": {
+    "shorter_than_2_scalars": 1527,
+    "dev_exact_other_split_fragment": 233,
+    "train_exact_other_split_fragment": 2387
+  },
+  "split_source_rows": {
+    "train": 71347,
+    "dev": 9005,
+    "heldout": 8896
+  },
+  "split_retained_source_rows": {
+    "train": 70769,
+    "dev": 8947,
+    "heldout": 8833
+  },
+  "split_fragments": {
+    "train": 86737,
+    "dev": 11067,
+    "heldout": 11146
+  },
+  "split_unicode_scalars": {
+    "train": 716681,
+    "dev": 90722,
+    "heldout": 90869
+  },
+  "nontrain_fulltext_sha256_count": 35636,
+  "train_fulltext_blacklist_intersections": 0,
+  "train_dev_heldout_exact_fragment_intersections": 0,
+  "notes": [
+    "Text is unconverted original Unicode; punctuation and non-Han end a fragment, so BOS/EOS represent retained Han fragment boundaries, not necessarily semantic sentence boundaries.",
+    "Detailed export owner is current owner, not guaranteed original creator. Full sentence ID, owner and stable Tatoeba URL must be kept for attribution; no human annotation or original-author signature is asserted.",
+    "Tags are sparse; absence of unsafe tags is not an independent content or copyright review.",
+    "Near-duplicate isolation is only under the explicitly stated shingle criterion, not proof that all paraphrases or all cross-language translation families have been isolated.",
+    "All partitions share global source family tatoeba-community and therefore are engineering-only splits, not independent gold.",
+    "Original sentence or Han-fragment frequency in this selected learner corpus is not modern IME token frequency/DF/Zipf."
+  ],
+  "files": {
+    "dev-fragments.jsonl": {
+      "bytes": 2078811,
+      "sha256": "9d923410be62e417791425c0636aab817855633668a868271d305d208b53a0c0"
+    },
+    "dev.txt": {
+      "bytes": 283233,
+      "sha256": "345474c1a6c111c8ea46374612e75cf9375cfa4792262dbd8de95afc3d8080c7"
+    },
+    "heldout-fragments.jsonl": {
+      "bytes": 2092097,
+      "sha256": "344afa3ba28aa9410309c5b89ba0e7f3fb76845c2d4b4624610a1053dcfaf12e"
+    },
+    "heldout.txt": {
+      "bytes": 283753,
+      "sha256": "4d437c0c5bba89854986c185db9de76b6716c39fbfed87f4e3a304b447e9ab23"
+    },
+    "nontrain-fulltext-sha256.txt": {
+      "bytes": 2316340,
+      "sha256": "c70edc78f4a221efd06a3268bcd6900c762bc7093eef76a0c1c36bbdd36fabca"
+    },
+    "source-lineage.jsonl": {
+      "bytes": 45563199,
+      "sha256": "ec6fa15c8f46912974972e75ddc7372fdb165153ef5597e867eb4b081e9fcc3f"
+    },
+    "train-fragments.jsonl": {
+      "bytes": 16311302,
+      "sha256": "c1b316998064caf1979641dc88b6179e287a5373ceed71e7d402580712af6387"
+    },
+    "train.txt": {
+      "bytes": 2236783,
+      "sha256": "1878767d1f0076011cac0be2c67afdfa0256a961030a80d91503a145d007590e"
+    }
+  }
+}

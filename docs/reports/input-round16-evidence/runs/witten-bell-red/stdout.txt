@@ -1,0 +1,18 @@
+
+running 1 test
+test witten_bell_backoff_is_explicit_and_still_segmentation_invariant ... FAILED
+
+failures:
+
+---- witten_bell_backoff_is_explicit_and_still_segmentation_invariant stdout ----
+
+thread 'witten_bell_backoff_is_explicit_and_still_segmentation_invariant' panicked at crates\cloudleaf-search\tests\character_model.rs:269:84:
+called `Result::unwrap()` on an `Err` value: SearchError { kind: InvalidModel, line: None, message: "固定语言模型格式、引用或预算无效" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    witten_bell_backoff_is_explicit_and_still_segmentation_invariant
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 7 filtered out; finished in 0.00s
+

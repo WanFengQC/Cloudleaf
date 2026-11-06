@@ -1,0 +1,879 @@
+{
+  "created_utc": "2026-11-06T05:41:04.045649+00:00",
+  "scope": "Round 15 original ranking diagnostic, no training or scoring changes",
+  "cases": [
+    "CASE\twoaini\tStructural\tbudget=None\tguaranteed=true\tbeam_pruned=0\texpansions=8657\tresident=124\tedges=234",
+    "CASE\twoaini\tLexical\tbudget=None\tguaranteed=true\tbeam_pruned=0\texpansions=8657\tresident=124\tedges=234",
+    "CASE\tzheshiyigebijiaofuzadewenti\tStructural\tbudget=None\tguaranteed=true\tbeam_pruned=0\texpansions=65379\tresident=243\tedges=1766",
+    "CASE\tzheshiyigebijiaofuzadewenti\tLexical\tbudget=None\tguaranteed=true\tbeam_pruned=0\texpansions=65379\tresident=243\tedges=1766"
+  ],
+  "targets": [
+    "TARGET\twoaini\tStructural\t\"我爱你\"\tpaths=2\tfirst50=None",
+    "TARGET\twoaini\tStructural\t\"我爱昵\"\tpaths=3\tfirst50=Some(4)",
+    "TARGET\twoaini\tLexical\t\"我爱你\"\tpaths=2\tfirst50=Some(24)",
+    "TARGET\twoaini\tLexical\t\"我爱昵\"\tpaths=3\tfirst50=Some(1)",
+    "TARGET\tzheshiyigebijiaofuzadewenti\tStructural\t\"这是一个比较复杂的问题\"\tpaths=672\tfirst50=None",
+    "TARGET\tzheshiyigebijiaofuzadewenti\tStructural\t\"这时一个比较复杂的问题\"\tpaths=1344\tfirst50=None",
+    "TARGET\tzheshiyigebijiaofuzadewenti\tLexical\t\"这是一个比较复杂的问题\"\tpaths=672\tfirst50=None",
+    "TARGET\tzheshiyigebijiaofuzadewenti\tLexical\t\"这时一个比较复杂的问题\"\tpaths=1344\tfirst50=Some(1)"
+  ],
+  "top10": [
+    "CAND\twoaini\tStructural\t1\t\"握爱昵\"\t-200\tFeatures { words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 0, lexical_observed: 0, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:00b6abd0f22f839f4202f7ec5be1f8ed\", \"entry:e4202006aede4c87d02ce9f9e8e72b18\"]",
+    "CAND\twoaini\tStructural\t2\t\"斡爱昵\"\t-200\tFeatures { words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 0, lexical_observed: 0, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:01125e638113519bdbada714736b8bfa\", \"entry:e4202006aede4c87d02ce9f9e8e72b18\"]",
+    "CAND\twoaini\tStructural\t3\t\"倭爱昵\"\t-200\tFeatures { words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 0, lexical_observed: 0, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:1ca29d64e4b2bac485cbb2f8bd3eedab\", \"entry:e4202006aede4c87d02ce9f9e8e72b18\"]",
+    "CAND\twoaini\tStructural\t4\t\"我爱昵\"\t-200\tFeatures { words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 0, lexical_observed: 0, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:2092b88b8f60f643614723298a422790\", \"entry:e4202006aede4c87d02ce9f9e8e72b18\"]",
+    "CAND\twoaini\tStructural\t5\t\"踒爱昵\"\t-200\tFeatures { words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 0, lexical_observed: 0, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:39df5af081d9cf6fb8a7418bbbce18c3\", \"entry:e4202006aede4c87d02ce9f9e8e72b18\"]",
+    "CAND\twoaini\tStructural\t6\t\"蜗爱昵\"\t-200\tFeatures { words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 0, lexical_observed: 0, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:3ccc4d810c43c2ff21a4683f5c98a10f\", \"entry:e4202006aede4c87d02ce9f9e8e72b18\"]",
+    "CAND\twoaini\tStructural\t7\t\"偓爱昵\"\t-200\tFeatures { words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 0, lexical_observed: 0, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:49237496b59ead179f776d1ce801cd49\", \"entry:e4202006aede4c87d02ce9f9e8e72b18\"]",
+    "CAND\twoaini\tStructural\t8\t\"薶爱昵\"\t-200\tFeatures { words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 0, lexical_observed: 0, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:4ea26542539952a1a158e78bb7abed40\", \"entry:e4202006aede4c87d02ce9f9e8e72b18\"]",
+    "CAND\twoaini\tStructural\t9\t\"肟爱昵\"\t-200\tFeatures { words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 0, lexical_observed: 0, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:52ac4be5448e241c76435879a9218283\", \"entry:e4202006aede4c87d02ce9f9e8e72b18\"]",
+    "CAND\twoaini\tStructural\t10\t\"窝爱昵\"\t-200\tFeatures { words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 0, lexical_observed: 0, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:5b2ae0cf20844dec8d9ab2ba62870c9a\", \"entry:e4202006aede4c87d02ce9f9e8e72b18\"]",
+    "CAND\twoaini\tLexical\t1\t\"我爱昵\"\t-200\tFeatures { words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 23013, lexical_observed: 1, lexical_missing: 1, bigram_units: 0, context_units: 0 }\t[\"entry:2092b88b8f60f643614723298a422790\", \"entry:e4202006aede4c87d02ce9f9e8e72b18\"]",
+    "CAND\twoaini\tLexical\t2\t\"握爱昵\"\t-200\tFeatures { words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 15967, lexical_observed: 1, lexical_missing: 1, bigram_units: 0, context_units: 0 }\t[\"entry:00b6abd0f22f839f4202f7ec5be1f8ed\", \"entry:e4202006aede4c87d02ce9f9e8e72b18\"]",
+    "CAND\twoaini\tLexical\t3\t\"沃爱昵\"\t-200\tFeatures { words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 15664, lexical_observed: 1, lexical_missing: 1, bigram_units: 0, context_units: 0 }\t[\"entry:86bf4168a9fb6858323e72bd732bdca4\", \"entry:e4202006aede4c87d02ce9f9e8e72b18\"]",
+    "CAND\twoaini\tLexical\t4\t\"窝爱昵\"\t-200\tFeatures { words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 11338, lexical_observed: 1, lexical_missing: 1, bigram_units: 0, context_units: 0 }\t[\"entry:5b2ae0cf20844dec8d9ab2ba62870c9a\", \"entry:e4202006aede4c87d02ce9f9e8e72b18\"]",
+    "CAND\twoaini\tLexical\t5\t\"涡爱昵\"\t-200\tFeatures { words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 11086, lexical_observed: 1, lexical_missing: 1, bigram_units: 0, context_units: 0 }\t[\"entry:ac16d67a5c2b58c85ab40a88f9599718\", \"entry:e4202006aede4c87d02ce9f9e8e72b18\"]",
+    "CAND\twoaini\tLexical\t6\t\"挝爱昵\"\t-200\tFeatures { words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 10942, lexical_observed: 1, lexical_missing: 1, bigram_units: 0, context_units: 0 }\t[\"entry:bf10b181bcd8dac4d91058b492b28095\", \"entry:e4202006aede4c87d02ce9f9e8e72b18\"]",
+    "CAND\twoaini\tLexical\t7\t\"卧爱昵\"\t-200\tFeatures { words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 10645, lexical_observed: 1, lexical_missing: 1, bigram_units: 0, context_units: 0 }\t[\"entry:8df840e4608a94f23ecaf0bac4a8cf6c\", \"entry:e4202006aede4c87d02ce9f9e8e72b18\"]",
+    "CAND\twoaini\tLexical\t8\t\"斡爱昵\"\t-200\tFeatures { words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 9186, lexical_observed: 1, lexical_missing: 1, bigram_units: 0, context_units: 0 }\t[\"entry:01125e638113519bdbada714736b8bfa\", \"entry:e4202006aede4c87d02ce9f9e8e72b18\"]",
+    "CAND\twoaini\tLexical\t9\t\"倭爱昵\"\t-200\tFeatures { words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 9139, lexical_observed: 1, lexical_missing: 1, bigram_units: 0, context_units: 0 }\t[\"entry:1ca29d64e4b2bac485cbb2f8bd3eedab\", \"entry:e4202006aede4c87d02ce9f9e8e72b18\"]",
+    "CAND\twoaini\tLexical\t10\t\"蜗爱昵\"\t-200\tFeatures { words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 8469, lexical_observed: 1, lexical_missing: 1, bigram_units: 0, context_units: 0 }\t[\"entry:3ccc4d810c43c2ff21a4683f5c98a10f\", \"entry:e4202006aede4c87d02ce9f9e8e72b18\"]",
+    "CAND\tzheshiyigebijiaofuzadewenti\tStructural\t1\t\"赭石一哥比较复杂德问题\"\t-600\tFeatures { words: 6, prefixes: 0, frequency_units: 0, missing_frequencies: 6, lexical_units: 0, lexical_observed: 0, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:29257ad8c4c1fefc2b9c8dc302385d05\", \"entry:5629fdfbc7df705a054f33de1fdb33bf\", \"entry:8024fc13e7f252adcdf8e3c3a1462acd\", \"entry:e80629076ac2c44673c9955d2e4b2e55\", \"entry:0d35687418e1851bf63ce8cc95cc4711\", \"entry:dae6b4f534dacc41ad50236f9afc5ad0\"]",
+    "CAND\tzheshiyigebijiaofuzadewenti\tStructural\t2\t\"赭石一哥比较复杂德文体\"\t-600\tFeatures { words: 6, prefixes: 0, frequency_units: 0, missing_frequencies: 6, lexical_units: 0, lexical_observed: 0, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:29257ad8c4c1fefc2b9c8dc302385d05\", \"entry:5629fdfbc7df705a054f33de1fdb33bf\", \"entry:8024fc13e7f252adcdf8e3c3a1462acd\", \"entry:e80629076ac2c44673c9955d2e4b2e55\", \"entry:0d35687418e1851bf63ce8cc95cc4711\", \"entry:e1b22838e7d47bd0ddb5135b5d4d78af\"]",
+    "CAND\tzheshiyigebijiaofuzadewenti\tStructural\t3\t\"赭石一哥比较复杂锝问题\"\t-600\tFeatures { words: 6, prefixes: 0, frequency_units: 0, missing_frequencies: 6, lexical_units: 0, lexical_observed: 0, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:29257ad8c4c1fefc2b9c8dc302385d05\", \"entry:5629fdfbc7df705a054f33de1fdb33bf\", \"entry:8024fc13e7f252adcdf8e3c3a1462acd\", \"entry:e80629076ac2c44673c9955d2e4b2e55\", \"entry:3346cff2187a6279b8188349e7763479\", \"entry:dae6b4f534dacc41ad50236f9afc5ad0\"]",
+    "CAND\tzheshiyigebijiaofuzadewenti\tStructural\t4\t\"赭石一哥比较复杂锝文体\"\t-600\tFeatures { words: 6, prefixes: 0, frequency_units: 0, missing_frequencies: 6, lexical_units: 0, lexical_observed: 0, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:29257ad8c4c1fefc2b9c8dc302385d05\", \"entry:5629fdfbc7df705a054f33de1fdb33bf\", \"entry:8024fc13e7f252adcdf8e3c3a1462acd\", \"entry:e80629076ac2c44673c9955d2e4b2e55\", \"entry:3346cff2187a6279b8188349e7763479\", \"entry:e1b22838e7d47bd0ddb5135b5d4d78af\"]",
+    "CAND\tzheshiyigebijiaofuzadewenti\tStructural\t5\t\"赭石一哥比较复杂得问题\"\t-600\tFeatures { words: 6, prefixes: 0, frequency_units: 0, missing_frequencies: 6, lexical_units: 0, lexical_observed: 0, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:29257ad8c4c1fefc2b9c8dc302385d05\", \"entry:5629fdfbc7df705a054f33de1fdb33bf\", \"entry:8024fc13e7f252adcdf8e3c3a1462acd\", \"entry:e80629076ac2c44673c9955d2e4b2e55\", \"entry:5672ec5fdac90d1303337033eebe3661\", \"entry:dae6b4f534dacc41ad50236f9afc5ad0\"]",
+    "CAND\tzheshiyigebijiaofuzadewenti\tStructural\t6\t\"赭石一哥比较复杂得文体\"\t-600\tFeatures { words: 6, prefixes: 0, frequency_units: 0, missing_frequencies: 6, lexical_units: 0, lexical_observed: 0, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:29257ad8c4c1fefc2b9c8dc302385d05\", \"entry:5629fdfbc7df705a054f33de1fdb33bf\", \"entry:8024fc13e7f252adcdf8e3c3a1462acd\", \"entry:e80629076ac2c44673c9955d2e4b2e55\", \"entry:5672ec5fdac90d1303337033eebe3661\", \"entry:e1b22838e7d47bd0ddb5135b5d4d78af\"]",
+    "CAND\tzheshiyigebijiaofuzadewenti\tStructural\t7\t\"赭石一哥比较复杂德文剃\"\t-600\tFeatures { words: 6, prefixes: 0, frequency_units: 0, missing_frequencies: 6, lexical_units: 0, lexical_observed: 0, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:29257ad8c4c1fefc2b9c8dc302385d05\", \"entry:5629fdfbc7df705a054f33de1fdb33bf\", \"entry:8024fc13e7f252adcdf8e3c3a1462acd\", \"entry:e80629076ac2c44673c9955d2e4b2e55\", \"entry:5f85dd3054cb37d00adeb854c08a4497\", \"entry:00787a40883a9f5651a994d364e3efe8\"]",
+    "CAND\tzheshiyigebijiaofuzadewenti\tStructural\t8\t\"赭石一哥比较复杂德文躰\"\t-600\tFeatures { words: 6, prefixes: 0, frequency_units: 0, missing_frequencies: 6, lexical_units: 0, lexical_observed: 0, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:29257ad8c4c1fefc2b9c8dc302385d05\", \"entry:5629fdfbc7df705a054f33de1fdb33bf\", \"entry:8024fc13e7f252adcdf8e3c3a1462acd\", \"entry:e80629076ac2c44673c9955d2e4b2e55\", \"entry:5f85dd3054cb37d00adeb854c08a4497\", \"entry:0568ebcf6dc34e1024fd5edd4f35474a\"]",
+    "CAND\tzheshiyigebijiaofuzadewenti\tStructural\t9\t\"赭石一哥比较复杂德文荑\"\t-600\tFeatures { words: 6, prefixes: 0, frequency_units: 0, missing_frequencies: 6, lexical_units: 0, lexical_observed: 0, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:29257ad8c4c1fefc2b9c8dc302385d05\", \"entry:5629fdfbc7df705a054f33de1fdb33bf\", \"entry:8024fc13e7f252adcdf8e3c3a1462acd\", \"entry:e80629076ac2c44673c9955d2e4b2e55\", \"entry:5f85dd3054cb37d00adeb854c08a4497\", \"entry:0ca53c64f96868de60ebc709f1f72520\"]",
+    "CAND\tzheshiyigebijiaofuzadewenti\tStructural\t10\t\"赭石一哥比较复杂德文洟\"\t-600\tFeatures { words: 6, prefixes: 0, frequency_units: 0, missing_frequencies: 6, lexical_units: 0, lexical_observed: 0, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:29257ad8c4c1fefc2b9c8dc302385d05\", \"entry:5629fdfbc7df705a054f33de1fdb33bf\", \"entry:8024fc13e7f252adcdf8e3c3a1462acd\", \"entry:e80629076ac2c44673c9955d2e4b2e55\", \"entry:5f85dd3054cb37d00adeb854c08a4497\", \"entry:1321a2dfd8a970a7d44ebeac78302e10\"]",
+    "CAND\tzheshiyigebijiaofuzadewenti\tLexical\t1\t\"这时一个比较复杂的问题\"\t-600\tFeatures { words: 6, prefixes: 0, frequency_units: 0, missing_frequencies: 6, lexical_units: 132075, lexical_observed: 6, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:e4d7679608bff1f61c5e78a707ff9552\", \"entry:864c7f51b7c593ee909ebf848ccc6efa\", \"entry:8024fc13e7f252adcdf8e3c3a1462acd\", \"entry:e80629076ac2c44673c9955d2e4b2e55\", \"entry:c20083f7d444abc1e21b06470a8273ad\", \"entry:dae6b4f534dacc41ad50236f9afc5ad0\"]",
+    "CAND\tzheshiyigebijiaofuzadewenti\tLexical\t2\t\"这时一个比较复杂地问题\"\t-600\tFeatures { words: 6, prefixes: 0, frequency_units: 0, missing_frequencies: 6, lexical_units: 126960, lexical_observed: 6, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:e4d7679608bff1f61c5e78a707ff9552\", \"entry:864c7f51b7c593ee909ebf848ccc6efa\", \"entry:8024fc13e7f252adcdf8e3c3a1462acd\", \"entry:e80629076ac2c44673c9955d2e4b2e55\", \"entry:dbb25ac63b05564db6e784cc9881e0f3\", \"entry:dae6b4f534dacc41ad50236f9afc5ad0\"]",
+    "CAND\tzheshiyigebijiaofuzadewenti\tLexical\t3\t\"这时一个比较复杂得问题\"\t-600\tFeatures { words: 6, prefixes: 0, frequency_units: 0, missing_frequencies: 6, lexical_units: 124786, lexical_observed: 6, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:e4d7679608bff1f61c5e78a707ff9552\", \"entry:864c7f51b7c593ee909ebf848ccc6efa\", \"entry:8024fc13e7f252adcdf8e3c3a1462acd\", \"entry:e80629076ac2c44673c9955d2e4b2e55\", \"entry:5672ec5fdac90d1303337033eebe3661\", \"entry:dae6b4f534dacc41ad50236f9afc5ad0\"]",
+    "CAND\tzheshiyigebijiaofuzadewenti\tLexical\t4\t\"这时一个比较复杂的文体\"\t-600\tFeatures { words: 6, prefixes: 0, frequency_units: 0, missing_frequencies: 6, lexical_units: 124521, lexical_observed: 6, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:e4d7679608bff1f61c5e78a707ff9552\", \"entry:864c7f51b7c593ee909ebf848ccc6efa\", \"entry:8024fc13e7f252adcdf8e3c3a1462acd\", \"entry:e80629076ac2c44673c9955d2e4b2e55\", \"entry:c20083f7d444abc1e21b06470a8273ad\", \"entry:e1b22838e7d47bd0ddb5135b5d4d78af\"]",
+    "CAND\tzheshiyigebijiaofuzadewenti\tLexical\t5\t\"这时一个比较复杂德问题\"\t-600\tFeatures { words: 6, prefixes: 0, frequency_units: 0, missing_frequencies: 6, lexical_units: 122873, lexical_observed: 6, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:e4d7679608bff1f61c5e78a707ff9552\", \"entry:864c7f51b7c593ee909ebf848ccc6efa\", \"entry:8024fc13e7f252adcdf8e3c3a1462acd\", \"entry:e80629076ac2c44673c9955d2e4b2e55\", \"entry:0d35687418e1851bf63ce8cc95cc4711\", \"entry:dae6b4f534dacc41ad50236f9afc5ad0\"]",
+    "CAND\tzheshiyigebijiaofuzadewenti\tLexical\t6\t\"这时一个比较复杂底问题\"\t-600\tFeatures { words: 6, prefixes: 0, frequency_units: 0, missing_frequencies: 6, lexical_units: 120391, lexical_observed: 6, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:e4d7679608bff1f61c5e78a707ff9552\", \"entry:864c7f51b7c593ee909ebf848ccc6efa\", \"entry:8024fc13e7f252adcdf8e3c3a1462acd\", \"entry:e80629076ac2c44673c9955d2e4b2e55\", \"entry:cdf0557775f860ddb5fe9b57a50f9643\", \"entry:dae6b4f534dacc41ad50236f9afc5ad0\"]",
+    "CAND\tzheshiyigebijiaofuzadewenti\tLexical\t7\t\"这时一个比较复杂地文体\"\t-600\tFeatures { words: 6, prefixes: 0, frequency_units: 0, missing_frequencies: 6, lexical_units: 119406, lexical_observed: 6, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:e4d7679608bff1f61c5e78a707ff9552\", \"entry:864c7f51b7c593ee909ebf848ccc6efa\", \"entry:8024fc13e7f252adcdf8e3c3a1462acd\", \"entry:e80629076ac2c44673c9955d2e4b2e55\", \"entry:dbb25ac63b05564db6e784cc9881e0f3\", \"entry:e1b22838e7d47bd0ddb5135b5d4d78af\"]",
+    "CAND\tzheshiyigebijiaofuzadewenti\tLexical\t8\t\"这时一个比较复杂得文体\"\t-600\tFeatures { words: 6, prefixes: 0, frequency_units: 0, missing_frequencies: 6, lexical_units: 117232, lexical_observed: 6, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:e4d7679608bff1f61c5e78a707ff9552\", \"entry:864c7f51b7c593ee909ebf848ccc6efa\", \"entry:8024fc13e7f252adcdf8e3c3a1462acd\", \"entry:e80629076ac2c44673c9955d2e4b2e55\", \"entry:5672ec5fdac90d1303337033eebe3661\", \"entry:e1b22838e7d47bd0ddb5135b5d4d78af\"]",
+    "CAND\tzheshiyigebijiaofuzadewenti\tLexical\t9\t\"赭石一个比较复杂的问题\"\t-600\tFeatures { words: 6, prefixes: 0, frequency_units: 0, missing_frequencies: 6, lexical_units: 116982, lexical_observed: 5, lexical_missing: 1, bigram_units: 0, context_units: 0 }\t[\"entry:29257ad8c4c1fefc2b9c8dc302385d05\", \"entry:864c7f51b7c593ee909ebf848ccc6efa\", \"entry:8024fc13e7f252adcdf8e3c3a1462acd\", \"entry:e80629076ac2c44673c9955d2e4b2e55\", \"entry:c20083f7d444abc1e21b06470a8273ad\", \"entry:dae6b4f534dacc41ad50236f9afc5ad0\"]",
+    "CAND\tzheshiyigebijiaofuzadewenti\tLexical\t10\t\"这时一个比较复杂德文体\"\t-600\tFeatures { words: 6, prefixes: 0, frequency_units: 0, missing_frequencies: 6, lexical_units: 115319, lexical_observed: 6, lexical_missing: 0, bigram_units: 0, context_units: 0 }\t[\"entry:e4d7679608bff1f61c5e78a707ff9552\", \"entry:864c7f51b7c593ee909ebf848ccc6efa\", \"entry:8024fc13e7f252adcdf8e3c3a1462acd\", \"entry:e80629076ac2c44673c9955d2e4b2e55\", \"entry:0d35687418e1851bf63ce8cc95cc4711\", \"entry:e1b22838e7d47bd0ddb5135b5d4d78af\"]"
+  ],
+  "groups": [
+    {
+      "input": "woaini",
+      "ranker": "Structural",
+      "target": "我爱你",
+      "paths": 2,
+      "best_path": {
+        "structural": -300,
+        "lexical": 62514,
+        "edges": [
+          {
+            "start": 0,
+            "end": 2,
+            "text": "我",
+            "id": "entry:2092b88b8f60f643614723298a422790",
+            "match": "Exact",
+            "lexical": "lexical=Some(23013)",
+            "raw_research_field2_sum": 5827571
+          },
+          {
+            "start": 2,
+            "end": 4,
+            "text": "爱",
+            "id": "entry:a235af8901d322cb0fd8661478ac8d32",
+            "match": "Exact",
+            "lexical": "lexical=Some(18199)",
+            "raw_research_field2_sum": 223966
+          },
+          {
+            "start": 4,
+            "end": 6,
+            "text": "你",
+            "id": "entry:4e3f132bbbd6f7b522b40ff1b0749f20",
+            "match": "Exact",
+            "lexical": "lexical=Some(21302)",
+            "raw_research_field2_sum": 1829937
+          }
+        ]
+      }
+    },
+    {
+      "input": "woaini",
+      "ranker": "Structural",
+      "target": "我爱昵",
+      "paths": 3,
+      "best_path": {
+        "structural": -200,
+        "lexical": 23013,
+        "edges": [
+          {
+            "start": 0,
+            "end": 2,
+            "text": "我",
+            "id": "entry:2092b88b8f60f643614723298a422790",
+            "match": "Exact",
+            "lexical": "lexical=Some(23013)",
+            "raw_research_field2_sum": 5827571
+          },
+          {
+            "start": 2,
+            "end": 6,
+            "text": "爱昵",
+            "id": "entry:e4202006aede4c87d02ce9f9e8e72b18",
+            "match": "Exact",
+            "lexical": "lexical=None",
+            "raw_research_field2_sum": null
+          }
+        ]
+      }
+    },
+    {
+      "input": "woaini",
+      "ranker": "Lexical",
+      "target": "我爱你",
+      "paths": 2,
+      "best_path": {
+        "structural": -300,
+        "lexical": 62514,
+        "edges": [
+          {
+            "start": 0,
+            "end": 2,
+            "text": "我",
+            "id": "entry:2092b88b8f60f643614723298a422790",
+            "match": "Exact",
+            "lexical": "lexical=Some(23013)",
+            "raw_research_field2_sum": 5827571
+          },
+          {
+            "start": 2,
+            "end": 4,
+            "text": "爱",
+            "id": "entry:a235af8901d322cb0fd8661478ac8d32",
+            "match": "Exact",
+            "lexical": "lexical=Some(18199)",
+            "raw_research_field2_sum": 223966
+          },
+          {
+            "start": 4,
+            "end": 6,
+            "text": "你",
+            "id": "entry:4e3f132bbbd6f7b522b40ff1b0749f20",
+            "match": "Exact",
+            "lexical": "lexical=Some(21302)",
+            "raw_research_field2_sum": 1829937
+          }
+        ]
+      }
+    },
+    {
+      "input": "woaini",
+      "ranker": "Lexical",
+      "target": "我爱昵",
+      "paths": 3,
+      "best_path": {
+        "structural": -200,
+        "lexical": 23013,
+        "edges": [
+          {
+            "start": 0,
+            "end": 2,
+            "text": "我",
+            "id": "entry:2092b88b8f60f643614723298a422790",
+            "match": "Exact",
+            "lexical": "lexical=Some(23013)",
+            "raw_research_field2_sum": 5827571
+          },
+          {
+            "start": 2,
+            "end": 6,
+            "text": "爱昵",
+            "id": "entry:e4202006aede4c87d02ce9f9e8e72b18",
+            "match": "Exact",
+            "lexical": "lexical=None",
+            "raw_research_field2_sum": null
+          }
+        ]
+      }
+    },
+    {
+      "input": "zheshiyigebijiaofuzadewenti",
+      "ranker": "Structural",
+      "target": "这是一个比较复杂的问题",
+      "paths": 672,
+      "best_path": {
+        "structural": -700,
+        "lexical": 167227,
+        "edges": [
+          {
+            "start": 0,
+            "end": 3,
+            "text": "这",
+            "id": "entry:0db7eef920f7168914a74b827c41264e",
+            "match": "Exact",
+            "lexical": "lexical=Some(24376)",
+            "raw_research_field2_sum": 14655107
+          },
+          {
+            "start": 3,
+            "end": 6,
+            "text": "是",
+            "id": "entry:d7f900bbfaeacf33eb6015aa4c0dbbc2",
+            "match": "Exact",
+            "lexical": "lexical=Some(25869)",
+            "raw_research_field2_sum": 40259093
+          },
+          {
+            "start": 6,
+            "end": 10,
+            "text": "一个",
+            "id": "entry:864c7f51b7c593ee909ebf848ccc6efa",
+            "match": "Exact",
+            "lexical": "lexical=Some(23625)",
+            "raw_research_field2_sum": 8814926
+          },
+          {
+            "start": 10,
+            "end": 16,
+            "text": "比较",
+            "id": "entry:8024fc13e7f252adcdf8e3c3a1462acd",
+            "match": "Exact",
+            "lexical": "lexical=Some(21360)",
+            "raw_research_field2_sum": 1903593
+          },
+          {
+            "start": 16,
+            "end": 20,
+            "text": "复杂",
+            "id": "entry:e80629076ac2c44673c9955d2e4b2e55",
+            "match": "Exact",
+            "lexical": "lexical=Some(19854)",
+            "raw_research_field2_sum": 686403
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "text": "的",
+            "id": "entry:c20083f7d444abc1e21b06470a8273ad",
+            "match": "Exact",
+            "lexical": "lexical=Some(28549)",
+            "raw_research_field2_sum": 247129481
+          },
+          {
+            "start": 22,
+            "end": 27,
+            "text": "问题",
+            "id": "entry:dae6b4f534dacc41ad50236f9afc5ad0",
+            "match": "Exact",
+            "lexical": "lexical=Some(23594)",
+            "raw_research_field2_sum": 8633260
+          }
+        ]
+      }
+    },
+    {
+      "input": "zheshiyigebijiaofuzadewenti",
+      "ranker": "Structural",
+      "target": "这时一个比较复杂的问题",
+      "paths": 1344,
+      "best_path": {
+        "structural": -600,
+        "lexical": 132075,
+        "edges": [
+          {
+            "start": 0,
+            "end": 6,
+            "text": "这时",
+            "id": "entry:e4d7679608bff1f61c5e78a707ff9552",
+            "match": "Exact",
+            "lexical": "lexical=Some(15093)",
+            "raw_research_field2_sum": 27354
+          },
+          {
+            "start": 6,
+            "end": 10,
+            "text": "一个",
+            "id": "entry:864c7f51b7c593ee909ebf848ccc6efa",
+            "match": "Exact",
+            "lexical": "lexical=Some(23625)",
+            "raw_research_field2_sum": 8814926
+          },
+          {
+            "start": 10,
+            "end": 16,
+            "text": "比较",
+            "id": "entry:8024fc13e7f252adcdf8e3c3a1462acd",
+            "match": "Exact",
+            "lexical": "lexical=Some(21360)",
+            "raw_research_field2_sum": 1903593
+          },
+          {
+            "start": 16,
+            "end": 20,
+            "text": "复杂",
+            "id": "entry:e80629076ac2c44673c9955d2e4b2e55",
+            "match": "Exact",
+            "lexical": "lexical=Some(19854)",
+            "raw_research_field2_sum": 686403
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "text": "的",
+            "id": "entry:c20083f7d444abc1e21b06470a8273ad",
+            "match": "Exact",
+            "lexical": "lexical=Some(28549)",
+            "raw_research_field2_sum": 247129481
+          },
+          {
+            "start": 22,
+            "end": 27,
+            "text": "问题",
+            "id": "entry:dae6b4f534dacc41ad50236f9afc5ad0",
+            "match": "Exact",
+            "lexical": "lexical=Some(23594)",
+            "raw_research_field2_sum": 8633260
+          }
+        ]
+      }
+    },
+    {
+      "input": "zheshiyigebijiaofuzadewenti",
+      "ranker": "Lexical",
+      "target": "这是一个比较复杂的问题",
+      "paths": 672,
+      "best_path": {
+        "structural": -700,
+        "lexical": 167227,
+        "edges": [
+          {
+            "start": 0,
+            "end": 3,
+            "text": "这",
+            "id": "entry:0db7eef920f7168914a74b827c41264e",
+            "match": "Exact",
+            "lexical": "lexical=Some(24376)",
+            "raw_research_field2_sum": 14655107
+          },
+          {
+            "start": 3,
+            "end": 6,
+            "text": "是",
+            "id": "entry:d7f900bbfaeacf33eb6015aa4c0dbbc2",
+            "match": "Exact",
+            "lexical": "lexical=Some(25869)",
+            "raw_research_field2_sum": 40259093
+          },
+          {
+            "start": 6,
+            "end": 10,
+            "text": "一个",
+            "id": "entry:864c7f51b7c593ee909ebf848ccc6efa",
+            "match": "Exact",
+            "lexical": "lexical=Some(23625)",
+            "raw_research_field2_sum": 8814926
+          },
+          {
+            "start": 10,
+            "end": 16,
+            "text": "比较",
+            "id": "entry:8024fc13e7f252adcdf8e3c3a1462acd",
+            "match": "Exact",
+            "lexical": "lexical=Some(21360)",
+            "raw_research_field2_sum": 1903593
+          },
+          {
+            "start": 16,
+            "end": 20,
+            "text": "复杂",
+            "id": "entry:e80629076ac2c44673c9955d2e4b2e55",
+            "match": "Exact",
+            "lexical": "lexical=Some(19854)",
+            "raw_research_field2_sum": 686403
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "text": "的",
+            "id": "entry:c20083f7d444abc1e21b06470a8273ad",
+            "match": "Exact",
+            "lexical": "lexical=Some(28549)",
+            "raw_research_field2_sum": 247129481
+          },
+          {
+            "start": 22,
+            "end": 27,
+            "text": "问题",
+            "id": "entry:dae6b4f534dacc41ad50236f9afc5ad0",
+            "match": "Exact",
+            "lexical": "lexical=Some(23594)",
+            "raw_research_field2_sum": 8633260
+          }
+        ]
+      }
+    },
+    {
+      "input": "zheshiyigebijiaofuzadewenti",
+      "ranker": "Lexical",
+      "target": "这时一个比较复杂的问题",
+      "paths": 1344,
+      "best_path": {
+        "structural": -600,
+        "lexical": 132075,
+        "edges": [
+          {
+            "start": 0,
+            "end": 6,
+            "text": "这时",
+            "id": "entry:e4d7679608bff1f61c5e78a707ff9552",
+            "match": "Exact",
+            "lexical": "lexical=Some(15093)",
+            "raw_research_field2_sum": 27354
+          },
+          {
+            "start": 6,
+            "end": 10,
+            "text": "一个",
+            "id": "entry:864c7f51b7c593ee909ebf848ccc6efa",
+            "match": "Exact",
+            "lexical": "lexical=Some(23625)",
+            "raw_research_field2_sum": 8814926
+          },
+          {
+            "start": 10,
+            "end": 16,
+            "text": "比较",
+            "id": "entry:8024fc13e7f252adcdf8e3c3a1462acd",
+            "match": "Exact",
+            "lexical": "lexical=Some(21360)",
+            "raw_research_field2_sum": 1903593
+          },
+          {
+            "start": 16,
+            "end": 20,
+            "text": "复杂",
+            "id": "entry:e80629076ac2c44673c9955d2e4b2e55",
+            "match": "Exact",
+            "lexical": "lexical=Some(19854)",
+            "raw_research_field2_sum": 686403
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "text": "的",
+            "id": "entry:c20083f7d444abc1e21b06470a8273ad",
+            "match": "Exact",
+            "lexical": "lexical=Some(28549)",
+            "raw_research_field2_sum": 247129481
+          },
+          {
+            "start": 22,
+            "end": 27,
+            "text": "问题",
+            "id": "entry:dae6b4f534dacc41ad50236f9afc5ad0",
+            "match": "Exact",
+            "lexical": "lexical=Some(23594)",
+            "raw_research_field2_sum": 8633260
+          }
+        ]
+      }
+    }
+  ],
+  "unique_related_entries": {
+    "entry:2092b88b8f60f643614723298a422790": {
+      "start": 0,
+      "end": 2,
+      "text": "我",
+      "id": "entry:2092b88b8f60f643614723298a422790",
+      "match": "Exact",
+      "lexical": "lexical=Some(23013)",
+      "raw_research_field2_sum": 5827571
+    },
+    "entry:a235af8901d322cb0fd8661478ac8d32": {
+      "start": 2,
+      "end": 4,
+      "text": "爱",
+      "id": "entry:a235af8901d322cb0fd8661478ac8d32",
+      "match": "Exact",
+      "lexical": "lexical=Some(18199)",
+      "raw_research_field2_sum": 223966
+    },
+    "entry:4e3f132bbbd6f7b522b40ff1b0749f20": {
+      "start": 4,
+      "end": 6,
+      "text": "你",
+      "id": "entry:4e3f132bbbd6f7b522b40ff1b0749f20",
+      "match": "Exact",
+      "lexical": "lexical=Some(21302)",
+      "raw_research_field2_sum": 1829937
+    },
+    "entry:8a773b666eef7d6d01db648f1464ee8a": {
+      "start": 4,
+      "end": 6,
+      "text": "你",
+      "id": "entry:8a773b666eef7d6d01db648f1464ee8a",
+      "match": "Exact",
+      "lexical": "lexical=Some(21302)",
+      "raw_research_field2_sum": 1829937
+    },
+    "entry:a081966e12a4d22ecd2108760c9ca779": {
+      "start": 4,
+      "end": 6,
+      "text": "昵",
+      "id": "entry:a081966e12a4d22ecd2108760c9ca779",
+      "match": "Exact",
+      "lexical": "lexical=Some(7202)",
+      "raw_research_field2_sum": 130
+    },
+    "entry:f507da2196649e815c9207851694a1cf": {
+      "start": 4,
+      "end": 6,
+      "text": "昵",
+      "id": "entry:f507da2196649e815c9207851694a1cf",
+      "match": "Exact",
+      "lexical": "lexical=Some(7202)",
+      "raw_research_field2_sum": 130
+    },
+    "entry:e4202006aede4c87d02ce9f9e8e72b18": {
+      "start": 2,
+      "end": 6,
+      "text": "爱昵",
+      "id": "entry:e4202006aede4c87d02ce9f9e8e72b18",
+      "match": "Exact",
+      "lexical": "lexical=None",
+      "raw_research_field2_sum": null
+    },
+    "entry:0db7eef920f7168914a74b827c41264e": {
+      "start": 0,
+      "end": 3,
+      "text": "这",
+      "id": "entry:0db7eef920f7168914a74b827c41264e",
+      "match": "Exact",
+      "lexical": "lexical=Some(24376)",
+      "raw_research_field2_sum": 14655107
+    },
+    "entry:d7f900bbfaeacf33eb6015aa4c0dbbc2": {
+      "start": 3,
+      "end": 6,
+      "text": "是",
+      "id": "entry:d7f900bbfaeacf33eb6015aa4c0dbbc2",
+      "match": "Exact",
+      "lexical": "lexical=Some(25869)",
+      "raw_research_field2_sum": 40259093
+    },
+    "entry:4c9a5f360ae83b603adf8516e2f795c6": {
+      "start": 6,
+      "end": 8,
+      "text": "一",
+      "id": "entry:4c9a5f360ae83b603adf8516e2f795c6",
+      "match": "Exact",
+      "lexical": "lexical=Some(25021)",
+      "raw_research_field2_sum": 22675114
+    },
+    "entry:2274a45e3e04b3d83a2588f33a6199fb": {
+      "start": 8,
+      "end": 10,
+      "text": "个",
+      "id": "entry:2274a45e3e04b3d83a2588f33a6199fb",
+      "match": "Exact",
+      "lexical": "lexical=Some(23442)",
+      "raw_research_field2_sum": 7788482
+    },
+    "entry:017afb39fdd27ee8a09efafa67ef2616": {
+      "start": 10,
+      "end": 12,
+      "text": "比",
+      "id": "entry:017afb39fdd27ee8a09efafa67ef2616",
+      "match": "Exact",
+      "lexical": "lexical=Some(21400)",
+      "raw_research_field2_sum": 1955883
+    },
+    "entry:4822a60b39de7d6e6c006773e28889fb": {
+      "start": 12,
+      "end": 16,
+      "text": "较",
+      "id": "entry:4822a60b39de7d6e6c006773e28889fb",
+      "match": "Exact",
+      "lexical": "lexical=Some(21661)",
+      "raw_research_field2_sum": 2333434
+    },
+    "entry:1d9eceffaf1ec88c65d995d58f3031ec": {
+      "start": 16,
+      "end": 18,
+      "text": "复",
+      "id": "entry:1d9eceffaf1ec88c65d995d58f3031ec",
+      "match": "Exact",
+      "lexical": "lexical=Some(18019)",
+      "raw_research_field2_sum": 198212
+    },
+    "entry:2bce46f7c4b13919cee3f97893568e64": {
+      "start": 18,
+      "end": 20,
+      "text": "杂",
+      "id": "entry:2bce46f7c4b13919cee3f97893568e64",
+      "match": "Exact",
+      "lexical": "lexical=Some(16364)",
+      "raw_research_field2_sum": 64657
+    },
+    "entry:c20083f7d444abc1e21b06470a8273ad": {
+      "start": 20,
+      "end": 22,
+      "text": "的",
+      "id": "entry:c20083f7d444abc1e21b06470a8273ad",
+      "match": "Exact",
+      "lexical": "lexical=Some(28549)",
+      "raw_research_field2_sum": 247129481
+    },
+    "entry:54a03b542c859100de89344777ae9ac5": {
+      "start": 22,
+      "end": 25,
+      "text": "问",
+      "id": "entry:54a03b542c859100de89344777ae9ac5",
+      "match": "Exact",
+      "lexical": "lexical=Some(19858)",
+      "raw_research_field2_sum": 688579
+    },
+    "entry:678ea05edcf7d20bef5c808c453ad3b7": {
+      "start": 25,
+      "end": 27,
+      "text": "题",
+      "id": "entry:678ea05edcf7d20bef5c808c453ad3b7",
+      "match": "Exact",
+      "lexical": "lexical=Some(19780)",
+      "raw_research_field2_sum": 653007
+    },
+    "entry:da7f285cf28e6d5c3cbd20ddf93dbcb9": {
+      "start": 25,
+      "end": 27,
+      "text": "题",
+      "id": "entry:da7f285cf28e6d5c3cbd20ddf93dbcb9",
+      "match": "Exact",
+      "lexical": "lexical=Some(19780)",
+      "raw_research_field2_sum": 653007
+    },
+    "entry:dae6b4f534dacc41ad50236f9afc5ad0": {
+      "start": 22,
+      "end": 27,
+      "text": "问题",
+      "id": "entry:dae6b4f534dacc41ad50236f9afc5ad0",
+      "match": "Exact",
+      "lexical": "lexical=Some(23594)",
+      "raw_research_field2_sum": 8633260
+    },
+    "entry:701344cd5f5bc21d5b7757c74c43771b": {
+      "start": 18,
+      "end": 20,
+      "text": "杂",
+      "id": "entry:701344cd5f5bc21d5b7757c74c43771b",
+      "match": "Exact",
+      "lexical": "lexical=Some(16364)",
+      "raw_research_field2_sum": 64657
+    },
+    "entry:b3edec01b3d8839de807ada20b0a5e04": {
+      "start": 16,
+      "end": 18,
+      "text": "复",
+      "id": "entry:b3edec01b3d8839de807ada20b0a5e04",
+      "match": "Exact",
+      "lexical": "lexical=Some(18019)",
+      "raw_research_field2_sum": 198212
+    },
+    "entry:b55d64dbc2a74418fc9cb16539d7a155": {
+      "start": 16,
+      "end": 18,
+      "text": "复",
+      "id": "entry:b55d64dbc2a74418fc9cb16539d7a155",
+      "match": "Exact",
+      "lexical": "lexical=Some(18019)",
+      "raw_research_field2_sum": 198212
+    },
+    "entry:e80629076ac2c44673c9955d2e4b2e55": {
+      "start": 16,
+      "end": 20,
+      "text": "复杂",
+      "id": "entry:e80629076ac2c44673c9955d2e4b2e55",
+      "match": "Exact",
+      "lexical": "lexical=Some(19854)",
+      "raw_research_field2_sum": 686403
+    },
+    "entry:2629347d59414cfe1100758c111d4440": {
+      "start": 10,
+      "end": 12,
+      "text": "比",
+      "id": "entry:2629347d59414cfe1100758c111d4440",
+      "match": "Exact",
+      "lexical": "lexical=Some(21400)",
+      "raw_research_field2_sum": 1955883
+    },
+    "entry:6139dd13631d7c72c6d29ddedc9e8c5b": {
+      "start": 10,
+      "end": 12,
+      "text": "比",
+      "id": "entry:6139dd13631d7c72c6d29ddedc9e8c5b",
+      "match": "Exact",
+      "lexical": "lexical=Some(21400)",
+      "raw_research_field2_sum": 1955883
+    },
+    "entry:8024fc13e7f252adcdf8e3c3a1462acd": {
+      "start": 10,
+      "end": 16,
+      "text": "比较",
+      "id": "entry:8024fc13e7f252adcdf8e3c3a1462acd",
+      "match": "Exact",
+      "lexical": "lexical=Some(21360)",
+      "raw_research_field2_sum": 1903593
+    },
+    "entry:a9a9fbfda0639b83b8664184816c6297": {
+      "start": 8,
+      "end": 10,
+      "text": "个",
+      "id": "entry:a9a9fbfda0639b83b8664184816c6297",
+      "match": "Exact",
+      "lexical": "lexical=Some(23442)",
+      "raw_research_field2_sum": 7788482
+    },
+    "entry:ab0e19bb020824ce653b9b1c17c0213b": {
+      "start": 8,
+      "end": 10,
+      "text": "个",
+      "id": "entry:ab0e19bb020824ce653b9b1c17c0213b",
+      "match": "Exact",
+      "lexical": "lexical=Some(23442)",
+      "raw_research_field2_sum": 7788482
+    },
+    "entry:864c7f51b7c593ee909ebf848ccc6efa": {
+      "start": 6,
+      "end": 10,
+      "text": "一个",
+      "id": "entry:864c7f51b7c593ee909ebf848ccc6efa",
+      "match": "Exact",
+      "lexical": "lexical=Some(23625)",
+      "raw_research_field2_sum": 8814926
+    },
+    "entry:db2884d48025da57e3ef141f8046c198": {
+      "start": 3,
+      "end": 6,
+      "text": "是",
+      "id": "entry:db2884d48025da57e3ef141f8046c198",
+      "match": "Exact",
+      "lexical": "lexical=Some(25869)",
+      "raw_research_field2_sum": 40259093
+    },
+    "entry:2535ecccf62dbfc8fcb3691a73a1bb90": {
+      "start": 3,
+      "end": 6,
+      "text": "时",
+      "id": "entry:2535ecccf62dbfc8fcb3691a73a1bb90",
+      "match": "Exact",
+      "lexical": "lexical=Some(22685)",
+      "raw_research_field2_sum": 4666679
+    },
+    "entry:3d7c9cf4f06d4cd162ee106e727ae5af": {
+      "start": 3,
+      "end": 6,
+      "text": "时",
+      "id": "entry:3d7c9cf4f06d4cd162ee106e727ae5af",
+      "match": "Exact",
+      "lexical": "lexical=Some(22685)",
+      "raw_research_field2_sum": 4666679
+    },
+    "entry:b4ddfd827d8bfae941fe718fe19ca570": {
+      "start": 3,
+      "end": 6,
+      "text": "时",
+      "id": "entry:b4ddfd827d8bfae941fe718fe19ca570",
+      "match": "Exact",
+      "lexical": "lexical=Some(22685)",
+      "raw_research_field2_sum": 4666679
+    },
+    "entry:e4d7679608bff1f61c5e78a707ff9552": {
+      "start": 0,
+      "end": 6,
+      "text": "这时",
+      "id": "entry:e4d7679608bff1f61c5e78a707ff9552",
+      "match": "Exact",
+      "lexical": "lexical=Some(15093)",
+      "raw_research_field2_sum": 27354
+    }
+  },
+  "commands": [
+    {
+      "command": "cargo run --release --locked --offline -- runtime.tsv signal.tsv",
+      "returncode": 101,
+      "reason": "new independent temporary project had no Cargo.lock",
+      "stderr": "diagnosis.stderr.txt"
+    },
+    {
+      "command": "cargo generate-lockfile --offline",
+      "returncode": 0
+    },
+    {
+      "command": "cargo run --release --locked --offline -- C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+      "returncode": 0,
+      "stdout": "diagnosis.stdout.tsv",
+      "stderr": "diagnosis.stderr-run.txt"
+    }
+  ],
+  "files": {
+    "Cargo.toml": {
+      "bytes": 198,
+      "sha256": "0dd9de80ee2839f6a50787cc13734c260c12c48db8028e246caca622c5042483"
+    },
+    "Cargo.lock": {
+      "bytes": 450,
+      "sha256": "9da4f9b06d8e520e2d3232366c38456afde6ea476cc1aeb6ef36758d800bacec"
+    },
+    "src/main.rs": {
+      "bytes": 3237,
+      "sha256": "d23081934880766ac6ed2ceef928f9ab6a5f5d65c11f76b9a3f242ed9731f503"
+    },
+    "summarize.py": {
+      "bytes": 4159,
+      "sha256": "f77777e163f1bccd6a306688721d8e669fba5524a1264e9aaeb3ec88ee875e95"
+    },
+    "diagnosis.stdout.tsv": {
+      "bytes": 5002993,
+      "sha256": "faf39f45f72475ba0ed33e18a90531a205a8b3d5eb9598a56413355b89c7da49"
+    },
+    "diagnosis.stderr.txt": {
+      "bytes": 264,
+      "sha256": "449e9d7865350fdd30e1d923bee1b2e1227f7f83ffb73e94a5fc7ee221e06503"
+    },
+    "diagnosis.stderr-run.txt": {
+      "bytes": 741,
+      "sha256": "a1d550ef5bed17956e7d04bfec5e2fade471246743d85195f1a38a57c8fd12a4"
+    },
+    "target/release/r16-old-diagnosis.exe": {
+      "bytes": 360960,
+      "sha256": "be4fd8ee7c6a9d2ffe284c4f5e130ad404084f4c7d0c3cebeb5c06c638fe699d"
+    }
+  },
+  "source_files": {
+    "crates/cloudleaf-search/src/lib.rs": {
+      "sha256": "4555c2cf83a6fc4bcae1acb9a23a55fa0310821278920e6be068ad918c03a144",
+      "same_as_round15_final": true
+    },
+    "crates/cloudleaf-search/src/search.rs": {
+      "sha256": "9f7e13e88597354c5a76d1afc85d19e4fb3ce0dc63046e2ac586fbd85a5fff3c",
+      "same_as_round15_final": true
+    },
+    "crates/cloudleaf-search/src/model.rs": {
+      "sha256": "e89283da3060cb5aabbaa838baf455eb87b657d30186b0fc79f89eeb0f735734",
+      "same_as_round15_final": true
+    },
+    "crates/cloudleaf-search/src/lattice.rs": {
+      "sha256": "ebf0f5e20eaf915a11abf5488711af12ca95b4d19b7728b7599de5aea506ff16",
+      "same_as_round15_final": true
+    },
+    "crates/cloudleaf-search/src/lexicon.rs": {
+      "sha256": "d620bc15ea7a07a515e9fb742a300491318616c7c563a11928428b89b16fb6bc",
+      "same_as_round15_final": true
+    },
+    "crates/cloudleaf-pinyin/src/lib.rs": {
+      "sha256": "02ba745b9f5d6f0ff000083b4e620650c8b34d3b6ae75f820c30bfd438cd08a9",
+      "same_as_round15_final": true
+    }
+  }
+}

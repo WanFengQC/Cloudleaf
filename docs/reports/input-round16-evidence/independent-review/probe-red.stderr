@@ -1,0 +1,55 @@
+
+thread 'main' panicked at C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-search\src\character.rs:93:21:
+index out of bounds: the len is 1 but the index is 1
+stack backtrace:
+   0: std::panicking::begin_panic_handler
+             at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\std\src\panicking.rs:697
+   1: core::panicking::panic_fmt
+             at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\core\src\panicking.rs:75
+   2: core::panicking::panic_bounds_check
+             at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\core\src\panicking.rs:280
+   3: core::slice::index::impl$2::index<cloudleaf_search::character::EntryScore>
+             at /rustc/1159e78c4747b02ef996e55082b704c09b970588\library\core\src\slice\index.rs:274
+   4: alloc::vec::impl$13::index<cloudleaf_search::character::EntryScore,usize,alloc::alloc::Global>
+             at /rustc/1159e78c4747b02ef996e55082b704c09b970588\library\alloc\src\vec\mod.rs:3571
+   5: cloudleaf_search::character::CharacterModel::entry
+             at .\crates\cloudleaf-search\src\character.rs:93
+   6: cloudleaf_search::search::dynamic<cloudleaf_search::profiling::Noop>
+             at .\crates\cloudleaf-search\src\search.rs:323
+   7: cloudleaf_search::search::search_controlled_observed<cloudleaf_search::profiling::Noop>
+             at .\crates\cloudleaf-search\src\search.rs:504
+   8: cloudleaf_search::search::search_observed<cloudleaf_search::profiling::Noop>
+             at .\crates\cloudleaf-search\src\search.rs:429
+   9: cloudleaf_search::search::search_graph
+             at .\crates\cloudleaf-search\src\search.rs:399
+  10: round16_character_binding_probe::main::closure$0
+             at C:\Users\EDY\.codex\tmp\r16-baseline\probe\src\main.rs:19
+  11: std::panicking::catch_unwind::do_call<round16_character_binding_probe::main::closure_env$0,enum2$<core::result::Result<cloudleaf_search::search::SearchResult,cloudleaf_search::SearchError> > >
+             at /rustc/1159e78c4747b02ef996e55082b704c09b970588\library\std\src\panicking.rs:589
+  12: std::panic::catch_unwind<round16_character_binding_probe::main::closure_env$0,enum2$<core::result::Result<cloudleaf_search::search::SearchResult,cloudleaf_search::SearchError> > >
+  13: std::panicking::catch_unwind
+             at /rustc/1159e78c4747b02ef996e55082b704c09b970588\library\std\src\panicking.rs:552
+  14: std::panic::catch_unwind<round16_character_binding_probe::main::closure_env$0,enum2$<core::result::Result<cloudleaf_search::search::SearchResult,cloudleaf_search::SearchError> > >
+             at /rustc/1159e78c4747b02ef996e55082b704c09b970588\library\std\src\panic.rs:359
+  15: round16_character_binding_probe::main
+             at C:\Users\EDY\.codex\tmp\r16-baseline\probe\src\main.rs:19
+  16: core::ops::function::FnOnce::call_once<void (*)(),tuple$<> >
+             at /rustc/1159e78c4747b02ef996e55082b704c09b970588\library\core\src\ops\function.rs:253
+  17: core::hint::black_box
+             at /rustc/1159e78c4747b02ef996e55082b704c09b970588\library\core\src\hint.rs:482
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+
+thread 'main' panicked at src\main.rs:29:5:
+公共入口应拒绝模型预计算词典不符，不能panic
+stack backtrace:
+   0: std::panicking::begin_panic_handler
+             at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\std\src\panicking.rs:697
+   1: core::panicking::panic_fmt
+             at /rustc/1159e78c4747b02ef996e55082b704c09b970588/library\core\src\panicking.rs:75
+   2: round16_character_binding_probe::main
+             at C:\Users\EDY\.codex\tmp\r16-baseline\probe\src\main.rs:29
+   3: core::ops::function::FnOnce::call_once<void (*)(),tuple$<> >
+             at /rustc/1159e78c4747b02ef996e55082b704c09b970588\library\core\src\ops\function.rs:253
+   4: core::hint::black_box
+             at /rustc/1159e78c4747b02ef996e55082b704c09b970588\library\core\src\hint.rs:482
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.

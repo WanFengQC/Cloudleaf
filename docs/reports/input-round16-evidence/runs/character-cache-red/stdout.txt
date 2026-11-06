@@ -1,0 +1,18 @@
+
+running 1 test
+test precompiled_entry_cache_rejects_a_different_lexicon_instance ... FAILED
+
+failures:
+
+---- precompiled_entry_cache_rejects_a_different_lexicon_instance stdout ----
+
+thread 'precompiled_entry_cache_rejects_a_different_lexicon_instance' panicked at crates\cloudleaf-search\tests\character_model.rs:111:9:
+assertion failed: search_graph(&other, &graph, &cfg, Some(model.model()), None).is_err()
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    precompiled_entry_cache_rejects_a_different_lexicon_instance
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+

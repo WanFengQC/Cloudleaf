@@ -1,0 +1,14 @@
+[package]
+name = "r16-phase-profile"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.90.0"
+
+[dependencies]
+cloudleaf-search = { path = "C:/Users/EDY/.codex/worktrees/input-round14/Cloudleaf/crates/cloudleaf-search" }
+
+[workspace]
+
+[profile.release]
+lto = "thin"
+codegen-units = 1

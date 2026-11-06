@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "kind": "cloudleaf-input-lexicon-load-receipt",
+  "verified": true,
+  "at_utc": "2026-11-06T06:04:33.453294+00:00",
+  "command": [
+    "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.EXE",
+    "scripts/verify_input_lexicon.py",
+    "--release",
+    "C:/Users/EDY/.codex/worktrees/cl009-data/Cloudleaf/.local/round5-clean-6d3d4e1/release-a",
+    "--output",
+    ".local/round16-lexicon-receipt.json"
+  ],
+  "seconds": 14.075697299995227,
+  "environment": {
+    "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26300-SP0"
+  },
+  "data_pipeline_reference_commit": "3f26f34e00c0775124f87e150a021f99fb52c567",
+  "verifier_version": "cloudleaf-data-2.1.0",
+  "tool_sha256": "bc929a1220c6c5ea6c2204a12cf3bb819d00577a4021eaf6282b43af38b3f8b4",
+  "verifier_files_sha256": {
+    "tools/data_pipeline/__init__.py": "23fe9b9d63d02a01c5401a85ad845defc688fa6db5927dc63d7ae902b4ec83d1",
+    "tools/data_pipeline/__main__.py": "9fe6b7f24253eb62cb7250e40b84d557c6fc3c1b218038238ca07067a64b37e1",
+    "tools/data_pipeline/cedict_source.py": "7533498d7aabdea7eb8702d042240e6654d7b40f82fc8db62b892a65956e3c92",
+    "tools/data_pipeline/filesystem.py": "3ff2533b1fdbf77fea688b45d5a44f04ba8cc7f9bd064844e823e786db8bad12",
+    "tools/data_pipeline/pipeline.py": "41ce3ce9e92229ff0b1e6f75fb41ca6f959b389bab32042b5763d6cc1d0cfc09",
+    "tools/data_pipeline/prefix_snapshot.py": "0f624cf0a0fa162117b4dcde7dc78e55af632104c8ae541812bc07d4ee3f0778",
+    "tools/data_pipeline/reading_audit.py": "e89dba255cf4e8c5afa8c908edc01cf2d3f33d60e1187b67d1a120d382a1ce5d",
+    "tools/data_pipeline/recovery.py": "760f106fe5fca0cbd111d366c3f83a3fdf266c9cd84992860baf33b18bffd3b9",
+    "tools/data_pipeline/word_source.py": "1d6d785da2b43895128c42b36e5f2997b1db872a466a86a45bab6961451dcd04"
+  },
+  "release": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a",
+  "manifest_sha256": "5971456293a4e868ae6372d9d928f3ad9edef4429ec0ba233eba8a5424ba77d5",
+  "runtime": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+    "bytes": 23602173,
+    "sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+  },
+  "files": {
+    "LICENSE.txt": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\LICENSE.txt",
+      "bytes": 20138,
+      "sha256": "28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5"
+    },
+    "NOTICE.txt": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\NOTICE.txt",
+      "bytes": 1147,
+      "sha256": "df5e0dfcac5f0e30cecc109d3dc810b0d22bf79634bb6d3cc7990fb74aea1c48"
+    },
+    "index.json": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\index.json",
+      "bytes": 13028916,
+      "sha256": "982c7ae244497d7f3cd68165e17f383655fe4c98470be5503182b6387011012e"
+    },
+    "quality.json": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\quality.json",
+      "bytes": 1739,
+      "sha256": "94955df94c7735930e2c09f19b54eaa460ba27bccb3c484b17a03df5ec34fb48"
+    },
+    "records.jsonl": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\records.jsonl",
+      "bytes": 77117585,
+      "sha256": "168f4579a7d72c87c41a9b2bde0d5f65f1537c65b64e107ea60bbf409f7fd072"
+    },
+    "rejected.jsonl": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\rejected.jsonl",
+      "bytes": 307494,
+      "sha256": "6c8b786912f4495b87064655b4f9f18369b1d7c94cea699e58f50c96afc8d0e8"
+    },
+    "runtime.tsv": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+      "bytes": 23602173,
+      "sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+    },
+    "source-lock.json": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\source-lock.json",
+      "bytes": 3496,
+      "sha256": "a7cbdd759ae2487ce238aea8a2d43eeef3248a1a124004def9ad35764e58bd57"
+    },
+    "manifest.json": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\manifest.json",
+      "bytes": 5720,
+      "sha256": "5971456293a4e868ae6372d9d928f3ad9edef4429ec0ba233eba8a5424ba77d5"
+    }
+  },
+  "entry_count": 123544,
+  "rejected_count": 1468,
+  "frequency": {
+    "kind": "unknown",
+    "missing": 123544,
+    "synthetic_values_created": 0,
+    "observed_counts_available": false
+  },
+  "source": {
+    "id": "cccedict:mirror-20260604",
+    "version": "2026-06-04T08:02:31Z-mirror7019e1c",
+    "sha256": "fff8763673740aecbbe4c7f414445171ef4a70e55eac3ceee364e4f9c7cc766a",
+    "source_lock_sha256": "a7cbdd759ae2487ce238aea8a2d43eeef3248a1a124004def9ad35764e58bd57",
+    "license_id": "CC-BY-SA-4.0",
+    "license_sha256": "28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5",
+    "approved_scope": "Licensed full fixed CC-CEDICT mirror archive and derived word/pronunciation/gloss data; not independent language quality acceptance.",
+    "attribution": "CC-CEDICT contributors; published by MDBG; referenced CEDICT copyright (C) 1997, 1998 Paul Andrew Denisowski. Licensed redistribution of raw ZIP by Lester Lin (poliwhirl555/cc-canto-cedict-jsons), fixed commit 7019e1c3ec3de3a44b165b15177ce2bb39a026d3. CC-CEDICT editor contributors: Matic Kavcic, Richard Warmington, Julien Baley, Yves Candau, feilipu and anonymous editors. No CC-Canto data or mirror parser code included.",
+    "redistribution": {
+      "CC_Canto_included": false,
+      "commercial_use": true,
+      "describe_modifications": true,
+      "media_included": false,
+      "mirror_parser_code_included": false,
+      "modified_data": true,
+      "retain_attribution_and_license": true,
+      "share_alike": true
+    }
+  },
+  "boundary": {
+    "fixed_word_pronunciation_gloss_scope_only": true,
+    "production_frequency_approved": false,
+    "independent_language_quality_accepted": false,
+    "cryptographic_signature_verified": false,
+    "approves_new_data": false,
+    "network_downloads": false,
+    "note": "只记录固定已审范围包的完整离线校验；Rust装载仍核runtime SHA，不把凭据当信任根。"
+  },
+  "repository_source_license_sha256": {
+    "Unicode-3.0.txt": "e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96",
+    "CC-BY-SA-4.0.txt": "28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5"
+  }
+}

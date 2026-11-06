@@ -1,0 +1,155 @@
+{
+  "created_utc": "2026-11-06T06:03:50.625305+00:00",
+  "git_head": "8a0838b2261d0cf74f1ae17fa028849509deedc6",
+  "commands": [
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.exe",
+        "generate-lockfile",
+        "--offline"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.125
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.exe",
+        "run",
+        "--release",
+        "--locked",
+        "--offline",
+        "--bin",
+        "r16-character-diff"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 5.328000000008615
+    }
+  ],
+  "source_before": {
+    "crates\\cloudleaf-search\\src\\cancellation.rs": {
+      "sha256": "697cae05d2707142db2c1eb4dccb8cd6d67a64e80e7b801b05a88f63cc929318",
+      "bytes": 690
+    },
+    "crates\\cloudleaf-search\\src\\character.rs": {
+      "sha256": "18c5ec322bccb2bdf8111e790dd3e310733d741387d755b32045badbd6b65dbe",
+      "bytes": 5797
+    },
+    "crates\\cloudleaf-search\\src\\lattice.rs": {
+      "sha256": "ebf0f5e20eaf915a11abf5488711af12ca95b4d19b7728b7599de5aea506ff16",
+      "bytes": 8508
+    },
+    "crates\\cloudleaf-search\\src\\lexicon.rs": {
+      "sha256": "3acd396f837effee46417a314d3cfb245e03961dc20af00eb2779f15ebcb4862",
+      "bytes": 11819
+    },
+    "crates\\cloudleaf-search\\src\\lib.rs": {
+      "sha256": "2fb76b05c67e35ae6959d353a5c4e417240c1cc28faba5887d731f052b3723b3",
+      "bytes": 4109
+    },
+    "crates\\cloudleaf-search\\src\\model.rs": {
+      "sha256": "9b0b5c055041271b8355d9ae53263db8087658aba591c45a330c8832f5e4e77b",
+      "bytes": 16538
+    },
+    "crates\\cloudleaf-search\\src\\profiling.rs": {
+      "sha256": "af2754a2a2c6d0bdec666601a3289320ed22acd8d87e70fc0c2afb37b3f453eb",
+      "bytes": 3098
+    },
+    "crates\\cloudleaf-search\\src\\search.rs": {
+      "sha256": "638a9cc2ae551783bff8035079e541d17e76b51fe489dba7870a1001b1707865",
+      "bytes": 33135
+    },
+    "crates\\cloudleaf-search\\Cargo.toml": {
+      "sha256": "954555f22ec14156d7422e2d18f2b2b9e99e878b1b422e7d60dcf12868f18c5d",
+      "bytes": 322
+    },
+    "crates\\cloudleaf-pinyin\\src\\lib.rs": {
+      "sha256": "02ba745b9f5d6f0ff000083b4e620650c8b34d3b6ae75f820c30bfd438cd08a9",
+      "bytes": 12660
+    }
+  },
+  "source_after": {
+    "crates\\cloudleaf-search\\src\\cancellation.rs": {
+      "sha256": "697cae05d2707142db2c1eb4dccb8cd6d67a64e80e7b801b05a88f63cc929318",
+      "bytes": 690
+    },
+    "crates\\cloudleaf-search\\src\\character.rs": {
+      "sha256": "18c5ec322bccb2bdf8111e790dd3e310733d741387d755b32045badbd6b65dbe",
+      "bytes": 5797
+    },
+    "crates\\cloudleaf-search\\src\\lattice.rs": {
+      "sha256": "ebf0f5e20eaf915a11abf5488711af12ca95b4d19b7728b7599de5aea506ff16",
+      "bytes": 8508
+    },
+    "crates\\cloudleaf-search\\src\\lexicon.rs": {
+      "sha256": "3acd396f837effee46417a314d3cfb245e03961dc20af00eb2779f15ebcb4862",
+      "bytes": 11819
+    },
+    "crates\\cloudleaf-search\\src\\lib.rs": {
+      "sha256": "2fb76b05c67e35ae6959d353a5c4e417240c1cc28faba5887d731f052b3723b3",
+      "bytes": 4109
+    },
+    "crates\\cloudleaf-search\\src\\model.rs": {
+      "sha256": "9b0b5c055041271b8355d9ae53263db8087658aba591c45a330c8832f5e4e77b",
+      "bytes": 16538
+    },
+    "crates\\cloudleaf-search\\src\\profiling.rs": {
+      "sha256": "af2754a2a2c6d0bdec666601a3289320ed22acd8d87e70fc0c2afb37b3f453eb",
+      "bytes": 3098
+    },
+    "crates\\cloudleaf-search\\src\\search.rs": {
+      "sha256": "638a9cc2ae551783bff8035079e541d17e76b51fe489dba7870a1001b1707865",
+      "bytes": 33135
+    },
+    "crates\\cloudleaf-search\\Cargo.toml": {
+      "sha256": "954555f22ec14156d7422e2d18f2b2b9e99e878b1b422e7d60dcf12868f18c5d",
+      "bytes": 322
+    },
+    "crates\\cloudleaf-pinyin\\src\\lib.rs": {
+      "sha256": "02ba745b9f5d6f0ff000083b4e620650c8b34d3b6ae75f820c30bfd438cd08a9",
+      "bytes": 12660
+    }
+  },
+  "source_unchanged": true,
+  "files": {
+    "Cargo.toml": {
+      "bytes": 199,
+      "sha256": "dbeb06bd3ce672e44056e4a3df32eabbe5fb0626d6d82380d7c9528164984214"
+    },
+    "Cargo.lock": {
+      "bytes": 451,
+      "sha256": "dfecbcae72fc36e428362c8dc1336d610c5526d975bbdd0082c86cbd23dea255"
+    },
+    "src/main.rs": {
+      "bytes": 6199,
+      "sha256": "5ae5263ce20f6e57d48b50d19cd070b7aefe7cf4d2ef2dc43014c637165e33fb"
+    },
+    "run.py": {
+      "bytes": 2292,
+      "sha256": "57f502f0bf430a87c9e27b87faba6fe95364a011b57ac565833e531556eba991"
+    },
+    "lock.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lock.stderr.txt": {
+      "bytes": 66,
+      "sha256": "040d033f36303c2b8cde7b6a8e1be1ec45b75fb2a3471c11a45bd0ababa1e85c"
+    },
+    "run.stdout.txt": {
+      "bytes": 36058136,
+      "sha256": "9fcc19b10b05c5e8e515c02ac01e4180936d18ba5ce4f9d8f3fb08fda0d07546"
+    },
+    "run.stderr.txt": {
+      "bytes": 115,
+      "sha256": "1fbcff7e484b78320a0ea9d931e67f77633c3350089165af1538568bb66efd08"
+    },
+    "target/release/r16-character-diff.exe": {
+      "bytes": 459264,
+      "sha256": "766e2654b8119824a1ab6c7da4fc8b6e0a19d4515ce01c2cc253f4b99b875eb4"
+    }
+  },
+  "summary_lines": [
+    "EOS\tSearchResult { candidates: [Candidate { text: \"乙\", score: -2168, entry_ids: [\"02\"], edge_indices: [1], features: Features { words: 1, prefixes: 0, frequency_units: 0, missing_frequencies: 1, lexical_units: 0, lexical_observed: 0, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -100, character_units: -2168, character_count: 1, character_unknown: 0 } }, Candidate { text: \"甲\", score: -5510, entry_ids: [\"01\"], edge_indices: [0], features: Features { words: 1, prefixes: 0, frequency_units: 0, missing_frequencies: 1, lexical_units: 0, lexical_observed: 0, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -100, character_units: -5510, character_count: 1, character_unknown: 0 } }, Candidate { text: \"甲乙\", score: -5968, entry_ids: [\"07\"], edge_indices: [2], features: Features { words: 1, prefixes: 0, frequency_units: 0, missing_frequencies: 1, lexical_units: 0, lexical_observed: 0, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -100, character_units: -5968, character_count: 2, character_unknown: 0 } }, Candidate { text: \"𠮷\", score: -7629, entry_ids: [\"11\"], edge_indices: [3], features: Features { words: 1, prefixes: 0, frequency_units: 0, missing_frequencies: 1, lexical_units: 0, lexical_observed: 0, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -100, character_units: -7629, character_count: 1, character_unknown: 1 } }, Candidate { text: \"安\", score: -7629, entry_ids: [\"16\"], edge_indices: [7], features: Features { words: 1, prefixes: 1, frequency_units: 0, missing_frequencies: 1, lexical_units: 0, lexical_observed: 0, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -400, character_units: -7629, character_count: 1, character_unknown: 1 } }, Candidate { text: \"甲丙\", score: -7887, entry_ids: [\"05\"], edge_indices: [5], features: Features { words: 1, prefixes: 1, frequency_units: 0, missing_frequencies: 1, lexical_units: 0, lexical_observed: 0, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -400, character_units: -7887, character_count: 2, character_unknown: 1 } }, Candidate { text: \"𠮷甲\", score: -12384, entry_ids: [\"09\"], edge_indices: [6], features: Features { words: 1, prefixes: 1, frequency_units: 0, missing_frequencies: 1, lexical_units: 0, lexical_observed: 0, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -400, character_units: -12384, character_count: 2, character_unknown: 1 } }], raw_fallback: \"a\", waiting: false, guaranteed: true, finite_pool_only: false, statistics: Statistics { graph_edges: 8, expansions: 16, resident_high_water: 20, beam_pruned: 0, budget: None } }",
+    "SUMMARY\tqueries=11160\tcomparisons=22320\tfailures=0\tincomplete_reference=0\tbeam_pruned_cases=0\tposition_rejections=11160\tinputs=62"
+  ]
+}

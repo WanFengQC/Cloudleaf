@@ -1,0 +1,133 @@
+{
+  "command": [
+    "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\build\\release\\examples\\input_trace.exe",
+    "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+    "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+  ],
+  "returncode": 0,
+  "seconds": 0.6286849000025541,
+  "variant": "structural",
+  "whole_process_cpu_seconds": 0.546875,
+  "original_implementation": null,
+  "worktree_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "head": "f2b5c5ee53882787c84b29180da6e835ffa98a27",
+  "executable_sha256": "6987c695ed2c1500ecbbff7e883cb748315f9b5dcf46d778adf7673c61d7bb6e",
+  "events_sha256": "e087cc965bd2f6c889a84f3db89b3829ccfda452f436d7b3cf562bbb965602ad",
+  "tool_sha256": "4754324dc9aff3743a69777b07f855f2ce7f3c644d9850b631a4b501b78102b5",
+  "runtime": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+    "bytes": 23602173,
+    "sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+  },
+  "sample_count": 12,
+  "resources": [
+    {
+      "seconds": 0.010376200021710247,
+      "working": 2080768,
+      "private": 385024,
+      "os_peak_working": 2080768,
+      "os_peak_pagefile": 385024
+    },
+    {
+      "seconds": 0.060688900004606694,
+      "working": 27840512,
+      "private": 24317952,
+      "os_peak_working": 27840512,
+      "os_peak_pagefile": 24326144
+    },
+    {
+      "seconds": 0.11117680001189001,
+      "working": 44003328,
+      "private": 43462656,
+      "os_peak_working": 44146688,
+      "os_peak_pagefile": 44634112
+    },
+    {
+      "seconds": 0.16139590000966564,
+      "working": 59310080,
+      "private": 62099456,
+      "os_peak_working": 60096512,
+      "os_peak_pagefile": 64819200
+    },
+    {
+      "seconds": 0.21173900002031587,
+      "working": 83939328,
+      "private": 104935424,
+      "os_peak_working": 83939328,
+      "os_peak_pagefile": 104951808
+    },
+    {
+      "seconds": 0.26226430002134293,
+      "working": 93278208,
+      "private": 101617664,
+      "os_peak_working": 93278208,
+      "os_peak_pagefile": 104951808
+    },
+    {
+      "seconds": 0.31291170002077706,
+      "working": 111087616,
+      "private": 114425856,
+      "os_peak_working": 111087616,
+      "os_peak_pagefile": 114425856
+    },
+    {
+      "seconds": 0.3634811000083573,
+      "working": 142905344,
+      "private": 145702912,
+      "os_peak_working": 142905344,
+      "os_peak_pagefile": 145702912
+    },
+    {
+      "seconds": 0.414067800011253,
+      "working": 171053056,
+      "private": 174481408,
+      "os_peak_working": 171053056,
+      "os_peak_pagefile": 174481408
+    },
+    {
+      "seconds": 0.46467410001787357,
+      "working": 185892864,
+      "private": 186527744,
+      "os_peak_working": 194572288,
+      "os_peak_pagefile": 215535616
+    },
+    {
+      "seconds": 0.5152403000101913,
+      "working": 187613184,
+      "private": 188375040,
+      "os_peak_working": 194572288,
+      "os_peak_pagefile": 215535616
+    },
+    {
+      "seconds": 0.5658913000079338,
+      "working": 82247680,
+      "private": 80437248,
+      "os_peak_working": 194572288,
+      "os_peak_pagefile": 215535616
+    }
+  ],
+  "resource_scope": "whole CLI process including fixed lexicon, strings, trie, search and runtime; no single-algorithm memory claim",
+  "event_latency_ns": {
+    "n": 171,
+    "p50": 100800,
+    "p95": 294400,
+    "p99": 382900,
+    "max": 414000
+  },
+  "raw_events_in_latency": true,
+  "timing_scope": "InputEngine.handle including frame clone and deterministic search; excludes stdout write, platform/UI and disk; heterogeneous engineering events, not formal latency acceptance",
+  "summary": [
+    "SUMMARY\tevents=171\tconfirmed_simulated_commits=5\tformal_metrics=null\tTSF=false"
+  ],
+  "formal_language_metrics": {
+    "top1": null,
+    "top5": null,
+    "mrr": null
+  },
+  "physical_disconnect": "not-run",
+  "TSF": false,
+  "files": {
+    "stdout.tsv": "4049682e6dae0ac670d343b3f9eedaeea20d724b5d4e3d099b2578b96c1dbf36",
+    "stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

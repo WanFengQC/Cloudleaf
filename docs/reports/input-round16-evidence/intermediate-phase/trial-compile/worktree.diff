@@ -1,0 +1,841 @@
+diff --git a/crates/cloudleaf-search/src/lexicon.rs b/crates/cloudleaf-search/src/lexicon.rs
+index d0ec6ea..6353398 100644
+--- a/crates/cloudleaf-search/src/lexicon.rs
++++ b/crates/cloudleaf-search/src/lexicon.rs
+@@ -35,6 +35,7 @@ pub(crate) struct TrieNode {
+ pub struct Lexicon {
+     pub(crate) entries: Vec<Entry>,
+     pub(crate) trie: Vec<TrieNode>,
++    pub(crate) identity: std::sync::Arc<()>,
+ }
+ 
+ /// 固定Rust1.90容器布局的保守预估，不是RSS或allocator硬上界。
+@@ -236,11 +237,16 @@ impl Lexicon {
+             node.exact.shrink_to_fit();
+             node.prefix.shrink_to_fit();
+         }
+-        Ok(Self { entries, trie })
++        Ok(Self {
++            entries,
++            trie,
++            identity: std::sync::Arc::new(()),
++        })
+     }
+ 
+     pub fn memory_estimate(&self) -> LexiconMemory {
+         let mut owned = std::mem::size_of::<Self>()
++            + 2 * std::mem::size_of::<usize>()
+             + self.entries.capacity() * std::mem::size_of::<Entry>()
+             + self.trie.capacity() * std::mem::size_of::<TrieNode>();
+         let mut tree_nodes = 0;
+diff --git a/crates/cloudleaf-search/src/lib.rs b/crates/cloudleaf-search/src/lib.rs
+index 0c82357..89aba4c 100644
+--- a/crates/cloudleaf-search/src/lib.rs
++++ b/crates/cloudleaf-search/src/lib.rs
+@@ -1,5 +1,6 @@
+ //! 全输入词条格实验内核。词典与模型由宿主预加载，查询不访问外部资源。
+ mod cancellation;
++mod character;
+ mod lattice;
+ mod lexicon;
+ mod model;
+@@ -76,6 +77,8 @@ pub enum Ranker {
+     Weighted,
+     /// 保留结构分优先，只在结构平局时比较独立研究词汇观测。
+     Lexical,
++    /// 完整正文的字符生成概率；保留最后字符历史，不叠加每词结构惩罚。
++    CharacterBigram,
+     Bigram,
+     ContextRerank,
+ }
+diff --git a/crates/cloudleaf-search/src/model.rs b/crates/cloudleaf-search/src/model.rs
+index afbcacd..9e07d92 100644
+--- a/crates/cloudleaf-search/src/model.rs
++++ b/crates/cloudleaf-search/src/model.rs
+@@ -12,16 +12,25 @@ pub struct BigramModel {
+     pairs: BTreeMap<(String, String), u64>,
+     totals: BTreeMap<String, u64>,
+     lexical: BTreeMap<String, u64>,
++    pub(crate) character: Option<crate::character::CharacterModel>,
+ }
+ 
+ impl BigramModel {
+     pub fn train(sequences: &[Vec<String>]) -> Result<Self, SearchError> {
++        Self::train_tokens(sequences, false)
++    }
++
++    fn train_tokens(sequences: &[Vec<String>], characters: bool) -> Result<Self, SearchError> {
+         if sequences.len() > 100_000
+             || sequences.iter().map(Vec::len).sum::<usize>() > 1_000_000
+             || sequences.iter().flatten().any(|s| {
+                 s.is_empty()
+                     || s.len() > 128
+-                    || s.starts_with('<')
++                    || if characters {
++                        s.chars().count() != 1
++                    } else {
++                        s.starts_with('<')
++                    }
+                     || s.chars().any(char::is_whitespace)
+             })
+         {
+@@ -35,6 +44,7 @@ impl BigramModel {
+             pairs: BTreeMap::new(),
+             totals: BTreeMap::new(),
+             lexical: BTreeMap::new(),
++            character: None,
+         };
+         for sequence in sequences {
+             let mut previous = BOS;
+@@ -89,6 +99,17 @@ impl BigramModel {
+         !self.lexical.is_empty()
+     }
+ 
++    pub fn has_character_transitions(&self) -> bool {
++        self.character.is_some()
++    }
++
++    /// 字符缓存按不可变词条索引编译；新词典实例须在装载阶段重新绑定。
++    pub fn is_compatible_lexicon(&self, lexicon: &Lexicon) -> bool {
++        self.character
++            .as_ref()
++            .is_none_or(|model| std::sync::Arc::ptr_eq(&model.lexicon_identity, &lexicon.identity))
++    }
++
+     /// 固定Rust1.90、BTree节点至少五项的布局估计，不是allocator硬上界。
+     pub fn estimated_bytes(&self) -> usize {
+         let node = |len: usize, item: usize| (len.div_ceil(5) + 1) * (32 + 12 * 8 + 11 * item);
+@@ -108,6 +129,10 @@ impl BigramModel {
+             )
+             + node(self.totals.len(), std::mem::size_of::<(String, u64)>())
+             + node(self.lexical.len(), std::mem::size_of::<(String, u64)>())
++            + self
++                .character
++                .as_ref()
++                .map_or(0, |model| model.estimated_bytes())
+     }
+ }
+ 
+@@ -221,7 +246,11 @@ impl LanguageModelSnapshot {
+             || metadata.lexicon_sha256 != expected_lexicon
+             || metadata.training_split != "train"
+             || !matches!(metadata.usage.as_str(), "mechanical" | "research_only")
+-            || !matches!(metadata.kind.as_str(), "lexical" | "bigram")
++            || !matches!(
++                metadata.kind.as_str(),
++                "lexical" | "bigram" | "character_bigram"
++            )
++            || (metadata.kind == "character_bigram" && metadata.tokenization != "unicode-scalar-v1")
+         {
+             return Err(invalid());
+         }
+@@ -235,6 +264,7 @@ impl LanguageModelSnapshot {
+             pairs: BTreeMap::new(),
+             totals: BTreeMap::new(),
+             lexical: BTreeMap::new(),
++            character: None,
+         };
+         let mut rows = 0;
+         let mut incoming = BTreeMap::<String, u64>::new();
+@@ -260,8 +290,16 @@ impl LanguageModelSnapshot {
+                     return Err(invalid());
+                 }
+             } else {
+-                if (previous != BOS && !ids.contains(previous))
+-                    || (next != EOS && !ids.contains(next))
++                let known = |value: &str| {
++                    if metadata.kind == "character_bigram" {
++                        value.chars().count() == 1
++                            && !value.chars().any(|c| c.is_whitespace() || c.is_control())
++                    } else {
++                        ids.contains(value)
++                    }
++                };
++                if (previous != BOS && !known(previous))
++                    || (next != EOS && !known(next))
+                     || model
+                         .pairs
+                         .insert((previous.into(), next.into()), count)
+@@ -280,16 +318,20 @@ impl LanguageModelSnapshot {
+         if rows == 0 {
+             return Err(invalid());
+         }
+-        if metadata.kind == "bigram" {
++        if matches!(metadata.kind.as_str(), "bigram" | "character_bigram") {
+             let bos = model.totals.get(BOS).copied().unwrap_or(0);
+             if bos == 0
+                 || bos > 100_000
+                 || incoming.get(EOS).copied().unwrap_or(0) != bos
+                 || model.totals.values().sum::<u64>() > 1_100_000
+-                || ids.iter().any(|id| {
+-                    model.totals.get(*id).copied().unwrap_or(0)
+-                        != incoming.get(*id).copied().unwrap_or(0)
+-                })
++                || model
++                    .vocabulary
++                    .iter()
++                    .filter(|id| id.as_str() != EOS && id.as_str() != UNK)
++                    .any(|id| {
++                        model.totals.get(id).copied().unwrap_or(0)
++                            != incoming.get(id).copied().unwrap_or(0)
++                    })
+             {
+                 return Err(invalid());
+             }
+@@ -301,6 +343,17 @@ impl LanguageModelSnapshot {
+                 return Err(invalid());
+             }
+         }
++        if metadata.kind == "character_bigram" {
++            model.character = Some(crate::character::CharacterModel::from_counts(
++                &model.vocabulary,
++                &model.pairs,
++                &model.totals,
++                lexicon,
++            ));
++            model.pairs.clear();
++            model.totals.clear();
++            model.vocabulary = BTreeSet::from([EOS.into(), UNK.into()]);
++        }
+         Ok(Self { metadata, model })
+     }
+ 
+@@ -319,13 +372,19 @@ impl LanguageModelSnapshot {
+                 "训练元数据不能携带计数",
+             ));
+         }
+-        let trained = BigramModel::train(sequences)?;
++        let characters = metadata_header
++            .lines()
++            .any(|line| line == "kind\tcharacter_bigram");
++        let trained = BigramModel::train_tokens(sequences, characters)?;
+         let mut payload = metadata_header.to_owned();
+         for ((previous, next), count) in &trained.pairs {
+             payload.push_str(&format!("{previous}\t{next}\t{count}\n"));
+         }
+         let snapshot = Self::from_tsv(&payload, lexicon, expected_lexicon)?;
+-        if snapshot.metadata.kind != "bigram" {
++        if !matches!(
++            snapshot.metadata.kind.as_str(),
++            "bigram" | "character_bigram"
++        ) {
+             return Err(SearchError::new(
+                 ErrorKind::InvalidModel,
+                 "训练入口只接受独立序列bigram",
+@@ -355,6 +414,8 @@ impl LanguageModelSnapshot {
+             for (id, count) in &self.model.lexical {
+                 output.push_str(&format!("<lexical>\t{id}\t{count}\n"));
+             }
++        } else if let Some(model) = &self.model.character {
++            model.write_tsv(&mut output);
+         } else {
+             for ((previous, next), count) in &self.model.pairs {
+                 output.push_str(&format!("{previous}\t{next}\t{count}\n"));
+@@ -389,7 +450,7 @@ fn reachable<'a>(
+ }
+ 
+ /// 以1024为单位的整数二进制对数；避免浮点平台舍入进入候选平局。
+-fn log2_fixed(value: u64) -> i64 {
++pub(crate) fn log2_fixed(value: u64) -> i64 {
+     let exponent = 63 - value.leading_zeros();
+     let mut normalized = (u128::from(value) << 32) >> exponent;
+     let mut fraction = 0_i64;
+diff --git a/crates/cloudleaf-search/src/search.rs b/crates/cloudleaf-search/src/search.rs
+index dc6104e..5b4d669 100644
+--- a/crates/cloudleaf-search/src/search.rs
++++ b/crates/cloudleaf-search/src/search.rs
+@@ -4,7 +4,7 @@ use crate::{
+     Ranker, SearchError,
+ };
+ use std::cmp::Ordering;
+-use std::collections::BTreeMap;
++use std::collections::{BTreeMap, BinaryHeap};
+ 
+ #[derive(Clone, Debug, Default, Eq, PartialEq)]
+ pub struct Features {
+@@ -17,6 +17,10 @@ pub struct Features {
+     pub lexical_missing: usize,
+     pub bigram_units: i64,
+     pub context_units: i64,
++    pub structural_units: i64,
++    pub character_units: i64,
++    pub character_count: usize,
++    pub character_unknown: usize,
+ }
+ 
+ #[derive(Clone, Debug, Eq, PartialEq)]
+@@ -55,6 +59,7 @@ struct Path {
+     ids: Vec<usize>,
+     edges: Vec<usize>,
+     features: Features,
++    last_character: Option<u32>,
+ }
+ 
+ fn compare(a: &Path, b: &Path) -> Ordering {
+@@ -88,11 +93,18 @@ impl Scorer<'_> {
+         let entry = &self.lexicon.entries[edge.entry];
+         let stamp = observer.start(Phase::Scoring);
+         let mut features = path.features.clone();
+-        let mut score = path.score - 100;
++        let mut score = path.score;
++        features.structural_units -= 100;
++        if self.ranker != Ranker::CharacterBigram {
++            score -= 100;
++        }
+         features.words += 1;
+         if edge.kind == MatchKind::Prefix {
+             features.prefixes += 1;
+-            score -= 300;
++            features.structural_units -= 300;
++            if self.ranker != Ranker::CharacterBigram {
++                score -= 300;
++            }
+         }
+         if let Some(frequency) = entry.frequency {
+             let units = i64::from(63 - (u64::from(frequency) + 1).leading_zeros());
+@@ -126,6 +138,20 @@ impl Scorer<'_> {
+             features.bigram_units += units;
+             score += units;
+         }
++        let mut last_character = path.last_character;
++        if self.ranker == Ranker::CharacterBigram {
++            let model = self.model.unwrap().character.as_ref().unwrap();
++            let entry_score = model.entry(edge.entry);
++            let units = model.transition(
++                path.last_character.unwrap_or(crate::character::BOS),
++                entry_score.first,
++            ) + entry_score.internal;
++            features.character_units += units;
++            features.character_count += entry_score.characters;
++            features.character_unknown += entry_score.unknown;
++            score += units;
++            last_character = Some(entry_score.last);
++        }
+         observer.stop(Phase::Scoring, stamp);
+         // 满桶中严格劣于末项的扩展必被丢弃，先比较借用ID，避免复制整条路径。
+         if cutoff.is_some_and(|worst| {
+@@ -147,6 +173,7 @@ impl Scorer<'_> {
+         let mut next = path.clone();
+         next.score = score;
+         next.features = features;
++        next.last_character = last_character;
+         next.text.push_str(&entry.text);
+         next.ids.push(edge.entry);
+         next.edges.push(edge_index);
+@@ -167,6 +194,17 @@ impl Scorer<'_> {
+             path.features.bigram_units += units;
+             path.score += units;
+         }
++        if self.ranker == Ranker::CharacterBigram {
++            let units = self
++                .model
++                .unwrap()
++                .character
++                .as_ref()
++                .unwrap()
++                .finish(path.last_character.unwrap_or(crate::character::BOS));
++            path.features.character_units += units;
++            path.score += units;
++        }
+         observer.stop(Phase::Scoring, stamp);
+         path
+     }
+@@ -264,7 +302,7 @@ fn dynamic<O: Observer>(
+     k: usize,
+     observer: &mut O,
+ ) -> Vec<Path> {
+-    // last词条是未来一阶评分的充分状态；文本去重在每个状态内进行。
++    // 词模型保留last词条；字符模型保留最后映射字符，不能按位置合并不同历史。
+     let mut states: Vec<BTreeMap<Option<usize>, Vec<Path>>> =
+         vec![BTreeMap::new(); scorer.graph.letters.len() + 1];
+     states[0].insert(None, vec![Path::default()]);
+@@ -289,7 +327,19 @@ fn dynamic<O: Observer>(
+                     return Vec::new();
+                 }
+                 let edge = &scorer.graph.edges[*edge_index];
+-                let bucket = states[edge.end].entry(Some(edge.entry)).or_default();
++                let history = if scorer.ranker == Ranker::CharacterBigram {
++                    scorer
++                        .model
++                        .unwrap()
++                        .character
++                        .as_ref()
++                        .unwrap()
++                        .entry(edge.entry)
++                        .last as usize
++                } else {
++                    edge.entry
++                };
++                let bucket = states[edge.end].entry(Some(history)).or_default();
+                 let old = bucket.len();
+                 if !resident_allowed(stats, resident + 1, config) {
+                     return Vec::new();
+@@ -353,6 +403,196 @@ fn position_dynamic<O: Observer>(
+     states.pop().unwrap_or_default()
+ }
+ 
++struct BoundedPath {
++    bound: i64,
++    best_ids: Vec<usize>,
++    order: usize,
++    position: usize,
++    path: Path,
++}
++
++impl PartialEq for BoundedPath {
++    fn eq(&self, other: &Self) -> bool {
++        self.order == other.order
++    }
++}
++impl Eq for BoundedPath {}
++impl PartialOrd for BoundedPath {
++    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
++        Some(self.cmp(other))
++    }
++}
++impl Ord for BoundedPath {
++    fn cmp(&self, other: &Self) -> Ordering {
++        self.bound
++            .cmp(&other.bound)
++            .then_with(|| other.best_ids.cmp(&self.best_ids))
++            .then_with(|| other.order.cmp(&self.order))
++    }
++}
++
++#[derive(Clone)]
++struct Suffix {
++    score: i64,
++    ids: Vec<usize>,
++}
++
++/// 精确后缀分用于有界最佳优先枚举；同分上界不能提前结束稳定ID比较。
++fn character_exact<O: Observer>(
++    scorer: &Scorer<'_>,
++    config: &Config,
++    stats: &mut Statistics,
++    k: usize,
++    observer: &mut O,
++) -> Vec<Path> {
++    let model = scorer.model.unwrap().character.as_ref().unwrap();
++    let end = scorer.graph.letters.len();
++    let mut suffix = vec![BTreeMap::<u32, Option<Suffix>>::new(); end + 1];
++    suffix[0].insert(crate::character::BOS, None);
++    let mut labels = 1;
++    for edge in &scorer.graph.edges {
++        if suffix[edge.end]
++            .insert(model.entry(edge.entry).last, None)
++            .is_none()
++        {
++            labels += 1;
++            if !resident_allowed(stats, labels + 1, config) {
++                return Vec::new();
++            }
++        }
++    }
++    for (&previous, value) in &mut suffix[end] {
++        *value = Some(Suffix {
++            score: model.finish(previous),
++            ids: Vec::new(),
++        });
++    }
++    for position in (0..end).rev() {
++        let histories: Vec<_> = suffix[position].keys().copied().collect();
++        for previous in histories {
++            let mut best: Option<Suffix> = None;
++            for edge_index in &scorer.graph.outgoing[position] {
++                if scorer.cancelled() {
++                    return Vec::new();
++                }
++                if !expand_allowed(stats, config) {
++                    return Vec::new();
++                }
++                let edge = &scorer.graph.edges[*edge_index];
++                let entry = model.entry(edge.entry);
++                if let Some(rest) = suffix[edge.end].get(&entry.last).and_then(Option::as_ref) {
++                    let stamp = observer.start(Phase::Scoring);
++                    let score =
++                        model.transition(previous, entry.first) + entry.internal + rest.score;
++                    let ids = std::iter::once(edge.entry).chain(rest.ids.iter().copied());
++                    if best.as_ref().is_none_or(|value| {
++                        score > value.score
++                            || (score == value.score
++                                && ids.clone().cmp(value.ids.iter().copied()) == Ordering::Less)
++                    }) {
++                        best = Some(Suffix {
++                            score,
++                            ids: ids.collect(),
++                        });
++                    }
++                    observer.stop(Phase::Scoring, stamp);
++                }
++            }
++            suffix[position].insert(previous, best);
++        }
++    }
++    let Some(best) = &suffix[0][&crate::character::BOS] else {
++        return Vec::new();
++    };
++    let mut pending = BinaryHeap::from([BoundedPath {
++        bound: best.score,
++        best_ids: best.ids.clone(),
++        order: 0,
++        position: 0,
++        path: Path::default(),
++    }]);
++    let mut order = 0;
++    let mut complete: Vec<Path> = Vec::new();
++    let mut seen = vec![BTreeMap::<String, Vec<usize>>::new(); end + 1];
++    seen[0].insert(String::new(), Vec::new());
++    let mut seen_count = 1;
++    while let Some(current) = pending.pop() {
++        if scorer.cancelled() {
++            return Vec::new();
++        }
++        if seen[current.position].get(&current.path.text) != Some(&current.path.ids) {
++            continue;
++        }
++        if complete.len() == k
++            && (current.bound < complete.last().unwrap().score
++                || (current.bound == complete.last().unwrap().score
++                    && current.best_ids >= complete.last().unwrap().ids))
++        {
++            break;
++        }
++        if current.position == end {
++            let finished = scorer.finish(current.path, observer);
++            insert_unique(&mut complete, finished, k, observer);
++            continue;
++        }
++        for edge_index in &scorer.graph.outgoing[current.position] {
++            if scorer.cancelled() {
++                return Vec::new();
++            }
++            if !expand_allowed(stats, config) {
++                return Vec::new();
++            }
++            let edge = &scorer.graph.edges[*edge_index];
++            let entry = model.entry(edge.entry);
++            let Some(rest) = suffix[edge.end].get(&entry.last).and_then(Option::as_ref) else {
++                continue;
++            };
++            if !resident_allowed(
++                stats,
++                labels + seen_count + pending.len() + complete.len() + 3,
++                config,
++            ) {
++                return Vec::new();
++            }
++            let next = scorer
++                .extend(&current.path, *edge_index, None, observer)
++                .unwrap();
++            let bound = next.score + rest.score;
++            if complete.len() == k && bound < complete.last().unwrap().score {
++                continue;
++            }
++            // 同位置相同正文有相同字符分和未来状态；不同词典分词只保留最优稳定ID。
++            if seen[edge.end]
++                .get(&next.text)
++                .is_some_and(|ids| ids <= &next.ids)
++            {
++                continue;
++            }
++            if seen[edge.end]
++                .insert(next.text.clone(), next.ids.clone())
++                .is_none()
++            {
++                seen_count += 1;
++            }
++            order += 1;
++            let best_ids = next
++                .ids
++                .iter()
++                .copied()
++                .chain(rest.ids.iter().copied())
++                .collect();
++            pending.push(BoundedPath {
++                bound,
++                best_ids,
++                order,
++                position: edge.end,
++                path: next,
++            });
++        }
++    }
++    complete
++}
++
+ /// 在同一个只读词条图上比较搜索方法。输入/模型载入和评估IO由宿主负责。
+ pub fn search_graph(
+     lexicon: &Lexicon,
+@@ -413,6 +653,9 @@ pub(crate) fn search_controlled_observed<O: Observer>(
+             && model.is_none_or(|value| !value.has_transitions()))
+             || (config.ranker == Ranker::Lexical
+                 && model.is_none_or(|value| !value.has_lexical_signal()))
++            || (config.ranker == Ranker::CharacterBigram
++                && model.is_none_or(|value| !value.has_character_transitions()))
++            || model.is_some_and(|value| !value.is_compatible_lexicon(lexicon))
+         {
+             return Err(SearchError::new(
+                 ErrorKind::InvalidModel,
+@@ -463,6 +706,8 @@ pub(crate) fn search_controlled_observed<O: Observer>(
+         reference(&scorer, config, &mut statistics, k, observer)
+     } else if config.method == Method::PositionDag {
+         position_dynamic(&scorer, config, &mut statistics, k, observer)
++    } else if config.method == Method::ExactDag && config.ranker == Ranker::CharacterBigram {
++        character_exact(&scorer, config, &mut statistics, k, observer)
+     } else {
+         dynamic(&scorer, config, &mut statistics, k, observer)
+     };
+diff --git a/crates/cloudleaf-search/tests/character_model.rs b/crates/cloudleaf-search/tests/character_model.rs
+index d35ac67..a2cb985 100644
+--- a/crates/cloudleaf-search/tests/character_model.rs
++++ b/crates/cloudleaf-search/tests/character_model.rs
+@@ -1,9 +1,13 @@
+-use cloudleaf_search::{Config, LanguageModelSnapshot, Lattice, Lexicon, Method, Ranker, search_graph};
++use cloudleaf_search::{
++    Config, LanguageModelSnapshot, Lattice, Lexicon, Method, Ranker, search_graph,
++};
+ 
+ const SHA: &str = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+ 
+ fn lexicon(with_phrase: bool) -> Lexicon {
+-    let mut text = String::from("# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\na\tma\t甲\t\tunknown\t\tfixture\ta\tMIT\nb\tma\t乙\t\tunknown\t\tfixture\tb\tMIT\nc\tna\t丙\t\tunknown\t\tfixture\tc\tMIT\nd\tna\t𠮷\t\tunknown\t\tfixture\td\tMIT\n");
++    let mut text = String::from(
++        "# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\na\tma\t甲\t\tunknown\t\tfixture\ta\tMIT\nb\tma\t乙\t\tunknown\t\tfixture\tb\tMIT\nc\tna\t丙\t\tunknown\t\tfixture\tc\tMIT\nd\tna\t𠮷\t\tunknown\t\tfixture\td\tMIT\n",
++    );
+     if with_phrase {
+         text.push_str("z\tma na\t乙丙\t\tunknown\t\tfixture\tz\tMIT\n");
+     }
+@@ -11,7 +15,9 @@ fn lexicon(with_phrase: bool) -> Lexicon {
+ }
+ 
+ fn metadata() -> String {
+-    format!("# cloudleaf-language-v1\nlexicon_sha256\t{SHA}\nsource_sha256\t{SHA}\nsource_id\tmechanical\nlicense_id\tMIT\ntokenization\tunicode-scalar-v1\nusage\tmechanical\nkind\tcharacter_bigram\ntraining_split\ttrain\nprevious\tnext\tcount\n")
++    format!(
++        "# cloudleaf-language-v1\nlexicon_sha256\t{SHA}\nsource_sha256\t{SHA}\nsource_id\tmechanical\nlicense_id\tMIT\ntokenization\tunicode-scalar-v1\nusage\tmechanical\nkind\tcharacter_bigram\ntraining_split\ttrain\nprevious\tnext\tcount\n"
++    )
+ }
+ 
+ fn sequences() -> Vec<Vec<String>> {
+@@ -28,20 +34,54 @@ fn complete_character_score_is_independent_of_dictionary_segmentation() {
+         let model = LanguageModelSnapshot::train(&metadata(), &lex, SHA, &sequences()).unwrap();
+         let restored = LanguageModelSnapshot::from_tsv(&model.to_tsv(), &lex, SHA).unwrap();
+         assert_eq!(model.to_tsv(), restored.to_tsv());
+-        let config = Config { ranker: Ranker::CharacterBigram, output_k: 10, ..Config::default() };
++        let config = Config {
++            ranker: Ranker::CharacterBigram,
++            output_k: 10,
++            ..Config::default()
++        };
+         let graph = Lattice::build(&lex, "mana", &config).unwrap();
+-        let reference = search_graph(&lex, &graph, &Config { method: Method::Reference, ..config.clone() }, Some(model.model()), None).unwrap();
++        let reference = search_graph(
++            &lex,
++            &graph,
++            &Config {
++                method: Method::Reference,
++                ..config.clone()
++            },
++            Some(model.model()),
++            None,
++        )
++        .unwrap();
+         assert!(reference.guaranteed);
+         assert_eq!(reference.candidates[0].text, "乙丙");
+         assert_eq!(reference.candidates[0].features.character_count, 2);
+-        assert_eq!(reference.candidates[0].score, reference.candidates[0].features.character_units);
++        assert_eq!(
++            reference.candidates[0].score,
++            reference.candidates[0].features.character_units
++        );
+         scores.push(reference.candidates[0].score);
+         for method in [Method::ExactDag, Method::Beam] {
+-            let actual = search_graph(&lex, &graph, &Config { method, ..config.clone() }, Some(model.model()), None).unwrap();
++            let actual = search_graph(
++                &lex,
++                &graph,
++                &Config {
++                    method,
++                    ..config.clone()
++                },
++                Some(model.model()),
++                None,
++            )
++            .unwrap();
+             assert_eq!(actual.candidates, reference.candidates);
+             assert!(actual.guaranteed);
+         }
+-        assert!(Config { method: Method::PositionDag, ..config }.validate().is_err());
++        assert!(
++            Config {
++                method: Method::PositionDag,
++                ..config
++            }
++            .validate()
++            .is_err()
++        );
+     }
+     assert_eq!(scores[0], scores[1]);
+ }
+@@ -51,10 +91,24 @@ fn lower_prefix_with_a_different_character_history_survives_exact_search() {
+     let lex = lexicon(false);
+     let model = LanguageModelSnapshot::train(&metadata(), &lex, SHA, &sequences()).unwrap();
+     for k in [1, 2, 5] {
+-        let cfg = Config { ranker: Ranker::CharacterBigram, output_k: k, ..Config::default() };
++        let cfg = Config {
++            ranker: Ranker::CharacterBigram,
++            output_k: k,
++            ..Config::default()
++        };
+         for raw in ["ma", "mana", "mama", "manama", "mamanana", "ma'na", "qz"] {
+             let graph = Lattice::build(&lex, raw, &cfg).unwrap();
+-            let reference = search_graph(&lex, &graph, &Config { method: Method::Reference, ..cfg.clone() }, Some(model.model()), None).unwrap();
++            let reference = search_graph(
++                &lex,
++                &graph,
++                &Config {
++                    method: Method::Reference,
++                    ..cfg.clone()
++                },
++                Some(model.model()),
++                None,
++            )
++            .unwrap();
+             let exact = search_graph(&lex, &graph, &cfg, Some(model.model()), None).unwrap();
+             assert_eq!(exact.candidates, reference.candidates, "{raw} k={k}");
+             assert!(exact.guaranteed);
+@@ -71,13 +125,17 @@ fn character_reader_rejects_word_tokens_scope_and_disconnected_counts() {
+     let text = model.to_tsv();
+     for invalid in [
+         text.replace("unicode-scalar-v1", "stable-entry-ids"),
+-        text.replace("research_only", "production").replace("usage\tmechanical", "usage\tproduction"),
++        text.replace("research_only", "production")
++            .replace("usage\tmechanical", "usage\tproduction"),
+         text.replace("\t甲\t", "\t甲乙\t"),
+         format!("{text}戊\t戊\t1\n"),
+     ] {
+         assert!(LanguageModelSnapshot::from_tsv(&invalid, &lex, SHA).is_err());
+     }
+-    let cfg = Config { ranker: Ranker::Bigram, ..Config::default() };
++    let cfg = Config {
++        ranker: Ranker::Bigram,
++        ..Config::default()
++    };
+     let graph = Lattice::build(&lex, "ma", &cfg).unwrap();
+     assert!(search_graph(&lex, &graph, &cfg, Some(model.model()), None).is_err());
+ }
+@@ -86,13 +144,31 @@ fn character_reader_rejects_word_tokens_scope_and_disconnected_counts() {
+ fn unknown_characters_and_resource_failure_keep_explicit_semantics() {
+     let lex = lexicon(false);
+     let model = LanguageModelSnapshot::train(&metadata(), &lex, SHA, &sequences()).unwrap();
+-    let cfg = Config { ranker: Ranker::CharacterBigram, output_k: 10, ..Config::default() };
++    let cfg = Config {
++        ranker: Ranker::CharacterBigram,
++        output_k: 10,
++        ..Config::default()
++    };
+     let graph = Lattice::build(&lex, "mana", &cfg).unwrap();
+     let result = search_graph(&lex, &graph, &cfg, Some(model.model()), None).unwrap();
+-    let unknown = result.candidates.iter().find(|c| c.text.contains('𠮷')).unwrap();
++    let unknown = result
++        .candidates
++        .iter()
++        .find(|c| c.text.contains('𠮷'))
++        .unwrap();
+     assert_eq!(unknown.features.character_unknown, 1);
+     assert!(unknown.score < 0);
+-    let exhausted = search_graph(&lex, &graph, &Config { max_expansions: 1, ..cfg }, Some(model.model()), None).unwrap();
++    let exhausted = search_graph(
++        &lex,
++        &graph,
++        &Config {
++            max_expansions: 1,
++            ..cfg
++        },
++        Some(model.model()),
++        None,
++    )
++    .unwrap();
+     assert!(!exhausted.guaranteed);
+     assert!(exhausted.statistics.budget.is_some());
+     assert_eq!(exhausted.raw_fallback, "mana");
+@@ -102,7 +178,10 @@ fn unknown_characters_and_resource_failure_keep_explicit_semantics() {
+ fn precompiled_entry_cache_rejects_a_different_lexicon_instance() {
+     let lex = lexicon(false);
+     let model = LanguageModelSnapshot::train(&metadata(), &lex, SHA, &sequences()).unwrap();
+-    let cfg = Config { ranker: Ranker::CharacterBigram, ..Config::default() };
++    let cfg = Config {
++        ranker: Ranker::CharacterBigram,
++        ..Config::default()
++    };
+     let cloned = lex.clone();
+     let graph = Lattice::build(&cloned, "ma", &cfg).unwrap();
+     assert!(search_graph(&cloned, &graph, &cfg, Some(model.model()), None).is_ok());
+@@ -118,10 +197,24 @@ fn eos_can_reverse_the_more_likely_sentence_prefix() {
+     let mut training = vec![vec!["甲".into(), "丁".into()]; 20];
+     training.extend(vec![vec!["乙".into()]; 10]);
+     let model = LanguageModelSnapshot::train(&metadata(), &lex, SHA, &training).unwrap();
+-    let cfg = Config { ranker: Ranker::CharacterBigram, output_k: 1, ..Config::default() };
++    let cfg = Config {
++        ranker: Ranker::CharacterBigram,
++        output_k: 1,
++        ..Config::default()
++    };
+     let graph = Lattice::build(&lex, "ma", &cfg).unwrap();
+     for method in [Method::Reference, Method::ExactDag, Method::Beam] {
+-        let result = search_graph(&lex, &graph, &Config { method, ..cfg.clone() }, Some(model.model()), None).unwrap();
++        let result = search_graph(
++            &lex,
++            &graph,
++            &Config {
++                method,
++                ..cfg.clone()
++            },
++            Some(model.model()),
++            None,
++        )
++        .unwrap();
+         assert_eq!(result.candidates[0].text, "乙");
+         assert!(result.guaranteed);
+     }
+@@ -132,11 +225,37 @@ fn exact_suffix_bounds_keep_top50_within_a_fixed_work_budget() {
+     let lex = lexicon(false);
+     let training = vec![vec!["甲".into(); 12]; 20];
+     let model = LanguageModelSnapshot::train(&metadata(), &lex, SHA, &training).unwrap();
+-    let cfg = Config { ranker: Ranker::CharacterBigram, output_k: 50, context_pool: 50, max_expansions: 100_000, ..Config::default() };
++    let cfg = Config {
++        ranker: Ranker::CharacterBigram,
++        output_k: 50,
++        context_pool: 50,
++        max_expansions: 100_000,
++        ..Config::default()
++    };
+     let graph = Lattice::build(&lex, &"ma".repeat(12), &cfg).unwrap();
+-    let reference = search_graph(&lex, &graph, &Config { method: Method::Reference, ..cfg.clone() }, Some(model.model()), None).unwrap();
++    let reference = search_graph(
++        &lex,
++        &graph,
++        &Config {
++            method: Method::Reference,
++            ..cfg.clone()
++        },
++        Some(model.model()),
++        None,
++    )
++    .unwrap();
+     assert!(reference.guaranteed);
+-    let bounded = search_graph(&lex, &graph, &Config { max_expansions: 600, ..cfg }, Some(model.model()), None).unwrap();
++    let bounded = search_graph(
++        &lex,
++        &graph,
++        &Config {
++            max_expansions: 600,
++            ..cfg
++        },
++        Some(model.model()),
++        None,
++    )
++    .unwrap();
+     assert!(bounded.guaranteed, "{:?}", bounded.statistics);
+     assert_eq!(bounded.candidates, reference.candidates);
+ }

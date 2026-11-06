@@ -1,0 +1,29 @@
+Round16工具层错误摘录（从本次工具返回值复制；不是产品故障或重新执行记录）
+
+1. 临时追踪脚本生成的PowerShell转义错误，shell返回1，未运行输入模型：
+ParserError: Missing ] at end of attribute or type literal.
+后改用UTF-8源文件apply_patch生成，实际trace命令返回0。失败未算产品测试。
+
+2. 临时baseline编译初次使用裸cargo路径，Python返回1，未创建编译子进程：
+FileNotFoundError: [WinError 2] 系统找不到指定的文件。
+后改为C:/Users/EDY/.cargo/bin/cargo.exe，固定5045e18源码archive编译返回0。
+
+3. 初次新许可文本直接复制HTML全文抽取结果，git diff 9664a1c 1398755 --check返回2：
+licenses/input-context/CC-BY-2.0-FR.txt:1: trailing whitespace.
+完整53508字节输出保存在runs/license-format-red/stdout.txt。
+PowerShell该链检查后仍继续提交1398755，是执行控制错误；8a0838b正常后续提交从官方HTML正文源头重新生成，未修改或删除旧版权原件。没有重写提交历史。
+
+4. 新许可生成工具第一次正文断言错误，Python返回1，未写目标：
+AssertionError
+原断言要求HTML纯文本包含字面3./4.，实际序号为HTML列表结构；改为正文长度/实际Offrant及Contrat检查。第二次生成成功，许可SHA362dd817bbc88624140127ee5075f995bccf09e4518c8834180798ffc2578574。
+
+5. 临时全检查脚本复制命令出现转义错误，Python返回1，后续脚本不存在返回2：
+SyntaxError: '(' was never closed
+can't open file '.local/full16_verified.py': [Errno 2] No such file or directory
+随后通过源文件生成新标签的完整检查器，全部13命令分别保存退出码和日志。
+
+6. 独立探针首次临时Cargo --locked缺少锁文件返回101，实际原文与修复后的generate-lockfile--offline记录在diagnosis目录。
+7. 独立最终差分meta核对首次在temp而非repo cwd执行git失败，随后git -C纠正；commit-verification.json如实保存，原测试候选差分没有失败。
+8. 语料cmn-eng存在85条悬空引用，最初严格准备失败；corpus/prepare-initial-failure.json保留原件及工具身份。随后只隔离这些边，不虚构缺失句。
+
+只有存在对应原始stdout/stderr/returncode的runs条目才计为实际验证结果；本文件摘录不替代原始证据。

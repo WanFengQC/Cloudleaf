@@ -1,0 +1,482 @@
+{
+  "implementation_head": "8a0838b2261d0cf74f1ae17fa028849509deedc6",
+  "status": "partial",
+  "rust": {
+    "passed": 218,
+    "failed": 0,
+    "ignored": 2
+  },
+  "python_tests": 67,
+  "checks": [
+    {
+      "label": "verified-01",
+      "command": [
+        "C:\\Program Files\\Git\\cmd\\git.EXE",
+        "diff",
+        "--check"
+      ],
+      "returncode": 0,
+      "seconds": 0.08374870000989176,
+      "head": "8a0838b2261d0cf74f1ae17fa028849509deedc6",
+      "stdout": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "label": "verified-02",
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "returncode": 0,
+      "seconds": 1.1000573000055738,
+      "head": "8a0838b2261d0cf74f1ae17fa028849509deedc6",
+      "stdout": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "label": "verified-03",
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "returncode": 0,
+      "seconds": 0.8164574000111315,
+      "head": "8a0838b2261d0cf74f1ae17fa028849509deedc6",
+      "stdout": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "bytes": 72,
+        "sha256": "29162d76fb109d9c6005d8544d63a4a438d15235d4f9b8e73d51adc9ba6e95d7"
+      }
+    },
+    {
+      "label": "verified-04",
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "test",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 14.188274299987825,
+      "head": "8a0838b2261d0cf74f1ae17fa028849509deedc6",
+      "stdout": {
+        "bytes": 23259,
+        "sha256": "95d26b08ab2a7d8fe574c61a838452c2e876f047bbed1d8dddf827ac2018a9c8"
+      },
+      "stderr": {
+        "bytes": 2894,
+        "sha256": "b57093269c071eeffd8abc782bc3a3f0c84ddc0690f2c6d8d92b1fea5fd6eef9"
+      }
+    },
+    {
+      "label": "verified-05",
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "test",
+        "--workspace",
+        "--doc",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 1.2893867999955546,
+      "head": "8a0838b2261d0cf74f1ae17fa028849509deedc6",
+      "stdout": {
+        "bytes": 791,
+        "sha256": "d7852962e3224d9e532b04708a6c7e304ce1ba4ec821a2b6175085af6a843e88"
+      },
+      "stderr": {
+        "bytes": 293,
+        "sha256": "827e069ed0b0676a6c5bf0aae72440c707733ea29abdd18f078a90cfa00d0c65"
+      }
+    },
+    {
+      "label": "verified-06",
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "build",
+        "--workspace",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 5.1923649000236765,
+      "head": "8a0838b2261d0cf74f1ae17fa028849509deedc6",
+      "stdout": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "bytes": 171,
+        "sha256": "2e4921f84155d52d21c44856a8ef0798ab05fd3629a8adb116f5104e6922599a"
+      }
+    },
+    {
+      "label": "verified-07",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.EXE",
+        "scripts/check_workspace.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.4736427000025287,
+      "head": "8a0838b2261d0cf74f1ae17fa028849509deedc6",
+      "stdout": {
+        "bytes": 645,
+        "sha256": "9811831b9af9d803c8dd8225c5ffba2cd69848837162d73dbf35f829b791ee41"
+      },
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "label": "verified-08",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.EXE",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "returncode": 0,
+      "seconds": 11.091320300009102,
+      "head": "8a0838b2261d0cf74f1ae17fa028849509deedc6",
+      "stdout": {
+        "bytes": 44,
+        "sha256": "48be988b8690832fbca5f54416fb88c67689df1d115b004b069ab54531c44f66"
+      },
+      "stderr": {
+        "bytes": 11452,
+        "sha256": "f58f220dcf5aa9452bfa1f954d58bc4b09937feecbb4102f0d1fb6aac32c6447"
+      }
+    },
+    {
+      "label": "verified-09",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.EXE",
+        "scripts/audit_windows_dependencies.py",
+        "--audit-binary",
+        "C:/Users/EDY/WebstormProjects/Cloudleaf/.local/audit-tool/bin/cargo-audit.exe",
+        "--output",
+        ".local/round16-final-dependency-audit.json"
+      ],
+      "returncode": 0,
+      "seconds": 4.979102300014347,
+      "head": "8a0838b2261d0cf74f1ae17fa028849509deedc6",
+      "stdout": {
+        "bytes": 266,
+        "sha256": "65415dad66226d78cf440e310aae5d9d42067c741b09762917ef7e107f64b821"
+      },
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "label": "verified-10",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.EXE",
+        "scripts/benchmark.py",
+        "--iterations",
+        "100",
+        "--output",
+        ".local/round16-performance.json"
+      ],
+      "returncode": 0,
+      "seconds": 5.581840200000443,
+      "head": "8a0838b2261d0cf74f1ae17fa028849509deedc6",
+      "stdout": {
+        "bytes": 1369,
+        "sha256": "dbf7fccdc3d6d0104e55bafff4265a7714c0c169c6761bd8cc9151e1e49975c9"
+      },
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "label": "verified-11",
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.EXE",
+        "scripts/evaluate_algorithms.py",
+        "--output-dir",
+        ".local/round16-algorithm-v1"
+      ],
+      "returncode": 0,
+      "seconds": 3.8294525999808684,
+      "head": "8a0838b2261d0cf74f1ae17fa028849509deedc6",
+      "stdout": {
+        "bytes": 2664,
+        "sha256": "fec74761448e149a0c6af7a03322d186c60806e2f8096bb1408968100556de23"
+      },
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "label": "verified-12",
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "build",
+        "-p",
+        "cloudleaf-input",
+        "--examples",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 0.23138720000861213,
+      "head": "8a0838b2261d0cf74f1ae17fa028849509deedc6",
+      "stdout": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "bytes": 62,
+        "sha256": "7a7bb64a28cdda9b91e6e27f41be455104d929b5d7ad6dd5beca75fc5a47f1f4"
+      }
+    },
+    {
+      "label": "verified-13",
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "build",
+        "-p",
+        "cloudleaf-search",
+        "--examples",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 0.18150480001349933,
+      "head": "8a0838b2261d0cf74f1ae17fa028849509deedc6",
+      "stdout": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "bytes": 62,
+        "sha256": "90c8a1a69c0155761cff4bfe0e61bbee007961d2b96729d2127c2e0c291489dd"
+      }
+    }
+  ],
+  "models": {
+    "character.tsv": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character.tsv",
+      "bytes": 1459894,
+      "sha256": "5f28834165fcf83b22458e701b3608b403cb9bf7a9be8ba3c686fd158c53d6b9"
+    },
+    "character-rebuild.tsv": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character-rebuild.tsv",
+      "bytes": 1459894,
+      "sha256": "5f28834165fcf83b22458e701b3608b403cb9bf7a9be8ba3c686fd158c53d6b9"
+    },
+    "covered-character.tsv": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\covered-character.tsv",
+      "bytes": 838486,
+      "sha256": "ca34af3b19eeb240090bf73a0c33e7d6738b9d30e94adbc3f0d79587f7b309f6"
+    },
+    "word.tsv": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\word.tsv",
+      "bytes": 8565226,
+      "sha256": "19c08b9bee4024a85567b3d5fcd8252493887b748a6da035a291bd79ea782080"
+    }
+  },
+  "performance_ns": {
+    "original": {
+      "n": 855,
+      "p50": 105800,
+      "p95": 323800,
+      "p99": 497900,
+      "max": 1248100
+    },
+    "originallexical": {
+      "n": 855,
+      "p50": 813800,
+      "p95": 4325900,
+      "p99": 5934700,
+      "max": 10339600
+    },
+    "structural": {
+      "n": 855,
+      "p50": 109900,
+      "p95": 346000,
+      "p99": 601400,
+      "max": 825200
+    },
+    "lexical": {
+      "n": 855,
+      "p50": 737800,
+      "p95": 3857000,
+      "p99": 5510100,
+      "max": 10431700
+    },
+    "character": {
+      "n": 855,
+      "p50": 757900,
+      "p95": 7330000,
+      "p99": 16564100,
+      "max": 39656500
+    }
+  },
+  "resources": {
+    "original": {
+      "processes": 5,
+      "samples": 61,
+      "sampled_working_max": 187662336,
+      "sampled_private_max": 200278016,
+      "os_peak_working_max": 194551808,
+      "cpu_seconds": [
+        0.578125,
+        0.53125,
+        0.609375,
+        0.578125,
+        0.5625
+      ]
+    },
+    "originallexical": {
+      "processes": 5,
+      "samples": 92,
+      "sampled_working_max": 191680512,
+      "sampled_private_max": 192331776,
+      "os_peak_working_max": 195039232,
+      "cpu_seconds": [
+        0.78125,
+        0.90625,
+        0.859375,
+        1.0,
+        0.84375
+      ]
+    },
+    "structural": {
+      "processes": 5,
+      "samples": 63,
+      "sampled_working_max": 187543552,
+      "sampled_private_max": 199745536,
+      "os_peak_working_max": 194560000,
+      "cpu_seconds": [
+        0.546875,
+        0.671875,
+        0.625,
+        0.5625,
+        0.59375
+      ]
+    },
+    "lexical": {
+      "processes": 5,
+      "samples": 89,
+      "sampled_working_max": 193400832,
+      "sampled_private_max": 215441408,
+      "os_peak_working_max": 194506752,
+      "cpu_seconds": [
+        0.75,
+        0.84375,
+        0.96875,
+        0.78125,
+        0.828125
+      ]
+    },
+    "character": {
+      "processes": 5,
+      "samples": 125,
+      "sampled_working_max": 221392896,
+      "sampled_private_max": 223027200,
+      "os_peak_working_max": 221396992,
+      "cpu_seconds": [
+        1.125,
+        1.21875,
+        1.25,
+        1.28125,
+        1.109375
+      ]
+    }
+  },
+  "development": {
+    "lexical": {
+      "preselected_tasks": 32,
+      "unmappable": 19,
+      "ready": 13,
+      "source_text_is_first": 7,
+      "source_text_present_in_top10": 8,
+      "final_budget_failures": 0
+    },
+    "character": {
+      "preselected_tasks": 32,
+      "unmappable": 19,
+      "ready": 13,
+      "source_text_is_first": 6,
+      "source_text_present_in_top10": 11,
+      "final_budget_failures": 0
+    },
+    "covered": {
+      "preselected_tasks": 32,
+      "unmappable": 19,
+      "ready": 13,
+      "source_text_is_first": 6,
+      "source_text_present_in_top10": 11,
+      "final_budget_failures": 0
+    },
+    "word": {
+      "preselected_tasks": 32,
+      "unmappable": 19,
+      "ready": 13,
+      "source_text_is_first": 3,
+      "source_text_present_in_top10": 3,
+      "final_budget_failures": 9
+    }
+  },
+  "development_source_first_improvements": [
+    "r16dev006",
+    "r16dev016",
+    "r16dev023"
+  ],
+  "development_source_first_regressions": [
+    "r16dev004",
+    "r16dev009",
+    "r16dev018",
+    "r16dev022"
+  ],
+  "formal_language_metrics": {
+    "top1": null,
+    "top5": null,
+    "mrr": null
+  },
+  "production_model": false,
+  "default_engine_changed": false,
+  "CL010": "closed",
+  "TSF_registered": false
+}

@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "iterations": 100,
+  "dictionary_entries": 64,
+  "dictionary_bytes": 3435,
+  "candidate_limit": 50,
+  "cold_load_and_nihao_sequence_ns": 364000,
+  "event": {
+    "samples": 7900,
+    "p50_ns": 2500,
+    "p95_ns": 6300,
+    "p99_ns": 9300,
+    "max_ns": 44700
+  },
+  "dictionary_query": {
+    "samples": 1100,
+    "p50_ns": 300,
+    "p95_ns": 700,
+    "p99_ns": 1100,
+    "max_ns": 24500
+  },
+  "environment": {
+    "os": "Windows-11-10.0.26300-SP0",
+    "machine": "AMD64",
+    "cpu": "11th Gen Intel(R) Core(TM) i5-11400 @ 2.60GHz",
+    "logical_cpus": 12,
+    "physical_memory_bytes": 34110734336
+  },
+  "rustc": "rustc 1.90.0 (1159e78c4 2025-09-14)",
+  "git_head": "13987558d700915079d612711c5631567d616b4c",
+  "source_sha256": "24c2762d69d7cf1ff3910dd12230167ec81eb60bc61728bd11ed7f509461c1ce",
+  "source_fingerprint_schema": "cloudleaf-source-v2",
+  "binary_sha256": "aa0121a95bd3929d18a7f63fd0fb62f402b3fe29db3befbb010f52c98d8a4f90",
+  "measured_at_utc": "2026-11-06T06:01:19.341701+00:00",
+  "build_profile": "release",
+  "peak_process_memory_bytes": 5074944,
+  "memory_method": "Windows GetProcessMemoryInfo.PeakWorkingSetSize",
+  "limitations": "64 条手工原型词典；空闲/当前背景负载未控制；进程内存包含运行时和样本数组；不含 TSF/UI；不是生产词库成绩。"
+}

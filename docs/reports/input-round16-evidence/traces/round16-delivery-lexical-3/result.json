@@ -1,0 +1,164 @@
+{
+  "command": [
+    "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\build\\release\\examples\\input_trace.exe",
+    "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+    "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+    "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+    "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5",
+    "lexical"
+  ],
+  "returncode": 0,
+  "seconds": 0.8328216999943834,
+  "variant": "lexical",
+  "whole_process_cpu_seconds": 0.78125,
+  "original_implementation": null,
+  "worktree_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "head": "f2b5c5ee53882787c84b29180da6e835ffa98a27",
+  "executable_sha256": "6987c695ed2c1500ecbbff7e883cb748315f9b5dcf46d778adf7673c61d7bb6e",
+  "events_sha256": "e087cc965bd2f6c889a84f3db89b3829ccfda452f436d7b3cf562bbb965602ad",
+  "tool_sha256": "4754324dc9aff3743a69777b07f855f2ce7f3c644d9850b631a4b501b78102b5",
+  "runtime": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+    "bytes": 23602173,
+    "sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+  },
+  "sample_count": 16,
+  "resources": [
+    {
+      "seconds": 0.010587800003122538,
+      "working": 2080768,
+      "private": 385024,
+      "os_peak_working": 2080768,
+      "os_peak_pagefile": 385024
+    },
+    {
+      "seconds": 0.06084969997755252,
+      "working": 27840512,
+      "private": 24313856,
+      "os_peak_working": 27840512,
+      "os_peak_pagefile": 24330240
+    },
+    {
+      "seconds": 0.11139710000134073,
+      "working": 43339776,
+      "private": 42946560,
+      "os_peak_working": 44179456,
+      "os_peak_pagefile": 44695552
+    },
+    {
+      "seconds": 0.16157929998007603,
+      "working": 60973056,
+      "private": 63283200,
+      "os_peak_working": 60973056,
+      "os_peak_pagefile": 64819200
+    },
+    {
+      "seconds": 0.21220879998872988,
+      "working": 77549568,
+      "private": 90484736,
+      "os_peak_working": 91897856,
+      "os_peak_pagefile": 105086976
+    },
+    {
+      "seconds": 0.2628369999874849,
+      "working": 96317440,
+      "private": 103862272,
+      "os_peak_working": 96317440,
+      "os_peak_pagefile": 105086976
+    },
+    {
+      "seconds": 0.3141077999898698,
+      "working": 113922048,
+      "private": 116400128,
+      "os_peak_working": 113922048,
+      "os_peak_pagefile": 116400128
+    },
+    {
+      "seconds": 0.3643830999790225,
+      "working": 146735104,
+      "private": 148324352,
+      "os_peak_working": 146735104,
+      "os_peak_pagefile": 148324352
+    },
+    {
+      "seconds": 0.41499279998242855,
+      "working": 170856448,
+      "private": 174288896,
+      "os_peak_working": 170856448,
+      "os_peak_pagefile": 174288896
+    },
+    {
+      "seconds": 0.4655406999809202,
+      "working": 185004032,
+      "private": 185552896,
+      "os_peak_working": 194506752,
+      "os_peak_pagefile": 215392256
+    },
+    {
+      "seconds": 0.516089299984742,
+      "working": 191885312,
+      "private": 192647168,
+      "os_peak_working": 194506752,
+      "os_peak_pagefile": 215392256
+    },
+    {
+      "seconds": 0.5662742999847978,
+      "working": 190562304,
+      "private": 191258624,
+      "os_peak_working": 194506752,
+      "os_peak_pagefile": 215392256
+    },
+    {
+      "seconds": 0.6169438999786507,
+      "working": 190562304,
+      "private": 191258624,
+      "os_peak_working": 194506752,
+      "os_peak_pagefile": 215392256
+    },
+    {
+      "seconds": 0.6676036999851931,
+      "working": 190570496,
+      "private": 191262720,
+      "os_peak_working": 194506752,
+      "os_peak_pagefile": 215392256
+    },
+    {
+      "seconds": 0.718190899991896,
+      "working": 190570496,
+      "private": 191262720,
+      "os_peak_working": 194506752,
+      "os_peak_pagefile": 215392256
+    },
+    {
+      "seconds": 0.7684239999798592,
+      "working": 149786624,
+      "private": 151805952,
+      "os_peak_working": 194506752,
+      "os_peak_pagefile": 215392256
+    }
+  ],
+  "resource_scope": "whole CLI process including fixed lexicon, strings, trie, search and runtime; no single-algorithm memory claim",
+  "event_latency_ns": {
+    "n": 171,
+    "p50": 776200,
+    "p95": 3433000,
+    "p99": 4647700,
+    "max": 6128900
+  },
+  "raw_events_in_latency": true,
+  "timing_scope": "InputEngine.handle including frame clone and deterministic search; excludes stdout write, platform/UI and disk; heterogeneous engineering events, not formal latency acceptance",
+  "summary": [
+    "SUMMARY\tevents=171\tconfirmed_simulated_commits=5\tformal_metrics=null\tTSF=false"
+  ],
+  "formal_language_metrics": {
+    "top1": null,
+    "top5": null,
+    "mrr": null
+  },
+  "physical_disconnect": "not-run",
+  "TSF": false,
+  "files": {
+    "stdout.tsv": "b67bd3c9663f1d6ed455d8edd6e29fe7995ee0db6ef7faa8ed690cbefa364a43",
+    "stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

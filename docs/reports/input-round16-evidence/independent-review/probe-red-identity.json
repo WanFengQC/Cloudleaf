@@ -1,0 +1,28 @@
+{
+  "at_utc": "2026-11-06T05:44:53.159716+00:00",
+  "head_at_followup_capture": "4f6485ba60ea6a9e274dc2b30ba10afa320080b6",
+  "returncode": 101,
+  "command": [
+    "C:/Users/EDY/.cargo/bin/cargo.exe",
+    "run",
+    "--manifest-path",
+    "C:\\Users\\EDY\\.codex\\tmp\\r16-baseline\\probe\\Cargo.toml",
+    "--offline",
+    "--quiet"
+  ],
+  "source_sha256_at_followup_capture": {
+    "crates/cloudleaf-search/src/character.rs": "4c79395e764a9360f68db88646cfa7d5f60534c0da03cc1edb0fb1ec261729f6",
+    "crates/cloudleaf-search/src/model.rs": "f85cfb0fba3c03462f687405bc02a01b6c6a01a8b135ada769c75cae4eff656e",
+    "crates/cloudleaf-search/src/search.rs": "6a3950080bc1d3b6f648f9e0d6838fe6fa64d91fbe2820de9cc45edcb87b94e8",
+    "crates/cloudleaf-search/src/lexicon.rs": "d620bc15ea7a07a515e9fb742a300491318616c7c563a11928428b89b16fb6bc"
+  },
+  "output_sha256": {
+    "probe-red.stdout": "90189f156f1b244af7952df68833952dc6985d83524e5b7205fa6a58e5b8e778",
+    "probe-red.stderr": "2d6a7f1ee6ab3c76e72b25de0b70367aa0a456e681096598c6ce1c692aec9d05"
+  },
+  "observed": [
+    "entry cache longer lexicon index1 len1 panic",
+    "same-size changed text returns guaranteed score for old text"
+  ],
+  "project_mutated": false
+}

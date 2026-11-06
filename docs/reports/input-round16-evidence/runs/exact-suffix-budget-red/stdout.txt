@@ -1,0 +1,18 @@
+
+running 1 test
+test exact_suffix_bounds_keep_top50_within_a_fixed_work_budget ... FAILED
+
+failures:
+
+---- exact_suffix_bounds_keep_top50_within_a_fixed_work_budget stdout ----
+
+thread 'exact_suffix_bounds_keep_top50_within_a_fixed_work_budget' panicked at crates\cloudleaf-search\tests\character_model.rs:140:5:
+Statistics { graph_edges: 24, expansions: 600, resident_high_water: 151, beam_pruned: 0, budget: Some(Expansions) }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    exact_suffix_bounds_keep_top50_within_a_fixed_work_budget
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.02s
+

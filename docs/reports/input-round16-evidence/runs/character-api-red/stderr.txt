@@ -1,0 +1,46 @@
+   Compiling cloudleaf-search v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-search)
+error[E0599]: no variant or associated item named `CharacterBigram` found for enum `Ranker` in the current scope
+  --> crates\cloudleaf-search\tests\character_model.rs:31:47
+   |
+31 |         let config = Config { ranker: Ranker::CharacterBigram, output_k: 10, ..Config::default() };
+   |                                               ^^^^^^^^^^^^^^^ variant or associated item not found in `Ranker`
+
+error[E0609]: no field `character_count` on type `Features`
+  --> crates\cloudleaf-search\tests\character_model.rs:36:53
+   |
+36 |         assert_eq!(reference.candidates[0].features.character_count, 2);
+   |                                                     ^^^^^^^^^^^^^^^ unknown field
+   |
+   = note: available fields are: `words`, `prefixes`, `frequency_units`, `missing_frequencies`, `lexical_units` ... and 4 others
+
+error[E0609]: no field `character_units` on type `Features`
+  --> crates\cloudleaf-search\tests\character_model.rs:37:84
+   |
+37 |         assert_eq!(reference.candidates[0].score, reference.candidates[0].features.character_units);
+   |                                                                                    ^^^^^^^^^^^^^^^ unknown field
+   |
+   = note: available fields are: `words`, `prefixes`, `frequency_units`, `missing_frequencies`, `lexical_units` ... and 4 others
+
+error[E0599]: no variant or associated item named `CharacterBigram` found for enum `Ranker` in the current scope
+  --> crates\cloudleaf-search\tests\character_model.rs:54:44
+   |
+54 |         let cfg = Config { ranker: Ranker::CharacterBigram, output_k: k, ..Config::default() };
+   |                                            ^^^^^^^^^^^^^^^ variant or associated item not found in `Ranker`
+
+error[E0599]: no variant or associated item named `CharacterBigram` found for enum `Ranker` in the current scope
+  --> crates\cloudleaf-search\tests\character_model.rs:89:40
+   |
+89 |     let cfg = Config { ranker: Ranker::CharacterBigram, output_k: 10, ..Config::default() };
+   |                                        ^^^^^^^^^^^^^^^ variant or associated item not found in `Ranker`
+
+error[E0609]: no field `character_unknown` on type `Features`
+  --> crates\cloudleaf-search\tests\character_model.rs:93:33
+   |
+93 |     assert_eq!(unknown.features.character_unknown, 1);
+   |                                 ^^^^^^^^^^^^^^^^^ unknown field
+   |
+   = note: available fields are: `words`, `prefixes`, `frequency_units`, `missing_frequencies`, `lexical_units` ... and 4 others
+
+Some errors have detailed explanations: E0599, E0609.
+For more information about an error, try `rustc --explain E0599`.
+error: could not compile `cloudleaf-search` (test "character_model") due to 6 previous errors
