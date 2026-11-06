@@ -573,4 +573,52 @@ mod tests {
         assert_eq!(local.document.borrow().as_str(), "你好");
         assert_eq!(writes.get(), 2);
     }
+    #[test]
+    fn child_edit_focus_then_host_deactivation_preserves_raw_and_closes_candidates() {
+        let view = Rc::new(Window {
+            local: LocalHost::new(Host::new().unwrap()).unwrap(),
+            window: Cell::new(HWND::default()),
+            document: Cell::new(HWND::default()),
+            status: Cell::new(HWND::default()),
+            fault: Cell::new(false),
+            ui: RefCell::new(None),
+        });
+        type_text(&view.local, "nihao");
+        let frame = view.local.host.engine.borrow().frame();
+        *view.ui.borrow_mut() = Some(CandidateUi::isolated(
+            view.local.host.clone(), frame, Rc::new(|_, _| Ok(())),
+        ).unwrap());
+        // 安全：隐藏窗口使用实际WndProc；只向本测试创建的父子HWND发送焦点/激活消息。
+        unsafe {
+            let instance = HINSTANCE(GetModuleHandleW(None).unwrap().0);
+            let class = w!("CloudleafRound17ChildFocusRegression");
+            let wc = WNDCLASSW {
+                lpfnWndProc: Some(window_proc), hInstance: instance,
+                lpszClassName: class, ..Default::default()
+            };
+            assert_ne!(RegisterClassW(&wc), 0);
+            let window = CreateWindowExW(
+                WINDOW_EX_STYLE::default(), class, w!(""), WS_OVERLAPPEDWINDOW,
+                0, 0, 770, 580, None, None, Some(instance),
+                Some(Rc::as_ptr(&view).cast()),
+            ).unwrap();
+            SetFocus(Some(window)).unwrap();
+            SetFocus(Some(view.document.get())).unwrap();
+            assert_eq!(GetFocus(), view.document.get());
+            assert_eq!(view.local.host.engine.borrow().frame().preedit, "nihao");
+            SendMessageW(window, WM_ACTIVATE, Some(WPARAM(WA_INACTIVE as usize)), Some(LPARAM(0)));
+            let after = view.local.host.engine.borrow().frame();
+            let retained = view.local.retained.borrow().clone();
+            let candidates_closed = view.ui.borrow().is_none();
+            DestroyWindow(window).unwrap();
+            let mut quit = MSG::default();
+            let _ = PeekMessageW(&mut quit, None, WM_QUIT, WM_QUIT, PM_REMOVE);
+            UnregisterClassW(class, Some(instance)).unwrap();
+            assert!(after.preedit.is_empty(), "整窗失活必须取消旧组合，而不是依赖父窗仍有键盘焦点");
+            assert_eq!(retained, "nihao");
+            assert!(candidates_closed);
+            assert!(view.local.document.borrow().is_empty());
+        }
+    }
+
 }
