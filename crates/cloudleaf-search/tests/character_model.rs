@@ -111,3 +111,32 @@ fn precompiled_entry_cache_rejects_a_different_lexicon_instance() {
         assert!(search_graph(&other, &graph, &cfg, Some(model.model()), None).is_err());
     }
 }
+
+#[test]
+fn eos_can_reverse_the_more_likely_sentence_prefix() {
+    let lex = lexicon(false);
+    let mut training = vec![vec!["甲".into(), "丁".into()]; 20];
+    training.extend(vec![vec!["乙".into()]; 10]);
+    let model = LanguageModelSnapshot::train(&metadata(), &lex, SHA, &training).unwrap();
+    let cfg = Config { ranker: Ranker::CharacterBigram, output_k: 1, ..Config::default() };
+    let graph = Lattice::build(&lex, "ma", &cfg).unwrap();
+    for method in [Method::Reference, Method::ExactDag, Method::Beam] {
+        let result = search_graph(&lex, &graph, &Config { method, ..cfg.clone() }, Some(model.model()), None).unwrap();
+        assert_eq!(result.candidates[0].text, "乙");
+        assert!(result.guaranteed);
+    }
+}
+
+#[test]
+fn exact_suffix_bounds_keep_top50_within_a_fixed_work_budget() {
+    let lex = lexicon(false);
+    let training = vec![vec!["甲".into(); 12]; 20];
+    let model = LanguageModelSnapshot::train(&metadata(), &lex, SHA, &training).unwrap();
+    let cfg = Config { ranker: Ranker::CharacterBigram, output_k: 50, context_pool: 50, max_expansions: 100_000, ..Config::default() };
+    let graph = Lattice::build(&lex, &"ma".repeat(12), &cfg).unwrap();
+    let reference = search_graph(&lex, &graph, &Config { method: Method::Reference, ..cfg.clone() }, Some(model.model()), None).unwrap();
+    assert!(reference.guaranteed);
+    let bounded = search_graph(&lex, &graph, &Config { max_expansions: 600, ..cfg }, Some(model.model()), None).unwrap();
+    assert!(bounded.guaranteed, "{:?}", bounded.statistics);
+    assert_eq!(bounded.candidates, reference.candidates);
+}
