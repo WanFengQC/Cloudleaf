@@ -1,0 +1,187 @@
+diff --git a/adapters/windows/candidate.rs b/adapters/windows/candidate.rs
+--- a/adapters/windows/candidate.rs
++++ b/adapters/windows/candidate.rs
+@@ -473,6 +473,50 @@
+     use cloudleaf_types::{InputEvent, Key};
+     use windows_core::Ref;
+ 
++    #[test]
++    fn isolated_mouse_selection_can_destroy_its_candidate_window_during_callback() {
++        let host = Host::new().unwrap();
++        host.engine.borrow_mut().handle(InputEvent::Activate);
++        for ch in "nihao".chars() {
++            host.engine
++                .borrow_mut()
++                .handle(InputEvent::Key(Key::Char(ch)));
++        }
++        let frame = host.engine.borrow().frame();
++        let expected = frame.candidates[0].id.clone();
++        let revision = frame.revision;
++        let slot = Rc::new(RefCell::new(None::<CandidateUi>));
++        let released = slot.clone();
++        let calls = Rc::new(Cell::new(0));
++        let callback_calls = calls.clone();
++        let select = Rc::new(move |actual_revision, id| {
++            assert_eq!(actual_revision, revision);
++            assert_eq!(id, expected);
++            callback_calls.set(callback_calls.get() + 1);
++            // 实际隔离宿主成功提交后同步销毁候选；消息中的临时Rc必须覆盖此路径。
++            released.borrow_mut().take();
++            Ok(())
++        });
++        let ui = CandidateUi::isolated(host.clone(), frame, select).unwrap();
++        let weak = Rc::downgrade(&ui.view);
++        let window = ui.view.window.get();
++        *slot.borrow_mut() = Some(ui);
++        // 安全：只向本测试创建且未显示的普通候选窗口发送真实选择消息。
++        unsafe {
++            SendMessageW(
++                window,
++                WM_LBUTTONUP,
++                Some(WPARAM(0)),
++                Some(LPARAM(10 | (10 << 16))),
++            );
++        }
++        assert_eq!(calls.get(), 1);
++        assert!(slot.borrow().is_none());
++        assert!(weak.upgrade().is_none());
++        assert!(!unsafe { IsWindow(Some(window)) }.as_bool());
++        assert!(host.context.borrow().is_none() && host.manager.borrow().is_none());
++    }
++
+     #[derive(Default)]
+     struct UiState {
+         begun: Cell<u32>,
+diff --git a/adapters/windows/session.rs b/adapters/windows/session.rs
+--- a/adapters/windows/session.rs
++++ b/adapters/windows/session.rs
+@@ -2003,3 +2003,6 @@
+ mod input_review;
+ pub(crate) use input_review::run as review_input_host;
+ pub(crate) use input_review::run_with_language as review_language_host;
++
++#[path = "isolated_input.rs"]
++mod isolated_input;
+diff --git a/adapters/windows/isolated_input.rs b/adapters/windows/isolated_input.rs
+--- /dev/null
++++ b/adapters/windows/isolated_input.rs
+@@ -0,0 +1,119 @@
++use super::*;
++use std::cell::Cell;
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++    fn type_text(local: &LocalHost, value: &str) {
++        for c in value.chars() {
++            local
++                .process(InputEvent::Key(Key::Char(c)), None, &|_| {
++                    CommitOutcome::Applied
++                })
++                .unwrap();
++        }
++    }
++    #[test]
++    fn actual_host_controller_commit_once_stale_selection_and_original_fallback() {
++        let local = LocalHost::new(Host::new().unwrap()).unwrap();
++        assert!(local.host.context.borrow().is_none() && local.host.manager.borrow().is_none());
++        type_text(&local, "nihao");
++        let old = local.host.engine.borrow().frame();
++        let writes = Cell::new(0);
++        let sink = |_: &str| {
++            writes.set(writes.get() + 1);
++            CommitOutcome::Applied
++        };
++        local
++            .process(
++                InputEvent::Key(Key::Space),
++                Some((old.revision, old.candidates[0].id.clone())),
++                &sink,
++            )
++            .unwrap();
++        assert_eq!(local.document.borrow().as_str(), "你好");
++        assert_eq!(writes.get(), 1);
++        assert!(
++            local
++                .process(
++                    InputEvent::Key(Key::Space),
++                    Some((old.revision, old.candidates[0].id.clone())),
++                    &sink
++                )
++                .is_err()
++        );
++        assert_eq!(writes.get(), 1);
++        type_text(&local, "qz");
++        local
++            .process(InputEvent::Key(Key::Enter), None, &sink)
++            .unwrap();
++        assert_eq!(local.document.borrow().as_str(), "你好qz");
++    }
++    #[test]
++    fn unknown_blocks_replay_and_explicit_new_epoch_rejects_old_candidate() {
++        let local = LocalHost::new(Host::new().unwrap()).unwrap();
++        type_text(&local, "nihao");
++        let old = local.host.engine.borrow().frame();
++        let epoch = local.host.epoch.get();
++        let writes = Cell::new(0);
++        let sink = |_: &str| {
++            writes.set(writes.get() + 1);
++            CommitOutcome::Unknown
++        };
++        local
++            .process(InputEvent::Key(Key::Space), None, &sink)
++            .unwrap();
++        assert_eq!(writes.get(), 1);
++        assert!(local.host.quarantined.get());
++        assert_eq!(
++            local.host.engine.borrow().frame().state,
++            cloudleaf_types::InputState::Committing
++        );
++        assert!(
++            local
++                .process(InputEvent::Key(Key::Space), None, &sink)
++                .is_err()
++        );
++        assert!(local.process(InputEvent::FocusLost, None, &sink).is_err());
++        assert_eq!(writes.get(), 1);
++        assert!(local.retained.borrow().contains("nihao"));
++        local.reset().unwrap();
++        assert!(local.host.epoch.get() > epoch);
++        assert!(
++            local
++                .process(
++                    InputEvent::Key(Key::Space),
++                    Some((old.revision, old.candidates[0].id.clone())),
++                    &sink
++                )
++                .is_err()
++        );
++        assert_eq!(writes.get(), 1);
++        assert!(!local.host.quarantined.get());
++    }
++
++    #[test]
++    fn not_applied_keeps_original_and_a_later_explicit_selection_can_commit_once() {
++        let local = LocalHost::new(Host::new().unwrap()).unwrap();
++        type_text(&local, "nihao");
++        let writes = Cell::new(0);
++        let (frame, _) = local
++            .process(InputEvent::Key(Key::Space), None, &|_| {
++                writes.set(writes.get() + 1);
++                CommitOutcome::NotApplied
++            })
++            .unwrap();
++        assert_eq!(frame.preedit, "nihao");
++        assert!(local.document.borrow().is_empty());
++        assert!(!local.host.quarantined.get());
++        assert_eq!(writes.get(), 1);
++        local
++            .process(InputEvent::RetryCommit, None, &|_| {
++                writes.set(writes.get() + 1);
++                CommitOutcome::Applied
++            })
++            .unwrap();
++        assert_eq!(local.document.borrow().as_str(), "你好");
++        assert_eq!(writes.get(), 2);
++    }
++}

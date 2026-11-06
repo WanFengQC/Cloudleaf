@@ -1,0 +1,69 @@
+diff --git a/adapters/windows/isolated_input.rs b/adapters/windows/isolated_input.rs
+index 86ef35d..4a5f8cb 100644
+--- a/adapters/windows/isolated_input.rs
++++ b/adapters/windows/isolated_input.rs
+@@ -8,7 +8,7 @@ use windows::Win32::{
+     Foundation::*,
+     Graphics::Gdi::*,
+     System::LibraryLoader::GetModuleHandleW,
+-    UI::{Input::KeyboardAndMouse::*, WindowsAndMessaging::*},
++    UI::{Input::{KeyboardAndMouse::*, Ime::{HIMC, IACE_CHILDREN, ImmAssociateContextEx}}, WindowsAndMessaging::*},
+ };
+ use windows_core::{PCWSTR, w};
+ 
+@@ -307,6 +307,11 @@ unsafe extern "system" fn window_proc(
+                         CreateWindowExW(WINDOW_EX_STYLE::default(),w!("BUTTON"),PCWSTR(wide(label).as_ptr()),WS_CHILD|WS_VISIBLE,x,104,width,30,Some(window),Some(HMENU(id as *mut _)),None,None)?;
+                     }
+                     view.document.set(CreateWindowExW(WS_EX_CLIENTEDGE,w!("EDIT"),w!(""),WS_CHILD|WS_VISIBLE|WS_VSCROLL|WINDOW_STYLE(ES_READONLY as u32|ES_MULTILINE as u32|ES_AUTOVSCROLL as u32),12,320,720,200,Some(window),None,None,None)?);
++                    // 只解绑本窗口及已创建子控件的继承IME；拼音由本隔离核心处理，不改变系统布局。
++                    if !ImmAssociateContextEx(window, HIMC::default(), 0).as_bool()
++                        || !ImmAssociateContextEx(window, HIMC::default(), IACE_CHILDREN).as_bool() {
++                        return Ok(LRESULT(-1));
++                    }
+                     Ok(LRESULT(0))
+                 }
+                 WM_CHAR => {
+@@ -657,4 +662,43 @@ mod tests {
+         }
+     }
+ 
++    #[test]
++    fn repeated_focus_loss_and_unknown_preserve_each_unacknowledged_raw_input() {
++        let local = LocalHost::new(Host::new().unwrap()).unwrap();
++        type_text(&local, "nihao");
++        local.process(InputEvent::FocusLost, None, &|_| CommitOutcome::Applied).unwrap();
++        assert!(local.retained.borrow().contains("nihao"));
++        local.process(InputEvent::Activate, None, &|_| CommitOutcome::Applied).unwrap();
++        type_text(&local, "zhongguo");
++        local.process(InputEvent::FocusLost, None, &|_| CommitOutcome::Applied).unwrap();
++        assert!(local.retained.borrow().contains("nihao"));
++        assert!(local.retained.borrow().contains("zhongguo"));
++        local.process(InputEvent::Activate, None, &|_| CommitOutcome::Applied).unwrap();
++        type_text(&local, "woaini");
++        local.process(InputEvent::Key(Key::Space), None, &|_| CommitOutcome::Unknown).unwrap();
++        assert!(local.host.quarantined.get());
++        for raw in ["nihao", "zhongguo", "woaini"] {
++            assert!(local.retained.borrow().contains(raw), "尚未确认的旧材料不能被后续失焦或Unknown覆盖：{raw}");
++        }
++        local.reset().unwrap();
++        assert!(local.retained.borrow().is_empty(), "明确新会话才确认并清除旧保全材料");
++    }
++
++    #[test]
++    fn retained_capacity_failure_quarantines_before_clearing_current_composition() {
++        let local = LocalHost::new(Host::new().unwrap()).unwrap();
++        *local.retained.borrow_mut() = "x".repeat(16384);
++        type_text(&local, "nihao");
++        let before = local.host.engine.borrow().frame();
++        let projected_before = local.host.projection.borrow().frame();
++        let result = local.process(InputEvent::FocusLost, None, &|_| CommitOutcome::Applied);
++        assert!(result.is_err());
++        assert!(local.host.quarantined.get());
++        assert_eq!(local.retained.borrow().as_str(), "x".repeat(16384));
++        assert_eq!(local.host.engine.borrow().frame(), before);
++        assert_eq!(local.host.projection.borrow().frame(), projected_before);
++        assert_eq!(before.preedit, "nihao");
++        assert!(local.document.borrow().is_empty());
++    }
++
+ }

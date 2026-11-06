@@ -1,0 +1,68 @@
+--- a/crates/cloudleaf-search/src/search.rs
++++ b/crates/cloudleaf-search/src/search.rs
+@@ -170,14 +170,16 @@
+         }) {
+             return None;
+         }
+-        let mut next = path.clone();
+-        next.score = score;
+-        next.features = features;
+-        next.last_character = last_character;
+-        next.text.push_str(&entry.text);
+-        next.ids.push(edge.entry);
+-        next.edges.push(edge_index);
+-        Some(next)
++        let mut text = String::with_capacity(path.text.len() + entry.text.len());
++        text.push_str(&path.text);
++        text.push_str(&entry.text);
++        let mut ids = Vec::with_capacity(path.ids.len() + 1);
++        ids.extend_from_slice(&path.ids);
++        ids.push(edge.entry);
++        let mut edges = Vec::with_capacity(path.edges.len() + 1);
++        edges.extend_from_slice(&path.edges);
++        edges.push(edge_index);
++        Some(Path { text, score, ids, edges, features, last_character })
+     }
+ 
+     fn finish<O: Observer>(&self, mut path: Path, observer: &mut O) -> Path {
+@@ -516,6 +518,7 @@
+     let mut seen = vec![BTreeMap::<String, Vec<usize>>::new(); end + 1];
+     seen[0].insert(String::new(), Vec::new());
+     let mut seen_count = 1;
++    let mut scratch = String::new();
+     while let Some(current) = pending.pop() {
+         if scorer.cancelled() {
+             return Vec::new();
+@@ -554,20 +557,23 @@
+             ) {
+                 return Vec::new();
+             }
+-            let next = scorer
+-                .extend(&current.path, *edge_index, None, observer)
+-                .unwrap();
+-            let bound = next.score + rest.score;
++            let bound = current.path.score + model.transition(
++                current.path.last_character.unwrap_or(crate::character::BOS), entry.first,
++            ) + entry.internal + rest.score;
+             if complete.len() == k && bound < complete.last().unwrap().score {
+                 continue;
+             }
+-            // 同位置相同正文有相同字符分和未来状态；不同词典分词只保留最优稳定ID。
+-            if seen[edge.end]
+-                .get(&next.text)
+-                .is_some_and(|ids| ids <= &next.ids)
+-            {
++            // 先复用正文暂存并借用ID比较，淘汰分支不再复制整条路径。
++            scratch.clear();
++            scratch.push_str(&current.path.text);
++            scratch.push_str(&scorer.lexicon.entries[edge.entry].text);
++            if seen[edge.end].get(scratch.as_str()).is_some_and(|ids| {
++                current.path.ids.iter().copied().chain(std::iter::once(edge.entry))
++                    .cmp(ids.iter().copied()) != Ordering::Less
++            }) {
+                 continue;
+             }
++            let next = scorer.extend(&current.path, *edge_index, None, observer).unwrap();
+             if seen[edge.end]
+                 .insert(next.text.clone(), next.ids.clone())
+                 .is_none()

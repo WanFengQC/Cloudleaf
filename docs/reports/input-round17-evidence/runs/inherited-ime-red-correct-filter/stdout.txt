@@ -1,0 +1,20 @@
+
+running 1 test
+test native::session::isolated_input::tests::isolated_window_and_child_do_not_inherit_external_ime ... FAILED
+
+failures:
+
+---- native::session::isolated_input::tests::isolated_window_and_child_do_not_inherit_external_ime stdout ----
+
+thread 'native::session::isolated_input::tests::isolated_window_and_child_do_not_inherit_external_ime' panicked at apps\windows-ime\src\..\..\..\adapters\windows\isolated_input.rs:656:13:
+assertion `left == right` failed: 隔离键盘入口不得再把拼音交给系统输入法
+  left: [true, false]
+ right: [false, false]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    native::session::isolated_input::tests::isolated_window_and_child_do_not_inherit_external_ime
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 110 filtered out; finished in 0.03s
+

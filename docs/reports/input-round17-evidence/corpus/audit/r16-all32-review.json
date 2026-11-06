@@ -1,0 +1,356 @@
+{
+  "diagnosis_c_sha256": "dcf37a25e9bac7a5e72c1fd119a22766c2ee41094afa57e2cd0d8b3748ba4f16",
+  "diagnosis_d_byte_identical": true,
+  "all32": 32,
+  "baseline_complete": 13,
+  "supplemented_complete": 32,
+  "nineteen_unmappable": 19,
+  "nineteen_with_missing_character_evidence": 19,
+  "input_bytes_max": 54,
+  "parser_failures_demonstrated": null,
+  "rust_lattice_verification": "root separately ran actual Rust coverage_probe; this script does not claim parser/search execution",
+  "unknown_frequency_preserved": true,
+  "human_reading_gold": false,
+  "reading_ambiguity_cases": 22,
+  "examples_of_non_gold_readings": [
+    {
+      "case": "r16dev001",
+      "pinyin": "woxiangzaiyigerenrenxiangqingxiangaidishijielishenghuo",
+      "note": "的可被stable ID选为di"
+    },
+    {
+      "case": "r16dev011",
+      "pinyin": "shuomengchongyizhien",
+      "note": "數可被选为shuo"
+    },
+    {
+      "case": "r16dev013",
+      "pinyin": "danhaishixiangrangtazhuanshougeiwo",
+      "note": "傳授可被选为zhuanshou"
+    },
+    {
+      "case": "r16dev032",
+      "pinyin": "nimeizaitingwoshuihua",
+      "note": "說話可被选为shuihua"
+    }
+  ],
+  "cases": [
+    {
+      "case": "r16dev001",
+      "baseline_complete": false,
+      "supplemented_complete": true,
+      "missing_characters": [
+        "個",
+        "愛",
+        "裏",
+        "親"
+      ],
+      "input_bytes": 54,
+      "ambiguous_readings": true
+    },
+    {
+      "case": "r16dev002",
+      "baseline_complete": false,
+      "supplemented_complete": true,
+      "missing_characters": [
+        "雖"
+      ],
+      "input_bytes": 17,
+      "ambiguous_readings": false
+    },
+    {
+      "case": "r16dev003",
+      "baseline_complete": true,
+      "supplemented_complete": true,
+      "missing_characters": [],
+      "input_bytes": 16,
+      "ambiguous_readings": false
+    },
+    {
+      "case": "r16dev004",
+      "baseline_complete": true,
+      "supplemented_complete": true,
+      "missing_characters": [],
+      "input_bytes": 16,
+      "ambiguous_readings": false
+    },
+    {
+      "case": "r16dev005",
+      "baseline_complete": false,
+      "supplemented_complete": true,
+      "missing_characters": [
+        "麼"
+      ],
+      "input_bytes": 24,
+      "ambiguous_readings": true
+    },
+    {
+      "case": "r16dev006",
+      "baseline_complete": true,
+      "supplemented_complete": true,
+      "missing_characters": [],
+      "input_bytes": 31,
+      "ambiguous_readings": true
+    },
+    {
+      "case": "r16dev007",
+      "baseline_complete": false,
+      "supplemented_complete": true,
+      "missing_characters": [
+        "遠"
+      ],
+      "input_bytes": 34,
+      "ambiguous_readings": true
+    },
+    {
+      "case": "r16dev008",
+      "baseline_complete": true,
+      "supplemented_complete": true,
+      "missing_characters": [],
+      "input_bytes": 22,
+      "ambiguous_readings": true
+    },
+    {
+      "case": "r16dev009",
+      "baseline_complete": true,
+      "supplemented_complete": true,
+      "missing_characters": [],
+      "input_bytes": 23,
+      "ambiguous_readings": true
+    },
+    {
+      "case": "r16dev010",
+      "baseline_complete": false,
+      "supplemented_complete": true,
+      "missing_characters": [
+        "瑪",
+        "麗"
+      ],
+      "input_bytes": 11,
+      "ambiguous_readings": false
+    },
+    {
+      "case": "r16dev011",
+      "baseline_complete": false,
+      "supplemented_complete": true,
+      "missing_characters": [
+        "寵",
+        "數",
+        "異"
+      ],
+      "input_bytes": 20,
+      "ambiguous_readings": true
+    },
+    {
+      "case": "r16dev012",
+      "baseline_complete": false,
+      "supplemented_complete": true,
+      "missing_characters": [
+        "個",
+        "後"
+      ],
+      "input_bytes": 21,
+      "ambiguous_readings": false
+    },
+    {
+      "case": "r16dev013",
+      "baseline_complete": false,
+      "supplemented_complete": true,
+      "missing_characters": [
+        "傳",
+        "給",
+        "讓",
+        "還"
+      ],
+      "input_bytes": 34,
+      "ambiguous_readings": true
+    },
+    {
+      "case": "r16dev014",
+      "baseline_complete": false,
+      "supplemented_complete": true,
+      "missing_characters": [
+        "裡"
+      ],
+      "input_bytes": 29,
+      "ambiguous_readings": true
+    },
+    {
+      "case": "r16dev015",
+      "baseline_complete": false,
+      "supplemented_complete": true,
+      "missing_characters": [
+        "膚"
+      ],
+      "input_bytes": 13,
+      "ambiguous_readings": false
+    },
+    {
+      "case": "r16dev016",
+      "baseline_complete": true,
+      "supplemented_complete": true,
+      "missing_characters": [],
+      "input_bytes": 12,
+      "ambiguous_readings": false
+    },
+    {
+      "case": "r16dev017",
+      "baseline_complete": true,
+      "supplemented_complete": true,
+      "missing_characters": [],
+      "input_bytes": 16,
+      "ambiguous_readings": false
+    },
+    {
+      "case": "r16dev018",
+      "baseline_complete": true,
+      "supplemented_complete": true,
+      "missing_characters": [],
+      "input_bytes": 32,
+      "ambiguous_readings": true
+    },
+    {
+      "case": "r16dev019",
+      "baseline_complete": false,
+      "supplemented_complete": true,
+      "missing_characters": [
+        "歡"
+      ],
+      "input_bytes": 11,
+      "ambiguous_readings": false
+    },
+    {
+      "case": "r16dev020",
+      "baseline_complete": false,
+      "supplemented_complete": true,
+      "missing_characters": [
+        "東",
+        "為",
+        "麼"
+      ],
+      "input_bytes": 25,
+      "ambiguous_readings": true
+    },
+    {
+      "case": "r16dev021",
+      "baseline_complete": false,
+      "supplemented_complete": true,
+      "missing_characters": [
+        "書",
+        "畫",
+        "給",
+        "這"
+      ],
+      "input_bytes": 36,
+      "ambiguous_readings": true
+    },
+    {
+      "case": "r16dev022",
+      "baseline_complete": true,
+      "supplemented_complete": true,
+      "missing_characters": [],
+      "input_bytes": 25,
+      "ambiguous_readings": true
+    },
+    {
+      "case": "r16dev023",
+      "baseline_complete": true,
+      "supplemented_complete": true,
+      "missing_characters": [],
+      "input_bytes": 16,
+      "ambiguous_readings": true
+    },
+    {
+      "case": "r16dev024",
+      "baseline_complete": false,
+      "supplemented_complete": true,
+      "missing_characters": [
+        "經",
+        "飽"
+      ],
+      "input_bytes": 18,
+      "ambiguous_readings": true
+    },
+    {
+      "case": "r16dev025",
+      "baseline_complete": true,
+      "supplemented_complete": true,
+      "missing_characters": [],
+      "input_bytes": 16,
+      "ambiguous_readings": true
+    },
+    {
+      "case": "r16dev026",
+      "baseline_complete": false,
+      "supplemented_complete": true,
+      "missing_characters": [
+        "黃"
+      ],
+      "input_bytes": 20,
+      "ambiguous_readings": true
+    },
+    {
+      "case": "r16dev027",
+      "baseline_complete": false,
+      "supplemented_complete": true,
+      "missing_characters": [
+        "個",
+        "會",
+        "買"
+      ],
+      "input_bytes": 21,
+      "ambiguous_readings": true
+    },
+    {
+      "case": "r16dev028",
+      "baseline_complete": true,
+      "supplemented_complete": true,
+      "missing_characters": [],
+      "input_bytes": 13,
+      "ambiguous_readings": false
+    },
+    {
+      "case": "r16dev029",
+      "baseline_complete": false,
+      "supplemented_complete": true,
+      "missing_characters": [
+        "們",
+        "裡"
+      ],
+      "input_bytes": 15,
+      "ambiguous_readings": true
+    },
+    {
+      "case": "r16dev030",
+      "baseline_complete": true,
+      "supplemented_complete": true,
+      "missing_characters": [],
+      "input_bytes": 30,
+      "ambiguous_readings": true
+    },
+    {
+      "case": "r16dev031",
+      "baseline_complete": false,
+      "supplemented_complete": true,
+      "missing_characters": [
+        "說"
+      ],
+      "input_bytes": 15,
+      "ambiguous_readings": true
+    },
+    {
+      "case": "r16dev032",
+      "baseline_complete": false,
+      "supplemented_complete": true,
+      "missing_characters": [
+        "沒",
+        "聽",
+        "話",
+        "說"
+      ],
+      "input_bytes": 21,
+      "ambiguous_readings": true
+    }
+  ],
+  "coverage_not_quality": true
+}

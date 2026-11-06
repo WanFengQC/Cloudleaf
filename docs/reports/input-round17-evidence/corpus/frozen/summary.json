@@ -1,0 +1,82 @@
+{
+  "created_utc": "2026-11-06T07:01:33.381870+00:00",
+  "source_family": "wikimedia-wikinews-zh",
+  "source_manifest_sha256": "b9fc2992b6a097345483055ad56728fe75054bb65307d6ae0aca1eef4cbcb165",
+  "selection_sha256": "b546bcca983056d4e5ce3afe33f5d116e261ce55747f8e7ffc3d7f238eb61d2e",
+  "source_articles": 32,
+  "preselected_slots": 96,
+  "sampling_rule": "Seven fixed topic categories, hash-selected first32 articles; three hash-selected original Han fragments 6..24 scalars/article before mapping. No replacement after unmappable or quarantine.",
+  "split_rule": "Article pageid families unioned by sampled-fragment canonical equality or >=8scalar Jaccard3-shingle>=.8; stable minimal component pageid SHA first64bits mod100 <50 dev else heldout. train empty, this source never used for training or parameter choice.",
+  "cross_article_near_pairs": [],
+  "article_families_after_near_union": 32,
+  "split_counts": {
+    "dev": 48,
+    "heldout": 48
+  },
+  "source_statuses": {
+    "frozen": 87,
+    "no_eligible_fragment": 6,
+    "quarantined_source_exception": 3
+  },
+  "mapping_statuses": {
+    "ready": 80,
+    "input_too_long": 6,
+    "not_run_source_quarantine": 9,
+    "unmappable": 1
+  },
+  "dev_statuses": {
+    "ready": 40,
+    "not_run_source_quarantine": 6,
+    "input_too_long": 1,
+    "unmappable": 1
+  },
+  "heldout_statuses": {
+    "ready": 40,
+    "input_too_long": 5,
+    "not_run_source_quarantine": 3
+  },
+  "baseline_complete_paths": 24,
+  "combined_complete_paths": 86,
+  "tatoeba_train_exact_overlaps": 0,
+  "tatoeba_train_near_overlaps": 0,
+  "training_used": false,
+  "heldout_model_evaluated": false,
+  "formal_gold": false,
+  "formal_metrics": {
+    "top1": null,
+    "top5": null,
+    "mrr": null
+  },
+  "license_id": "CC-BY-4.0",
+  "production_approved": false,
+  "notes": [
+    "Article source dates may predate recent category timestamps; dates are separately preserved, no assumption of all2025/2026 content.",
+    "News text covers public affairs/health/technology/culture/economy but is not an independent human IME intent corpus or balanced daily chat/work corpus.",
+    "No simplified/traditional conversion; punctuation/non-Han split fragments, so some semantic context and mixed input are absent.",
+    "Quoted/contact-shaped paragraphs and flagged source exceptions are excluded before fragment selection; no claim that all third-party rights/personality rights have been exhaustively reviewed.",
+    "Near overlap is exact3-shingle Jaccard>=.8 for >=8scalar fragments; it does not prove semantic paraphrase separation.",
+    "All human input intent, accepted outputs, notes and pronunciation confirmation remain null."
+  ],
+  "files": {
+    "article-screening.json": {
+      "bytes": 30102,
+      "sha256": "36507689b3fd7a29d0e379186bb85622f43d408dbcaffd2a35c15c6a9d2f67cf"
+    },
+    "dev-events.tsv": {
+      "bytes": 2130,
+      "sha256": "3863934a9d0c7a3c31de22fa73ba18c9f9b198bf79a7d8db8b93914cd41ceb37"
+    },
+    "heldout-events.tsv": {
+      "bytes": 2015,
+      "sha256": "0099f315067020bc4f1a9abd08345d94e5ca919dba61e1e8eefa39acc195e2ce"
+    },
+    "sample-freeze-before-mapping.jsonl": {
+      "bytes": 110205,
+      "sha256": "06610f69eb860cc10c971c97901defa5d07c6f52e5a5a822c5ede6979b1f09d1"
+    },
+    "tasks.jsonl": {
+      "bytes": 337722,
+      "sha256": "fe9e9d3a7d36fab4e25549755307497cb477320dac8b237fab1e02821f62f8f6"
+    }
+  }
+}

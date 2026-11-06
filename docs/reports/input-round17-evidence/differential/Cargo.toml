@@ -1,0 +1,17 @@
+[package]
+name="r17-actual-diff"
+version="0.1.0"
+edition="2024"
+rust-version="1.90.0"
+[dependencies]
+cloudleaf-search={path="C:/Users/EDY/.codex/worktrees/input-round14/Cloudleaf/crates/cloudleaf-search"}
+[[bin]]
+name="r17-actual-diff"
+path="src/differential.rs"
+[[bin]]
+name="r17-actual-profile"
+path="src/profile.rs"
+[workspace]
+[profile.release]
+lto="thin"
+codegen-units=1

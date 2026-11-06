@@ -1,0 +1,95 @@
+{
+  "slots": 48,
+  "statuses": {
+    "ready": 40,
+    "not_run_source_quarantine": 6,
+    "input_too_long": 1,
+    "unmappable": 1
+  },
+  "ready_baseline_complete_paths": 9,
+  "ready_supplemented_complete_paths": 40,
+  "all_frozen_source_baseline_complete_paths": 10,
+  "all_frozen_source_supplemented_complete_paths": 41,
+  "failed_slots": [
+    {
+      "case": "r17news010",
+      "mapping_status": "not_run_source_quarantine",
+      "source_text": null,
+      "source_pageid": 49046,
+      "copyright_exception_flags": [],
+      "derived_input_bytes": null
+    },
+    {
+      "case": "r17news011",
+      "mapping_status": "not_run_source_quarantine",
+      "source_text": null,
+      "source_pageid": 49046,
+      "copyright_exception_flags": [],
+      "derived_input_bytes": null
+    },
+    {
+      "case": "r17news012",
+      "mapping_status": "not_run_source_quarantine",
+      "source_text": null,
+      "source_pageid": 49046,
+      "copyright_exception_flags": [],
+      "derived_input_bytes": null
+    },
+    {
+      "case": "r17news021",
+      "mapping_status": "input_too_long",
+      "source_text": "并指责该公司依然在俄罗斯成为智能手机销量领军者",
+      "source_pageid": 53582,
+      "copyright_exception_flags": [],
+      "derived_input_bytes": 72
+    },
+    {
+      "case": "r17news058",
+      "mapping_status": "not_run_source_quarantine",
+      "source_text": "人面識別技術有使用失控的風險",
+      "source_pageid": 53152,
+      "copyright_exception_flags": [
+        "侵權"
+      ],
+      "derived_input_bytes": null
+    },
+    {
+      "case": "r17news059",
+      "mapping_status": "not_run_source_quarantine",
+      "source_text": "每間超市採集的人面數以萬計",
+      "source_pageid": 53152,
+      "copyright_exception_flags": [
+        "侵權"
+      ],
+      "derived_input_bytes": null
+    },
+    {
+      "case": "r17news060",
+      "mapping_status": "not_run_source_quarantine",
+      "source_text": "中國科學技術大學網絡空間安全學院教授左曉棟表示",
+      "source_pageid": 53152,
+      "copyright_exception_flags": [
+        "侵權"
+      ],
+      "derived_input_bytes": null
+    },
+    {
+      "case": "r17news078",
+      "mapping_status": "unmappable",
+      "source_text": "查閲或處理系統資料",
+      "source_pageid": 49301,
+      "copyright_exception_flags": [],
+      "derived_input_bytes": null
+    }
+  ],
+  "reading_ambiguity_cases": 26,
+  "new_corpus_training_used": false,
+  "heldout_candidates_executed": false,
+  "formal_metrics": {
+    "top1": null,
+    "top5": null,
+    "mrr": null
+  },
+  "dev_targets_sha256": "0b3d3cfa050668ba31ed837e3e2f6720c945ce8d017a7bf850f1c8837b2f3ef0",
+  "human_gold": false
+}

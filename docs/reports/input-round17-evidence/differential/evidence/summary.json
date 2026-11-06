@@ -1,0 +1,165 @@
+{
+  "expected_source_commit": "3889c3d683053f4719fa5692996e0e31e214f3c1",
+  "head_before": "3889c3d683053f4719fa5692996e0e31e214f3c1",
+  "at_utc": "2026-11-06T07:04:41.391152+00:00",
+  "source_before": {
+    "crates/cloudleaf-search/src/cancellation.rs": "697cae05d2707142db2c1eb4dccb8cd6d67a64e80e7b801b05a88f63cc929318",
+    "crates/cloudleaf-search/src/character.rs": "b87aa883e6b8eeaf60f7ec245c99887fccce15d2148754807884c0ae80c99ae6",
+    "crates/cloudleaf-search/src/lattice.rs": "ebf0f5e20eaf915a11abf5488711af12ca95b4d19b7728b7599de5aea506ff16",
+    "crates/cloudleaf-search/src/lexicon.rs": "3acd396f837effee46417a314d3cfb245e03961dc20af00eb2779f15ebcb4862",
+    "crates/cloudleaf-search/src/lib.rs": "2fb76b05c67e35ae6959d353a5c4e417240c1cc28faba5887d731f052b3723b3",
+    "crates/cloudleaf-search/src/model.rs": "8d5e7ab05a6e089458e5c90d15709dcf306b79a59ad3f4ae244e728e266476dc",
+    "crates/cloudleaf-search/src/profiling.rs": "af2754a2a2c6d0bdec666601a3289320ed22acd8d87e70fc0c2afb37b3f453eb",
+    "crates/cloudleaf-search/src/search.rs": "51916dc49959e5b042c7fa60a1487983a8328c17e0cf57cf1212fd515a98ac5d",
+    "crates/cloudleaf-search/Cargo.toml": "954555f22ec14156d7422e2d18f2b2b9e99e878b1b422e7d60dcf12868f18c5d",
+    "crates/cloudleaf-pinyin/src/lib.rs": "02ba745b9f5d6f0ff000083b4e620650c8b34d3b6ae75f820c30bfd438cd08a9",
+    "crates/cloudleaf-types/src/lib.rs": "674836819dc83c732dd48444926e32f081322b3544f32fca4b03253a98525716"
+  },
+  "source_matches_expected_blobs": {
+    "crates/cloudleaf-search/src/cancellation.rs": true,
+    "crates/cloudleaf-search/src/character.rs": true,
+    "crates/cloudleaf-search/src/lattice.rs": true,
+    "crates/cloudleaf-search/src/lexicon.rs": true,
+    "crates/cloudleaf-search/src/lib.rs": true,
+    "crates/cloudleaf-search/src/model.rs": true,
+    "crates/cloudleaf-search/src/profiling.rs": true,
+    "crates/cloudleaf-search/src/search.rs": true,
+    "crates/cloudleaf-search/Cargo.toml": true,
+    "crates/cloudleaf-pinyin/src/lib.rs": true,
+    "crates/cloudleaf-types/src/lib.rs": true
+  },
+  "commands": [
+    {
+      "label": "lock",
+      "command": [
+        "C:/Users/EDY/.cargo/bin/cargo.exe",
+        "generate-lockfile",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 0.20979270001407713,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "040d033f36303c2b8cde7b6a8e1be1ec45b75fb2a3471c11a45bd0ababa1e85c"
+    },
+    {
+      "label": "build",
+      "command": [
+        "C:/Users/EDY/.cargo/bin/cargo.exe",
+        "build",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 19.45442369999364,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "9952cc8bd04829d1dd4ea9693492cec92f96a50d32c89c304c10fb3d362500a6"
+    },
+    {
+      "label": "differential",
+      "command": [
+        "C:\\Users\\EDY\\.codex\\tmp\\r17-actual-diff\\target\\release\\r17-actual-diff.exe"
+      ],
+      "returncode": 0,
+      "seconds": 8.014093400008278,
+      "stdout_sha256": "e4134bfb68ea6e2fcc272189f9a6e79cee5d1cc6a2806808ebac06b5091f5939",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "profile-baseline-addone",
+      "command": [
+        "C:\\Users\\EDY\\.codex\\tmp\\r17-perf\\baseline\\target\\release\\r17-perf-probe.exe",
+        "C:/Users/EDY/.codex/worktrees/cl009-data/Cloudleaf/.local/round5-clean-6d3d4e1/release-a/runtime.tsv",
+        "C:\\Users\\EDY\\.codex\\tmp\\r17-actual-diff\\cases.tsv",
+        "exact",
+        "character",
+        "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character.tsv",
+        "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+        "64",
+        "3",
+        "1",
+        "16384",
+        "200000",
+        "50000",
+        "10"
+      ],
+      "returncode": 0,
+      "seconds": 1.6763484999828506,
+      "stdout_sha256": "39ca68e47d73b5fb02940c18c41e2ae64e957fa39b86295df938b78280a19a2b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "profile-actual-addone",
+      "command": [
+        "C:\\Users\\EDY\\.codex\\tmp\\r17-actual-diff\\target\\release\\r17-actual-profile.exe",
+        "C:/Users/EDY/.codex/worktrees/cl009-data/Cloudleaf/.local/round5-clean-6d3d4e1/release-a/runtime.tsv",
+        "C:\\Users\\EDY\\.codex\\tmp\\r17-actual-diff\\cases.tsv",
+        "exact",
+        "character",
+        "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character.tsv",
+        "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+        "64",
+        "3",
+        "1",
+        "16384",
+        "200000",
+        "50000",
+        "10"
+      ],
+      "returncode": 0,
+      "seconds": 1.5293577999982517,
+      "stdout_sha256": "5caef943198737a06467857a3ae4882ec23c405149090fc5d218e8bb84dfdf9f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "differential": {
+    "raw_bytes": 72193620,
+    "raw_sha256": "e4134bfb68ea6e2fcc272189f9a6e79cee5d1cc6a2806808ebac06b5091f5939",
+    "gzip_bytes": 2270687,
+    "gzip_sha256": "e0e5f87508c0c3df98cbf812866e69d45f6d3bce49b3bf08c714980ebd6d6837",
+    "gzip_CRC_and_exact_uncompressed_bytes": true,
+    "summary_lines": [
+      "SUMMARY\tkind=character_bigram\tqueries=11160\tcomparisons=22320\tfailures=0\tincomplete_reference=0\tbeam_pruned_cases=0\tposition_rejections=11160\tinputs=62",
+      "SUMMARY\tkind=character_bigram_witten_bell\tqueries=11160\tcomparisons=22320\tfailures=0\tincomplete_reference=0\tbeam_pruned_cases=0\tposition_rejections=11160\tinputs=62"
+    ]
+  },
+  "source_after": {
+    "crates/cloudleaf-search/src/cancellation.rs": "697cae05d2707142db2c1eb4dccb8cd6d67a64e80e7b801b05a88f63cc929318",
+    "crates/cloudleaf-search/src/character.rs": "b87aa883e6b8eeaf60f7ec245c99887fccce15d2148754807884c0ae80c99ae6",
+    "crates/cloudleaf-search/src/lattice.rs": "ebf0f5e20eaf915a11abf5488711af12ca95b4d19b7728b7599de5aea506ff16",
+    "crates/cloudleaf-search/src/lexicon.rs": "3acd396f837effee46417a314d3cfb245e03961dc20af00eb2779f15ebcb4862",
+    "crates/cloudleaf-search/src/lib.rs": "2fb76b05c67e35ae6959d353a5c4e417240c1cc28faba5887d731f052b3723b3",
+    "crates/cloudleaf-search/src/model.rs": "8d5e7ab05a6e089458e5c90d15709dcf306b79a59ad3f4ae244e728e266476dc",
+    "crates/cloudleaf-search/src/profiling.rs": "af2754a2a2c6d0bdec666601a3289320ed22acd8d87e70fc0c2afb37b3f453eb",
+    "crates/cloudleaf-search/src/search.rs": "51916dc49959e5b042c7fa60a1487983a8328c17e0cf57cf1212fd515a98ac5d",
+    "crates/cloudleaf-search/Cargo.toml": "954555f22ec14156d7422e2d18f2b2b9e99e878b1b422e7d60dcf12868f18c5d",
+    "crates/cloudleaf-pinyin/src/lib.rs": "02ba745b9f5d6f0ff000083b4e620650c8b34d3b6ae75f820c30bfd438cd08a9",
+    "crates/cloudleaf-types/src/lib.rs": "674836819dc83c732dd48444926e32f081322b3544f32fca4b03253a98525716"
+  },
+  "head_after": "3889c3d683053f4719fa5692996e0e31e214f3c1",
+  "source_unchanged": true,
+  "source_after_matches_expected_blobs": {
+    "crates/cloudleaf-search/src/cancellation.rs": true,
+    "crates/cloudleaf-search/src/character.rs": true,
+    "crates/cloudleaf-search/src/lattice.rs": true,
+    "crates/cloudleaf-search/src/lexicon.rs": true,
+    "crates/cloudleaf-search/src/lib.rs": true,
+    "crates/cloudleaf-search/src/model.rs": true,
+    "crates/cloudleaf-search/src/profiling.rs": true,
+    "crates/cloudleaf-search/src/search.rs": true,
+    "crates/cloudleaf-search/Cargo.toml": true,
+    "crates/cloudleaf-pinyin/src/lib.rs": true,
+    "crates/cloudleaf-types/src/lib.rs": true
+  },
+  "binaries": {
+    "r17-actual-diff.exe": {
+      "bytes": 444416,
+      "sha256": "649aae1e3bd8fec1eafda812f73d3dc9ffaa1b574af53727f4566d0c3925e7c4"
+    },
+    "r17-actual-profile.exe": {
+      "bytes": 506368,
+      "sha256": "0654c5488c37e0eec4c190e560b6bd14a2f1362ddc1bfe0300af774fee473c4e"
+    }
+  },
+  "tool_sha256": "d253994f0b51f08055a8564dbbcd016914c9198b8fbcbe4ed59a2163d50cf5c6"
+}

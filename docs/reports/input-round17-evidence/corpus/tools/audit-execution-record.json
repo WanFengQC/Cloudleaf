@@ -1,0 +1,33 @@
+{
+  "scope": "temp-only read-only source/task verification; no actual repository writes and no candidate inference",
+  "repo": "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf",
+  "checked_head": "3889c3d683053f4719fa5692996e0e31e214f3c1",
+  "runs": [
+    {
+      "command": ["python", "prepare_wikinews_tasks.py", "--source-dir", "wikinews-originals", "--output-dir", "wikinews-tasks-b", "--baseline-runtime", "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv", "--combined-runtime", "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round17-supplement-a\\combined-runtime.tsv", "--tatoeba-prepared", "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-corpus-a"],
+      "exit_code": 0,
+      "captured_tool_chunk": "56a384",
+      "result": "Five stable files are byte-identical between builds a/b; summary differs only created_utc."
+    },
+    {
+      "command": ["python", "finish_wikinews_audit.py"],
+      "exit_code": 1,
+      "captured_tool_chunk": "9d1db7",
+      "raw_error": "Traceback (most recent call last):\n  File \"C:\\Users\\EDY\\.codex\\tmp\\r17-data\\finish_wikinews_audit.py\", line 113, in <module>\n    assert diagnosis_b==diagnosis_c\n           ^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+      "reason": "The audit initially compared traditional-b/c diagnostics from different tool versions. Version c adds reading_ambiguities/reading_ambiguity_present. This was an audit assumption failure, not source/runtime corruption. Partial first-attempt output stays in final-audit."
+    },
+    {
+      "command": ["python", "prepare_traditional_layer.py", "--repo-path", "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf", "--baseline-release", "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a", "--source-archive", "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round4-source-cedict\\cccedict-20260604-mirror7019e1c.zip", "--output-dir", "traditional-d"],
+      "exit_code": 0,
+      "captured_tool_chunk": "445bc2",
+      "result": "Rebuilt current diagnostic tool in d; c/d diagnostics are identical (SHA dcf37a25e9bac7a5e72c1fd119a22766c2ee41094afa57e2cd0d8b3748ba4f16)."
+    },
+    {
+      "command": ["python", "finish_wikinews_audit.py"],
+      "exit_code": 0,
+      "captured_tool_chunk": "c48d1c",
+      "result": "7 final-audit-v2 files generated, 108 fixed source files verified; 40 ready dev targets only."
+    }
+  ],
+  "not_run": ["heldout candidates", "training", "formal language metrics", "new downloads", "TSF", "repository modifications"]
+}

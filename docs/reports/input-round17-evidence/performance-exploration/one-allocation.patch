@@ -1,0 +1,27 @@
+--- a/crates/cloudleaf-search/src/search.rs
++++ b/crates/cloudleaf-search/src/search.rs
+@@ -170,14 +170,16 @@
+         }) {
+             return None;
+         }
+-        let mut next = path.clone();
+-        next.score = score;
+-        next.features = features;
+-        next.last_character = last_character;
+-        next.text.push_str(&entry.text);
+-        next.ids.push(edge.entry);
+-        next.edges.push(edge_index);
+-        Some(next)
++        let mut text = String::with_capacity(path.text.len() + entry.text.len());
++        text.push_str(&path.text);
++        text.push_str(&entry.text);
++        let mut ids = Vec::with_capacity(path.ids.len() + 1);
++        ids.extend_from_slice(&path.ids);
++        ids.push(edge.entry);
++        let mut edges = Vec::with_capacity(path.edges.len() + 1);
++        edges.extend_from_slice(&path.edges);
++        edges.push(edge_index);
++        Some(Path { text, score, ids, edges, features, last_character })
+     }
+ 
+     fn finish<O: Observer>(&self, mut path: Path, observer: &mut O) -> Path {

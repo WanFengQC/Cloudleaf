@@ -1,0 +1,12 @@
+{
+  "bindings": "pinned windows0.62.2 Win32_UI_Input_Ime",
+  "feature_only_no_new_dependency": true,
+  "documentation": "https://learn.microsoft.com/en-us/windows/win32/api/imm/nf-imm-immassociatecontextex",
+  "IACE_CHILDREN_only_children": "Rootmustuseflag0formainandIACE_CHILDRENforalreadycreatedchildren",
+  "scope": "OnlynewisolatedHostHWNDanditsownthreadchildren; no globalsettings/profile/layout/TSFregistration",
+  "test_execution": "not-run; rootwillrunactualred/green",
+  "patch_sha256": {
+    "implementation-after-tests-ime.patch": "4a8651748ae234ec8c6df1cf6d26859a2baa47dd43a035bf7b433dade84439ec",
+    "tests-only-ime.patch": "fa92de2d097ea70fea26f963e23ee8c3a6ffdc0f7b45337139026ce4f1fb1c9a"
+  }
+}

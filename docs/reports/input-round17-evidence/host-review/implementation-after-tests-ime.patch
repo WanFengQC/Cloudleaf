@@ -1,0 +1,24 @@
+diff --git a/adapters/windows/isolated_input.rs b/adapters/windows/isolated_input.rs
+--- a/adapters/windows/isolated_input.rs
++++ b/adapters/windows/isolated_input.rs
+@@ -8,7 +8,7 @@
+     Foundation::*,
+     Graphics::Gdi::*,
+     System::LibraryLoader::GetModuleHandleW,
+-    UI::{Input::KeyboardAndMouse::*, WindowsAndMessaging::*},
++    UI::{Input::{KeyboardAndMouse::*, Ime::{HIMC, IACE_CHILDREN, ImmAssociateContextEx}}, WindowsAndMessaging::*},
+ };
+ use windows_core::{PCWSTR, w};
+ 
+@@ -307,6 +307,11 @@
+                         CreateWindowExW(WINDOW_EX_STYLE::default(),w!("BUTTON"),PCWSTR(wide(label).as_ptr()),WS_CHILD|WS_VISIBLE,x,104,width,30,Some(window),Some(HMENU(id as *mut _)),None,None)?;
+                     }
+                     view.document.set(CreateWindowExW(WS_EX_CLIENTEDGE,w!("EDIT"),w!(""),WS_CHILD|WS_VISIBLE|WS_VSCROLL|WINDOW_STYLE(ES_READONLY as u32|ES_MULTILINE as u32|ES_AUTOVSCROLL as u32),12,320,720,200,Some(window),None,None,None)?);
++                    // 只解绑本窗口及已创建子控件的继承IME；拼音由本隔离核心处理，不改变系统布局。
++                    if !ImmAssociateContextEx(window, HIMC::default(), 0).as_bool()
++                        || !ImmAssociateContextEx(window, HIMC::default(), IACE_CHILDREN).as_bool() {
++                        return Ok(LRESULT(-1));
++                    }
+                     Ok(LRESULT(0))
+                 }
+                 WM_CHAR => {

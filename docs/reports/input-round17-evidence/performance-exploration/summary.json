@@ -1,0 +1,284 @@
+{
+  "scope": "Exploratory independent temporary copies, immutable base521472d. Pure queries not InputEngine/Host/TSF. No repo edits. Root must repeat exact final implementation and event traces.",
+  "minimal_recommendation": "Scorer::extend allocate text/id/edge vectors once at their final capacities. Optional prefilter computes exact-bound and seen comparison before materialization; profile must include its boundary transition in Scoring.",
+  "timings": {
+    "addone": {
+      "baseline": {
+        "samples": 375,
+        "p50_ns": 1380300,
+        "p95_ns": 7806400,
+        "p99_ns": 9979500,
+        "max_ns": 11471100
+      },
+      "one-allocation": {
+        "samples": 375,
+        "p50_ns": 1098900,
+        "p95_ns": 6182100,
+        "p99_ns": 8628000,
+        "max_ns": 10151400
+      },
+      "prefilter": {
+        "samples": 375,
+        "p50_ns": 1143800,
+        "p95_ns": 6467300,
+        "p99_ns": 8476400,
+        "max_ns": 11448400
+      }
+    },
+    "witten": {
+      "baseline": {
+        "samples": 375,
+        "p50_ns": 1299700,
+        "p95_ns": 9311500,
+        "p99_ns": 11285200,
+        "max_ns": 15087000
+      },
+      "one-allocation": {
+        "samples": 375,
+        "p50_ns": 1247100,
+        "p95_ns": 7962500,
+        "p99_ns": 26292900,
+        "max_ns": 27657700
+      },
+      "prefilter": {
+        "samples": 375,
+        "p50_ns": 998200,
+        "p95_ns": 7323000,
+        "p99_ns": 9340600,
+        "max_ns": 13001200
+      }
+    }
+  },
+  "old_new_full_SearchResult_comparisons": 300,
+  "old_new_all_equal": true,
+  "allocation_counts": {
+    "addone": {
+      "baseline": {
+        "query_count": 25,
+        "total_allocations": 273050,
+        "total_reallocations": 131619,
+        "total_cumulative_requested_bytes": 47353675,
+        "complex_case": {
+          "id": "r14-5",
+          "allocations": "30498",
+          "reallocations": "14967",
+          "cumulative_requested_bytes": "7216558",
+          "expansions": "54843",
+          "resident_high_water": "9288",
+          "budget": "None",
+          "top1": "Some(\"这是一个比较复杂的问题\")"
+        }
+      },
+      "one-allocation": {
+        "query_count": 25,
+        "total_allocations": 273050,
+        "total_reallocations": 300,
+        "total_cumulative_requested_bytes": 39892589,
+        "complex_case": {
+          "id": "r14-5",
+          "allocations": "30498",
+          "reallocations": "15",
+          "cumulative_requested_bytes": "5954766",
+          "expansions": "54843",
+          "resident_high_water": "9288",
+          "budget": "None",
+          "top1": "Some(\"这是一个比较复杂的问题\")"
+        }
+      },
+      "prefilter": {
+        "query_count": 25,
+        "total_allocations": 250985,
+        "total_reallocations": 338,
+        "total_cumulative_requested_bytes": 39102582,
+        "complex_case": {
+          "id": "r14-5",
+          "allocations": "28723",
+          "reallocations": "18",
+          "cumulative_requested_bytes": "5867559",
+          "expansions": "54843",
+          "resident_high_water": "9288",
+          "budget": "None",
+          "top1": "Some(\"这是一个比较复杂的问题\")"
+        }
+      }
+    },
+    "witten": {
+      "baseline": {
+        "query_count": 25,
+        "total_allocations": 261575,
+        "total_reallocations": 123826,
+        "total_cumulative_requested_bytes": 43559189,
+        "complex_case": {
+          "id": "r14-5",
+          "allocations": "40325",
+          "reallocations": "19791",
+          "cumulative_requested_bytes": "7844453",
+          "expansions": "56451",
+          "resident_high_water": "12105",
+          "budget": "None",
+          "top1": "Some(\"这是一个比较复杂的问题\")"
+        }
+      },
+      "one-allocation": {
+        "query_count": 25,
+        "total_allocations": 261575,
+        "total_reallocations": 295,
+        "total_cumulative_requested_bytes": 36675857,
+        "complex_case": {
+          "id": "r14-5",
+          "allocations": "40325",
+          "reallocations": "15",
+          "cumulative_requested_bytes": "6411384",
+          "expansions": "56451",
+          "resident_high_water": "12105",
+          "budget": "None",
+          "top1": "Some(\"这是一个比较复杂的问题\")"
+        }
+      },
+      "prefilter": {
+        "query_count": 25,
+        "total_allocations": 240989,
+        "total_reallocations": 333,
+        "total_cumulative_requested_bytes": 35956450,
+        "complex_case": {
+          "id": "r14-5",
+          "allocations": "37974",
+          "reallocations": "18",
+          "cumulative_requested_bytes": "6308753",
+          "expansions": "56451",
+          "resident_high_water": "12105",
+          "budget": "None",
+          "top1": "Some(\"这是一个比较复杂的问题\")"
+        }
+      }
+    }
+  },
+  "allocation_scope": "Temporary global System allocator counting tool, only search on prebuilt lattice. Cumulative requested bytes are not peak/live/RSS. Product code has no allocator/unsafe changes.",
+  "reference_differential": {
+    "one-allocation": {
+      "variant": "one-allocation",
+      "commands": [
+        {
+          "command": [
+            "C:/Users/EDY/.cargo/bin/cargo.exe",
+            "generate-lockfile",
+            "--offline"
+          ],
+          "returncode": 0,
+          "seconds": 0.20940479999990202
+        },
+        {
+          "command": [
+            "C:/Users/EDY/.cargo/bin/cargo.exe",
+            "test",
+            "-p",
+            "cloudleaf-search",
+            "--locked",
+            "--offline"
+          ],
+          "returncode": 0,
+          "seconds": 12.737640399980592
+        },
+        {
+          "command": [
+            "C:/Users/EDY/.cargo/bin/cargo.exe",
+            "run",
+            "--release",
+            "--locked",
+            "--offline",
+            "-p",
+            "r17-diff"
+          ],
+          "returncode": 0,
+          "seconds": 11.38839760000701
+        }
+      ],
+      "summary_lines": [
+        "SUMMARY\tkind=character_bigram\tqueries=11160\tcomparisons=22320\tfailures=0\tincomplete_reference=0\tbeam_pruned_cases=0\tposition_rejections=11160\tinputs=62",
+        "SUMMARY\tkind=character_bigram_witten_bell\tqueries=11160\tcomparisons=22320\tfailures=0\tincomplete_reference=0\tbeam_pruned_cases=0\tposition_rejections=11160\tinputs=62"
+      ],
+      "source_sha256": {
+        "crates\\cloudleaf-search\\src\\cancellation.rs": "697cae05d2707142db2c1eb4dccb8cd6d67a64e80e7b801b05a88f63cc929318",
+        "crates\\cloudleaf-search\\src\\character.rs": "b87aa883e6b8eeaf60f7ec245c99887fccce15d2148754807884c0ae80c99ae6",
+        "crates\\cloudleaf-search\\src\\lattice.rs": "ebf0f5e20eaf915a11abf5488711af12ca95b4d19b7728b7599de5aea506ff16",
+        "crates\\cloudleaf-search\\src\\lexicon.rs": "3acd396f837effee46417a314d3cfb245e03961dc20af00eb2779f15ebcb4862",
+        "crates\\cloudleaf-search\\src\\lib.rs": "2fb76b05c67e35ae6959d353a5c4e417240c1cc28faba5887d731f052b3723b3",
+        "crates\\cloudleaf-search\\src\\model.rs": "8d5e7ab05a6e089458e5c90d15709dcf306b79a59ad3f4ae244e728e266476dc",
+        "crates\\cloudleaf-search\\src\\profiling.rs": "af2754a2a2c6d0bdec666601a3289320ed22acd8d87e70fc0c2afb37b3f453eb",
+        "crates\\cloudleaf-search\\src\\search.rs": "32f095d4ab3babe3dcadaff2c64b4ce75f84bec99c2ae71d6f4be9473411551a"
+      },
+      "raw_sha256": "e4134bfb68ea6e2fcc272189f9a6e79cee5d1cc6a2806808ebac06b5091f5939",
+      "raw_bytes": 72193620,
+      "gzip_sha256": "e0e5f87508c0c3df98cbf812866e69d45f6d3bce49b3bf08c714980ebd6d6837",
+      "gzip_bytes": 2270687,
+      "gzip_validated": true
+    },
+    "prefilter": {
+      "variant": "prefilter",
+      "commands": [
+        {
+          "command": [
+            "C:/Users/EDY/.cargo/bin/cargo.exe",
+            "generate-lockfile",
+            "--offline"
+          ],
+          "returncode": 0,
+          "seconds": 0.21060209997813217
+        },
+        {
+          "command": [
+            "C:/Users/EDY/.cargo/bin/cargo.exe",
+            "test",
+            "-p",
+            "cloudleaf-search",
+            "--locked",
+            "--offline"
+          ],
+          "returncode": 0,
+          "seconds": 12.713640300004045
+        },
+        {
+          "command": [
+            "C:/Users/EDY/.cargo/bin/cargo.exe",
+            "run",
+            "--release",
+            "--locked",
+            "--offline",
+            "-p",
+            "r17-diff"
+          ],
+          "returncode": 0,
+          "seconds": 11.358665700012352
+        }
+      ],
+      "summary_lines": [
+        "SUMMARY\tkind=character_bigram\tqueries=11160\tcomparisons=22320\tfailures=0\tincomplete_reference=0\tbeam_pruned_cases=0\tposition_rejections=11160\tinputs=62",
+        "SUMMARY\tkind=character_bigram_witten_bell\tqueries=11160\tcomparisons=22320\tfailures=0\tincomplete_reference=0\tbeam_pruned_cases=0\tposition_rejections=11160\tinputs=62"
+      ],
+      "source_sha256": {
+        "crates\\cloudleaf-search\\src\\cancellation.rs": "697cae05d2707142db2c1eb4dccb8cd6d67a64e80e7b801b05a88f63cc929318",
+        "crates\\cloudleaf-search\\src\\character.rs": "b87aa883e6b8eeaf60f7ec245c99887fccce15d2148754807884c0ae80c99ae6",
+        "crates\\cloudleaf-search\\src\\lattice.rs": "ebf0f5e20eaf915a11abf5488711af12ca95b4d19b7728b7599de5aea506ff16",
+        "crates\\cloudleaf-search\\src\\lexicon.rs": "3acd396f837effee46417a314d3cfb245e03961dc20af00eb2779f15ebcb4862",
+        "crates\\cloudleaf-search\\src\\lib.rs": "2fb76b05c67e35ae6959d353a5c4e417240c1cc28faba5887d731f052b3723b3",
+        "crates\\cloudleaf-search\\src\\model.rs": "8d5e7ab05a6e089458e5c90d15709dcf306b79a59ad3f4ae244e728e266476dc",
+        "crates\\cloudleaf-search\\src\\profiling.rs": "af2754a2a2c6d0bdec666601a3289320ed22acd8d87e70fc0c2afb37b3f453eb",
+        "crates\\cloudleaf-search\\src\\search.rs": "745e787c2d024a65ab8cfd945e9423e8e6dd054fc652d101e9bc07df77a9d049"
+      },
+      "raw_sha256": "e4134bfb68ea6e2fcc272189f9a6e79cee5d1cc6a2806808ebac06b5091f5939",
+      "raw_bytes": 72193620,
+      "gzip_sha256": "e0e5f87508c0c3df98cbf812866e69d45f6d3bce49b3bf08c714980ebd6d6837",
+      "gzip_bytes": 2270687,
+      "gzip_validated": true
+    }
+  },
+  "observed_tradeoff": "Add-one query P95 improves for both, but prefilter6.4673ms is slightly slower than once-only6.1821ms in these samples. Witten prefilter7.3230ms improves on once7.9625ms; once Witten max27.6577ms retained. No universal speedup claim.",
+  "failures": [
+    "Initial temp --locked failed101 after adding new diff workspace member without regenerating lock; raw unit.stderr and checks.json preserved. checks-v2 generated offline lock then all tests/differentials passed."
+  ],
+  "patch_sha256": {
+    "one-allocation.patch": "96b2f0f8a76ab1b8c07209b5c50ff9ed0c24cdd9a7d5c8068536dd6b86ee977d",
+    "prefilter.patch": "d1e0a713e8f8c0aa445d69440eafa3fc27be51e08895f9255601261a44f732d3",
+    "prefilter-only.patch": "386409af1a7e4b1ba5cba8965ae42d5448c46d49e1e08918dc20141ba176c235"
+  }
+}

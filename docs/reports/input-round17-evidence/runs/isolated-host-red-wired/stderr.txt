@@ -1,0 +1,59 @@
+   Compiling cloudleaf-windows-ime v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\apps\windows-ime)
+warning: unused import: `super::*`
+ --> apps\windows-ime\src\..\..\..\adapters\windows\isolated_input.rs:1:5
+  |
+1 | use super::*;
+  |     ^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unused import: `std::cell::Cell`
+ --> apps\windows-ime\src\..\..\..\adapters\windows\isolated_input.rs:2:5
+  |
+2 | use std::cell::Cell;
+  |     ^^^^^^^^^^^^^^^
+
+error[E0412]: cannot find type `LocalHost` in this scope
+ --> apps\windows-ime\src\..\..\..\adapters\windows\isolated_input.rs:7:26
+  |
+7 |     fn type_text(local: &LocalHost, value: &str) {
+  |                          ^^^^^^^^^ not found in this scope
+
+error[E0599]: no function or associated item named `isolated` found for struct `candidate::CandidateUi` in the current scope
+   --> apps\windows-ime\src\..\..\..\adapters\windows\candidate.rs:500:31
+    |
+ 56 | pub(crate) struct CandidateUi {
+    | ----------------------------- function or associated item `isolated` not found for this struct
+...
+500 |         let ui = CandidateUi::isolated(host.clone(), frame, select).unwrap();
+    |                               ^^^^^^^^ function or associated item not found in `candidate::CandidateUi`
+    |
+note: if you're trying to build a new `candidate::CandidateUi`, consider using `candidate::CandidateUi::new` which returns `std::result::Result<candidate::CandidateUi, windows_core::Error>`
+   --> apps\windows-ime\src\..\..\..\adapters\windows\candidate.rs:81:5
+    |
+ 81 |     pub fn new(host: Shared, context: ITfContext, frame: InputFrame) -> Result<Self> {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0433]: failed to resolve: use of undeclared type `LocalHost`
+  --> apps\windows-ime\src\..\..\..\adapters\windows\isolated_input.rs:18:21
+   |
+18 |         let local = LocalHost::new(Host::new().unwrap()).unwrap();
+   |                     ^^^^^^^^^ use of undeclared type `LocalHost`
+
+error[E0433]: failed to resolve: use of undeclared type `LocalHost`
+  --> apps\windows-ime\src\..\..\..\adapters\windows\isolated_input.rs:54:21
+   |
+54 |         let local = LocalHost::new(Host::new().unwrap()).unwrap();
+   |                     ^^^^^^^^^ use of undeclared type `LocalHost`
+
+error[E0433]: failed to resolve: use of undeclared type `LocalHost`
+  --> apps\windows-ime\src\..\..\..\adapters\windows\isolated_input.rs:97:21
+   |
+97 |         let local = LocalHost::new(Host::new().unwrap()).unwrap();
+   |                     ^^^^^^^^^ use of undeclared type `LocalHost`
+
+Some errors have detailed explanations: E0412, E0433, E0599.
+For more information about an error, try `rustc --explain E0412`.
+error: could not compile `cloudleaf-windows-ime` (lib test) due to 5 previous errors
+warning: build failed, waiting for other jobs to finish...
+warning: `cloudleaf-windows-ime` (lib) generated 2 warnings (run `cargo fix --lib -p cloudleaf-windows-ime` to apply 2 suggestions)

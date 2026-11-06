@@ -1,0 +1,13 @@
+diff --git a/adapters/windows/isolated_input.rs b/adapters/windows/isolated_input.rs
+--- a/adapters/windows/isolated_input.rs
++++ b/adapters/windows/isolated_input.rs
+@@ -328,7 +328,8 @@
+                     *view.local.document.borrow_mut()=text(view.document.get());
+                     view.local.reset()?; let frame=view.local.host.engine.borrow().frame(); view.update(frame)?; let _=SetFocus(Some(window)); Ok(LRESULT(0))
+                 }
+-                WM_KILLFOCUS if !view.local.host.quarantined.get() && GetAncestor(HWND(wparam.0 as *mut _),GA_ROOT)!=window => { view.process(InputEvent::FocusLost,None)?; Ok(LRESULT(0)) }
++                // 顶层激活状态覆盖EDIT/按钮持有焦点时的外部切换，子控件间切换不取消组合。
++                WM_ACTIVATE if wparam.0 & 0xffff == WA_INACTIVE as usize => { if !view.local.host.quarantined.get() { view.process(InputEvent::FocusLost,None)?; } Ok(LRESULT(0)) }
+                 WM_SETFOCUS => { if !view.local.host.quarantined.get() { view.process(InputEvent::Activate,None)?; } Ok(LRESULT(0)) }
+                 WM_CLOSE => { view.ui.borrow_mut().take(); DestroyWindow(window)?; Ok(LRESULT(0)) }
+                 WM_DESTROY => { PostQuitMessage(0); Ok(LRESULT(0)) }

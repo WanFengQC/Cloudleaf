@@ -1,0 +1,130 @@
+{
+  "compile": [
+    {
+      "variant": "baseline",
+      "command": [
+        "C:/Users/EDY/.cargo/bin/cargo.exe",
+        "build",
+        "--release",
+        "--locked",
+        "--offline",
+        "--bin",
+        "allocations"
+      ],
+      "returncode": 0
+    },
+    {
+      "variant": "one-allocation",
+      "command": [
+        "C:/Users/EDY/.cargo/bin/cargo.exe",
+        "build",
+        "--release",
+        "--locked",
+        "--offline",
+        "--bin",
+        "allocations"
+      ],
+      "returncode": 0
+    },
+    {
+      "variant": "prefilter",
+      "command": [
+        "C:/Users/EDY/.cargo/bin/cargo.exe",
+        "build",
+        "--release",
+        "--locked",
+        "--offline",
+        "--bin",
+        "allocations"
+      ],
+      "returncode": 0
+    }
+  ],
+  "runs": [
+    {
+      "variant": "baseline",
+      "kind": "addone",
+      "command": [
+        "C:\\Users\\EDY\\.codex\\tmp\\r17-perf\\baseline\\target\\release\\allocations.exe",
+        "C:/Users/EDY/.codex/worktrees/cl009-data/Cloudleaf/.local/round5-clean-6d3d4e1/release-a/runtime.tsv",
+        "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character.tsv",
+        "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+        "C:\\Users\\EDY\\.codex\\tmp\\r17-perf\\cases.tsv"
+      ],
+      "returncode": 0,
+      "probe_sha256": "175f80f1c702dfbabb61fa4138965765ee242b0f283f0ac6e0761c57df4baf12",
+      "stdout_sha256": "4c3392d539e674c39e7d3baf827d9aed28517e924b92ec96ebe4c094be595294"
+    },
+    {
+      "variant": "baseline",
+      "kind": "witten",
+      "command": [
+        "C:\\Users\\EDY\\.codex\\tmp\\r17-perf\\baseline\\target\\release\\allocations.exe",
+        "C:/Users/EDY/.codex/worktrees/cl009-data/Cloudleaf/.local/round5-clean-6d3d4e1/release-a/runtime.tsv",
+        "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character-witten.tsv",
+        "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+        "C:\\Users\\EDY\\.codex\\tmp\\r17-perf\\cases.tsv"
+      ],
+      "returncode": 0,
+      "probe_sha256": "175f80f1c702dfbabb61fa4138965765ee242b0f283f0ac6e0761c57df4baf12",
+      "stdout_sha256": "9ac868074c492fa7668bd7dc0215fa06d8644f6756d83fd3eca99b4eb4b7ef87"
+    },
+    {
+      "variant": "one-allocation",
+      "kind": "addone",
+      "command": [
+        "C:\\Users\\EDY\\.codex\\tmp\\r17-perf\\one-allocation\\target\\release\\allocations.exe",
+        "C:/Users/EDY/.codex/worktrees/cl009-data/Cloudleaf/.local/round5-clean-6d3d4e1/release-a/runtime.tsv",
+        "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character.tsv",
+        "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+        "C:\\Users\\EDY\\.codex\\tmp\\r17-perf\\cases.tsv"
+      ],
+      "returncode": 0,
+      "probe_sha256": "175f80f1c702dfbabb61fa4138965765ee242b0f283f0ac6e0761c57df4baf12",
+      "stdout_sha256": "e1530a45ad97910cebbda7227eefc687e669b53b0a3b73b3638b9308b55675f4"
+    },
+    {
+      "variant": "one-allocation",
+      "kind": "witten",
+      "command": [
+        "C:\\Users\\EDY\\.codex\\tmp\\r17-perf\\one-allocation\\target\\release\\allocations.exe",
+        "C:/Users/EDY/.codex/worktrees/cl009-data/Cloudleaf/.local/round5-clean-6d3d4e1/release-a/runtime.tsv",
+        "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character-witten.tsv",
+        "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+        "C:\\Users\\EDY\\.codex\\tmp\\r17-perf\\cases.tsv"
+      ],
+      "returncode": 0,
+      "probe_sha256": "175f80f1c702dfbabb61fa4138965765ee242b0f283f0ac6e0761c57df4baf12",
+      "stdout_sha256": "860579fc4c555418b015613fab8b86ec842aa369d2e6a71a5f8c234b9a5e9a7e"
+    },
+    {
+      "variant": "prefilter",
+      "kind": "addone",
+      "command": [
+        "C:\\Users\\EDY\\.codex\\tmp\\r17-perf\\prefilter\\target\\release\\allocations.exe",
+        "C:/Users/EDY/.codex/worktrees/cl009-data/Cloudleaf/.local/round5-clean-6d3d4e1/release-a/runtime.tsv",
+        "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character.tsv",
+        "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+        "C:\\Users\\EDY\\.codex\\tmp\\r17-perf\\cases.tsv"
+      ],
+      "returncode": 0,
+      "probe_sha256": "175f80f1c702dfbabb61fa4138965765ee242b0f283f0ac6e0761c57df4baf12",
+      "stdout_sha256": "fcc7492e274032a0979b9bd046509dc579801fc4ee6670a3d3efd96f79fc5a05"
+    },
+    {
+      "variant": "prefilter",
+      "kind": "witten",
+      "command": [
+        "C:\\Users\\EDY\\.codex\\tmp\\r17-perf\\prefilter\\target\\release\\allocations.exe",
+        "C:/Users/EDY/.codex/worktrees/cl009-data/Cloudleaf/.local/round5-clean-6d3d4e1/release-a/runtime.tsv",
+        "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character-witten.tsv",
+        "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+        "C:\\Users\\EDY\\.codex\\tmp\\r17-perf\\cases.tsv"
+      ],
+      "returncode": 0,
+      "probe_sha256": "175f80f1c702dfbabb61fa4138965765ee242b0f283f0ac6e0761c57df4baf12",
+      "stdout_sha256": "a7c174788566d0f9fd0143bf09af2e92eee3f0301531143b5b27d48d12a1b406"
+    }
+  ],
+  "scope": "Temporary System allocator wrapper counts allocations/reallocations during search on prebuilt lattice. Cumulative requested bytes are not live/peak allocated memory. No allocator or unsafe code added to product."
+}

@@ -1,0 +1,30 @@
+
+running 7 tests
+test native::session::isolated_input::tests::not_applied_keeps_original_and_a_later_explicit_selection_can_commit_once ... ok
+test native::session::isolated_input::tests::retained_capacity_failure_quarantines_before_clearing_current_composition ... FAILED
+test native::session::isolated_input::tests::repeated_focus_loss_and_unknown_preserve_each_unacknowledged_raw_input ... FAILED
+test native::session::isolated_input::tests::actual_host_controller_commit_once_stale_selection_and_original_fallback ... ok
+test native::session::isolated_input::tests::unknown_blocks_replay_and_explicit_new_epoch_rejects_old_candidate ... ok
+test native::session::isolated_input::tests::isolated_window_and_child_do_not_inherit_external_ime ... ok
+test native::session::isolated_input::tests::child_edit_focus_then_host_deactivation_preserves_raw_and_closes_candidates ... ok
+
+failures:
+
+---- native::session::isolated_input::tests::retained_capacity_failure_quarantines_before_clearing_current_composition stdout ----
+
+thread 'native::session::isolated_input::tests::retained_capacity_failure_quarantines_before_clearing_current_composition' panicked at apps\windows-ime\src\..\..\..\adapters\windows\isolated_input.rs:695:9:
+assertion failed: result.is_err()
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- native::session::isolated_input::tests::repeated_focus_loss_and_unknown_preserve_each_unacknowledged_raw_input stdout ----
+
+thread 'native::session::isolated_input::tests::repeated_focus_loss_and_unknown_preserve_each_unacknowledged_raw_input' panicked at apps\windows-ime\src\..\..\..\adapters\windows\isolated_input.rs:674:9:
+assertion failed: local.retained.borrow().contains("nihao")
+
+
+failures:
+    native::session::isolated_input::tests::repeated_focus_loss_and_unknown_preserve_each_unacknowledged_raw_input
+    native::session::isolated_input::tests::retained_capacity_failure_quarantines_before_clearing_current_composition
+
+test result: FAILED. 5 passed; 2 failed; 0 ignored; 0 measured; 106 filtered out; finished in 0.10s
+

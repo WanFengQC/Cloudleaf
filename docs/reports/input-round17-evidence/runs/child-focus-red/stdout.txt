@@ -1,0 +1,20 @@
+
+running 1 test
+test native::session::isolated_input::tests::child_edit_focus_then_host_deactivation_preserves_raw_and_closes_candidates ... FAILED
+
+failures:
+
+---- native::session::isolated_input::tests::child_edit_focus_then_host_deactivation_preserves_raw_and_closes_candidates stdout ----
+HOST_SAMPLE core_ns=6300 projection_ns=1200 comparison_ns=49300 transaction_ns=200 frame_ns=900 candidate_window_ns=8556500 TSF=false
+HOST_SAMPLE core_ns=6800 projection_ns=900 comparison_ns=5700 transaction_ns=300 frame_ns=600 candidate_window_ns=119200 TSF=false
+
+thread 'native::session::isolated_input::tests::child_edit_focus_then_host_deactivation_preserves_raw_and_closes_candidates' panicked at apps\windows-ime\src\..\..\..\adapters\windows\isolated_input.rs:617:13:
+整窗失活必须取消旧组合，而不是依赖父窗仍有键盘焦点
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    native::session::isolated_input::tests::child_edit_focus_then_host_deactivation_preserves_raw_and_closes_candidates
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 109 filtered out; finished in 0.08s
+

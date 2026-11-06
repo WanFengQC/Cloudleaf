@@ -1,0 +1,56 @@
+diff --git a/adapters/windows/isolated_input.rs b/adapters/windows/isolated_input.rs
+index 4a5f8cb..60c8588 100644
+--- a/adapters/windows/isolated_input.rs
++++ b/adapters/windows/isolated_input.rs
+@@ -52,6 +52,18 @@ impl LocalHost {
+             .projection
+             .borrow_mut()
+             .handle(InputEvent::Activate);
++        self.retained.borrow_mut().clear();
++        Ok(())
++    }
++    fn retain(&self, material: &str) -> Result<()> {
++        let mut retained = self.retained.borrow_mut();
++        let separator = if retained.is_empty() { "" } else { "\r\n" };
++        if retained.len() + separator.len() + material.len() > 16384 {
++            self.host.quarantined.set(true);
++            return Err(Error::new(E_FAIL, "保全材料已满；当前组合保留，核对后再开始新会话"));
++        }
++        retained.push_str(separator);
++        retained.push_str(material);
+         Ok(())
+     }
+     pub fn process(
+@@ -67,7 +79,7 @@ impl LocalHost {
+         if event == InputEvent::FocusLost {
+             let raw = self.host.engine.borrow().frame().preedit;
+             if !raw.is_empty() {
+-                *self.retained.borrow_mut() = raw;
++                self.retain(&raw)?;
+             }
+         }
+         let mut sample = Sample::default();
+@@ -140,12 +152,9 @@ impl LocalHost {
+                         });
+                 }
+                 CommitOutcome::Unknown => {
+-                    *self.retained.borrow_mut() = format!(
+-                        "拼音：{}；待核对提交：{}",
+-                        actual.frame.preedit, commit.text
+-                    );
+                     self.host.quarantined.set(true);
+                     self.host.unknown_text.set(true);
++                    self.retain(&format!("拼音：{}；待核对提交：{}", actual.frame.preedit, commit.text))?;
+                 }
+             }
+         } else if !actual.handled {
+@@ -170,8 +179,8 @@ impl LocalHost {
+                 if document.len() <= 16384 && sink(&document) == CommitOutcome::Applied {
+                     *self.document.borrow_mut() = document;
+                 } else {
+-                    *self.retained.borrow_mut() = format!("原生事件待核对：{event:?}");
+                     self.host.quarantined.set(true);
++                    self.retain(&format!("原生事件待核对：{event:?}"))?;
+                 }
+             }
+         }
