@@ -328,7 +328,8 @@ unsafe extern "system" fn window_proc(
                     *view.local.document.borrow_mut()=text(view.document.get());
                     view.local.reset()?; let frame=view.local.host.engine.borrow().frame(); view.update(frame)?; let _=SetFocus(Some(window)); Ok(LRESULT(0))
                 }
-                WM_KILLFOCUS if !view.local.host.quarantined.get() && GetAncestor(HWND(wparam.0 as *mut _),GA_ROOT)!=window => { view.process(InputEvent::FocusLost,None)?; Ok(LRESULT(0)) }
+                // 顶层激活状态覆盖EDIT/按钮持有焦点时的外部切换，子控件间切换不取消组合。
+                WM_ACTIVATE if wparam.0 & 0xffff == WA_INACTIVE as usize => { if !view.local.host.quarantined.get() { view.process(InputEvent::FocusLost,None)?; } Ok(LRESULT(0)) }
                 WM_SETFOCUS => { if !view.local.host.quarantined.get() { view.process(InputEvent::Activate,None)?; } Ok(LRESULT(0)) }
                 WM_CLOSE => { view.ui.borrow_mut().take(); DestroyWindow(window)?; Ok(LRESULT(0)) }
                 WM_DESTROY => { PostQuitMessage(0); Ok(LRESULT(0)) }
@@ -618,6 +619,41 @@ mod tests {
             assert_eq!(retained, "nihao");
             assert!(candidates_closed);
             assert!(view.local.document.borrow().is_empty());
+        }
+    }
+
+    #[test]
+    fn isolated_window_and_child_do_not_inherit_external_ime() {
+        use windows::Win32::UI::Input::Ime::{ImmGetContext, ImmReleaseContext};
+        let view = Rc::new(Window {
+            local: LocalHost::new(Host::new().unwrap()).unwrap(),
+            window: Cell::new(HWND::default()), document: Cell::new(HWND::default()),
+            status: Cell::new(HWND::default()), fault: Cell::new(false),
+            ui: RefCell::new(None),
+        });
+        // 安全：检查本测试隐藏父子窗口的上下文；不切换用户布局或其他窗口的输入法。
+        unsafe {
+            let instance = HINSTANCE(GetModuleHandleW(None).unwrap().0);
+            let class = w!("CloudleafRound17OwnImeRegression");
+            let wc = WNDCLASSW { lpfnWndProc: Some(window_proc), hInstance: instance,
+                lpszClassName: class, ..Default::default() };
+            assert_ne!(RegisterClassW(&wc), 0);
+            let window = CreateWindowExW(
+                WINDOW_EX_STYLE::default(), class, w!(""), WS_OVERLAPPEDWINDOW,
+                0, 0, 770, 580, None, None, Some(instance),
+                Some(Rc::as_ptr(&view).cast()),
+            ).unwrap();
+            let mut inherited = Vec::new();
+            for hwnd in [window, view.document.get()] {
+                let context = ImmGetContext(hwnd);
+                inherited.push(!context.is_invalid());
+                if !context.is_invalid() { assert!(ImmReleaseContext(hwnd, context).as_bool()); }
+            }
+            DestroyWindow(window).unwrap();
+            let mut quit = MSG::default();
+            let _ = PeekMessageW(&mut quit, None, WM_QUIT, WM_QUIT, PM_REMOVE);
+            UnregisterClassW(class, Some(instance)).unwrap();
+            assert_eq!(inherited, [false, false], "隔离键盘入口不得再把拼音交给系统输入法");
         }
     }
 
