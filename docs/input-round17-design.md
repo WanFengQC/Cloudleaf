@@ -35,6 +35,8 @@ Round16原词典123544条frequency均unknown，Tatoeba预选32条中19条正文�
 
 测量分开记录实际核心执行、投影执行、帧生成、候选窗口更新和隔离文档事务；未创建窗口时UI阶段为not-run。隔离Host/组件回归不等于真实系统应用验收。跨事件取消仍未实现，底层合作式API与工作预算不冒称同步线程可抢占；本轮不为功能列表引入无界线程或无收益增量缓存。
 
+实际窗口检查发现当前系统IME拦截测试窗口的ASCII按键，另有EDIT持焦点时父窗收不到WM_KILLFOCUS。隔离入口改为按顶层WM_ACTIVATE处理整窗失活；仅对本入口创建的父子HWND解除继承的IMM上下文，使用固定windows绑定的`Win32_UI_Input_Ime`功能，不改系统键盘布局/配置或注册服务。通过真实WndProc回归证明失活保全，并检查本窗口及子控件无IMM上下文；现有生产TSF入口不调用此操作。
+
 ## 交付与退出条件
 
 保留全部历史报告/测试/原始失败；复用原13项完整回归、词典来源校验、依赖/许可审计、旧基准、新旧搜索差分、真实轨迹和Host专项。各结果绑定源码/数据/工具/二进制SHA。普通提交并push当前分支后，单独核最终HEAD的Windows/Linux push CI、步骤和产物。输出`docs/reports/input-round17-status.md`及Git外`.local/round17-delivery-receipt.json`，明确done/partial/blocked/not implemented/not run。任何质量、资源或原平台退出门禁未满足，CL-010关闭。
