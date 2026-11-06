@@ -35,6 +35,35 @@ pub fn manage(args: Vec<String>) -> Result<()> {
             )),
         };
     }
+    if args
+        .first()
+        .is_some_and(|value| value == "--interactive-input-host")
+    {
+        return match args.as_slice() {
+            [_, runtime, sha] => session::interactive_input_host(runtime, sha, None),
+            [_, runtime, sha, model, model_sha] => {
+                session::interactive_input_host(runtime, sha, Some((model, model_sha)))
+            }
+            _ => Err(Error::new(
+                E_UNEXPECTED,
+                "用法：--interactive-input-host RUNTIME SHA [MODEL MODEL_SHA]",
+            )),
+        };
+    }
+    if args
+        .first()
+        .is_some_and(|value| value == "--benchmark-input-host")
+    {
+        return match args.as_slice() {
+            [_, runtime, sha, model, model_sha, events] => {
+                session::benchmark_input_host(runtime, sha, model, model_sha, events)
+            }
+            _ => Err(Error::new(
+                E_UNEXPECTED,
+                "用法：--benchmark-input-host RUNTIME SHA MODEL MODEL_SHA EVENTS",
+            )),
+        };
+    }
     registration::manage(args)
 }
 pub use service::{DllCanUnloadNow, DllGetClassObject};

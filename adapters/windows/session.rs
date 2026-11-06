@@ -2006,3 +2006,5 @@ pub(crate) use input_review::run_with_language as review_language_host;
 
 #[path = "isolated_input.rs"]
 mod isolated_input;
+pub(crate) use isolated_input::benchmark as benchmark_input_host;
+pub(crate) use isolated_input::run as interactive_input_host;

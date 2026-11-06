@@ -16,10 +16,13 @@ use windows::Win32::{
 };
 use windows_core::{BSTR, Error, GUID, Interface, PCWSTR, Result, implement};
 
+type IsolatedSelection = Rc<dyn Fn(u64, String) -> Result<()>>;
+
 struct View {
     _lease: super::service::Lease,
     host: Weak<Host>,
-    context: ITfContext,
+    context: Option<ITfContext>,
+    local_select: Option<IsolatedSelection>,
     epoch: u64,
     frame: RefCell<InputFrame>,
     selected: Cell<usize>,
@@ -49,14 +52,18 @@ impl View {
             .clone();
         let revision = frame.revision;
         drop(frame);
-        h.select(revision, id)
+        if let Some(select) = &self.local_select {
+            select(revision, id)
+        } else {
+            h.select(revision, id)
+        }
     }
 }
 
 pub(crate) struct CandidateUi {
     view: Rc<View>,
-    _element: ITfUIElement,
-    manager: ITfUIElementMgr,
+    _element: Option<ITfUIElement>,
+    manager: Option<ITfUIElementMgr>,
     id: u32,
     class: Vec<u16>,
     instance: HINSTANCE,
@@ -83,7 +90,8 @@ impl CandidateUi {
             _lease: super::service::Lease::new(),
             epoch: host.epoch.get(),
             host: Rc::downgrade(&host),
-            context,
+            context: Some(context),
+            local_select: None,
             selected: Cell::new(frame.highlighted.unwrap_or(0)),
             frame: RefCell::new(frame),
             shown: Cell::new(true),
@@ -110,53 +118,40 @@ impl CandidateUi {
         };
         view.valid()?;
         view.shown.set(show.as_bool());
-        // 安全：只获取当前进程模块，不转移句柄所有权。
-        let instance = HINSTANCE(unsafe { GetModuleHandleW(None)? }.0);
-        let class: Vec<u16> = format!("CloudleafCandidate_{}_{}", host.owner, id)
-            .encode_utf16()
-            .chain([0])
-            .collect();
-        let wc = WNDCLASSW {
-            lpfnWndProc: Some(window_proc),
-            hInstance: instance,
-            lpszClassName: PCWSTR(class.as_ptr()),
-            hbrBackground: HBRUSH((COLOR_WINDOW.0 + 1) as *mut _),
-            ..Default::default()
-        };
-        // 安全：class 字符串活至注销；userdata 借用由本对象保持的 Rc，绝不转移所有权。
-        unsafe {
-            if RegisterClassW(&wc) == 0 {
-                return Err(Error::from_thread());
-            }
-            let data = Rc::as_ptr(&view);
-            let window = CreateWindowExW(
-                WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW | WS_EX_TOPMOST,
-                PCWSTR(class.as_ptr()),
-                PCWSTR::null(),
-                WS_POPUP | WS_BORDER,
-                0,
-                0,
-                300,
-                180,
-                None,
-                None,
-                Some(instance),
-                Some(data.cast()),
-            );
-            match window {
-                Ok(w) => view.window.set(w),
-                Err(e) => {
-                    let _ = UnregisterClassW(PCWSTR(class.as_ptr()), Some(instance));
-                    return Err(e);
-                }
-            }
-        }
+        let (class, instance) = create_window(&view, host.owner, id)?;
         begun.active = false;
         Ok(Self {
             view,
-            _element: element,
-            manager,
+            _element: Some(element),
+            manager: Some(manager),
             id,
+            class,
+            instance,
+            closed: false,
+        })
+    }
+    pub(crate) fn isolated(
+        host: Shared,
+        frame: InputFrame,
+        select: IsolatedSelection,
+    ) -> Result<Self> {
+        let view = Rc::new(View {
+            _lease: super::service::Lease::new(),
+            epoch: host.epoch.get(),
+            host: Rc::downgrade(&host),
+            context: None,
+            local_select: Some(select),
+            selected: Cell::new(frame.highlighted.unwrap_or(0)),
+            frame: RefCell::new(frame),
+            shown: Cell::new(true),
+            window: Cell::new(HWND::default()),
+        });
+        let (class, instance) = create_window(&view, host.owner, 0)?;
+        Ok(Self {
+            view,
+            _element: None,
+            manager: None,
+            id: 0,
             class,
             instance,
             closed: false,
@@ -172,7 +167,9 @@ impl CandidateUi {
         let height = (self.view.frame.borrow().page_size as i32) * 30 + 8;
         // 安全：window 在本对象拥有的生命周期内有效；不激活、不改变宿主焦点。
         unsafe {
-            self.manager.UpdateUIElement(self.id)?;
+            if let Some(manager) = &self.manager {
+                manager.UpdateUIElement(self.id)?;
+            }
             self.view.valid()?;
             let _ = SetWindowPos(
                 self.view.window.get(),
@@ -206,10 +203,57 @@ impl CandidateUi {
                 let _ = DestroyWindow(self.view.window.replace(HWND::default()));
             }
             let _ = UnregisterClassW(PCWSTR(self.class.as_ptr()), Some(self.instance));
-            let _ = self.manager.EndUIElement(self.id);
+            if let Some(manager) = &self.manager {
+                let _ = manager.EndUIElement(self.id);
+            }
         }
     }
 }
+fn create_window(view: &Rc<View>, owner: u32, id: u32) -> Result<(Vec<u16>, HINSTANCE)> {
+    // 安全：只获取当前进程模块，不转移句柄所有权。
+    let instance = HINSTANCE(unsafe { GetModuleHandleW(None)? }.0);
+    let class: Vec<u16> = format!("CloudleafCandidate_{}_{}", owner, id)
+        .encode_utf16()
+        .chain([0])
+        .collect();
+    let wc = WNDCLASSW {
+        lpfnWndProc: Some(window_proc),
+        hInstance: instance,
+        lpszClassName: PCWSTR(class.as_ptr()),
+        hbrBackground: HBRUSH((COLOR_WINDOW.0 + 1) as *mut _),
+        ..Default::default()
+    };
+    // 安全：class 字符串活至注销；userdata 借用由本对象保持的 Rc，绝不转移所有权。
+    unsafe {
+        if RegisterClassW(&wc) == 0 {
+            return Err(Error::from_thread());
+        }
+        let data = Rc::as_ptr(view);
+        let window = CreateWindowExW(
+            WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW | WS_EX_TOPMOST,
+            PCWSTR(class.as_ptr()),
+            PCWSTR::null(),
+            WS_POPUP | WS_BORDER,
+            0,
+            0,
+            300,
+            180,
+            None,
+            None,
+            Some(instance),
+            Some(data.cast()),
+        );
+        match window {
+            Ok(w) => view.window.set(w),
+            Err(e) => {
+                let _ = UnregisterClassW(PCWSTR(class.as_ptr()), Some(instance));
+                return Err(e);
+            }
+        }
+    }
+    Ok((class, instance))
+}
+
 impl Drop for CandidateUi {
     fn drop(&mut self) {
         self.close();
@@ -274,7 +318,13 @@ impl ITfCandidateListUIElement_Impl for Element_Impl {
         boundary(|| {
             self.view.valid()?;
             // 安全：同 apartment 的 context 接口仍由 View 持有。
-            unsafe { self.view.context.GetDocumentMgr() }
+            unsafe {
+                self.view
+                    .context
+                    .as_ref()
+                    .ok_or_else(|| Error::from_hresult(E_FAIL))?
+                    .GetDocumentMgr()
+            }
         })
     }
     fn GetCount(&self) -> Result<u32> {
@@ -745,7 +795,8 @@ mod tests {
         let view = Rc::new(View {
             _lease: super::super::service::Lease::new(),
             host: Rc::downgrade(&host),
-            context: host.context.borrow().clone().unwrap(),
+            context: host.context.borrow().clone(),
+            local_select: None,
             epoch: host.epoch.get(),
             frame: RefCell::new(frame),
             selected: Cell::new(0),

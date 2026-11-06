@@ -104,3 +104,7 @@ Round16另有显式`kind=character_bigram`、`tokenization=unicode-scalar-v1`：
 `python scripts/prepare_input_supplement.py --baseline-release FIXED_RELEASE --source-archive FIXED_CEDICT_ZIP --output-dir NEW_DIRECTORY [--model RESEARCH_MODEL]`只从固定批准记录和原件投影基线缺失的繁体单字读音，生成独立`layer.tsv`、逐条来源、许可、修改说明及研发合并快照。原123544条runtime逐字节保留为合并文件前缀，新增frequency仍unknown；该层没有自动获得生产质量批准。可选模型仅改变词典SHA绑定，计数与训练来源不变，必须由真实Rust reader在新词典上重编译缓存，不能把旧模型直接套到新实例。
 
 显式将合并快照及对应新SHA传给既有`--search-lexicon/--search-sha`，才会使用补充层；默认词典不变。`coverage_probe`示例读取实际词典、模型和`case TAB pinyin TAB source_text`，检查完整词条格的正文路径并输出真实Top10/预算。词典导出的拼音可能选择多音字的非常用读法，所有人工确认和正式指标保持未交付；可达性不是准确率。
+
+Windows研发程序的`cloudleaf-ime.exe --interactive-input-host RUNTIME SHA [MODEL MODEL_SHA]`创建普通键盘测试窗口，复用实际Host、双引擎和候选窗口；不注册或激活TSF。请先点击窗口空白区再键入拼音，Space/数字选词、方向键/翻页、Enter确认或未识别原文回退、Escape取消。正文只写入本窗口拥有的文档；Unknown按钮模拟写后未知，停止继续输入，人工核对后才能点击新会话，绝不重放旧事务。这个入口没有粘贴或UTF-16代理对输入支持，不构成系统应用验收。
+
+`--benchmark-input-host RUNTIME SHA MODEL MODEL_SHA EVENTS_TSV`复用同一隔离控制器，分别记录两个引擎、语义比较、候选帧和内存文档事务；无窗口模式明确不测HWND更新。实际键盘窗口另外输出候选窗口更新时间。两者都不是原生TSF或其他应用的端到端延迟。
