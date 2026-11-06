@@ -259,3 +259,24 @@ fn exact_suffix_bounds_keep_top50_within_a_fixed_work_budget() {
     assert!(bounded.guaranteed, "{:?}", bounded.statistics);
     assert_eq!(bounded.candidates, reference.candidates);
 }
+
+#[test]
+fn witten_bell_backoff_is_explicit_and_still_segmentation_invariant() {
+    let mut scores = Vec::new();
+    for with_phrase in [false, true] {
+        let lex = lexicon(with_phrase);
+        let header = metadata().replace("kind\tcharacter_bigram\n", "kind\tcharacter_bigram_witten_bell\n");
+        let model = LanguageModelSnapshot::train(&header, &lex, SHA, &sequences()).unwrap();
+        assert_eq!(model.metadata().kind, "character_bigram_witten_bell");
+        let cfg = Config { ranker: Ranker::CharacterBigram, ..Config::default() };
+        let graph = Lattice::build(&lex, "mana", &cfg).unwrap();
+        let reference = search_graph(&lex, &graph, &Config { method: Method::Reference, ..cfg.clone() }, Some(model.model()), None).unwrap();
+        for method in [Method::ExactDag, Method::Beam] {
+            let result = search_graph(&lex, &graph, &Config { method, ..cfg.clone() }, Some(model.model()), None).unwrap();
+            assert_eq!(result.candidates, reference.candidates);
+        }
+        assert_eq!(reference.candidates[0].text, "乙丙");
+        scores.push(reference.candidates[0].score);
+    }
+    assert_eq!(scores[0], scores[1]);
+}
