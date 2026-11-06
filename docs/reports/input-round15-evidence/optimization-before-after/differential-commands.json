@@ -1,0 +1,22 @@
+[
+  {
+    "command": [
+      "C:/Users/EDY/.cargo/bin/cargo.exe",
+      "generate-lockfile",
+      "--offline"
+    ],
+    "returncode": 0
+  },
+  {
+    "command": [
+      "C:/Users/EDY/.cargo/bin/cargo.exe",
+      "run",
+      "-p",
+      "differential",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "returncode": 0
+  }
+]

@@ -1,0 +1,86 @@
+   Compiling cloudleaf-search v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-search)
+   Compiling cloudleaf-input v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-input)
+error[E0432]: unresolved import `cloudleaf_input::LanguageSnapshot`
+ --> crates\cloudleaf-input\tests\language_integration.rs:1:49
+  |
+1 | use cloudleaf_input::{InputConfig, InputEngine, LanguageSnapshot, SearchSnapshot};
+  |                                                 ^^^^^^^^^^^^^^^^ no `LanguageSnapshot` in the root
+
+error[E0599]: no function or associated item named `with_language` found for struct `InputEngine` in the current scope
+  --> crates\cloudleaf-input\tests\language_integration.rs:27:35
+   |
+27 |     let mut engine = InputEngine::with_language(snapshot.clone(), cfg(), model_a, None, InputConfig::default()).unwrap();
+   |                                   ^^^^^^^^^^^^^ function or associated item not found in `InputEngine`
+   |
+note: if you're trying to build a new `InputEngine` consider using one of the following associated functions:
+      InputEngine::new
+      InputEngine::with_config
+      InputEngine::with_search
+  --> C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-input\src\lib.rs:56:5
+   |
+56 |       pub fn new(dictionary: Dictionary) -> Self {
+   |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+60 |       pub fn with_config(dictionary: Dictionary, config: InputConfig) -> Result<Self, CoreError> {
+   |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+90 | /     pub fn with_search(
+91 | |         snapshot: Arc<SearchSnapshot>,
+92 | |         search_config: cloudleaf_search::Config,
+93 | |         config: InputConfig,
+94 | |     ) -> Result<Self, CoreError> {
+   | |________________________________^
+
+error[E0599]: no function or associated item named `with_language` found for struct `InputEngine` in the current scope
+  --> crates\cloudleaf-input\tests\language_integration.rs:55:26
+   |
+55 |     assert!(InputEngine::with_language(next.clone(), cfg(), language.clone(), None, InputConfig::default()).is_err());
+   |                          ^^^^^^^^^^^^^ function or associated item not found in `InputEngine`
+   |
+note: if you're trying to build a new `InputEngine` consider using one of the following associated functions:
+      InputEngine::new
+      InputEngine::with_config
+      InputEngine::with_search
+  --> C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-input\src\lib.rs:56:5
+   |
+56 |       pub fn new(dictionary: Dictionary) -> Self {
+   |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+60 |       pub fn with_config(dictionary: Dictionary, config: InputConfig) -> Result<Self, CoreError> {
+   |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+90 | /     pub fn with_search(
+91 | |         snapshot: Arc<SearchSnapshot>,
+92 | |         search_config: cloudleaf_search::Config,
+93 | |         config: InputConfig,
+94 | |     ) -> Result<Self, CoreError> {
+   | |________________________________^
+
+error[E0599]: no function or associated item named `with_language` found for struct `InputEngine` in the current scope
+  --> crates\cloudleaf-input\tests\language_integration.rs:56:35
+   |
+56 |     let mut engine = InputEngine::with_language(snapshot, cfg(), language, None, InputConfig::default()).unwrap();
+   |                                   ^^^^^^^^^^^^^ function or associated item not found in `InputEngine`
+   |
+note: if you're trying to build a new `InputEngine` consider using one of the following associated functions:
+      InputEngine::new
+      InputEngine::with_config
+      InputEngine::with_search
+  --> C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-input\src\lib.rs:56:5
+   |
+56 |       pub fn new(dictionary: Dictionary) -> Self {
+   |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+60 |       pub fn with_config(dictionary: Dictionary, config: InputConfig) -> Result<Self, CoreError> {
+   |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+90 | /     pub fn with_search(
+91 | |         snapshot: Arc<SearchSnapshot>,
+92 | |         search_config: cloudleaf_search::Config,
+93 | |         config: InputConfig,
+94 | |     ) -> Result<Self, CoreError> {
+   | |________________________________^
+
+Some errors have detailed explanations: E0432, E0599.
+For more information about an error, try `rustc --explain E0432`.
+error: could not compile `cloudleaf-input` (test "language_integration") due to 4 previous errors

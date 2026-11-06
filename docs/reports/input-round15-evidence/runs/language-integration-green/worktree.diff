@@ -1,0 +1,1122 @@
+diff --git a/crates/cloudleaf-input/src/lib.rs b/crates/cloudleaf-input/src/lib.rs
+index ea2f987..db1962f 100644
+--- a/crates/cloudleaf-input/src/lib.rs
++++ b/crates/cloudleaf-input/src/lib.rs
+@@ -2,7 +2,7 @@
+ 
+ mod sentence;
+ pub use sentence::{
+-    EdgeSource, SearchCapacityBounds, SearchDiagnostic, SearchPath, SearchSnapshot,
++    EdgeSource, LanguageSnapshot, SearchCapacityBounds, SearchDiagnostic, SearchPath, SearchSnapshot,
+ };
+ 
+ use cloudleaf_dictionary::Dictionary;
+@@ -108,6 +108,34 @@ impl InputEngine {
+         self.search_diagnostic.as_ref()
+     }
+ 
++    /// 显式研发模型；构造前由宿主完成文件读取与模型身份核验。
++    pub fn with_language(snapshot: Arc<SearchSnapshot>, search_config: cloudleaf_search::Config,
++        language: Arc<LanguageSnapshot>, left_word: Option<String>, config: InputConfig) -> Result<Self, CoreError> {
++        if search_config.output_k > config.max_candidates {
++            return Err(CoreError::new(ErrorCode::InvalidConfig, "搜索候选数超过输入帧预算"));
++        }
++        let backend = sentence::SentenceBackend::configured(snapshot, search_config, Some(language), left_word)?;
++        let mut engine = Self::with_config(Dictionary::empty(), config)?;
++        engine.sentence = Some(backend);
++        Ok(engine)
++    }
++
++    pub fn reconfigure_search(&mut self, search_config: cloudleaf_search::Config,
++        language: Option<Arc<LanguageSnapshot>>, left_word: Option<String>) -> Result<(), CoreError> {
++        if self.pending_commit.is_some() || self.failed_commit.is_some() {
++            return Err(CoreError::new(ErrorCode::CommitPending, "当前事务未完成，不能切换评分模型"));
++        }
++        if self.revision == u64::MAX || search_config.output_k > self.config.max_candidates {
++            return Err(CoreError::new(ErrorCode::InvalidConfig, "修订号或候选预算无效"));
++        }
++        let current = self.sentence.as_ref().ok_or_else(|| CoreError::new(ErrorCode::InvalidConfig, "当前不是整句实验后端"))?;
++        self.sentence = Some(current.reconfigured(search_config, language, left_word)?);
++        let inactive = self.state == InputState::Inactive;
++        self.refresh();
++        if inactive { self.state = InputState::Inactive; }
++        Ok(())
++    }
++
+     pub fn search_capacity_bounds(&self) -> Option<SearchCapacityBounds> {
+         self.sentence
+             .as_ref()
+@@ -132,7 +160,7 @@ impl InputEngine {
+             .sentence
+             .as_mut()
+             .ok_or_else(|| CoreError::new(ErrorCode::InvalidConfig, "当前不是整句实验后端"))?;
+-        backend.replace_snapshot(snapshot);
++        backend.replace_snapshot(snapshot)?;
+         let inactive = self.state == InputState::Inactive;
+         self.refresh();
+         if inactive {
+diff --git a/crates/cloudleaf-input/src/sentence.rs b/crates/cloudleaf-input/src/sentence.rs
+index b0a623a..44687df 100644
+--- a/crates/cloudleaf-input/src/sentence.rs
++++ b/crates/cloudleaf-input/src/sentence.rs
+@@ -1,6 +1,6 @@
+ //! 显式试验后端；词典在会话创建前校验，按键查询只读不可变快照。
+ use cloudleaf_search::{
+-    Config, Features, Lattice, Lexicon, MatchKind, Method, Ranker, SearchError, Statistics,
++    Config, Features, LanguageModelSnapshot, Lattice, Lexicon, MatchKind, Method, Ranker, SearchError, Statistics,
+     search_graph,
+ };
+ use cloudleaf_types::{Candidate, CoreError, ErrorCode};
+@@ -96,6 +96,8 @@ impl SearchSnapshot {
+             max_candidate_source_bytes: SEARCH_SOURCE.len(),
+             max_diagnostic_bytes: std::mem::size_of::<SearchDiagnostic>()
+                 + CANDIDATE_ID_BYTES
++                + CANDIDATE_ID_BYTES
++                + 128
+                 + INPUT_BYTES
+                 + candidates * diagnostic_path_bytes,
+             max_frame_bytes: std::mem::size_of::<cloudleaf_types::InputFrame>()
+@@ -109,6 +111,33 @@ impl SearchSnapshot {
+     }
+ }
+ 
++/// 模型在输入路径外按完整字节校验并与词典绑定，运行时只读共享。
++#[derive(Debug)]
++pub struct LanguageSnapshot {
++    snapshot: LanguageModelSnapshot,
++    version: String,
++}
++
++impl LanguageSnapshot {
++    pub fn from_verified_tsv(text: &str, expected_sha256: &str, lexicon: &SearchSnapshot) -> Result<Self, CoreError> {
++        let version = hex(digest(&SHA256, text.as_bytes()).as_ref());
++        if version != expected_sha256 {
++            return Err(CoreError::new(ErrorCode::InvalidConfig, "语言模型实际SHA-256不符"));
++        }
++        let snapshot = LanguageModelSnapshot::from_tsv(text, &lexicon.lexicon, lexicon.version())
++            .map_err(|_| CoreError::new(ErrorCode::InvalidConfig, "语言模型格式、范围或词典版本不符"))?;
++        Ok(Self { snapshot, version })
++    }
++
++    pub fn version(&self) -> &str { &self.version }
++
++    pub fn metadata(&self) -> &cloudleaf_search::ModelMetadata { self.snapshot.metadata() }
++
++    pub fn estimated_bytes(&self) -> usize {
++        self.snapshot.estimated_bytes() + std::mem::size_of::<Self>() + self.version.capacity() + 32
++    }
++}
++
+ /// 字符串有效字节和结构容量上界，不冒充allocator真实峰值或共享Trie字节数。
+ #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+ pub struct SearchCapacityBounds {
+@@ -148,6 +177,8 @@ pub struct SearchPath {
+ pub struct SearchDiagnostic {
+     pub revision: u64,
+     pub snapshot_version: String,
++    pub model_version: Option<String>,
++    pub context_entry_id: Option<String>,
+     pub method: Method,
+     pub ranker: Ranker,
+     pub raw_input: String,
+@@ -162,24 +193,46 @@ pub struct SearchDiagnostic {
+ pub(crate) struct SentenceBackend {
+     snapshot: Arc<SearchSnapshot>,
+     config: Config,
++    language: Option<Arc<LanguageSnapshot>>,
++    left_word: Option<String>,
+ }
+ 
+ impl SentenceBackend {
+     pub(crate) fn new(snapshot: Arc<SearchSnapshot>, config: Config) -> Result<Self, CoreError> {
++        Self::configured(snapshot, config, None, None)
++    }
++
++    pub(crate) fn configured(snapshot: Arc<SearchSnapshot>, config: Config,
++        language: Option<Arc<LanguageSnapshot>>, left_word: Option<String>) -> Result<Self, CoreError> {
+         config
+             .validate()
+             .map_err(|_| CoreError::new(ErrorCode::InvalidConfig, "搜索配置无效"))?;
+-        if matches!(config.ranker, Ranker::Bigram | Ranker::ContextRerank) {
++        let valid_model = match config.ranker {
++            Ranker::Structural | Ranker::Weighted => true,
++            Ranker::Lexical => language.as_ref().is_some_and(|value| value.metadata().kind == "lexical"),
++            Ranker::Bigram | Ranker::ContextRerank => language.as_ref().is_some_and(|value| value.metadata().kind == "bigram"),
++        };
++        if !valid_model || language.as_ref().is_some_and(|value| value.metadata().lexicon_sha256 != snapshot.version)
++            || left_word.as_ref().is_some_and(|id| config.ranker != Ranker::ContextRerank
++                || snapshot.entries().binary_search_by(|entry| entry.id.cmp(id)).is_err()) {
+             return Err(CoreError::new(
+                 ErrorCode::InvalidConfig,
+-                "输入试验未提供历史评分模型",
++                "评分种类、上下文或模型词典绑定无效",
+             ));
+         }
+-        Ok(Self { snapshot, config })
++        Ok(Self { snapshot, config, language, left_word })
+     }
+ 
+-    pub(crate) fn replace_snapshot(&mut self, snapshot: Arc<SearchSnapshot>) {
++    pub(crate) fn replace_snapshot(&mut self, snapshot: Arc<SearchSnapshot>) -> Result<(), CoreError> {
++        if self.language.as_ref().is_some_and(|value| value.metadata().lexicon_sha256 != snapshot.version) {
++            return Err(CoreError::new(ErrorCode::InvalidConfig, "先解除旧模型绑定，不能套用到新词典"));
++        }
+         self.snapshot = snapshot;
++        Ok(())
++    }
++
++    pub(crate) fn reconfigured(&self, config: Config, language: Option<Arc<LanguageSnapshot>>, left_word: Option<String>) -> Result<Self, CoreError> {
++        Self::configured(self.snapshot.clone(), config, language, left_word)
+     }
+ 
+     pub(crate) fn capacity_bounds(&self) -> SearchCapacityBounds {
+@@ -190,6 +243,8 @@ impl SentenceBackend {
+         let mut diagnostic = SearchDiagnostic {
+             revision,
+             snapshot_version: self.snapshot.version.clone(),
++            model_version: self.language.as_ref().map(|value| value.version.clone()),
++            context_entry_id: self.left_word.clone(),
+             method: self.config.method,
+             ranker: self.config.ranker,
+             // 非法超长输入仍由InputEngine持有；诊断不另存无界副本或伪造截断原文。
+@@ -208,7 +263,8 @@ impl SentenceBackend {
+                 return (Vec::new(), diagnostic);
+             }
+         };
+-        let result = match search_graph(&self.snapshot.lexicon, &graph, &self.config, None, None) {
++        let result = match search_graph(&self.snapshot.lexicon, &graph, &self.config,
++            self.language.as_ref().map(|value| value.snapshot.model()), self.left_word.as_deref()) {
+             Ok(result) => result,
+             Err(error) => {
+                 diagnostic.error = Some(error);
+@@ -222,7 +278,7 @@ impl SentenceBackend {
+         let mut candidates = Vec::with_capacity(result.candidates.len());
+         diagnostic.paths = Vec::with_capacity(result.candidates.len());
+         for path in result.candidates {
+-            let id = candidate_id(&self.snapshot.version, input, &path, &graph);
++            let id = candidate_id(&self.snapshot.version, self.language.as_ref().map(|value| value.version()), input, &path, &graph);
+             let edges: Vec<_> = path
+                 .edge_indices
+                 .iter()
+@@ -279,6 +335,7 @@ impl SentenceBackend {
+ 
+ fn candidate_id(
+     version: &str,
++    model_version: Option<&str>,
+     raw: &str,
+     path: &cloudleaf_search::Candidate,
+     graph: &Lattice<'_>,
+@@ -288,6 +345,10 @@ fn candidate_id(
+         hash.update(&(value.len() as u64).to_le_bytes());
+         hash.update(value.as_bytes());
+     }
++    if let Some(version) = model_version {
++        hash.update(&(version.len() as u64).to_le_bytes());
++        hash.update(version.as_bytes());
++    }
+     for (id, index) in path.entry_ids.iter().zip(&path.edge_indices) {
+         hash.update(&(id.len() as u64).to_le_bytes());
+         hash.update(id.as_bytes());
+diff --git a/crates/cloudleaf-search/src/lattice.rs b/crates/cloudleaf-search/src/lattice.rs
+index 0500407..62b790b 100644
+--- a/crates/cloudleaf-search/src/lattice.rs
++++ b/crates/cloudleaf-search/src/lattice.rs
+@@ -1,5 +1,5 @@
+ use crate::profiling::{Noop, Observer, Phase};
+-use crate::{Budget, Config, ErrorKind, Lexicon, SearchError};
++use crate::{Budget, Cancellation, Config, ErrorKind, Lexicon, SearchError};
+ use std::collections::BTreeSet;
+ 
+ #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+@@ -35,39 +35,55 @@ impl<'a> Lattice<'a> {
+         Self::build_observed(lexicon, input, config, &mut Noop)
+     }
+ 
++    pub fn build_cancellable(
++        lexicon: &'a Lexicon,
++        input: &str,
++        config: &Config,
++        cancellation: &Cancellation,
++    ) -> Result<Self, SearchError> {
++        Self::build_controlled_observed(lexicon, input, config, Some(cancellation), &mut Noop)
++    }
++
+     pub(crate) fn build_observed<O: Observer>(
+         lexicon: &'a Lexicon,
+         input: &str,
+         config: &Config,
+         observer: &mut O,
++    ) -> Result<Self, SearchError> {
++        Self::build_controlled_observed(lexicon, input, config, None, observer)
++    }
++
++    pub(crate) fn build_controlled_observed<O: Observer>(
++        lexicon: &'a Lexicon,
++        input: &str,
++        config: &Config,
++        cancellation: Option<&Cancellation>,
++        observer: &mut O,
+     ) -> Result<Self, SearchError> {
+         let stamp = observer.start(Phase::Normalize);
+-        let normalized = normalize(input, config);
++        let normalized = normalize(input, config, cancellation);
+         observer.stop(Phase::Normalize, stamp);
+-        let (letters, raw_offsets, separators, waiting) = normalized?;
++        let normalized = normalized?;
+         let stamp = observer.start(Phase::Lattice);
+-        let graph = Self::from_normalized(
+-            lexicon,
+-            input,
+-            config,
+-            letters,
+-            raw_offsets,
+-            separators,
+-            waiting,
+-        );
++        let graph = Self::from_normalized(lexicon, input, config, normalized, cancellation);
+         observer.stop(Phase::Lattice, stamp);
+-        Ok(graph)
++        if let Some(control) = cancellation {
++            control.check()?;
++        }
++        graph
+     }
+ 
+     fn from_normalized(
+         lexicon: &'a Lexicon,
+         input: &str,
+         config: &Config,
+-        letters: String,
+-        raw_offsets: Vec<usize>,
+-        separators: BTreeSet<usize>,
+-        waiting: bool,
+-    ) -> Self {
++        normalized: Normalized,
++        cancellation: Option<&Cancellation>,
++    ) -> Result<Self, SearchError> {
++        let (letters, raw_offsets, separators, waiting) = normalized;
++        if let Some(control) = cancellation {
++            control.check()?;
++        }
+         let mut graph = Self {
+             lexicon,
+             raw: input.into(),
+@@ -79,9 +95,12 @@ impl<'a> Lattice<'a> {
+             budget: None,
+         };
+         if waiting {
+-            return graph;
++            return Ok(graph);
+         }
+         'positions: for start in 0..graph.letters.len() {
++            if let Some(control) = cancellation {
++                control.check()?;
++            }
+             let mut node = 0;
+             for end in start + 1..=graph.letters.len() {
+                 let byte = graph.letters.as_bytes()[end - 1];
+@@ -99,6 +118,9 @@ impl<'a> Lattice<'a> {
+                     .filter(|_| end == graph.letters.len())
+                     .map(|entry| (*entry, MatchKind::Prefix));
+                 for (entry_index, kind) in exact.chain(prefix) {
++                    if let Some(control) = cancellation {
++                        control.check()?;
++                    }
+                     let entry = &lexicon.entries[entry_index];
+                     if separators
+                         .range(start + 1..end)
+@@ -123,7 +145,10 @@ impl<'a> Lattice<'a> {
+                 }
+             }
+         }
+-        graph
++        if let Some(control) = cancellation {
++            control.check()?;
++        }
++        Ok(graph)
+     }
+ 
+     pub fn raw(&self) -> &str {
+@@ -148,7 +173,14 @@ impl<'a> Lattice<'a> {
+ 
+ type Normalized = (String, Vec<usize>, BTreeSet<usize>, bool);
+ 
+-fn normalize(input: &str, config: &Config) -> Result<Normalized, SearchError> {
++fn normalize(
++    input: &str,
++    config: &Config,
++    cancellation: Option<&Cancellation>,
++) -> Result<Normalized, SearchError> {
++    if let Some(control) = cancellation {
++        control.check()?;
++    }
+     config.validate()?;
+     let invalid = || SearchError::new(ErrorKind::InvalidInput, "输入字符或长度无效");
+     if input.len() > config.max_input_bytes {
+@@ -159,6 +191,9 @@ fn normalize(input: &str, config: &Config) -> Result<Normalized, SearchError> {
+     let mut separators = BTreeSet::new();
+     let mut waiting = false;
+     for (offset, ch) in input.char_indices() {
++        if let Some(control) = cancellation {
++            control.check()?;
++        }
+         match ch {
+             '\'' => {
+                 if letters.is_empty() || waiting {
+@@ -184,3 +219,49 @@ fn normalize(input: &str, config: &Config) -> Result<Normalized, SearchError> {
+     }
+     Ok((letters, raw_offsets, separators, waiting))
+ }
++
++#[cfg(test)]
++mod cancellation_regression {
++    use super::*;
++
++    struct CancelAtBoundary<'a> {
++        control: &'a Cancellation,
++        phase: Phase,
++    }
++
++    impl Observer for CancelAtBoundary<'_> {
++        type Stamp = ();
++        fn start(&mut self, _: Phase) {}
++        fn stop(&mut self, phase: Phase, _: ()) {
++            if phase == self.phase {
++                self.control.cancel();
++            }
++        }
++    }
++
++    #[test]
++    fn cancelled_empty_or_waiting_graph_is_not_published_after_phase_boundary() {
++        let lexicon = Lexicon::from_tsv("# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\na\ta\t甲\t\tunknown\t\tfixture\ta\tMIT\n").unwrap();
++        for raw in ["", "a'", "a"] {
++            for phase in [Phase::Normalize, Phase::Lattice] {
++                let control = Cancellation::default();
++                let mut observer = CancelAtBoundary {
++                    control: &control,
++                    phase,
++                };
++                assert_eq!(
++                    Lattice::build_controlled_observed(
++                        &lexicon,
++                        raw,
++                        &Config::default(),
++                        Some(&control),
++                        &mut observer
++                    )
++                    .unwrap_err()
++                    .kind,
++                    ErrorKind::Cancelled
++                );
++            }
++        }
++    }
++}
+diff --git a/crates/cloudleaf-search/src/lib.rs b/crates/cloudleaf-search/src/lib.rs
+index 67575b6..16be4d4 100644
+--- a/crates/cloudleaf-search/src/lib.rs
++++ b/crates/cloudleaf-search/src/lib.rs
+@@ -1,15 +1,17 @@
+ //! 全输入词条格实验内核。词典与模型由宿主预加载，查询不访问外部资源。
++mod cancellation;
+ mod lattice;
+ mod lexicon;
+ mod model;
+ mod profiling;
+ mod search;
+ 
++pub use cancellation::Cancellation;
+ pub use lattice::{Edge, Lattice, MatchKind};
+ pub use lexicon::{Entry, FrequencyKind, Lexicon, LexiconMemory, LoadLimits};
+-pub use model::BigramModel;
++pub use model::{BigramModel, LanguageModelSnapshot, ModelMetadata};
+ pub use profiling::{Measurement, Phase, Profile, profile_query};
+-pub use search::{Candidate, Features, SearchResult, Statistics, search_graph};
++pub use search::{Candidate, Features, SearchResult, Statistics, search_graph, search_graph_cancellable};
+ 
+ use std::fmt;
+ 
+@@ -19,6 +21,7 @@ pub enum ErrorKind {
+     InvalidInput,
+     InvalidConfig,
+     InvalidModel,
++    Cancelled,
+ }
+ 
+ /// 错误不包含输入原文、词条正文或上下文。
+@@ -69,6 +72,8 @@ pub enum Method {
+ pub enum Ranker {
+     Structural,
+     Weighted,
++    /// 保留结构分优先，只在结构平局时比较独立研究词汇观测。
++    Lexical,
+     Bigram,
+     ContextRerank,
+ }
+@@ -123,7 +128,7 @@ impl Config {
+             && (1..=2_000_000).contains(&self.max_expansions)
+             && (1..=200_000).contains(&self.max_resident_paths)
+             && (self.method != Method::PositionDag
+-                || matches!(self.ranker, Ranker::Structural | Ranker::Weighted));
++                || matches!(self.ranker, Ranker::Structural | Ranker::Weighted | Ranker::Lexical));
+         if valid {
+             Ok(())
+         } else {
+diff --git a/crates/cloudleaf-search/src/model.rs b/crates/cloudleaf-search/src/model.rs
+index 08406d6..3723dcd 100644
+--- a/crates/cloudleaf-search/src/model.rs
++++ b/crates/cloudleaf-search/src/model.rs
+@@ -1,4 +1,4 @@
+-use crate::{ErrorKind, SearchError};
++use crate::{ErrorKind, Lexicon, SearchError};
+ use std::collections::{BTreeMap, BTreeSet};
+ 
+ const BOS: &str = "<bos>";
+@@ -11,6 +11,7 @@ pub struct BigramModel {
+     vocabulary: BTreeSet<String>,
+     pairs: BTreeMap<(String, String), u64>,
+     totals: BTreeMap<String, u64>,
++    lexical: BTreeMap<String, u64>,
+ }
+ 
+ impl BigramModel {
+@@ -33,6 +34,7 @@ impl BigramModel {
+             vocabulary: BTreeSet::from([EOS.into(), UNK.into()]),
+             pairs: BTreeMap::new(),
+             totals: BTreeMap::new(),
++            lexical: BTreeMap::new(),
+         };
+         for sequence in sequences {
+             let mut previous = BOS;
+@@ -74,6 +76,188 @@ impl BigramModel {
+             self.totals.get(previous).copied().unwrap_or(0) + self.vocabulary.len() as u64;
+         log2_fixed(numerator) - log2_fixed(denominator)
+     }
++
++    pub fn lexical_units(&self, id: &str) -> Option<i64> {
++        self.lexical.get(id).map(|count| log2_fixed(count + 1))
++    }
++
++    pub fn has_transitions(&self) -> bool {
++        !self.pairs.is_empty()
++    }
++
++    pub fn has_lexical_signal(&self) -> bool {
++        !self.lexical.is_empty()
++    }
++
++    /// 固定Rust1.90、BTree节点至少五项的布局估计，不是allocator硬上界。
++    pub fn estimated_bytes(&self) -> usize {
++        let node = |len: usize, item: usize| (len.div_ceil(5) + 1) * (32 + 12 * 8 + 11 * item);
++        std::mem::size_of::<Self>()
++            + self.vocabulary.iter().map(String::capacity).sum::<usize>()
++            + self.pairs.keys().map(|(a, b)| a.capacity() + b.capacity()).sum::<usize>()
++            + self.totals.keys().map(String::capacity).sum::<usize>()
++            + self.lexical.keys().map(String::capacity).sum::<usize>()
++            + node(self.vocabulary.len(), std::mem::size_of::<String>())
++            + node(self.pairs.len(), std::mem::size_of::<((String, String), u64)>())
++            + node(self.totals.len(), std::mem::size_of::<(String, u64)>())
++            + node(self.lexical.len(), std::mem::size_of::<(String, u64)>())
++    }
++}
++
++/// 固定来源声明不构成生产批准；本格式只接收显式研发材料。
++#[derive(Clone, Debug, Eq, PartialEq)]
++pub struct ModelMetadata {
++    pub lexicon_sha256: String,
++    pub source_sha256: String,
++    pub source_id: String,
++    pub license_id: String,
++    pub tokenization: String,
++    pub usage: String,
++    pub kind: String,
++    pub training_split: String,
++}
++
++#[derive(Clone, Debug)]
++pub struct LanguageModelSnapshot {
++    metadata: ModelMetadata,
++    model: BigramModel,
++}
++
++const META_KEYS: [&str; 8] = ["lexicon_sha256", "source_sha256", "source_id", "license_id",
++    "tokenization", "usage", "kind", "training_split"];
++
++impl LanguageModelSnapshot {
++    pub fn metadata(&self) -> &ModelMetadata {
++        &self.metadata
++    }
++
++    pub fn estimated_bytes(&self) -> usize {
++        let m = &self.metadata;
++        self.model.estimated_bytes() + std::mem::size_of::<ModelMetadata>()
++            + [&m.lexicon_sha256, &m.source_sha256, &m.source_id, &m.license_id,
++                &m.tokenization, &m.usage, &m.kind, &m.training_split]
++                .iter().map(|value| value.capacity()).sum::<usize>()
++    }
++    pub fn model(&self) -> &BigramModel {
++        &self.model
++    }
++
++    pub fn from_tsv(text: &str, lexicon: &Lexicon, expected_lexicon: &str) -> Result<Self, SearchError> {
++        let invalid = || SearchError::new(ErrorKind::InvalidModel, "固定语言模型格式、引用或预算无效");
++        if text.len() > 16 * 1024 * 1024 || text.contains('\r') || !text.ends_with('\n') {
++            return Err(invalid());
++        }
++        let mut lines = text.lines();
++        if lines.next() != Some("# cloudleaf-language-v1") { return Err(invalid()); }
++        let mut values = Vec::new();
++        for key in META_KEYS {
++            let (actual, value) = lines.next().and_then(|line| line.split_once('\t')).ok_or_else(invalid)?;
++            if actual != key || value.is_empty() || value.len() > 256 || value.chars().any(char::is_control) {
++                return Err(invalid());
++            }
++            values.push(value.to_owned());
++        }
++        if lines.next() != Some("previous\tnext\tcount") { return Err(invalid()); }
++        let metadata = ModelMetadata { lexicon_sha256: values[0].clone(), source_sha256: values[1].clone(),
++            source_id: values[2].clone(), license_id: values[3].clone(), tokenization: values[4].clone(),
++            usage: values[5].clone(), kind: values[6].clone(), training_split: values[7].clone() };
++        let sha = |value: &str| value.len() == 64 && value.bytes().all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b));
++        if !sha(&metadata.lexicon_sha256) || !sha(&metadata.source_sha256)
++            || metadata.lexicon_sha256 != expected_lexicon || metadata.training_split != "train"
++            || !matches!(metadata.usage.as_str(), "mechanical" | "research_only")
++            || !matches!(metadata.kind.as_str(), "lexical" | "bigram") { return Err(invalid()); }
++        let ids: BTreeSet<&str> = lexicon.entries().iter().map(|entry| entry.id.as_str()).collect();
++        let mut model = BigramModel { vocabulary: BTreeSet::from([EOS.into(), UNK.into()]),
++            pairs: BTreeMap::new(), totals: BTreeMap::new(), lexical: BTreeMap::new() };
++        let mut rows = 0;
++        let mut incoming = BTreeMap::<String, u64>::new();
++        for line in lines {
++            rows += 1;
++            if rows > 200_000 { return Err(invalid()); }
++            let fields: Vec<_> = line.split('\t').collect();
++            if fields.len() != 3 || !fields[2].bytes().all(|b| b.is_ascii_digit()) { return Err(invalid()); }
++            let count = fields[2].parse::<u64>().map_err(|_| invalid())?;
++            if count == 0 || count > 1_000_000_000_000 { return Err(invalid()); }
++            let (previous, next) = (fields[0], fields[1]);
++            if metadata.kind == "lexical" {
++                if previous != "<lexical>" || !ids.contains(next) || model.lexical.insert(next.into(), count).is_some() {
++                    return Err(invalid());
++                }
++            } else {
++                if (previous != BOS && !ids.contains(previous)) || (next != EOS && !ids.contains(next))
++                    || model.pairs.insert((previous.into(), next.into()), count).is_some() {
++                    return Err(invalid());
++                }
++                model.vocabulary.insert(next.into());
++                if previous != BOS { model.vocabulary.insert(previous.into()); }
++                *model.totals.entry(previous.into()).or_default() += count;
++                *incoming.entry(next.into()).or_default() += count;
++            }
++        }
++        if rows == 0 { return Err(invalid()); }
++        if metadata.kind == "bigram" {
++            let bos = model.totals.get(BOS).copied().unwrap_or(0);
++            if bos == 0 || bos > 100_000 || incoming.get(EOS).copied().unwrap_or(0) != bos
++                || model.totals.values().sum::<u64>() > 1_100_000
++                || ids.iter().any(|id| model.totals.get(*id).copied().unwrap_or(0) != incoming.get(*id).copied().unwrap_or(0)) {
++                return Err(invalid());
++            }
++            let from_bos = reachable(&model.pairs, BOS, false);
++            let to_eos = reachable(&model.pairs, EOS, true);
++            if model.pairs.keys().any(|(previous, next)| !from_bos.contains(previous.as_str()) || !to_eos.contains(next.as_str())) {
++                return Err(invalid());
++            }
++        }
++        Ok(Self { metadata, model })
++    }
++
++    /// 离线调用，元数据和序列只在边界校验，输入查询不调用训练器。
++    pub fn train(metadata_header: &str, lexicon: &Lexicon, expected_lexicon: &str, sequences: &[Vec<String>]) -> Result<Self, SearchError> {
++        if metadata_header.lines().count() != 10 || !metadata_header.ends_with("previous\tnext\tcount\n") {
++            return Err(SearchError::new(ErrorKind::InvalidModel, "训练元数据不能携带计数"));
++        }
++        let trained = BigramModel::train(sequences)?;
++        let mut payload = metadata_header.to_owned();
++        for ((previous, next), count) in &trained.pairs {
++            payload.push_str(&format!("{previous}\t{next}\t{count}\n"));
++        }
++        let snapshot = Self::from_tsv(&payload, lexicon, expected_lexicon)?;
++        if snapshot.metadata.kind != "bigram" {
++            return Err(SearchError::new(ErrorKind::InvalidModel, "训练入口只接受独立序列bigram"));
++        }
++        Ok(snapshot)
++    }
++
++    pub fn to_tsv(&self) -> String {
++        let m = &self.metadata;
++        let values = [&m.lexicon_sha256, &m.source_sha256, &m.source_id, &m.license_id,
++            &m.tokenization, &m.usage, &m.kind, &m.training_split];
++        let mut output = String::from("# cloudleaf-language-v1\n");
++        for (key, value) in META_KEYS.iter().zip(values) { output.push_str(&format!("{key}\t{value}\n")); }
++        output.push_str("previous\tnext\tcount\n");
++        if m.kind == "lexical" {
++            for (id, count) in &self.model.lexical { output.push_str(&format!("<lexical>\t{id}\t{count}\n")); }
++        } else {
++            for ((previous, next), count) in &self.model.pairs { output.push_str(&format!("{previous}\t{next}\t{count}\n")); }
++        }
++        output
++    }
++}
++
++fn reachable<'a>(pairs: &'a BTreeMap<(String, String), u64>, start: &'a str, reverse: bool) -> BTreeSet<&'a str> {
++    let mut outgoing = BTreeMap::<&str, Vec<&str>>::new();
++    for (previous, next) in pairs.keys() {
++        let (from, to) = if reverse { (next.as_str(), previous.as_str()) } else { (previous.as_str(), next.as_str()) };
++        outgoing.entry(from).or_default().push(to);
++    }
++    let mut visited = BTreeSet::new();
++    let mut pending = vec![start];
++    while let Some(node) = pending.pop() {
++        if visited.insert(node) {
++            pending.extend(outgoing.get(node).into_iter().flatten().copied());
++        }
++    }
++    visited
+ }
+ 
+ /// 以1024为单位的整数二进制对数；避免浮点平台舍入进入候选平局。
+diff --git a/crates/cloudleaf-search/src/search.rs b/crates/cloudleaf-search/src/search.rs
+index 98edb31..d09a07c 100644
+--- a/crates/cloudleaf-search/src/search.rs
++++ b/crates/cloudleaf-search/src/search.rs
+@@ -1,7 +1,7 @@
+ use crate::profiling::{Noop, Observer, Phase};
+ use crate::{
+-    BigramModel, Budget, Config, ErrorKind, Lattice, Lexicon, MatchKind, Method, Ranker,
+-    SearchError,
++    BigramModel, Budget, Cancellation, Config, ErrorKind, Lattice, Lexicon, MatchKind, Method,
++    Ranker, SearchError,
+ };
+ use std::cmp::Ordering;
+ use std::collections::BTreeMap;
+@@ -12,6 +12,9 @@ pub struct Features {
+     pub prefixes: usize,
+     pub frequency_units: i64,
+     pub missing_frequencies: usize,
++    pub lexical_units: i64,
++    pub lexical_observed: usize,
++    pub lexical_missing: usize,
+     pub bigram_units: i64,
+     pub context_units: i64,
+ }
+@@ -55,7 +58,9 @@ struct Path {
+ }
+ 
+ fn compare(a: &Path, b: &Path) -> Ordering {
+-    b.score.cmp(&a.score).then_with(|| a.ids.cmp(&b.ids))
++    b.score.cmp(&a.score)
++        .then_with(|| b.features.lexical_units.cmp(&a.features.lexical_units))
++        .then_with(|| a.ids.cmp(&b.ids))
+ }
+ 
+ struct Scorer<'a> {
+@@ -63,29 +68,47 @@ struct Scorer<'a> {
+     graph: &'a Lattice<'a>,
+     ranker: Ranker,
+     model: Option<&'a BigramModel>,
++    cancellation: Option<&'a Cancellation>,
+ }
+ 
+ impl Scorer<'_> {
+-    fn extend<O: Observer>(&self, path: &Path, edge_index: usize, observer: &mut O) -> Path {
++    fn cancelled(&self) -> bool {
++        self.cancellation.is_some_and(Cancellation::is_cancelled)
++    }
++
++    fn extend<O: Observer>(
++        &self,
++        path: &Path,
++        edge_index: usize,
++        cutoff: Option<&Path>,
++        observer: &mut O,
++    ) -> Option<Path> {
+         let edge = &self.graph.edges[edge_index];
+         let entry = &self.lexicon.entries[edge.entry];
+-        let mut next = path.clone();
+-        next.text.push_str(&entry.text);
+         let stamp = observer.start(Phase::Scoring);
+-        next.features.words += 1;
+-        next.score -= 100;
++        let mut features = path.features.clone();
++        let mut score = path.score - 100;
++        features.words += 1;
+         if edge.kind == MatchKind::Prefix {
+-            next.features.prefixes += 1;
+-            next.score -= 300;
++            features.prefixes += 1;
++            score -= 300;
+         }
+         if let Some(frequency) = entry.frequency {
+             let units = i64::from(63 - (u64::from(frequency) + 1).leading_zeros());
+-            next.features.frequency_units += units;
+-            if self.ranker != Ranker::Structural {
+-                next.score += units * 10;
++            features.frequency_units += units;
++            if matches!(self.ranker, Ranker::Weighted | Ranker::Bigram | Ranker::ContextRerank) {
++                score += units * 10;
+             }
+         } else {
+-            next.features.missing_frequencies += 1;
++            features.missing_frequencies += 1;
++        }
++        if self.ranker == Ranker::Lexical {
++            if let Some(units) = self.model.and_then(|model| model.lexical_units(&entry.id)) {
++                features.lexical_units += units;
++                features.lexical_observed += 1;
++            } else {
++                features.lexical_missing += 1;
++            }
+         }
+         if let Some(model) = self
+             .model
+@@ -96,13 +119,31 @@ impl Scorer<'_> {
+                 .last()
+                 .map(|index| self.lexicon.entries[*index].id.as_str());
+             let units = model.transition(previous, Some(&entry.id));
+-            next.features.bigram_units += units;
+-            next.score += units;
++            features.bigram_units += units;
++            score += units;
+         }
+         observer.stop(Phase::Scoring, stamp);
++        // 满桶中严格劣于末项的扩展必被丢弃，先比较借用ID，避免复制整条路径。
++        if cutoff.is_some_and(|worst| {
++            worst.score.cmp(&score)
++                .then_with(|| worst.features.lexical_units.cmp(&features.lexical_units))
++                .then_with(|| {
++                path.ids
++                    .iter()
++                    .copied()
++                    .chain(std::iter::once(edge.entry))
++                    .cmp(worst.ids.iter().copied())
++            }) == Ordering::Greater
++        }) {
++            return None;
++        }
++        let mut next = path.clone();
++        next.score = score;
++        next.features = features;
++        next.text.push_str(&entry.text);
+         next.ids.push(edge.entry);
+         next.edges.push(edge_index);
+-        next
++        Some(next)
+     }
+ 
+     fn finish<O: Observer>(&self, mut path: Path, observer: &mut O) -> Path {
+@@ -180,6 +221,9 @@ fn reference<O: Observer>(
+     let mut complete = Vec::new();
+     stats.resident_high_water = 1;
+     while let Some((position, path)) = pending.pop() {
++        if scorer.cancelled() {
++            return Vec::new();
++        }
+         if position == scorer.graph.letters.len() {
+             // 参考枚举所有路径，只将已完成输出压缩为当前最佳unique top-k。
+             let finished = scorer.finish(path, observer);
+@@ -187,6 +231,9 @@ fn reference<O: Observer>(
+             continue;
+         }
+         for edge in &scorer.graph.outgoing[position] {
++            if scorer.cancelled() {
++                return Vec::new();
++            }
+             if !expand_allowed(stats, config) {
+                 return complete;
+             }
+@@ -196,7 +243,7 @@ fn reference<O: Observer>(
+             }
+             pending.push((
+                 scorer.graph.edges[*edge].end,
+-                scorer.extend(&path, *edge, observer),
++                scorer.extend(&path, *edge, None, observer).unwrap(),
+             ));
+         }
+     }
+@@ -228,6 +275,9 @@ fn dynamic<O: Observer>(
+         }
+         for path in paths {
+             for edge_index in &scorer.graph.outgoing[position] {
++                if scorer.cancelled() {
++                    return Vec::new();
++                }
+                 if !expand_allowed(stats, config) {
+                     return Vec::new();
+                 }
+@@ -237,8 +287,10 @@ fn dynamic<O: Observer>(
+                 if !resident_allowed(stats, resident + 1, config) {
+                     return Vec::new();
+                 }
+-                let next = scorer.extend(&path, *edge_index, observer);
+-                insert_unique(bucket, next, k, observer);
++                let cutoff = (old == k).then(|| bucket.last().unwrap());
++                if let Some(next) = scorer.extend(&path, *edge_index, cutoff, observer) {
++                    insert_unique(bucket, next, k, observer);
++                }
+                 resident = resident + bucket.len() - old;
+             }
+             resident -= 1;
+@@ -270,6 +322,9 @@ fn position_dynamic<O: Observer>(
+         // 取出的整批路径仍计入resident，不能只计算尚留在states中的容器。
+         for path in current {
+             for edge_index in &scorer.graph.outgoing[position] {
++                if scorer.cancelled() {
++                    return Vec::new();
++                }
+                 if !expand_allowed(stats, config) {
+                     return Vec::new();
+                 }
+@@ -279,8 +334,10 @@ fn position_dynamic<O: Observer>(
+                 if !resident_allowed(stats, resident + 1, config) {
+                     return Vec::new();
+                 }
+-                let next = scorer.extend(&path, *edge_index, observer);
+-                insert_unique(bucket, next, k, observer);
++                let cutoff = (old == k).then(|| bucket.last().unwrap());
++                if let Some(next) = scorer.extend(&path, *edge_index, cutoff, observer) {
++                    insert_unique(bucket, next, k, observer);
++                }
+                 resident = resident + bucket.len() - old;
+             }
+             resident -= 1;
+@@ -300,6 +357,25 @@ pub fn search_graph(
+     search_observed(lexicon, graph, config, model, left_word, &mut Noop)
+ }
+ 
++pub fn search_graph_cancellable(
++    lexicon: &Lexicon,
++    graph: &Lattice<'_>,
++    config: &Config,
++    model: Option<&BigramModel>,
++    left_word: Option<&str>,
++    cancellation: &Cancellation,
++) -> Result<SearchResult, SearchError> {
++    search_controlled_observed(
++        lexicon,
++        graph,
++        config,
++        model,
++        left_word,
++        Some(cancellation),
++        &mut Noop,
++    )
++}
++
+ pub(crate) fn search_observed<O: Observer>(
+     lexicon: &Lexicon,
+     graph: &Lattice<'_>,
+@@ -308,10 +384,28 @@ pub(crate) fn search_observed<O: Observer>(
+     left_word: Option<&str>,
+     observer: &mut O,
+ ) -> Result<SearchResult, SearchError> {
++    search_controlled_observed(lexicon, graph, config, model, left_word, None, observer)
++}
++
++pub(crate) fn search_controlled_observed<O: Observer>(
++    lexicon: &Lexicon,
++    graph: &Lattice<'_>,
++    config: &Config,
++    model: Option<&BigramModel>,
++    left_word: Option<&str>,
++    cancellation: Option<&Cancellation>,
++    observer: &mut O,
++) -> Result<SearchResult, SearchError> {
++    if let Some(control) = cancellation {
++        control.check()?;
++    }
+     let stamp = observer.start(Phase::SearchValidate);
+     let validation = (|| {
+         config.validate()?;
+-        if matches!(config.ranker, Ranker::Bigram | Ranker::ContextRerank) && model.is_none() {
++        if (matches!(config.ranker, Ranker::Bigram | Ranker::ContextRerank)
++            && model.is_none_or(|value| !value.has_transitions()))
++            || (config.ranker == Ranker::Lexical
++                && model.is_none_or(|value| !value.has_lexical_signal())) {
+             return Err(SearchError::new(
+                 ErrorKind::InvalidModel,
+                 "所选评分需要预加载模型",
+@@ -352,6 +446,7 @@ pub(crate) fn search_observed<O: Observer>(
+         graph,
+         ranker: config.ranker,
+         model,
++        cancellation,
+     };
+     let stamp = observer.start(Phase::Traversal);
+     let mut paths = if graph.letters.is_empty() || graph.waiting {
+@@ -364,6 +459,9 @@ pub(crate) fn search_observed<O: Observer>(
+         dynamic(&scorer, config, &mut statistics, k, observer)
+     };
+     observer.stop(Phase::Traversal, stamp);
++    if let Some(control) = cancellation {
++        control.check()?;
++    }
+     retain_unique(&mut paths, k, observer, Phase::FinalSortDedup);
+     if config.ranker == Ranker::ContextRerank {
+         let stamp = observer.start(Phase::ContextRerank);
+@@ -406,6 +504,9 @@ pub(crate) fn search_observed<O: Observer>(
+         statistics,
+     };
+     observer.stop(Phase::Materialize, stamp);
++    if let Some(control) = cancellation {
++        control.check()?;
++    }
+     Ok(result)
+ }
+ 
+@@ -471,3 +572,153 @@ mod bucket_regression {
+         );
+     }
+ }
++
++#[cfg(test)]
++mod cancellation_regression {
++    use super::*;
++
++    struct CancelDuringScoring<'a> {
++        control: &'a Cancellation,
++        scored: usize,
++    }
++    impl Observer for CancelDuringScoring<'_> {
++        type Stamp = ();
++        fn start(&mut self, phase: Phase) {
++            if phase == Phase::Scoring {
++                self.scored += 1;
++                if self.scored == 2 {
++                    self.control.cancel();
++                }
++            }
++        }
++        fn stop(&mut self, _: Phase, _: ()) {}
++    }
++
++    const DATA: &str = "# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\na\ta\t甲\t\tunknown\t\tfixture\ta\tMIT\nb\ta\t乙\t\tunknown\t\tfixture\tb\tMIT\n";
++
++    #[test]
++    fn pre_cancelled_graph_and_search_return_cancelled_not_budget() {
++        let lexicon = Lexicon::from_tsv(DATA).unwrap();
++        let config = Config::default();
++        let control = Cancellation::default();
++        let clone = control.clone();
++        clone.cancel();
++        assert!(control.is_cancelled());
++        assert_eq!(
++            Lattice::build_cancellable(&lexicon, "aa", &config, &control)
++                .unwrap_err()
++                .kind,
++            ErrorKind::Cancelled
++        );
++        let graph = Lattice::build(&lexicon, "aa", &config).unwrap();
++        assert_eq!(
++            search_graph_cancellable(&lexicon, &graph, &config, None, None, &control)
++                .unwrap_err()
++                .kind,
++            ErrorKind::Cancelled
++        );
++    }
++
++    #[test]
++    fn actual_traversal_cancellation_discards_partial_paths_for_every_method() {
++        let lexicon = Lexicon::from_tsv(DATA).unwrap();
++        for method in [
++            Method::Reference,
++            Method::ExactDag,
++            Method::PositionDag,
++            Method::Beam,
++        ] {
++            let config = Config {
++                method,
++                ranker: Ranker::Structural,
++                ..Config::default()
++            };
++            let graph = Lattice::build(&lexicon, "aaaa", &config).unwrap();
++            let control = Cancellation::default();
++            let mut observer = CancelDuringScoring {
++                control: &control,
++                scored: 0,
++            };
++            assert_eq!(
++                search_controlled_observed(
++                    &lexicon,
++                    &graph,
++                    &config,
++                    None,
++                    None,
++                    Some(&control),
++                    &mut observer
++                )
++                .unwrap_err()
++                .kind,
++                ErrorKind::Cancelled
++            );
++            assert_eq!(observer.scored, 2);
++        }
++    }
++
++    struct CancelAfterMaterialize<'a>(&'a Cancellation);
++    impl Observer for CancelAfterMaterialize<'_> {
++        type Stamp = ();
++        fn start(&mut self, _: Phase) {}
++        fn stop(&mut self, phase: Phase, _: ()) {
++            if phase == Phase::Materialize {
++                self.0.cancel();
++            }
++        }
++    }
++
++    #[test]
++    fn cancellation_before_result_publication_returns_no_completed_candidates() {
++        let lexicon = Lexicon::from_tsv(DATA).unwrap();
++        let config = Config::default();
++        let graph = Lattice::build(&lexicon, "a", &config).unwrap();
++        let control = Cancellation::default();
++        let mut observer = CancelAfterMaterialize(&control);
++        assert_eq!(
++            search_controlled_observed(
++                &lexicon,
++                &graph,
++                &config,
++                None,
++                None,
++                Some(&control),
++                &mut observer
++            )
++            .unwrap_err()
++            .kind,
++            ErrorKind::Cancelled
++        );
++    }
++
++    #[test]
++    fn uncancelled_entry_preserves_results_and_original_budget_semantics() {
++        let lexicon = Lexicon::from_tsv(DATA).unwrap();
++        for method in [
++            Method::Reference,
++            Method::ExactDag,
++            Method::PositionDag,
++            Method::Beam,
++        ] {
++            for budget in [1, 200000] {
++                let config = Config {
++                    method,
++                    ranker: Ranker::Structural,
++                    max_expansions: budget,
++                    ..Config::default()
++                };
++                let control = Cancellation::default();
++                let graph =
++                    Lattice::build_cancellable(&lexicon, "aaaa", &config, &control).unwrap();
++                let full = search_graph(&lexicon, &graph, &config, None, None).unwrap();
++                let controlled =
++                    search_graph_cancellable(&lexicon, &graph, &config, None, None, &control)
++                        .unwrap();
++                assert_eq!(full, controlled);
++                if budget == 1 {
++                    assert_eq!(controlled.statistics.budget, Some(Budget::Expansions));
++                }
++            }
++        }
++    }
++}

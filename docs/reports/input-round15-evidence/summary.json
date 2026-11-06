@@ -1,0 +1,60 @@
+{
+  "implementation_head": "994704c8ce9b5780b8cc53a32ca5c1f731094b30",
+  "status": "partial",
+  "full_commands": 13,
+  "rust_passed": 209,
+  "rust_ignored": 2,
+  "python_passed": 63,
+  "doc_test_examples": 0,
+  "model": {
+    "signal_sha256": "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5",
+    "signal_bytes": 3034818,
+    "usage": "research_only",
+    "projected_entry_ids": 56644,
+    "missing_entry_ids": 66900,
+    "source_status_unchanged": "candidate-not-approved"
+  },
+  "actual_input_event_latency_ns": {
+    "original": {
+      "n": 855,
+      "p50": 982300,
+      "p95": 5792600,
+      "p99": 8106700,
+      "max": 11363700
+    },
+    "structural": {
+      "n": 855,
+      "p50": 108700,
+      "p95": 354200,
+      "p99": 553100,
+      "max": 928900
+    },
+    "lexical": {
+      "n": 855,
+      "p50": 782900,
+      "p95": 4063100,
+      "p99": 5780800,
+      "max": 13709300
+    }
+  },
+  "original_structural_behavior_unchanged": true,
+  "formal_language_metrics": {
+    "top1": null,
+    "top5": null,
+    "mrr": null
+  },
+  "default_input_backend": "legacy unchanged; model opt-in only",
+  "Bigram_and_Context": "version-bound interfaces and mechanical tests implemented; real transition corpus absent; inactive for real-data runs",
+  "incremental": "not implemented; full recomputation retained",
+  "cancellation": "search/lattice cooperative API and actual boundary tests; not wired to synchronous Host key handling; no deadline or async scheduling",
+  "TSF": false,
+  "long_soak": false,
+  "CL010": "closed",
+  "binary_SHA256": {
+    "cloudleaf-cli.exe": "71ea2311c0ddae5d0c4636945fde319f9ce3f5796805b4aeb3dd8222d7970eae",
+    "cloudleaf-ime.exe": "b3c0abf040ec08dbd595f7b275d974bc6047f31f4e4bdc0aaa8f48cd5d166116",
+    "cloudleaf_windows_ime.dll": "5c2b9d7910544146772337e0d77d308385a32a6bd89032bfd4f963d45efbff9f",
+    "examples/input_trace.exe": "9afdcbd30bc4277a4405e85a87e7a6f01f848707a8d3b05f017fe7e54c228fef",
+    "examples/train_language.exe": "1aa21efe5325f0633b388aa1d36d55b0be4b40af70ffa32279b80e94b23a147e"
+  }
+}

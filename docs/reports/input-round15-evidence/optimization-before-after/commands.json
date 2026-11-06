@@ -1,0 +1,32 @@
+{
+  "commands": [
+    {
+      "command": [
+        "C:/Users/EDY/.cargo/bin/cargo.exe",
+        "test",
+        "-p",
+        "cloudleaf-search",
+        "--all-targets",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0
+    },
+    {
+      "command": [
+        "C:/Users/EDY/.cargo/bin/cargo.exe",
+        "clippy",
+        "-p",
+        "cloudleaf-search",
+        "--all-targets",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "returncode": 0
+    }
+  ],
+  "search_sha256": "9226e357e6a1b70960f32d43791ecb794849150e96fd0b99d32583618f558a10"
+}

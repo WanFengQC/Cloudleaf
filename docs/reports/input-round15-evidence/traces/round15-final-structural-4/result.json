@@ -1,0 +1,132 @@
+{
+  "command": [
+    "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\build\\release\\examples\\input_trace.exe",
+    "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+    "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+  ],
+  "returncode": 0,
+  "seconds": 0.6274903999874368,
+  "variant": "structural",
+  "original_implementation": null,
+  "worktree_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "head": "994704c8ce9b5780b8cc53a32ca5c1f731094b30",
+  "executable_sha256": "9afdcbd30bc4277a4405e85a87e7a6f01f848707a8d3b05f017fe7e54c228fef",
+  "events_sha256": "e087cc965bd2f6c889a84f3db89b3829ccfda452f436d7b3cf562bbb965602ad",
+  "tool_sha256": "a0028863e176ab598909c10a818b33ad0cfd0041c06d963a6e6ca7d8b149ddd3",
+  "runtime": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+    "bytes": 23602173,
+    "sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+  },
+  "sample_count": 12,
+  "resources": [
+    {
+      "seconds": 0.009012800001073629,
+      "working": 2080768,
+      "private": 385024,
+      "os_peak_working": 2080768,
+      "os_peak_pagefile": 385024
+    },
+    {
+      "seconds": 0.05934669999987818,
+      "working": 27856896,
+      "private": 24322048,
+      "os_peak_working": 27856896,
+      "os_peak_pagefile": 24371200
+    },
+    {
+      "seconds": 0.10962339999969117,
+      "working": 44285952,
+      "private": 43630592,
+      "os_peak_working": 44285952,
+      "os_peak_pagefile": 44646400
+    },
+    {
+      "seconds": 0.16018889998667873,
+      "working": 60698624,
+      "private": 63012864,
+      "os_peak_working": 60698624,
+      "os_peak_pagefile": 64761856
+    },
+    {
+      "seconds": 0.21072089998051524,
+      "working": 91205632,
+      "private": 104996864,
+      "os_peak_working": 91205632,
+      "os_peak_pagefile": 105058304
+    },
+    {
+      "seconds": 0.2612591999932192,
+      "working": 93880320,
+      "private": 102064128,
+      "os_peak_working": 93880320,
+      "os_peak_pagefile": 105058304
+    },
+    {
+      "seconds": 0.31181079999078065,
+      "working": 110428160,
+      "private": 113999872,
+      "os_peak_working": 110428160,
+      "os_peak_pagefile": 113999872
+    },
+    {
+      "seconds": 0.3623774999869056,
+      "working": 134156288,
+      "private": 139980800,
+      "os_peak_working": 138121216,
+      "os_peak_pagefile": 144142336
+    },
+    {
+      "seconds": 0.4128422999929171,
+      "working": 159772672,
+      "private": 166625280,
+      "os_peak_working": 159772672,
+      "os_peak_pagefile": 167698432
+    },
+    {
+      "seconds": 0.46305159997427836,
+      "working": 179675136,
+      "private": 199274496,
+      "os_peak_working": 194592768,
+      "os_peak_pagefile": 215457792
+    },
+    {
+      "seconds": 0.5135427999775857,
+      "working": 187338752,
+      "private": 188137472,
+      "os_peak_working": 194592768,
+      "os_peak_pagefile": 215457792
+    },
+    {
+      "seconds": 0.564082299999427,
+      "working": 157401088,
+      "private": 159035392,
+      "os_peak_working": 194592768,
+      "os_peak_pagefile": 215457792
+    }
+  ],
+  "resource_scope": "whole CLI process including fixed lexicon, strings, trie, search and runtime; no single-algorithm memory claim",
+  "event_latency_ns": {
+    "n": 171,
+    "p50": 100200,
+    "p95": 290300,
+    "p99": 358600,
+    "max": 496100
+  },
+  "raw_events_in_latency": true,
+  "timing_scope": "InputEngine.handle including frame clone and deterministic search; excludes stdout write, platform/UI and disk; heterogeneous engineering events, not formal latency acceptance",
+  "summary": [
+    "SUMMARY\tevents=171\tconfirmed_simulated_commits=5\tformal_metrics=null\tTSF=false"
+  ],
+  "formal_language_metrics": {
+    "top1": null,
+    "top5": null,
+    "mrr": null
+  },
+  "physical_disconnect": "not-run",
+  "TSF": false,
+  "files": {
+    "stdout.tsv": "61fa4fc928f59ed9b3cbaca971c03bf29339a0dff209c2d00e316075ce8c7854",
+    "stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

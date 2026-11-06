@@ -1,0 +1,13 @@
+diff --git a/docs/input-round15-design.md b/docs/input-round15-design.md
+index a63f27e..204c47a 100644
+--- a/docs/input-round15-design.md
++++ b/docs/input-round15-design.md
+@@ -14,6 +14,8 @@ Structural每词-100、末音节前缀-300；同音词没有观测信号时按
+ 
+ 沿用现有结构代价、现有manual Weighted与Bigram整数尺度，不宣称最终权重最优。新增词汇观测与转移/上下文分开诊断、独立开关，候选记录结构、词汇、BOS/转移/EOS、上下文贡献和固定模型版本。个人学习本轮不启用。固定模型使用版本化UTF-8 TSV、确定性顺序、正整数计数、固定词典SHA与stable entry ID引用、source/license/tokenization/train-split/scope声明及完整产物SHA；reader在入口校验一次、限制大小/计数/词条引用。声明和哈希只证明一致性，不替代权利审查或真人签名。未获得正式授权/质量门禁时只能显式research_only/mechanical。
+ 
++11月4日明确研究词汇比较规则：Lexical模式先比较原Structural分，再比较每条路径的`sum(log2_fixed(observed_count+1))`，最后沿用稳定ID平局；缺失不生成计数、不改变frequency，诊断分别记录observed/missing和词汇贡献。词汇值是同结构路径间的独立次序，**不加进原score、不冒充归一化语言概率**。这样不引入未经评估的一元计数权重，也不因每添一词累积正奖励而改变长短词偏好；相同position的公共后缀对加法二元序保持单调，因此PositionDag仍适用。此约束可能无法修正结构分本身造成的过度长词偏好，须保留真实失败。模型TSV八个元数据键顺序为lexicon_sha256/source_sha256/source_id/license_id/tokenization/usage/kind/training_split，之后previous/next/count；lexical行为`<lexical>,entryID,count`，bigram为原BOS/EOS/entryID计数。只读模型种类不混用，不从一元表制造转移。
++
+ 修改模型或词典必须使旧候选revision失效；待确认或失败提交时禁止换模型/词典，原文和Unknown保护不变。普通构造仍是旧默认，实验模型必须显式传入。模型加载失败不得回退到手写原型频率。
+ 
+ ## 性能与取消

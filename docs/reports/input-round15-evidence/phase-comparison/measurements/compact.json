@@ -1,0 +1,312 @@
+{
+  "implementation_head": "994704c8ce9b5780b8cc53a32ca5c1f731094b30",
+  "paired_measurements": 288,
+  "all_equal": true,
+  "source_unchanged": true,
+  "rows": [
+    {
+      "method": "reference",
+      "ranker": "structural",
+      "cases": 12,
+      "budget_cases": 8,
+      "pruned_cases": 0,
+      "error_cases": 0,
+      "target": [
+        {
+          "plain_ns": [
+            78469000,
+            79796200,
+            81151000
+          ],
+          "plain_median_ns": 79796200,
+          "phase_median_ns": {
+            "query_total": 113795000,
+            "normalize": 1900,
+            "lattice": 64500,
+            "search_validate": 0,
+            "traversal": 113718100,
+            "scoring": 10777500,
+            "bucket_sort_dedup": 22055400,
+            "final_sort_dedup": 2500,
+            "materialize": 9500
+          },
+          "statistics": {
+            "graph_edges": 1482,
+            "expansions": 200000,
+            "resident_high_water": 688,
+            "beam_pruned": 0,
+            "budget": "Expansions"
+          },
+          "guaranteed": false,
+          "top1": "喔正在开发藙欵中文输入法"
+        }
+      ]
+    },
+    {
+      "method": "reference",
+      "ranker": "lexical",
+      "cases": 12,
+      "budget_cases": 8,
+      "pruned_cases": 0,
+      "error_cases": 0,
+      "target": [
+        {
+          "plain_ns": [
+            121280700,
+            129282200,
+            137012000
+          ],
+          "plain_median_ns": 129282200,
+          "phase_median_ns": {
+            "query_total": 174275000,
+            "normalize": 1900,
+            "lattice": 66400,
+            "search_validate": 100,
+            "traversal": 174186400,
+            "scoring": 53435300,
+            "bucket_sort_dedup": 25527200,
+            "final_sort_dedup": 2600,
+            "materialize": 9600
+          },
+          "statistics": {
+            "graph_edges": 1482,
+            "expansions": 200000,
+            "resident_high_water": 688,
+            "beam_pruned": 0,
+            "budget": "Expansions"
+          },
+          "guaranteed": false,
+          "top1": "喔正在开发藙欵中文输入法"
+        }
+      ]
+    },
+    {
+      "method": "exact",
+      "ranker": "structural",
+      "cases": 12,
+      "budget_cases": 3,
+      "pruned_cases": 0,
+      "error_cases": 0,
+      "target": [
+        {
+          "plain_ns": [
+            15950400,
+            14788500,
+            14258300
+          ],
+          "plain_median_ns": 14788500,
+          "phase_median_ns": {
+            "query_total": 26846000,
+            "normalize": 2400,
+            "lattice": 71900,
+            "search_validate": 100,
+            "traversal": 26770200,
+            "scoring": 5355600,
+            "bucket_sort_dedup": 3086700,
+            "final_sort_dedup": 200,
+            "materialize": 500
+          },
+          "statistics": {
+            "graph_edges": 1482,
+            "expansions": 200000,
+            "resident_high_water": 2441,
+            "beam_pruned": 0,
+            "budget": "Expansions"
+          },
+          "guaranteed": false,
+          "top1": null
+        }
+      ]
+    },
+    {
+      "method": "exact",
+      "ranker": "lexical",
+      "cases": 12,
+      "budget_cases": 3,
+      "pruned_cases": 0,
+      "error_cases": 0,
+      "target": [
+        {
+          "plain_ns": [
+            40018000,
+            52054700,
+            53286200
+          ],
+          "plain_median_ns": 52054700,
+          "phase_median_ns": {
+            "query_total": 62692500,
+            "normalize": 2900,
+            "lattice": 103100,
+            "search_validate": 100,
+            "traversal": 62581300,
+            "scoring": 32786700,
+            "bucket_sort_dedup": 5030500,
+            "final_sort_dedup": 200,
+            "materialize": 400
+          },
+          "statistics": {
+            "graph_edges": 1482,
+            "expansions": 200000,
+            "resident_high_water": 2441,
+            "beam_pruned": 0,
+            "budget": "Expansions"
+          },
+          "guaranteed": false,
+          "top1": null
+        }
+      ]
+    },
+    {
+      "method": "position",
+      "ranker": "structural",
+      "cases": 12,
+      "budget_cases": 0,
+      "pruned_cases": 0,
+      "error_cases": 0,
+      "target": [
+        {
+          "plain_ns": [
+            193900,
+            185800,
+            174200
+          ],
+          "plain_median_ns": 185800,
+          "phase_median_ns": {
+            "query_total": 627600,
+            "normalize": 900,
+            "lattice": 24400,
+            "search_validate": 0,
+            "traversal": 597600,
+            "scoring": 218500,
+            "bucket_sort_dedup": 17800,
+            "final_sort_dedup": 1000,
+            "materialize": 3000
+          },
+          "statistics": {
+            "graph_edges": 1482,
+            "expansions": 8113,
+            "resident_high_water": 41,
+            "beam_pruned": 0,
+            "budget": null
+          },
+          "guaranteed": true,
+          "top1": "握正在炌法医宽中文输入法"
+        }
+      ]
+    },
+    {
+      "method": "position",
+      "ranker": "lexical",
+      "cases": 12,
+      "budget_cases": 0,
+      "pruned_cases": 0,
+      "error_cases": 0,
+      "target": [
+        {
+          "plain_ns": [
+            3764100,
+            2662400,
+            2491000
+          ],
+          "plain_median_ns": 2662400,
+          "phase_median_ns": {
+            "query_total": 3963800,
+            "normalize": 4600,
+            "lattice": 108900,
+            "search_validate": 100,
+            "traversal": 3789300,
+            "scoring": 2902700,
+            "bucket_sort_dedup": 92600,
+            "final_sort_dedup": 3100,
+            "materialize": 9300
+          },
+          "statistics": {
+            "graph_edges": 1482,
+            "expansions": 8113,
+            "resident_high_water": 41,
+            "beam_pruned": 0,
+            "budget": null
+          },
+          "guaranteed": true,
+          "top1": "我正在开发一款中文输入法"
+        }
+      ]
+    },
+    {
+      "method": "beam",
+      "ranker": "structural",
+      "cases": 12,
+      "budget_cases": 0,
+      "pruned_cases": 11,
+      "error_cases": 0,
+      "target": [
+        {
+          "plain_ns": [
+            3822000,
+            4083600,
+            4545400
+          ],
+          "plain_median_ns": 4083600,
+          "phase_median_ns": {
+            "query_total": 5076800,
+            "normalize": 2400,
+            "lattice": 60800,
+            "search_validate": 100,
+            "traversal": 4650200,
+            "scoring": 277800,
+            "bucket_sort_dedup": 496500,
+            "final_sort_dedup": 275900,
+            "materialize": 7600
+          },
+          "statistics": {
+            "graph_edges": 1482,
+            "expansions": 6495,
+            "resident_high_water": 1681,
+            "beam_pruned": 5466,
+            "budget": null
+          },
+          "guaranteed": false,
+          "top1": "握正在炌法医宽中文输入法"
+        }
+      ]
+    },
+    {
+      "method": "beam",
+      "ranker": "lexical",
+      "cases": 12,
+      "budget_cases": 0,
+      "pruned_cases": 11,
+      "error_cases": 0,
+      "target": [
+        {
+          "plain_ns": [
+            5920800,
+            6145100,
+            5222800
+          ],
+          "plain_median_ns": 5920800,
+          "phase_median_ns": {
+            "query_total": 6349900,
+            "normalize": 2000,
+            "lattice": 54400,
+            "search_validate": 100,
+            "traversal": 6010800,
+            "scoring": 1730100,
+            "bucket_sort_dedup": 416100,
+            "final_sort_dedup": 245600,
+            "materialize": 5200
+          },
+          "statistics": {
+            "graph_edges": 1482,
+            "expansions": 6495,
+            "resident_high_water": 1675,
+            "beam_pruned": 4704,
+            "budget": null
+          },
+          "guaranteed": false,
+          "top1": "我正在开发一款中文输入法"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+   Compiling shlex v2.0.1
+   Compiling cloudleaf-types v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\.local\round15-baseline\crates\cloudleaf-types)
+   Compiling find-msvc-tools v0.1.15
+   Compiling cfg-if v1.0.5
+   Compiling untrusted v0.9.0
+   Compiling getrandom v0.2.17
+   Compiling cloudleaf-pinyin v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\.local\round15-baseline\crates\cloudleaf-pinyin)
+   Compiling cloudleaf-dictionary v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\.local\round15-baseline\crates\cloudleaf-dictionary)
+   Compiling cloudleaf-search v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\.local\round15-baseline\crates\cloudleaf-search)
+error: couldn't read `crates\cloudleaf-dictionary\src\../../../data/dictionaries/prototype.tsv`: 系统找不到指定的路径。 (os error 3)
+ --> crates\cloudleaf-dictionary\src\lib.rs:9:33
+  |
+9 | pub const PROTOTYPE_TSV: &str = include_str!("../../../data/dictionaries/prototype.tsv");
+  |                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+help: there is a file with the same name in a different directory
+  |
+9 | pub const PROTOTYPE_TSV: &str = include_str!("../../../../../data/dictionaries/prototype.tsv");
+  |                                                        ++++++
+
+error: could not compile `cloudleaf-dictionary` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

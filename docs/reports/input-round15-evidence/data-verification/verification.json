@@ -1,0 +1,107 @@
+{
+  "checked_at_utc": "2026-11-04T10:05:29.917292+00:00",
+  "usage": "research_only",
+  "production_approved": false,
+  "official_sources": [
+    {
+      "url": "https://storage.googleapis.com/books/ngrams/books/20200217/chi_sim/chi_sim-1-ngrams_exports.html",
+      "http_status": 200,
+      "file": "google-1gram-index.html",
+      "bytes": 2875,
+      "sha256": "cd676d9817f7cc9ceb515f4610e01574c1e7d06e32127e0ea23a91772a701f17"
+    },
+    {
+      "url": "https://creativecommons.org/licenses/by/3.0/legalcode.txt",
+      "http_status": 403,
+      "file": "CC-BY-3.0.txt.http-error",
+      "bytes": 17,
+      "sha256": "2938e9f1284180959e33ab1718d0793a72ff6e4cdb8108c34dcd14e69446de5c"
+    }
+  ],
+  "license_bytes_match_previously_frozen_official_SHA": true,
+  "previous_official_license_record": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\docs\\acceptance\\cl009-round8\\google-source-evidence.json",
+    "bytes": 4442,
+    "sha256": "b20380ad29044b661ba00db93506474c5bd934dc1a9a8718fa066454edd1e00a",
+    "record": {
+      "id": "cc-by-3.0",
+      "requested_url": "https://creativecommons.org/licenses/by/3.0/legalcode.txt",
+      "final_url": "https://creativecommons.org/licenses/by/3.0/legalcode.txt",
+      "retrieved_at_utc": "2026-10-29T16:25:41.569585+00:00",
+      "status": 200,
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 19467,
+      "sha256": "e6bc9e9c474700b708f568bac9e5a8a9bcb2b1dad53442f5ba449fcb848b8e76",
+      "etag": "W/\"4c0b-6051c4db542f3-gzip\"",
+      "last_modified": "Mon, 11 Sep 2023 21:49:41 GMT",
+      "cap_bytes": 1048576
+    }
+  },
+  "current_legalcode_web_tool_read": true,
+  "dual_build_files": [
+    {
+      "file": "signal.tsv",
+      "bytes": 3034818,
+      "sha256": "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5",
+      "byte_identical": true
+    },
+    {
+      "file": "LICENSE.txt",
+      "bytes": 19467,
+      "sha256": "e6bc9e9c474700b708f568bac9e5a8a9bcb2b1dad53442f5ba449fcb848b8e76",
+      "byte_identical": true
+    },
+    {
+      "file": "NOTICE.txt",
+      "bytes": 511,
+      "sha256": "fb8f953acd809d913a31b3786d6ab0811643ae5d7836cb05a7fb5d873a358d29",
+      "byte_identical": true
+    }
+  ],
+  "report_static_content_equal": true,
+  "build_reports": [
+    "C:\\Users\\EDY\\.codex\\tmp\\r15-data\\verify-a\\report.json",
+    "C:\\Users\\EDY\\.codex\\tmp\\r15-data\\verify-b\\report.json"
+  ],
+  "test": {
+    "command": [
+      "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "-X",
+      "utf8",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "C:\\Users\\EDY\\.codex\\tmp\\r15-data",
+      "-p",
+      "test_extract_ngram_signal.py",
+      "-v"
+    ],
+    "returncode": 0,
+    "tests": 4,
+    "stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "bytes": 739,
+      "sha256": "0721b42467ecec61485cf49440b41f305818ab9644866349a5c6be1f540bcfc3"
+    }
+  },
+  "script": {
+    "bytes": 8680,
+    "sha256": "87ca916e67e2a281fd49f21fb746a3f86aabce20a2d1dcd67e3b5a13a8be5e0c"
+  },
+  "statistical_boundary": {
+    "raw_field2_inferred": true,
+    "totalcounts_normalization": false,
+    "token_frequency": null,
+    "document_frequency": null,
+    "Zipf": null,
+    "BOS_EOS_or_word_transitions_available": false,
+    "modern_IME_quality_accepted": false,
+    "upstream_chinese_tokenization_version_known": false,
+    "fixed_source_registry_status": "candidate-not-approved"
+  },
+  "scope_interpretation": "Official Google page licenses the compilation CC BY 3.0; section 3 permits reproduction/adaptation, section 4 requires license, attribution and change notice. This explicit local research projection keeps those notices and does not license source book text or approve production statistics."
+}

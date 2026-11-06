@@ -1,0 +1,138 @@
+{
+  "format": "cloudleaf-round15-research-lexical-projection-v1",
+  "usage": "research_only",
+  "production_approved": false,
+  "at_utc": "2026-11-05T10:06:27.127386+00:00",
+  "inputs": {
+    "source": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round8-ngram-acquisition\\1-00000-of-00001.gz",
+      "bytes": 60833224,
+      "sha256": "6ab29862a8c904c261bb9d5a02a342285c4dbabf79cee5c4f8818076fd44fb86"
+    },
+    "totalcounts": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round8-ngram-acquisition\\totalcounts-1",
+      "bytes": 7479,
+      "sha256": "f4a136b63419c0f34dfbfcf76f501ac80a745ad535f5cc9bda2666189a35e9f3"
+    },
+    "lexicon": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+      "bytes": 23602173,
+      "sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+    }
+  },
+  "source_url": "https://storage.googleapis.com/books/ngrams/books/20200217/chi_sim/1-00000-of-00001.gz",
+  "license_statement_url": "https://storage.googleapis.com/books/ngrams/books/20200217/chi_sim/chi_sim-1-ngrams_exports.html",
+  "license_url": "https://creativecommons.org/licenses/by/3.0/",
+  "copyright": "© 2019 Google",
+  "license_sha256": "e6bc9e9c474700b708f568bac9e5a8a9bcb2b1dad53442f5ba449fcb848b8e76",
+  "modification": "Filter fixed 1gram raw records by exact unmodified CEDICT text and sum raw field2 in 2000-2019. Project identical text signal to stable reading IDs. No production frequency or transition statistics.",
+  "source_status_unchanged": "candidate-not-approved",
+  "unit": "inferred raw match count; not approved token-frequency, DF or Zipf",
+  "totalcounts_used_as_denominator": false,
+  "token_frequency": null,
+  "document_frequency": null,
+  "zipf": null,
+  "missing_records_are_zero": false,
+  "runtime_frequency_modified": false,
+  "transition_or_BOS_EOS_statistics_available": false,
+  "window": [
+    2000,
+    2019
+  ],
+  "source_rows": 508674,
+  "raw_triplet_fields": 19074163,
+  "gzip_crc_verified": true,
+  "expanded_sha256": "f5535ee7d0c0a5ba18bff3b4019d150da0e63265b8e2abdebb2d442db45b95f0",
+  "lexicon_entries": 123544,
+  "lexicon_unique_texts": 119781,
+  "observed_texts": 53642,
+  "projected_entry_ids": 56644,
+  "missing_entry_ids": 66900,
+  "observed_zero_values_excluded_from_model": 0,
+  "signal_sha256": "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5",
+  "signal_bytes": 3034818,
+  "tool_sha256": "87ca916e67e2a281fd49f21fb746a3f86aabce20a2d1dcd67e3b5a13a8be5e0c",
+  "python": "3.12.10",
+  "seconds": 27.72673679998843,
+  "diagnostic_words_not_used_for_training_or_parameter_selection": {
+    "我": {
+      "raw_match_sum": 5827571,
+      "year_groups": 20
+    },
+    "握": {
+      "raw_match_sum": 49445,
+      "year_groups": 19
+    },
+    "斡": {
+      "raw_match_sum": 501,
+      "year_groups": 19
+    },
+    "倭": {
+      "raw_match_sum": 485,
+      "year_groups": 19
+    },
+    "爱": {
+      "raw_match_sum": 223966,
+      "year_groups": 20
+    },
+    "昵": {
+      "raw_match_sum": 130,
+      "year_groups": 18
+    },
+    "你": {
+      "raw_match_sum": 1829937,
+      "year_groups": 20
+    },
+    "很": {
+      "raw_match_sum": 3518305,
+      "year_groups": 20
+    },
+    "痕": {
+      "raw_match_sum": 1848,
+      "year_groups": 19
+    },
+    "好": {
+      "raw_match_sum": 3384786,
+      "year_groups": 20
+    },
+    "諕": null,
+    "正在": {
+      "raw_match_sum": 640611,
+      "year_groups": 20
+    },
+    "开发": {
+      "raw_match_sum": 2205636,
+      "year_groups": 20
+    },
+    "炌": null,
+    "一": {
+      "raw_match_sum": 22675114,
+      "year_groups": 20
+    },
+    "法医": {
+      "raw_match_sum": 3629,
+      "year_groups": 19
+    },
+    "款": {
+      "raw_match_sum": 674179,
+      "year_groups": 20
+    },
+    "中文": {
+      "raw_match_sum": 129819,
+      "year_groups": 20
+    },
+    "输入法": null,
+    "天气": {
+      "raw_match_sum": 41575,
+      "year_groups": 20
+    }
+  },
+  "remaining": [
+    "v3 match semantics inferred",
+    "unknown original Chinese tokenizer version",
+    "truncation and POS alias protocol not accepted",
+    "historical books are not modern IME representativeness evidence",
+    "no independent gold",
+    "no word transition corpus"
+  ]
+}

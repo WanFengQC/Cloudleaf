@@ -1,0 +1,24 @@
+   Compiling cloudleaf-search v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-search)
+error[E0432]: unresolved import `cloudleaf_search::LanguageModelSnapshot`
+ --> crates\cloudleaf-search\tests\language_model.rs:2:13
+  |
+2 |     Config, LanguageModelSnapshot, Lattice, Lexicon, Method, Ranker, search_graph,
+  |             ^^^^^^^^^^^^^^^^^^^^^ no `LanguageModelSnapshot` in the root
+
+error[E0599]: no variant or associated item named `Lexical` found for enum `Ranker` in the current scope
+  --> crates\cloudleaf-search\tests\language_model.rs:35:29
+   |
+35 |             ranker: Ranker::Lexical,
+   |                             ^^^^^^^ variant or associated item not found in `Ranker`
+
+error[E0609]: no field `lexical_units` on type `Features`
+  --> crates\cloudleaf-search\tests\language_model.rs:42:50
+   |
+42 |         assert_eq!(result.candidates[0].features.lexical_units, 10240);
+   |                                                  ^^^^^^^^^^^^^ unknown field
+   |
+   = note: available fields are: `words`, `prefixes`, `frequency_units`, `missing_frequencies`, `bigram_units`, `context_units`
+
+Some errors have detailed explanations: E0432, E0599, E0609.
+For more information about an error, try `rustc --explain E0432`.
+error: could not compile `cloudleaf-search` (test "language_model") due to 3 previous errors

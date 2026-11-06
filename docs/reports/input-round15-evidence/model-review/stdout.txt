@@ -1,0 +1,46 @@
+clean-training:
+# cloudleaf-language-v1
+lexicon_sha256	aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+source_sha256	aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+source_id	fixture
+license_id	MIT
+tokenization	stable-entry-ids
+usage	mechanical
+kind	bigram
+training_split	train
+previous	next	count
+<bos>	a	1
+a	<eos>	1
+
+training-header-injection-accepted=true
+injected-training:
+# cloudleaf-language-v1
+lexicon_sha256	aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+source_sha256	aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+source_id	fixture
+license_id	MIT
+tokenization	stable-entry-ids
+usage	mechanical
+kind	bigram
+training_split	train
+previous	next	count
+<bos>	a	1
+<bos>	b	100
+a	<eos>	1
+b	<eos>	100
+
+disconnected-cycle-accepted=true
+post-validation-mutation:
+# cloudleaf-language-v1
+lexicon_sha256	bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+source_sha256	aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+source_id	fixture
+license_id	MIT
+tokenization	stable-entry-ids
+usage	production
+kind	bigram
+training_split	train
+previous	next	count
+<bos>	a	1
+a	<eos>	1
+

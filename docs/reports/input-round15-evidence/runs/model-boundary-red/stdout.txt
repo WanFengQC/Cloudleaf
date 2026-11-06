@@ -1,0 +1,28 @@
+
+running 5 tests
+test fixed_model_rejects_wrong_version_scope_counts_and_entry_reference ... ok
+test lexical_is_independent_tiebreak_and_unknown_dictionary_stays_unknown ... ok
+test offline_training_roundtrips_real_bigram_counts_and_boundaries ... ok
+test reader_rejects_balanced_counts_disconnected_from_sentence_boundaries ... FAILED
+test training_header_cannot_inject_unobserved_sequences ... FAILED
+
+failures:
+
+---- reader_rejects_balanced_counts_disconnected_from_sentence_boundaries stdout ----
+
+thread 'reader_rejects_balanced_counts_disconnected_from_sentence_boundaries' panicked at crates\cloudleaf-search\tests\language_model.rs:116:5:
+assertion failed: LanguageModelSnapshot::from_tsv(&artifact, &lex, SHA).is_err()
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- training_header_cannot_inject_unobserved_sequences stdout ----
+
+thread 'training_header_cannot_inject_unobserved_sequences' panicked at crates\cloudleaf-search\tests\language_model.rs:109:5:
+assertion failed: LanguageModelSnapshot::train(&header, &lex, SHA, &[vec!["a".into()]]).is_err()
+
+
+failures:
+    reader_rejects_balanced_counts_disconnected_from_sentence_boundaries
+    training_header_cannot_inject_unobserved_sequences
+
+test result: FAILED. 3 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

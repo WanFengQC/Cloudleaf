@@ -1,0 +1,112 @@
+--- a/crates/cloudleaf-search/src/search.rs
++++ b/crates/cloudleaf-search/src/search.rs
+@@ -66,26 +66,31 @@
+ }
+ 
+ impl Scorer<'_> {
+-    fn extend<O: Observer>(&self, path: &Path, edge_index: usize, observer: &mut O) -> Path {
++    fn extend<O: Observer>(
++        &self,
++        path: &Path,
++        edge_index: usize,
++        cutoff: Option<&Path>,
++        observer: &mut O,
++    ) -> Option<Path> {
+         let edge = &self.graph.edges[edge_index];
+         let entry = &self.lexicon.entries[edge.entry];
+-        let mut next = path.clone();
+-        next.text.push_str(&entry.text);
+         let stamp = observer.start(Phase::Scoring);
+-        next.features.words += 1;
+-        next.score -= 100;
++        let mut features = path.features.clone();
++        let mut score = path.score - 100;
++        features.words += 1;
+         if edge.kind == MatchKind::Prefix {
+-            next.features.prefixes += 1;
+-            next.score -= 300;
++            features.prefixes += 1;
++            score -= 300;
+         }
+         if let Some(frequency) = entry.frequency {
+             let units = i64::from(63 - (u64::from(frequency) + 1).leading_zeros());
+-            next.features.frequency_units += units;
++            features.frequency_units += units;
+             if self.ranker != Ranker::Structural {
+-                next.score += units * 10;
++                score += units * 10;
+             }
+         } else {
+-            next.features.missing_frequencies += 1;
++            features.missing_frequencies += 1;
+         }
+         if let Some(model) = self
+             .model
+@@ -96,13 +101,29 @@
+                 .last()
+                 .map(|index| self.lexicon.entries[*index].id.as_str());
+             let units = model.transition(previous, Some(&entry.id));
+-            next.features.bigram_units += units;
+-            next.score += units;
++            features.bigram_units += units;
++            score += units;
+         }
+         observer.stop(Phase::Scoring, stamp);
++        // 满桶中严格劣于末项的扩展必被丢弃，先比较借用ID，避免复制整条路径。
++        if cutoff.is_some_and(|worst| {
++            worst.score.cmp(&score).then_with(|| {
++                path.ids
++                    .iter()
++                    .copied()
++                    .chain(std::iter::once(edge.entry))
++                    .cmp(worst.ids.iter().copied())
++            }) == Ordering::Greater
++        }) {
++            return None;
++        }
++        let mut next = path.clone();
++        next.score = score;
++        next.features = features;
++        next.text.push_str(&entry.text);
+         next.ids.push(edge.entry);
+         next.edges.push(edge_index);
+-        next
++        Some(next)
+     }
+ 
+     fn finish<O: Observer>(&self, mut path: Path, observer: &mut O) -> Path {
+@@ -196,7 +217,7 @@
+             }
+             pending.push((
+                 scorer.graph.edges[*edge].end,
+-                scorer.extend(&path, *edge, observer),
++                scorer.extend(&path, *edge, None, observer).unwrap(),
+             ));
+         }
+     }
+@@ -237,8 +258,10 @@
+                 if !resident_allowed(stats, resident + 1, config) {
+                     return Vec::new();
+                 }
+-                let next = scorer.extend(&path, *edge_index, observer);
+-                insert_unique(bucket, next, k, observer);
++                let cutoff = (old == k).then(|| bucket.last().unwrap());
++                if let Some(next) = scorer.extend(&path, *edge_index, cutoff, observer) {
++                    insert_unique(bucket, next, k, observer);
++                }
+                 resident = resident + bucket.len() - old;
+             }
+             resident -= 1;
+@@ -279,8 +302,10 @@
+                 if !resident_allowed(stats, resident + 1, config) {
+                     return Vec::new();
+                 }
+-                let next = scorer.extend(&path, *edge_index, observer);
+-                insert_unique(bucket, next, k, observer);
++                let cutoff = (old == k).then(|| bucket.last().unwrap());
++                if let Some(next) = scorer.extend(&path, *edge_index, cutoff, observer) {
++                    insert_unique(bucket, next, k, observer);
++                }
+                 resident = resident + bucket.len() - old;
+             }
+             resident -= 1;

@@ -1,0 +1,3978 @@
+{
+  "schema_version": 1,
+  "at_utc": "2026-11-06T03:10:36.972162+00:00",
+  "implementation_head": "994704c8ce9b5780b8cc53a32ca5c1f731094b30",
+  "observed_head": "994704c8ce9b5780b8cc53a32ca5c1f731094b30",
+  "tool_sha256": "20107d95a43a9ba24d518995cf9699a0bed58518f0081f45c40a1d8d91c4c24e",
+  "probe_sha256": "ce2215e6d23509c7acf6e0c0a1ef5c7fe972777dd7be0dc3eecb07c293bd4156",
+  "executable_sha256": "8d352f69fd808496844a414c46495bacf1395b9904590274990addd746b8f92c",
+  "runtime": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+    "bytes": 23602173,
+    "sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+  },
+  "model": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+    "sha256": "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5",
+    "usage": "research_only"
+  },
+  "cases_sha256": "efae5cb9e8198a423c6041f2b0e56b49381427d04b9addeb6ecdbaeaef3d39d5",
+  "source_before": {
+    "crates/cloudleaf-search/src/cancellation.rs": "697cae05d2707142db2c1eb4dccb8cd6d67a64e80e7b801b05a88f63cc929318",
+    "crates/cloudleaf-search/src/lattice.rs": "ebf0f5e20eaf915a11abf5488711af12ca95b4d19b7728b7599de5aea506ff16",
+    "crates/cloudleaf-search/src/lexicon.rs": "d620bc15ea7a07a515e9fb742a300491318616c7c563a11928428b89b16fb6bc",
+    "crates/cloudleaf-search/src/lib.rs": "4555c2cf83a6fc4bcae1acb9a23a55fa0310821278920e6be068ad918c03a144",
+    "crates/cloudleaf-search/src/model.rs": "e89283da3060cb5aabbaa838baf455eb87b657d30186b0fc79f89eeb0f735734",
+    "crates/cloudleaf-search/src/profiling.rs": "af2754a2a2c6d0bdec666601a3289320ed22acd8d87e70fc0c2afb37b3f453eb",
+    "crates/cloudleaf-search/src/search.rs": "9f7e13e88597354c5a76d1afc85d19e4fb3ce0dc63046e2ac586fbd85a5fff3c"
+  },
+  "source_after": {
+    "crates/cloudleaf-search/src/cancellation.rs": "697cae05d2707142db2c1eb4dccb8cd6d67a64e80e7b801b05a88f63cc929318",
+    "crates/cloudleaf-search/src/lattice.rs": "ebf0f5e20eaf915a11abf5488711af12ca95b4d19b7728b7599de5aea506ff16",
+    "crates/cloudleaf-search/src/lexicon.rs": "d620bc15ea7a07a515e9fb742a300491318616c7c563a11928428b89b16fb6bc",
+    "crates/cloudleaf-search/src/lib.rs": "4555c2cf83a6fc4bcae1acb9a23a55fa0310821278920e6be068ad918c03a144",
+    "crates/cloudleaf-search/src/model.rs": "e89283da3060cb5aabbaa838baf455eb87b657d30186b0fc79f89eeb0f735734",
+    "crates/cloudleaf-search/src/profiling.rs": "af2754a2a2c6d0bdec666601a3289320ed22acd8d87e70fc0c2afb37b3f453eb",
+    "crates/cloudleaf-search/src/search.rs": "9f7e13e88597354c5a76d1afc85d19e4fb3ce0dc63046e2ac586fbd85a5fff3c"
+  },
+  "source_unchanged": true,
+  "configuration": {
+    "output_k": 10,
+    "beam_width": 8,
+    "max_edges": 16384,
+    "max_expansions": 200000,
+    "max_resident_paths": 50000
+  },
+  "iterations": 3,
+  "warmups": 1,
+  "paired_measurements": 288,
+  "seconds": 28.918609599990305,
+  "all_pairs_equal": true,
+  "phase_relation": "Traversal includes nested Scoring and BucketSortDedup. Do not sum all phases.",
+  "resource_boundary": "Deterministic path/edge counts, not measured per-algorithm allocated byte memory.",
+  "formal_language_metrics": null,
+  "commands": [
+    {
+      "method": "reference",
+      "ranker": "structural",
+      "command": [
+        "C:\\Users\\EDY\\.codex\\tmp\\r15-phase-final\\target\\release\\r15-phase-final.exe",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+        "C:\\Users\\EDY\\.codex\\tmp\\r15-phase-final\\measurements\\cases.tsv",
+        "reference",
+        "structural",
+        "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+        "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+        "8",
+        "3",
+        "1",
+        "16384",
+        "200000",
+        "50000",
+        "10"
+      ],
+      "returncode": 0,
+      "seconds": 7.840585199999623,
+      "stdout_sha256": "061c366ef6fd826527420a72e2588cba0322127fc2d6219bf520aa61837fb768",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "method": "reference",
+      "ranker": "lexical",
+      "command": [
+        "C:\\Users\\EDY\\.codex\\tmp\\r15-phase-final\\target\\release\\r15-phase-final.exe",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+        "C:\\Users\\EDY\\.codex\\tmp\\r15-phase-final\\measurements\\cases.tsv",
+        "reference",
+        "lexical",
+        "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+        "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+        "8",
+        "3",
+        "1",
+        "16384",
+        "200000",
+        "50000",
+        "10"
+      ],
+      "returncode": 0,
+      "seconds": 11.45163299998967,
+      "stdout_sha256": "80290fc68b31ab39ff5f26abbbbda2486b9143d0c31433e864fe433d127ed117",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "method": "exact",
+      "ranker": "structural",
+      "command": [
+        "C:\\Users\\EDY\\.codex\\tmp\\r15-phase-final\\target\\release\\r15-phase-final.exe",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+        "C:\\Users\\EDY\\.codex\\tmp\\r15-phase-final\\measurements\\cases.tsv",
+        "exact",
+        "structural",
+        "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+        "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+        "8",
+        "3",
+        "1",
+        "16384",
+        "200000",
+        "50000",
+        "10"
+      ],
+      "returncode": 0,
+      "seconds": 1.7477160000125878,
+      "stdout_sha256": "da8dbb97f409b3135d077355fd4783e5d63fe96c946e63638df7440a2c956364",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "method": "exact",
+      "ranker": "lexical",
+      "command": [
+        "C:\\Users\\EDY\\.codex\\tmp\\r15-phase-final\\target\\release\\r15-phase-final.exe",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+        "C:\\Users\\EDY\\.codex\\tmp\\r15-phase-final\\measurements\\cases.tsv",
+        "exact",
+        "lexical",
+        "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+        "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+        "8",
+        "3",
+        "1",
+        "16384",
+        "200000",
+        "50000",
+        "10"
+      ],
+      "returncode": 0,
+      "seconds": 4.313409800000954,
+      "stdout_sha256": "f5bd3278a9606decda9380617095d2a407506343c21d7098af65e81c85730968",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "method": "position",
+      "ranker": "structural",
+      "command": [
+        "C:\\Users\\EDY\\.codex\\tmp\\r15-phase-final\\target\\release\\r15-phase-final.exe",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+        "C:\\Users\\EDY\\.codex\\tmp\\r15-phase-final\\measurements\\cases.tsv",
+        "position",
+        "structural",
+        "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+        "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+        "8",
+        "3",
+        "1",
+        "16384",
+        "200000",
+        "50000",
+        "10"
+      ],
+      "returncode": 0,
+      "seconds": 0.7913353999902029,
+      "stdout_sha256": "03f39ab16f09606f67aedff5ebf402ae7efe1d3fb39e9689328dd3f6ae109c27",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "method": "position",
+      "ranker": "lexical",
+      "command": [
+        "C:\\Users\\EDY\\.codex\\tmp\\r15-phase-final\\target\\release\\r15-phase-final.exe",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+        "C:\\Users\\EDY\\.codex\\tmp\\r15-phase-final\\measurements\\cases.tsv",
+        "position",
+        "lexical",
+        "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+        "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+        "8",
+        "3",
+        "1",
+        "16384",
+        "200000",
+        "50000",
+        "10"
+      ],
+      "returncode": 0,
+      "seconds": 0.8785826999810524,
+      "stdout_sha256": "8f3d673d827d5c69246e0d9202079b20a1af9a48df295bf6ab9a0c317eecd1c3",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "method": "beam",
+      "ranker": "structural",
+      "command": [
+        "C:\\Users\\EDY\\.codex\\tmp\\r15-phase-final\\target\\release\\r15-phase-final.exe",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+        "C:\\Users\\EDY\\.codex\\tmp\\r15-phase-final\\measurements\\cases.tsv",
+        "beam",
+        "structural",
+        "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+        "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+        "8",
+        "3",
+        "1",
+        "16384",
+        "200000",
+        "50000",
+        "10"
+      ],
+      "returncode": 0,
+      "seconds": 0.8875089999928605,
+      "stdout_sha256": "a76cd8f0cb787e683e87a3fafcca05989946548720a2099ba90dde41851ec28d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "method": "beam",
+      "ranker": "lexical",
+      "command": [
+        "C:\\Users\\EDY\\.codex\\tmp\\r15-phase-final\\target\\release\\r15-phase-final.exe",
+        "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+        "C:\\Users\\EDY\\.codex\\tmp\\r15-phase-final\\measurements\\cases.tsv",
+        "beam",
+        "lexical",
+        "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+        "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+        "8",
+        "3",
+        "1",
+        "16384",
+        "200000",
+        "50000",
+        "10"
+      ],
+      "returncode": 0,
+      "seconds": 0.9332838999980595,
+      "stdout_sha256": "e2d1a409b508bdbac9cb60f31306f5dc8a9d937c6dd3485369c3fbee951e7f61",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "cases": [
+    {
+      "method": "reference",
+      "ranker": "structural",
+      "id": "r14-0",
+      "input": "nihao",
+      "plain_ns": [
+        4451500,
+        3709900,
+        3277700
+      ],
+      "profile_outer_ns": [
+        5761500,
+        5023000,
+        6040700
+      ],
+      "all_equal": true,
+      "plain_median_ns": 3709900,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 172,
+        "expansions": 9541,
+        "resident_high_water": 97,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "你好",
+      "phase_median_ns": {
+        "query_total": 5760400,
+        "normalize": 600,
+        "lattice": 10300,
+        "search_validate": 100,
+        "traversal": 5725400,
+        "scoring": 540700,
+        "bucket_sort_dedup": 1035600,
+        "final_sort_dedup": 2100,
+        "materialize": 5100
+      }
+    },
+    {
+      "method": "reference",
+      "ranker": "structural",
+      "id": "r14-1",
+      "input": "zhongguo",
+      "plain_ns": [
+        28122700,
+        29350600,
+        29722000
+      ],
+      "profile_outer_ns": [
+        57446000,
+        43448900,
+        45466700
+      ],
+      "all_equal": true,
+      "plain_median_ns": 29350600,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 234,
+        "expansions": 80735,
+        "resident_high_water": 158,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "中国",
+      "phase_median_ns": {
+        "query_total": 45465900,
+        "normalize": 1100,
+        "lattice": 15600,
+        "search_validate": 0,
+        "traversal": 45436300,
+        "scoring": 4349200,
+        "bucket_sort_dedup": 7765900,
+        "final_sort_dedup": 2500,
+        "materialize": 4900
+      }
+    },
+    {
+      "method": "reference",
+      "ranker": "structural",
+      "id": "r14-2",
+      "input": "woaini",
+      "plain_ns": [
+        66488700,
+        58693200,
+        61139300
+      ],
+      "profile_outer_ns": [
+        93028600,
+        89270600,
+        94794700
+      ],
+      "all_equal": true,
+      "plain_median_ns": 61139300,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 234,
+        "expansions": 155825,
+        "resident_high_water": 234,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "握爱昵",
+      "phase_median_ns": {
+        "query_total": 93027700,
+        "normalize": 1000,
+        "lattice": 15400,
+        "search_validate": 100,
+        "traversal": 93000900,
+        "scoring": 8537800,
+        "bucket_sort_dedup": 19033200,
+        "final_sort_dedup": 2300,
+        "materialize": 5300
+      }
+    },
+    {
+      "method": "reference",
+      "ranker": "structural",
+      "id": "r14-3",
+      "input": "jintiantianqihenhao",
+      "plain_ns": [
+        100423600,
+        86840200,
+        83604200
+      ],
+      "profile_outer_ns": [
+        128580000,
+        129395500,
+        118802500
+      ],
+      "all_equal": true,
+      "plain_median_ns": 86840200,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 952,
+        "expansions": 200000,
+        "resident_high_water": 606,
+        "beam_pruned": 0,
+        "budget": "Expansions"
+      },
+      "top1": "今天天气痕諕",
+      "phase_median_ns": {
+        "query_total": 128579400,
+        "normalize": 1700,
+        "lattice": 43200,
+        "search_validate": 100,
+        "traversal": 128473700,
+        "scoring": 10968500,
+        "bucket_sort_dedup": 18603600,
+        "final_sort_dedup": 2700,
+        "materialize": 6200
+      }
+    },
+    {
+      "method": "reference",
+      "ranker": "structural",
+      "id": "r14-4",
+      "input": "wozhengzaikaifayikuanzhongwenshurufa",
+      "plain_ns": [
+        78469000,
+        79796200,
+        81151000
+      ],
+      "profile_outer_ns": [
+        113431800,
+        113795600,
+        114821900
+      ],
+      "all_equal": true,
+      "plain_median_ns": 79796200,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 1482,
+        "expansions": 200000,
+        "resident_high_water": 688,
+        "beam_pruned": 0,
+        "budget": "Expansions"
+      },
+      "top1": "喔正在开发藙欵中文输入法",
+      "phase_median_ns": {
+        "query_total": 113795000,
+        "normalize": 1900,
+        "lattice": 64500,
+        "search_validate": 0,
+        "traversal": 113718100,
+        "scoring": 10777500,
+        "bucket_sort_dedup": 22055400,
+        "final_sort_dedup": 2500,
+        "materialize": 9500
+      }
+    },
+    {
+      "method": "reference",
+      "ranker": "structural",
+      "id": "r14-5",
+      "input": "zheshiyigebijiaofuzadewenti",
+      "plain_ns": [
+        76458600,
+        78162900,
+        84645100
+      ],
+      "profile_outer_ns": [
+        120508600,
+        121619700,
+        136508800
+      ],
+      "all_equal": true,
+      "plain_median_ns": 78162900,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 1766,
+        "expansions": 200000,
+        "resident_high_water": 754,
+        "beam_pruned": 0,
+        "budget": "Expansions"
+      },
+      "top1": "这时一个比较复杂德问题",
+      "phase_median_ns": {
+        "query_total": 121618200,
+        "normalize": 2500,
+        "lattice": 79400,
+        "search_validate": 100,
+        "traversal": 121462100,
+        "scoring": 12044600,
+        "bucket_sort_dedup": 24251000,
+        "final_sort_dedup": 3100,
+        "materialize": 9100
+      }
+    },
+    {
+      "method": "reference",
+      "ranker": "structural",
+      "id": "r14-6",
+      "input": "xian",
+      "plain_ns": [
+        70264100,
+        70366500,
+        72629500
+      ],
+      "profile_outer_ns": [
+        108512500,
+        104986900,
+        109819300
+      ],
+      "all_equal": true,
+      "plain_median_ns": 70366500,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 744,
+        "expansions": 200000,
+        "resident_high_water": 539,
+        "beam_pruned": 0,
+        "budget": "Expansions"
+      },
+      "top1": "秈",
+      "phase_median_ns": {
+        "query_total": 108511900,
+        "normalize": 1100,
+        "lattice": 24000,
+        "search_validate": 100,
+        "traversal": 108478000,
+        "scoring": 10869800,
+        "bucket_sort_dedup": 17108100,
+        "final_sort_dedup": 2100,
+        "materialize": 4100
+      }
+    },
+    {
+      "method": "reference",
+      "ranker": "structural",
+      "id": "r14-7",
+      "input": "xi'an",
+      "plain_ns": [
+        69920800,
+        73360800,
+        72598600
+      ],
+      "profile_outer_ns": [
+        109047500,
+        114652700,
+        105691900
+      ],
+      "all_equal": true,
+      "plain_median_ns": 72598600,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 551,
+        "expansions": 200000,
+        "resident_high_water": 514,
+        "beam_pruned": 0,
+        "budget": "Expansions"
+      },
+      "top1": "锡安",
+      "phase_median_ns": {
+        "query_total": 109046300,
+        "normalize": 1500,
+        "lattice": 36300,
+        "search_validate": 100,
+        "traversal": 108995300,
+        "scoring": 11166400,
+        "bucket_sort_dedup": 17119700,
+        "final_sort_dedup": 2500,
+        "materialize": 5700
+      }
+    },
+    {
+      "method": "reference",
+      "ranker": "structural",
+      "id": "r14-8",
+      "input": "changan",
+      "plain_ns": [
+        74219800,
+        71736300,
+        74343000
+      ],
+      "profile_outer_ns": [
+        106216000,
+        111538000,
+        116968900
+      ],
+      "all_equal": true,
+      "plain_median_ns": 74219800,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 736,
+        "expansions": 200000,
+        "resident_high_water": 481,
+        "beam_pruned": 0,
+        "budget": "Expansions"
+      },
+      "top1": "长按",
+      "phase_median_ns": {
+        "query_total": 111537400,
+        "normalize": 1200,
+        "lattice": 29400,
+        "search_validate": 100,
+        "traversal": 111502500,
+        "scoring": 11378300,
+        "bucket_sort_dedup": 17485600,
+        "final_sort_dedup": 2500,
+        "materialize": 6000
+      }
+    },
+    {
+      "method": "reference",
+      "ranker": "structural",
+      "id": "r14-9",
+      "input": "zhangan",
+      "plain_ns": [
+        72635900,
+        78072500,
+        73230000
+      ],
+      "profile_outer_ns": [
+        107746800,
+        108315200,
+        110630400
+      ],
+      "all_equal": true,
+      "plain_median_ns": 73230000,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 716,
+        "expansions": 200000,
+        "resident_high_water": 462,
+        "beam_pruned": 0,
+        "budget": "Expansions"
+      },
+      "top1": "账揞",
+      "phase_median_ns": {
+        "query_total": 108314700,
+        "normalize": 1000,
+        "lattice": 28600,
+        "search_validate": 100,
+        "traversal": 108280100,
+        "scoring": 11439400,
+        "bucket_sort_dedup": 17037800,
+        "final_sort_dedup": 2200,
+        "materialize": 5600
+      }
+    },
+    {
+      "method": "reference",
+      "ranker": "structural",
+      "id": "r14-10",
+      "input": "qz",
+      "plain_ns": [
+        9400,
+        13100,
+        9100
+      ],
+      "profile_outer_ns": [
+        12900,
+        9400,
+        9400
+      ],
+      "all_equal": true,
+      "plain_median_ns": 9400,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 1090,
+        "expansions": 0,
+        "resident_high_water": 1,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": null,
+      "phase_median_ns": {
+        "query_total": 9300,
+        "normalize": 100,
+        "lattice": 8600,
+        "search_validate": 0,
+        "traversal": 200,
+        "final_sort_dedup": 0,
+        "materialize": 0
+      }
+    },
+    {
+      "method": "reference",
+      "ranker": "structural",
+      "id": "r14-11",
+      "input": "zhongwenshuruf",
+      "plain_ns": [
+        77173800,
+        75874100,
+        77160100
+      ],
+      "profile_outer_ns": [
+        111990000,
+        111745300,
+        113538300
+      ],
+      "all_equal": true,
+      "plain_median_ns": 77160100,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 800,
+        "expansions": 200000,
+        "resident_high_water": 554,
+        "beam_pruned": 0,
+        "budget": "Expansions"
+      },
+      "top1": "中文输入法",
+      "phase_median_ns": {
+        "query_total": 111989500,
+        "normalize": 1200,
+        "lattice": 47700,
+        "search_validate": 100,
+        "traversal": 111925000,
+        "scoring": 10948300,
+        "bucket_sort_dedup": 22548300,
+        "final_sort_dedup": 2600,
+        "materialize": 5300
+      }
+    },
+    {
+      "method": "reference",
+      "ranker": "lexical",
+      "id": "r14-0",
+      "input": "nihao",
+      "plain_ns": [
+        5353300,
+        4998500,
+        4701100
+      ],
+      "profile_outer_ns": [
+        6224900,
+        6260200,
+        6169800
+      ],
+      "all_equal": true,
+      "plain_median_ns": 4998500,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 172,
+        "expansions": 9541,
+        "resident_high_water": 97,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "你好",
+      "phase_median_ns": {
+        "query_total": 6224100,
+        "normalize": 700,
+        "lattice": 18200,
+        "search_validate": 100,
+        "traversal": 6197800,
+        "scoring": 1703000,
+        "bucket_sort_dedup": 808000,
+        "final_sort_dedup": 1400,
+        "materialize": 2400
+      }
+    },
+    {
+      "method": "reference",
+      "ranker": "lexical",
+      "id": "r14-1",
+      "input": "zhongguo",
+      "plain_ns": [
+        38578300,
+        41143400,
+        41571200
+      ],
+      "profile_outer_ns": [
+        53699000,
+        57360700,
+        57470900
+      ],
+      "all_equal": true,
+      "plain_median_ns": 41143400,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 234,
+        "expansions": 80735,
+        "resident_high_water": 158,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "中国",
+      "phase_median_ns": {
+        "query_total": 57360300,
+        "normalize": 1400,
+        "lattice": 16200,
+        "search_validate": 100,
+        "traversal": 57335000,
+        "scoring": 17016900,
+        "bucket_sort_dedup": 6724300,
+        "final_sort_dedup": 2900,
+        "materialize": 6000
+      }
+    },
+    {
+      "method": "reference",
+      "ranker": "lexical",
+      "id": "r14-2",
+      "input": "woaini",
+      "plain_ns": [
+        113950100,
+        94286600,
+        108438700
+      ],
+      "profile_outer_ns": [
+        132348800,
+        120274500,
+        121670600
+      ],
+      "all_equal": true,
+      "plain_median_ns": 108438700,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 234,
+        "expansions": 155825,
+        "resident_high_water": 234,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "我爱昵",
+      "phase_median_ns": {
+        "query_total": 121669800,
+        "normalize": 1300,
+        "lattice": 24900,
+        "search_validate": 100,
+        "traversal": 121632200,
+        "scoring": 37926200,
+        "bucket_sort_dedup": 18095400,
+        "final_sort_dedup": 2200,
+        "materialize": 6500
+      }
+    },
+    {
+      "method": "reference",
+      "ranker": "lexical",
+      "id": "r14-3",
+      "input": "jintiantianqihenhao",
+      "plain_ns": [
+        113216300,
+        115321000,
+        117821000
+      ],
+      "profile_outer_ns": [
+        154460300,
+        159666200,
+        163344900
+      ],
+      "all_equal": true,
+      "plain_median_ns": 115321000,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 952,
+        "expansions": 200000,
+        "resident_high_water": 606,
+        "beam_pruned": 0,
+        "budget": "Expansions"
+      },
+      "top1": "今天天气很好",
+      "phase_median_ns": {
+        "query_total": 159665400,
+        "normalize": 2200,
+        "lattice": 57100,
+        "search_validate": 100,
+        "traversal": 159596000,
+        "scoring": 50819900,
+        "bucket_sort_dedup": 17800200,
+        "final_sort_dedup": 3400,
+        "materialize": 4100
+      }
+    },
+    {
+      "method": "reference",
+      "ranker": "lexical",
+      "id": "r14-4",
+      "input": "wozhengzaikaifayikuanzhongwenshurufa",
+      "plain_ns": [
+        121280700,
+        129282200,
+        137012000
+      ],
+      "profile_outer_ns": [
+        156114100,
+        183105800,
+        174276100
+      ],
+      "all_equal": true,
+      "plain_median_ns": 129282200,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 1482,
+        "expansions": 200000,
+        "resident_high_water": 688,
+        "beam_pruned": 0,
+        "budget": "Expansions"
+      },
+      "top1": "喔正在开发藙欵中文输入法",
+      "phase_median_ns": {
+        "query_total": 174275000,
+        "normalize": 1900,
+        "lattice": 66400,
+        "search_validate": 100,
+        "traversal": 174186400,
+        "scoring": 53435300,
+        "bucket_sort_dedup": 25527200,
+        "final_sort_dedup": 2600,
+        "materialize": 9600
+      }
+    },
+    {
+      "method": "reference",
+      "ranker": "lexical",
+      "id": "r14-5",
+      "input": "zheshiyigebijiaofuzadewenti",
+      "plain_ns": [
+        127642600,
+        119119000,
+        119214700
+      ],
+      "profile_outer_ns": [
+        220568400,
+        171232100,
+        163503100
+      ],
+      "all_equal": true,
+      "plain_median_ns": 119214700,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 1766,
+        "expansions": 200000,
+        "resident_high_water": 754,
+        "beam_pruned": 0,
+        "budget": "Expansions"
+      },
+      "top1": "这时一个比较复杂的问题",
+      "phase_median_ns": {
+        "query_total": 171231500,
+        "normalize": 2900,
+        "lattice": 116200,
+        "search_validate": 100,
+        "traversal": 171060400,
+        "scoring": 54449600,
+        "bucket_sort_dedup": 25712300,
+        "final_sort_dedup": 3000,
+        "materialize": 12800
+      }
+    },
+    {
+      "method": "reference",
+      "ranker": "lexical",
+      "id": "r14-6",
+      "input": "xian",
+      "plain_ns": [
+        147072600,
+        125656800,
+        115231100
+      ],
+      "profile_outer_ns": [
+        280006100,
+        180015400,
+        153883000
+      ],
+      "all_equal": true,
+      "plain_median_ns": 125656800,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 744,
+        "expansions": 200000,
+        "resident_high_water": 539,
+        "beam_pruned": 0,
+        "budget": "Expansions"
+      },
+      "top1": "现",
+      "phase_median_ns": {
+        "query_total": 180015000,
+        "normalize": 900,
+        "lattice": 22700,
+        "search_validate": 100,
+        "traversal": 179988000,
+        "scoring": 67147100,
+        "bucket_sort_dedup": 18798000,
+        "final_sort_dedup": 2400,
+        "materialize": 4100
+      }
+    },
+    {
+      "method": "reference",
+      "ranker": "lexical",
+      "id": "r14-7",
+      "input": "xi'an",
+      "plain_ns": [
+        129942900,
+        122762100,
+        122038200
+      ],
+      "profile_outer_ns": [
+        152587000,
+        162061400,
+        156678700
+      ],
+      "all_equal": true,
+      "plain_median_ns": 122762100,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 551,
+        "expansions": 200000,
+        "resident_high_water": 514,
+        "beam_pruned": 0,
+        "budget": "Expansions"
+      },
+      "top1": "西安",
+      "phase_median_ns": {
+        "query_total": 156677900,
+        "normalize": 1500,
+        "lattice": 34400,
+        "search_validate": 100,
+        "traversal": 156630300,
+        "scoring": 52019200,
+        "bucket_sort_dedup": 18182100,
+        "final_sort_dedup": 2900,
+        "materialize": 5200
+      }
+    },
+    {
+      "method": "reference",
+      "ranker": "lexical",
+      "id": "r14-8",
+      "input": "changan",
+      "plain_ns": [
+        114127900,
+        115560500,
+        126710800
+      ],
+      "profile_outer_ns": [
+        150982700,
+        157989300,
+        154421000
+      ],
+      "all_equal": true,
+      "plain_median_ns": 115560500,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 736,
+        "expansions": 200000,
+        "resident_high_water": 481,
+        "beam_pruned": 0,
+        "budget": "Expansions"
+      },
+      "top1": "长安",
+      "phase_median_ns": {
+        "query_total": 154420500,
+        "normalize": 800,
+        "lattice": 29100,
+        "search_validate": 100,
+        "traversal": 154373600,
+        "scoring": 50484900,
+        "bucket_sort_dedup": 18017300,
+        "final_sort_dedup": 2200,
+        "materialize": 5100
+      }
+    },
+    {
+      "method": "reference",
+      "ranker": "lexical",
+      "id": "r14-9",
+      "input": "zhangan",
+      "plain_ns": [
+        125989500,
+        131711900,
+        123684500
+      ],
+      "profile_outer_ns": [
+        159983500,
+        163109500,
+        177679500
+      ],
+      "all_equal": true,
+      "plain_median_ns": 125989500,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 716,
+        "expansions": 200000,
+        "resident_high_water": 462,
+        "beam_pruned": 0,
+        "budget": "Expansions"
+      },
+      "top1": "长按",
+      "phase_median_ns": {
+        "query_total": 163109000,
+        "normalize": 800,
+        "lattice": 29100,
+        "search_validate": 100,
+        "traversal": 163061400,
+        "scoring": 54910500,
+        "bucket_sort_dedup": 18540900,
+        "final_sort_dedup": 3100,
+        "materialize": 7400
+      }
+    },
+    {
+      "method": "reference",
+      "ranker": "lexical",
+      "id": "r14-10",
+      "input": "qz",
+      "plain_ns": [
+        10000,
+        15800,
+        10500
+      ],
+      "profile_outer_ns": [
+        13100,
+        11000,
+        9500
+      ],
+      "all_equal": true,
+      "plain_median_ns": 10500,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 1090,
+        "expansions": 0,
+        "resident_high_water": 1,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": null,
+      "phase_median_ns": {
+        "query_total": 10800,
+        "normalize": 200,
+        "lattice": 9900,
+        "search_validate": 0,
+        "traversal": 200,
+        "final_sort_dedup": 0,
+        "materialize": 100
+      }
+    },
+    {
+      "method": "reference",
+      "ranker": "lexical",
+      "id": "r14-11",
+      "input": "zhongwenshuruf",
+      "plain_ns": [
+        128960200,
+        130753800,
+        122931900
+      ],
+      "profile_outer_ns": [
+        161432500,
+        157543400,
+        166878400
+      ],
+      "all_equal": true,
+      "plain_median_ns": 128960200,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 800,
+        "expansions": 200000,
+        "resident_high_water": 554,
+        "beam_pruned": 0,
+        "budget": "Expansions"
+      },
+      "top1": "中文输入法",
+      "phase_median_ns": {
+        "query_total": 161432000,
+        "normalize": 1400,
+        "lattice": 33400,
+        "search_validate": 0,
+        "traversal": 161384500,
+        "scoring": 52532800,
+        "bucket_sort_dedup": 24003200,
+        "final_sort_dedup": 2600,
+        "materialize": 5200
+      }
+    },
+    {
+      "method": "exact",
+      "ranker": "structural",
+      "id": "r14-0",
+      "input": "nihao",
+      "plain_ns": [
+        738500,
+        835400,
+        741700
+      ],
+      "profile_outer_ns": [
+        1156900,
+        1278100,
+        1041600
+      ],
+      "all_equal": true,
+      "plain_median_ns": 741700,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 172,
+        "expansions": 3661,
+        "resident_high_water": 702,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "你好",
+      "phase_median_ns": {
+        "query_total": 1156700,
+        "normalize": 300,
+        "lattice": 5600,
+        "search_validate": 100,
+        "traversal": 932700,
+        "scoring": 108400,
+        "bucket_sort_dedup": 130100,
+        "final_sort_dedup": 166300,
+        "materialize": 2000
+      }
+    },
+    {
+      "method": "exact",
+      "ranker": "structural",
+      "id": "r14-1",
+      "input": "zhongguo",
+      "plain_ns": [
+        1640900,
+        1683700,
+        1851700
+      ],
+      "profile_outer_ns": [
+        3625300,
+        3209500,
+        3176900
+      ],
+      "all_equal": true,
+      "plain_median_ns": 1683700,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 234,
+        "expansions": 25407,
+        "resident_high_water": 1394,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "中国",
+      "phase_median_ns": {
+        "query_total": 3209200,
+        "normalize": 900,
+        "lattice": 8200,
+        "search_validate": 100,
+        "traversal": 3008900,
+        "scoring": 702900,
+        "bucket_sort_dedup": 209300,
+        "final_sort_dedup": 170800,
+        "materialize": 3700
+      }
+    },
+    {
+      "method": "exact",
+      "ranker": "structural",
+      "id": "r14-2",
+      "input": "woaini",
+      "plain_ns": [
+        4475900,
+        4402100,
+        4523600
+      ],
+      "profile_outer_ns": [
+        8572300,
+        9347500,
+        9026100
+      ],
+      "all_equal": true,
+      "plain_median_ns": 4475900,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 234,
+        "expansions": 68517,
+        "resident_high_water": 1921,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "握爱昵",
+      "phase_median_ns": {
+        "query_total": 9025400,
+        "normalize": 600,
+        "lattice": 8000,
+        "search_validate": 0,
+        "traversal": 8453900,
+        "scoring": 1846200,
+        "bucket_sort_dedup": 615400,
+        "final_sort_dedup": 520300,
+        "materialize": 6200
+      }
+    },
+    {
+      "method": "exact",
+      "ranker": "structural",
+      "id": "r14-3",
+      "input": "jintiantianqihenhao",
+      "plain_ns": [
+        10080000,
+        9395900,
+        10803000
+      ],
+      "profile_outer_ns": [
+        20787600,
+        25634100,
+        23002200
+      ],
+      "all_equal": true,
+      "plain_median_ns": 10080000,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 952,
+        "expansions": 200000,
+        "resident_high_water": 2251,
+        "beam_pruned": 0,
+        "budget": "Expansions"
+      },
+      "top1": null,
+      "phase_median_ns": {
+        "query_total": 23000000,
+        "normalize": 1700,
+        "lattice": 32300,
+        "search_validate": 100,
+        "traversal": 22954000,
+        "scoring": 5547300,
+        "bucket_sort_dedup": 1919700,
+        "final_sort_dedup": 200,
+        "materialize": 700
+      }
+    },
+    {
+      "method": "exact",
+      "ranker": "structural",
+      "id": "r14-4",
+      "input": "wozhengzaikaifayikuanzhongwenshurufa",
+      "plain_ns": [
+        15950400,
+        14788500,
+        14258300
+      ],
+      "profile_outer_ns": [
+        27935600,
+        26846500,
+        26425800
+      ],
+      "all_equal": true,
+      "plain_median_ns": 14788500,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 1482,
+        "expansions": 200000,
+        "resident_high_water": 2441,
+        "beam_pruned": 0,
+        "budget": "Expansions"
+      },
+      "top1": null,
+      "phase_median_ns": {
+        "query_total": 26846000,
+        "normalize": 2400,
+        "lattice": 71900,
+        "search_validate": 100,
+        "traversal": 26770200,
+        "scoring": 5355600,
+        "bucket_sort_dedup": 3086700,
+        "final_sort_dedup": 200,
+        "materialize": 500
+      }
+    },
+    {
+      "method": "exact",
+      "ranker": "structural",
+      "id": "r14-5",
+      "input": "zheshiyigebijiaofuzadewenti",
+      "plain_ns": [
+        8572500,
+        9439100,
+        8346500
+      ],
+      "profile_outer_ns": [
+        21125300,
+        21695800,
+        20454200
+      ],
+      "all_equal": true,
+      "plain_median_ns": 8572500,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 1766,
+        "expansions": 200000,
+        "resident_high_water": 3493,
+        "beam_pruned": 0,
+        "budget": "Expansions"
+      },
+      "top1": null,
+      "phase_median_ns": {
+        "query_total": 21124600,
+        "normalize": 3100,
+        "lattice": 58400,
+        "search_validate": 0,
+        "traversal": 21042800,
+        "scoring": 5451800,
+        "bucket_sort_dedup": 978600,
+        "final_sort_dedup": 200,
+        "materialize": 1200
+      }
+    },
+    {
+      "method": "exact",
+      "ranker": "structural",
+      "id": "r14-6",
+      "input": "xian",
+      "plain_ns": [
+        6453200,
+        7781900,
+        7550300
+      ],
+      "profile_outer_ns": [
+        11058800,
+        13632700,
+        12535600
+      ],
+      "all_equal": true,
+      "plain_median_ns": 7550300,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 744,
+        "expansions": 55716,
+        "resident_high_water": 3866,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "秈",
+      "phase_median_ns": {
+        "query_total": 12534800,
+        "normalize": 1200,
+        "lattice": 18300,
+        "search_validate": 100,
+        "traversal": 10992500,
+        "scoring": 1874700,
+        "bucket_sort_dedup": 1083500,
+        "final_sort_dedup": 1224600,
+        "materialize": 4900
+      }
+    },
+    {
+      "method": "exact",
+      "ranker": "structural",
+      "id": "r14-7",
+      "input": "xi'an",
+      "plain_ns": [
+        10336400,
+        9337400,
+        9121800
+      ],
+      "profile_outer_ns": [
+        14212800,
+        12377700,
+        13510100
+      ],
+      "all_equal": true,
+      "plain_median_ns": 9337400,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 551,
+        "expansions": 44568,
+        "resident_high_water": 3673,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "锡安",
+      "phase_median_ns": {
+        "query_total": 13509400,
+        "normalize": 1800,
+        "lattice": 39700,
+        "search_validate": 100,
+        "traversal": 11879300,
+        "scoring": 1417000,
+        "bucket_sort_dedup": 1719700,
+        "final_sort_dedup": 1354600,
+        "materialize": 6600
+      }
+    },
+    {
+      "method": "exact",
+      "ranker": "structural",
+      "id": "r14-8",
+      "input": "changan",
+      "plain_ns": [
+        12068300,
+        16832400,
+        14619700
+      ],
+      "profile_outer_ns": [
+        22351700,
+        25480000,
+        27043200
+      ],
+      "all_equal": true,
+      "plain_median_ns": 14619700,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 736,
+        "expansions": 98815,
+        "resident_high_water": 4573,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "长按",
+      "phase_median_ns": {
+        "query_total": 25478600,
+        "normalize": 1700,
+        "lattice": 31500,
+        "search_validate": 100,
+        "traversal": 22224900,
+        "scoring": 3295500,
+        "bucket_sort_dedup": 4085300,
+        "final_sort_dedup": 1913500,
+        "materialize": 7700
+      }
+    },
+    {
+      "method": "exact",
+      "ranker": "structural",
+      "id": "r14-9",
+      "input": "zhangan",
+      "plain_ns": [
+        12091600,
+        10340800,
+        10420500
+      ],
+      "profile_outer_ns": [
+        19554800,
+        17071100,
+        16384500
+      ],
+      "all_equal": true,
+      "plain_median_ns": 10420500,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 716,
+        "expansions": 96640,
+        "resident_high_water": 4572,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "搌秆",
+      "phase_median_ns": {
+        "query_total": 17069200,
+        "normalize": 1100,
+        "lattice": 30700,
+        "search_validate": 100,
+        "traversal": 14958800,
+        "scoring": 2774200,
+        "bucket_sort_dedup": 1687800,
+        "final_sort_dedup": 1816600,
+        "materialize": 9300
+      }
+    },
+    {
+      "method": "exact",
+      "ranker": "structural",
+      "id": "r14-10",
+      "input": "qz",
+      "plain_ns": [
+        9200,
+        11700,
+        9200
+      ],
+      "profile_outer_ns": [
+        10800,
+        9500,
+        9300
+      ],
+      "all_equal": true,
+      "plain_median_ns": 9200,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 1090,
+        "expansions": 0,
+        "resident_high_water": 1,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": null,
+      "phase_median_ns": {
+        "query_total": 9400,
+        "normalize": 200,
+        "lattice": 8300,
+        "search_validate": 0,
+        "traversal": 500,
+        "final_sort_dedup": 0,
+        "materialize": 100
+      }
+    },
+    {
+      "method": "exact",
+      "ranker": "structural",
+      "id": "r14-11",
+      "input": "zhongwenshuruf",
+      "plain_ns": [
+        16708300,
+        16274600,
+        16472400
+      ],
+      "profile_outer_ns": [
+        34523100,
+        29562700,
+        37449300
+      ],
+      "all_equal": true,
+      "plain_median_ns": 16472400,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 800,
+        "expansions": 199412,
+        "resident_high_water": 4341,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "中文输入法",
+      "phase_median_ns": {
+        "query_total": 34522400,
+        "normalize": 1900,
+        "lattice": 37200,
+        "search_validate": 100,
+        "traversal": 32678300,
+        "scoring": 6193000,
+        "bucket_sort_dedup": 2961300,
+        "final_sort_dedup": 1616300,
+        "materialize": 22300
+      }
+    },
+    {
+      "method": "exact",
+      "ranker": "lexical",
+      "id": "r14-0",
+      "input": "nihao",
+      "plain_ns": [
+        1579800,
+        1656700,
+        1836100
+      ],
+      "profile_outer_ns": [
+        1945900,
+        1783400,
+        2067500
+      ],
+      "all_equal": true,
+      "plain_median_ns": 1656700,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 172,
+        "expansions": 3661,
+        "resident_high_water": 702,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "你好",
+      "phase_median_ns": {
+        "query_total": 1945600,
+        "normalize": 700,
+        "lattice": 11100,
+        "search_validate": 100,
+        "traversal": 1748900,
+        "scoring": 615700,
+        "bucket_sort_dedup": 179100,
+        "final_sort_dedup": 196600,
+        "materialize": 2600
+      }
+    },
+    {
+      "method": "exact",
+      "ranker": "lexical",
+      "id": "r14-1",
+      "input": "zhongguo",
+      "plain_ns": [
+        6157600,
+        5688500,
+        6366800
+      ],
+      "profile_outer_ns": [
+        8416900,
+        9764000,
+        7893800
+      ],
+      "all_equal": true,
+      "plain_median_ns": 6157600,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 234,
+        "expansions": 25407,
+        "resident_high_water": 1394,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "中国",
+      "phase_median_ns": {
+        "query_total": 8415900,
+        "normalize": 1400,
+        "lattice": 16000,
+        "search_validate": 0,
+        "traversal": 8163500,
+        "scoring": 4365300,
+        "bucket_sort_dedup": 519700,
+        "final_sort_dedup": 214200,
+        "materialize": 5500
+      }
+    },
+    {
+      "method": "exact",
+      "ranker": "lexical",
+      "id": "r14-2",
+      "input": "woaini",
+      "plain_ns": [
+        15080300,
+        17434200,
+        15034100
+      ],
+      "profile_outer_ns": [
+        19409000,
+        19731800,
+        20413800
+      ],
+      "all_equal": true,
+      "plain_median_ns": 15080300,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 234,
+        "expansions": 68517,
+        "resident_high_water": 1921,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "我爱昵",
+      "phase_median_ns": {
+        "query_total": 19731300,
+        "normalize": 1000,
+        "lattice": 14600,
+        "search_validate": 100,
+        "traversal": 19184100,
+        "scoring": 11441900,
+        "bucket_sort_dedup": 969100,
+        "final_sort_dedup": 429500,
+        "materialize": 5600
+      }
+    },
+    {
+      "method": "exact",
+      "ranker": "lexical",
+      "id": "r14-3",
+      "input": "jintiantianqihenhao",
+      "plain_ns": [
+        50811100,
+        49375100,
+        50342900
+      ],
+      "profile_outer_ns": [
+        65802800,
+        61086000,
+        56265700
+      ],
+      "all_equal": true,
+      "plain_median_ns": 50342900,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 952,
+        "expansions": 200000,
+        "resident_high_water": 2251,
+        "beam_pruned": 0,
+        "budget": "Expansions"
+      },
+      "top1": null,
+      "phase_median_ns": {
+        "query_total": 61085400,
+        "normalize": 2300,
+        "lattice": 50400,
+        "search_validate": 100,
+        "traversal": 61030700,
+        "scoring": 33645900,
+        "bucket_sort_dedup": 4423200,
+        "final_sort_dedup": 200,
+        "materialize": 1200
+      }
+    },
+    {
+      "method": "exact",
+      "ranker": "lexical",
+      "id": "r14-4",
+      "input": "wozhengzaikaifayikuanzhongwenshurufa",
+      "plain_ns": [
+        40018000,
+        52054700,
+        53286200
+      ],
+      "profile_outer_ns": [
+        61706800,
+        67019200,
+        62693400
+      ],
+      "all_equal": true,
+      "plain_median_ns": 52054700,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 1482,
+        "expansions": 200000,
+        "resident_high_water": 2441,
+        "beam_pruned": 0,
+        "budget": "Expansions"
+      },
+      "top1": null,
+      "phase_median_ns": {
+        "query_total": 62692500,
+        "normalize": 2900,
+        "lattice": 103100,
+        "search_validate": 100,
+        "traversal": 62581300,
+        "scoring": 32786700,
+        "bucket_sort_dedup": 5030500,
+        "final_sort_dedup": 200,
+        "materialize": 400
+      }
+    },
+    {
+      "method": "exact",
+      "ranker": "lexical",
+      "id": "r14-5",
+      "input": "zheshiyigebijiaofuzadewenti",
+      "plain_ns": [
+        46746800,
+        54437700,
+        63335200
+      ],
+      "profile_outer_ns": [
+        64609800,
+        67120800,
+        68434500
+      ],
+      "all_equal": true,
+      "plain_median_ns": 54437700,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 1766,
+        "expansions": 200000,
+        "resident_high_water": 3493,
+        "beam_pruned": 0,
+        "budget": "Expansions"
+      },
+      "top1": null,
+      "phase_median_ns": {
+        "query_total": 67120300,
+        "normalize": 4400,
+        "lattice": 89400,
+        "search_validate": 100,
+        "traversal": 67041900,
+        "scoring": 39844800,
+        "bucket_sort_dedup": 4745800,
+        "final_sort_dedup": 300,
+        "materialize": 1400
+      }
+    },
+    {
+      "method": "exact",
+      "ranker": "lexical",
+      "id": "r14-6",
+      "input": "xian",
+      "plain_ns": [
+        29151700,
+        52063600,
+        26840700
+      ],
+      "profile_outer_ns": [
+        31949300,
+        51476300,
+        46751100
+      ],
+      "all_equal": true,
+      "plain_median_ns": 29151700,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 744,
+        "expansions": 55716,
+        "resident_high_water": 3866,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "现",
+      "phase_median_ns": {
+        "query_total": 46750500,
+        "normalize": 2500,
+        "lattice": 24100,
+        "search_validate": 100,
+        "traversal": 45229600,
+        "scoring": 21798300,
+        "bucket_sort_dedup": 3254700,
+        "final_sort_dedup": 1553100,
+        "materialize": 5600
+      }
+    },
+    {
+      "method": "exact",
+      "ranker": "lexical",
+      "id": "r14-7",
+      "input": "xi'an",
+      "plain_ns": [
+        18895000,
+        24670100,
+        24698500
+      ],
+      "profile_outer_ns": [
+        27237700,
+        52308000,
+        57116800
+      ],
+      "all_equal": true,
+      "plain_median_ns": 24670100,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 551,
+        "expansions": 44568,
+        "resident_high_water": 3673,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "西安",
+      "phase_median_ns": {
+        "query_total": 52307200,
+        "normalize": 1700,
+        "lattice": 68600,
+        "search_validate": 100,
+        "traversal": 50370600,
+        "scoring": 24306600,
+        "bucket_sort_dedup": 7085400,
+        "final_sort_dedup": 1776500,
+        "materialize": 8000
+      }
+    },
+    {
+      "method": "exact",
+      "ranker": "lexical",
+      "id": "r14-8",
+      "input": "changan",
+      "plain_ns": [
+        42706900,
+        44327100,
+        47402200
+      ],
+      "profile_outer_ns": [
+        57514500,
+        55220600,
+        58165000
+      ],
+      "all_equal": true,
+      "plain_median_ns": 44327100,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 736,
+        "expansions": 98815,
+        "resident_high_water": 4573,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "长安",
+      "phase_median_ns": {
+        "query_total": 57513400,
+        "normalize": 1600,
+        "lattice": 35100,
+        "search_validate": 100,
+        "traversal": 55100000,
+        "scoring": 27396700,
+        "bucket_sort_dedup": 6772000,
+        "final_sort_dedup": 2192900,
+        "materialize": 8600
+      }
+    },
+    {
+      "method": "exact",
+      "ranker": "lexical",
+      "id": "r14-9",
+      "input": "zhangan",
+      "plain_ns": [
+        48868900,
+        58101800,
+        41037400
+      ],
+      "profile_outer_ns": [
+        71856200,
+        60403000,
+        48260200
+      ],
+      "all_equal": true,
+      "plain_median_ns": 48868900,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 716,
+        "expansions": 96640,
+        "resident_high_water": 4572,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "长按",
+      "phase_median_ns": {
+        "query_total": 60402300,
+        "normalize": 2100,
+        "lattice": 45700,
+        "search_validate": 200,
+        "traversal": 58246000,
+        "scoring": 28267200,
+        "bucket_sort_dedup": 7189200,
+        "final_sort_dedup": 1750800,
+        "materialize": 8700
+      }
+    },
+    {
+      "method": "exact",
+      "ranker": "lexical",
+      "id": "r14-10",
+      "input": "qz",
+      "plain_ns": [
+        13100,
+        15900,
+        12300
+      ],
+      "profile_outer_ns": [
+        18100,
+        15100,
+        10200
+      ],
+      "all_equal": true,
+      "plain_median_ns": 13100,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 1090,
+        "expansions": 0,
+        "resident_high_water": 1,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": null,
+      "phase_median_ns": {
+        "query_total": 14900,
+        "normalize": 200,
+        "lattice": 13800,
+        "search_validate": 100,
+        "traversal": 500,
+        "final_sort_dedup": 0,
+        "materialize": 100
+      }
+    },
+    {
+      "method": "exact",
+      "ranker": "lexical",
+      "id": "r14-11",
+      "input": "zhongwenshuruf",
+      "plain_ns": [
+        92699900,
+        66022700,
+        70459600
+      ],
+      "profile_outer_ns": [
+        83881400,
+        102228500,
+        84790200
+      ],
+      "all_equal": true,
+      "plain_median_ns": 70459600,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 800,
+        "expansions": 199412,
+        "resident_high_water": 4341,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "中文输入法",
+      "phase_median_ns": {
+        "query_total": 84789600,
+        "normalize": 3200,
+        "lattice": 62300,
+        "search_validate": 200,
+        "traversal": 82424500,
+        "scoring": 48439800,
+        "bucket_sort_dedup": 7449200,
+        "final_sort_dedup": 1760000,
+        "materialize": 7700
+      }
+    },
+    {
+      "method": "position",
+      "ranker": "structural",
+      "id": "r14-0",
+      "input": "nihao",
+      "plain_ns": [
+        28100,
+        24700,
+        24700
+      ],
+      "profile_outer_ns": [
+        73100,
+        67400,
+        65500
+      ],
+      "all_equal": true,
+      "plain_median_ns": 24700,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 172,
+        "expansions": 756,
+        "resident_high_water": 29,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "你好",
+      "phase_median_ns": {
+        "query_total": 67200,
+        "normalize": 300,
+        "lattice": 4500,
+        "search_validate": 100,
+        "traversal": 60100,
+        "scoring": 18600,
+        "bucket_sort_dedup": 3000,
+        "final_sort_dedup": 700,
+        "materialize": 1100
+      }
+    },
+    {
+      "method": "position",
+      "ranker": "structural",
+      "id": "r14-1",
+      "input": "zhongguo",
+      "plain_ns": [
+        28400,
+        28700,
+        27200
+      ],
+      "profile_outer_ns": [
+        106100,
+        105400,
+        105100
+      ],
+      "all_equal": true,
+      "plain_median_ns": 28400,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 234,
+        "expansions": 1439,
+        "resident_high_water": 31,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "中国",
+      "phase_median_ns": {
+        "query_total": 105300,
+        "normalize": 300,
+        "lattice": 3500,
+        "search_validate": 100,
+        "traversal": 99000,
+        "scoring": 36500,
+        "bucket_sort_dedup": 2700,
+        "final_sort_dedup": 700,
+        "materialize": 1100
+      }
+    },
+    {
+      "method": "position",
+      "ranker": "structural",
+      "id": "r14-2",
+      "input": "woaini",
+      "plain_ns": [
+        39200,
+        40300,
+        39100
+      ],
+      "profile_outer_ns": [
+        152300,
+        152100,
+        150800
+      ],
+      "all_equal": true,
+      "plain_median_ns": 39200,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 234,
+        "expansions": 2063,
+        "resident_high_water": 31,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "握爱昵",
+      "phase_median_ns": {
+        "query_total": 152100,
+        "normalize": 300,
+        "lattice": 3600,
+        "search_validate": 0,
+        "traversal": 145300,
+        "scoring": 53500,
+        "bucket_sort_dedup": 3800,
+        "final_sort_dedup": 900,
+        "materialize": 1200
+      }
+    },
+    {
+      "method": "position",
+      "ranker": "structural",
+      "id": "r14-3",
+      "input": "jintiantianqihenhao",
+      "plain_ns": [
+        126700,
+        136000,
+        136000
+      ],
+      "profile_outer_ns": [
+        459000,
+        456700,
+        469700
+      ],
+      "all_equal": true,
+      "plain_median_ns": 136000,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 952,
+        "expansions": 5924,
+        "resident_high_water": 50,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "今天天气痕諕",
+      "phase_median_ns": {
+        "query_total": 458800,
+        "normalize": 700,
+        "lattice": 14000,
+        "search_validate": 100,
+        "traversal": 439700,
+        "scoring": 155700,
+        "bucket_sort_dedup": 13600,
+        "final_sort_dedup": 1300,
+        "materialize": 3000
+      }
+    },
+    {
+      "method": "position",
+      "ranker": "structural",
+      "id": "r14-4",
+      "input": "wozhengzaikaifayikuanzhongwenshurufa",
+      "plain_ns": [
+        193900,
+        185800,
+        174200
+      ],
+      "profile_outer_ns": [
+        641000,
+        627800,
+        608800
+      ],
+      "all_equal": true,
+      "plain_median_ns": 185800,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 1482,
+        "expansions": 8113,
+        "resident_high_water": 41,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "握正在炌法医宽中文输入法",
+      "phase_median_ns": {
+        "query_total": 627600,
+        "normalize": 900,
+        "lattice": 24400,
+        "search_validate": 0,
+        "traversal": 597600,
+        "scoring": 218500,
+        "bucket_sort_dedup": 17800,
+        "final_sort_dedup": 1000,
+        "materialize": 3000
+      }
+    },
+    {
+      "method": "position",
+      "ranker": "structural",
+      "id": "r14-5",
+      "input": "zheshiyigebijiaofuzadewenti",
+      "plain_ns": [
+        237000,
+        383400,
+        250000
+      ],
+      "profile_outer_ns": [
+        1021600,
+        959200,
+        930700
+      ],
+      "all_equal": true,
+      "plain_median_ns": 250000,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 1766,
+        "expansions": 13534,
+        "resident_high_water": 50,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "赭石一哥比较复杂德问题",
+      "phase_median_ns": {
+        "query_total": 959100,
+        "normalize": 800,
+        "lattice": 24900,
+        "search_validate": 100,
+        "traversal": 929100,
+        "scoring": 380300,
+        "bucket_sort_dedup": 16700,
+        "final_sort_dedup": 1100,
+        "materialize": 3100
+      }
+    },
+    {
+      "method": "position",
+      "ranker": "structural",
+      "id": "r14-6",
+      "input": "xian",
+      "plain_ns": [
+        49300,
+        56400,
+        53100
+      ],
+      "profile_outer_ns": [
+        266100,
+        262100,
+        269600
+      ],
+      "all_equal": true,
+      "plain_median_ns": 53100,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 744,
+        "expansions": 4056,
+        "resident_high_water": 32,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "秈",
+      "phase_median_ns": {
+        "query_total": 266000,
+        "normalize": 200,
+        "lattice": 8500,
+        "search_validate": 0,
+        "traversal": 254700,
+        "scoring": 104800,
+        "bucket_sort_dedup": 2600,
+        "final_sort_dedup": 900,
+        "materialize": 900
+      }
+    },
+    {
+      "method": "position",
+      "ranker": "structural",
+      "id": "r14-7",
+      "input": "xi'an",
+      "plain_ns": [
+        57200,
+        55900,
+        54700
+      ],
+      "profile_outer_ns": [
+        263000,
+        271500,
+        264800
+      ],
+      "all_equal": true,
+      "plain_median_ns": 55900,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 551,
+        "expansions": 3863,
+        "resident_high_water": 30,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "锡安",
+      "phase_median_ns": {
+        "query_total": 264600,
+        "normalize": 400,
+        "lattice": 10400,
+        "search_validate": 0,
+        "traversal": 249300,
+        "scoring": 102100,
+        "bucket_sort_dedup": 2900,
+        "final_sort_dedup": 1000,
+        "materialize": 1600
+      }
+    },
+    {
+      "method": "position",
+      "ranker": "structural",
+      "id": "r14-8",
+      "input": "changan",
+      "plain_ns": [
+        76300,
+        97100,
+        91000
+      ],
+      "profile_outer_ns": [
+        329900,
+        351800,
+        350300
+      ],
+      "all_equal": true,
+      "plain_median_ns": 91000,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 736,
+        "expansions": 4730,
+        "resident_high_water": 41,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "长按",
+      "phase_median_ns": {
+        "query_total": 350100,
+        "normalize": 300,
+        "lattice": 8900,
+        "search_validate": 0,
+        "traversal": 333300,
+        "scoring": 122700,
+        "bucket_sort_dedup": 8000,
+        "final_sort_dedup": 1700,
+        "materialize": 2600
+      }
+    },
+    {
+      "method": "position",
+      "ranker": "structural",
+      "id": "r14-9",
+      "input": "zhangan",
+      "plain_ns": [
+        122900,
+        72000,
+        67700
+      ],
+      "profile_outer_ns": [
+        351900,
+        323100,
+        331400
+      ],
+      "all_equal": true,
+      "plain_median_ns": 72000,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 716,
+        "expansions": 4710,
+        "resident_high_water": 41,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "搌秆",
+      "phase_median_ns": {
+        "query_total": 331300,
+        "normalize": 400,
+        "lattice": 12400,
+        "search_validate": 100,
+        "traversal": 319600,
+        "scoring": 125500,
+        "bucket_sort_dedup": 5000,
+        "final_sort_dedup": 1100,
+        "materialize": 1400
+      }
+    },
+    {
+      "method": "position",
+      "ranker": "structural",
+      "id": "r14-10",
+      "input": "qz",
+      "plain_ns": [
+        9300,
+        11200,
+        9600
+      ],
+      "profile_outer_ns": [
+        12100,
+        11400,
+        9800
+      ],
+      "all_equal": true,
+      "plain_median_ns": 9600,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 1090,
+        "expansions": 0,
+        "resident_high_water": 1,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": null,
+      "phase_median_ns": {
+        "query_total": 11200,
+        "normalize": 200,
+        "lattice": 10400,
+        "search_validate": 0,
+        "traversal": 300,
+        "final_sort_dedup": 0,
+        "materialize": 100
+      }
+    },
+    {
+      "method": "position",
+      "ranker": "structural",
+      "id": "r14-11",
+      "input": "zhongwenshuruf",
+      "plain_ns": [
+        93400,
+        84500,
+        81500
+      ],
+      "profile_outer_ns": [
+        389700,
+        383600,
+        390500
+      ],
+      "all_equal": true,
+      "plain_median_ns": 84500,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 800,
+        "expansions": 5617,
+        "resident_high_water": 31,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "中文输入法",
+      "phase_median_ns": {
+        "query_total": 389400,
+        "normalize": 500,
+        "lattice": 9700,
+        "search_validate": 0,
+        "traversal": 373700,
+        "scoring": 144800,
+        "bucket_sort_dedup": 5200,
+        "final_sort_dedup": 800,
+        "materialize": 1800
+      }
+    },
+    {
+      "method": "position",
+      "ranker": "lexical",
+      "id": "r14-0",
+      "input": "nihao",
+      "plain_ns": [
+        180700,
+        211400,
+        160900
+      ],
+      "profile_outer_ns": [
+        206300,
+        212800,
+        240100
+      ],
+      "all_equal": true,
+      "plain_median_ns": 180700,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 172,
+        "expansions": 756,
+        "resident_high_water": 29,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "你好",
+      "phase_median_ns": {
+        "query_total": 212600,
+        "normalize": 300,
+        "lattice": 8900,
+        "search_validate": 0,
+        "traversal": 203300,
+        "scoring": 116400,
+        "bucket_sort_dedup": 12300,
+        "final_sort_dedup": 1200,
+        "materialize": 2100
+      }
+    },
+    {
+      "method": "position",
+      "ranker": "lexical",
+      "id": "r14-1",
+      "input": "zhongguo",
+      "plain_ns": [
+        247500,
+        277900,
+        258800
+      ],
+      "profile_outer_ns": [
+        336700,
+        325100,
+        342000
+      ],
+      "all_equal": true,
+      "plain_median_ns": 258800,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 234,
+        "expansions": 1439,
+        "resident_high_water": 31,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "中国",
+      "phase_median_ns": {
+        "query_total": 336600,
+        "normalize": 500,
+        "lattice": 6100,
+        "search_validate": 0,
+        "traversal": 325800,
+        "scoring": 222700,
+        "bucket_sort_dedup": 13400,
+        "final_sort_dedup": 1200,
+        "materialize": 1900
+      }
+    },
+    {
+      "method": "position",
+      "ranker": "lexical",
+      "id": "r14-2",
+      "input": "woaini",
+      "plain_ns": [
+        368400,
+        570300,
+        417700
+      ],
+      "profile_outer_ns": [
+        797700,
+        771800,
+        536800
+      ],
+      "all_equal": true,
+      "plain_median_ns": 417700,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 234,
+        "expansions": 2063,
+        "resident_high_water": 31,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "我爱昵",
+      "phase_median_ns": {
+        "query_total": 771500,
+        "normalize": 700,
+        "lattice": 7700,
+        "search_validate": 0,
+        "traversal": 745600,
+        "scoring": 557700,
+        "bucket_sort_dedup": 16900,
+        "final_sort_dedup": 3000,
+        "materialize": 4200
+      }
+    },
+    {
+      "method": "position",
+      "ranker": "lexical",
+      "id": "r14-3",
+      "input": "jintiantianqihenhao",
+      "plain_ns": [
+        1401400,
+        1750900,
+        1419700
+      ],
+      "profile_outer_ns": [
+        2383500,
+        2080900,
+        1871900
+      ],
+      "all_equal": true,
+      "plain_median_ns": 1419700,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 952,
+        "expansions": 5924,
+        "resident_high_water": 50,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "今天天气很好",
+      "phase_median_ns": {
+        "query_total": 2080400,
+        "normalize": 2100,
+        "lattice": 43600,
+        "search_validate": 0,
+        "traversal": 2027100,
+        "scoring": 1397200,
+        "bucket_sort_dedup": 62800,
+        "final_sort_dedup": 2100,
+        "materialize": 3000
+      }
+    },
+    {
+      "method": "position",
+      "ranker": "lexical",
+      "id": "r14-4",
+      "input": "wozhengzaikaifayikuanzhongwenshurufa",
+      "plain_ns": [
+        3764100,
+        2662400,
+        2491000
+      ],
+      "profile_outer_ns": [
+        3964300,
+        3396300,
+        4110500
+      ],
+      "all_equal": true,
+      "plain_median_ns": 2662400,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 1482,
+        "expansions": 8113,
+        "resident_high_water": 41,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "我正在开发一款中文输入法",
+      "phase_median_ns": {
+        "query_total": 3963800,
+        "normalize": 4600,
+        "lattice": 108900,
+        "search_validate": 100,
+        "traversal": 3789300,
+        "scoring": 2902700,
+        "bucket_sort_dedup": 92600,
+        "final_sort_dedup": 3100,
+        "materialize": 9300
+      }
+    },
+    {
+      "method": "position",
+      "ranker": "lexical",
+      "id": "r14-5",
+      "input": "zheshiyigebijiaofuzadewenti",
+      "plain_ns": [
+        3940600,
+        5336500,
+        7126000
+      ],
+      "profile_outer_ns": [
+        8438200,
+        4632400,
+        7022300
+      ],
+      "all_equal": true,
+      "plain_median_ns": 5336500,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 1766,
+        "expansions": 13534,
+        "resident_high_water": 50,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "这时一个比较复杂的问题",
+      "phase_median_ns": {
+        "query_total": 7020900,
+        "normalize": 3700,
+        "lattice": 95300,
+        "search_validate": 100,
+        "traversal": 6894800,
+        "scoring": 5784500,
+        "bucket_sort_dedup": 90900,
+        "final_sort_dedup": 3900,
+        "materialize": 10500
+      }
+    },
+    {
+      "method": "position",
+      "ranker": "lexical",
+      "id": "r14-6",
+      "input": "xian",
+      "plain_ns": [
+        2098500,
+        1902900,
+        2092000
+      ],
+      "profile_outer_ns": [
+        2037000,
+        1949400,
+        1876100
+      ],
+      "all_equal": true,
+      "plain_median_ns": 2092000,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 744,
+        "expansions": 4056,
+        "resident_high_water": 32,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "现",
+      "phase_median_ns": {
+        "query_total": 1947500,
+        "normalize": 2200,
+        "lattice": 35300,
+        "search_validate": 100,
+        "traversal": 1903400,
+        "scoring": 1603600,
+        "bucket_sort_dedup": 20500,
+        "final_sort_dedup": 4100,
+        "materialize": 6200
+      }
+    },
+    {
+      "method": "position",
+      "ranker": "lexical",
+      "id": "r14-7",
+      "input": "xi'an",
+      "plain_ns": [
+        1284000,
+        1588100,
+        1340300
+      ],
+      "profile_outer_ns": [
+        1358700,
+        1519900,
+        1773100
+      ],
+      "all_equal": true,
+      "plain_median_ns": 1340300,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 551,
+        "expansions": 3863,
+        "resident_high_water": 30,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "西安",
+      "phase_median_ns": {
+        "query_total": 1519600,
+        "normalize": 3500,
+        "lattice": 68600,
+        "search_validate": 100,
+        "traversal": 1467500,
+        "scoring": 1218100,
+        "bucket_sort_dedup": 18700,
+        "final_sort_dedup": 4400,
+        "materialize": 8900
+      }
+    },
+    {
+      "method": "position",
+      "ranker": "lexical",
+      "id": "r14-8",
+      "input": "changan",
+      "plain_ns": [
+        1670100,
+        2211700,
+        1619100
+      ],
+      "profile_outer_ns": [
+        1507800,
+        1612600,
+        2077400
+      ],
+      "all_equal": true,
+      "plain_median_ns": 1670100,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 736,
+        "expansions": 4730,
+        "resident_high_water": 41,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "长安",
+      "phase_median_ns": {
+        "query_total": 1611900,
+        "normalize": 2000,
+        "lattice": 40200,
+        "search_validate": 200,
+        "traversal": 1567600,
+        "scoring": 1274700,
+        "bucket_sort_dedup": 23500,
+        "final_sort_dedup": 3000,
+        "materialize": 7500
+      }
+    },
+    {
+      "method": "position",
+      "ranker": "lexical",
+      "id": "r14-9",
+      "input": "zhangan",
+      "plain_ns": [
+        1236700,
+        966800,
+        1006800
+      ],
+      "profile_outer_ns": [
+        1369400,
+        1184000,
+        1474200
+      ],
+      "all_equal": true,
+      "plain_median_ns": 1006800,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 716,
+        "expansions": 4710,
+        "resident_high_water": 41,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "长按",
+      "phase_median_ns": {
+        "query_total": 1368800,
+        "normalize": 1500,
+        "lattice": 28300,
+        "search_validate": 100,
+        "traversal": 1326100,
+        "scoring": 1043300,
+        "bucket_sort_dedup": 25200,
+        "final_sort_dedup": 1500,
+        "materialize": 3100
+      }
+    },
+    {
+      "method": "position",
+      "ranker": "lexical",
+      "id": "r14-10",
+      "input": "qz",
+      "plain_ns": [
+        9600,
+        12000,
+        9100
+      ],
+      "profile_outer_ns": [
+        13300,
+        10200,
+        9500
+      ],
+      "all_equal": true,
+      "plain_median_ns": 9600,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 1090,
+        "expansions": 0,
+        "resident_high_water": 1,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": null,
+      "phase_median_ns": {
+        "query_total": 9800,
+        "normalize": 200,
+        "lattice": 9100,
+        "search_validate": 0,
+        "traversal": 200,
+        "final_sort_dedup": 0,
+        "materialize": 0
+      }
+    },
+    {
+      "method": "position",
+      "ranker": "lexical",
+      "id": "r14-11",
+      "input": "zhongwenshuruf",
+      "plain_ns": [
+        1386700,
+        1655400,
+        1744100
+      ],
+      "profile_outer_ns": [
+        1661400,
+        1525300,
+        2312800
+      ],
+      "all_equal": true,
+      "plain_median_ns": 1655400,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 800,
+        "expansions": 5617,
+        "resident_high_water": 31,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": "中文输入法",
+      "phase_median_ns": {
+        "query_total": 1660800,
+        "normalize": 1600,
+        "lattice": 41400,
+        "search_validate": 100,
+        "traversal": 1593600,
+        "scoring": 1286700,
+        "bucket_sort_dedup": 25400,
+        "final_sort_dedup": 3200,
+        "materialize": 4900
+      }
+    },
+    {
+      "method": "beam",
+      "ranker": "structural",
+      "id": "r14-0",
+      "input": "nihao",
+      "plain_ns": [
+        337900,
+        352200,
+        479000
+      ],
+      "profile_outer_ns": [
+        436600,
+        489800,
+        486900
+      ],
+      "all_equal": true,
+      "plain_median_ns": 352200,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 172,
+        "expansions": 614,
+        "resident_high_water": 429,
+        "beam_pruned": 71,
+        "budget": null
+      },
+      "top1": "你好",
+      "phase_median_ns": {
+        "query_total": 486700,
+        "normalize": 300,
+        "lattice": 5700,
+        "search_validate": 0,
+        "traversal": 372900,
+        "scoring": 25800,
+        "bucket_sort_dedup": 47900,
+        "final_sort_dedup": 97400,
+        "materialize": 1400
+      }
+    },
+    {
+      "method": "beam",
+      "ranker": "structural",
+      "id": "r14-1",
+      "input": "zhongguo",
+      "plain_ns": [
+        831000,
+        619100,
+        622200
+      ],
+      "profile_outer_ns": [
+        860900,
+        846400,
+        824700
+      ],
+      "all_equal": true,
+      "plain_median_ns": 622200,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 234,
+        "expansions": 1159,
+        "resident_high_water": 900,
+        "beam_pruned": 630,
+        "budget": null
+      },
+      "top1": "中国",
+      "phase_median_ns": {
+        "query_total": 846100,
+        "normalize": 500,
+        "lattice": 6000,
+        "search_validate": 0,
+        "traversal": 721200,
+        "scoring": 42700,
+        "bucket_sort_dedup": 87500,
+        "final_sort_dedup": 109400,
+        "materialize": 1500
+      }
+    },
+    {
+      "method": "beam",
+      "ranker": "structural",
+      "id": "r14-2",
+      "input": "woaini",
+      "plain_ns": [
+        1272500,
+        1089400,
+        1016500
+      ],
+      "profile_outer_ns": [
+        1418200,
+        1645300,
+        1167400
+      ],
+      "all_equal": true,
+      "plain_median_ns": 1089400,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 234,
+        "expansions": 1655,
+        "resident_high_water": 886,
+        "beam_pruned": 455,
+        "budget": null
+      },
+      "top1": "握爱昵",
+      "phase_median_ns": {
+        "query_total": 1417800,
+        "normalize": 300,
+        "lattice": 10100,
+        "search_validate": 0,
+        "traversal": 1034000,
+        "scoring": 69800,
+        "bucket_sort_dedup": 123000,
+        "final_sort_dedup": 207700,
+        "materialize": 2400
+      }
+    },
+    {
+      "method": "beam",
+      "ranker": "structural",
+      "id": "r14-3",
+      "input": "jintiantianqihenhao",
+      "plain_ns": [
+        2695500,
+        2533100,
+        2898100
+      ],
+      "profile_outer_ns": [
+        3020700,
+        2967700,
+        3290000
+      ],
+      "all_equal": true,
+      "plain_median_ns": 2695500,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 952,
+        "expansions": 4790,
+        "resident_high_water": 1225,
+        "beam_pruned": 4128,
+        "budget": null
+      },
+      "top1": "今天天气痕諕",
+      "phase_median_ns": {
+        "query_total": 3020400,
+        "normalize": 1000,
+        "lattice": 21500,
+        "search_validate": 100,
+        "traversal": 2877400,
+        "scoring": 152000,
+        "bucket_sort_dedup": 320100,
+        "final_sort_dedup": 111400,
+        "materialize": 2100
+      }
+    },
+    {
+      "method": "beam",
+      "ranker": "structural",
+      "id": "r14-4",
+      "input": "wozhengzaikaifayikuanzhongwenshurufa",
+      "plain_ns": [
+        3822000,
+        4083600,
+        4545400
+      ],
+      "profile_outer_ns": [
+        5077500,
+        4567900,
+        5205300
+      ],
+      "all_equal": true,
+      "plain_median_ns": 4083600,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 1482,
+        "expansions": 6495,
+        "resident_high_water": 1681,
+        "beam_pruned": 5466,
+        "budget": null
+      },
+      "top1": "握正在炌法医宽中文输入法",
+      "phase_median_ns": {
+        "query_total": 5076800,
+        "normalize": 2400,
+        "lattice": 60800,
+        "search_validate": 100,
+        "traversal": 4650200,
+        "scoring": 277800,
+        "bucket_sort_dedup": 496500,
+        "final_sort_dedup": 275900,
+        "materialize": 7600
+      }
+    },
+    {
+      "method": "beam",
+      "ranker": "structural",
+      "id": "r14-5",
+      "input": "zheshiyigebijiaofuzadewenti",
+      "plain_ns": [
+        7182900,
+        7347300,
+        6759500
+      ],
+      "profile_outer_ns": [
+        8281900,
+        8702500,
+        8034500
+      ],
+      "all_equal": true,
+      "plain_median_ns": 7182900,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 1766,
+        "expansions": 10836,
+        "resident_high_water": 3041,
+        "beam_pruned": 9281,
+        "budget": null
+      },
+      "top1": "赭石一哥比较复杂德问题",
+      "phase_median_ns": {
+        "query_total": 8281200,
+        "normalize": 1800,
+        "lattice": 52700,
+        "search_validate": 100,
+        "traversal": 7846100,
+        "scoring": 442500,
+        "bucket_sort_dedup": 863300,
+        "final_sort_dedup": 366300,
+        "materialize": 6300
+      }
+    },
+    {
+      "method": "beam",
+      "ranker": "structural",
+      "id": "r14-6",
+      "input": "xian",
+      "plain_ns": [
+        2704000,
+        2896000,
+        2635200
+      ],
+      "profile_outer_ns": [
+        3239300,
+        3466400,
+        2876800
+      ],
+      "all_equal": true,
+      "plain_median_ns": 2704000,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 744,
+        "expansions": 3320,
+        "resident_high_water": 3017,
+        "beam_pruned": 288,
+        "budget": null
+      },
+      "top1": "秈",
+      "phase_median_ns": {
+        "query_total": 3238500,
+        "normalize": 1100,
+        "lattice": 17900,
+        "search_validate": 100,
+        "traversal": 2116700,
+        "scoring": 218600,
+        "bucket_sort_dedup": 238800,
+        "final_sort_dedup": 1048500,
+        "materialize": 3600
+      }
+    },
+    {
+      "method": "beam",
+      "ranker": "structural",
+      "id": "r14-7",
+      "input": "xi'an",
+      "plain_ns": [
+        1788800,
+        1969900,
+        1786100
+      ],
+      "profile_outer_ns": [
+        2237300,
+        2985900,
+        2250800
+      ],
+      "all_equal": true,
+      "plain_median_ns": 1788800,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 551,
+        "expansions": 3127,
+        "resident_high_water": 1920,
+        "beam_pruned": 253,
+        "budget": null
+      },
+      "top1": "锡安",
+      "phase_median_ns": {
+        "query_total": 2250500,
+        "normalize": 700,
+        "lattice": 15100,
+        "search_validate": 100,
+        "traversal": 1666400,
+        "scoring": 144600,
+        "bucket_sort_dedup": 170000,
+        "final_sort_dedup": 547100,
+        "materialize": 2000
+      }
+    },
+    {
+      "method": "beam",
+      "ranker": "structural",
+      "id": "r14-8",
+      "input": "changan",
+      "plain_ns": [
+        3254200,
+        2481800,
+        2655000
+      ],
+      "profile_outer_ns": [
+        4098400,
+        3538800,
+        3504800
+      ],
+      "all_equal": true,
+      "plain_median_ns": 2655000,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 736,
+        "expansions": 3814,
+        "resident_high_water": 2496,
+        "beam_pruned": 348,
+        "budget": null
+      },
+      "top1": "长按",
+      "phase_median_ns": {
+        "query_total": 3538400,
+        "normalize": 1500,
+        "lattice": 55600,
+        "search_validate": 100,
+        "traversal": 2659200,
+        "scoring": 241200,
+        "bucket_sort_dedup": 321600,
+        "final_sort_dedup": 907100,
+        "materialize": 5000
+      }
+    },
+    {
+      "method": "beam",
+      "ranker": "structural",
+      "id": "r14-9",
+      "input": "zhangan",
+      "plain_ns": [
+        3345700,
+        4232600,
+        3064400
+      ],
+      "profile_outer_ns": [
+        3836200,
+        3883600,
+        4676100
+      ],
+      "all_equal": true,
+      "plain_median_ns": 3345700,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 716,
+        "expansions": 3794,
+        "resident_high_water": 3434,
+        "beam_pruned": 329,
+        "budget": null
+      },
+      "top1": "搌秆",
+      "phase_median_ns": {
+        "query_total": 3883000,
+        "normalize": 800,
+        "lattice": 22300,
+        "search_validate": 100,
+        "traversal": 2612600,
+        "scoring": 246800,
+        "bucket_sort_dedup": 313300,
+        "final_sort_dedup": 1233700,
+        "materialize": 5900
+      }
+    },
+    {
+      "method": "beam",
+      "ranker": "structural",
+      "id": "r14-10",
+      "input": "qz",
+      "plain_ns": [
+        9100,
+        10200,
+        9600
+      ],
+      "profile_outer_ns": [
+        11700,
+        9400,
+        9100
+      ],
+      "all_equal": true,
+      "plain_median_ns": 9600,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 1090,
+        "expansions": 0,
+        "resident_high_water": 1,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": null,
+      "phase_median_ns": {
+        "query_total": 9300,
+        "normalize": 100,
+        "lattice": 8200,
+        "search_validate": 0,
+        "traversal": 400,
+        "final_sort_dedup": 0,
+        "materialize": 100
+      }
+    },
+    {
+      "method": "beam",
+      "ranker": "structural",
+      "id": "r14-11",
+      "input": "zhongwenshuruf",
+      "plain_ns": [
+        4404100,
+        3723300,
+        3943400
+      ],
+      "profile_outer_ns": [
+        4758900,
+        4009700,
+        4987800
+      ],
+      "all_equal": true,
+      "plain_median_ns": 3943400,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 800,
+        "expansions": 4501,
+        "resident_high_water": 3207,
+        "beam_pruned": 1101,
+        "budget": null
+      },
+      "top1": "中文输入法",
+      "phase_median_ns": {
+        "query_total": 4758300,
+        "normalize": 2000,
+        "lattice": 41000,
+        "search_validate": 100,
+        "traversal": 3287500,
+        "scoring": 273200,
+        "bucket_sort_dedup": 420900,
+        "final_sort_dedup": 1335300,
+        "materialize": 7100
+      }
+    },
+    {
+      "method": "beam",
+      "ranker": "lexical",
+      "id": "r14-0",
+      "input": "nihao",
+      "plain_ns": [
+        442400,
+        479300,
+        455500
+      ],
+      "profile_outer_ns": [
+        481700,
+        545000,
+        467900
+      ],
+      "all_equal": true,
+      "plain_median_ns": 455500,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 172,
+        "expansions": 614,
+        "resident_high_water": 309,
+        "beam_pruned": 65,
+        "budget": null
+      },
+      "top1": "你好",
+      "phase_median_ns": {
+        "query_total": 481400,
+        "normalize": 300,
+        "lattice": 6200,
+        "search_validate": 100,
+        "traversal": 400200,
+        "scoring": 110200,
+        "bucket_sort_dedup": 30400,
+        "final_sort_dedup": 66500,
+        "materialize": 1300
+      }
+    },
+    {
+      "method": "beam",
+      "ranker": "lexical",
+      "id": "r14-1",
+      "input": "zhongguo",
+      "plain_ns": [
+        735300,
+        1060800,
+        1044100
+      ],
+      "profile_outer_ns": [
+        923600,
+        885900,
+        1022700
+      ],
+      "all_equal": true,
+      "plain_median_ns": 1044100,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 234,
+        "expansions": 1159,
+        "resident_high_water": 453,
+        "beam_pruned": 326,
+        "budget": null
+      },
+      "top1": "中国",
+      "phase_median_ns": {
+        "query_total": 923300,
+        "normalize": 500,
+        "lattice": 5400,
+        "search_validate": 100,
+        "traversal": 844600,
+        "scoring": 229700,
+        "bucket_sort_dedup": 53900,
+        "final_sort_dedup": 66500,
+        "materialize": 1400
+      }
+    },
+    {
+      "method": "beam",
+      "ranker": "lexical",
+      "id": "r14-2",
+      "input": "woaini",
+      "plain_ns": [
+        1282500,
+        1341500,
+        1292800
+      ],
+      "profile_outer_ns": [
+        1487000,
+        1491100,
+        1627400
+      ],
+      "all_equal": true,
+      "plain_median_ns": 1292800,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 234,
+        "expansions": 1655,
+        "resident_high_water": 885,
+        "beam_pruned": 455,
+        "budget": null
+      },
+      "top1": "我爱昵",
+      "phase_median_ns": {
+        "query_total": 1490900,
+        "normalize": 400,
+        "lattice": 6100,
+        "search_validate": 100,
+        "traversal": 1261600,
+        "scoring": 372800,
+        "bucket_sort_dedup": 100000,
+        "final_sort_dedup": 209100,
+        "materialize": 2600
+      }
+    },
+    {
+      "method": "beam",
+      "ranker": "lexical",
+      "id": "r14-3",
+      "input": "jintiantianqihenhao",
+      "plain_ns": [
+        3660700,
+        3364700,
+        3336600
+      ],
+      "profile_outer_ns": [
+        4064800,
+        3911700,
+        4145100
+      ],
+      "all_equal": true,
+      "plain_median_ns": 3364700,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 952,
+        "expansions": 4790,
+        "resident_high_water": 1071,
+        "beam_pruned": 3536,
+        "budget": null
+      },
+      "top1": "今天天气很好",
+      "phase_median_ns": {
+        "query_total": 4064400,
+        "normalize": 1000,
+        "lattice": 25500,
+        "search_validate": 100,
+        "traversal": 3922300,
+        "scoring": 1097100,
+        "bucket_sort_dedup": 295800,
+        "final_sort_dedup": 104500,
+        "materialize": 2800
+      }
+    },
+    {
+      "method": "beam",
+      "ranker": "lexical",
+      "id": "r14-4",
+      "input": "wozhengzaikaifayikuanzhongwenshurufa",
+      "plain_ns": [
+        5920800,
+        6145100,
+        5222800
+      ],
+      "profile_outer_ns": [
+        6450800,
+        6350400,
+        5913300
+      ],
+      "all_equal": true,
+      "plain_median_ns": 5920800,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 1482,
+        "expansions": 6495,
+        "resident_high_water": 1675,
+        "beam_pruned": 4704,
+        "budget": null
+      },
+      "top1": "我正在开发一款中文输入法",
+      "phase_median_ns": {
+        "query_total": 6349900,
+        "normalize": 2000,
+        "lattice": 54400,
+        "search_validate": 100,
+        "traversal": 6010800,
+        "scoring": 1730100,
+        "bucket_sort_dedup": 416100,
+        "final_sort_dedup": 245600,
+        "materialize": 5200
+      }
+    },
+    {
+      "method": "beam",
+      "ranker": "lexical",
+      "id": "r14-5",
+      "input": "zheshiyigebijiaofuzadewenti",
+      "plain_ns": [
+        8835700,
+        9987700,
+        9805600
+      ],
+      "profile_outer_ns": [
+        9935600,
+        11386600,
+        10139200
+      ],
+      "all_equal": true,
+      "plain_median_ns": 9805600,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 1766,
+        "expansions": 10836,
+        "resident_high_water": 2301,
+        "beam_pruned": 7363,
+        "budget": null
+      },
+      "top1": "这时一个比较复杂的问题",
+      "phase_median_ns": {
+        "query_total": 10138800,
+        "normalize": 2000,
+        "lattice": 48600,
+        "search_validate": 0,
+        "traversal": 9706900,
+        "scoring": 2946600,
+        "bucket_sort_dedup": 735400,
+        "final_sort_dedup": 358500,
+        "materialize": 4300
+      }
+    },
+    {
+      "method": "beam",
+      "ranker": "lexical",
+      "id": "r14-6",
+      "input": "xian",
+      "plain_ns": [
+        3127800,
+        3562200,
+        3549200
+      ],
+      "profile_outer_ns": [
+        3797300,
+        4273000,
+        3538000
+      ],
+      "all_equal": true,
+      "plain_median_ns": 3549200,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 744,
+        "expansions": 3320,
+        "resident_high_water": 2572,
+        "beam_pruned": 255,
+        "budget": null
+      },
+      "top1": "现",
+      "phase_median_ns": {
+        "query_total": 3796800,
+        "normalize": 800,
+        "lattice": 15900,
+        "search_validate": 100,
+        "traversal": 2818000,
+        "scoring": 942300,
+        "bucket_sort_dedup": 235000,
+        "final_sort_dedup": 921700,
+        "materialize": 3100
+      }
+    },
+    {
+      "method": "beam",
+      "ranker": "lexical",
+      "id": "r14-7",
+      "input": "xi'an",
+      "plain_ns": [
+        2471100,
+        2319200,
+        2269200
+      ],
+      "profile_outer_ns": [
+        2981600,
+        2926700,
+        2773300
+      ],
+      "all_equal": true,
+      "plain_median_ns": 2319200,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 551,
+        "expansions": 3127,
+        "resident_high_water": 1475,
+        "beam_pruned": 220,
+        "budget": null
+      },
+      "top1": "西安",
+      "phase_median_ns": {
+        "query_total": 2926400,
+        "normalize": 700,
+        "lattice": 18700,
+        "search_validate": 100,
+        "traversal": 2453500,
+        "scoring": 785700,
+        "bucket_sort_dedup": 161400,
+        "final_sort_dedup": 394700,
+        "materialize": 2200
+      }
+    },
+    {
+      "method": "beam",
+      "ranker": "lexical",
+      "id": "r14-8",
+      "input": "changan",
+      "plain_ns": [
+        2950600,
+        4782800,
+        4840500
+      ],
+      "profile_outer_ns": [
+        3676400,
+        3577300,
+        4992600
+      ],
+      "all_equal": true,
+      "plain_median_ns": 4782800,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 736,
+        "expansions": 3814,
+        "resident_high_water": 1935,
+        "beam_pruned": 286,
+        "budget": null
+      },
+      "top1": "长安",
+      "phase_median_ns": {
+        "query_total": 3676100,
+        "normalize": 800,
+        "lattice": 16100,
+        "search_validate": 0,
+        "traversal": 3016800,
+        "scoring": 988700,
+        "bucket_sort_dedup": 210200,
+        "final_sort_dedup": 659600,
+        "materialize": 8400
+      }
+    },
+    {
+      "method": "beam",
+      "ranker": "lexical",
+      "id": "r14-9",
+      "input": "zhangan",
+      "plain_ns": [
+        3263000,
+        4364800,
+        4468200
+      ],
+      "profile_outer_ns": [
+        3756900,
+        5246900,
+        5235100
+      ],
+      "all_equal": true,
+      "plain_median_ns": 4364800,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 716,
+        "expansions": 3794,
+        "resident_high_water": 1878,
+        "beam_pruned": 253,
+        "budget": null
+      },
+      "top1": "长按",
+      "phase_median_ns": {
+        "query_total": 5234400,
+        "normalize": 2000,
+        "lattice": 30600,
+        "search_validate": 200,
+        "traversal": 4371300,
+        "scoring": 1819800,
+        "bucket_sort_dedup": 270100,
+        "final_sort_dedup": 625300,
+        "materialize": 5600
+      }
+    },
+    {
+      "method": "beam",
+      "ranker": "lexical",
+      "id": "r14-10",
+      "input": "qz",
+      "plain_ns": [
+        8800,
+        13900,
+        11800
+      ],
+      "profile_outer_ns": [
+        12800,
+        25700,
+        10700
+      ],
+      "all_equal": true,
+      "plain_median_ns": 11800,
+      "status": "ok",
+      "guaranteed": true,
+      "statistics": {
+        "graph_edges": 1090,
+        "expansions": 0,
+        "resident_high_water": 1,
+        "beam_pruned": 0,
+        "budget": null
+      },
+      "top1": null,
+      "phase_median_ns": {
+        "query_total": 12700,
+        "normalize": 200,
+        "lattice": 10900,
+        "search_validate": 0,
+        "traversal": 500,
+        "final_sort_dedup": 0,
+        "materialize": 100
+      }
+    },
+    {
+      "method": "beam",
+      "ranker": "lexical",
+      "id": "r14-11",
+      "input": "zhongwenshuruf",
+      "plain_ns": [
+        6223500,
+        4108400,
+        4191700
+      ],
+      "profile_outer_ns": [
+        5228300,
+        5332100,
+        4885800
+      ],
+      "all_equal": true,
+      "plain_median_ns": 4191700,
+      "status": "ok",
+      "guaranteed": false,
+      "statistics": {
+        "graph_edges": 800,
+        "expansions": 4501,
+        "resident_high_water": 3197,
+        "beam_pruned": 746,
+        "budget": null
+      },
+      "top1": "中文输入法",
+      "phase_median_ns": {
+        "query_total": 5227700,
+        "normalize": 1300,
+        "lattice": 39100,
+        "search_validate": 100,
+        "traversal": 4037700,
+        "scoring": 1369600,
+        "bucket_sort_dedup": 304500,
+        "final_sort_dedup": 1080900,
+        "materialize": 5800
+      }
+    }
+  ]
+}

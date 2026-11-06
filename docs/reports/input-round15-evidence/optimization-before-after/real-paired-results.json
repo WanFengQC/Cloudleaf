@@ -1,0 +1,528 @@
+{
+  "runtime": {
+    "bytes": 23602173,
+    "sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+  },
+  "source_baseline_sha256": "38e9359fbc25dd802eb926264d0bc2f7bdf1434cf893bda094d4603bda0b8279",
+  "source_optimized_sha256": "9226e357e6a1b70960f32d43791ecb794849150e96fd0b99d32583618f558a10",
+  "binary_sha256": {
+    "baseline": "7fafadefc125c8564bfc65634da7337a18043cef1ef04657d7b9c8f88544b037",
+    "optimized": "7bd17db1e2c4a3c6213bec42ce63a74aa311f9bae84e40c11de7da093903d0e7"
+  },
+  "input_cases_sha256": "efae5cb9e8198a423c6041f2b0e56b49381427d04b9addeb6ecdbaeaef3d39d5",
+  "paired_real_input_cases": 24,
+  "repeats": 5,
+  "warmup": 1,
+  "rows": [
+    {
+      "input": "nihao",
+      "k": 5,
+      "full_result_and_statistics_equal": true,
+      "baseline_ns": [
+        127300,
+        132700,
+        129200,
+        132400,
+        140900
+      ],
+      "optimized_ns": [
+        20800,
+        13900,
+        12300,
+        22000,
+        12400
+      ],
+      "baseline_median_ns": 132400,
+      "optimized_median_ns": 13900
+    },
+    {
+      "input": "zhongguo",
+      "k": 5,
+      "full_result_and_statistics_equal": true,
+      "baseline_ns": [
+        237200,
+        237400,
+        237200,
+        235500,
+        235000
+      ],
+      "optimized_ns": [
+        15300,
+        14200,
+        13900,
+        13800,
+        14000
+      ],
+      "baseline_median_ns": 237200,
+      "optimized_median_ns": 14000
+    },
+    {
+      "input": "woaini",
+      "k": 5,
+      "full_result_and_statistics_equal": true,
+      "baseline_ns": [
+        328400,
+        374600,
+        423200,
+        373600,
+        368300
+      ],
+      "optimized_ns": [
+        18800,
+        18800,
+        19400,
+        18500,
+        17900
+      ],
+      "baseline_median_ns": 373600,
+      "optimized_median_ns": 18800
+    },
+    {
+      "input": "jintiantianqihenhao",
+      "k": 5,
+      "full_result_and_statistics_equal": true,
+      "baseline_ns": [
+        1004700,
+        1005500,
+        1029400,
+        1183600,
+        1121000
+      ],
+      "optimized_ns": [
+        60100,
+        91800,
+        61000,
+        68300,
+        76700
+      ],
+      "baseline_median_ns": 1029400,
+      "optimized_median_ns": 68300
+    },
+    {
+      "input": "wozhengzaikaifayikuanzhongwenshurufa",
+      "k": 5,
+      "full_result_and_statistics_equal": true,
+      "baseline_ns": [
+        1733000,
+        1691400,
+        3148900,
+        2519100,
+        1933500
+      ],
+      "optimized_ns": [
+        86100,
+        89000,
+        86600,
+        85400,
+        86200
+      ],
+      "baseline_median_ns": 1933500,
+      "optimized_median_ns": 86200
+    },
+    {
+      "input": "zheshiyigebijiaofuzadewenti",
+      "k": 5,
+      "full_result_and_statistics_equal": true,
+      "baseline_ns": [
+        2200600,
+        4275800,
+        2485400,
+        2357200,
+        2384200
+      ],
+      "optimized_ns": [
+        99900,
+        100200,
+        98700,
+        98400,
+        106200
+      ],
+      "baseline_median_ns": 2384200,
+      "optimized_median_ns": 99900
+    },
+    {
+      "input": "xian",
+      "k": 5,
+      "full_result_and_statistics_equal": true,
+      "baseline_ns": [
+        618600,
+        655900,
+        657500,
+        655100,
+        982900
+      ],
+      "optimized_ns": [
+        25900,
+        41800,
+        26100,
+        25900,
+        25600
+      ],
+      "baseline_median_ns": 655900,
+      "optimized_median_ns": 25900
+    },
+    {
+      "input": "xi'an",
+      "k": 5,
+      "full_result_and_statistics_equal": true,
+      "baseline_ns": [
+        628900,
+        626300,
+        607700,
+        634200,
+        594100
+      ],
+      "optimized_ns": [
+        27900,
+        27700,
+        26800,
+        26800,
+        26700
+      ],
+      "baseline_median_ns": 626300,
+      "optimized_median_ns": 26800
+    },
+    {
+      "input": "changan",
+      "k": 5,
+      "full_result_and_statistics_equal": true,
+      "baseline_ns": [
+        791100,
+        1724900,
+        1397500,
+        768600,
+        765200
+      ],
+      "optimized_ns": [
+        53800,
+        35500,
+        35600,
+        35400,
+        35400
+      ],
+      "baseline_median_ns": 791100,
+      "optimized_median_ns": 35500
+    },
+    {
+      "input": "zhangan",
+      "k": 5,
+      "full_result_and_statistics_equal": true,
+      "baseline_ns": [
+        703200,
+        815000,
+        1065700,
+        1007600,
+        923400
+      ],
+      "optimized_ns": [
+        31600,
+        31900,
+        31100,
+        41100,
+        32100
+      ],
+      "baseline_median_ns": 923400,
+      "optimized_median_ns": 31900
+    },
+    {
+      "input": "qz",
+      "k": 5,
+      "full_result_and_statistics_equal": true,
+      "baseline_ns": [
+        11100,
+        15100,
+        12100,
+        11400,
+        11500
+      ],
+      "optimized_ns": [
+        10200,
+        10300,
+        10000,
+        10400,
+        10000
+      ],
+      "baseline_median_ns": 11500,
+      "optimized_median_ns": 10200
+    },
+    {
+      "input": "zhongwenshuruf",
+      "k": 5,
+      "full_result_and_statistics_equal": true,
+      "baseline_ns": [
+        978800,
+        986200,
+        1208900,
+        1021500,
+        964200
+      ],
+      "optimized_ns": [
+        37900,
+        39000,
+        38000,
+        38100,
+        37100
+      ],
+      "baseline_median_ns": 986200,
+      "optimized_median_ns": 38000
+    },
+    {
+      "input": "nihao",
+      "k": 10,
+      "full_result_and_statistics_equal": true,
+      "baseline_ns": [
+        238600,
+        277600,
+        236100,
+        236500,
+        236600
+      ],
+      "optimized_ns": [
+        26800,
+        25300,
+        37100,
+        25500,
+        23400
+      ],
+      "baseline_median_ns": 236600,
+      "optimized_median_ns": 25500
+    },
+    {
+      "input": "zhongguo",
+      "k": 10,
+      "full_result_and_statistics_equal": true,
+      "baseline_ns": [
+        455700,
+        454500,
+        456100,
+        538400,
+        534100
+      ],
+      "optimized_ns": [
+        25900,
+        27800,
+        40600,
+        28300,
+        30900
+      ],
+      "baseline_median_ns": 456100,
+      "optimized_median_ns": 28300
+    },
+    {
+      "input": "woaini",
+      "k": 10,
+      "full_result_and_statistics_equal": true,
+      "baseline_ns": [
+        942700,
+        689800,
+        662300,
+        800300,
+        726900
+      ],
+      "optimized_ns": [
+        46000,
+        47600,
+        69400,
+        39400,
+        37600
+      ],
+      "baseline_median_ns": 726900,
+      "optimized_median_ns": 46000
+    },
+    {
+      "input": "jintiantianqihenhao",
+      "k": 10,
+      "full_result_and_statistics_equal": true,
+      "baseline_ns": [
+        1941700,
+        1942800,
+        1860600,
+        2079000,
+        2087000
+      ],
+      "optimized_ns": [
+        129900,
+        124500,
+        115200,
+        155500,
+        118600
+      ],
+      "baseline_median_ns": 1942800,
+      "optimized_median_ns": 124500
+    },
+    {
+      "input": "wozhengzaikaifayikuanzhongwenshurufa",
+      "k": 10,
+      "full_result_and_statistics_equal": true,
+      "baseline_ns": [
+        3050800,
+        2844900,
+        2773700,
+        3305800,
+        3106000
+      ],
+      "optimized_ns": [
+        235700,
+        185000,
+        185600,
+        203300,
+        171800
+      ],
+      "baseline_median_ns": 3050800,
+      "optimized_median_ns": 185600
+    },
+    {
+      "input": "zheshiyigebijiaofuzadewenti",
+      "k": 10,
+      "full_result_and_statistics_equal": true,
+      "baseline_ns": [
+        5626600,
+        5806100,
+        5650700,
+        6126500,
+        5192500
+      ],
+      "optimized_ns": [
+        259600,
+        272300,
+        231100,
+        233800,
+        226100
+      ],
+      "baseline_median_ns": 5650700,
+      "optimized_median_ns": 233800
+    },
+    {
+      "input": "xian",
+      "k": 10,
+      "full_result_and_statistics_equal": true,
+      "baseline_ns": [
+        1456300,
+        1565100,
+        1605300,
+        1246100,
+        1323200
+      ],
+      "optimized_ns": [
+        57400,
+        100300,
+        57700,
+        62700,
+        65300
+      ],
+      "baseline_median_ns": 1456300,
+      "optimized_median_ns": 62700
+    },
+    {
+      "input": "xi'an",
+      "k": 10,
+      "full_result_and_statistics_equal": true,
+      "baseline_ns": [
+        1164300,
+        1153400,
+        1162200,
+        1170800,
+        1261200
+      ],
+      "optimized_ns": [
+        61500,
+        64300,
+        51000,
+        49500,
+        48200
+      ],
+      "baseline_median_ns": 1164300,
+      "optimized_median_ns": 51000
+    },
+    {
+      "input": "changan",
+      "k": 10,
+      "full_result_and_statistics_equal": true,
+      "baseline_ns": [
+        1560100,
+        1517800,
+        2327900,
+        3160700,
+        2687700
+      ],
+      "optimized_ns": [
+        101300,
+        70000,
+        67100,
+        68100,
+        92200
+      ],
+      "baseline_median_ns": 2327900,
+      "optimized_median_ns": 70000
+    },
+    {
+      "input": "zhangan",
+      "k": 10,
+      "full_result_and_statistics_equal": true,
+      "baseline_ns": [
+        2765000,
+        1717200,
+        1526600,
+        1794900,
+        1867900
+      ],
+      "optimized_ns": [
+        78500,
+        213500,
+        178300,
+        75400,
+        62500
+      ],
+      "baseline_median_ns": 1794900,
+      "optimized_median_ns": 78500
+    },
+    {
+      "input": "qz",
+      "k": 10,
+      "full_result_and_statistics_equal": true,
+      "baseline_ns": [
+        11200,
+        13700,
+        10500,
+        11200,
+        10600
+      ],
+      "optimized_ns": [
+        17200,
+        19300,
+        13800,
+        12800,
+        10800
+      ],
+      "baseline_median_ns": 11200,
+      "optimized_median_ns": 13800
+    },
+    {
+      "input": "zhongwenshuruf",
+      "k": 10,
+      "full_result_and_statistics_equal": true,
+      "baseline_ns": [
+        3185600,
+        2212400,
+        2301800,
+        2288400,
+        2232100
+      ],
+      "optimized_ns": [
+        96500,
+        193700,
+        127600,
+        90600,
+        78000
+      ],
+      "baseline_median_ns": 2288400,
+      "optimized_median_ns": 96500
+    }
+  ],
+  "comparison_scope": "Standalone query-only PositionDag/Structural, unchanged inputs, data and budgets; not final InputEngine measurements",
+  "formal_language_metrics": {
+    "top1": null,
+    "top5": null,
+    "mrr": null
+  }
+}

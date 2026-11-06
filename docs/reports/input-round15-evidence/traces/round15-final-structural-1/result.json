@@ -1,0 +1,160 @@
+{
+  "command": [
+    "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\build\\release\\examples\\input_trace.exe",
+    "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+    "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+  ],
+  "returncode": 0,
+  "seconds": 0.8356219999841414,
+  "variant": "structural",
+  "original_implementation": null,
+  "worktree_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "head": "994704c8ce9b5780b8cc53a32ca5c1f731094b30",
+  "executable_sha256": "9afdcbd30bc4277a4405e85a87e7a6f01f848707a8d3b05f017fe7e54c228fef",
+  "events_sha256": "e087cc965bd2f6c889a84f3db89b3829ccfda452f436d7b3cf562bbb965602ad",
+  "tool_sha256": "a0028863e176ab598909c10a818b33ad0cfd0041c06d963a6e6ca7d8b149ddd3",
+  "runtime": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+    "bytes": 23602173,
+    "sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+  },
+  "sample_count": 16,
+  "resources": [
+    {
+      "seconds": 0.012194299983093515,
+      "working": 2080768,
+      "private": 385024,
+      "os_peak_working": 2080768,
+      "os_peak_pagefile": 385024
+    },
+    {
+      "seconds": 0.06268509998335503,
+      "working": 4210688,
+      "private": 667648,
+      "os_peak_working": 4210688,
+      "os_peak_pagefile": 679936
+    },
+    {
+      "seconds": 0.11322030000155792,
+      "working": 30306304,
+      "private": 26898432,
+      "os_peak_working": 30306304,
+      "os_peak_pagefile": 26898432
+    },
+    {
+      "seconds": 0.16378360000089742,
+      "working": 44195840,
+      "private": 43544576,
+      "os_peak_working": 44195840,
+      "os_peak_pagefile": 44646400
+    },
+    {
+      "seconds": 0.21428519999608397,
+      "working": 58597376,
+      "private": 61603840,
+      "os_peak_working": 60035072,
+      "os_peak_pagefile": 64749568
+    },
+    {
+      "seconds": 0.2648449999978766,
+      "working": 75149312,
+      "private": 73392128,
+      "os_peak_working": 75149312,
+      "os_peak_pagefile": 73392128
+    },
+    {
+      "seconds": 0.3154901999805588,
+      "working": 89006080,
+      "private": 98607104,
+      "os_peak_working": 91918336,
+      "os_peak_pagefile": 105009152
+    },
+    {
+      "seconds": 0.36600839998573065,
+      "working": 104243200,
+      "private": 109531136,
+      "os_peak_working": 104243200,
+      "os_peak_pagefile": 109531136
+    },
+    {
+      "seconds": 0.4168465999828186,
+      "working": 122617856,
+      "private": 123871232,
+      "os_peak_working": 122617856,
+      "os_peak_pagefile": 134877184
+    },
+    {
+      "seconds": 0.46761639998294413,
+      "working": 152408064,
+      "private": 167641088,
+      "os_peak_working": 152408064,
+      "os_peak_pagefile": 167645184
+    },
+    {
+      "seconds": 0.5179784999927506,
+      "working": 161914880,
+      "private": 168120320,
+      "os_peak_working": 161914880,
+      "os_peak_pagefile": 168120320
+    },
+    {
+      "seconds": 0.5685183999885339,
+      "working": 176168960,
+      "private": 196898816,
+      "os_peak_working": 194572288,
+      "os_peak_pagefile": 215478272
+    },
+    {
+      "seconds": 0.6190352999838069,
+      "working": 183656448,
+      "private": 184152064,
+      "os_peak_working": 194572288,
+      "os_peak_pagefile": 215478272
+    },
+    {
+      "seconds": 0.6696032999898307,
+      "working": 187338752,
+      "private": 188137472,
+      "os_peak_working": 194572288,
+      "os_peak_pagefile": 215478272
+    },
+    {
+      "seconds": 0.7200812999799382,
+      "working": 168611840,
+      "private": 168706048,
+      "os_peak_working": 194572288,
+      "os_peak_pagefile": 215478272
+    },
+    {
+      "seconds": 0.7706217999802902,
+      "working": 53841920,
+      "private": 50782208,
+      "os_peak_working": 194572288,
+      "os_peak_pagefile": 215478272
+    }
+  ],
+  "resource_scope": "whole CLI process including fixed lexicon, strings, trie, search and runtime; no single-algorithm memory claim",
+  "event_latency_ns": {
+    "n": 171,
+    "p50": 117500,
+    "p95": 500600,
+    "p99": 758700,
+    "max": 928900
+  },
+  "raw_events_in_latency": true,
+  "timing_scope": "InputEngine.handle including frame clone and deterministic search; excludes stdout write, platform/UI and disk; heterogeneous engineering events, not formal latency acceptance",
+  "summary": [
+    "SUMMARY\tevents=171\tconfirmed_simulated_commits=5\tformal_metrics=null\tTSF=false"
+  ],
+  "formal_language_metrics": {
+    "top1": null,
+    "top5": null,
+    "mrr": null
+  },
+  "physical_disconnect": "not-run",
+  "TSF": false,
+  "files": {
+    "stdout.tsv": "c113bad6f186b1bb0aad4c6ac29145822ad77041e66e6e2b27c726dea839ab96",
+    "stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

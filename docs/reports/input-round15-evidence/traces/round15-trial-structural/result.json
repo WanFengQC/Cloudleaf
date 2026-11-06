@@ -1,0 +1,125 @@
+{
+  "command": [
+    "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\build\\release\\examples\\input_trace.exe",
+    "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+    "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+  ],
+  "returncode": 0,
+  "seconds": 0.5751957000029506,
+  "variant": "structural",
+  "original_implementation": null,
+  "worktree_diff_sha256": "ee266b8e1b18283b8286d27f8ca515afc8b7082bba7b3d191cf8d110a084a052",
+  "head": "3addc3e1c151602d2bc1d365bf581042adfac6d9",
+  "executable_sha256": "0900a2ce0db12567af728cb1cb28ee8f7a666b05cf7804c298a2d27d32f7d15c",
+  "events_sha256": "e087cc965bd2f6c889a84f3db89b3829ccfda452f436d7b3cf562bbb965602ad",
+  "tool_sha256": "a0028863e176ab598909c10a818b33ad0cfd0041c06d963a6e6ca7d8b149ddd3",
+  "runtime": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+    "bytes": 23602173,
+    "sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+  },
+  "sample_count": 11,
+  "resources": [
+    {
+      "seconds": 0.009321300007286482,
+      "working": 2080768,
+      "private": 385024,
+      "os_peak_working": 2080768,
+      "os_peak_pagefile": 385024
+    },
+    {
+      "seconds": 0.05981219999375753,
+      "working": 27848704,
+      "private": 24309760,
+      "os_peak_working": 27848704,
+      "os_peak_pagefile": 24334336
+    },
+    {
+      "seconds": 0.11061099999642465,
+      "working": 44773376,
+      "private": 44019712,
+      "os_peak_working": 44773376,
+      "os_peak_pagefile": 44646400
+    },
+    {
+      "seconds": 0.16094669999438338,
+      "working": 60678144,
+      "private": 63000576,
+      "os_peak_working": 60678144,
+      "os_peak_pagefile": 64761856
+    },
+    {
+      "seconds": 0.2115890999994008,
+      "working": 77529088,
+      "private": 90406912,
+      "os_peak_working": 91910144,
+      "os_peak_pagefile": 104992768
+    },
+    {
+      "seconds": 0.262406199995894,
+      "working": 96849920,
+      "private": 104218624,
+      "os_peak_working": 96849920,
+      "os_peak_pagefile": 104992768
+    },
+    {
+      "seconds": 0.3127068000030704,
+      "working": 115060736,
+      "private": 117276672,
+      "os_peak_working": 115060736,
+      "os_peak_pagefile": 117276672
+    },
+    {
+      "seconds": 0.3634050999971805,
+      "working": 147369984,
+      "private": 158244864,
+      "os_peak_working": 156676096,
+      "os_peak_pagefile": 167677952
+    },
+    {
+      "seconds": 0.4141941999987466,
+      "working": 175677440,
+      "private": 196530176,
+      "os_peak_working": 194555904,
+      "os_peak_pagefile": 215465984
+    },
+    {
+      "seconds": 0.4645504000072833,
+      "working": 187330560,
+      "private": 188125184,
+      "os_peak_working": 194555904,
+      "os_peak_pagefile": 215465984
+    },
+    {
+      "seconds": 0.5150922000029823,
+      "working": 157396992,
+      "private": 158707712,
+      "os_peak_working": 194555904,
+      "os_peak_pagefile": 215465984
+    }
+  ],
+  "resource_scope": "whole CLI process including fixed lexicon, strings, trie, search and runtime; no single-algorithm memory claim",
+  "event_latency_ns": {
+    "n": 171,
+    "p50": 91100,
+    "p95": 305400,
+    "p99": 511300,
+    "max": 539000
+  },
+  "raw_events_in_latency": true,
+  "timing_scope": "InputEngine.handle including frame clone and deterministic search; excludes stdout write, platform/UI and disk; heterogeneous engineering events, not formal latency acceptance",
+  "summary": [
+    "SUMMARY\tevents=171\tconfirmed_simulated_commits=5\tformal_metrics=null\tTSF=false"
+  ],
+  "formal_language_metrics": {
+    "top1": null,
+    "top5": null,
+    "mrr": null
+  },
+  "physical_disconnect": "not-run",
+  "TSF": false,
+  "files": {
+    "stdout.tsv": "c38085768e77a8493f6b171267d3e7c2bdb69d30fdc4f37830616db07350acdf",
+    "stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}
