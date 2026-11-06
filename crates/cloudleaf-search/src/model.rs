@@ -248,9 +248,10 @@ impl LanguageModelSnapshot {
             || !matches!(metadata.usage.as_str(), "mechanical" | "research_only")
             || !matches!(
                 metadata.kind.as_str(),
-                "lexical" | "bigram" | "character_bigram"
+                "lexical" | "bigram" | "character_bigram" | "character_bigram_witten_bell"
             )
-            || (metadata.kind == "character_bigram" && metadata.tokenization != "unicode-scalar-v1")
+            || (metadata.kind.starts_with("character_bigram")
+                && metadata.tokenization != "unicode-scalar-v1")
         {
             return Err(invalid());
         }
@@ -291,7 +292,7 @@ impl LanguageModelSnapshot {
                 }
             } else {
                 let known = |value: &str| {
-                    if metadata.kind == "character_bigram" {
+                    if metadata.kind.starts_with("character_bigram") {
                         value.chars().count() == 1
                             && !value.chars().any(|c| c.is_whitespace() || c.is_control())
                     } else {
@@ -318,7 +319,7 @@ impl LanguageModelSnapshot {
         if rows == 0 {
             return Err(invalid());
         }
-        if matches!(metadata.kind.as_str(), "bigram" | "character_bigram") {
+        if metadata.kind != "lexical" {
             let bos = model.totals.get(BOS).copied().unwrap_or(0);
             if bos == 0
                 || bos > 100_000
@@ -343,12 +344,14 @@ impl LanguageModelSnapshot {
                 return Err(invalid());
             }
         }
-        if metadata.kind == "character_bigram" {
+        if metadata.kind.starts_with("character_bigram") {
             model.character = Some(crate::character::CharacterModel::from_counts(
                 &model.vocabulary,
                 &model.pairs,
                 &model.totals,
+                &incoming,
                 lexicon,
+                metadata.kind == "character_bigram_witten_bell",
             ));
             model.pairs.clear();
             model.totals.clear();
@@ -374,7 +377,7 @@ impl LanguageModelSnapshot {
         }
         let characters = metadata_header
             .lines()
-            .any(|line| line == "kind\tcharacter_bigram");
+            .any(|line| line.starts_with("kind\tcharacter_bigram"));
         let trained = BigramModel::train_tokens(sequences, characters)?;
         let mut payload = metadata_header.to_owned();
         for ((previous, next), count) in &trained.pairs {
@@ -383,7 +386,7 @@ impl LanguageModelSnapshot {
         let snapshot = Self::from_tsv(&payload, lexicon, expected_lexicon)?;
         if !matches!(
             snapshot.metadata.kind.as_str(),
-            "bigram" | "character_bigram"
+            "bigram" | "character_bigram" | "character_bigram_witten_bell"
         ) {
             return Err(SearchError::new(
                 ErrorKind::InvalidModel,

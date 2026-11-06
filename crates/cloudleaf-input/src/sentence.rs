@@ -232,9 +232,12 @@ impl SentenceBackend {
             Ranker::Bigram | Ranker::ContextRerank => language
                 .as_ref()
                 .is_some_and(|value| value.metadata().kind == "bigram"),
-            Ranker::CharacterBigram => language
-                .as_ref()
-                .is_some_and(|value| value.metadata().kind == "character_bigram"),
+            Ranker::CharacterBigram => language.as_ref().is_some_and(|value| {
+                matches!(
+                    value.metadata().kind.as_str(),
+                    "character_bigram" | "character_bigram_witten_bell"
+                )
+            }),
         };
         if !valid_model
             || language.as_ref().is_some_and(|value| {

@@ -39,7 +39,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         {
             "structural" => Ranker::Structural,
             "lexical" => Ranker::Lexical,
-            "character_bigram" => {
+            "character_bigram" | "character_bigram_witten_bell" => {
                 config.method = Method::ExactDag;
                 Ranker::CharacterBigram
             }

@@ -39,7 +39,10 @@ fn main() -> Result<(), Box<dyn Error>> {
     let sequences: Vec<Vec<String>> = source
         .lines()
         .map(|line| {
-            if header.lines().any(|line| line == "kind\tcharacter_bigram") {
+            if header
+                .lines()
+                .any(|line| line.starts_with("kind\tcharacter_bigram"))
+            {
                 line.chars().map(|value| value.to_string()).collect()
             } else if line.is_empty() {
                 Vec::new()

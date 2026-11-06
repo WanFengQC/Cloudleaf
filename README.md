@@ -95,4 +95,6 @@ python scripts/evaluate_algorithms.py --output-dir .local/algorithm-v1
 
 Round16另有显式`kind=character_bigram`、`tokenization=unicode-scalar-v1`：同一训练入口逐行读取未经分词的正文，使用BOS/Unicode字符/EOS实际转移的add-one定点对数概率。整条正文同分，不依赖词典切成几个词；不叠加每词结构扣分或研究一元计数。ExactDag按最后模型字符状态计算后缀最优界再有界枚举，PositionDag拒绝该历史评分，Beam仍为近似对照。模型与预载词典实例共同编译，新词典实例须在该实例上重新载入模型。原结构/词汇/词级评分和默认引擎不变。
 
+另有显式`kind=character_bigram_witten_bell`作为平滑对照，按实际不同后继数插值到同语料字符一元分布；没有超参数调优或heldout使用。研发比较未证明其质量优于add-one，两种模式均未获正式质量批准，不能按算法名称或历史四句通过结果默认选用。
+
 `python scripts/prepare_context_corpus.py --source-dir FIXED_TATOEBA_CACHE --output-dir NEW_DIRECTORY`只处理本轮固定SHA的官方原件，保留来源家族、近重复、train/dev/heldout、历史目标排除与逐句署名链接；不下载、不批准生产或生成人工gold。完整原文、模型及owner记录留Git外，内部研发划分不构成独立质量评测。字符Bigram仍可能误选同音字、过度补全前缀或偏向较短正文，详见[Round16设计](docs/input-round16-design.md)。
