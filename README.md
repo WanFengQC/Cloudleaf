@@ -98,3 +98,9 @@ Round16另有显式`kind=character_bigram`、`tokenization=unicode-scalar-v1`：
 另有显式`kind=character_bigram_witten_bell`作为平滑对照，按实际不同后继数插值到同语料字符一元分布；没有超参数调优或heldout使用。研发比较未证明其质量优于add-one，两种模式均未获正式质量批准，不能按算法名称或历史四句通过结果默认选用。
 
 `python scripts/prepare_context_corpus.py --source-dir FIXED_TATOEBA_CACHE --output-dir NEW_DIRECTORY`只处理本轮固定SHA的官方原件，保留来源家族、近重复、train/dev/heldout、历史目标排除与逐句署名链接；不下载、不批准生产或生成人工gold。完整原文、模型及owner记录留Git外，内部研发划分不构成独立质量评测。字符Bigram仍可能误选同音字、过度补全前缀或偏向较短正文，详见[Round16设计](docs/input-round16-design.md)。
+
+## Round17覆盖实验
+
+`python scripts/prepare_input_supplement.py --baseline-release FIXED_RELEASE --source-archive FIXED_CEDICT_ZIP --output-dir NEW_DIRECTORY [--model RESEARCH_MODEL]`只从固定批准记录和原件投影基线缺失的繁体单字读音，生成独立`layer.tsv`、逐条来源、许可、修改说明及研发合并快照。原123544条runtime逐字节保留为合并文件前缀，新增frequency仍unknown；该层没有自动获得生产质量批准。可选模型仅改变词典SHA绑定，计数与训练来源不变，必须由真实Rust reader在新词典上重编译缓存，不能把旧模型直接套到新实例。
+
+显式将合并快照及对应新SHA传给既有`--search-lexicon/--search-sha`，才会使用补充层；默认词典不变。`coverage_probe`示例读取实际词典、模型和`case TAB pinyin TAB source_text`，检查完整词条格的正文路径并输出真实Top10/预算。词典导出的拼音可能选择多音字的非常用读法，所有人工确认和正式指标保持未交付；可达性不是准确率。
