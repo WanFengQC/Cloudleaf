@@ -397,3 +397,38 @@ pub(crate) fn sentence_host(mode: u8, readonly: bool) -> Shared {
     host.projection.borrow_mut().handle(InputEvent::Activate);
     host
 }
+
+pub(crate) fn language_host() -> Shared {
+    // 原创组件数据只验证实际Host和语言配置，不构成人工gold。
+    const WORDS: &str = "# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\na\tma\t甲\t\tunknown\t\tfixture\ta\tMIT\nb\tma\t乙\t\tunknown\t\tfixture\tb\tMIT\nc\tna\t丙\t\tunknown\t\tfixture\tc\tMIT\n";
+    const MODEL: &str = "# cloudleaf-language-v1\nlexicon_sha256\t1b17bd61d0012078be97202bb09f50ef47544e0f704b96cde05d11990e9fd9cb\nsource_sha256\taaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nsource_id\tmechanical\nlicense_id\tMIT\ntokenization\tstable-ids\nusage\tmechanical\nkind\tlexical\ntraining_split\ttrain\nprevious\tnext\tcount\n<lexical>\ta\t1\n<lexical>\tb\t100\n";
+    let snapshot = Arc::new(
+        SearchSnapshot::from_verified_tsv(
+            WORDS,
+            "1b17bd61d0012078be97202bb09f50ef47544e0f704b96cde05d11990e9fd9cb",
+        )
+        .unwrap(),
+    );
+    let language = Arc::new(
+        cloudleaf_input::LanguageSnapshot::from_verified_tsv(
+            MODEL,
+            "690e01bac9f53c9936cb8d651cedebf065b0cf3acbe8d29b0948d6bfecad4222",
+            &snapshot,
+        )
+        .unwrap(),
+    );
+    let host = Host::with_language(
+        snapshot,
+        cloudleaf_search::Config {
+            method: cloudleaf_search::Method::PositionDag,
+            ranker: cloudleaf_search::Ranker::Lexical,
+            ..cloudleaf_search::Config::default()
+        },
+        language,
+        InputConfig::default(),
+    )
+    .unwrap();
+    host.engine.borrow_mut().handle(InputEvent::Activate);
+    host.projection.borrow_mut().handle(InputEvent::Activate);
+    host
+}

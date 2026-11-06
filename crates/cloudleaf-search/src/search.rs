@@ -1,7 +1,7 @@
 use crate::profiling::{Noop, Observer, Phase};
 use crate::{
-    BigramModel, Budget, Config, ErrorKind, Lattice, Lexicon, MatchKind, Method, Ranker,
-    SearchError,
+    BigramModel, Budget, Cancellation, Config, ErrorKind, Lattice, Lexicon, MatchKind, Method,
+    Ranker, SearchError,
 };
 use std::cmp::Ordering;
 use std::collections::BTreeMap;
@@ -12,6 +12,9 @@ pub struct Features {
     pub prefixes: usize,
     pub frequency_units: i64,
     pub missing_frequencies: usize,
+    pub lexical_units: i64,
+    pub lexical_observed: usize,
+    pub lexical_missing: usize,
     pub bigram_units: i64,
     pub context_units: i64,
 }
@@ -55,7 +58,10 @@ struct Path {
 }
 
 fn compare(a: &Path, b: &Path) -> Ordering {
-    b.score.cmp(&a.score).then_with(|| a.ids.cmp(&b.ids))
+    b.score
+        .cmp(&a.score)
+        .then_with(|| b.features.lexical_units.cmp(&a.features.lexical_units))
+        .then_with(|| a.ids.cmp(&b.ids))
 }
 
 struct Scorer<'a> {
@@ -63,29 +69,50 @@ struct Scorer<'a> {
     graph: &'a Lattice<'a>,
     ranker: Ranker,
     model: Option<&'a BigramModel>,
+    cancellation: Option<&'a Cancellation>,
 }
 
 impl Scorer<'_> {
-    fn extend<O: Observer>(&self, path: &Path, edge_index: usize, observer: &mut O) -> Path {
+    fn cancelled(&self) -> bool {
+        self.cancellation.is_some_and(Cancellation::is_cancelled)
+    }
+
+    fn extend<O: Observer>(
+        &self,
+        path: &Path,
+        edge_index: usize,
+        cutoff: Option<&Path>,
+        observer: &mut O,
+    ) -> Option<Path> {
         let edge = &self.graph.edges[edge_index];
         let entry = &self.lexicon.entries[edge.entry];
-        let mut next = path.clone();
-        next.text.push_str(&entry.text);
         let stamp = observer.start(Phase::Scoring);
-        next.features.words += 1;
-        next.score -= 100;
+        let mut features = path.features.clone();
+        let mut score = path.score - 100;
+        features.words += 1;
         if edge.kind == MatchKind::Prefix {
-            next.features.prefixes += 1;
-            next.score -= 300;
+            features.prefixes += 1;
+            score -= 300;
         }
         if let Some(frequency) = entry.frequency {
             let units = i64::from(63 - (u64::from(frequency) + 1).leading_zeros());
-            next.features.frequency_units += units;
-            if self.ranker != Ranker::Structural {
-                next.score += units * 10;
+            features.frequency_units += units;
+            if matches!(
+                self.ranker,
+                Ranker::Weighted | Ranker::Bigram | Ranker::ContextRerank
+            ) {
+                score += units * 10;
             }
         } else {
-            next.features.missing_frequencies += 1;
+            features.missing_frequencies += 1;
+        }
+        if self.ranker == Ranker::Lexical {
+            if let Some(units) = self.model.and_then(|model| model.lexical_units(&entry.id)) {
+                features.lexical_units += units;
+                features.lexical_observed += 1;
+            } else {
+                features.lexical_missing += 1;
+            }
         }
         if let Some(model) = self
             .model
@@ -96,13 +123,34 @@ impl Scorer<'_> {
                 .last()
                 .map(|index| self.lexicon.entries[*index].id.as_str());
             let units = model.transition(previous, Some(&entry.id));
-            next.features.bigram_units += units;
-            next.score += units;
+            features.bigram_units += units;
+            score += units;
         }
         observer.stop(Phase::Scoring, stamp);
+        // 满桶中严格劣于末项的扩展必被丢弃，先比较借用ID，避免复制整条路径。
+        if cutoff.is_some_and(|worst| {
+            worst
+                .score
+                .cmp(&score)
+                .then_with(|| worst.features.lexical_units.cmp(&features.lexical_units))
+                .then_with(|| {
+                    path.ids
+                        .iter()
+                        .copied()
+                        .chain(std::iter::once(edge.entry))
+                        .cmp(worst.ids.iter().copied())
+                })
+                == Ordering::Greater
+        }) {
+            return None;
+        }
+        let mut next = path.clone();
+        next.score = score;
+        next.features = features;
+        next.text.push_str(&entry.text);
         next.ids.push(edge.entry);
         next.edges.push(edge_index);
-        next
+        Some(next)
     }
 
     fn finish<O: Observer>(&self, mut path: Path, observer: &mut O) -> Path {
@@ -180,6 +228,9 @@ fn reference<O: Observer>(
     let mut complete = Vec::new();
     stats.resident_high_water = 1;
     while let Some((position, path)) = pending.pop() {
+        if scorer.cancelled() {
+            return Vec::new();
+        }
         if position == scorer.graph.letters.len() {
             // 参考枚举所有路径，只将已完成输出压缩为当前最佳unique top-k。
             let finished = scorer.finish(path, observer);
@@ -187,6 +238,9 @@ fn reference<O: Observer>(
             continue;
         }
         for edge in &scorer.graph.outgoing[position] {
+            if scorer.cancelled() {
+                return Vec::new();
+            }
             if !expand_allowed(stats, config) {
                 return complete;
             }
@@ -196,7 +250,7 @@ fn reference<O: Observer>(
             }
             pending.push((
                 scorer.graph.edges[*edge].end,
-                scorer.extend(&path, *edge, observer),
+                scorer.extend(&path, *edge, None, observer).unwrap(),
             ));
         }
     }
@@ -228,6 +282,9 @@ fn dynamic<O: Observer>(
         }
         for path in paths {
             for edge_index in &scorer.graph.outgoing[position] {
+                if scorer.cancelled() {
+                    return Vec::new();
+                }
                 if !expand_allowed(stats, config) {
                     return Vec::new();
                 }
@@ -237,8 +294,10 @@ fn dynamic<O: Observer>(
                 if !resident_allowed(stats, resident + 1, config) {
                     return Vec::new();
                 }
-                let next = scorer.extend(&path, *edge_index, observer);
-                insert_unique(bucket, next, k, observer);
+                let cutoff = (old == k).then(|| bucket.last().unwrap());
+                if let Some(next) = scorer.extend(&path, *edge_index, cutoff, observer) {
+                    insert_unique(bucket, next, k, observer);
+                }
                 resident = resident + bucket.len() - old;
             }
             resident -= 1;
@@ -270,6 +329,9 @@ fn position_dynamic<O: Observer>(
         // 取出的整批路径仍计入resident，不能只计算尚留在states中的容器。
         for path in current {
             for edge_index in &scorer.graph.outgoing[position] {
+                if scorer.cancelled() {
+                    return Vec::new();
+                }
                 if !expand_allowed(stats, config) {
                     return Vec::new();
                 }
@@ -279,8 +341,10 @@ fn position_dynamic<O: Observer>(
                 if !resident_allowed(stats, resident + 1, config) {
                     return Vec::new();
                 }
-                let next = scorer.extend(&path, *edge_index, observer);
-                insert_unique(bucket, next, k, observer);
+                let cutoff = (old == k).then(|| bucket.last().unwrap());
+                if let Some(next) = scorer.extend(&path, *edge_index, cutoff, observer) {
+                    insert_unique(bucket, next, k, observer);
+                }
                 resident = resident + bucket.len() - old;
             }
             resident -= 1;
@@ -300,6 +364,25 @@ pub fn search_graph(
     search_observed(lexicon, graph, config, model, left_word, &mut Noop)
 }
 
+pub fn search_graph_cancellable(
+    lexicon: &Lexicon,
+    graph: &Lattice<'_>,
+    config: &Config,
+    model: Option<&BigramModel>,
+    left_word: Option<&str>,
+    cancellation: &Cancellation,
+) -> Result<SearchResult, SearchError> {
+    search_controlled_observed(
+        lexicon,
+        graph,
+        config,
+        model,
+        left_word,
+        Some(cancellation),
+        &mut Noop,
+    )
+}
+
 pub(crate) fn search_observed<O: Observer>(
     lexicon: &Lexicon,
     graph: &Lattice<'_>,
@@ -308,10 +391,29 @@ pub(crate) fn search_observed<O: Observer>(
     left_word: Option<&str>,
     observer: &mut O,
 ) -> Result<SearchResult, SearchError> {
+    search_controlled_observed(lexicon, graph, config, model, left_word, None, observer)
+}
+
+pub(crate) fn search_controlled_observed<O: Observer>(
+    lexicon: &Lexicon,
+    graph: &Lattice<'_>,
+    config: &Config,
+    model: Option<&BigramModel>,
+    left_word: Option<&str>,
+    cancellation: Option<&Cancellation>,
+    observer: &mut O,
+) -> Result<SearchResult, SearchError> {
+    if let Some(control) = cancellation {
+        control.check()?;
+    }
     let stamp = observer.start(Phase::SearchValidate);
     let validation = (|| {
         config.validate()?;
-        if matches!(config.ranker, Ranker::Bigram | Ranker::ContextRerank) && model.is_none() {
+        if (matches!(config.ranker, Ranker::Bigram | Ranker::ContextRerank)
+            && model.is_none_or(|value| !value.has_transitions()))
+            || (config.ranker == Ranker::Lexical
+                && model.is_none_or(|value| !value.has_lexical_signal()))
+        {
             return Err(SearchError::new(
                 ErrorKind::InvalidModel,
                 "所选评分需要预加载模型",
@@ -352,6 +454,7 @@ pub(crate) fn search_observed<O: Observer>(
         graph,
         ranker: config.ranker,
         model,
+        cancellation,
     };
     let stamp = observer.start(Phase::Traversal);
     let mut paths = if graph.letters.is_empty() || graph.waiting {
@@ -364,6 +467,9 @@ pub(crate) fn search_observed<O: Observer>(
         dynamic(&scorer, config, &mut statistics, k, observer)
     };
     observer.stop(Phase::Traversal, stamp);
+    if let Some(control) = cancellation {
+        control.check()?;
+    }
     retain_unique(&mut paths, k, observer, Phase::FinalSortDedup);
     if config.ranker == Ranker::ContextRerank {
         let stamp = observer.start(Phase::ContextRerank);
@@ -406,6 +512,9 @@ pub(crate) fn search_observed<O: Observer>(
         statistics,
     };
     observer.stop(Phase::Materialize, stamp);
+    if let Some(control) = cancellation {
+        control.check()?;
+    }
     Ok(result)
 }
 
@@ -469,5 +578,155 @@ mod bucket_regression {
             bucket.iter().map(|p| p.edges[0]).collect::<Vec<_>>(),
             [5, 4]
         );
+    }
+}
+
+#[cfg(test)]
+mod cancellation_regression {
+    use super::*;
+
+    struct CancelDuringScoring<'a> {
+        control: &'a Cancellation,
+        scored: usize,
+    }
+    impl Observer for CancelDuringScoring<'_> {
+        type Stamp = ();
+        fn start(&mut self, phase: Phase) {
+            if phase == Phase::Scoring {
+                self.scored += 1;
+                if self.scored == 2 {
+                    self.control.cancel();
+                }
+            }
+        }
+        fn stop(&mut self, _: Phase, _: ()) {}
+    }
+
+    const DATA: &str = "# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\na\ta\t甲\t\tunknown\t\tfixture\ta\tMIT\nb\ta\t乙\t\tunknown\t\tfixture\tb\tMIT\n";
+
+    #[test]
+    fn pre_cancelled_graph_and_search_return_cancelled_not_budget() {
+        let lexicon = Lexicon::from_tsv(DATA).unwrap();
+        let config = Config::default();
+        let control = Cancellation::default();
+        let clone = control.clone();
+        clone.cancel();
+        assert!(control.is_cancelled());
+        assert_eq!(
+            Lattice::build_cancellable(&lexicon, "aa", &config, &control)
+                .unwrap_err()
+                .kind,
+            ErrorKind::Cancelled
+        );
+        let graph = Lattice::build(&lexicon, "aa", &config).unwrap();
+        assert_eq!(
+            search_graph_cancellable(&lexicon, &graph, &config, None, None, &control)
+                .unwrap_err()
+                .kind,
+            ErrorKind::Cancelled
+        );
+    }
+
+    #[test]
+    fn actual_traversal_cancellation_discards_partial_paths_for_every_method() {
+        let lexicon = Lexicon::from_tsv(DATA).unwrap();
+        for method in [
+            Method::Reference,
+            Method::ExactDag,
+            Method::PositionDag,
+            Method::Beam,
+        ] {
+            let config = Config {
+                method,
+                ranker: Ranker::Structural,
+                ..Config::default()
+            };
+            let graph = Lattice::build(&lexicon, "aaaa", &config).unwrap();
+            let control = Cancellation::default();
+            let mut observer = CancelDuringScoring {
+                control: &control,
+                scored: 0,
+            };
+            assert_eq!(
+                search_controlled_observed(
+                    &lexicon,
+                    &graph,
+                    &config,
+                    None,
+                    None,
+                    Some(&control),
+                    &mut observer
+                )
+                .unwrap_err()
+                .kind,
+                ErrorKind::Cancelled
+            );
+            assert_eq!(observer.scored, 2);
+        }
+    }
+
+    struct CancelAfterMaterialize<'a>(&'a Cancellation);
+    impl Observer for CancelAfterMaterialize<'_> {
+        type Stamp = ();
+        fn start(&mut self, _: Phase) {}
+        fn stop(&mut self, phase: Phase, _: ()) {
+            if phase == Phase::Materialize {
+                self.0.cancel();
+            }
+        }
+    }
+
+    #[test]
+    fn cancellation_before_result_publication_returns_no_completed_candidates() {
+        let lexicon = Lexicon::from_tsv(DATA).unwrap();
+        let config = Config::default();
+        let graph = Lattice::build(&lexicon, "a", &config).unwrap();
+        let control = Cancellation::default();
+        let mut observer = CancelAfterMaterialize(&control);
+        assert_eq!(
+            search_controlled_observed(
+                &lexicon,
+                &graph,
+                &config,
+                None,
+                None,
+                Some(&control),
+                &mut observer
+            )
+            .unwrap_err()
+            .kind,
+            ErrorKind::Cancelled
+        );
+    }
+
+    #[test]
+    fn uncancelled_entry_preserves_results_and_original_budget_semantics() {
+        let lexicon = Lexicon::from_tsv(DATA).unwrap();
+        for method in [
+            Method::Reference,
+            Method::ExactDag,
+            Method::PositionDag,
+            Method::Beam,
+        ] {
+            for budget in [1, 200000] {
+                let config = Config {
+                    method,
+                    ranker: Ranker::Structural,
+                    max_expansions: budget,
+                    ..Config::default()
+                };
+                let control = Cancellation::default();
+                let graph =
+                    Lattice::build_cancellable(&lexicon, "aaaa", &config, &control).unwrap();
+                let full = search_graph(&lexicon, &graph, &config, None, None).unwrap();
+                let controlled =
+                    search_graph_cancellable(&lexicon, &graph, &config, None, None, &control)
+                        .unwrap();
+                assert_eq!(full, controlled);
+                if budget == 1 {
+                    assert_eq!(controlled.statistics.budget, Some(Budget::Expansions));
+                }
+            }
+        }
     }
 }

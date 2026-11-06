@@ -112,6 +112,47 @@ fn training_header_cannot_inject_unobserved_sequences() {
 #[test]
 fn reader_rejects_balanced_counts_disconnected_from_sentence_boundaries() {
     let lex = lexicon();
-    let artifact = format!("{}<bos>\ta\t1\na\t<eos>\t1\nb\tb\t100\n", metadata("bigram"));
+    let artifact = format!(
+        "{}<bos>\ta\t1\na\t<eos>\t1\nb\tb\t100\n",
+        metadata("bigram")
+    );
     assert!(LanguageModelSnapshot::from_tsv(&artifact, &lex, SHA).is_err());
+}
+
+#[test]
+fn lexical_multiedge_paths_match_full_reference_and_keep_structure_priority() {
+    let lex = lexicon();
+    let text = format!(
+        "{}<lexical>\ta\t1\n<lexical>\tb\t1023\n<lexical>\tc\t10\n",
+        metadata("lexical")
+    );
+    let snapshot = LanguageModelSnapshot::from_tsv(&text, &lex, SHA).unwrap();
+    for raw in ["mana", "mama", "manama", "mamanama", "ma'na", "ma'"] {
+        for k in [1, 2, 5] {
+            let config = Config {
+                method: Method::Reference,
+                ranker: Ranker::Lexical,
+                output_k: k,
+                ..Config::default()
+            };
+            let graph = Lattice::build(&lex, raw, &config).unwrap();
+            let reference =
+                search_graph(&lex, &graph, &config, Some(snapshot.model()), None).unwrap();
+            for method in [Method::ExactDag, Method::PositionDag, Method::Beam] {
+                let result = search_graph(
+                    &lex,
+                    &graph,
+                    &Config {
+                        method,
+                        ..config.clone()
+                    },
+                    Some(snapshot.model()),
+                    None,
+                )
+                .unwrap();
+                assert_eq!(result.candidates, reference.candidates);
+                assert_eq!(result.guaranteed, reference.guaranteed);
+            }
+        }
+    }
 }

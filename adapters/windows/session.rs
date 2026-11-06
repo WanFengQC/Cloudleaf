@@ -218,11 +218,44 @@ impl Host {
         let dictionary_bytes = snapshot.estimated_bytes();
         let engine = InputEngine::with_search(snapshot.clone(), search_config.clone(), config)
             .map_err(|_| Error::new(E_FAIL, "输入搜索配置无效"))?;
+        let projection = InputEngine::with_search(snapshot, search_config, config)
+            .map_err(|_| Error::new(E_FAIL, "投影搜索配置无效"))?;
+        Self::from_search_engines(engine, projection, dictionary_bytes)
+    }
+
+    pub fn with_language(
+        snapshot: Arc<SearchSnapshot>,
+        search_config: cloudleaf_search::Config,
+        language: Arc<cloudleaf_input::LanguageSnapshot>,
+        config: InputConfig,
+    ) -> Result<Shared> {
+        let fixed_bytes = checked_cost(
+            snapshot
+                .estimated_bytes()
+                .checked_add(language.estimated_bytes()),
+        )?;
+        let engine = InputEngine::with_language(
+            snapshot.clone(),
+            search_config.clone(),
+            language.clone(),
+            None,
+            config,
+        )
+        .map_err(|_| Error::new(E_FAIL, "输入语言配置无效"))?;
+        let projection =
+            InputEngine::with_language(snapshot, search_config, language, None, config)
+                .map_err(|_| Error::new(E_FAIL, "投影语言配置无效"))?;
+        Self::from_search_engines(engine, projection, fixed_bytes)
+    }
+
+    fn from_search_engines(
+        engine: InputEngine,
+        projection: InputEngine,
+        dictionary_bytes: usize,
+    ) -> Result<Shared> {
         let bounds = engine
             .search_capacity_bounds()
             .ok_or_else(|| Error::new(E_FAIL, "缺少搜索容量约定"))?;
-        let projection = InputEngine::with_search(snapshot, search_config, config)
-            .map_err(|_| Error::new(E_FAIL, "投影搜索配置无效"))?;
         let (epoch_cost, frame_bytes, diagnostic_bytes) = search_recovery_cost(bounds)?;
         // 快照与两份持久诊断按Host保守计费，事件FIFO只复制frame，不重复计诊断。
         let fixed = checked_cost(
@@ -1969,3 +2002,4 @@ mod render_tests;
 #[path = "input_review.rs"]
 mod input_review;
 pub(crate) use input_review::run as review_input_host;
+pub(crate) use input_review::run_with_language as review_language_host;

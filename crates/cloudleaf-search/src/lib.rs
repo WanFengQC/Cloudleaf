@@ -1,15 +1,19 @@
 //! 全输入词条格实验内核。词典与模型由宿主预加载，查询不访问外部资源。
+mod cancellation;
 mod lattice;
 mod lexicon;
 mod model;
 mod profiling;
 mod search;
 
+pub use cancellation::Cancellation;
 pub use lattice::{Edge, Lattice, MatchKind};
 pub use lexicon::{Entry, FrequencyKind, Lexicon, LexiconMemory, LoadLimits};
-pub use model::BigramModel;
+pub use model::{BigramModel, LanguageModelSnapshot, ModelMetadata};
 pub use profiling::{Measurement, Phase, Profile, profile_query};
-pub use search::{Candidate, Features, SearchResult, Statistics, search_graph};
+pub use search::{
+    Candidate, Features, SearchResult, Statistics, search_graph, search_graph_cancellable,
+};
 
 use std::fmt;
 
@@ -19,6 +23,7 @@ pub enum ErrorKind {
     InvalidInput,
     InvalidConfig,
     InvalidModel,
+    Cancelled,
 }
 
 /// 错误不包含输入原文、词条正文或上下文。
@@ -69,6 +74,8 @@ pub enum Method {
 pub enum Ranker {
     Structural,
     Weighted,
+    /// 保留结构分优先，只在结构平局时比较独立研究词汇观测。
+    Lexical,
     Bigram,
     ContextRerank,
 }
@@ -123,7 +130,10 @@ impl Config {
             && (1..=2_000_000).contains(&self.max_expansions)
             && (1..=200_000).contains(&self.max_resident_paths)
             && (self.method != Method::PositionDag
-                || matches!(self.ranker, Ranker::Structural | Ranker::Weighted));
+                || matches!(
+                    self.ranker,
+                    Ranker::Structural | Ranker::Weighted | Ranker::Lexical
+                ));
         if valid {
             Ok(())
         } else {

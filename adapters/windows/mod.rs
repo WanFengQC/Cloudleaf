@@ -26,9 +26,12 @@ pub fn manage(args: Vec<String>) -> Result<()> {
     {
         return match args.as_slice() {
             [_, runtime, expected_sha256] => session::review_input_host(runtime, expected_sha256),
+            [_, runtime, expected_sha256, model, model_sha] => {
+                session::review_language_host(runtime, expected_sha256, model, model_sha)
+            }
             _ => Err(Error::new(
                 E_UNEXPECTED,
-                "用法：--review-input-host RUNTIME SHA256",
+                "用法：--review-input-host RUNTIME SHA256 [MODEL MODEL_SHA256]",
             )),
         };
     }

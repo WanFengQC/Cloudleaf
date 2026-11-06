@@ -1,5 +1,5 @@
 use crate::profiling::{Noop, Observer, Phase};
-use crate::{Budget, Config, ErrorKind, Lexicon, SearchError};
+use crate::{Budget, Cancellation, Config, ErrorKind, Lexicon, SearchError};
 use std::collections::BTreeSet;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -35,39 +35,55 @@ impl<'a> Lattice<'a> {
         Self::build_observed(lexicon, input, config, &mut Noop)
     }
 
+    pub fn build_cancellable(
+        lexicon: &'a Lexicon,
+        input: &str,
+        config: &Config,
+        cancellation: &Cancellation,
+    ) -> Result<Self, SearchError> {
+        Self::build_controlled_observed(lexicon, input, config, Some(cancellation), &mut Noop)
+    }
+
     pub(crate) fn build_observed<O: Observer>(
         lexicon: &'a Lexicon,
         input: &str,
         config: &Config,
         observer: &mut O,
     ) -> Result<Self, SearchError> {
+        Self::build_controlled_observed(lexicon, input, config, None, observer)
+    }
+
+    pub(crate) fn build_controlled_observed<O: Observer>(
+        lexicon: &'a Lexicon,
+        input: &str,
+        config: &Config,
+        cancellation: Option<&Cancellation>,
+        observer: &mut O,
+    ) -> Result<Self, SearchError> {
         let stamp = observer.start(Phase::Normalize);
-        let normalized = normalize(input, config);
+        let normalized = normalize(input, config, cancellation);
         observer.stop(Phase::Normalize, stamp);
-        let (letters, raw_offsets, separators, waiting) = normalized?;
+        let normalized = normalized?;
         let stamp = observer.start(Phase::Lattice);
-        let graph = Self::from_normalized(
-            lexicon,
-            input,
-            config,
-            letters,
-            raw_offsets,
-            separators,
-            waiting,
-        );
+        let graph = Self::from_normalized(lexicon, input, config, normalized, cancellation);
         observer.stop(Phase::Lattice, stamp);
-        Ok(graph)
+        if let Some(control) = cancellation {
+            control.check()?;
+        }
+        graph
     }
 
     fn from_normalized(
         lexicon: &'a Lexicon,
         input: &str,
         config: &Config,
-        letters: String,
-        raw_offsets: Vec<usize>,
-        separators: BTreeSet<usize>,
-        waiting: bool,
-    ) -> Self {
+        normalized: Normalized,
+        cancellation: Option<&Cancellation>,
+    ) -> Result<Self, SearchError> {
+        let (letters, raw_offsets, separators, waiting) = normalized;
+        if let Some(control) = cancellation {
+            control.check()?;
+        }
         let mut graph = Self {
             lexicon,
             raw: input.into(),
@@ -79,9 +95,12 @@ impl<'a> Lattice<'a> {
             budget: None,
         };
         if waiting {
-            return graph;
+            return Ok(graph);
         }
         'positions: for start in 0..graph.letters.len() {
+            if let Some(control) = cancellation {
+                control.check()?;
+            }
             let mut node = 0;
             for end in start + 1..=graph.letters.len() {
                 let byte = graph.letters.as_bytes()[end - 1];
@@ -99,6 +118,9 @@ impl<'a> Lattice<'a> {
                     .filter(|_| end == graph.letters.len())
                     .map(|entry| (*entry, MatchKind::Prefix));
                 for (entry_index, kind) in exact.chain(prefix) {
+                    if let Some(control) = cancellation {
+                        control.check()?;
+                    }
                     let entry = &lexicon.entries[entry_index];
                     if separators
                         .range(start + 1..end)
@@ -123,7 +145,10 @@ impl<'a> Lattice<'a> {
                 }
             }
         }
-        graph
+        if let Some(control) = cancellation {
+            control.check()?;
+        }
+        Ok(graph)
     }
 
     pub fn raw(&self) -> &str {
@@ -148,7 +173,14 @@ impl<'a> Lattice<'a> {
 
 type Normalized = (String, Vec<usize>, BTreeSet<usize>, bool);
 
-fn normalize(input: &str, config: &Config) -> Result<Normalized, SearchError> {
+fn normalize(
+    input: &str,
+    config: &Config,
+    cancellation: Option<&Cancellation>,
+) -> Result<Normalized, SearchError> {
+    if let Some(control) = cancellation {
+        control.check()?;
+    }
     config.validate()?;
     let invalid = || SearchError::new(ErrorKind::InvalidInput, "输入字符或长度无效");
     if input.len() > config.max_input_bytes {
@@ -159,6 +191,9 @@ fn normalize(input: &str, config: &Config) -> Result<Normalized, SearchError> {
     let mut separators = BTreeSet::new();
     let mut waiting = false;
     for (offset, ch) in input.char_indices() {
+        if let Some(control) = cancellation {
+            control.check()?;
+        }
         match ch {
             '\'' => {
                 if letters.is_empty() || waiting {
@@ -183,4 +218,50 @@ fn normalize(input: &str, config: &Config) -> Result<Normalized, SearchError> {
         }
     }
     Ok((letters, raw_offsets, separators, waiting))
+}
+
+#[cfg(test)]
+mod cancellation_regression {
+    use super::*;
+
+    struct CancelAtBoundary<'a> {
+        control: &'a Cancellation,
+        phase: Phase,
+    }
+
+    impl Observer for CancelAtBoundary<'_> {
+        type Stamp = ();
+        fn start(&mut self, _: Phase) {}
+        fn stop(&mut self, phase: Phase, _: ()) {
+            if phase == self.phase {
+                self.control.cancel();
+            }
+        }
+    }
+
+    #[test]
+    fn cancelled_empty_or_waiting_graph_is_not_published_after_phase_boundary() {
+        let lexicon = Lexicon::from_tsv("# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\na\ta\t甲\t\tunknown\t\tfixture\ta\tMIT\n").unwrap();
+        for raw in ["", "a'", "a"] {
+            for phase in [Phase::Normalize, Phase::Lattice] {
+                let control = Cancellation::default();
+                let mut observer = CancelAtBoundary {
+                    control: &control,
+                    phase,
+                };
+                assert_eq!(
+                    Lattice::build_controlled_observed(
+                        &lexicon,
+                        raw,
+                        &Config::default(),
+                        Some(&control),
+                        &mut observer
+                    )
+                    .unwrap_err()
+                    .kind,
+                    ErrorKind::Cancelled
+                );
+            }
+        }
+    }
 }

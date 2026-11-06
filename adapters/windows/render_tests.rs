@@ -2296,3 +2296,70 @@ fn round14_sentence_host_applied_once_and_unknown_never_replays_old_epoch() {
         }
     }
 }
+
+#[test]
+fn round15_language_host_confirms_once_and_isolates_unknown() {
+    for unknown in [false, true] {
+        let host = super::tests::language_host();
+        let data = Rc::new(Data::default());
+        *data.host.borrow_mut() = Rc::downgrade(&host);
+        let context: ITfContext = Context { data: data.clone() }.into();
+        *host.context.borrow_mut() = Some(context.clone());
+        for ch in "ma".chars() {
+            assert!(host.key(Key::Char(ch)).unwrap());
+        }
+        let frame = host.engine.borrow().frame();
+        assert_eq!(frame.candidates[0].text, "乙");
+        assert_eq!(frame.candidates[0].frequency, None);
+        assert_eq!(
+            frame.candidates,
+            host.projection.borrow().frame().candidates
+        );
+        assert!(
+            host.engine
+                .borrow()
+                .search_diagnostic()
+                .unwrap()
+                .model_version
+                .is_some()
+        );
+        let stale: ITfEditSession = KeyEdit {
+            host: host.clone(),
+            epoch: host.epoch.get(),
+            context,
+            action: Operation::Key(Key::Char('x')),
+            executed: Rc::new(Cell::new(false)),
+            called: Rc::new(Cell::new(false)),
+        }
+        .into();
+        let writes = data.writes.get();
+        if unknown {
+            data.mode.set(2);
+        }
+        assert!(host.key(Key::Space).unwrap());
+        assert_eq!(text(&data), "乙");
+        assert_eq!(data.writes.get(), writes + 1);
+        assert!(!host.key(Key::Space).unwrap());
+        if unknown {
+            assert!(host.quarantined.get() && host.unknown_text.get());
+            assert_eq!(
+                host.engine.borrow().frame().state,
+                cloudleaf_types::InputState::Committing
+            );
+            data.mode.set(0);
+            host.invalidate().unwrap();
+            let fresh = host.engine.borrow().frame();
+            unsafe {
+                stale.DoEditSession(7).unwrap();
+                stale.DoEditSession(7).unwrap();
+            }
+            assert_eq!(host.engine.borrow().frame(), fresh);
+        } else {
+            assert_eq!(
+                host.engine.borrow().frame().state,
+                cloudleaf_types::InputState::Idle
+            );
+        }
+        assert_eq!(data.writes.get(), writes + 1);
+    }
+}

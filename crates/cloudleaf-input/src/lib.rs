@@ -2,7 +2,8 @@
 
 mod sentence;
 pub use sentence::{
-    EdgeSource, SearchCapacityBounds, SearchDiagnostic, SearchPath, SearchSnapshot,
+    EdgeSource, LanguageSnapshot, SearchCapacityBounds, SearchDiagnostic, SearchPath,
+    SearchSnapshot,
 };
 
 use cloudleaf_dictionary::Dictionary;
@@ -108,6 +109,62 @@ impl InputEngine {
         self.search_diagnostic.as_ref()
     }
 
+    /// 显式研发模型；构造前由宿主完成文件读取与模型身份核验。
+    pub fn with_language(
+        snapshot: Arc<SearchSnapshot>,
+        search_config: cloudleaf_search::Config,
+        language: Arc<LanguageSnapshot>,
+        left_word: Option<String>,
+        config: InputConfig,
+    ) -> Result<Self, CoreError> {
+        if search_config.output_k > config.max_candidates {
+            return Err(CoreError::new(
+                ErrorCode::InvalidConfig,
+                "搜索候选数超过输入帧预算",
+            ));
+        }
+        let backend = sentence::SentenceBackend::configured(
+            snapshot,
+            search_config,
+            Some(language),
+            left_word,
+        )?;
+        let mut engine = Self::with_config(Dictionary::empty(), config)?;
+        engine.sentence = Some(backend);
+        Ok(engine)
+    }
+
+    pub fn reconfigure_search(
+        &mut self,
+        search_config: cloudleaf_search::Config,
+        language: Option<Arc<LanguageSnapshot>>,
+        left_word: Option<String>,
+    ) -> Result<(), CoreError> {
+        if self.pending_commit.is_some() || self.failed_commit.is_some() {
+            return Err(CoreError::new(
+                ErrorCode::CommitPending,
+                "当前事务未完成，不能切换评分模型",
+            ));
+        }
+        if self.revision == u64::MAX || search_config.output_k > self.config.max_candidates {
+            return Err(CoreError::new(
+                ErrorCode::InvalidConfig,
+                "修订号或候选预算无效",
+            ));
+        }
+        let current = self
+            .sentence
+            .as_ref()
+            .ok_or_else(|| CoreError::new(ErrorCode::InvalidConfig, "当前不是整句实验后端"))?;
+        self.sentence = Some(current.reconfigured(search_config, language, left_word)?);
+        let inactive = self.state == InputState::Inactive;
+        self.refresh();
+        if inactive {
+            self.state = InputState::Inactive;
+        }
+        Ok(())
+    }
+
     pub fn search_capacity_bounds(&self) -> Option<SearchCapacityBounds> {
         self.sentence
             .as_ref()
@@ -132,7 +189,7 @@ impl InputEngine {
             .sentence
             .as_mut()
             .ok_or_else(|| CoreError::new(ErrorCode::InvalidConfig, "当前不是整句实验后端"))?;
-        backend.replace_snapshot(snapshot);
+        backend.replace_snapshot(snapshot)?;
         let inactive = self.state == InputState::Inactive;
         self.refresh();
         if inactive {

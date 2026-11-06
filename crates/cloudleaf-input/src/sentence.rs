@@ -1,7 +1,7 @@
 //! 显式试验后端；词典在会话创建前校验，按键查询只读不可变快照。
 use cloudleaf_search::{
-    Config, Features, Lattice, Lexicon, MatchKind, Method, Ranker, SearchError, Statistics,
-    search_graph,
+    Config, Features, LanguageModelSnapshot, Lattice, Lexicon, MatchKind, Method, Ranker,
+    SearchError, Statistics, search_graph,
 };
 use cloudleaf_types::{Candidate, CoreError, ErrorCode};
 use ring::digest::{Context, SHA256, digest};
@@ -96,6 +96,8 @@ impl SearchSnapshot {
             max_candidate_source_bytes: SEARCH_SOURCE.len(),
             max_diagnostic_bytes: std::mem::size_of::<SearchDiagnostic>()
                 + CANDIDATE_ID_BYTES
+                + CANDIDATE_ID_BYTES
+                + 128
                 + INPUT_BYTES
                 + candidates * diagnostic_path_bytes,
             max_frame_bytes: std::mem::size_of::<cloudleaf_types::InputFrame>()
@@ -106,6 +108,46 @@ impl SearchSnapshot {
                         + max_candidate_text_bytes
                         + SEARCH_SOURCE.len()),
         }
+    }
+}
+
+/// 模型在输入路径外按完整字节校验并与词典绑定，运行时只读共享。
+#[derive(Debug)]
+pub struct LanguageSnapshot {
+    snapshot: LanguageModelSnapshot,
+    version: String,
+}
+
+impl LanguageSnapshot {
+    pub fn from_verified_tsv(
+        text: &str,
+        expected_sha256: &str,
+        lexicon: &SearchSnapshot,
+    ) -> Result<Self, CoreError> {
+        let version = hex(digest(&SHA256, text.as_bytes()).as_ref());
+        if version != expected_sha256 {
+            return Err(CoreError::new(
+                ErrorCode::InvalidConfig,
+                "语言模型实际SHA-256不符",
+            ));
+        }
+        let snapshot = LanguageModelSnapshot::from_tsv(text, &lexicon.lexicon, lexicon.version())
+            .map_err(|_| {
+            CoreError::new(ErrorCode::InvalidConfig, "语言模型格式、范围或词典版本不符")
+        })?;
+        Ok(Self { snapshot, version })
+    }
+
+    pub fn version(&self) -> &str {
+        &self.version
+    }
+
+    pub fn metadata(&self) -> &cloudleaf_search::ModelMetadata {
+        self.snapshot.metadata()
+    }
+
+    pub fn estimated_bytes(&self) -> usize {
+        self.snapshot.estimated_bytes() + std::mem::size_of::<Self>() + self.version.capacity() + 32
     }
 }
 
@@ -148,6 +190,8 @@ pub struct SearchPath {
 pub struct SearchDiagnostic {
     pub revision: u64,
     pub snapshot_version: String,
+    pub model_version: Option<String>,
+    pub context_entry_id: Option<String>,
     pub method: Method,
     pub ranker: Ranker,
     pub raw_input: String,
@@ -162,24 +206,83 @@ pub struct SearchDiagnostic {
 pub(crate) struct SentenceBackend {
     snapshot: Arc<SearchSnapshot>,
     config: Config,
+    language: Option<Arc<LanguageSnapshot>>,
+    left_word: Option<String>,
 }
 
 impl SentenceBackend {
     pub(crate) fn new(snapshot: Arc<SearchSnapshot>, config: Config) -> Result<Self, CoreError> {
+        Self::configured(snapshot, config, None, None)
+    }
+
+    pub(crate) fn configured(
+        snapshot: Arc<SearchSnapshot>,
+        config: Config,
+        language: Option<Arc<LanguageSnapshot>>,
+        left_word: Option<String>,
+    ) -> Result<Self, CoreError> {
         config
             .validate()
             .map_err(|_| CoreError::new(ErrorCode::InvalidConfig, "搜索配置无效"))?;
-        if matches!(config.ranker, Ranker::Bigram | Ranker::ContextRerank) {
+        let valid_model = match config.ranker {
+            Ranker::Structural | Ranker::Weighted => true,
+            Ranker::Lexical => language
+                .as_ref()
+                .is_some_and(|value| value.metadata().kind == "lexical"),
+            Ranker::Bigram | Ranker::ContextRerank => language
+                .as_ref()
+                .is_some_and(|value| value.metadata().kind == "bigram"),
+        };
+        if !valid_model
+            || language
+                .as_ref()
+                .is_some_and(|value| value.metadata().lexicon_sha256 != snapshot.version)
+            || left_word.as_ref().is_some_and(|id| {
+                config.ranker != Ranker::ContextRerank
+                    || snapshot
+                        .entries()
+                        .binary_search_by(|entry| entry.id.cmp(id))
+                        .is_err()
+            })
+        {
             return Err(CoreError::new(
                 ErrorCode::InvalidConfig,
-                "输入试验未提供历史评分模型",
+                "评分种类、上下文或模型词典绑定无效",
             ));
         }
-        Ok(Self { snapshot, config })
+        Ok(Self {
+            snapshot,
+            config,
+            language,
+            left_word,
+        })
     }
 
-    pub(crate) fn replace_snapshot(&mut self, snapshot: Arc<SearchSnapshot>) {
+    pub(crate) fn replace_snapshot(
+        &mut self,
+        snapshot: Arc<SearchSnapshot>,
+    ) -> Result<(), CoreError> {
+        if self
+            .language
+            .as_ref()
+            .is_some_and(|value| value.metadata().lexicon_sha256 != snapshot.version)
+        {
+            return Err(CoreError::new(
+                ErrorCode::InvalidConfig,
+                "先解除旧模型绑定，不能套用到新词典",
+            ));
+        }
         self.snapshot = snapshot;
+        Ok(())
+    }
+
+    pub(crate) fn reconfigured(
+        &self,
+        config: Config,
+        language: Option<Arc<LanguageSnapshot>>,
+        left_word: Option<String>,
+    ) -> Result<Self, CoreError> {
+        Self::configured(self.snapshot.clone(), config, language, left_word)
     }
 
     pub(crate) fn capacity_bounds(&self) -> SearchCapacityBounds {
@@ -190,6 +293,8 @@ impl SentenceBackend {
         let mut diagnostic = SearchDiagnostic {
             revision,
             snapshot_version: self.snapshot.version.clone(),
+            model_version: self.language.as_ref().map(|value| value.version.clone()),
+            context_entry_id: self.left_word.clone(),
             method: self.config.method,
             ranker: self.config.ranker,
             // 非法超长输入仍由InputEngine持有；诊断不另存无界副本或伪造截断原文。
@@ -208,7 +313,13 @@ impl SentenceBackend {
                 return (Vec::new(), diagnostic);
             }
         };
-        let result = match search_graph(&self.snapshot.lexicon, &graph, &self.config, None, None) {
+        let result = match search_graph(
+            &self.snapshot.lexicon,
+            &graph,
+            &self.config,
+            self.language.as_ref().map(|value| value.snapshot.model()),
+            self.left_word.as_deref(),
+        ) {
             Ok(result) => result,
             Err(error) => {
                 diagnostic.error = Some(error);
@@ -222,7 +333,13 @@ impl SentenceBackend {
         let mut candidates = Vec::with_capacity(result.candidates.len());
         diagnostic.paths = Vec::with_capacity(result.candidates.len());
         for path in result.candidates {
-            let id = candidate_id(&self.snapshot.version, input, &path, &graph);
+            let id = candidate_id(
+                &self.snapshot.version,
+                self.language.as_ref().map(|value| value.version()),
+                input,
+                &path,
+                &graph,
+            );
             let edges: Vec<_> = path
                 .edge_indices
                 .iter()
@@ -279,6 +396,7 @@ impl SentenceBackend {
 
 fn candidate_id(
     version: &str,
+    model_version: Option<&str>,
     raw: &str,
     path: &cloudleaf_search::Candidate,
     graph: &Lattice<'_>,
@@ -287,6 +405,10 @@ fn candidate_id(
     for value in ["cloudleaf-sentence-path-v1", version, raw] {
         hash.update(&(value.len() as u64).to_le_bytes());
         hash.update(value.as_bytes());
+    }
+    if let Some(version) = model_version {
+        hash.update(&(version.len() as u64).to_le_bytes());
+        hash.update(version.as_bytes());
     }
     for (id, index) in path.entry_ids.iter().zip(&path.edge_indices) {
         hash.update(&(id.len() as u64).to_le_bytes());

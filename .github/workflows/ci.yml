@@ -47,20 +47,25 @@ jobs:
         run: python scripts/benchmark.py --iterations 100 --output .local/m2-performance.json
       - name: Algorithm baseline and ablation
         run: python scripts/evaluate_algorithms.py --output-dir .local/algorithm-v1
+      - name: Build offline research tools
+        run: cargo build -p cloudleaf-input --examples --release --locked --offline
       - name: Upload Windows experimental input tools
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v4
         with:
-          name: input-round14-windows
+          name: input-round15-windows
           path: |
             target/release/cloudleaf-cli.exe
             target/release/cloudleaf-ime.exe
             target/release/cloudleaf_windows_ime.dll
+            target/release/examples/input_trace.exe
+            target/release/examples/train_language.exe
             LICENSE
             THIRD_PARTY_NOTICES.md
             licenses/windows/
             licenses/input-snapshot/
             docs/input-round14-design.md
+            docs/input-round15-design.md
           if-no-files-found: error
       - uses: actions/upload-artifact@v4
         with:

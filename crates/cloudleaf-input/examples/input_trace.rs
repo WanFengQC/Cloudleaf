@@ -1,13 +1,13 @@
 //! 显式研发事件轨迹，调用真实引擎；只在该工具输出自有样本原文。
-use cloudleaf_input::{InputConfig, InputEngine, SearchSnapshot};
+use cloudleaf_input::{InputConfig, InputEngine, LanguageSnapshot, SearchSnapshot};
 use cloudleaf_search::{Config, Method, Ranker};
 use cloudleaf_types::{InputEvent, Key};
 use std::{io::BufRead, sync::Arc, time::Instant};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<_> = std::env::args().skip(1).collect();
-    if args.len() != 2 {
-        return Err("usage: input_trace RUNTIME SHA256 < own-events.tsv".into());
+    if !matches!(args.len(), 2 | 4 | 5) {
+        return Err("usage: input_trace RUNTIME SHA256 [MODEL MODEL_SHA [structural|lexical|bigram]] < own-events.tsv".into());
     }
     let start = Instant::now();
     let text = std::fs::read_to_string(&args[0])?;
@@ -19,18 +19,42 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         snapshot.entries().len(),
         snapshot.estimated_bytes()
     );
-    let mut engine = InputEngine::with_search(
-        snapshot,
-        Config {
-            method: Method::PositionDag,
-            ranker: Ranker::Structural,
-            output_k: 10,
-            max_input_bytes: 64,
-            max_letters: 64,
-            ..Config::default()
-        },
-        InputConfig::default(),
-    )?;
+    let mut config = Config {
+        method: Method::PositionDag,
+        ranker: Ranker::Structural,
+        output_k: 10,
+        max_input_bytes: 64,
+        max_letters: 64,
+        ..Config::default()
+    };
+    let mut engine = if args.len() >= 4 {
+        let text = std::fs::read_to_string(&args[2])?;
+        let language = Arc::new(LanguageSnapshot::from_verified_tsv(
+            &text, &args[3], &snapshot,
+        )?);
+        config.ranker = match args
+            .get(4)
+            .map(String::as_str)
+            .unwrap_or(language.metadata().kind.as_str())
+        {
+            "structural" => Ranker::Structural,
+            "lexical" => Ranker::Lexical,
+            "bigram" => {
+                config.method = Method::ExactDag;
+                Ranker::Bigram
+            }
+            _ => return Err("unknown research ranker".into()),
+        };
+        println!(
+            "MODEL\t{}\t{}\t{:?}",
+            language.version(),
+            language.estimated_bytes(),
+            language.metadata()
+        );
+        InputEngine::with_language(snapshot, config, language, None, InputConfig::default())?
+    } else {
+        InputEngine::with_search(snapshot, config, InputConfig::default())?
+    };
     engine.handle(InputEvent::Activate);
     let mut commits = 0;
     let mut event_number = 0;

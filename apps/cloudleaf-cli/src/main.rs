@@ -6,7 +6,7 @@ use std::io::{self, BufRead};
 use std::process::ExitCode;
 
 use cloudleaf_dictionary::{Dictionary, PROTOTYPE_TSV};
-use cloudleaf_input::{InputConfig, InputEngine, SearchSnapshot};
+use cloudleaf_input::{InputConfig, InputEngine, LanguageSnapshot, SearchSnapshot};
 use cloudleaf_types::{InputEvent, InputFrame, InputMode, Key};
 use std::sync::Arc;
 
@@ -28,6 +28,8 @@ fn run() -> Result<(), String> {
     let mut benchmark_iterations = None;
     let mut search_path = None;
     let mut search_sha = None;
+    let mut language_path = None;
+    let mut language_sha = None;
     while let Some(arg) = args.next() {
         match arg.as_str() {
             "--help" | "-h" => {
@@ -36,6 +38,9 @@ fn run() -> Result<(), String> {
                 );
                 println!(
                     "整句试验：--search-lexicon <预检runtime.tsv> --search-sha <实际SHA256>；默认仍为原型引擎。"
+                );
+                println!(
+                    "独立研发评分：另加 --language-model <固定TSV> --language-sha <实际SHA256>；仅显式启用已预检的研究模型。"
                 );
                 return Ok(());
             }
@@ -46,6 +51,10 @@ fn run() -> Result<(), String> {
                 search_path = Some(args.next().ok_or("--search-lexicon 缺少路径")?)
             }
             "--search-sha" => search_sha = Some(args.next().ok_or("--search-sha 缺少SHA")?),
+            "--language-model" => {
+                language_path = Some(args.next().ok_or("--language-model 缺少路径")?)
+            }
+            "--language-sha" => language_sha = Some(args.next().ok_or("--language-sha 缺少SHA")?),
             "--benchmark" => {
                 let count = args
                     .next()
@@ -64,6 +73,11 @@ fn run() -> Result<(), String> {
         || (search_path.is_some() && dictionary_path.is_some())
     {
         return Err("试验搜索必须成对提供--search-lexicon和--search-sha，不能混用原型词典".into());
+    }
+    if language_path.is_some() != language_sha.is_some()
+        || (language_path.is_some() && search_path.is_none())
+    {
+        return Err("语言模型必须成对提供路径和SHA，并显式选择同版本搜索词典".into());
     }
     if usize::from(query.is_some())
         + usize::from(replay.is_some())
@@ -112,16 +126,44 @@ fn run() -> Result<(), String> {
                     snapshot.version(),
                     snapshot.entries().len()
                 );
-                InputEngine::with_search(
-                    Arc::new(snapshot),
-                    cloudleaf_search::Config {
-                        method: cloudleaf_search::Method::PositionDag,
-                        ranker: cloudleaf_search::Ranker::Structural,
-                        output_k: 10,
-                        ..cloudleaf_search::Config::default()
-                    },
-                    InputConfig::default(),
-                )
+                let snapshot = Arc::new(snapshot);
+                let mut config = cloudleaf_search::Config {
+                    method: cloudleaf_search::Method::PositionDag,
+                    ranker: cloudleaf_search::Ranker::Structural,
+                    output_k: 10,
+                    ..cloudleaf_search::Config::default()
+                };
+                if let Some(path) = language_path {
+                    let text = std::fs::read_to_string(path).map_err(|_| "语言模型无法读取")?;
+                    let language = Arc::new(
+                        LanguageSnapshot::from_verified_tsv(
+                            &text,
+                            language_sha.as_deref().unwrap(),
+                            &snapshot,
+                        )
+                        .map_err(|error| error.to_string())?,
+                    );
+                    println!(
+                        "显式研发语言模型：{} {:?}",
+                        language.version(),
+                        language.metadata()
+                    );
+                    config.ranker = if language.metadata().kind == "lexical" {
+                        cloudleaf_search::Ranker::Lexical
+                    } else {
+                        config.method = cloudleaf_search::Method::ExactDag;
+                        cloudleaf_search::Ranker::Bigram
+                    };
+                    InputEngine::with_language(
+                        snapshot,
+                        config,
+                        language,
+                        None,
+                        InputConfig::default(),
+                    )
+                } else {
+                    InputEngine::with_search(snapshot, config, InputConfig::default())
+                }
                 .map_err(|error| error.to_string())?
             }
             Err(error) => {

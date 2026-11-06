@@ -1,4 +1,4 @@
-use crate::{ErrorKind, SearchError};
+use crate::{ErrorKind, Lexicon, SearchError};
 use std::collections::{BTreeMap, BTreeSet};
 
 const BOS: &str = "<bos>";
@@ -11,6 +11,7 @@ pub struct BigramModel {
     vocabulary: BTreeSet<String>,
     pairs: BTreeMap<(String, String), u64>,
     totals: BTreeMap<String, u64>,
+    lexical: BTreeMap<String, u64>,
 }
 
 impl BigramModel {
@@ -33,6 +34,7 @@ impl BigramModel {
             vocabulary: BTreeSet::from([EOS.into(), UNK.into()]),
             pairs: BTreeMap::new(),
             totals: BTreeMap::new(),
+            lexical: BTreeMap::new(),
         };
         for sequence in sequences {
             let mut previous = BOS;
@@ -74,6 +76,316 @@ impl BigramModel {
             self.totals.get(previous).copied().unwrap_or(0) + self.vocabulary.len() as u64;
         log2_fixed(numerator) - log2_fixed(denominator)
     }
+
+    pub fn lexical_units(&self, id: &str) -> Option<i64> {
+        self.lexical.get(id).map(|count| log2_fixed(count + 1))
+    }
+
+    pub fn has_transitions(&self) -> bool {
+        !self.pairs.is_empty()
+    }
+
+    pub fn has_lexical_signal(&self) -> bool {
+        !self.lexical.is_empty()
+    }
+
+    /// 固定Rust1.90、BTree节点至少五项的布局估计，不是allocator硬上界。
+    pub fn estimated_bytes(&self) -> usize {
+        let node = |len: usize, item: usize| (len.div_ceil(5) + 1) * (32 + 12 * 8 + 11 * item);
+        std::mem::size_of::<Self>()
+            + self.vocabulary.iter().map(String::capacity).sum::<usize>()
+            + self
+                .pairs
+                .keys()
+                .map(|(a, b)| a.capacity() + b.capacity())
+                .sum::<usize>()
+            + self.totals.keys().map(String::capacity).sum::<usize>()
+            + self.lexical.keys().map(String::capacity).sum::<usize>()
+            + node(self.vocabulary.len(), std::mem::size_of::<String>())
+            + node(
+                self.pairs.len(),
+                std::mem::size_of::<((String, String), u64)>(),
+            )
+            + node(self.totals.len(), std::mem::size_of::<(String, u64)>())
+            + node(self.lexical.len(), std::mem::size_of::<(String, u64)>())
+    }
+}
+
+/// 固定来源声明不构成生产批准；本格式只接收显式研发材料。
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct ModelMetadata {
+    pub lexicon_sha256: String,
+    pub source_sha256: String,
+    pub source_id: String,
+    pub license_id: String,
+    pub tokenization: String,
+    pub usage: String,
+    pub kind: String,
+    pub training_split: String,
+}
+
+#[derive(Clone, Debug)]
+pub struct LanguageModelSnapshot {
+    metadata: ModelMetadata,
+    model: BigramModel,
+}
+
+const META_KEYS: [&str; 8] = [
+    "lexicon_sha256",
+    "source_sha256",
+    "source_id",
+    "license_id",
+    "tokenization",
+    "usage",
+    "kind",
+    "training_split",
+];
+
+impl LanguageModelSnapshot {
+    pub fn metadata(&self) -> &ModelMetadata {
+        &self.metadata
+    }
+
+    pub fn estimated_bytes(&self) -> usize {
+        let m = &self.metadata;
+        self.model.estimated_bytes()
+            + std::mem::size_of::<ModelMetadata>()
+            + [
+                &m.lexicon_sha256,
+                &m.source_sha256,
+                &m.source_id,
+                &m.license_id,
+                &m.tokenization,
+                &m.usage,
+                &m.kind,
+                &m.training_split,
+            ]
+            .iter()
+            .map(|value| value.capacity())
+            .sum::<usize>()
+    }
+    pub fn model(&self) -> &BigramModel {
+        &self.model
+    }
+
+    pub fn from_tsv(
+        text: &str,
+        lexicon: &Lexicon,
+        expected_lexicon: &str,
+    ) -> Result<Self, SearchError> {
+        let invalid =
+            || SearchError::new(ErrorKind::InvalidModel, "固定语言模型格式、引用或预算无效");
+        if text.len() > 16 * 1024 * 1024 || text.contains('\r') || !text.ends_with('\n') {
+            return Err(invalid());
+        }
+        let mut lines = text.lines();
+        if lines.next() != Some("# cloudleaf-language-v1") {
+            return Err(invalid());
+        }
+        let mut values = Vec::new();
+        for key in META_KEYS {
+            let (actual, value) = lines
+                .next()
+                .and_then(|line| line.split_once('\t'))
+                .ok_or_else(invalid)?;
+            if actual != key
+                || value.is_empty()
+                || value.len() > 256
+                || value.chars().any(char::is_control)
+            {
+                return Err(invalid());
+            }
+            values.push(value.to_owned());
+        }
+        if lines.next() != Some("previous\tnext\tcount") {
+            return Err(invalid());
+        }
+        let metadata = ModelMetadata {
+            lexicon_sha256: values[0].clone(),
+            source_sha256: values[1].clone(),
+            source_id: values[2].clone(),
+            license_id: values[3].clone(),
+            tokenization: values[4].clone(),
+            usage: values[5].clone(),
+            kind: values[6].clone(),
+            training_split: values[7].clone(),
+        };
+        let sha = |value: &str| {
+            value.len() == 64
+                && value
+                    .bytes()
+                    .all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b))
+        };
+        if !sha(&metadata.lexicon_sha256)
+            || !sha(&metadata.source_sha256)
+            || metadata.lexicon_sha256 != expected_lexicon
+            || metadata.training_split != "train"
+            || !matches!(metadata.usage.as_str(), "mechanical" | "research_only")
+            || !matches!(metadata.kind.as_str(), "lexical" | "bigram")
+        {
+            return Err(invalid());
+        }
+        let ids: BTreeSet<&str> = lexicon
+            .entries()
+            .iter()
+            .map(|entry| entry.id.as_str())
+            .collect();
+        let mut model = BigramModel {
+            vocabulary: BTreeSet::from([EOS.into(), UNK.into()]),
+            pairs: BTreeMap::new(),
+            totals: BTreeMap::new(),
+            lexical: BTreeMap::new(),
+        };
+        let mut rows = 0;
+        let mut incoming = BTreeMap::<String, u64>::new();
+        for line in lines {
+            rows += 1;
+            if rows > 200_000 {
+                return Err(invalid());
+            }
+            let fields: Vec<_> = line.split('\t').collect();
+            if fields.len() != 3 || !fields[2].bytes().all(|b| b.is_ascii_digit()) {
+                return Err(invalid());
+            }
+            let count = fields[2].parse::<u64>().map_err(|_| invalid())?;
+            if count == 0 || count > 1_000_000_000_000 {
+                return Err(invalid());
+            }
+            let (previous, next) = (fields[0], fields[1]);
+            if metadata.kind == "lexical" {
+                if previous != "<lexical>"
+                    || !ids.contains(next)
+                    || model.lexical.insert(next.into(), count).is_some()
+                {
+                    return Err(invalid());
+                }
+            } else {
+                if (previous != BOS && !ids.contains(previous))
+                    || (next != EOS && !ids.contains(next))
+                    || model
+                        .pairs
+                        .insert((previous.into(), next.into()), count)
+                        .is_some()
+                {
+                    return Err(invalid());
+                }
+                model.vocabulary.insert(next.into());
+                if previous != BOS {
+                    model.vocabulary.insert(previous.into());
+                }
+                *model.totals.entry(previous.into()).or_default() += count;
+                *incoming.entry(next.into()).or_default() += count;
+            }
+        }
+        if rows == 0 {
+            return Err(invalid());
+        }
+        if metadata.kind == "bigram" {
+            let bos = model.totals.get(BOS).copied().unwrap_or(0);
+            if bos == 0
+                || bos > 100_000
+                || incoming.get(EOS).copied().unwrap_or(0) != bos
+                || model.totals.values().sum::<u64>() > 1_100_000
+                || ids.iter().any(|id| {
+                    model.totals.get(*id).copied().unwrap_or(0)
+                        != incoming.get(*id).copied().unwrap_or(0)
+                })
+            {
+                return Err(invalid());
+            }
+            let from_bos = reachable(&model.pairs, BOS, false);
+            let to_eos = reachable(&model.pairs, EOS, true);
+            if model.pairs.keys().any(|(previous, next)| {
+                !from_bos.contains(previous.as_str()) || !to_eos.contains(next.as_str())
+            }) {
+                return Err(invalid());
+            }
+        }
+        Ok(Self { metadata, model })
+    }
+
+    /// 离线调用，元数据和序列只在边界校验，输入查询不调用训练器。
+    pub fn train(
+        metadata_header: &str,
+        lexicon: &Lexicon,
+        expected_lexicon: &str,
+        sequences: &[Vec<String>],
+    ) -> Result<Self, SearchError> {
+        if metadata_header.lines().count() != 10
+            || !metadata_header.ends_with("previous\tnext\tcount\n")
+        {
+            return Err(SearchError::new(
+                ErrorKind::InvalidModel,
+                "训练元数据不能携带计数",
+            ));
+        }
+        let trained = BigramModel::train(sequences)?;
+        let mut payload = metadata_header.to_owned();
+        for ((previous, next), count) in &trained.pairs {
+            payload.push_str(&format!("{previous}\t{next}\t{count}\n"));
+        }
+        let snapshot = Self::from_tsv(&payload, lexicon, expected_lexicon)?;
+        if snapshot.metadata.kind != "bigram" {
+            return Err(SearchError::new(
+                ErrorKind::InvalidModel,
+                "训练入口只接受独立序列bigram",
+            ));
+        }
+        Ok(snapshot)
+    }
+
+    pub fn to_tsv(&self) -> String {
+        let m = &self.metadata;
+        let values = [
+            &m.lexicon_sha256,
+            &m.source_sha256,
+            &m.source_id,
+            &m.license_id,
+            &m.tokenization,
+            &m.usage,
+            &m.kind,
+            &m.training_split,
+        ];
+        let mut output = String::from("# cloudleaf-language-v1\n");
+        for (key, value) in META_KEYS.iter().zip(values) {
+            output.push_str(&format!("{key}\t{value}\n"));
+        }
+        output.push_str("previous\tnext\tcount\n");
+        if m.kind == "lexical" {
+            for (id, count) in &self.model.lexical {
+                output.push_str(&format!("<lexical>\t{id}\t{count}\n"));
+            }
+        } else {
+            for ((previous, next), count) in &self.model.pairs {
+                output.push_str(&format!("{previous}\t{next}\t{count}\n"));
+            }
+        }
+        output
+    }
+}
+
+fn reachable<'a>(
+    pairs: &'a BTreeMap<(String, String), u64>,
+    start: &'a str,
+    reverse: bool,
+) -> BTreeSet<&'a str> {
+    let mut outgoing = BTreeMap::<&str, Vec<&str>>::new();
+    for (previous, next) in pairs.keys() {
+        let (from, to) = if reverse {
+            (next.as_str(), previous.as_str())
+        } else {
+            (previous.as_str(), next.as_str())
+        };
+        outgoing.entry(from).or_default().push(to);
+    }
+    let mut visited = BTreeSet::new();
+    let mut pending = vec![start];
+    while let Some(node) = pending.pop() {
+        if visited.insert(node) {
+            pending.extend(outgoing.get(node).into_iter().flatten().copied());
+        }
+    }
+    visited
 }
 
 /// 以1024为单位的整数二进制对数；避免浮点平台舍入进入候选平局。

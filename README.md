@@ -86,3 +86,9 @@ python scripts/evaluate_algorithms.py --output-dir .local/algorithm-v1
 产品核心不直接写日志，不保存完整输入历史。候选注释不进入提交文本；提交失败保留请求，显式重试需要新 ID；宿主先确认提交，再派发下一事件。日志及错误规范详见[设计约定](docs/m1-m2-design.md)。
 
 代码与项目手写数据采用 MIT 许可证；来源见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。[算法设计](docs/algorithm-design.md)、[平台契约](docs/core-platform-contract.md)及[Windows设计](docs/windows-tsf-design.md)定义后续并行边界；契约模型测试不等于TSF实装。[M1/M2任务记录](docs/m1-m2-tasks.md)保留历史成果。
+
+## 显式研发语言评分
+
+在预检的固定词典参数后增加`--language-model <TSV> --language-sha <SHA256>`，CLI才加载独立模型。Lexical以结构分为先、只在结构平局时比较词汇观测；Bigram使用保留上一词状态的ExactDag。模型须与完整词典SHA及stable entry ID对应，当前格式仅接收`mechanical/research_only`训练材料，不能把原始研究计数标成生产频率。默认宿主和输入引擎保持原路径。
+
+离线训练入口为`cargo run -p cloudleaf-input --example train_language --release --locked --offline -- RUNTIME RUNTIME_SHA SEQUENCES METADATA_HEADER NEW_OUTPUT`。序列原件逐行使用stable entry ID、以单个空格分词，元数据记录实际原件SHA、来源、许可、分词协议和train划分。该工具复用既有Bigram训练器、校验原件和词典身份，拒绝覆盖输出；不会生成授权、人工gold或自动启用产物。按键路径只使用预加载只读模型。格式和限制见[Round 15设计](docs/input-round15-design.md)。
