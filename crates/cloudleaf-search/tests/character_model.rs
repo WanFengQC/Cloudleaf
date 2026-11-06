@@ -97,3 +97,17 @@ fn unknown_characters_and_resource_failure_keep_explicit_semantics() {
     assert!(exhausted.statistics.budget.is_some());
     assert_eq!(exhausted.raw_fallback, "mana");
 }
+
+#[test]
+fn precompiled_entry_cache_rejects_a_different_lexicon_instance() {
+    let lex = lexicon(false);
+    let model = LanguageModelSnapshot::train(&metadata(), &lex, SHA, &sequences()).unwrap();
+    let cfg = Config { ranker: Ranker::CharacterBigram, ..Config::default() };
+    let cloned = lex.clone();
+    let graph = Lattice::build(&cloned, "ma", &cfg).unwrap();
+    assert!(search_graph(&cloned, &graph, &cfg, Some(model.model()), None).is_ok());
+    for other in [lexicon(false), lexicon(true)] {
+        let graph = Lattice::build(&other, "mana", &cfg).unwrap();
+        assert!(search_graph(&other, &graph, &cfg, Some(model.model()), None).is_err());
+    }
+}
