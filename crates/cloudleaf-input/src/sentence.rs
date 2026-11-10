@@ -38,7 +38,11 @@ impl SearchSnapshot {
                 let letters = entry.pinyin.bytes().filter(|byte| *byte != b' ').count();
                 let last = entry.pinyin.rsplit(' ').next().unwrap().len();
                 // 最后一个音节可为前缀；不能按完整读音长度低估每消耗字母的输出。
-                entry.text.len().div_ceil(letters - last + 1)
+                entry
+                    .text
+                    .len()
+                    .div_ceil(letters - last + 1)
+                    .max(entry.text.len().div_ceil(entry.pinyin.split(' ').count()))
             })
             .max()
             .unwrap_or(0);
@@ -86,7 +90,10 @@ impl SearchSnapshot {
         // 每条边至少消耗一个ASCII字母；末音节前缀仍只增加一个词条。
         let diagnostic_path_bytes = std::mem::size_of::<SearchPath>()
             + CANDIDATE_ID_BYTES
-            + INPUT_BYTES * (std::mem::size_of::<EdgeSource>() + self.max_edge_source_bytes);
+            + INPUT_BYTES * (std::mem::size_of::<EdgeSource>() + self.max_edge_source_bytes)
+            // 最多64个非零消耗音节；每弧两条模糊规则或一条编辑，字符串与结构分开计费。
+            + INPUT_BYTES * (std::mem::size_of::<cloudleaf_pinyin::PhoneticArc>()
+                + 2 * std::mem::size_of::<cloudleaf_pinyin::PhoneticChange>() + 128);
         SearchCapacityBounds {
             max_input_bytes: INPUT_BYTES,
             max_candidates: candidates,
@@ -97,7 +104,7 @@ impl SearchSnapshot {
             max_diagnostic_bytes: std::mem::size_of::<SearchDiagnostic>()
                 + CANDIDATE_ID_BYTES
                 + CANDIDATE_ID_BYTES
-                + 128
+                + 1024
                 + INPUT_BYTES
                 + candidates * diagnostic_path_bytes,
             max_frame_bytes: std::mem::size_of::<cloudleaf_types::InputFrame>()
@@ -176,6 +183,7 @@ pub struct EdgeSource {
     pub source: String,
     pub source_record_id: String,
     pub license_id: String,
+    pub interpretation: Option<cloudleaf_search::EdgeInterpretation>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -201,6 +209,8 @@ pub struct SearchDiagnostic {
     pub statistics: Statistics,
     pub paths: Vec<SearchPath>,
     pub error: Option<SearchError>,
+    pub scheme_version: Option<String>,
+    pub scheme_statistics: Option<cloudleaf_search::SchemeStatistics>,
 }
 
 pub(crate) struct SentenceBackend {
@@ -208,6 +218,7 @@ pub(crate) struct SentenceBackend {
     config: Config,
     language: Option<Arc<LanguageSnapshot>>,
     left_word: Option<String>,
+    scheme: cloudleaf_pinyin::SchemeConfig,
 }
 
 impl SentenceBackend {
@@ -265,6 +276,7 @@ impl SentenceBackend {
             config,
             language,
             left_word,
+            scheme: cloudleaf_pinyin::SchemeConfig::default(),
         })
     }
 
@@ -294,7 +306,16 @@ impl SentenceBackend {
         language: Option<Arc<LanguageSnapshot>>,
         left_word: Option<String>,
     ) -> Result<Self, CoreError> {
-        Self::configured(self.snapshot.clone(), config, language, left_word)
+        let mut replacement = Self::configured(self.snapshot.clone(), config, language, left_word)?;
+        replacement.scheme = self.scheme.clone();
+        Ok(replacement)
+    }
+
+    pub(crate) fn scheme(&self) -> &cloudleaf_pinyin::SchemeConfig {
+        &self.scheme
+    }
+    pub(crate) fn set_scheme(&mut self, scheme: cloudleaf_pinyin::SchemeConfig) {
+        self.scheme = scheme;
     }
 
     pub(crate) fn capacity_bounds(&self) -> SearchCapacityBounds {
@@ -317,14 +338,22 @@ impl SentenceBackend {
             statistics: Statistics::default(),
             paths: Vec::new(),
             error: None,
+            scheme_version: (!self.scheme.is_default()).then(|| self.scheme.version_id()),
+            scheme_statistics: None,
         };
-        let graph = match Lattice::build(&self.snapshot.lexicon, input, &self.config) {
+        let graph = match Lattice::build_with_scheme(
+            &self.snapshot.lexicon,
+            input,
+            &self.config,
+            &self.scheme,
+        ) {
             Ok(graph) => graph,
             Err(error) => {
                 diagnostic.error = Some(error);
                 return (Vec::new(), diagnostic);
             }
         };
+        diagnostic.scheme_statistics = graph.scheme_statistics().cloned();
         let result = match search_graph(
             &self.snapshot.lexicon,
             &graph,
@@ -369,6 +398,7 @@ impl SentenceBackend {
                         source: entry.source.clone(),
                         source_record_id: entry.source_record_id.clone(),
                         license_id: entry.license_id.clone(),
+                        interpretation: graph.interpretation(*index).cloned(),
                     }
                 })
                 .collect();
@@ -377,14 +407,17 @@ impl SentenceBackend {
             } else {
                 None
             };
-            let match_kind = if edges
+            let match_kind = edges
                 .iter()
-                .any(|edge| edge.match_kind == MatchKind::Prefix)
-            {
-                cloudleaf_types::MatchKind::Prefix
-            } else {
-                cloudleaf_types::MatchKind::Exact
-            };
+                .map(|edge| match edge.match_kind {
+                    MatchKind::Exact => cloudleaf_types::MatchKind::Exact,
+                    MatchKind::Prefix => cloudleaf_types::MatchKind::Prefix,
+                    MatchKind::Abbreviation => cloudleaf_types::MatchKind::Abbreviation,
+                    MatchKind::Fuzzy => cloudleaf_types::MatchKind::Fuzzy,
+                    MatchKind::Correction => cloudleaf_types::MatchKind::Correction,
+                })
+                .max()
+                .unwrap_or(cloudleaf_types::MatchKind::Exact);
             diagnostic.paths.push(SearchPath {
                 candidate_id: id.clone(),
                 score: path.score,
@@ -418,6 +451,10 @@ fn candidate_id(
         hash.update(&(value.len() as u64).to_le_bytes());
         hash.update(value.as_bytes());
     }
+    if let Some(version) = graph.scheme_version() {
+        hash.update(&(version.len() as u64).to_le_bytes());
+        hash.update(version.as_bytes());
+    }
     if let Some(version) = model_version {
         hash.update(&(version.len() as u64).to_le_bytes());
         hash.update(version.as_bytes());
@@ -430,6 +467,11 @@ fn candidate_id(
             hash.update(&(value as u64).to_le_bytes());
         }
         hash.update(&[u8::from(edge.kind == MatchKind::Prefix)]);
+        if let Some(evidence) = graph.interpretation(*index) {
+            let source = format!("{evidence:?}");
+            hash.update(&(source.len() as u64).to_le_bytes());
+            hash.update(source.as_bytes());
+        }
     }
     hex(hash.finish().as_ref())
 }

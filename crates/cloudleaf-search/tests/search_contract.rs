@@ -356,6 +356,7 @@ fn budgets_are_explicit_and_resident_high_water_includes_active_and_clone() {
                 Budget::GraphEdges => cfg.max_edges = 1,
                 Budget::Expansions => cfg.max_expansions = 1,
                 Budget::ResidentPaths => cfg.max_resident_paths = 1,
+                Budget::Interpretation | Budget::Intersection => panic!("本组仅枚举原三个搜索预算"),
             }
             let graph = Lattice::build(&lex, "anana", &cfg).unwrap();
             let result = search_graph(&lex, &graph, &cfg, None, None).unwrap();

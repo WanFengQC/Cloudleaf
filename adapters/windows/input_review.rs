@@ -85,6 +85,15 @@ pub(super) fn load_host(
     expected_sha256: &str,
     model: Option<(&str, &str)>,
 ) -> Result<(Shared, String, usize)> {
+    load_host_k(runtime, expected_sha256, model, 5)
+}
+
+pub(super) fn load_host_k(
+    runtime: &str,
+    expected_sha256: &str,
+    model: Option<(&str, &str)>,
+    output_k: usize,
+) -> Result<(Shared, String, usize)> {
     let text = std::fs::read_to_string(Path::new(runtime))
         .map_err(|_| Error::new(E_FAIL, "无法读取指定研发词典"))?;
     let snapshot = Arc::new(
@@ -98,7 +107,7 @@ pub(super) fn load_host(
         ranker: cloudleaf_search::Ranker::Structural,
         max_input_bytes: 64,
         max_letters: 64,
-        output_k: 5,
+        output_k,
         ..cloudleaf_search::Config::default()
     };
     let host = if let Some((path, expected)) = model {

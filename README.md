@@ -107,4 +107,8 @@ Round16另有显式`kind=character_bigram`、`tokenization=unicode-scalar-v1`：
 
 Windows研发程序的`cloudleaf-ime.exe --interactive-input-host RUNTIME SHA [MODEL MODEL_SHA]`创建普通键盘测试窗口，复用实际Host、双引擎和候选窗口；不注册或激活TSF。请先点击窗口空白区再键入拼音，Space/数字选词、方向键/翻页、Enter确认或未识别原文回退、Escape取消。正文只写入本窗口拥有的文档；Unknown按钮模拟写后未知，停止继续输入，人工核对后才能点击新会话，绝不重放旧事务。这个入口没有粘贴或UTF-16代理对输入支持，不构成系统应用验收。
 
+Round18在同一隔离窗口增加F6循环全拼/全拼简拼混合/小鹤双拼、F7切换n/l双向模糊音、F8切换有界全拼纠错。窗口显示当前配置；进入双拼会关闭纠错，双拼下F8拒绝启用（未实现双拼纠错）。修饰键组合不切换设置。仅该交互入口显式使用K10、每页5条以验证多页，原只读review/benchmark仍K5；默认核心、词典及系统设置不变。
+
+平台无关API为`InputEngine::reconfigure_scheme(SchemeConfig)`，需要显式整句搜索后端。事务待确认/失败时拒绝切换，原文和光标保留、revision增加，旧候选不可再提交。七组模糊音逐项/方向配置；拼写纠错仅在整个按键串不存在完整精确音节解释时尝试一处编辑，不能由词典缺词推断拼错。精确、前缀、缩写、模糊及纠错解释成本先作独立全序比较，不叠加到研究语言概率。原始按键不改写，超过解释/交集/搜索预算保留原文回退。默认全部关闭，微软/自然码尚未核实完整原表，未实现。
+
 `--benchmark-input-host RUNTIME SHA MODEL MODEL_SHA EVENTS_TSV`复用同一隔离控制器，分别记录两个引擎、语义比较、候选帧和内存文档事务；无窗口模式明确不测HWND更新。实际键盘窗口另外输出候选窗口更新时间。两者都不是原生TSF或其他应用的端到端延迟。

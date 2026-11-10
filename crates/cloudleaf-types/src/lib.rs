@@ -125,6 +125,9 @@ pub enum InputEvent {
 pub enum MatchKind {
     Exact,
     Prefix,
+    Abbreviation,
+    Fuzzy,
+    Correction,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]

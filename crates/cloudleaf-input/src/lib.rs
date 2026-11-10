@@ -7,6 +7,10 @@ pub use sentence::{
 };
 
 use cloudleaf_dictionary::Dictionary;
+pub use cloudleaf_pinyin::{
+    CorrectionConfig, DoublePinyinLayout, FuzzyDirection, FuzzyPair, FuzzyRule, PinyinScheme,
+    SchemeConfig,
+};
 use cloudleaf_types::{
     Candidate, CommitRequest, CoreError, ErrorCode, EventResult, InputEvent, InputFrame, InputMode,
     InputState, Key, KeyDisposition,
@@ -169,6 +173,40 @@ impl InputEngine {
         self.sentence
             .as_ref()
             .map(sentence::SentenceBackend::capacity_bounds)
+    }
+
+    pub fn pinyin_scheme(&self) -> Option<&SchemeConfig> {
+        self.sentence
+            .as_ref()
+            .map(sentence::SentenceBackend::scheme)
+    }
+
+    /// 平台双引擎先共同预检，再在所属线程内一次应用；不改变待确认事务。
+    pub fn validate_scheme_config(&self, scheme: &SchemeConfig) -> Result<(), CoreError> {
+        if self.pending_commit.is_some() || self.failed_commit.is_some() {
+            return Err(CoreError::new(
+                ErrorCode::CommitPending,
+                "事务未完成，不能切换输入方案",
+            ));
+        }
+        if self.revision == u64::MAX || self.sentence.is_none() {
+            return Err(CoreError::new(
+                ErrorCode::InvalidConfig,
+                "当前后端或修订号不支持输入方案",
+            ));
+        }
+        scheme.validate()
+    }
+
+    pub fn reconfigure_scheme(&mut self, scheme: SchemeConfig) -> Result<(), CoreError> {
+        self.validate_scheme_config(&scheme)?;
+        self.sentence.as_mut().unwrap().set_scheme(scheme);
+        let inactive = self.state == InputState::Inactive;
+        self.refresh();
+        if inactive {
+            self.state = InputState::Inactive;
+        }
+        Ok(())
     }
 
     /// 未确定的提交先由原事务收尾，不能通过换词典解除失败保护。

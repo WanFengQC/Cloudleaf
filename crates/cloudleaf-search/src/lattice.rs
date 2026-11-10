@@ -6,6 +6,9 @@ use std::collections::BTreeSet;
 pub enum MatchKind {
     Exact,
     Prefix,
+    Abbreviation,
+    Fuzzy,
+    Correction,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -28,6 +31,7 @@ pub struct Lattice<'a> {
     pub(crate) edges: Vec<Edge>,
     pub(crate) outgoing: Vec<Vec<usize>>,
     pub(crate) budget: Option<Budget>,
+    pub(crate) interpreted: Option<crate::schemes::Interpreted>,
 }
 
 impl<'a> Lattice<'a> {
@@ -93,6 +97,7 @@ impl<'a> Lattice<'a> {
             waiting,
             edges: Vec::new(),
             budget: None,
+            interpreted: None,
         };
         if waiting {
             return Ok(graph);

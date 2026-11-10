@@ -28,3 +28,7 @@ CL-009固定CC-CEDICT包保留CC-BY-SA4、来源、署名与修改说明，仅�
 # Round 16 本地上下文研究材料
 
 Tatoeba Mandarin Chinese官方2026-10-31周导出采用CC BY 2.0 FR，来源与条款见 https://tatoeba.org/en/downloads 、https://tatoeba.org/en/terms_of_use 和 https://creativecommons.org/licenses/by/2.0/fr/ 。本轮原件、来源/owner/句URL及确定性派生模型保留Git外，仅research_only，不随本工具包分发或自动批准用于生产。owner不保证是原作者；正式派生内容发布前仍须核实完整署名与原文权利处理。许可原文保留于`licenses/input-context/CC-BY-2.0-FR.txt`。仅处理中文文本，不含音频，不将学习例句计数称为现代词频、人工gold或输入法准确率。
+
+## Round18 小鹤双拼事实规则
+
+小鹤纯双拼的键位事实按作者[规则说明](https://flypy.cc/help/up.md)、[键位图](https://flypy.cc/images/hejp.png)及[零声母图](https://flypy.cc/images/uplu.png)独立实现，固定映射标识`xiaohe-flypy-up-2026-09-27-v1`。署名小鹤，规则页面原字节SHA256为`67b3069d9773b36b7e2b8153997158d83ed832cd4ec37963aea6d48d12524419`。不复制第三方输入核心、形码或词库；官网图文原件留Git外供核验，不推定这些素材取得再分发授权，不加入产物。微软和自然码完整原始规则未核实，本轮不提供猜测实现。

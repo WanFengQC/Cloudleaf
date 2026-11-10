@@ -14,6 +14,8 @@ pub enum Phase {
     FinalSortDedup,
     ContextRerank,
     Materialize,
+    SchemeInterpret,
+    SchemeIntersection,
 }
 
 impl Phase {
@@ -29,8 +31,59 @@ impl Phase {
             Self::FinalSortDedup => "final_sort_dedup",
             Self::ContextRerank => "context_rerank",
             Self::Materialize => "materialize",
+            Self::SchemeInterpret => "scheme_interpret",
+            Self::SchemeIntersection => "scheme_intersection",
         }
     }
+}
+
+/// 单独观测新方案的映射和词典交集；默认查询仍走原入口，无额外读钟。
+pub fn profile_scheme_query<'a>(
+    lexicon: &'a Lexicon,
+    input: &str,
+    config: &Config,
+    scheme: &cloudleaf_pinyin::SchemeConfig,
+    model: Option<&BigramModel>,
+) -> (
+    Result<(Lattice<'a>, SearchResult), SearchError>,
+    Profile,
+    cloudleaf_pinyin::InterpretationProfile,
+) {
+    if scheme.is_default() {
+        let (result, profile) = profile_query(lexicon, input, config, model, None);
+        return (
+            result,
+            profile,
+            cloudleaf_pinyin::InterpretationProfile::default(),
+        );
+    }
+    let mut profile = Profile::default();
+    let mut interpretation = cloudleaf_pinyin::InterpretationProfile::default();
+    let total = profile.start(Phase::QueryTotal);
+    let result = (|| {
+        config.validate()?;
+        if input.len() > config.max_input_bytes {
+            return Err(SearchError::new(
+                crate::ErrorKind::InvalidInput,
+                "原始输入超过搜索预算",
+            ));
+        }
+        let stamp = profile.start(Phase::SchemeInterpret);
+        let (hypotheses, measured) = cloudleaf_pinyin::interpret_profiled(input, scheme);
+        interpretation = measured;
+        profile.stop(Phase::SchemeInterpret, stamp);
+        let hypotheses = hypotheses.map_err(|_| {
+            SearchError::new(crate::ErrorKind::InvalidInput, "输入方案配置或按键无效")
+        })?;
+        let stamp = profile.start(Phase::SchemeIntersection);
+        let graph = Lattice::from_phonetic(lexicon, input, config, scheme, hypotheses);
+        profile.stop(Phase::SchemeIntersection, stamp);
+        let graph = graph?;
+        crate::search::search_observed(lexicon, &graph, config, model, None, &mut profile)
+            .map(|result| (graph, result))
+    })();
+    profile.stop(Phase::QueryTotal, total);
+    (result, profile, interpretation)
 }
 
 #[derive(Clone, Debug, Default)]

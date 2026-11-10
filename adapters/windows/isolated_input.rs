@@ -61,6 +61,37 @@ impl LocalHost {
         self.retained.borrow_mut().clear();
         Ok(())
     }
+    pub fn switch_scheme(&self, config: cloudleaf_input::SchemeConfig) -> Result<InputFrame> {
+        self.host.check()?;
+        if self.host.quarantined.get() {
+            return Err(Error::new(E_FAIL, "提交结果未知，不能切换输入方案"));
+        }
+        let mut actual = self.host.engine.borrow_mut();
+        let mut projected = self.host.projection.borrow_mut();
+        // 两份只读预检全部成功后才替换，避免第二引擎拒绝时留下半次设置变化。
+        actual
+            .validate_scheme_config(&config)
+            .map_err(|_| Error::new(E_FAIL, "当前事务或方案配置不允许切换"))?;
+        projected
+            .validate_scheme_config(&config)
+            .map_err(|_| Error::new(E_FAIL, "投影事务或方案配置不允许切换"))?;
+        actual
+            .reconfigure_scheme(config.clone())
+            .map_err(|_| Error::new(E_FAIL, "输入方案应用失败"))?;
+        if projected.reconfigure_scheme(config).is_err() {
+            self.host.quarantined.set(true);
+            return Err(Error::new(E_FAIL, "双引擎设置未一致，已隔离且未写文档"));
+        }
+        let frame = actual.frame();
+        let mut projection_frame = projected.frame();
+        projection_frame.revision = frame.revision;
+        if frame != projection_frame {
+            self.host.quarantined.set(true);
+            return Err(Error::new(E_FAIL, "双引擎方案候选不一致，已隔离且未写文档"));
+        }
+        Ok(frame)
+    }
+
     fn retain(&self, material: &str) -> Result<()> {
         let mut retained = self.retained.borrow_mut();
         let separator = if retained.is_empty() { "" } else { "\r\n" };
@@ -260,9 +291,79 @@ impl Window {
             }
         }
     }
+    fn settings_key(self: &Rc<Self>, key: u16) -> Result<()> {
+        use cloudleaf_input::{
+            CorrectionConfig, DoublePinyinLayout, FuzzyDirection, FuzzyPair, FuzzyRule,
+            PinyinScheme,
+        };
+        let mut config = self
+            .local
+            .host
+            .engine
+            .borrow()
+            .pinyin_scheme()
+            .cloned()
+            .ok_or_else(|| Error::new(E_FAIL, "此后端不支持方案设置"))?;
+        if key == VK_F6.0 {
+            config.scheme = match config.scheme {
+                PinyinScheme::FullPinyin => PinyinScheme::AbbreviatedPinyin,
+                PinyinScheme::AbbreviatedPinyin => {
+                    PinyinScheme::DoublePinyin(DoublePinyinLayout::Xiaohe)
+                }
+                PinyinScheme::DoublePinyin(_) => PinyinScheme::FullPinyin,
+            };
+            if matches!(config.scheme, PinyinScheme::DoublePinyin(_)) {
+                config.correction = None;
+            }
+        } else if key == VK_F7.0 {
+            if config.fuzzy.iter().any(|rule| rule.pair == FuzzyPair::NL) {
+                config.fuzzy.retain(|rule| rule.pair != FuzzyPair::NL);
+            } else {
+                config.fuzzy.push(FuzzyRule {
+                    pair: FuzzyPair::NL,
+                    direction: FuzzyDirection::Both,
+                });
+            }
+        } else if key == VK_F8.0 {
+            if matches!(config.scheme, PinyinScheme::DoublePinyin(_)) {
+                return Err(Error::new(E_FAIL, "小鹤双拼尚不支持拼写纠错，设置未改变"));
+            }
+            config.correction = if config.correction.is_some() {
+                None
+            } else {
+                Some(CorrectionConfig::default())
+            };
+        }
+        let frame = self.local.switch_scheme(config)?;
+        self.update(frame)
+    }
+
     fn update(self: &Rc<Self>, frame: InputFrame) -> Result<()> {
+        let config = self
+            .local
+            .host
+            .engine
+            .borrow()
+            .pinyin_scheme()
+            .cloned()
+            .unwrap_or_default();
+        let name = match config.scheme {
+            cloudleaf_input::PinyinScheme::FullPinyin => "全拼",
+            cloudleaf_input::PinyinScheme::AbbreviatedPinyin => "全拼/简拼混合",
+            cloudleaf_input::PinyinScheme::DoublePinyin(_) => "小鹤双拼",
+        };
         let message = format!(
-            "拼音：{}  修订：{}  {:?}\r\n{}{}",
+            "方案：{name}  n/l模糊：{}  纠错：{}\r\n拼音：{}  修订：{}  {:?}\r\n{}{}",
+            if config.fuzzy.is_empty() {
+                "关"
+            } else {
+                "开"
+            },
+            if config.correction.is_none() {
+                "关"
+            } else {
+                "开"
+            },
             frame.preedit,
             frame.revision,
             frame.state,
@@ -301,7 +402,7 @@ impl Window {
             GetWindowRect(self.window.get(), &mut rect)?;
         }
         rect.left += 12;
-        rect.bottom = rect.top + 142;
+        rect.bottom = rect.top + 170;
         self.ui.borrow_mut().as_mut().unwrap().update(frame, rect)
     }
 }
@@ -322,10 +423,10 @@ unsafe extern "system" fn window_proc(
             match message {
                 WM_CREATE => {
                     view.window.set(window);
-                    CreateWindowExW(WINDOW_EX_STYLE::default(),w!("STATIC"),w!("直接键入拼音；Space/数字选词，方向键/翻页，Enter确认，未识别拼音原文回退，Esc取消。"),WS_CHILD|WS_VISIBLE,12,10,720,30,Some(window),None,None,None)?;
-                    view.status.set(CreateWindowExW(WINDOW_EX_STYLE::default(),w!("STATIC"),w!(""),WS_CHILD|WS_VISIBLE,12,44,720,56,Some(window),None,None,None)?);
+                    CreateWindowExW(WINDOW_EX_STYLE::default(),w!("STATIC"),w!("F6方案 / F7 n↔l / F8纠错；Space/数字选词，方向键/翻页，Enter确认/原文，Esc取消。"),WS_CHILD|WS_VISIBLE,12,10,720,30,Some(window),None,None,None)?;
+                    view.status.set(CreateWindowExW(WINDOW_EX_STYLE::default(),w!("STATIC"),w!(""),WS_CHILD|WS_VISIBLE,12,44,720,76,Some(window),None,None,None)?);
                     for (id,label,x,width) in [(1,"下一次提交注入Unknown",12,230),(2,"核对后开始新会话",260,210)] {
-                        CreateWindowExW(WINDOW_EX_STYLE::default(),w!("BUTTON"),PCWSTR(wide(label).as_ptr()),WS_CHILD|WS_VISIBLE,x,104,width,30,Some(window),Some(HMENU(id as *mut _)),None,None)?;
+                        CreateWindowExW(WINDOW_EX_STYLE::default(),w!("BUTTON"),PCWSTR(wide(label).as_ptr()),WS_CHILD|WS_VISIBLE,x,128,width,30,Some(window),Some(HMENU(id as *mut _)),None,None)?;
                     }
                     view.document.set(CreateWindowExW(WS_EX_CLIENTEDGE,w!("EDIT"),w!(""),WS_CHILD|WS_VISIBLE|WS_VSCROLL|WINDOW_STYLE(ES_READONLY as u32|ES_MULTILINE as u32|ES_AUTOVSCROLL as u32),12,320,720,200,Some(window),None,None,None)?);
                     // 只解绑本窗口及已创建子控件的继承IME；拼音由本隔离核心处理，不改变系统布局。
@@ -341,7 +442,18 @@ unsafe extern "system" fn window_proc(
                     Ok(LRESULT(0))
                 }
                 WM_KEYDOWN => {
-                    let key = match wparam.0 as u16 {
+                    let virtual_key = wparam.0 as u16;
+                    if matches!(virtual_key, x if x == VK_F6.0 || x == VK_F7.0 || x == VK_F8.0)
+                        && GetKeyState(i32::from(VK_CONTROL.0)) >= 0
+                        && GetKeyState(i32::from(VK_MENU.0)) >= 0
+                        && GetKeyState(i32::from(VK_SHIFT.0)) >= 0 {
+                        if let Err(error) = view.settings_key(virtual_key) {
+                            let message = wide(&format!("设置未改变：{}", error.message()));
+                            SetWindowTextW(view.status.get(), PCWSTR(message.as_ptr()))?;
+                        }
+                        return Ok(LRESULT(0));
+                    }
+                    let key = match virtual_key {
                         x if x==VK_BACK.0 => Some(Key::Backspace), x if x==VK_RETURN.0 => Some(Key::Enter), x if x==VK_ESCAPE.0 => Some(Key::Escape),
                         x if x==VK_LEFT.0 => Some(Key::Left),x if x==VK_RIGHT.0 => Some(Key::Right),x if x==VK_UP.0 => Some(Key::Up),x if x==VK_DOWN.0 => Some(Key::Down),x if x==VK_PRIOR.0 => Some(Key::PageUp),x if x==VK_NEXT.0 => Some(Key::PageDown),_=>None};
                     if let Some(key)=key { view.process(InputEvent::Key(key),None)?; }
@@ -367,7 +479,7 @@ unsafe extern "system" fn window_proc(
 }
 
 pub(crate) fn run(runtime: &str, runtime_sha: &str, model: Option<(&str, &str)>) -> Result<()> {
-    let (host, _, _) = super::input_review::load_host(runtime, runtime_sha, model)?;
+    let (host, _, _) = super::input_review::load_host_k(runtime, runtime_sha, model, 10)?;
     let view = Rc::new(Window {
         local: LocalHost::new(host)?,
         window: Cell::new(HWND::default()),
@@ -780,5 +892,122 @@ mod tests {
         assert_eq!(local.host.projection.borrow().frame(), projected_before);
         assert_eq!(before.preedit, "nihao");
         assert!(local.document.borrow().is_empty());
+    }
+
+    fn scheme_local() -> LocalHost {
+        let snapshot = Arc::new(SearchSnapshot::from_verified_tsv("# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\nnihao\tni hao\t你好\t\tunknown\t\tmechanical\tnihao\tMIT\nnonghu\tnong hu\t农户\t\tunknown\t\tmechanical\tnonghu\tMIT\nzhongguo\tzhong guo\t中国\t\tunknown\t\tmechanical\tzhongguo\tMIT\nni0\tni\t你\t\tunknown\t\tmechanical\tni0\tMIT\nni1\tni\t尼\t\tunknown\t\tmechanical\tni1\tMIT\nni2\tni\t泥\t\tunknown\t\tmechanical\tni2\tMIT\nni3\tni\t拟\t\tunknown\t\tmechanical\tni3\tMIT\nni4\tni\t逆\t\tunknown\t\tmechanical\tni4\tMIT\nni5\tni\t匿\t\tunknown\t\tmechanical\tni5\tMIT\nni6\tni\t妮\t\tunknown\t\tmechanical\tni6\tMIT\nni7\tni\t霓\t\tunknown\t\tmechanical\tni7\tMIT\nni8\tni\t腻\t\tunknown\t\tmechanical\tni8\tMIT\nni9\tni\t溺\t\tunknown\t\tmechanical\tni9\tMIT\nni10\tni\t呢\t\tunknown\t\tmechanical\tni10\tMIT\nni11\tni\t旎\t\tunknown\t\tmechanical\tni11\tMIT\n", "87fc5f6e465ef421da4428b4e0fa08c88907b850c932b9b8690294d3fac53ded").unwrap());
+        let config = cloudleaf_search::Config {
+            ranker: cloudleaf_search::Ranker::Structural,
+            method: cloudleaf_search::Method::PositionDag,
+            output_k: 10,
+            max_input_bytes: 64,
+            max_letters: 64,
+            ..Default::default()
+        };
+        LocalHost::new(Host::with_search(snapshot, config, InputConfig::default()).unwrap())
+            .unwrap()
+    }
+
+    #[test]
+    fn scheme_switch_preserves_raw_cursor_and_rejects_the_old_candidate() {
+        let local = scheme_local();
+        type_text(&local, "nihao");
+        local
+            .process(InputEvent::Key(Key::Left), None, &|_| {
+                CommitOutcome::Applied
+            })
+            .unwrap();
+        let before = local.host.engine.borrow().frame();
+        let config = cloudleaf_input::SchemeConfig {
+            scheme: cloudleaf_input::PinyinScheme::AbbreviatedPinyin,
+            ..Default::default()
+        };
+        let after = local.switch_scheme(config.clone()).unwrap();
+        assert_eq!(after.preedit, before.preedit);
+        assert_eq!(after.cursor, before.cursor);
+        assert!(after.revision > before.revision);
+        assert_eq!(local.host.engine.borrow().pinyin_scheme(), Some(&config));
+        assert_eq!(
+            local.host.projection.borrow().pinyin_scheme(),
+            Some(&config)
+        );
+        assert!(
+            local
+                .process(
+                    InputEvent::Key(Key::Space),
+                    Some((before.revision, before.candidates[0].id.clone())),
+                    &|_| panic!("旧候选不能写文档")
+                )
+                .is_err()
+        );
+        assert!(local.document.borrow().is_empty());
+    }
+
+    #[test]
+    fn failed_or_unknown_commit_blocks_settings_without_partial_change() {
+        for outcome in [CommitOutcome::NotApplied, CommitOutcome::Unknown] {
+            let local = scheme_local();
+            type_text(&local, "nihao");
+            local
+                .process(InputEvent::Key(Key::Space), None, &|_| outcome)
+                .unwrap();
+            let actual = local.host.engine.borrow().frame();
+            let projected = local.host.projection.borrow().frame();
+            let config = cloudleaf_input::SchemeConfig {
+                scheme: cloudleaf_input::PinyinScheme::AbbreviatedPinyin,
+                ..Default::default()
+            };
+            assert!(local.switch_scheme(config).is_err());
+            assert_eq!(local.host.engine.borrow().frame(), actual);
+            assert_eq!(local.host.projection.borrow().frame(), projected);
+            assert_eq!(
+                local.host.engine.borrow().pinyin_scheme(),
+                Some(&cloudleaf_input::SchemeConfig::default())
+            );
+            assert!(local.document.borrow().is_empty());
+        }
+    }
+
+    #[test]
+    fn projection_preflight_failure_never_changes_the_first_engine() {
+        let local = scheme_local();
+        type_text(&local, "nihao");
+        local
+            .host
+            .projection
+            .borrow_mut()
+            .handle(InputEvent::Key(Key::Space));
+        let actual = local.host.engine.borrow().frame();
+        let projected = local.host.projection.borrow().frame();
+        let config = cloudleaf_input::SchemeConfig {
+            scheme: cloudleaf_input::PinyinScheme::AbbreviatedPinyin,
+            ..Default::default()
+        };
+        assert!(local.switch_scheme(config).is_err());
+        assert_eq!(local.host.engine.borrow().frame(), actual);
+        assert_eq!(local.host.projection.borrow().frame(), projected);
+    }
+
+    #[test]
+    fn configured_host_keeps_page_selection_in_the_real_input_core() {
+        let local = scheme_local();
+        type_text(&local, "ni");
+        let before = local.host.engine.borrow().frame();
+        assert_eq!(before.candidates.len(), 10);
+        local
+            .process(InputEvent::Key(Key::PageDown), None, &|_| {
+                CommitOutcome::Applied
+            })
+            .unwrap();
+        let paged = local.host.engine.borrow().frame();
+        assert_eq!(paged.page_start, 5);
+        let expected = paged.candidates[6].text.clone();
+        local
+            .process(InputEvent::Key(Key::Char('2')), None, &|_| {
+                CommitOutcome::Applied
+            })
+            .unwrap();
+        assert_eq!(local.document.borrow().as_str(), expected);
+        assert_eq!(local.host.engine.borrow().frame().preedit, "");
     }
 }

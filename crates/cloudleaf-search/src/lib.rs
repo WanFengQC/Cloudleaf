@@ -5,13 +5,15 @@ mod lattice;
 mod lexicon;
 mod model;
 mod profiling;
+mod schemes;
 mod search;
 
 pub use cancellation::Cancellation;
 pub use lattice::{Edge, Lattice, MatchKind};
 pub use lexicon::{Entry, FrequencyKind, Lexicon, LexiconMemory, LoadLimits};
 pub use model::{BigramModel, LanguageModelSnapshot, ModelMetadata};
-pub use profiling::{Measurement, Phase, Profile, profile_query};
+pub use profiling::{Measurement, Phase, Profile, profile_query, profile_scheme_query};
+pub use schemes::{EdgeInterpretation, InterpretationCost, SchemeStatistics};
 pub use search::{
     Candidate, Features, SearchResult, Statistics, search_graph, search_graph_cancellable,
 };
@@ -88,6 +90,8 @@ pub enum Budget {
     GraphEdges,
     Expansions,
     ResidentPaths,
+    Interpretation,
+    Intersection,
 }
 
 /// 确定性工作预算；墙钟时间不参与剪枝。上界控制调用者配置的最坏资源范围。

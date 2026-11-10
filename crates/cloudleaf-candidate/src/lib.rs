@@ -60,6 +60,9 @@ fn rank(kind: MatchKind) -> u8 {
     match kind {
         MatchKind::Exact => 0,
         MatchKind::Prefix => 1,
+        MatchKind::Abbreviation => 2,
+        MatchKind::Fuzzy => 3,
+        MatchKind::Correction => 4,
     }
 }
 

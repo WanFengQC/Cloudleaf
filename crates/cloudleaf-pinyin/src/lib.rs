@@ -1,5 +1,17 @@
 //! 自研全拼分段；仅在最后一个音节允许前缀，不做模糊音或简拼猜测。
 
+mod scheme;
+pub use scheme::{
+    BaseMatch, ChangeKind, CorrectionConfig, DoublePinyinLayout, FuzzyDirection, FuzzyPair,
+    FuzzyRule, InterpretationBudget, InterpretationLimits, InterpretationProfile, PhoneticArc,
+    PhoneticChange, PhoneticHypotheses, PhoneticMatch, PinyinScheme, SchemeConfig,
+    XIAOHE_LAYOUT_VERSION, interpret, interpret_profiled,
+};
+
+pub fn legal_syllables() -> &'static [&'static str] {
+    syllables()
+}
+
 use std::cmp::Ordering;
 use std::sync::OnceLock;
 
