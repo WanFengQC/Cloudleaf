@@ -1,0 +1,29 @@
+use cloudleaf_pinyin::{CorrectionConfig, FuzzyDirection, FuzzyPair, FuzzyRule, PhoneticMatch, SchemeConfig, interpret, legal_syllables};
+
+#[test]
+fn every_valid_complete_syllable_is_not_reclassified_as_a_typo() {
+    let config = SchemeConfig {correction:Some(CorrectionConfig::default()),..Default::default()};
+    for syllable in legal_syllables() {
+        let graph=interpret(syllable,&config).unwrap();
+        assert!(graph.budget.is_none(), "{syllable}");
+        assert!(graph.arcs.iter().all(|a|a.kind!=PhoneticMatch::Correction), "{syllable}");
+    }
+    for raw in ["nihao", "woxiangzaizhelishenghuo", "zhongguoren", "beijingdaxue", "xian", "xi'an", "nvlv", "wozhengzaikaifayikuanzhongwenshurufa"] {
+        let graph=interpret(raw,&config).unwrap();
+        assert!(graph.budget.is_none(), "{raw}");
+        assert!(graph.arcs.iter().all(|a|a.kind!=PhoneticMatch::Correction), "{raw}");
+    }
+}
+
+#[test]
+fn all_fuzzy_rules_stay_bounded_and_preserve_the_exact_interpretation() {
+    let pairs=[FuzzyPair::ZhZ,FuzzyPair::ChC,FuzzyPair::ShS,FuzzyPair::NL,FuzzyPair::InIng,FuzzyPair::EnEng,FuzzyPair::AnAng];
+    let config=SchemeConfig {fuzzy:pairs.into_iter().map(|pair|FuzzyRule{pair,direction:FuzzyDirection::Both}).collect(),..Default::default()};
+    for syllable in legal_syllables() {
+        let graph=interpret(syllable,&config).unwrap();
+        assert!(graph.budget.is_none(), "{syllable}: {:?}", graph.budget);
+        assert!(graph.arcs.len()<=config.limits.max_arcs);
+        assert!(graph.arcs.iter().any(|a|a.start==0&&a.end==syllable.len()&&a.syllable==*syllable&&a.kind==PhoneticMatch::Exact),"{syllable}");
+        assert!(graph.arcs.iter().all(|a|a.changes.len()<=2&&cloudleaf_pinyin::is_syllable(&a.syllable)));
+    }
+}
