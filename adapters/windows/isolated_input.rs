@@ -425,7 +425,7 @@ unsafe extern "system" fn window_proc(
                     view.window.set(window);
                     CreateWindowExW(WINDOW_EX_STYLE::default(),w!("STATIC"),w!("F6方案 / F7 n↔l / F8纠错；Space/数字选词，方向键/翻页，Enter确认/原文，Esc取消。"),WS_CHILD|WS_VISIBLE,12,10,720,30,Some(window),None,None,None)?;
                     view.status.set(CreateWindowExW(WINDOW_EX_STYLE::default(),w!("STATIC"),w!(""),WS_CHILD|WS_VISIBLE,12,44,720,76,Some(window),None,None,None)?);
-                    for (id,label,x,width) in [(1,"下一次提交注入Unknown",12,230),(2,"核对后开始新会话",260,210)] {
+                    for (id,label,x,width) in [(1,"下一次提交注入Unknown",12,230),(2,"核对后开始新会话",260,210),(3,"纠错开关",485,200)] {
                         CreateWindowExW(WINDOW_EX_STYLE::default(),w!("BUTTON"),PCWSTR(wide(label).as_ptr()),WS_CHILD|WS_VISIBLE,x,128,width,30,Some(window),Some(HMENU(id as *mut _)),None,None)?;
                     }
                     view.document.set(CreateWindowExW(WS_EX_CLIENTEDGE,w!("EDIT"),w!(""),WS_CHILD|WS_VISIBLE|WS_VSCROLL|WINDOW_STYLE(ES_READONLY as u32|ES_MULTILINE as u32|ES_AUTOVSCROLL as u32),12,320,720,200,Some(window),None,None,None)?);
@@ -465,6 +465,13 @@ unsafe extern "system" fn window_proc(
                     // 明确新会话接受当前本窗口文档，旧Unknown请求只失效，不重发。
                     *view.local.document.borrow_mut()=text(view.document.get());
                     view.local.reset()?; let frame=view.local.host.engine.borrow().frame(); view.update(frame)?; let _=SetFocus(Some(window)); Ok(LRESULT(0))
+                }
+                WM_COMMAND if wparam.0&0xffff==3 => {
+                    // 系统热键可能拦截F8；按钮仅切换本窗口配置，不改全局快捷键。
+                    if let Err(error)=view.settings_key(VK_F8.0) {
+                        SetWindowTextW(view.status.get(),PCWSTR(wide(&format!("设置未改变：{}",error.message())).as_ptr()))?;
+                    }
+                    let _=SetFocus(Some(window)); Ok(LRESULT(0))
                 }
                 // 顶层激活状态覆盖EDIT/按钮持有焦点时的外部切换，子控件间切换不取消组合。
                 WM_ACTIVATE if wparam.0 & 0xffff == WA_INACTIVE as usize => { if !view.local.host.quarantined.get() { view.process(InputEvent::FocusLost,None)?; } Ok(LRESULT(0)) }
