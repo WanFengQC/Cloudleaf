@@ -1,0 +1,15 @@
+[workspace]
+members=["crates/cloudleaf-pinyin","crates/cloudleaf-types"]
+resolver="3"
+[workspace.package]
+version="0.1.0"
+edition="2024"
+rust-version="1.90.0"
+license="MIT"
+publish=false
+[workspace.dependencies]
+cloudleaf-types={path="crates/cloudleaf-types",version="=0.1.0"}
+[workspace.lints.rust]
+unsafe_code="forbid"
+[workspace.lints.clippy]
+all="warn"

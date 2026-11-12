@@ -1,0 +1,264 @@
+diff --git a/crates/cloudleaf-pinyin/src/lib.rs b/crates/cloudleaf-pinyin/src/lib.rs
+--- a/crates/cloudleaf-pinyin/src/lib.rs
++++ b/crates/cloudleaf-pinyin/src/lib.rs
+@@ -1,4 +1,16 @@
+ //! 自研全拼分段；仅在最后一个音节允许前缀，不做模糊音或简拼猜测。
++
++mod scheme;
++pub use scheme::{
++    BaseMatch, ChangeKind, CorrectionConfig, DoublePinyinLayout, FuzzyDirection, FuzzyPair,
++    FuzzyRule, InterpretationBudget, InterpretationLimits, PhoneticArc, PhoneticChange,
++    PhoneticHypotheses, PhoneticMatch, PinyinScheme, SchemeConfig, XIAOHE_LAYOUT_VERSION,
++    interpret,
++};
++
++pub fn legal_syllables() -> &'static [&'static str] {
++    syllables()
++}
+ 
+ use std::cmp::Ordering;
+ use std::sync::OnceLock;
+diff --git a/crates/cloudleaf-pinyin/src/scheme.rs b/crates/cloudleaf-pinyin/src/scheme.rs
+new file mode 100644
+--- /dev/null
++++ b/crates/cloudleaf-pinyin/src/scheme.rs
+@@ -0,0 +1,239 @@
++#[cfg(test)]
++mod tests {
++    use super::*;
++    fn has(
++        graph: &PhoneticHypotheses,
++        start: usize,
++        end: usize,
++        syllable: &str,
++        kind: PhoneticMatch,
++    ) -> bool {
++        graph
++            .arcs
++            .iter()
++            .any(|a| a.start == start && a.end == end && a.syllable == syllable && a.kind == kind)
++    }
++    #[test]
++    fn raw_unicode_ranges_case_and_separator_are_not_syllable_indexes() {
++        let graph = interpret("NÜ'hao", &SchemeConfig::default()).unwrap();
++        assert_eq!(graph.raw, "NÜ'hao");
++        assert_eq!(graph.keys, "nvhao");
++        let nv = graph
++            .arcs
++            .iter()
++            .find(|a| a.syllable == "nv" && a.start == 0)
++            .unwrap();
++        assert_eq!((nv.raw_start, nv.raw_end), (0, 3));
++        let hao = graph
++            .arcs
++            .iter()
++            .find(|a| a.syllable == "hao" && a.start == 2)
++            .unwrap();
++        assert_eq!((hao.raw_start, hao.raw_end), (4, 7));
++        assert!(!graph.arcs.iter().any(|a| a.start < 2 && a.end > 2));
++        assert!(interpret("ni'", &SchemeConfig::default()).unwrap().waiting);
++        for bad in ["'ni", "ni''hao", "ni hao", "ni2", "☁"] {
++            assert!(interpret(bad, &SchemeConfig::default()).is_err(), "{bad}");
++        }
++    }
++    #[test]
++    fn abbreviation_and_mixed_arcs_keep_exact_syllables_and_raw_positions() {
++        let config = SchemeConfig {
++            scheme: PinyinScheme::AbbreviatedPinyin,
++            ..SchemeConfig::default()
++        };
++        for input in ["zgr", "bjdx", "zg", "zhg", "zhonggr", "wzgs", "nihao", "nh"] {
++            let graph = interpret(input, &config).unwrap();
++            assert!(graph.budget.is_none(), "{input}");
++            assert!(
++                graph
++                    .arcs
++                    .iter()
++                    .all(|a| a.start < a.end && a.raw_end <= input.len())
++            );
++        }
++        let graph = interpret("zhonggr", &config).unwrap();
++        assert!(has(&graph, 0, 5, "zhong", PhoneticMatch::Exact));
++        assert!(has(&graph, 5, 6, "guo", PhoneticMatch::Abbreviation));
++        assert!(has(&graph, 6, 7, "ren", PhoneticMatch::Abbreviation));
++        let graph = interpret("nihao", &config).unwrap();
++        assert!(has(&graph, 0, 2, "ni", PhoneticMatch::Exact));
++        assert!(has(&graph, 2, 5, "hao", PhoneticMatch::Exact));
++    }
++    #[test]
++    fn xiaohe_pairs_zero_initials_collisions_and_unfinished_keys() {
++        let config = SchemeConfig {
++            scheme: PinyinScheme::DoublePinyin(DoublePinyinLayout::Xiaohe),
++            ..SchemeConfig::default()
++        };
++        for syllable in legal_syllables() {
++            assert!(xiaohe::xiaohe_code(syllable).is_some(), "{syllable}");
++        }
++        let graph = interpret("NIHC", &config).unwrap();
++        assert!(has(&graph, 0, 2, "ni", PhoneticMatch::Exact));
++        assert!(has(&graph, 2, 4, "hao", PhoneticMatch::Exact));
++        let graph = interpret("lo", &config).unwrap();
++        assert!(has(&graph, 0, 2, "lo", PhoneticMatch::Exact));
++        assert!(has(&graph, 0, 2, "luo", PhoneticMatch::Exact));
++        let graph = interpret("n", &config).unwrap();
++        assert!(graph.arcs.iter().all(|a| a.kind == PhoneticMatch::Prefix));
++        assert!(has(&graph, 0, 1, "ni", PhoneticMatch::Prefix));
++        assert!(
++            !interpret("aa'ah", &config)
++                .unwrap()
++                .arcs
++                .iter()
++                .any(|a| a.start < 2 && a.end > 2)
++        );
++    }
++    #[test]
++    fn fuzzy_is_directional_composable_and_does_not_rewrite_source() {
++        let mut config = SchemeConfig {
++            fuzzy: vec![
++                FuzzyRule {
++                    pair: FuzzyPair::NL,
++                    direction: FuzzyDirection::Forward,
++                },
++                FuzzyRule {
++                    pair: FuzzyPair::AnAng,
++                    direction: FuzzyDirection::Forward,
++                },
++            ],
++            ..SchemeConfig::default()
++        };
++        let graph = interpret("nan", &config).unwrap();
++        assert_eq!(graph.raw, "nan");
++        assert!(has(&graph, 0, 3, "nan", PhoneticMatch::Exact));
++        assert!(has(&graph, 0, 3, "lang", PhoneticMatch::Fuzzy));
++        assert!(!has(
++            &interpret("lan", &config).unwrap(),
++            0,
++            3,
++            "nan",
++            PhoneticMatch::Fuzzy
++        ));
++        config.fuzzy[0].direction = FuzzyDirection::Both;
++        assert!(has(
++            &interpret("lan", &config).unwrap(),
++            0,
++            3,
++            "nan",
++            PhoneticMatch::Fuzzy
++        ));
++        config.fuzzy.clear();
++        assert!(
++            !interpret("nan", &config)
++                .unwrap()
++                .arcs
++                .iter()
++                .any(|a| a.kind == PhoneticMatch::Fuzzy)
++        );
++        let config = SchemeConfig {
++            fuzzy: vec![FuzzyRule {
++                pair: FuzzyPair::ZhZ,
++                direction: FuzzyDirection::Reverse,
++            }],
++            ..SchemeConfig::default()
++        };
++        assert!(
++            !interpret("zhang", &config)
++                .unwrap()
++                .arcs
++                .iter()
++                .any(|a| a.syllable == "zhhang")
++        );
++    }
++    #[test]
++    fn correction_records_actual_edit_and_never_treats_legal_oov_as_a_typo() {
++        let config = SchemeConfig {
++            correction: Some(CorrectionConfig::default()),
++            ..SchemeConfig::default()
++        };
++        for (raw, syllable, kind) in [
++            ("zhnog", "zhong", ChangeKind::Transpose),
++            ("zongg", "zong", ChangeKind::Extra),
++            ("zhng", "zhong", ChangeKind::Omission),
++            ("zhpng", "zhong", ChangeKind::AdjacentKey),
++        ] {
++            let graph = interpret(raw, &config).unwrap();
++            assert!(
++                graph.arcs.iter().any(|a| a.start == 0
++                    && a.end == raw.len()
++                    && a.syllable == syllable
++                    && a.changes.iter().any(|c| c.kind == kind)),
++                "{raw}: {:?}",
++                graph.budget
++            );
++        }
++        let graph = interpret("nihao", &config).unwrap();
++        assert!(
++            !graph
++                .arcs
++                .iter()
++                .any(|a| a.kind == PhoneticMatch::Correction)
++        );
++        assert!(graph.arcs.iter().all(|a| crate::is_syllable(&a.syllable)));
++    }
++    #[test]
++    fn budgets_reject_invalid_config_and_report_deterministic_exhaustion() {
++        let mut config = SchemeConfig::default();
++        config.limits.max_work = 1;
++        let graph = interpret("zhongguo", &config).unwrap();
++        assert_eq!(graph.budget, Some(InterpretationBudget::Work));
++        assert_eq!(graph.work, 1);
++        config.limits.max_work = 200000;
++        config.limits.max_arcs = 1;
++        assert_eq!(
++            interpret("n", &config).unwrap().budget,
++            Some(InterpretationBudget::Arcs)
++        );
++        config.fuzzy = vec![
++            FuzzyRule {
++                pair: FuzzyPair::NL,
++                direction: FuzzyDirection::Both
++            };
++            2
++        ];
++        assert!(config.validate().is_err());
++        config = SchemeConfig {
++            correction: Some(CorrectionConfig {
++                max_edit_cost: 2,
++                ..CorrectionConfig::default()
++            }),
++            ..SchemeConfig::default()
++        };
++        assert!(config.validate().is_err());
++        config = SchemeConfig {
++            scheme: PinyinScheme::AbbreviatedPinyin,
++            ..SchemeConfig::default()
++        };
++        let raw = "z".repeat(64);
++        assert_eq!(
++            interpret(&raw, &config).unwrap(),
++            interpret(&raw, &config).unwrap()
++        );
++    }
++    #[test]
++    fn configuration_identity_is_order_independent_but_rules_and_layouts_are_bound() {
++        let a = FuzzyRule {
++            pair: FuzzyPair::NL,
++            direction: FuzzyDirection::Both,
++        };
++        let b = FuzzyRule {
++            pair: FuzzyPair::InIng,
++            direction: FuzzyDirection::Forward,
++        };
++        let mut c = SchemeConfig {
++            fuzzy: vec![a, b],
++            ..SchemeConfig::default()
++        };
++        let version = c.version_id();
++        c.fuzzy.reverse();
++        assert_eq!(version, c.version_id());
++        c.fuzzy[0].direction = FuzzyDirection::Both;
++        assert_ne!(version, c.version_id());
++        assert!(!c.is_default());
++        assert!(SchemeConfig::default().is_default());
++        assert!(c.version_id().is_ascii());
++    }
++}

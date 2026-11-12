@@ -1,0 +1,61 @@
+{
+  "scope": "Temporary search.rs compile verification with default-zero Lattice stubs; not actual interpreted graph integration, no product quality claim",
+  "actual_base_sha256": "51916dc49959e5b042c7fa60a1487983a8328c17e0cf57cf1212fd515a98ac5d",
+  "search_sha256": "53530e540bb4f3ec7d9839f265eb731923b92142e67429cbbe255b9da5cd085b",
+  "patches": {
+    "tests-only.patch": "1cdcd674873e860f132dbc22d2215ae91777954a9558d343527ab61ed32aa7b0",
+    "implementation-after-tests.patch": "67c16336bc4c8cbc63e66405a014d264137d873dc754f33c5930a76c28b2da7c",
+    "complete.patch": "7be5e0ddc786264b90bd72bd2d07e3316683307955822f90e32495ea0bc0e305"
+  },
+  "commands": [
+    {
+      "label": "tests",
+      "command": [
+        "C:/Users/EDY/.cargo/bin/cargo.exe",
+        "test",
+        "-p",
+        "cloudleaf-search",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 7.419433500035666,
+      "stdout_sha256": "4d72c8428cc1d475c2732e9187f249a7e62eb287180e84ddae3bfaf9223123c2",
+      "stderr_sha256": "9cade10d64d2dcf050d5bc0bc389f644dbe9f37f2434457feb1ba8a3d1e7cf38"
+    },
+    {
+      "label": "lint",
+      "command": [
+        "C:/Users/EDY/.cargo/bin/cargo.exe",
+        "clippy",
+        "-p",
+        "cloudleaf-search",
+        "--all-targets",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "returncode": 0,
+      "seconds": 0.569120500003919,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "5604fc8f0c276397a55db4bd7008236712075c0ad37d3b3a0f1fe362b1b85a36"
+    },
+    {
+      "label": "fmt",
+      "command": [
+        "C:/Users/EDY/.cargo/bin/cargo.exe",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "returncode": 0,
+      "seconds": 0.5102647000458091,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "prior_failures": "runs retains initial missing temp lock, compile-red and type_complexity lint failure; type alias fixes lint without suppression",
+  "future_state_invariant": "edited path cap is global; interpreted states keyed last model history and used_edits; full default graph uses old algorithms"
+}

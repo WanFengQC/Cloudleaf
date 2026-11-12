@@ -1,0 +1,37 @@
+   Compiling cloudleaf-types v0.1.0 (C:\Users\EDY\.codex\tmp\r18-interpreter\source\crates\cloudleaf-types)
+   Compiling cloudleaf-pinyin v0.1.0 (C:\Users\EDY\.codex\tmp\r18-interpreter\source\crates\cloudleaf-pinyin)
+   Compiling r18-interpreter-viability-compare v0.1.0 (C:\Users\EDY\.codex\tmp\r18-interpreter\comparison)
+error[E0603]: struct `CoreError` is private
+  --> src\main.rs:1:28
+   |
+ 1 | pub use cloudleaf_pinyin::{CoreError, ErrorCode};
+   |                            ^^^^^^^^^ private struct
+   |
+note: the struct `CoreError` is defined here
+  --> C:\Users\EDY\.codex\tmp\r18-interpreter\source\crates\cloudleaf-pinyin\src\lib.rs:18:23
+   |
+18 | use cloudleaf_types::{CoreError, ErrorCode};
+   |                       ^^^^^^^^^
+help: import `CoreError` directly
+   |
+ 1 | pub use cloudleaf_pinyin::{cloudleaf_types::CoreError, ErrorCode};
+   |                            +++++++++++++++++
+
+error[E0603]: enum `ErrorCode` is private
+  --> src\main.rs:1:39
+   |
+ 1 | pub use cloudleaf_pinyin::{CoreError, ErrorCode};
+   |                                       ^^^^^^^^^ private enum
+   |
+note: the enum `ErrorCode` is defined here
+  --> C:\Users\EDY\.codex\tmp\r18-interpreter\source\crates\cloudleaf-pinyin\src\lib.rs:18:34
+   |
+18 | use cloudleaf_types::{CoreError, ErrorCode};
+   |                                  ^^^^^^^^^
+help: import `ErrorCode` directly
+   |
+ 1 | pub use cloudleaf_pinyin::{CoreError, cloudleaf_types::ErrorCode};
+   |                                       +++++++++++++++++
+
+For more information about this error, try `rustc --explain E0603`.
+error: could not compile `r18-interpreter-viability-compare` (bin "r18-interpreter-viability-compare") due to 2 previous errors

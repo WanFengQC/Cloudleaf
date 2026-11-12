@@ -1,0 +1,53 @@
+diff --git a/README.md b/README.md
+index 699af2b..558b5c6 100644
+--- a/README.md
++++ b/README.md
+@@ -107,7 +107,7 @@ Round16另有显式`kind=character_bigram`、`tokenization=unicode-scalar-v1`：
+ 
+ Windows研发程序的`cloudleaf-ime.exe --interactive-input-host RUNTIME SHA [MODEL MODEL_SHA]`创建普通键盘测试窗口，复用实际Host、双引擎和候选窗口；不注册或激活TSF。请先点击窗口空白区再键入拼音，Space/数字选词、方向键/翻页、Enter确认或未识别原文回退、Escape取消。正文只写入本窗口拥有的文档；Unknown按钮模拟写后未知，停止继续输入，人工核对后才能点击新会话，绝不重放旧事务。这个入口没有粘贴或UTF-16代理对输入支持，不构成系统应用验收。
+ 
+-Round18在同一隔离窗口增加F6循环全拼/全拼简拼混合/小鹤双拼、F7切换n/l双向模糊音、F8切换有界全拼纠错。窗口显示当前配置；进入双拼会关闭纠错，双拼下F8拒绝启用（未实现双拼纠错）。修饰键组合不切换设置。仅该交互入口显式使用K10、每页5条以验证多页，原只读review/benchmark仍K5；默认核心、词典及系统设置不变。
++Round18在同一隔离窗口增加F6循环全拼/全拼简拼混合/小鹤双拼、F7切换n/l双向模糊音、F8或“纠错开关”按钮切换有界全拼纠错。窗口显示当前配置；进入双拼会关闭纠错，双拼下拒绝启用纠错（未实现）。按钮适用于系统拦截F8的环境，修饰键组合不切换设置。仅该交互入口显式使用K10、每页5条以验证多页，原只读review/benchmark仍K5；默认核心、词典及系统设置不变。
+ 
+ 平台无关API为`InputEngine::reconfigure_scheme(SchemeConfig)`，需要显式整句搜索后端。事务待确认/失败时拒绝切换，原文和光标保留、revision增加，旧候选不可再提交。七组模糊音逐项/方向配置；拼写纠错仅在整个按键串不存在完整精确音节解释时尝试一处编辑，不能由词典缺词推断拼错。精确、前缀、缩写、模糊及纠错解释成本先作独立全序比较，不叠加到研究语言概率。原始按键不改写，超过解释/交集/搜索预算保留原文回退。默认全部关闭，微软/自然码尚未核实完整原表，未实现。
+ 
+diff --git a/adapters/windows/isolated_input.rs b/adapters/windows/isolated_input.rs
+index 8524d78..ec74783 100644
+--- a/adapters/windows/isolated_input.rs
++++ b/adapters/windows/isolated_input.rs
+@@ -425,7 +425,7 @@ unsafe extern "system" fn window_proc(
+                     view.window.set(window);
+                     CreateWindowExW(WINDOW_EX_STYLE::default(),w!("STATIC"),w!("F6方案 / F7 n↔l / F8纠错；Space/数字选词，方向键/翻页，Enter确认/原文，Esc取消。"),WS_CHILD|WS_VISIBLE,12,10,720,30,Some(window),None,None,None)?;
+                     view.status.set(CreateWindowExW(WINDOW_EX_STYLE::default(),w!("STATIC"),w!(""),WS_CHILD|WS_VISIBLE,12,44,720,76,Some(window),None,None,None)?);
+-                    for (id,label,x,width) in [(1,"下一次提交注入Unknown",12,230),(2,"核对后开始新会话",260,210)] {
++                    for (id,label,x,width) in [(1,"下一次提交注入Unknown",12,230),(2,"核对后开始新会话",260,210),(3,"纠错开关",485,200)] {
+                         CreateWindowExW(WINDOW_EX_STYLE::default(),w!("BUTTON"),PCWSTR(wide(label).as_ptr()),WS_CHILD|WS_VISIBLE,x,128,width,30,Some(window),Some(HMENU(id as *mut _)),None,None)?;
+                     }
+                     view.document.set(CreateWindowExW(WS_EX_CLIENTEDGE,w!("EDIT"),w!(""),WS_CHILD|WS_VISIBLE|WS_VSCROLL|WINDOW_STYLE(ES_READONLY as u32|ES_MULTILINE as u32|ES_AUTOVSCROLL as u32),12,320,720,200,Some(window),None,None,None)?);
+@@ -466,6 +466,13 @@ unsafe extern "system" fn window_proc(
+                     *view.local.document.borrow_mut()=text(view.document.get());
+                     view.local.reset()?; let frame=view.local.host.engine.borrow().frame(); view.update(frame)?; let _=SetFocus(Some(window)); Ok(LRESULT(0))
+                 }
++                WM_COMMAND if wparam.0&0xffff==3 => {
++                    // 系统热键可能拦截F8；按钮仅切换本窗口配置，不改全局快捷键。
++                    if let Err(error)=view.settings_key(VK_F8.0) {
++                        SetWindowTextW(view.status.get(),PCWSTR(wide(&format!("设置未改变：{}",error.message())).as_ptr()))?;
++                    }
++                    let _=SetFocus(Some(window)); Ok(LRESULT(0))
++                }
+                 // 顶层激活状态覆盖EDIT/按钮持有焦点时的外部切换，子控件间切换不取消组合。
+                 WM_ACTIVATE if wparam.0 & 0xffff == WA_INACTIVE as usize => { if !view.local.host.quarantined.get() { view.process(InputEvent::FocusLost,None)?; } Ok(LRESULT(0)) }
+                 WM_SETFOCUS => { if !view.local.host.quarantined.get() { view.process(InputEvent::Activate,None)?; } Ok(LRESULT(0)) }
+diff --git a/docs/input-round18-design.md b/docs/input-round18-design.md
+index e556757..320cefe 100644
+--- a/docs/input-round18-design.md
++++ b/docs/input-round18-design.md
+@@ -34,6 +34,8 @@
+ 
+ 隔离Windows Host同时维护两个实际引擎，设置变化先对两者预检，不能只改一个。只在窗口自有文档提交，继续Applied/NotApplied/Unknown、失焦保全和容量保护。原候选窗复用；使用显式研发参数或自有控件切换，键位识别须让只读预判与处理共用规则，不吞应用修饰键。没有实际操作的交互标not-run，不将隔离验证当TSF验收。
+ 
++2026-11-12实际桌面验证发现F8未送达本窗口开关，保留该失败观察，增加同一窗口的纠错按钮直接调用同一设置函数；不改变系统热键。F6/F7、双拼、分页和数字提交均已有实际操作，按钮与纠错仍须单独复验。
++
+ ## 实施顺序与验收
+ 
+ 先提交本设计，再增加失败测试和实现：方案/小鹤映射与解释图→词典交集/排序→InputEngine配置与身份→隔离Host。仅主代理写实际工作区，辅助实现只在临时目录生成补丁后顺序审阅应用。

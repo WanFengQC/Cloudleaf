@@ -1,0 +1,784 @@
+{
+  "head": "b948f986c4c9d00bec7cdb7845283c83e6a87970",
+  "run_id": "43191081791",
+  "tool_sha256": "c703305d6c3ad7a1bac84e0439560a4941badae9523c25c238bd6e1bff1ee9a0",
+  "files": [
+    {
+      "file": "logs.zip",
+      "bytes": 137027,
+      "sha256": "7eec41a4db55b0fac78337c9a6d04f99240279c7a8fa32410565db02f529f832",
+      "crc": "passed",
+      "members": [
+        {
+          "name": "0_core (ubuntu-latest).txt",
+          "bytes": 113536,
+          "sha256": "16c68ef80c9608ccc635591175995c06e7a6f11cc752a270bcb9ba736d1ad4cb"
+        },
+        {
+          "name": "core (ubuntu-latest)/system.txt",
+          "bytes": 582,
+          "sha256": "aebd6cd72c193cefc919854fae2ea75debe6a38ea4f9d3487c0cd3816661d8ff"
+        },
+        {
+          "name": "core (ubuntu-latest)/1_Set up job.txt",
+          "bytes": 2167,
+          "sha256": "060f95316f568c4af47b16b485f8f6b3e4881bdeb327864b00c3d56c42abd5fa"
+        },
+        {
+          "name": "core (ubuntu-latest)/2_Run actions_checkout@v4.txt",
+          "bytes": 6004,
+          "sha256": "7b5c1ce57216f72e842d87d7f231448cad8d626bb4cffafa8d109249f33d9102"
+        },
+        {
+          "name": "core (ubuntu-latest)/3_Run actions_setup-python@v5.txt",
+          "bytes": 1009,
+          "sha256": "ef4a0245e1be98e3579c69ae6e3d447c5e4007f6dc5bcd8e9e695199929a4802"
+        },
+        {
+          "name": "core (ubuntu-latest)/4_Install pinned Rust.txt",
+          "bytes": 1474,
+          "sha256": "ada1971236c05d8182a4159b28b856b4b93fe895d31d61bedf6f9ca78c1d9868"
+        },
+        {
+          "name": "core (ubuntu-latest)/5_Fetch precisely locked build dependencies.txt",
+          "bytes": 3200,
+          "sha256": "bf3075088147e8e9f6a9601025f89e7fcac40f6f72abb236a0c217baf922b23e"
+        },
+        {
+          "name": "core (ubuntu-latest)/6_Format.txt",
+          "bytes": 913,
+          "sha256": "b089defdb7e8baa924c158f30c0d5a8dbcbb7face47e597ceb1daf5456f666d8"
+        },
+        {
+          "name": "core (ubuntu-latest)/7_Lint.txt",
+          "bytes": 2613,
+          "sha256": "14b23625af0697fe0be07621da17d34bce499b2ae8f33a48c7c68af51b51f0da"
+        },
+        {
+          "name": "core (ubuntu-latest)/8_Tests and fixed input corpus.txt",
+          "bytes": 29886,
+          "sha256": "454775acb657d3c7a8c0a363b7c1ff927bfc6419abd23150e4319e57d61164eb"
+        },
+        {
+          "name": "core (ubuntu-latest)/9_Documentation tests.txt",
+          "bytes": 3292,
+          "sha256": "8b277f836c889131510c62e46436da3647415ede7d2a708a17435fc6524acae1"
+        },
+        {
+          "name": "core (ubuntu-latest)/10_Release workspace build.txt",
+          "bytes": 2564,
+          "sha256": "c668cfb0bd84566820f9699ea38863c392f086122dfa1e342a35fbd2f34ed72b"
+        },
+        {
+          "name": "core (ubuntu-latest)/11_Dependency, license and fixture audit.txt",
+          "bytes": 1858,
+          "sha256": "60a1dd569f3b27c5d7d5643c2fcd0d574629f50c4b49db17328f8918b46bd360"
+        },
+        {
+          "name": "core (ubuntu-latest)/12_Install pinned development vulnerability auditor.txt",
+          "bytes": 39027,
+          "sha256": "3bb191425ce4e679971984f8af0277882a58172edf527917f4c67ae39bd076e8"
+        },
+        {
+          "name": "core (ubuntu-latest)/13_Exact input snapshot and Windows dependency audit.txt",
+          "bytes": 1337,
+          "sha256": "f763f2d85c6243d5bf5a2d6adbf8298330129bdf4365a6cf24ff5ecf5b14f705"
+        },
+        {
+          "name": "core (ubuntu-latest)/14_Evaluation and artifact provenance tests.txt",
+          "bytes": 1356,
+          "sha256": "6e38ad7bbf28cc872f5a6dd1c416fc55deb72efecd55df04fa1c6b2f3b9efeb0"
+        },
+        {
+          "name": "core (ubuntu-latest)/15_Benchmark smoke.txt",
+          "bytes": 3445,
+          "sha256": "d4142fb437ff50dd325f1566450eca6b6158816f2f200024f547d25f07c77f9e"
+        },
+        {
+          "name": "core (ubuntu-latest)/16_Algorithm baseline and ablation.txt",
+          "bytes": 6779,
+          "sha256": "d2eb7b9598de3a862ea266f4f9567107bdacfa1c5c8efda1a12f6136e76363e5"
+        },
+        {
+          "name": "core (ubuntu-latest)/17_Build offline research tools.txt",
+          "bytes": 1227,
+          "sha256": "8ec7de56ac56c1cac5d92c00e0877331885433a7faacdba45b1513ff7773b838"
+        },
+        {
+          "name": "core (ubuntu-latest)/19_Run actions_upload-artifact@v4.txt",
+          "bytes": 3025,
+          "sha256": "9b9b286b3f1e276d0ad229d3477e597d2d1bf03aefdb8b76be7a116570fce5a1"
+        },
+        {
+          "name": "core (ubuntu-latest)/37_Post Run actions_setup-python@v5.txt",
+          "bytes": 306,
+          "sha256": "2eda7193fd0e370fe0560bfb48d89ce37192d5e761278a65f061fc53ca7a6d80"
+        },
+        {
+          "name": "core (ubuntu-latest)/38_Post Run actions_checkout@v4.txt",
+          "bytes": 1713,
+          "sha256": "af861ee74b187a3d8881492a1a2ea7263be9db5c2ba9d9c11b011e201df3202b"
+        },
+        {
+          "name": "core (ubuntu-latest)/39_Complete job.txt",
+          "bytes": 401,
+          "sha256": "c50d68edf2189f78bb9bc457a8fdd3a8568cbec702eb83af588c04e7781350c1"
+        },
+        {
+          "name": "1_core (windows-latest).txt",
+          "bytes": 136724,
+          "sha256": "3e157f42877bd26521cfcf98221c17f12ac5bf5d3162b2622ed6b4ce120818b3"
+        },
+        {
+          "name": "core (windows-latest)/system.txt",
+          "bytes": 583,
+          "sha256": "921cdb94b6fbe88a6775ebb52958d3f92894d8e28e035626694b186e727791f3"
+        },
+        {
+          "name": "core (windows-latest)/1_Set up job.txt",
+          "bytes": 2262,
+          "sha256": "627f705ad6b8a33f01bbf0a92012bd176891d1843cff0e8fe634580226b4c19f"
+        },
+        {
+          "name": "core (windows-latest)/2_Run actions_checkout@v4.txt",
+          "bytes": 5422,
+          "sha256": "b27c68be6015d162f6efe58347c9e10aa859549d511427fd726a7b0233e1964b"
+        },
+        {
+          "name": "core (windows-latest)/3_Run actions_setup-python@v5.txt",
+          "bytes": 1026,
+          "sha256": "5fe51a43ea7e7bc891f347bdfcb85eeb9be5acd1e881fa1b588e19b4b8cc8e38"
+        },
+        {
+          "name": "core (windows-latest)/4_Install pinned Rust.txt",
+          "bytes": 1463,
+          "sha256": "a601268877aa450d5bcf3e3802c02f49fb135e48a901eeb0326cfd1d827d2225"
+        },
+        {
+          "name": "core (windows-latest)/5_Fetch precisely locked build dependencies.txt",
+          "bytes": 3223,
+          "sha256": "7d14b545e12c4107695e2f6e540315a0223e90ca17d0bd3156565e45b9d3c3e1"
+        },
+        {
+          "name": "core (windows-latest)/6_Format.txt",
+          "bytes": 900,
+          "sha256": "fc7fc568f30493a15237921ff25cdd86ed57928eac9be89b841a3e716a0c4339"
+        },
+        {
+          "name": "core (windows-latest)/7_Lint.txt",
+          "bytes": 3424,
+          "sha256": "8ef52c70c48dc7d122f69dae721b852dcd622fc1f8d21cbc7efe0ae30bc832d0"
+        },
+        {
+          "name": "core (windows-latest)/8_Tests and fixed input corpus.txt",
+          "bytes": 47225,
+          "sha256": "dce268daeec1bcceb055b26f5b7daf74d47cb8fdf4fbc014a3d337a3ab70e6b8"
+        },
+        {
+          "name": "core (windows-latest)/9_Documentation tests.txt",
+          "bytes": 3322,
+          "sha256": "4eb6ad1b438ca01ce4b35ffde7a2d4f7e1ced3e524121689419d25af4fd5d389"
+        },
+        {
+          "name": "core (windows-latest)/10_Release workspace build.txt",
+          "bytes": 3374,
+          "sha256": "ddca4fb8da85e2576dee2165c0033b53625a9ebb2fa2017afbf379b065274283"
+        },
+        {
+          "name": "core (windows-latest)/11_Dependency, license and fixture audit.txt",
+          "bytes": 1855,
+          "sha256": "fc4451b32fa7258489d22f87ffa0d424013448cd2219656fdbe93c4651a97f7a"
+        },
+        {
+          "name": "core (windows-latest)/12_Install pinned development vulnerability auditor.txt",
+          "bytes": 39956,
+          "sha256": "e3460d12f7d554e61541a3edc05e24d7be5db104e3bceb2d7bfb2dba7549f636"
+        },
+        {
+          "name": "core (windows-latest)/13_Exact input snapshot and Windows dependency audit.txt",
+          "bytes": 1325,
+          "sha256": "c1df7b224852b557695fa3dc83e5dd63ea8097e11808d9df641a6778f7e3a5b3"
+        },
+        {
+          "name": "core (windows-latest)/14_Evaluation and artifact provenance tests.txt",
+          "bytes": 1349,
+          "sha256": "449ce85af0cab8031fdeee74fa0e1f8f6d009c8025ebe4bbb0006bd16d3fd757"
+        },
+        {
+          "name": "core (windows-latest)/15_Benchmark smoke.txt",
+          "bytes": 3505,
+          "sha256": "b23c6b2b4861e2a61020a5e5f8a99d9829c749710c8ccd54f9f1a5f0108e352e"
+        },
+        {
+          "name": "core (windows-latest)/16_Algorithm baseline and ablation.txt",
+          "bytes": 6877,
+          "sha256": "087b8929119f03bbb7a434ea65905e9ee2b31573a14d5c61b7e48c3af313e47f"
+        },
+        {
+          "name": "core (windows-latest)/17_Build offline research tools.txt",
+          "bytes": 1203,
+          "sha256": "00f86bbab0acc6c8b3f64df20971c28d821860774c13d1256109f575f37d6dfb"
+        },
+        {
+          "name": "core (windows-latest)/18_Upload Windows experimental input tools.txt",
+          "bytes": 3387,
+          "sha256": "1f73c0fdc4187bf77edbdedbbd6974c08590eb6cfd6845304f63ed254d6ef5b5"
+        },
+        {
+          "name": "core (windows-latest)/19_Run actions_upload-artifact@v4.txt",
+          "bytes": 2984,
+          "sha256": "60a3f9ba809bae5f771e6691083402c3cc37f069e0a46e7f9139e1be4a6a13ac"
+        },
+        {
+          "name": "core (windows-latest)/37_Post Run actions_setup-python@v5.txt",
+          "bytes": 308,
+          "sha256": "ee1ee143142b1f600f173f48cb35577309e59d5ab537cc9e17f843e3779480f9"
+        },
+        {
+          "name": "core (windows-latest)/38_Post Run actions_checkout@v4.txt",
+          "bytes": 1919,
+          "sha256": "f54660b8914238c60fa31614bf1679d1e396b9673852fd63e3461f3345b73d65"
+        },
+        {
+          "name": "core (windows-latest)/39_Complete job.txt",
+          "bytes": 478,
+          "sha256": "4557618ed8d5165bd58441df462d019ebbdc4b596c58f68fc7f2f5af4848ce87"
+        }
+      ]
+    },
+    {
+      "file": "core-performance-ubuntu-latest.zip",
+      "bytes": 27245,
+      "sha256": "9ce2603f64a5dd5acc6e885e0b97d0350d68578cc176a607070cd298cd0efc61",
+      "crc": "passed",
+      "members": [
+        {
+          "name": "m2-performance.json",
+          "bytes": 1287,
+          "sha256": "7f3deaa61aa7e3cb40647eb6125ada04ead274588c7a8ac0a10930cfde356b69"
+        },
+        {
+          "name": "algorithm-v1/case-comparison.tsv",
+          "bytes": 7104,
+          "sha256": "973fa37b9ae60cfb63e067718ec2c39ec1f9d9ceee3b0ca6f480dfde991547a2"
+        },
+        {
+          "name": "algorithm-v1/raw-results.tsv",
+          "bytes": 91516,
+          "sha256": "72b04d63866cfd2e203b4b860c7a849a972473568fa6a163013f736dfe6cef34"
+        },
+        {
+          "name": "algorithm-v1/report.md",
+          "bytes": 9391,
+          "sha256": "6db7809eeb83bc1306a364b5aa69de0bed69faeb75143328c7d5d4624c8b3e8a"
+        },
+        {
+          "name": "algorithm-v1/summary.json",
+          "bytes": 110471,
+          "sha256": "cc0d6ef9a8bd48cfa4027de22e7aaeade52dd837f95b65d6403a2f54c9a3b2d9"
+        },
+        {
+          "name": "input-dependency-audit.json",
+          "bytes": 26992,
+          "sha256": "4c9878027e4bd12f9a53e7abb34e230cba74e3a1b33c5872a00f0c4d6780b4e0"
+        }
+      ]
+    },
+    {
+      "file": "input-round18-windows.zip",
+      "bytes": 2669072,
+      "sha256": "5bcbe566b70890532db07f3f4a670003efc68656a2b236baf16481b1a77fccd5",
+      "crc": "passed",
+      "members": [
+        {
+          "name": "target/release/cloudleaf-cli.exe",
+          "bytes": 804864,
+          "sha256": "9a9e14dbe20fe2ff62b4ba3dcd1b002d1a93e780b496fe2886d679343d9724ce"
+        },
+        {
+          "name": "target/release/cloudleaf_windows_ime.dll",
+          "bytes": 1198592,
+          "sha256": "e7910d59d2c7f94898efe3a8cc251dce8105dd5d4825c0f14d99e21b40b0f6bd"
+        },
+        {
+          "name": "target/release/cloudleaf-ime.exe",
+          "bytes": 968704,
+          "sha256": "4a2f40089dad201da5d08607142a48fb2e547e2b2fa465433ddb08470d056a88"
+        },
+        {
+          "name": "target/release/examples/input_trace.exe",
+          "bytes": 707072,
+          "sha256": "3b56f519efba6f56f1c16f0487b9e94c1c3496a4c33e4d5f1d372ad33025bf60"
+        },
+        {
+          "name": "target/release/examples/train_language.exe",
+          "bytes": 357888,
+          "sha256": "86d1ad02bd4d0eb247f24552b032a66fe21c499a4fe0794beb25c0dfb9aa526e"
+        },
+        {
+          "name": "target/release/examples/coverage_probe.exe",
+          "bytes": 478208,
+          "sha256": "4f3b9268bc56f352edb3fcbc318dec040b236bc12296c67e6b3e785bdf8ea94f"
+        },
+        {
+          "name": "target/release/examples/scheme_trace.exe",
+          "bytes": 787456,
+          "sha256": "84a34970be8b0f8ab2de859a607ecb8ddb786acf588b68380854ce619459c2e1"
+        },
+        {
+          "name": "LICENSE",
+          "bytes": 1100,
+          "sha256": "9f167ddc3e83dbf5088f4fb72cf0a5937523ccc3014a2955590869d9b358f7fe"
+        },
+        {
+          "name": "THIRD_PARTY_NOTICES.md",
+          "bytes": 4992,
+          "sha256": "678e15bde68c9722b132baf25431d50be102e88ebc60a3c1de91ba51d6c5fb2f"
+        },
+        {
+          "name": "licenses/windows/manifest.json",
+          "bytes": 6636,
+          "sha256": "fb04e7342a1f53accbf5209c879d99ef73ed04e4fdb70f06363600fa0cdec751"
+        },
+        {
+          "name": "licenses/windows/proc-macro2-1.0.107-LICENSE-APACHE",
+          "bytes": 9723,
+          "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a"
+        },
+        {
+          "name": "licenses/windows/proc-macro2-1.0.107-LICENSE-MIT",
+          "bytes": 1023,
+          "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+        },
+        {
+          "name": "licenses/windows/quote-1.0.47-LICENSE-APACHE",
+          "bytes": 9723,
+          "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a"
+        },
+        {
+          "name": "licenses/windows/quote-1.0.47-LICENSE-MIT",
+          "bytes": 1023,
+          "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+        },
+        {
+          "name": "licenses/windows/syn-2.0.119-LICENSE-APACHE",
+          "bytes": 9723,
+          "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a"
+        },
+        {
+          "name": "licenses/windows/syn-2.0.119-LICENSE-MIT",
+          "bytes": 1023,
+          "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+        },
+        {
+          "name": "licenses/windows/unicode-ident-1.0.27-LICENSE-APACHE",
+          "bytes": 9723,
+          "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a"
+        },
+        {
+          "name": "licenses/windows/unicode-ident-1.0.27-LICENSE-MIT",
+          "bytes": 1023,
+          "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+        },
+        {
+          "name": "licenses/windows/unicode-ident-1.0.27-LICENSE-UNICODE",
+          "bytes": 1995,
+          "sha256": "f7db81051789b729fea528a63ec4c938fdcb93d9d61d97dc8cc2e9df6d47f2a1"
+        },
+        {
+          "name": "licenses/windows/windows-0.62.2-license-apache-2.0",
+          "bytes": 11351,
+          "sha256": "c16f8dcf1a368b83be78d826ea23de4079fe1b4469a0ab9ee20563f37ff3d44b"
+        },
+        {
+          "name": "licenses/windows/windows-collections-0.3.2-license-apache-2.0",
+          "bytes": 11351,
+          "sha256": "c16f8dcf1a368b83be78d826ea23de4079fe1b4469a0ab9ee20563f37ff3d44b"
+        },
+        {
+          "name": "licenses/windows/windows-0.62.2-license-mit",
+          "bytes": 1141,
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        {
+          "name": "licenses/windows/windows-collections-0.3.2-license-mit",
+          "bytes": 1141,
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        {
+          "name": "licenses/windows/windows-core-0.62.2-license-apache-2.0",
+          "bytes": 11351,
+          "sha256": "c16f8dcf1a368b83be78d826ea23de4079fe1b4469a0ab9ee20563f37ff3d44b"
+        },
+        {
+          "name": "licenses/windows/windows-core-0.62.2-license-mit",
+          "bytes": 1141,
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        {
+          "name": "licenses/windows/windows-future-0.3.2-license-apache-2.0",
+          "bytes": 11351,
+          "sha256": "c16f8dcf1a368b83be78d826ea23de4079fe1b4469a0ab9ee20563f37ff3d44b"
+        },
+        {
+          "name": "licenses/windows/windows-future-0.3.2-license-mit",
+          "bytes": 1141,
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        {
+          "name": "licenses/windows/windows-implement-0.60.2-license-apache-2.0",
+          "bytes": 11351,
+          "sha256": "c16f8dcf1a368b83be78d826ea23de4079fe1b4469a0ab9ee20563f37ff3d44b"
+        },
+        {
+          "name": "licenses/windows/windows-implement-0.60.2-license-mit",
+          "bytes": 1141,
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        {
+          "name": "licenses/windows/windows-interface-0.59.3-license-apache-2.0",
+          "bytes": 11351,
+          "sha256": "c16f8dcf1a368b83be78d826ea23de4079fe1b4469a0ab9ee20563f37ff3d44b"
+        },
+        {
+          "name": "licenses/windows/windows-interface-0.59.3-license-mit",
+          "bytes": 1141,
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        {
+          "name": "licenses/windows/windows-link-0.2.1-license-apache-2.0",
+          "bytes": 11351,
+          "sha256": "c16f8dcf1a368b83be78d826ea23de4079fe1b4469a0ab9ee20563f37ff3d44b"
+        },
+        {
+          "name": "licenses/windows/windows-link-0.2.1-license-mit",
+          "bytes": 1141,
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        {
+          "name": "licenses/windows/windows-numerics-0.3.1-license-apache-2.0",
+          "bytes": 11351,
+          "sha256": "c16f8dcf1a368b83be78d826ea23de4079fe1b4469a0ab9ee20563f37ff3d44b"
+        },
+        {
+          "name": "licenses/windows/windows-numerics-0.3.1-license-mit",
+          "bytes": 1141,
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        {
+          "name": "licenses/windows/windows-result-0.4.1-license-mit",
+          "bytes": 1141,
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        {
+          "name": "licenses/windows/windows-result-0.4.1-license-apache-2.0",
+          "bytes": 11351,
+          "sha256": "c16f8dcf1a368b83be78d826ea23de4079fe1b4469a0ab9ee20563f37ff3d44b"
+        },
+        {
+          "name": "licenses/windows/windows-strings-0.5.1-license-apache-2.0",
+          "bytes": 11351,
+          "sha256": "c16f8dcf1a368b83be78d826ea23de4079fe1b4469a0ab9ee20563f37ff3d44b"
+        },
+        {
+          "name": "licenses/windows/windows-strings-0.5.1-license-mit",
+          "bytes": 1141,
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        {
+          "name": "licenses/windows/windows-threading-0.2.1-license-mit",
+          "bytes": 1141,
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        {
+          "name": "licenses/windows/windows-threading-0.2.1-license-apache-2.0",
+          "bytes": 11351,
+          "sha256": "c16f8dcf1a368b83be78d826ea23de4079fe1b4469a0ab9ee20563f37ff3d44b"
+        },
+        {
+          "name": "licenses/input-snapshot/cc-1.10.0/LICENSE-APACHE",
+          "bytes": 10847,
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+        },
+        {
+          "name": "licenses/input-snapshot/cc-1.10.0/LICENSE-MIT",
+          "bytes": 1057,
+          "sha256": "378f5840b258e2779c39418f3f2d7b2ba96f1c7917dd6be0713f88305dbda397"
+        },
+        {
+          "name": "licenses/input-snapshot/cfg-if-1.0.5/LICENSE-APACHE",
+          "bytes": 10847,
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+        },
+        {
+          "name": "licenses/input-snapshot/cfg-if-1.0.5/LICENSE-MIT",
+          "bytes": 1057,
+          "sha256": "378f5840b258e2779c39418f3f2d7b2ba96f1c7917dd6be0713f88305dbda397"
+        },
+        {
+          "name": "licenses/input-snapshot/find-msvc-tools-0.1.15/LICENSE-APACHE",
+          "bytes": 10847,
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+        },
+        {
+          "name": "licenses/input-snapshot/find-msvc-tools-0.1.15/LICENSE-MIT",
+          "bytes": 1057,
+          "sha256": "378f5840b258e2779c39418f3f2d7b2ba96f1c7917dd6be0713f88305dbda397"
+        },
+        {
+          "name": "licenses/input-snapshot/getrandom-0.2.17/LICENSE-APACHE",
+          "bytes": 10849,
+          "sha256": "aaff376532ea30a0cd5330b9502ad4a4c8bf769c539c87ffe78819d188a18ebf"
+        },
+        {
+          "name": "licenses/input-snapshot/libc-0.2.191/LICENSE-APACHE",
+          "bytes": 9723,
+          "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a"
+        },
+        {
+          "name": "licenses/input-snapshot/getrandom-0.2.17/LICENSE-MIT",
+          "bytes": 1130,
+          "sha256": "42fa16951ce7f24b5a467a40e5b449a1d41e662f97ca779864f053f39e097737"
+        },
+        {
+          "name": "licenses/input-snapshot/libc-0.2.191/LICENSE-MIT",
+          "bytes": 1066,
+          "sha256": "123a331b5dbf04c30097fa43b8f858bc85df671fe776de498d01f3d6b7c1f69e"
+        },
+        {
+          "name": "licenses/input-snapshot/manifest.json",
+          "bytes": 26195,
+          "sha256": "e44a5fd818de9d02bc351891501c454e409c056b935b857170081497d7202d64"
+        },
+        {
+          "name": "licenses/input-snapshot/ring-0.17.14/LICENSE",
+          "bytes": 499,
+          "sha256": "b3d734001a94efff3579978d953391aa7115f877657d25eb54037a43875d078a"
+        },
+        {
+          "name": "licenses/input-snapshot/ring-0.17.14/LICENSE-BoringSSL",
+          "bytes": 14870,
+          "sha256": "005fc765ddc5115da796cca915baa9557abae13ff35e0a47c47affc56f6c414d"
+        },
+        {
+          "name": "licenses/input-snapshot/ring-0.17.14/LICENSE-other-bits",
+          "bytes": 731,
+          "sha256": "f025ccfb7dfb6bdfedc75ca0f67acc69e6fb4998143d834f7c2f38a29989680f"
+        },
+        {
+          "name": "licenses/input-snapshot/ring-0.17.14/src/polyfill/once_cell/LICENSE-APACHE",
+          "bytes": 10847,
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+        },
+        {
+          "name": "licenses/input-snapshot/ring-0.17.14/src/polyfill/once_cell/LICENSE-MIT",
+          "bytes": 1022,
+          "sha256": "6ee2ed6c77710de911761acd5fc1ad1da00f476beb1a7ef27e78c2d1858deafc"
+        },
+        {
+          "name": "licenses/input-snapshot/ring-0.17.14/third_party/fiat/LICENSE",
+          "bytes": 638,
+          "sha256": "9eacbcb81be660840c714a560a9d65ba07913db98dd4baf969f78dd499fdd60f"
+        },
+        {
+          "name": "licenses/input-snapshot/shlex-2.0.1/LICENSE-MIT",
+          "bytes": 1092,
+          "sha256": "4455bf75a91154108304cb283e0fea9948c14f13e20d60887cf2552449dea3b1"
+        },
+        {
+          "name": "licenses/input-snapshot/shlex-2.0.1/LICENSE-APACHE",
+          "bytes": 566,
+          "sha256": "553fffcd9b1cb158bc3e9edc35da85ca5c3b3d7d2e61c883ebcfa8a65814b583"
+        },
+        {
+          "name": "licenses/input-snapshot/untrusted-0.9.0/LICENSE.txt",
+          "bytes": 769,
+          "sha256": "7abd9b6960dcf7d4d0a48606a5b71bfe37d472db68d70637f3a58a56785f1621"
+        },
+        {
+          "name": "licenses/input-snapshot/wasi-0.11.1+wasi-snapshot-preview1/LICENSE-APACHE",
+          "bytes": 10847,
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+        },
+        {
+          "name": "licenses/input-snapshot/wasi-0.11.1+wasi-snapshot-preview1/LICENSE-Apache-2.0_WITH_LLVM-exception",
+          "bytes": 12243,
+          "sha256": "268872b9816f90fd8e85db5a28d33f8150ebb8dd016653fb39ef1f94f2686bc5"
+        },
+        {
+          "name": "licenses/input-snapshot/wasi-0.11.1+wasi-snapshot-preview1/LICENSE-MIT",
+          "bytes": 1023,
+          "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+        },
+        {
+          "name": "licenses/input-snapshot/windows-sys-0.52.0/license-apache-2.0",
+          "bytes": 11351,
+          "sha256": "c16f8dcf1a368b83be78d826ea23de4079fe1b4469a0ab9ee20563f37ff3d44b"
+        },
+        {
+          "name": "licenses/input-snapshot/windows-sys-0.52.0/license-mit",
+          "bytes": 1141,
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        {
+          "name": "licenses/input-snapshot/windows-targets-0.52.6/license-apache-2.0",
+          "bytes": 11351,
+          "sha256": "c16f8dcf1a368b83be78d826ea23de4079fe1b4469a0ab9ee20563f37ff3d44b"
+        },
+        {
+          "name": "licenses/input-snapshot/windows-targets-0.52.6/license-mit",
+          "bytes": 1141,
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        {
+          "name": "licenses/input-snapshot/windows_aarch64_gnullvm-0.52.6/license-apache-2.0",
+          "bytes": 11351,
+          "sha256": "c16f8dcf1a368b83be78d826ea23de4079fe1b4469a0ab9ee20563f37ff3d44b"
+        },
+        {
+          "name": "licenses/input-snapshot/windows_aarch64_gnullvm-0.52.6/license-mit",
+          "bytes": 1141,
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        {
+          "name": "licenses/input-snapshot/windows_aarch64_msvc-0.52.6/license-apache-2.0",
+          "bytes": 11351,
+          "sha256": "c16f8dcf1a368b83be78d826ea23de4079fe1b4469a0ab9ee20563f37ff3d44b"
+        },
+        {
+          "name": "licenses/input-snapshot/windows_aarch64_msvc-0.52.6/license-mit",
+          "bytes": 1141,
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        {
+          "name": "licenses/input-snapshot/windows_i686_gnu-0.52.6/license-apache-2.0",
+          "bytes": 11351,
+          "sha256": "c16f8dcf1a368b83be78d826ea23de4079fe1b4469a0ab9ee20563f37ff3d44b"
+        },
+        {
+          "name": "licenses/input-snapshot/windows_i686_gnu-0.52.6/license-mit",
+          "bytes": 1141,
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        {
+          "name": "licenses/input-snapshot/windows_i686_gnullvm-0.52.6/license-apache-2.0",
+          "bytes": 11351,
+          "sha256": "c16f8dcf1a368b83be78d826ea23de4079fe1b4469a0ab9ee20563f37ff3d44b"
+        },
+        {
+          "name": "licenses/input-snapshot/windows_i686_gnullvm-0.52.6/license-mit",
+          "bytes": 1141,
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        {
+          "name": "licenses/input-snapshot/windows_i686_msvc-0.52.6/license-apache-2.0",
+          "bytes": 11351,
+          "sha256": "c16f8dcf1a368b83be78d826ea23de4079fe1b4469a0ab9ee20563f37ff3d44b"
+        },
+        {
+          "name": "licenses/input-snapshot/windows_i686_msvc-0.52.6/license-mit",
+          "bytes": 1141,
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        {
+          "name": "licenses/input-snapshot/windows_x86_64_gnu-0.52.6/license-apache-2.0",
+          "bytes": 11351,
+          "sha256": "c16f8dcf1a368b83be78d826ea23de4079fe1b4469a0ab9ee20563f37ff3d44b"
+        },
+        {
+          "name": "licenses/input-snapshot/windows_x86_64_gnullvm-0.52.6/license-apache-2.0",
+          "bytes": 11351,
+          "sha256": "c16f8dcf1a368b83be78d826ea23de4079fe1b4469a0ab9ee20563f37ff3d44b"
+        },
+        {
+          "name": "licenses/input-snapshot/windows_x86_64_gnu-0.52.6/license-mit",
+          "bytes": 1141,
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        {
+          "name": "licenses/input-snapshot/windows_x86_64_gnullvm-0.52.6/license-mit",
+          "bytes": 1141,
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        {
+          "name": "licenses/input-snapshot/windows_x86_64_msvc-0.52.6/license-apache-2.0",
+          "bytes": 11351,
+          "sha256": "c16f8dcf1a368b83be78d826ea23de4079fe1b4469a0ab9ee20563f37ff3d44b"
+        },
+        {
+          "name": "licenses/input-snapshot/windows_x86_64_msvc-0.52.6/license-mit",
+          "bytes": 1141,
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        {
+          "name": "licenses/input-context/CC-BY-2.0-FR.txt",
+          "bytes": 16072,
+          "sha256": "362dd817bbc88624140127ee5075f995bccf09e4518c8834180798ffc2578574"
+        },
+        {
+          "name": "docs/input-round14-design.md",
+          "bytes": 8598,
+          "sha256": "d59804045f29b9e6a2bb9041bbec5a7be24484882d9f6fd36cbea67201ca0d70"
+        },
+        {
+          "name": "docs/input-round15-design.md",
+          "bytes": 5910,
+          "sha256": "6d3b0ed5eb3d76affd99f492ccd5a2c9e1d7981aa91e5efd9c1abf5f863e88e5"
+        },
+        {
+          "name": "docs/input-round16-design.md",
+          "bytes": 7207,
+          "sha256": "2d8e6ac51ca57cba17e7ceb855da971937832afef58f49aaeedb0f1707fdb15f"
+        },
+        {
+          "name": "docs/input-round17-design.md",
+          "bytes": 6820,
+          "sha256": "92f335e530f67dc556c8ae6859bdc82b0083fa4b14a6eb0fc18d131cbe51af1e"
+        },
+        {
+          "name": "docs/input-round18-design.md",
+          "bytes": 6573,
+          "sha256": "3c825dea2ef153620c601f768c75542c9d41999da425a24435caaa2eca001508"
+        }
+      ]
+    },
+    {
+      "file": "core-performance-windows-latest.zip",
+      "bytes": 19476,
+      "sha256": "9eb2f2b443e15f585134bf75d32b47bc5d204a8e38fe50527cb4a1411ccd1de9",
+      "crc": "passed",
+      "members": [
+        {
+          "name": "m2-performance.json",
+          "bytes": 1360,
+          "sha256": "b15d5b38e4ff68053f38b321e1e7b1f6af96ada8f9af3bdfabd752f19ea628fc"
+        },
+        {
+          "name": "algorithm-v1/raw-results.tsv",
+          "bytes": 94054,
+          "sha256": "16ffa6d785a4de35efde9bfa2d9c84a64079f91c82a7c332d032326dc7c02d0b"
+        },
+        {
+          "name": "algorithm-v1/case-comparison.tsv",
+          "bytes": 7104,
+          "sha256": "973fa37b9ae60cfb63e067718ec2c39ec1f9d9ceee3b0ca6f480dfde991547a2"
+        },
+        {
+          "name": "algorithm-v1/report.md",
+          "bytes": 9366,
+          "sha256": "467c93cd0e20a7d6d7ebbcd0df74411874bb964a44fd2d9a9c101ff7f6db25a7"
+        },
+        {
+          "name": "algorithm-v1/summary.json",
+          "bytes": 110572,
+          "sha256": "047fef8da291211490f7731e456603f274a8b0193f3de79d3124e9d45613bf47"
+        },
+        {
+          "name": "input-dependency-audit.json",
+          "bytes": 26999,
+          "sha256": "bd406846db509aa969c45abe3d2bf4a0021006bec9573ff5bfa2c4536161f77d"
+        }
+      ]
+    }
+  ]
+}

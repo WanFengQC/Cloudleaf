@@ -1,0 +1,673 @@
+diff --git a/adapters/windows/isolated_input.rs b/adapters/windows/isolated_input.rs
+index 297867f..4b83035 100644
+--- a/adapters/windows/isolated_input.rs
++++ b/adapters/windows/isolated_input.rs
+@@ -781,4 +781,87 @@ mod tests {
+         assert_eq!(before.preedit, "nihao");
+         assert!(local.document.borrow().is_empty());
+     }
++
++    fn scheme_local() -> LocalHost {
++        let snapshot = Arc::new(SearchSnapshot::from_verified_tsv("# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\nnihao\tni hao\t你好\t\tunknown\t\tmechanical\tnihao\tMIT\nnonghu\tnong hu\t农户\t\tunknown\t\tmechanical\tnonghu\tMIT\nzhongguo\tzhong guo\t中国\t\tunknown\t\tmechanical\tzhongguo\tMIT\nni0\tni\t你\t\tunknown\t\tmechanical\tni0\tMIT\nni1\tni\t尼\t\tunknown\t\tmechanical\tni1\tMIT\nni2\tni\t泥\t\tunknown\t\tmechanical\tni2\tMIT\nni3\tni\t拟\t\tunknown\t\tmechanical\tni3\tMIT\nni4\tni\t逆\t\tunknown\t\tmechanical\tni4\tMIT\nni5\tni\t匿\t\tunknown\t\tmechanical\tni5\tMIT\nni6\tni\t妮\t\tunknown\t\tmechanical\tni6\tMIT\nni7\tni\t霓\t\tunknown\t\tmechanical\tni7\tMIT\nni8\tni\t腻\t\tunknown\t\tmechanical\tni8\tMIT\nni9\tni\t溺\t\tunknown\t\tmechanical\tni9\tMIT\nni10\tni\t呢\t\tunknown\t\tmechanical\tni10\tMIT\nni11\tni\t旎\t\tunknown\t\tmechanical\tni11\tMIT\n", "87fc5f6e465ef421da4428b4e0fa08c88907b850c932b9b8690294d3fac53ded").unwrap());
++        let config = cloudleaf_search::Config {
++            ranker: cloudleaf_search::Ranker::Structural,
++            method: cloudleaf_search::Method::PositionDag,
++            output_k: 10, max_input_bytes: 64, max_letters: 64,
++            ..Default::default()
++        };
++        LocalHost::new(Host::with_search(snapshot, config, InputConfig::default()).unwrap()).unwrap()
++    }
++
++    #[test]
++    fn scheme_switch_preserves_raw_cursor_and_rejects_the_old_candidate() {
++        let local = scheme_local();
++        type_text(&local, "nihao");
++        local.process(InputEvent::Key(Key::Left), None, &|_| CommitOutcome::Applied).unwrap();
++        let before = local.host.engine.borrow().frame();
++        let config = cloudleaf_input::SchemeConfig {
++            scheme: cloudleaf_input::PinyinScheme::AbbreviatedPinyin,
++            ..Default::default()
++        };
++        let after = local.switch_scheme(config.clone()).unwrap();
++        assert_eq!(after.preedit, before.preedit);
++        assert_eq!(after.cursor, before.cursor);
++        assert!(after.revision > before.revision);
++        assert_eq!(local.host.engine.borrow().pinyin_scheme(), Some(&config));
++        assert_eq!(local.host.projection.borrow().pinyin_scheme(), Some(&config));
++        assert!(local.process(InputEvent::Key(Key::Space), Some((before.revision, before.candidates[0].id.clone())), &|_| panic!("旧候选不能写文档")).is_err());
++        assert!(local.document.borrow().is_empty());
++    }
++
++    #[test]
++    fn failed_or_unknown_commit_blocks_settings_without_partial_change() {
++        for outcome in [CommitOutcome::NotApplied, CommitOutcome::Unknown] {
++            let local = scheme_local();
++            type_text(&local, "nihao");
++            local.process(InputEvent::Key(Key::Space), None, &|_| outcome).unwrap();
++            let actual = local.host.engine.borrow().frame();
++            let projected = local.host.projection.borrow().frame();
++            let config = cloudleaf_input::SchemeConfig {
++                scheme: cloudleaf_input::PinyinScheme::AbbreviatedPinyin,
++                ..Default::default()
++            };
++            assert!(local.switch_scheme(config).is_err());
++            assert_eq!(local.host.engine.borrow().frame(), actual);
++            assert_eq!(local.host.projection.borrow().frame(), projected);
++            assert_eq!(local.host.engine.borrow().pinyin_scheme(), Some(&cloudleaf_input::SchemeConfig::default()));
++            assert!(local.document.borrow().is_empty());
++        }
++    }
++
++    #[test]
++    fn projection_preflight_failure_never_changes_the_first_engine() {
++        let local = scheme_local();
++        type_text(&local, "nihao");
++        local.host.projection.borrow_mut().handle(InputEvent::Key(Key::Space));
++        let actual = local.host.engine.borrow().frame();
++        let projected = local.host.projection.borrow().frame();
++        let config = cloudleaf_input::SchemeConfig {
++            scheme: cloudleaf_input::PinyinScheme::AbbreviatedPinyin,
++            ..Default::default()
++        };
++        assert!(local.switch_scheme(config).is_err());
++        assert_eq!(local.host.engine.borrow().frame(), actual);
++        assert_eq!(local.host.projection.borrow().frame(), projected);
++    }
++
++    #[test]
++    fn configured_host_keeps_page_selection_in_the_real_input_core() {
++        let local = scheme_local();
++        type_text(&local, "ni");
++        let before = local.host.engine.borrow().frame();
++        assert_eq!(before.candidates.len(), 10);
++        local.process(InputEvent::Key(Key::PageDown), None, &|_| CommitOutcome::Applied).unwrap();
++        let paged = local.host.engine.borrow().frame();
++        assert_eq!(paged.page_start, 5);
++        let expected = paged.candidates[6].text.clone();
++        local.process(InputEvent::Key(Key::Char('2')), None, &|_| CommitOutcome::Applied).unwrap();
++        assert_eq!(local.document.borrow().as_str(), expected);
++        assert_eq!(local.host.engine.borrow().frame().preedit, "");
++    }
++
+ }
+diff --git a/crates/cloudleaf-candidate/src/lib.rs b/crates/cloudleaf-candidate/src/lib.rs
+index ec8a767..330aec6 100644
+--- a/crates/cloudleaf-candidate/src/lib.rs
++++ b/crates/cloudleaf-candidate/src/lib.rs
+@@ -60,6 +60,9 @@ fn rank(kind: MatchKind) -> u8 {
+     match kind {
+         MatchKind::Exact => 0,
+         MatchKind::Prefix => 1,
++        MatchKind::Abbreviation => 2,
++        MatchKind::Fuzzy => 3,
++        MatchKind::Correction => 4,
+     }
+ }
+ 
+diff --git a/crates/cloudleaf-input/src/lib.rs b/crates/cloudleaf-input/src/lib.rs
+index 8fad68b..6be2995 100644
+--- a/crates/cloudleaf-input/src/lib.rs
++++ b/crates/cloudleaf-input/src/lib.rs
+@@ -12,6 +12,7 @@ use cloudleaf_types::{
+     InputState, Key, KeyDisposition,
+ };
+ use std::sync::Arc;
++pub use cloudleaf_pinyin::{SchemeConfig, PinyinScheme, DoublePinyinLayout, FuzzyPair, FuzzyDirection, FuzzyRule, CorrectionConfig};
+ 
+ /// 首期每页最多显示五个候选，数字快捷键按当前页编号。
+ pub const DEFAULT_PAGE_SIZE: usize = 5;
+@@ -171,6 +172,30 @@ impl InputEngine {
+             .map(sentence::SentenceBackend::capacity_bounds)
+     }
+ 
++    pub fn pinyin_scheme(&self) -> Option<&SchemeConfig> {
++        self.sentence.as_ref().map(sentence::SentenceBackend::scheme)
++    }
++
++    /// 平台双引擎先共同预检，再在所属线程内一次应用；不改变待确认事务。
++    pub fn validate_scheme_config(&self, scheme: &SchemeConfig) -> Result<(), CoreError> {
++        if self.pending_commit.is_some() || self.failed_commit.is_some() {
++            return Err(CoreError::new(ErrorCode::CommitPending, "事务未完成，不能切换输入方案"));
++        }
++        if self.revision == u64::MAX || self.sentence.is_none() {
++            return Err(CoreError::new(ErrorCode::InvalidConfig, "当前后端或修订号不支持输入方案"));
++        }
++        scheme.validate()
++    }
++
++    pub fn reconfigure_scheme(&mut self, scheme: SchemeConfig) -> Result<(), CoreError> {
++        self.validate_scheme_config(&scheme)?;
++        self.sentence.as_mut().unwrap().set_scheme(scheme);
++        let inactive = self.state == InputState::Inactive;
++        self.refresh();
++        if inactive { self.state = InputState::Inactive; }
++        Ok(())
++    }
++
+     /// 未确定的提交先由原事务收尾，不能通过换词典解除失败保护。
+     pub fn replace_search_snapshot(
+         &mut self,
+diff --git a/crates/cloudleaf-input/src/sentence.rs b/crates/cloudleaf-input/src/sentence.rs
+index b33c65b..f9c7d5b 100644
+--- a/crates/cloudleaf-input/src/sentence.rs
++++ b/crates/cloudleaf-input/src/sentence.rs
+@@ -39,6 +39,7 @@ impl SearchSnapshot {
+                 let last = entry.pinyin.rsplit(' ').next().unwrap().len();
+                 // 最后一个音节可为前缀；不能按完整读音长度低估每消耗字母的输出。
+                 entry.text.len().div_ceil(letters - last + 1)
++                    .max(entry.text.len().div_ceil(entry.pinyin.split(' ').count()))
+             })
+             .max()
+             .unwrap_or(0);
+@@ -86,7 +87,10 @@ impl SearchSnapshot {
+         // 每条边至少消耗一个ASCII字母；末音节前缀仍只增加一个词条。
+         let diagnostic_path_bytes = std::mem::size_of::<SearchPath>()
+             + CANDIDATE_ID_BYTES
+-            + INPUT_BYTES * (std::mem::size_of::<EdgeSource>() + self.max_edge_source_bytes);
++            + INPUT_BYTES * (std::mem::size_of::<EdgeSource>() + self.max_edge_source_bytes)
++            // 最多64个非零消耗音节；每弧两条模糊规则或一条编辑，字符串与结构分开计费。
++            + INPUT_BYTES * (std::mem::size_of::<cloudleaf_pinyin::PhoneticArc>()
++                + 2 * std::mem::size_of::<cloudleaf_pinyin::PhoneticChange>() + 128);
+         SearchCapacityBounds {
+             max_input_bytes: INPUT_BYTES,
+             max_candidates: candidates,
+@@ -97,7 +101,7 @@ impl SearchSnapshot {
+             max_diagnostic_bytes: std::mem::size_of::<SearchDiagnostic>()
+                 + CANDIDATE_ID_BYTES
+                 + CANDIDATE_ID_BYTES
+-                + 128
++                + 1024
+                 + INPUT_BYTES
+                 + candidates * diagnostic_path_bytes,
+             max_frame_bytes: std::mem::size_of::<cloudleaf_types::InputFrame>()
+@@ -176,6 +180,7 @@ pub struct EdgeSource {
+     pub source: String,
+     pub source_record_id: String,
+     pub license_id: String,
++    pub interpretation: Option<cloudleaf_search::EdgeInterpretation>,
+ }
+ 
+ #[derive(Debug, Clone, PartialEq, Eq)]
+@@ -201,6 +206,8 @@ pub struct SearchDiagnostic {
+     pub statistics: Statistics,
+     pub paths: Vec<SearchPath>,
+     pub error: Option<SearchError>,
++    pub scheme_version: Option<String>,
++    pub scheme_statistics: Option<cloudleaf_search::SchemeStatistics>,
+ }
+ 
+ pub(crate) struct SentenceBackend {
+@@ -208,6 +215,7 @@ pub(crate) struct SentenceBackend {
+     config: Config,
+     language: Option<Arc<LanguageSnapshot>>,
+     left_word: Option<String>,
++    scheme: cloudleaf_pinyin::SchemeConfig,
+ }
+ 
+ impl SentenceBackend {
+@@ -265,6 +273,7 @@ impl SentenceBackend {
+             config,
+             language,
+             left_word,
++            scheme: cloudleaf_pinyin::SchemeConfig::default(),
+         })
+     }
+ 
+@@ -294,9 +303,14 @@ impl SentenceBackend {
+         language: Option<Arc<LanguageSnapshot>>,
+         left_word: Option<String>,
+     ) -> Result<Self, CoreError> {
+-        Self::configured(self.snapshot.clone(), config, language, left_word)
++        let mut replacement = Self::configured(self.snapshot.clone(), config, language, left_word)?;
++        replacement.scheme = self.scheme.clone();
++        Ok(replacement)
+     }
+ 
++    pub(crate) fn scheme(&self) -> &cloudleaf_pinyin::SchemeConfig { &self.scheme }
++    pub(crate) fn set_scheme(&mut self, scheme: cloudleaf_pinyin::SchemeConfig) { self.scheme = scheme; }
++
+     pub(crate) fn capacity_bounds(&self) -> SearchCapacityBounds {
+         self.snapshot.bounds(self.config.output_k)
+     }
+@@ -317,14 +331,17 @@ impl SentenceBackend {
+             statistics: Statistics::default(),
+             paths: Vec::new(),
+             error: None,
++            scheme_version: (!self.scheme.is_default()).then(|| self.scheme.version_id()),
++            scheme_statistics: None,
+         };
+-        let graph = match Lattice::build(&self.snapshot.lexicon, input, &self.config) {
++        let graph = match Lattice::build_with_scheme(&self.snapshot.lexicon, input, &self.config, &self.scheme) {
+             Ok(graph) => graph,
+             Err(error) => {
+                 diagnostic.error = Some(error);
+                 return (Vec::new(), diagnostic);
+             }
+         };
++        diagnostic.scheme_statistics = graph.scheme_statistics().cloned();
+         let result = match search_graph(
+             &self.snapshot.lexicon,
+             &graph,
+@@ -369,6 +386,7 @@ impl SentenceBackend {
+                         source: entry.source.clone(),
+                         source_record_id: entry.source_record_id.clone(),
+                         license_id: entry.license_id.clone(),
++                        interpretation: graph.interpretation(*index).cloned(),
+                     }
+                 })
+                 .collect();
+@@ -377,14 +395,13 @@ impl SentenceBackend {
+             } else {
+                 None
+             };
+-            let match_kind = if edges
+-                .iter()
+-                .any(|edge| edge.match_kind == MatchKind::Prefix)
+-            {
+-                cloudleaf_types::MatchKind::Prefix
+-            } else {
+-                cloudleaf_types::MatchKind::Exact
+-            };
++            let match_kind = edges.iter().map(|edge| match edge.match_kind {
++                MatchKind::Exact => cloudleaf_types::MatchKind::Exact,
++                MatchKind::Prefix => cloudleaf_types::MatchKind::Prefix,
++                MatchKind::Abbreviation => cloudleaf_types::MatchKind::Abbreviation,
++                MatchKind::Fuzzy => cloudleaf_types::MatchKind::Fuzzy,
++                MatchKind::Correction => cloudleaf_types::MatchKind::Correction,
++            }).max().unwrap_or(cloudleaf_types::MatchKind::Exact);
+             diagnostic.paths.push(SearchPath {
+                 candidate_id: id.clone(),
+                 score: path.score,
+@@ -418,6 +435,10 @@ fn candidate_id(
+         hash.update(&(value.len() as u64).to_le_bytes());
+         hash.update(value.as_bytes());
+     }
++    if let Some(version) = graph.scheme_version() {
++        hash.update(&(version.len() as u64).to_le_bytes());
++        hash.update(version.as_bytes());
++    }
+     if let Some(version) = model_version {
+         hash.update(&(version.len() as u64).to_le_bytes());
+         hash.update(version.as_bytes());
+@@ -430,6 +451,11 @@ fn candidate_id(
+             hash.update(&(value as u64).to_le_bytes());
+         }
+         hash.update(&[u8::from(edge.kind == MatchKind::Prefix)]);
++        if let Some(evidence) = graph.interpretation(*index) {
++            let source = format!("{evidence:?}");
++            hash.update(&(source.len() as u64).to_le_bytes());
++            hash.update(source.as_bytes());
++        }
+     }
+     hex(hash.finish().as_ref())
+ }
+diff --git a/crates/cloudleaf-pinyin/src/lib.rs b/crates/cloudleaf-pinyin/src/lib.rs
+index f9ee49f..7150890 100644
+--- a/crates/cloudleaf-pinyin/src/lib.rs
++++ b/crates/cloudleaf-pinyin/src/lib.rs
+@@ -1,5 +1,17 @@
+ //! 自研全拼分段；仅在最后一个音节允许前缀，不做模糊音或简拼猜测。
+ 
++mod scheme;
++pub use scheme::{
++    BaseMatch, ChangeKind, CorrectionConfig, DoublePinyinLayout, FuzzyDirection, FuzzyPair,
++    FuzzyRule, InterpretationBudget, InterpretationLimits, PhoneticArc, PhoneticChange,
++    PhoneticHypotheses, PhoneticMatch, PinyinScheme, SchemeConfig, XIAOHE_LAYOUT_VERSION,
++    interpret,
++};
++
++pub fn legal_syllables() -> &'static [&'static str] {
++    syllables()
++}
++
+ use std::cmp::Ordering;
+ use std::sync::OnceLock;
+ 
+diff --git a/crates/cloudleaf-search/src/lattice.rs b/crates/cloudleaf-search/src/lattice.rs
+index 62b790b..32cf4b1 100644
+--- a/crates/cloudleaf-search/src/lattice.rs
++++ b/crates/cloudleaf-search/src/lattice.rs
+@@ -6,6 +6,9 @@ use std::collections::BTreeSet;
+ pub enum MatchKind {
+     Exact,
+     Prefix,
++    Abbreviation,
++    Fuzzy,
++    Correction,
+ }
+ 
+ #[derive(Clone, Debug, Eq, PartialEq)]
+@@ -28,6 +31,7 @@ pub struct Lattice<'a> {
+     pub(crate) edges: Vec<Edge>,
+     pub(crate) outgoing: Vec<Vec<usize>>,
+     pub(crate) budget: Option<Budget>,
++    pub(crate) interpreted: Option<crate::schemes::Interpreted>,
+ }
+ 
+ impl<'a> Lattice<'a> {
+@@ -93,6 +97,7 @@ impl<'a> Lattice<'a> {
+             waiting,
+             edges: Vec::new(),
+             budget: None,
++            interpreted: None,
+         };
+         if waiting {
+             return Ok(graph);
+diff --git a/crates/cloudleaf-search/src/lib.rs b/crates/cloudleaf-search/src/lib.rs
+index 89aba4c..a428d87 100644
+--- a/crates/cloudleaf-search/src/lib.rs
++++ b/crates/cloudleaf-search/src/lib.rs
+@@ -6,6 +6,7 @@ mod lexicon;
+ mod model;
+ mod profiling;
+ mod search;
++mod schemes;
+ 
+ pub use cancellation::Cancellation;
+ pub use lattice::{Edge, Lattice, MatchKind};
+@@ -15,6 +16,7 @@ pub use profiling::{Measurement, Phase, Profile, profile_query};
+ pub use search::{
+     Candidate, Features, SearchResult, Statistics, search_graph, search_graph_cancellable,
+ };
++pub use schemes::{EdgeInterpretation, InterpretationCost, SchemeStatistics};
+ 
+ use std::fmt;
+ 
+@@ -88,6 +90,8 @@ pub enum Budget {
+     GraphEdges,
+     Expansions,
+     ResidentPaths,
++    Interpretation,
++    Intersection,
+ }
+ 
+ /// 确定性工作预算；墙钟时间不参与剪枝。上界控制调用者配置的最坏资源范围。
+diff --git a/crates/cloudleaf-search/src/search.rs b/crates/cloudleaf-search/src/search.rs
+index f3b24e9..8c1121a 100644
+--- a/crates/cloudleaf-search/src/search.rs
++++ b/crates/cloudleaf-search/src/search.rs
+@@ -1,13 +1,14 @@
+ use crate::profiling::{Noop, Observer, Phase};
+ use crate::{
+-    BigramModel, Budget, Cancellation, Config, ErrorKind, Lattice, Lexicon, MatchKind, Method,
+-    Ranker, SearchError,
++    BigramModel, Budget, Cancellation, Config, ErrorKind, InterpretationCost, Lattice, Lexicon,
++    MatchKind, Method, Ranker, SearchError,
+ };
+ use std::cmp::Ordering;
+ use std::collections::{BTreeMap, BinaryHeap};
+ 
+ #[derive(Clone, Debug, Default, Eq, PartialEq)]
+ pub struct Features {
++    pub interpretation_cost: InterpretationCost,
+     pub words: usize,
+     pub prefixes: usize,
+     pub frequency_units: i64,
+@@ -63,8 +64,10 @@ struct Path {
+ }
+ 
+ fn compare(a: &Path, b: &Path) -> Ordering {
+-    b.score
+-        .cmp(&a.score)
++    a.features
++        .interpretation_cost
++        .cmp(&b.features.interpretation_cost)
++        .then_with(|| b.score.cmp(&a.score))
+         .then_with(|| b.features.lexical_units.cmp(&a.features.lexical_units))
+         .then_with(|| a.ids.cmp(&b.ids))
+ }
+@@ -93,6 +96,13 @@ impl Scorer<'_> {
+         let entry = &self.lexicon.entries[edge.entry];
+         let stamp = observer.start(Phase::Scoring);
+         let mut features = path.features.clone();
++        features.interpretation_cost = features
++            .interpretation_cost
++            .plus(self.graph.interpretation_cost(edge_index));
++        if features.interpretation_cost.edits > self.graph.max_edit_cost() {
++            observer.stop(Phase::Scoring, stamp);
++            return None;
++        }
+         let mut score = path.score;
+         features.structural_units -= 100;
+         if self.ranker != Ranker::CharacterBigram {
+@@ -155,9 +165,10 @@ impl Scorer<'_> {
+         observer.stop(Phase::Scoring, stamp);
+         // 满桶中严格劣于末项的扩展必被丢弃，先比较借用ID，避免复制整条路径。
+         if cutoff.is_some_and(|worst| {
+-            worst
+-                .score
+-                .cmp(&score)
++            features
++                .interpretation_cost
++                .cmp(&worst.features.interpretation_cost)
++                .then_with(|| worst.score.cmp(&score))
+                 .then_with(|| worst.features.lexical_units.cmp(&features.lexical_units))
+                 .then_with(|| {
+                     path.ids
+@@ -295,10 +306,9 @@ fn reference<O: Observer>(
+             if !resident_allowed(stats, pending.len() + complete.len() + 2, config) {
+                 return complete;
+             }
+-            pending.push((
+-                scorer.graph.edges[*edge].end,
+-                scorer.extend(&path, *edge, None, observer).unwrap(),
+-            ));
++            if let Some(next) = scorer.extend(&path, *edge, None, observer) {
++                pending.push((scorer.graph.edges[*edge].end, next));
++            }
+         }
+     }
+     complete
+@@ -371,6 +381,84 @@ fn dynamic<O: Observer>(
+         .collect()
+ }
+ 
++type InterpretationStates = BTreeMap<(Option<usize>, u16), Vec<Path>>;
++
++/// 解释成本与语言历史分别保存；已用编辑量影响剩余可行后缀，不能按位置丢弃。
++fn interpreted_dynamic<O: Observer>(
++    scorer: &Scorer<'_>,
++    config: &Config,
++    stats: &mut Statistics,
++    k: usize,
++    observer: &mut O,
++) -> Vec<Path> {
++    let mut states: Vec<InterpretationStates> =
++        vec![BTreeMap::new(); scorer.graph.letters.len() + 1];
++    states[0].insert((None, 0), vec![Path::default()]);
++    let mut resident = 1;
++    stats.resident_high_water = 1;
++    for position in 0..scorer.graph.letters.len() {
++        let current = std::mem::take(&mut states[position]);
++        let mut paths: Vec<_> = current.into_values().flatten().collect();
++        if config.method == Method::Beam {
++            paths.sort_by(compare);
++            let pruned = paths.len().saturating_sub(config.beam_width);
++            stats.beam_pruned += pruned;
++            resident -= pruned;
++            paths.truncate(config.beam_width);
++        }
++        for path in paths {
++            for edge_index in &scorer.graph.outgoing[position] {
++                if scorer.cancelled() {
++                    return Vec::new();
++                }
++                if !expand_allowed(stats, config) {
++                    return Vec::new();
++                }
++                let edge = &scorer.graph.edges[*edge_index];
++                let used_edits = path.features.interpretation_cost.edits
++                    + scorer.graph.interpretation_cost(*edge_index).edits;
++                if used_edits > scorer.graph.max_edit_cost() {
++                    continue;
++                }
++                let history = if config.method == Method::PositionDag {
++                    None
++                } else if scorer.ranker == Ranker::CharacterBigram {
++                    Some(
++                        scorer
++                            .model
++                            .unwrap()
++                            .character
++                            .as_ref()
++                            .unwrap()
++                            .entry(edge.entry)
++                            .last as usize,
++                    )
++                } else {
++                    Some(edge.entry)
++                };
++                let bucket = states[edge.end].entry((history, used_edits)).or_default();
++                let old = bucket.len();
++                if !resident_allowed(stats, resident + 1, config) {
++                    return Vec::new();
++                }
++                let cutoff = (old == k).then(|| bucket.last().unwrap());
++                if let Some(next) = scorer.extend(&path, *edge_index, cutoff, observer) {
++                    insert_unique(bucket, next, k, observer);
++                }
++                resident = resident + bucket.len() - old;
++            }
++            resident -= 1;
++        }
++    }
++    states
++        .pop()
++        .unwrap_or_default()
++        .into_values()
++        .flatten()
++        .map(|path| scorer.finish(path, observer))
++        .collect()
++}
++
+ fn position_dynamic<O: Observer>(
+     scorer: &Scorer<'_>,
+     config: &Config,
+@@ -731,6 +819,8 @@ pub(crate) fn search_controlled_observed<O: Observer>(
+         Vec::new()
+     } else if config.method == Method::Reference {
+         reference(&scorer, config, &mut statistics, k, observer)
++    } else if graph.is_interpreted() {
++        interpreted_dynamic(&scorer, config, &mut statistics, k, observer)
+     } else if config.method == Method::PositionDag {
+         position_dynamic(&scorer, config, &mut statistics, k, observer)
+     } else if config.method == Method::ExactDag && config.ranker == Ranker::CharacterBigram {
+@@ -1002,3 +1092,92 @@ mod cancellation_regression {
+         }
+     }
+ }
++
++#[cfg(test)]
++mod interpretation_regression {
++    use super::*;
++    use crate::InterpretationCost;
++
++    fn path(text: &str, score: i64, ids: &[usize], cost: InterpretationCost) -> Path {
++        Path {
++            text: text.into(),
++            score,
++            ids: ids.to_vec(),
++            features: Features {
++                interpretation_cost: cost,
++                ..Features::default()
++            },
++            ..Path::default()
++        }
++    }
++
++    #[test]
++    fn exact_interpretation_precedes_better_language_score_without_mixing_units() {
++        let exact = path("甲", -10000, &[9], InterpretationCost::default());
++        let edited = path(
++            "乙",
++            10000,
++            &[0],
++            InterpretationCost {
++                edits: 1,
++                ..InterpretationCost::default()
++            },
++        );
++        assert_eq!(compare(&exact, &edited), Ordering::Less);
++        assert_eq!(exact.score, -10000);
++        assert_eq!(edited.score, 10000);
++    }
++
++    #[test]
++    fn duplicate_text_keeps_best_interpretation_before_score_or_entry_id() {
++        let mut bucket = Vec::new();
++        let fuzzy = InterpretationCost {
++            fuzzy: 1,
++            ..InterpretationCost::default()
++        };
++        insert_unique(&mut bucket, path("甲", 1000, &[0], fuzzy), 5, &mut Noop);
++        insert_unique(
++            &mut bucket,
++            path("甲", -1000, &[9], InterpretationCost::default()),
++            5,
++            &mut Noop,
++        );
++        assert_eq!(bucket.len(), 1);
++        assert_eq!(bucket[0].ids, [9]);
++        assert_eq!(
++            bucket[0].features.interpretation_cost,
++            InterpretationCost::default()
++        );
++    }
++
++    #[test]
++    fn cutoff_cannot_discard_an_exact_path_for_an_edited_high_score() {
++        let lexicon = Lexicon::from_tsv("# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\na\ta\t甲\t\tunknown\t\tfixture\ta\tMIT\n").unwrap();
++        let graph = Lattice::build(&lexicon, "a", &Config::default()).unwrap();
++        let scorer = Scorer {
++            lexicon: &lexicon,
++            graph: &graph,
++            ranker: Ranker::Structural,
++            model: None,
++            cancellation: None,
++        };
++        let worst = path(
++            "乙",
++            10000,
++            &[0],
++            InterpretationCost {
++                edits: 1,
++                ..InterpretationCost::default()
++            },
++        );
++        let result = scorer
++            .extend(&Path::default(), 0, Some(&worst), &mut Noop)
++            .unwrap();
++        assert_eq!(result.text, "甲");
++        assert_eq!(result.score, -100);
++        assert_eq!(
++            result.features.interpretation_cost,
++            InterpretationCost::default()
++        );
++    }
++}
+diff --git a/crates/cloudleaf-search/tests/search_contract.rs b/crates/cloudleaf-search/tests/search_contract.rs
+index 748b769..437e977 100644
+--- a/crates/cloudleaf-search/tests/search_contract.rs
++++ b/crates/cloudleaf-search/tests/search_contract.rs
+@@ -356,6 +356,7 @@ fn budgets_are_explicit_and_resident_high_water_includes_active_and_clone() {
+                 Budget::GraphEdges => cfg.max_edges = 1,
+                 Budget::Expansions => cfg.max_expansions = 1,
+                 Budget::ResidentPaths => cfg.max_resident_paths = 1,
++                Budget::Interpretation | Budget::Intersection => panic!("本组仅枚举原三个搜索预算"),
+             }
+             let graph = Lattice::build(&lex, "anana", &cfg).unwrap();
+             let result = search_graph(&lex, &graph, &cfg, None, None).unwrap();
+diff --git a/crates/cloudleaf-types/src/lib.rs b/crates/cloudleaf-types/src/lib.rs
+index 76eca6c..e648a4e 100644
+--- a/crates/cloudleaf-types/src/lib.rs
++++ b/crates/cloudleaf-types/src/lib.rs
+@@ -125,6 +125,9 @@ pub enum InputEvent {
+ pub enum MatchKind {
+     Exact,
+     Prefix,
++    Abbreviation,
++    Fuzzy,
++    Correction,
+ }
+ 
+ #[derive(Debug, Clone, PartialEq, Eq)]

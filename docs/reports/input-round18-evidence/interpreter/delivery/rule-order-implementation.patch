@@ -1,0 +1,21 @@
+diff --git a/crates/cloudleaf-pinyin/src/scheme.rs b/crates/cloudleaf-pinyin/src/scheme.rs
+--- a/crates/cloudleaf-pinyin/src/scheme.rs
++++ b/crates/cloudleaf-pinyin/src/scheme.rs
+@@ -420,6 +420,8 @@
+     }
+ }
+ fn fuzzy_arcs(graph: &mut PhoneticHypotheses, config: &SchemeConfig) {
++    let mut rules = config.fuzzy.clone();
++    rules.sort_unstable();
+     let originals = graph.arcs.clone();
+     for original in originals
+         .into_iter()
+@@ -431,7 +433,7 @@
+             if depth == config.limits.max_fuzzy_steps {
+                 continue;
+             }
+-            for rule in &config.fuzzy {
++            for rule in &rules {
+                 let (a, b, id, initial) = fuzzy_parts(rule.pair);
+                 for (from, to) in [(a, b), (b, a)] {
+                     if (rule.direction == FuzzyDirection::Forward && from != a)

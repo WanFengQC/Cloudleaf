@@ -1,0 +1,14 @@
+diff --git a/crates/cloudleaf-pinyin/src/scheme.rs b/crates/cloudleaf-pinyin/src/scheme.rs
+--- a/crates/cloudleaf-pinyin/src/scheme.rs
++++ b/crates/cloudleaf-pinyin/src/scheme.rs
+@@ -866,8 +866,10 @@
+             ..SchemeConfig::default()
+         };
+         let version = c.version_id();
++        let first_graph = interpret("nin", &c).unwrap();
+         c.fuzzy.reverse();
+         assert_eq!(version, c.version_id());
++        assert_eq!(first_graph, interpret("nin", &c).unwrap());
+         c.fuzzy[0].direction = FuzzyDirection::Both;
+         assert_ne!(version, c.version_id());
+         assert!(!c.is_default());

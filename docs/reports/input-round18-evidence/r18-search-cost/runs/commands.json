@@ -1,0 +1,79 @@
+[
+  {
+    "label": "initial-locked",
+    "command": [
+      "C:/Users/EDY/.cargo/bin/cargo.exe",
+      "test",
+      "-p",
+      "cloudleaf-search",
+      "--locked",
+      "--offline"
+    ],
+    "returncode": 101,
+    "seconds": 0.3641544000711292,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "a3d9305b014046165b7c2da61f156d8ebd70d535ac03932afc5980877c4cd1df"
+  },
+  {
+    "label": "temp-lock",
+    "command": [
+      "C:/Users/EDY/.cargo/bin/cargo.exe",
+      "generate-lockfile",
+      "--offline"
+    ],
+    "returncode": 0,
+    "seconds": 0.200868200045079,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "red",
+    "command": [
+      "C:/Users/EDY/.cargo/bin/cargo.exe",
+      "test",
+      "-p",
+      "cloudleaf-search",
+      "interpretation_regression",
+      "--locked",
+      "--offline"
+    ],
+    "returncode": 101,
+    "seconds": 4.091392400092445,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "a01032b0a57f801960f48b4a9862c5a6a461d5d07937896525de6ee28c0767b0"
+  },
+  {
+    "label": "green",
+    "command": [
+      "C:/Users/EDY/.cargo/bin/cargo.exe",
+      "test",
+      "-p",
+      "cloudleaf-search",
+      "--locked",
+      "--offline"
+    ],
+    "returncode": 0,
+    "seconds": 10.182025499991141,
+    "stdout_sha256": "2221fa99365f1270393acd51b6cf7e3ac091e16d426cdfaa3d383ee87ad45e4c",
+    "stderr_sha256": "d265cc31c08fa713a7e4abe6b25474f83bef3d04a6795ae4a592697f20bdcc60"
+  },
+  {
+    "label": "lint",
+    "command": [
+      "C:/Users/EDY/.cargo/bin/cargo.exe",
+      "clippy",
+      "-p",
+      "cloudleaf-search",
+      "--all-targets",
+      "--locked",
+      "--offline",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "returncode": 101,
+    "seconds": 1.9518043000716716,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "dd88358414c46006513698521b8268256c7c0ca2bd9acc439c029d787b063787"
+  }
+]

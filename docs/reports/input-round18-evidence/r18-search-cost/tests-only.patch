@@ -1,0 +1,53 @@
+--- a/crates/cloudleaf-search/src/search.rs
++++ b/crates/cloudleaf-search/src/search.rs
+@@ -1002,3 +1002,50 @@
+         }
+     }
+ }
++
++
++#[cfg(test)]
++mod interpretation_regression {
++    use super::*;
++    use crate::InterpretationCost;
++
++    fn path(text: &str, score: i64, ids: &[usize], cost: InterpretationCost) -> Path {
++        Path {
++            text: text.into(), score, ids: ids.to_vec(),
++            features: Features { interpretation_cost: cost, ..Features::default() },
++            ..Path::default()
++        }
++    }
++
++    #[test]
++    fn exact_interpretation_precedes_better_language_score_without_mixing_units() {
++        let exact = path("甲", -10000, &[9], InterpretationCost::default());
++        let edited = path("乙", 10000, &[0], InterpretationCost { edits: 1, ..InterpretationCost::default() });
++        assert_eq!(compare(&exact, &edited), Ordering::Less);
++        assert_eq!(exact.score, -10000);
++        assert_eq!(edited.score, 10000);
++    }
++
++    #[test]
++    fn duplicate_text_keeps_best_interpretation_before_score_or_entry_id() {
++        let mut bucket = Vec::new();
++        let fuzzy = InterpretationCost { fuzzy: 1, ..InterpretationCost::default() };
++        insert_unique(&mut bucket, path("甲", 1000, &[0], fuzzy), 5, &mut Noop);
++        insert_unique(&mut bucket, path("甲", -1000, &[9], InterpretationCost::default()), 5, &mut Noop);
++        assert_eq!(bucket.len(), 1);
++        assert_eq!(bucket[0].ids, [9]);
++        assert_eq!(bucket[0].features.interpretation_cost, InterpretationCost::default());
++    }
++
++    #[test]
++    fn cutoff_cannot_discard_an_exact_path_for_an_edited_high_score() {
++        let lexicon = Lexicon::from_tsv("# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\na\ta\t甲\t\tunknown\t\tfixture\ta\tMIT\n").unwrap();
++        let graph = Lattice::build(&lexicon, "a", &Config::default()).unwrap();
++        let scorer = Scorer { lexicon: &lexicon, graph: &graph, ranker: Ranker::Structural, model: None, cancellation: None };
++        let worst = path("乙", 10000, &[0], InterpretationCost { edits: 1, ..InterpretationCost::default() });
++        let result = scorer.extend(&Path::default(), 0, Some(&worst), &mut Noop).unwrap();
++        assert_eq!(result.text, "甲");
++        assert_eq!(result.score, -100);
++        assert_eq!(result.features.interpretation_cost, InterpretationCost::default());
++    }
++}

@@ -1,0 +1,35 @@
+diff --git a/crates/cloudleaf-pinyin/src/scheme.rs b/crates/cloudleaf-pinyin/src/scheme.rs
+--- a/crates/cloudleaf-pinyin/src/scheme.rs
++++ b/crates/cloudleaf-pinyin/src/scheme.rs
+@@ -815,6 +815,31 @@
+         assert!(graph.arcs.iter().all(|a| crate::is_syllable(&a.syllable)));
+     }
+     #[test]
++    fn correction_budget_ignores_arcs_that_cannot_join_a_complete_one_edit_path() {
++        let config = SchemeConfig {
++            correction: Some(CorrectionConfig::default()),
++            ..SchemeConfig::default()
++        };
++        let graph = interpret("jintiantiqnqihenhao", &config).unwrap();
++        assert!(graph.budget.is_none(), "{:?}", graph.budget);
++        assert!(
++            graph
++                .arcs
++                .iter()
++                .any(|arc| arc.kind == PhoneticMatch::Correction
++                    && arc.syllable == "tian"
++                    && &graph.raw[arc.raw_start..arc.raw_end] == "tiqn")
++        );
++        assert!(
++            graph
++                .arcs
++                .iter()
++                .filter(|arc| arc.kind == PhoneticMatch::Correction)
++                .count()
++                < 128
++        );
++    }
++    #[test]
+     fn budgets_reject_invalid_config_and_report_deterministic_exhaustion() {
+         let mut config = SchemeConfig::default();
+         config.limits.max_work = 1;

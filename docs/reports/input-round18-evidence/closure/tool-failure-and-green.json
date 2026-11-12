@@ -1,0 +1,51 @@
+{
+  "scope": "Post-archive delivery-tool failure excerpt, not a product-test failure; full earlier product regression logs retained",
+  "command": [
+    "python",
+    ".local/verify_delivery18.py"
+  ],
+  "returncode": 1,
+  "location": "verify_delivery18.py line25: assert result.returncode==0",
+  "nested_command": [
+    "python",
+    "scripts/check_workspace.py"
+  ],
+  "nested_returncode": 1,
+  "diagnostic": "[WinError 2]; child toolchain executable absent from this shell PATH; stderr displayed with replacement characters under default console decoding",
+  "fix": "Reuse verified full-regression environment: prepend existing .cargo/bin, set PYTHONUTF8=1 and PYTHONIOENCODING=utf-8. Did not relax workspace audit.",
+  "rerun": {
+    "source_head": "b948f986c4c9d00bec7cdb7845283c83e6a87970",
+    "indexed_files_verified": 968,
+    "gzip_CRC": "passed",
+    "report_links": "all resolved",
+    "production_source_matches_full_regression": true,
+    "rust": [
+      254,
+      0,
+      2
+    ],
+    "python": 71,
+    "commands": [
+      {
+        "command": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "returncode": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "python",
+          "scripts/check_workspace.py"
+        ],
+        "returncode": 0,
+        "stdout": "资源已验证：tests/evaluation/algorithm-v1.tsv (83 条)\r\n资源已验证：data/sources/source-review.jsonl (8 条)\r\n资源已验证：tests/fixtures/input-round14-events.tsv (30 条)\r\n资源已验证：tests/fixtures/input-v1.tsv (41 条)\r\n资源已验证：data/dictionaries/prototype.tsv (64 条)\r\n资源已验证：tests/search-mechanics-v1/cases.tsv (13 条)\r\n资源已验证：tests/search-mechanics-v1/lexicon.tsv (13 条)\r\n资源已验证：tests/search-resources-v1/cases.tsv (24 条)\r\n资源已验证：tests/search-mechanics-v1/train.tsv (3 条)\r\nworkspace 已验证：8 个crate，34 个已登记外部Rust依赖，MSRV 1.90.0\r\n",
+        "stderr": ""
+      }
+    ],
+    "tool_sha256": "92a9fc99d6aa2fe59a7b14bcdf40282141fbc4930edb29d471f154260358f43a"
+  }
+}

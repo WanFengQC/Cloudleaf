@@ -1,0 +1,75 @@
+{
+  "at_utc": "2026-11-10T10:16:32.052861+00:00",
+  "head": "52fb19cfdfcd3f4b26ada8181a564caaaa4b8fce",
+  "source_before": {
+    "crates/cloudleaf-search/src/cancellation.rs": "697cae05d2707142db2c1eb4dccb8cd6d67a64e80e7b801b05a88f63cc929318",
+    "crates/cloudleaf-search/src/character.rs": "b87aa883e6b8eeaf60f7ec245c99887fccce15d2148754807884c0ae80c99ae6",
+    "crates/cloudleaf-search/src/lattice.rs": "00cf424c66511e25ee9a97325cc97a9dd4393e85e5d47565a509b94de786cab1",
+    "crates/cloudleaf-search/src/lexicon.rs": "3acd396f837effee46417a314d3cfb245e03961dc20af00eb2779f15ebcb4862",
+    "crates/cloudleaf-search/src/lib.rs": "3f9028845d9cb66b8d94c3b576dd594bccb496b4c33f6476a3cd7781e0924c04",
+    "crates/cloudleaf-search/src/model.rs": "8d5e7ab05a6e089458e5c90d15709dcf306b79a59ad3f4ae244e728e266476dc",
+    "crates/cloudleaf-search/src/profiling.rs": "be5678ca231dea1440f60027fb2318344d36824627b69decf99897bd6740d418",
+    "crates/cloudleaf-search/src/schemes.rs": "53783f6b7ae0e2daadbb1633e8ad848b7478f322f4b54ad91e5e278321288fda",
+    "crates/cloudleaf-search/src/search.rs": "e9475d0d4732d3883ad9cf43fd35edbb5505d3ba3a7cdf2f845b2684abc0e996",
+    "crates/cloudleaf-pinyin/src/lib.rs": "80d9cc2588a15be0cc5db841347eb5c375ca3102fe9e18d32b2e02123ba7816d",
+    "crates/cloudleaf-pinyin/src/scheme.rs": "a342ab38b913058feda6fba99e6e581200b7dd18f9edc889253c31a36234bd94",
+    "crates/cloudleaf-pinyin/src/xiaohe.rs": "57e85751c43594df2e95843f0463949ff34c42d4950668451c22aec649c7c983"
+  },
+  "unchanged_old_test_source_sha256": "7f6b0b8878da585092dc6b806740e22eea6f7edc031694316656a98594bc7571",
+  "commands": [
+    {
+      "label": "build",
+      "command": [
+        "C:/Users/EDY/.cargo/bin/cargo.exe",
+        "build",
+        "--bin",
+        "legacy",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 10.874424100038595,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "7f068ab7951bca6d75a287d49f3562b628406313d9d21bb08e5762a4dc6e91b9"
+    },
+    {
+      "label": "differential",
+      "command": [
+        "C:\\Users\\EDY\\.codex\\tmp\\r18-scheme-diff\\target\\release\\legacy.exe"
+      ],
+      "returncode": 0,
+      "seconds": 7.131635099998675,
+      "stdout_sha256": "a08fb009774dcb5010c236d09f4031de44f9d4764d16fc35509712952793dcdb",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "summary_lines": [
+    "SUMMARY\tkind=character_bigram\tqueries=11160\tcomparisons=22320\tfailures=0\tincomplete_reference=0\tbeam_pruned_cases=0\tposition_rejections=11160\tinputs=62",
+    "SUMMARY\tkind=character_bigram_witten_bell\tqueries=11160\tcomparisons=22320\tfailures=0\tincomplete_reference=0\tbeam_pruned_cases=0\tposition_rejections=11160\tinputs=62"
+  ],
+  "gzip": {
+    "bytes": 2431602,
+    "sha256": "2e4fa8998247ad11094131298401018e6b4c09298f979c511f7eebfca1b6792c",
+    "full_CRC_and_uncompressed_bytes_equal": true
+  },
+  "run_passed": true,
+  "source_after": {
+    "crates/cloudleaf-search/src/cancellation.rs": "697cae05d2707142db2c1eb4dccb8cd6d67a64e80e7b801b05a88f63cc929318",
+    "crates/cloudleaf-search/src/character.rs": "b87aa883e6b8eeaf60f7ec245c99887fccce15d2148754807884c0ae80c99ae6",
+    "crates/cloudleaf-search/src/lattice.rs": "00cf424c66511e25ee9a97325cc97a9dd4393e85e5d47565a509b94de786cab1",
+    "crates/cloudleaf-search/src/lexicon.rs": "3acd396f837effee46417a314d3cfb245e03961dc20af00eb2779f15ebcb4862",
+    "crates/cloudleaf-search/src/lib.rs": "3f9028845d9cb66b8d94c3b576dd594bccb496b4c33f6476a3cd7781e0924c04",
+    "crates/cloudleaf-search/src/model.rs": "8d5e7ab05a6e089458e5c90d15709dcf306b79a59ad3f4ae244e728e266476dc",
+    "crates/cloudleaf-search/src/profiling.rs": "be5678ca231dea1440f60027fb2318344d36824627b69decf99897bd6740d418",
+    "crates/cloudleaf-search/src/schemes.rs": "53783f6b7ae0e2daadbb1633e8ad848b7478f322f4b54ad91e5e278321288fda",
+    "crates/cloudleaf-search/src/search.rs": "e9475d0d4732d3883ad9cf43fd35edbb5505d3ba3a7cdf2f845b2684abc0e996",
+    "crates/cloudleaf-pinyin/src/lib.rs": "80d9cc2588a15be0cc5db841347eb5c375ca3102fe9e18d32b2e02123ba7816d",
+    "crates/cloudleaf-pinyin/src/scheme.rs": "a342ab38b913058feda6fba99e6e581200b7dd18f9edc889253c31a36234bd94",
+    "crates/cloudleaf-pinyin/src/xiaohe.rs": "57e85751c43594df2e95843f0463949ff34c42d4950668451c22aec649c7c983"
+  },
+  "source_unchanged": true,
+  "head_after": "52fb19cfdfcd3f4b26ada8181a564caaaa4b8fce",
+  "binary_sha256": "2032000f2511d43dc4b71fbd43ccf1efc0c453e77c3c6b3d48e58c12fc0c4c38",
+  "tool_sha256": "01eb87432b1770ce31d8a525aeacf9b21a11771a4460eefc0eaf4cb0a04f898a"
+}

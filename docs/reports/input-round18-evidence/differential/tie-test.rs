@@ -1,0 +1,25 @@
+use cloudleaf_pinyin::{CorrectionConfig, SchemeConfig};
+use cloudleaf_search::{Config, Lattice, Lexicon, Method, Ranker, search_graph};
+
+#[test]
+fn repeated_entry_correction_has_same_provenance_in_every_complete_search() {
+    let mut tsv = "# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\n".to_owned();
+    for (id, pinyin, text) in [("a", "a", "阿"), ("a2", "a", "啊"), ("hao", "hao", "好"), ("hao2", "hao", "号"), ("hu", "hu", "户")] {
+        tsv.push_str(&format!("{id}\t{pinyin}\t{text}\t\tunknown\t\tmechanical\t{id}\tMIT\n"));
+    }
+    let lexicon = Lexicon::from_tsv(&tsv).unwrap();
+    let scheme = SchemeConfig { correction: Some(CorrectionConfig::default()), ..Default::default() };
+    for ranker in [Ranker::Structural, Ranker::Weighted] {
+        let config = Config { ranker, output_k: 10, beam_width: 1024, ..Default::default() };
+        let graph = Lattice::build_with_scheme(&lexicon, "aahah", &config, &scheme).unwrap();
+        let reference = search_graph(&lexicon, &graph, &Config { method: Method::Reference, ..config.clone() }, None, None).unwrap();
+        assert!(reference.guaranteed);
+        assert!(reference.candidates.iter().all(|candidate| candidate.features.interpretation_cost.edits == 1));
+        // 同一词条序列可在不同按键位置纠错；正文和分数相等也必须有统一来源代表。
+        for method in [Method::ExactDag, Method::PositionDag, Method::Beam] {
+            let result = search_graph(&lexicon, &graph, &Config { method, ..config.clone() }, None, None).unwrap();
+            assert!(result.guaranteed);
+            assert_eq!(result.candidates, reference.candidates, "{ranker:?}/{method:?}");
+        }
+    }
+}

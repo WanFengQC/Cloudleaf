@@ -1,0 +1,261 @@
+--- a/crates/cloudleaf-search/src/search.rs
++++ b/crates/cloudleaf-search/src/search.rs
+@@ -1,13 +1,14 @@
+ use crate::profiling::{Noop, Observer, Phase};
+ use crate::{
+-    BigramModel, Budget, Cancellation, Config, ErrorKind, Lattice, Lexicon, MatchKind, Method,
+-    Ranker, SearchError,
++    BigramModel, Budget, Cancellation, Config, ErrorKind, InterpretationCost, Lattice, Lexicon,
++    MatchKind, Method, Ranker, SearchError,
+ };
+ use std::cmp::Ordering;
+ use std::collections::{BTreeMap, BinaryHeap};
+ 
+ #[derive(Clone, Debug, Default, Eq, PartialEq)]
+ pub struct Features {
++    pub interpretation_cost: InterpretationCost,
+     pub words: usize,
+     pub prefixes: usize,
+     pub frequency_units: i64,
+@@ -63,8 +64,10 @@
+ }
+ 
+ fn compare(a: &Path, b: &Path) -> Ordering {
+-    b.score
+-        .cmp(&a.score)
++    a.features
++        .interpretation_cost
++        .cmp(&b.features.interpretation_cost)
++        .then_with(|| b.score.cmp(&a.score))
+         .then_with(|| b.features.lexical_units.cmp(&a.features.lexical_units))
+         .then_with(|| a.ids.cmp(&b.ids))
+ }
+@@ -93,6 +96,13 @@
+         let entry = &self.lexicon.entries[edge.entry];
+         let stamp = observer.start(Phase::Scoring);
+         let mut features = path.features.clone();
++        features.interpretation_cost = features
++            .interpretation_cost
++            .plus(self.graph.interpretation_cost(edge_index));
++        if features.interpretation_cost.edits > self.graph.max_edit_cost() {
++            observer.stop(Phase::Scoring, stamp);
++            return None;
++        }
+         let mut score = path.score;
+         features.structural_units -= 100;
+         if self.ranker != Ranker::CharacterBigram {
+@@ -155,9 +165,10 @@
+         observer.stop(Phase::Scoring, stamp);
+         // 满桶中严格劣于末项的扩展必被丢弃，先比较借用ID，避免复制整条路径。
+         if cutoff.is_some_and(|worst| {
+-            worst
+-                .score
+-                .cmp(&score)
++            features
++                .interpretation_cost
++                .cmp(&worst.features.interpretation_cost)
++                .then_with(|| worst.score.cmp(&score))
+                 .then_with(|| worst.features.lexical_units.cmp(&features.lexical_units))
+                 .then_with(|| {
+                     path.ids
+@@ -295,10 +306,9 @@
+             if !resident_allowed(stats, pending.len() + complete.len() + 2, config) {
+                 return complete;
+             }
+-            pending.push((
+-                scorer.graph.edges[*edge].end,
+-                scorer.extend(&path, *edge, None, observer).unwrap(),
+-            ));
++            if let Some(next) = scorer.extend(&path, *edge, None, observer) {
++                pending.push((scorer.graph.edges[*edge].end, next));
++            }
+         }
+     }
+     complete
+@@ -349,6 +359,84 @@
+                     edge.entry
+                 };
+                 let bucket = states[edge.end].entry(Some(history)).or_default();
++                let old = bucket.len();
++                if !resident_allowed(stats, resident + 1, config) {
++                    return Vec::new();
++                }
++                let cutoff = (old == k).then(|| bucket.last().unwrap());
++                if let Some(next) = scorer.extend(&path, *edge_index, cutoff, observer) {
++                    insert_unique(bucket, next, k, observer);
++                }
++                resident = resident + bucket.len() - old;
++            }
++            resident -= 1;
++        }
++    }
++    states
++        .pop()
++        .unwrap_or_default()
++        .into_values()
++        .flatten()
++        .map(|path| scorer.finish(path, observer))
++        .collect()
++}
++
++type InterpretationStates = BTreeMap<(Option<usize>, u16), Vec<Path>>;
++
++/// 解释成本与语言历史分别保存；已用编辑量影响剩余可行后缀，不能按位置丢弃。
++fn interpreted_dynamic<O: Observer>(
++    scorer: &Scorer<'_>,
++    config: &Config,
++    stats: &mut Statistics,
++    k: usize,
++    observer: &mut O,
++) -> Vec<Path> {
++    let mut states: Vec<InterpretationStates> =
++        vec![BTreeMap::new(); scorer.graph.letters.len() + 1];
++    states[0].insert((None, 0), vec![Path::default()]);
++    let mut resident = 1;
++    stats.resident_high_water = 1;
++    for position in 0..scorer.graph.letters.len() {
++        let current = std::mem::take(&mut states[position]);
++        let mut paths: Vec<_> = current.into_values().flatten().collect();
++        if config.method == Method::Beam {
++            paths.sort_by(compare);
++            let pruned = paths.len().saturating_sub(config.beam_width);
++            stats.beam_pruned += pruned;
++            resident -= pruned;
++            paths.truncate(config.beam_width);
++        }
++        for path in paths {
++            for edge_index in &scorer.graph.outgoing[position] {
++                if scorer.cancelled() {
++                    return Vec::new();
++                }
++                if !expand_allowed(stats, config) {
++                    return Vec::new();
++                }
++                let edge = &scorer.graph.edges[*edge_index];
++                let used_edits = path.features.interpretation_cost.edits
++                    + scorer.graph.interpretation_cost(*edge_index).edits;
++                if used_edits > scorer.graph.max_edit_cost() {
++                    continue;
++                }
++                let history = if config.method == Method::PositionDag {
++                    None
++                } else if scorer.ranker == Ranker::CharacterBigram {
++                    Some(
++                        scorer
++                            .model
++                            .unwrap()
++                            .character
++                            .as_ref()
++                            .unwrap()
++                            .entry(edge.entry)
++                            .last as usize,
++                    )
++                } else {
++                    Some(edge.entry)
++                };
++                let bucket = states[edge.end].entry((history, used_edits)).or_default();
+                 let old = bucket.len();
+                 if !resident_allowed(stats, resident + 1, config) {
+                     return Vec::new();
+@@ -731,6 +819,8 @@
+         Vec::new()
+     } else if config.method == Method::Reference {
+         reference(&scorer, config, &mut statistics, k, observer)
++    } else if graph.is_interpreted() {
++        interpreted_dynamic(&scorer, config, &mut statistics, k, observer)
+     } else if config.method == Method::PositionDag {
+         position_dynamic(&scorer, config, &mut statistics, k, observer)
+     } else if config.method == Method::ExactDag && config.ranker == Ranker::CharacterBigram {
+@@ -1002,3 +1092,92 @@
+         }
+     }
+ }
++
++#[cfg(test)]
++mod interpretation_regression {
++    use super::*;
++    use crate::InterpretationCost;
++
++    fn path(text: &str, score: i64, ids: &[usize], cost: InterpretationCost) -> Path {
++        Path {
++            text: text.into(),
++            score,
++            ids: ids.to_vec(),
++            features: Features {
++                interpretation_cost: cost,
++                ..Features::default()
++            },
++            ..Path::default()
++        }
++    }
++
++    #[test]
++    fn exact_interpretation_precedes_better_language_score_without_mixing_units() {
++        let exact = path("甲", -10000, &[9], InterpretationCost::default());
++        let edited = path(
++            "乙",
++            10000,
++            &[0],
++            InterpretationCost {
++                edits: 1,
++                ..InterpretationCost::default()
++            },
++        );
++        assert_eq!(compare(&exact, &edited), Ordering::Less);
++        assert_eq!(exact.score, -10000);
++        assert_eq!(edited.score, 10000);
++    }
++
++    #[test]
++    fn duplicate_text_keeps_best_interpretation_before_score_or_entry_id() {
++        let mut bucket = Vec::new();
++        let fuzzy = InterpretationCost {
++            fuzzy: 1,
++            ..InterpretationCost::default()
++        };
++        insert_unique(&mut bucket, path("甲", 1000, &[0], fuzzy), 5, &mut Noop);
++        insert_unique(
++            &mut bucket,
++            path("甲", -1000, &[9], InterpretationCost::default()),
++            5,
++            &mut Noop,
++        );
++        assert_eq!(bucket.len(), 1);
++        assert_eq!(bucket[0].ids, [9]);
++        assert_eq!(
++            bucket[0].features.interpretation_cost,
++            InterpretationCost::default()
++        );
++    }
++
++    #[test]
++    fn cutoff_cannot_discard_an_exact_path_for_an_edited_high_score() {
++        let lexicon = Lexicon::from_tsv("# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\na\ta\t甲\t\tunknown\t\tfixture\ta\tMIT\n").unwrap();
++        let graph = Lattice::build(&lexicon, "a", &Config::default()).unwrap();
++        let scorer = Scorer {
++            lexicon: &lexicon,
++            graph: &graph,
++            ranker: Ranker::Structural,
++            model: None,
++            cancellation: None,
++        };
++        let worst = path(
++            "乙",
++            10000,
++            &[0],
++            InterpretationCost {
++                edits: 1,
++                ..InterpretationCost::default()
++            },
++        );
++        let result = scorer
++            .extend(&Path::default(), 0, Some(&worst), &mut Noop)
++            .unwrap();
++        assert_eq!(result.text, "甲");
++        assert_eq!(result.score, -100);
++        assert_eq!(
++            result.features.interpretation_cost,
++            InterpretationCost::default()
++        );
++    }
++}

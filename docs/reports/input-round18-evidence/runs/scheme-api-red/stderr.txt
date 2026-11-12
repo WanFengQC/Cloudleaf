@@ -1,0 +1,56 @@
+   Compiling cloudleaf-search v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-search)
+error[E0432]: unresolved imports `cloudleaf_pinyin::PinyinScheme`, `cloudleaf_pinyin::SchemeConfig`
+ --> crates\cloudleaf-search\tests\scheme_contract.rs:1:24
+  |
+1 | use cloudleaf_pinyin::{PinyinScheme, SchemeConfig};
+  |                        ^^^^^^^^^^^^  ^^^^^^^^^^^^ no `SchemeConfig` in the root
+  |                        |
+  |                        no `PinyinScheme` in the root
+
+error[E0599]: no function or associated item named `build_with_scheme` found for struct `cloudleaf_search::Lattice` in the current scope
+  --> crates\cloudleaf-search\tests\scheme_contract.rs:25:30
+   |
+25 |         let graph = Lattice::build_with_scheme(&lex, raw, &config, &scheme).unwrap();
+   |                              ^^^^^^^^^^^^^^^^^ function or associated item not found in `cloudleaf_search::Lattice<'_>`
+   |
+note: if you're trying to build a new `cloudleaf_search::Lattice<'_>` consider using one of the following associated functions:
+      cloudleaf_search::Lattice::<'a>::build
+      cloudleaf_search::Lattice::<'a>::build_cancellable
+  --> C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-search\src\lattice.rs:34:5
+   |
+34 |       pub fn build(lexicon: &'a Lexicon, input: &str, config: &Config) -> Result<Self, SearchError> {
+   |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+38 | /     pub fn build_cancellable(
+39 | |         lexicon: &'a Lexicon,
+40 | |         input: &str,
+41 | |         config: &Config,
+42 | |         cancellation: &Cancellation,
+43 | |     ) -> Result<Self, SearchError> {
+   | |__________________________________^
+
+error[E0599]: no function or associated item named `build_with_scheme` found for struct `cloudleaf_search::Lattice` in the current scope
+  --> crates\cloudleaf-search\tests\scheme_contract.rs:43:32
+   |
+43 |             let new = Lattice::build_with_scheme(&lex, raw, &config, &SchemeConfig::default()).unwrap();
+   |                                ^^^^^^^^^^^^^^^^^ function or associated item not found in `cloudleaf_search::Lattice<'_>`
+   |
+note: if you're trying to build a new `cloudleaf_search::Lattice<'_>` consider using one of the following associated functions:
+      cloudleaf_search::Lattice::<'a>::build
+      cloudleaf_search::Lattice::<'a>::build_cancellable
+  --> C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-search\src\lattice.rs:34:5
+   |
+34 |       pub fn build(lexicon: &'a Lexicon, input: &str, config: &Config) -> Result<Self, SearchError> {
+   |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+38 | /     pub fn build_cancellable(
+39 | |         lexicon: &'a Lexicon,
+40 | |         input: &str,
+41 | |         config: &Config,
+42 | |         cancellation: &Cancellation,
+43 | |     ) -> Result<Self, SearchError> {
+   | |__________________________________^
+
+Some errors have detailed explanations: E0432, E0599.
+For more information about an error, try `rustc --explain E0432`.
+error: could not compile `cloudleaf-search` (test "scheme_contract") due to 3 previous errors

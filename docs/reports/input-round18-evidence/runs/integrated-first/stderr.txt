@@ -1,0 +1,33 @@
+   Compiling cloudleaf-types v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-types)
+   Compiling cloudleaf-pinyin v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-pinyin)
+   Compiling cloudleaf-search v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-search)
+   Compiling cloudleaf-dictionary v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-dictionary)
+   Compiling cloudleaf-candidate v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-candidate)
+   Compiling cloudleaf-input v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-input)
+   Compiling cloudleaf-windows-ime v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\apps\windows-ime)
+error[E0004]: non-exhaustive patterns: `Budget::Interpretation` and `Budget::Intersection` not covered
+   --> crates\cloudleaf-search\tests\search_contract.rs:355:19
+    |
+355 |             match budget {
+    |                   ^^^^^^ patterns `Budget::Interpretation` and `Budget::Intersection` not covered
+    |
+note: `Budget` defined here
+   --> C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-search\src\lib.rs:89:1
+    |
+ 89 | pub enum Budget {
+    | ^^^^^^^^^^^^^^^
+...
+ 93 |     Interpretation,
+    |     -------------- not covered
+ 94 |     Intersection,
+    |     ------------ not covered
+    = note: the matched value is of type `Budget`
+help: ensure that all possible cases are being handled by adding a match arm with a wildcard pattern, a match arm with multiple or-patterns as shown, or multiple match arms
+    |
+358 ~                 Budget::ResidentPaths => cfg.max_resident_paths = 1,
+359 ~                 Budget::Interpretation | Budget::Intersection => todo!(),
+    |
+
+For more information about this error, try `rustc --explain E0004`.
+error: could not compile `cloudleaf-search` (test "search_contract") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

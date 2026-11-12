@@ -1,0 +1,36 @@
+   Compiling cloudleaf-pinyin v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-pinyin)
+   Compiling cloudleaf-dictionary v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-dictionary)
+   Compiling cloudleaf-search v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-search)
+   Compiling cloudleaf-candidate v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-candidate)
+   Compiling cloudleaf-input v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-input)
+   Compiling cloudleaf-windows-ime v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\apps\windows-ime)
+error[E0599]: no method named `switch_scheme` found for struct `isolated_input::LocalHost` in the current scope
+   --> apps\windows-ime\src\..\..\..\adapters\windows\isolated_input.rs:806:27
+    |
+ 30 | pub(crate) struct LocalHost {
+    | --------------------------- method `switch_scheme` not found for this struct
+...
+806 |         let after = local.switch_scheme(config.clone()).unwrap();
+    |                           ^^^^^^^^^^^^^ method not found in `isolated_input::LocalHost`
+
+error[E0599]: no method named `switch_scheme` found for struct `isolated_input::LocalHost` in the current scope
+   --> apps\windows-ime\src\..\..\..\adapters\windows\isolated_input.rs:828:27
+    |
+ 30 | pub(crate) struct LocalHost {
+    | --------------------------- method `switch_scheme` not found for this struct
+...
+828 |             assert!(local.switch_scheme(config).is_err());
+    |                           ^^^^^^^^^^^^^ method not found in `isolated_input::LocalHost`
+
+error[E0599]: no method named `switch_scheme` found for struct `isolated_input::LocalHost` in the current scope
+   --> apps\windows-ime\src\..\..\..\adapters\windows\isolated_input.rs:847:23
+    |
+ 30 | pub(crate) struct LocalHost {
+    | --------------------------- method `switch_scheme` not found for this struct
+...
+847 |         assert!(local.switch_scheme(config).is_err());
+    |                       ^^^^^^^^^^^^^ method not found in `isolated_input::LocalHost`
+
+For more information about this error, try `rustc --explain E0599`.
+error: could not compile `cloudleaf-windows-ime` (lib test) due to 3 previous errors
+warning: build failed, waiting for other jobs to finish...

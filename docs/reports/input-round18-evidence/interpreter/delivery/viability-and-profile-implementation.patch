@@ -1,0 +1,192 @@
+diff --git a/crates/cloudleaf-pinyin/src/scheme.rs b/crates/cloudleaf-pinyin/src/scheme.rs
+--- a/crates/cloudleaf-pinyin/src/scheme.rs
++++ b/crates/cloudleaf-pinyin/src/scheme.rs
+@@ -195,30 +195,86 @@
+ }
+ 
+ pub fn interpret(raw: &str, config: &SchemeConfig) -> Result<PhoneticHypotheses, CoreError> {
++    interpret_inner(raw, config, None)
++}
++
++#[derive(Clone, Debug, Default, Eq, PartialEq)]
++pub struct InterpretationProfile {
++    pub normalize_ns: u128,
++    pub base_ns: u128,
++    pub abbreviation_ns: u128,
++    pub fuzzy_ns: u128,
++    pub correction_ns: u128,
++    pub finalize_ns: u128,
++    pub total_ns: u128,
++}
++
++/// 显式离线观测；与正常入口共用全部解释逻辑，普通按键入口不读时钟。
++pub fn interpret_profiled(
++    raw: &str,
++    config: &SchemeConfig,
++) -> (Result<PhoneticHypotheses, CoreError>, InterpretationProfile) {
++    let mut profile = InterpretationProfile::default();
++    let total = std::time::Instant::now();
++    let result = interpret_inner(raw, config, Some(&mut profile));
++    profile.total_ns = total.elapsed().as_nanos();
++    (result, profile)
++}
++
++fn interpret_inner(
++    raw: &str,
++    config: &SchemeConfig,
++    mut profile: Option<&mut InterpretationProfile>,
++) -> Result<PhoneticHypotheses, CoreError> {
++    let started = profile.as_ref().map(|_| std::time::Instant::now());
+     config.validate()?;
+-    let (mut graph, starts, separators) = normalize(raw, config)?;
++    let normalized = normalize(raw, config);
++    if let Some(profile) = profile.as_deref_mut() {
++        profile.normalize_ns = started.unwrap().elapsed().as_nanos();
++    }
++    let (mut graph, starts, separators) = normalized?;
+     if graph.waiting || graph.keys.is_empty() {
+         return Ok(graph);
+     }
++    let started = profile.as_ref().map(|_| std::time::Instant::now());
+     base_arcs(&mut graph, &starts, &separators, config);
++    let complete_exact = complete_exact(&graph);
++    if let Some(profile) = profile.as_deref_mut() {
++        profile.base_ns = started.unwrap().elapsed().as_nanos();
++    }
+     if graph.budget.is_some() {
+         return Ok(graph);
+     }
+-    let complete_exact = complete_exact(&graph);
+     if config.scheme == PinyinScheme::AbbreviatedPinyin {
++        let started = profile.as_ref().map(|_| std::time::Instant::now());
+         abbreviation_arcs(&mut graph, &starts, &separators, config);
++        if let Some(profile) = profile.as_deref_mut() {
++            profile.abbreviation_ns = started.unwrap().elapsed().as_nanos();
++        }
+     }
+     if graph.budget.is_none() && !config.fuzzy.is_empty() {
++        let started = profile.as_ref().map(|_| std::time::Instant::now());
+         fuzzy_arcs(&mut graph, config);
++        if let Some(profile) = profile.as_deref_mut() {
++            profile.fuzzy_ns = started.unwrap().elapsed().as_nanos();
++        }
+     }
+     if graph.budget.is_none()
+         && !complete_exact
+         && let Some(correction) = &config.correction
+     {
++        let started = profile.as_ref().map(|_| std::time::Instant::now());
+         correction_arcs(&mut graph, &starts, &separators, config, correction);
+-    }
++        if let Some(profile) = profile.as_deref_mut() {
++            profile.correction_ns = started.unwrap().elapsed().as_nanos();
++        }
++    }
++    let started = profile.as_ref().map(|_| std::time::Instant::now());
+     graph.arcs.sort_unstable();
+     graph.arcs.dedup();
++    if let Some(profile) = profile {
++        profile.finalize_ns = started.unwrap().elapsed().as_nanos();
++    }
+     Ok(graph)
+ }
+ 
+@@ -504,9 +560,38 @@
+         return;
+     }
+     let mut count = 0;
++    // 完整路径最多一次编辑；唯一编辑前后只能经过已有零编辑弧。
++    let mut prefix = vec![false; graph.keys.len() + 1];
++    prefix[0] = true;
++    let mut suffix = vec![false; graph.keys.len() + 1];
++    suffix[graph.keys.len()] = true;
++    for position in 0..graph.keys.len() {
++        if prefix[position] {
++            for arc in graph.arcs.iter().filter(|arc| arc.start == position) {
++                prefix[arc.end] = true;
++            }
++        }
++    }
++    for position in (0..graph.keys.len()).rev() {
++        suffix[position] = graph
++            .arcs
++            .iter()
++            .any(|arc| arc.start == position && suffix[arc.end]);
++    }
+     for start in 0..graph.keys.len() {
++        if !prefix[start] {
++            continue;
++        }
+         let stop = end_of_part(start, graph.keys.len(), separators);
+-        for end in start + 1..=stop.min(start + 7) {
++        for (end, can_finish) in suffix
++            .iter()
++            .enumerate()
++            .take(stop.min(start + 7) + 1)
++            .skip(start + 1)
++        {
++            if !can_finish {
++                continue;
++            }
+             for syllable in legal_syllables() {
+                 if !spend(graph, config) {
+                     return;
+@@ -840,6 +925,43 @@
+         );
+     }
+     #[test]
++    fn explicit_phase_observation_preserves_the_actual_graph_and_failure() {
++        let configs = [
++            SchemeConfig::default(),
++            SchemeConfig {
++                scheme: PinyinScheme::AbbreviatedPinyin,
++                ..SchemeConfig::default()
++            },
++            SchemeConfig {
++                scheme: PinyinScheme::DoublePinyin(DoublePinyinLayout::Xiaohe),
++                ..SchemeConfig::default()
++            },
++            SchemeConfig {
++                fuzzy: vec![FuzzyRule {
++                    pair: FuzzyPair::NL,
++                    direction: FuzzyDirection::Both,
++                }],
++                correction: Some(CorrectionConfig::default()),
++                ..SchemeConfig::default()
++            },
++        ];
++        for config in configs {
++            for raw in ["nihao", "nihc", "zhnogguo", "☁", ""] {
++                let (observed, profile) = interpret_profiled(raw, &config);
++                assert_eq!(interpret(raw, &config), observed);
++                assert!(
++                    profile.total_ns
++                        >= profile.normalize_ns
++                            + profile.base_ns
++                            + profile.abbreviation_ns
++                            + profile.fuzzy_ns
++                            + profile.correction_ns
++                            + profile.finalize_ns
++                );
++            }
++        }
++    }
++    #[test]
+     fn budgets_reject_invalid_config_and_report_deterministic_exhaustion() {
+         let mut config = SchemeConfig::default();
+         config.limits.max_work = 1;
+diff --git a/crates/cloudleaf-pinyin/src/lib.rs b/crates/cloudleaf-pinyin/src/lib.rs
+--- a/crates/cloudleaf-pinyin/src/lib.rs
++++ b/crates/cloudleaf-pinyin/src/lib.rs
+@@ -3,9 +3,9 @@
+ mod scheme;
+ pub use scheme::{
+     BaseMatch, ChangeKind, CorrectionConfig, DoublePinyinLayout, FuzzyDirection, FuzzyPair,
+-    FuzzyRule, InterpretationBudget, InterpretationLimits, PhoneticArc, PhoneticChange,
++    FuzzyRule, InterpretationBudget, InterpretationProfile, InterpretationLimits, PhoneticArc, PhoneticChange,
+     PhoneticHypotheses, PhoneticMatch, PinyinScheme, SchemeConfig, XIAOHE_LAYOUT_VERSION,
+-    interpret,
++    interpret, interpret_profiled,
+ };
+ 
+ pub fn legal_syllables() -> &'static [&'static str] {

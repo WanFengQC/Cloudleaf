@@ -1,0 +1,43 @@
+[
+  {
+    "command": [
+      "C:/Users/EDY/.cargo/bin/cargo.exe",
+      "generate-lockfile",
+      "--offline"
+    ],
+    "returncode": 0
+  },
+  {
+    "command": [
+      "C:/Users/EDY/.cargo/bin/cargo.exe",
+      "fmt",
+      "--all"
+    ],
+    "returncode": 0
+  },
+  {
+    "command": [
+      "C:/Users/EDY/.cargo/bin/cargo.exe",
+      "test",
+      "--workspace",
+      "--all-targets",
+      "--locked",
+      "--offline"
+    ],
+    "returncode": 0
+  },
+  {
+    "command": [
+      "C:/Users/EDY/.cargo/bin/cargo.exe",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--locked",
+      "--offline",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "returncode": 101
+  }
+]

@@ -1,0 +1,38 @@
+--- a/crates/cloudleaf-search/src/search.rs
++++ b/crates/cloudleaf-search/src/search.rs
+@@ -61,6 +61,7 @@
+     edges: Vec<usize>,
+     features: Features,
+     last_character: Option<u32>,
++    interpreted: bool,
+ }
+ 
+ fn compare(a: &Path, b: &Path) -> Ordering {
+@@ -70,6 +71,7 @@
+         .then_with(|| b.score.cmp(&a.score))
+         .then_with(|| b.features.lexical_units.cmp(&a.features.lexical_units))
+         .then_with(|| a.ids.cmp(&b.ids))
++        .then_with(|| if a.interpreted || b.interpreted { a.edges.cmp(&b.edges) } else { Ordering::Equal })
+ }
+ 
+ struct Scorer<'a> {
+@@ -177,6 +179,11 @@
+                         .chain(std::iter::once(edge.entry))
+                         .cmp(worst.ids.iter().copied())
+                 })
++                .then_with(|| {
++                    if self.graph.is_interpreted() {
++                        path.edges.iter().copied().chain(std::iter::once(edge_index)).cmp(worst.edges.iter().copied())
++                    } else { Ordering::Equal }
++                })
+                 == Ordering::Greater
+         }) {
+             return None;
+@@ -197,6 +204,7 @@
+             edges,
+             features,
+             last_character,
++            interpreted: self.graph.is_interpreted(),
+         })
+     }
+ 

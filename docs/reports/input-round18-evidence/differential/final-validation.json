@@ -1,0 +1,100 @@
+{
+  "at_utc": "2026-11-10T10:17:38.349600+00:00",
+  "scope": "mechanical correctness, not IME language accuracy; original failures retained; no heldout/user data used",
+  "raw_failure_count": 592,
+  "new_complete_reference_queries": 33480,
+  "new_complete_candidate_comparisons": 83700,
+  "old_complete_reference_queries": 22320,
+  "old_complete_candidate_comparisons": 44640,
+  "final_failures": 0,
+  "final_incomplete": 0,
+  "final_beam_pruned_queries": 0,
+  "reference_candidate_field_equality": "Candidate PartialEq compares text/score/IDs/edge_indices/features including interpretation_cost",
+  "rankers": [
+    "Structural",
+    "Weighted",
+    "Lexical",
+    "Bigram",
+    "CharacterBigram/addone",
+    "CharacterBigram/WittenBell"
+  ],
+  "schemes": [
+    "Abbreviated",
+    "Full+7fuzzyBoth",
+    "Full+CorrectionCost1",
+    "Xiaohe"
+  ],
+  "candidate_K": 10,
+  "old_K": [
+    1,
+    2,
+    5,
+    10,
+    20
+  ],
+  "new_input_count": 1395,
+  "new_beam_width": 1024,
+  "old_beam_width": 4096,
+  "records": [
+    {
+      "directory": "evidence",
+      "head": "a9452c6042da4aeb0eef35db8644f99f7f935763",
+      "source_unchanged_during_run": true,
+      "source_still_same": false,
+      "passed": false,
+      "summary_lines": [
+        "SUMMARY\tinputs=1395\tschemes=4\tfailures=592\t{\"candidate_comparisons_attempted\": 83700, \"complete_candidate_comparisons\": 82965, \"graph_budget\": 49, \"optimized_incomplete\": 735, \"position_unsupported\": 16740, \"reference_incomplete\": 294, \"reference_queries\": 33480}\tformal_language_metrics=null"
+      ],
+      "raw_bytes": 153040137,
+      "raw_sha256": "d0102f6369ade8feec9fcb3fd083bbdf22c8d943e74d9a3257d808d549f734a6",
+      "gzip_bytes": 2619470,
+      "gzip_sha256": "fc022c05c68e31f50c289430984566a5c647eedd08f638b42ce41d8de6606c07",
+      "CRC_and_exact_uncompressed_bytes": true,
+      "full_commands_and_sources": "C:\\Users\\EDY\\.codex\\tmp\\r18-scheme-diff\\evidence\\summary.json"
+    },
+    {
+      "directory": "evidence-final",
+      "head": "4a42b4799bc51c4dca267eea2a6a010de283af95",
+      "source_unchanged_during_run": true,
+      "source_still_same": true,
+      "passed": true,
+      "summary_lines": [
+        "SUMMARY\tinputs=1395\tschemes=4\tfailures=0\t{\"candidate_comparisons_attempted\": 83700, \"complete_candidate_comparisons\": 83700, \"position_unsupported\": 16740, \"reference_queries\": 33480}\tformal_language_metrics=null"
+      ],
+      "raw_bytes": 153019003,
+      "raw_sha256": "2c18dfaba4272d8b4e69420bbd50df43bafe8bb69a00da7e7979f8ee67a9ff1c",
+      "gzip_bytes": 2582328,
+      "gzip_sha256": "4f43b0a25a6aefcc266ddc4914a0461eecc401d46517dfcc663b105a4d98c30d",
+      "CRC_and_exact_uncompressed_bytes": true,
+      "full_commands_and_sources": "C:\\Users\\EDY\\.codex\\tmp\\r18-scheme-diff\\evidence-final\\summary.json"
+    },
+    {
+      "directory": "legacy-final",
+      "head": "52fb19cfdfcd3f4b26ada8181a564caaaa4b8fce",
+      "source_unchanged_during_run": true,
+      "source_still_same": true,
+      "passed": true,
+      "summary_lines": [
+        "SUMMARY\tkind=character_bigram\tqueries=11160\tcomparisons=22320\tfailures=0\tincomplete_reference=0\tbeam_pruned_cases=0\tposition_rejections=11160\tinputs=62",
+        "SUMMARY\tkind=character_bigram_witten_bell\tqueries=11160\tcomparisons=22320\tfailures=0\tincomplete_reference=0\tbeam_pruned_cases=0\tposition_rejections=11160\tinputs=62"
+      ],
+      "raw_bytes": 86805190,
+      "raw_sha256": "a08fb009774dcb5010c236d09f4031de44f9d4764d16fc35509712952793dcdb",
+      "gzip_bytes": 2431602,
+      "gzip_sha256": "2e4fa8998247ad11094131298401018e6b4c09298f979c511f7eebfca1b6792c",
+      "CRC_and_exact_uncompressed_bytes": true,
+      "full_commands_and_sources": "C:\\Users\\EDY\\.codex\\tmp\\r18-scheme-diff\\legacy-final\\summary.json"
+    }
+  ],
+  "binaries": {
+    "r18-scheme-diff.exe": {
+      "bytes": 610816,
+      "sha256": "87cb3ef292da93f89acaeb0111f7d6b029e251ae731c13c37c6e3fac1905d194"
+    },
+    "legacy.exe": {
+      "bytes": 464896,
+      "sha256": "2032000f2511d43dc4b71fbd43ccf1efc0c453e77c3c6b3d48e58c12fc0c4c38"
+    }
+  },
+  "tool_sha256": "827c8e8c60db9fce61bac576f993e93aba6dae8da20ab6920b7ca1b245d651b0"
+}

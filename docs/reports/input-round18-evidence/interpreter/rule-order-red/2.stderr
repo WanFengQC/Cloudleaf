@@ -1,0 +1,279 @@
+   Compiling cloudleaf-pinyin v0.1.0 (C:\Users\EDY\.codex\tmp\r18-interpreter\source\crates\cloudleaf-pinyin)
+error[E0428]: the name `scheme` is defined multiple times
+  --> crates\cloudleaf-pinyin\src\lib.rs:15:1
+   |
+ 3 | mod scheme;
+   | ----------- previous definition of the module `scheme` here
+...
+15 | mod scheme;
+   | ^^^^^^^^^^^ `scheme` redefined here
+   |
+   = note: `scheme` must be defined only once in the type namespace of this module
+
+error[E0428]: the name `legal_syllables` is defined multiple times
+  --> crates\cloudleaf-pinyin\src\lib.rs:23:1
+   |
+11 | pub fn legal_syllables() -> &'static [&'static str] {
+   | --------------------------------------------------- previous definition of the value `legal_syllables` here
+...
+23 | pub fn legal_syllables() -> &'static [&'static str] {
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `legal_syllables` redefined here
+   |
+   = note: `legal_syllables` must be defined only once in the value namespace of this module
+
+error[E0252]: the name `XIAOHE_LAYOUT_VERSION` is defined multiple times
+  --> crates\cloudleaf-pinyin\src\lib.rs:19:68
+   |
+ 7 |     PhoneticHypotheses, PhoneticMatch, PinyinScheme, SchemeConfig, XIAOHE_LAYOUT_VERSION,
+   |                                                                    --------------------- previous import of the value `XIAOHE_LAYOUT_VERSION` here
+...
+19 |     PhoneticHypotheses, PhoneticMatch, PinyinScheme, SchemeConfig, XIAOHE_LAYOUT_VERSION,
+   |                                                                    ^^^^^^^^^^^^^^^^^^^^^-
+   |                                                                    |
+   |                                                                    `XIAOHE_LAYOUT_VERSION` reimported here
+   |                                                                    help: remove unnecessary import
+   |
+   = note: `XIAOHE_LAYOUT_VERSION` must be defined only once in the value namespace of this module
+
+error[E0252]: the name `interpret` is defined multiple times
+  --> crates\cloudleaf-pinyin\src\lib.rs:20:5
+   |
+ 8 |     interpret,
+   |     --------- previous import of the value `interpret` here
+...
+20 |     interpret,
+   |     ^^^^^^^^^-
+   |     |
+   |     `interpret` reimported here
+   |     help: remove unnecessary import
+   |
+   = note: `interpret` must be defined only once in the value namespace of this module
+
+error[E0252]: the name `BaseMatch` is defined multiple times
+  --> crates\cloudleaf-pinyin\src\lib.rs:17:5
+   |
+ 5 |     BaseMatch, ChangeKind, CorrectionConfig, DoublePinyinLayout, FuzzyDirection, FuzzyPair,
+   |     --------- previous import of the type `BaseMatch` here
+...
+17 |     BaseMatch, ChangeKind, CorrectionConfig, DoublePinyinLayout, FuzzyDirection, FuzzyPair,
+   |     ^^^^^^^^^--
+   |     |
+   |     `BaseMatch` reimported here
+   |     help: remove unnecessary import
+   |
+   = note: `BaseMatch` must be defined only once in the type namespace of this module
+
+error[E0252]: the name `ChangeKind` is defined multiple times
+  --> crates\cloudleaf-pinyin\src\lib.rs:17:16
+   |
+ 5 |     BaseMatch, ChangeKind, CorrectionConfig, DoublePinyinLayout, FuzzyDirection, FuzzyPair,
+   |                ---------- previous import of the type `ChangeKind` here
+...
+17 |     BaseMatch, ChangeKind, CorrectionConfig, DoublePinyinLayout, FuzzyDirection, FuzzyPair,
+   |                ^^^^^^^^^^--
+   |                |
+   |                `ChangeKind` reimported here
+   |                help: remove unnecessary import
+   |
+   = note: `ChangeKind` must be defined only once in the type namespace of this module
+
+error[E0252]: the name `CorrectionConfig` is defined multiple times
+  --> crates\cloudleaf-pinyin\src\lib.rs:17:28
+   |
+ 5 |     BaseMatch, ChangeKind, CorrectionConfig, DoublePinyinLayout, FuzzyDirection, FuzzyPair,
+   |                            ---------------- previous import of the type `CorrectionConfig` here
+...
+17 |     BaseMatch, ChangeKind, CorrectionConfig, DoublePinyinLayout, FuzzyDirection, FuzzyPair,
+   |                            ^^^^^^^^^^^^^^^^--
+   |                            |
+   |                            `CorrectionConfig` reimported here
+   |                            help: remove unnecessary import
+   |
+   = note: `CorrectionConfig` must be defined only once in the type namespace of this module
+
+error[E0252]: the name `DoublePinyinLayout` is defined multiple times
+  --> crates\cloudleaf-pinyin\src\lib.rs:17:46
+   |
+ 5 |     BaseMatch, ChangeKind, CorrectionConfig, DoublePinyinLayout, FuzzyDirection, FuzzyPair,
+   |                                              ------------------ previous import of the type `DoublePinyinLayout` here
+...
+17 |     BaseMatch, ChangeKind, CorrectionConfig, DoublePinyinLayout, FuzzyDirection, FuzzyPair,
+   |                                              ^^^^^^^^^^^^^^^^^^--
+   |                                              |
+   |                                              `DoublePinyinLayout` reimported here
+   |                                              help: remove unnecessary import
+   |
+   = note: `DoublePinyinLayout` must be defined only once in the type namespace of this module
+
+error[E0252]: the name `FuzzyDirection` is defined multiple times
+  --> crates\cloudleaf-pinyin\src\lib.rs:17:66
+   |
+ 5 |     BaseMatch, ChangeKind, CorrectionConfig, DoublePinyinLayout, FuzzyDirection, FuzzyPair,
+   |                                                                  -------------- previous import of the type `FuzzyDirection` here
+...
+17 |     BaseMatch, ChangeKind, CorrectionConfig, DoublePinyinLayout, FuzzyDirection, FuzzyPair,
+   |                                                                  ^^^^^^^^^^^^^^--
+   |                                                                  |
+   |                                                                  `FuzzyDirection` reimported here
+   |                                                                  help: remove unnecessary import
+   |
+   = note: `FuzzyDirection` must be defined only once in the type namespace of this module
+
+error[E0252]: the name `FuzzyPair` is defined multiple times
+  --> crates\cloudleaf-pinyin\src\lib.rs:17:82
+   |
+ 5 |     BaseMatch, ChangeKind, CorrectionConfig, DoublePinyinLayout, FuzzyDirection, FuzzyPair,
+   |                                                                                  --------- previous import of the type `FuzzyPair` here
+...
+17 |     BaseMatch, ChangeKind, CorrectionConfig, DoublePinyinLayout, FuzzyDirection, FuzzyPair,
+   |                                                                                  ^^^^^^^^^-
+   |                                                                                  |
+   |                                                                                  `FuzzyPair` reimported here
+   |                                                                                  help: remove unnecessary import
+   |
+   = note: `FuzzyPair` must be defined only once in the type namespace of this module
+
+error[E0252]: the name `FuzzyRule` is defined multiple times
+  --> crates\cloudleaf-pinyin\src\lib.rs:18:5
+   |
+ 6 |     FuzzyRule, InterpretationBudget, InterpretationLimits, PhoneticArc, PhoneticChange,
+   |     --------- previous import of the type `FuzzyRule` here
+...
+18 |     FuzzyRule, InterpretationBudget, InterpretationLimits, PhoneticArc, PhoneticChange,
+   |     ^^^^^^^^^--
+   |     |
+   |     `FuzzyRule` reimported here
+   |     help: remove unnecessary import
+   |
+   = note: `FuzzyRule` must be defined only once in the type namespace of this module
+
+error[E0252]: the name `InterpretationBudget` is defined multiple times
+  --> crates\cloudleaf-pinyin\src\lib.rs:18:16
+   |
+ 6 |     FuzzyRule, InterpretationBudget, InterpretationLimits, PhoneticArc, PhoneticChange,
+   |                -------------------- previous import of the type `InterpretationBudget` here
+...
+18 |     FuzzyRule, InterpretationBudget, InterpretationLimits, PhoneticArc, PhoneticChange,
+   |                ^^^^^^^^^^^^^^^^^^^^--
+   |                |
+   |                `InterpretationBudget` reimported here
+   |                help: remove unnecessary import
+   |
+   = note: `InterpretationBudget` must be defined only once in the type namespace of this module
+
+error[E0252]: the name `InterpretationLimits` is defined multiple times
+  --> crates\cloudleaf-pinyin\src\lib.rs:18:38
+   |
+ 6 |     FuzzyRule, InterpretationBudget, InterpretationLimits, PhoneticArc, PhoneticChange,
+   |                                      -------------------- previous import of the type `InterpretationLimits` here
+...
+18 |     FuzzyRule, InterpretationBudget, InterpretationLimits, PhoneticArc, PhoneticChange,
+   |                                      ^^^^^^^^^^^^^^^^^^^^--
+   |                                      |
+   |                                      `InterpretationLimits` reimported here
+   |                                      help: remove unnecessary import
+   |
+   = note: `InterpretationLimits` must be defined only once in the type namespace of this module
+
+error[E0252]: the name `PhoneticArc` is defined multiple times
+  --> crates\cloudleaf-pinyin\src\lib.rs:18:60
+   |
+ 6 |     FuzzyRule, InterpretationBudget, InterpretationLimits, PhoneticArc, PhoneticChange,
+   |                                                            ----------- previous import of the type `PhoneticArc` here
+...
+18 |     FuzzyRule, InterpretationBudget, InterpretationLimits, PhoneticArc, PhoneticChange,
+   |                                                            ^^^^^^^^^^^--
+   |                                                            |
+   |                                                            `PhoneticArc` reimported here
+   |                                                            help: remove unnecessary import
+   |
+   = note: `PhoneticArc` must be defined only once in the type namespace of this module
+
+error[E0252]: the name `PhoneticChange` is defined multiple times
+  --> crates\cloudleaf-pinyin\src\lib.rs:18:73
+   |
+ 6 |     FuzzyRule, InterpretationBudget, InterpretationLimits, PhoneticArc, PhoneticChange,
+   |                                                                         -------------- previous import of the type `PhoneticChange` here
+...
+18 |     FuzzyRule, InterpretationBudget, InterpretationLimits, PhoneticArc, PhoneticChange,
+   |                                                                         ^^^^^^^^^^^^^^-
+   |                                                                         |
+   |                                                                         `PhoneticChange` reimported here
+   |                                                                         help: remove unnecessary import
+   |
+   = note: `PhoneticChange` must be defined only once in the type namespace of this module
+
+error[E0252]: the name `PhoneticHypotheses` is defined multiple times
+  --> crates\cloudleaf-pinyin\src\lib.rs:19:5
+   |
+ 7 |     PhoneticHypotheses, PhoneticMatch, PinyinScheme, SchemeConfig, XIAOHE_LAYOUT_VERSION,
+   |     ------------------ previous import of the type `PhoneticHypotheses` here
+...
+19 |     PhoneticHypotheses, PhoneticMatch, PinyinScheme, SchemeConfig, XIAOHE_LAYOUT_VERSION,
+   |     ^^^^^^^^^^^^^^^^^^--
+   |     |
+   |     `PhoneticHypotheses` reimported here
+   |     help: remove unnecessary import
+   |
+   = note: `PhoneticHypotheses` must be defined only once in the type namespace of this module
+
+error[E0252]: the name `PhoneticMatch` is defined multiple times
+  --> crates\cloudleaf-pinyin\src\lib.rs:19:25
+   |
+ 7 |     PhoneticHypotheses, PhoneticMatch, PinyinScheme, SchemeConfig, XIAOHE_LAYOUT_VERSION,
+   |                         ------------- previous import of the type `PhoneticMatch` here
+...
+19 |     PhoneticHypotheses, PhoneticMatch, PinyinScheme, SchemeConfig, XIAOHE_LAYOUT_VERSION,
+   |                         ^^^^^^^^^^^^^--
+   |                         |
+   |                         `PhoneticMatch` reimported here
+   |                         help: remove unnecessary import
+   |
+   = note: `PhoneticMatch` must be defined only once in the type namespace of this module
+
+error[E0252]: the name `PinyinScheme` is defined multiple times
+  --> crates\cloudleaf-pinyin\src\lib.rs:19:40
+   |
+ 7 |     PhoneticHypotheses, PhoneticMatch, PinyinScheme, SchemeConfig, XIAOHE_LAYOUT_VERSION,
+   |                                        ------------ previous import of the type `PinyinScheme` here
+...
+19 |     PhoneticHypotheses, PhoneticMatch, PinyinScheme, SchemeConfig, XIAOHE_LAYOUT_VERSION,
+   |                                        ^^^^^^^^^^^^--
+   |                                        |
+   |                                        `PinyinScheme` reimported here
+   |                                        help: remove unnecessary import
+   |
+   = note: `PinyinScheme` must be defined only once in the type namespace of this module
+
+error[E0252]: the name `SchemeConfig` is defined multiple times
+  --> crates\cloudleaf-pinyin\src\lib.rs:19:54
+   |
+ 7 |     PhoneticHypotheses, PhoneticMatch, PinyinScheme, SchemeConfig, XIAOHE_LAYOUT_VERSION,
+   |                                                      ------------ previous import of the type `SchemeConfig` here
+...
+19 |     PhoneticHypotheses, PhoneticMatch, PinyinScheme, SchemeConfig, XIAOHE_LAYOUT_VERSION,
+   |                                                      ^^^^^^^^^^^^--
+   |                                                      |
+   |                                                      `SchemeConfig` reimported here
+   |                                                      help: remove unnecessary import
+   |
+   = note: `SchemeConfig` must be defined only once in the type namespace of this module
+
+warning: unused imports: `BaseMatch`, `ChangeKind`, `CorrectionConfig`, `DoublePinyinLayout`, `FuzzyDirection`, `FuzzyPair`, `FuzzyRule`, `InterpretationBudget`, `InterpretationLimits`, `PhoneticArc`, `PhoneticChange`, `PhoneticHypotheses`, `PhoneticMatch`, `PinyinScheme`, `SchemeConfig`, `XIAOHE_LAYOUT_VERSION`, and `interpret`
+  --> crates\cloudleaf-pinyin\src\lib.rs:17:5
+   |
+17 |     BaseMatch, ChangeKind, CorrectionConfig, DoublePinyinLayout, FuzzyDirection, FuzzyPair,
+   |     ^^^^^^^^^  ^^^^^^^^^^  ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^  ^^^^^^^^^
+18 |     FuzzyRule, InterpretationBudget, InterpretationLimits, PhoneticArc, PhoneticChange,
+   |     ^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^  ^^^^^^^^^^^^^^
+19 |     PhoneticHypotheses, PhoneticMatch, PinyinScheme, SchemeConfig, XIAOHE_LAYOUT_VERSION,
+   |     ^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^  ^^^^^^^^^^^^  ^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^
+20 |     interpret,
+   |     ^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` on by default
+
+Some errors have detailed explanations: E0252, E0428.
+For more information about an error, try `rustc --explain E0252`.
+warning: `cloudleaf-pinyin` (lib test) generated 1 warning
+error: could not compile `cloudleaf-pinyin` (lib test) due to 19 previous errors; 1 warning emitted

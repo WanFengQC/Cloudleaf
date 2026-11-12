@@ -1,0 +1,31 @@
+   Compiling cloudleaf-types v0.1.0 (C:\Users\EDY\.codex\tmp\r18-search-cost\crates\cloudleaf-types)
+   Compiling cloudleaf-pinyin v0.1.0 (C:\Users\EDY\.codex\tmp\r18-search-cost\crates\cloudleaf-pinyin)
+   Compiling cloudleaf-search v0.1.0 (C:\Users\EDY\.codex\tmp\r18-search-cost\crates\cloudleaf-search)
+error[E0560]: struct `search::Features` has no field named `interpretation_cost`
+    --> crates\cloudleaf-search\src\search.rs:1015:34
+     |
+1015 |             features: Features { interpretation_cost: cost, ..Features::default() },
+     |                                  ^^^^^^^^^^^^^^^^^^^ `search::Features` does not have this field
+     |
+     = note: available fields are: `words`, `prefixes`, `frequency_units`, `missing_frequencies`, `lexical_units` ... and 8 others
+
+error[E0609]: no field `interpretation_cost` on type `search::Features`
+    --> crates\cloudleaf-search\src\search.rs:1037:39
+     |
+1037 |         assert_eq!(bucket[0].features.interpretation_cost, InterpretationCost::default());
+     |                                       ^^^^^^^^^^^^^^^^^^^ unknown field
+     |
+     = note: available fields are: `words`, `prefixes`, `frequency_units`, `missing_frequencies`, `lexical_units` ... and 8 others
+
+error[E0609]: no field `interpretation_cost` on type `search::Features`
+    --> crates\cloudleaf-search\src\search.rs:1049:36
+     |
+1049 |         assert_eq!(result.features.interpretation_cost, InterpretationCost::default());
+     |                                    ^^^^^^^^^^^^^^^^^^^ unknown field
+     |
+     = note: available fields are: `words`, `prefixes`, `frequency_units`, `missing_frequencies`, `lexical_units` ... and 8 others
+
+Some errors have detailed explanations: E0560, E0609.
+For more information about an error, try `rustc --explain E0560`.
+error: could not compile `cloudleaf-search` (lib test) due to 3 previous errors
+warning: build failed, waiting for other jobs to finish...

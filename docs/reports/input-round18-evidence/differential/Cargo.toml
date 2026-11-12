@@ -1,0 +1,15 @@
+[package]
+name = "r18-scheme-diff"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.90.0"
+
+[dependencies]
+cloudleaf-search = { path = "C:/Users/EDY/.codex/worktrees/input-round14/Cloudleaf/crates/cloudleaf-search" }
+cloudleaf-pinyin = { path = "C:/Users/EDY/.codex/worktrees/input-round14/Cloudleaf/crates/cloudleaf-pinyin" }
+
+[workspace]
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
