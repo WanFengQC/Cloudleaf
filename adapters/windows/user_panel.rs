@@ -101,7 +101,7 @@ impl Panel {
                 creation_error: RefCell::new(None),
             });
             let lease = Rc::into_raw(panel.clone());
-            // 独立的owned顶层窗口保留正常IME；不是已解绑IME的输入窗口子控件。
+            // 独立顶层窗口可单独聚焦；生命周期由UserState显式管理，保持正常IME。
             let created = CreateWindowExW(
                 WINDOW_EX_STYLE::default(),
                 PCWSTR(panel.class.as_ptr()),
@@ -111,7 +111,7 @@ impl Panel {
                 CW_USEDEFAULT,
                 970,
                 830,
-                Some(owner),
+                None,
                 None,
                 Some(instance),
                 Some(lease.cast()),

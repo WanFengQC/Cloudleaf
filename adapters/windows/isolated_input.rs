@@ -258,6 +258,12 @@ struct UserState {
     busy: bool,
     session: String,
 }
+impl Drop for UserState {
+    fn drop(&mut self) {
+        self.panel.close();
+        self.worker.shutdown();
+    }
+}
 fn wide(text: &str) -> Vec<u16> {
     text.encode_utf16().chain([0]).collect()
 }
@@ -343,6 +349,7 @@ impl Window {
             .search_resources()
             .ok_or_else(|| Error::new(E_FAIL, "没有可管理的搜索快照"))?;
         let weak = Rc::downgrade(self);
+        let path = user_directory()?;
         let panel = user_panel::Panel::open(
             self.window.get(),
             Rc::new(move |command| {
@@ -351,7 +358,6 @@ impl Window {
                 }
             }),
         )?;
-        let path = user_directory()?;
         let worker = user_worker::Worker::start(base, language, path);
         *self.users.borrow_mut() = Some(UserState {
             panel,
