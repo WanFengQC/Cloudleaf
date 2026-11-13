@@ -33,9 +33,11 @@ pub(crate) struct TrieNode {
 /// 只读词条与读音索引，装载后可在多个查询之间复用。
 #[derive(Clone, Debug)]
 pub struct Lexicon {
-    pub(crate) entries: Vec<Entry>,
-    pub(crate) trie: Vec<TrieNode>,
+    pub(crate) entries: crate::layer::Entries,
+    pub(crate) trie: crate::layer::Trie,
     pub(crate) identity: std::sync::Arc<()>,
+    pub(crate) preferences: Option<Vec<u32>>,
+    pub(crate) base_memory: Option<LexiconMemory>,
 }
 
 /// 固定Rust1.90容器布局的保守预估，不是RSS或allocator硬上界。
@@ -238,13 +240,18 @@ impl Lexicon {
             node.prefix.shrink_to_fit();
         }
         Ok(Self {
-            entries,
-            trie,
+            entries: crate::layer::Entries::new(entries),
+            trie: crate::layer::Trie::new(trie),
             identity: std::sync::Arc::new(()),
+            preferences: None,
+            base_memory: None,
         })
     }
 
     pub fn memory_estimate(&self) -> LexiconMemory {
+        if let Some(memory) = self.layered_memory() {
+            return memory;
+        }
         let mut owned = std::mem::size_of::<Self>()
             + 2 * std::mem::size_of::<usize>()
             + self.entries.capacity() * std::mem::size_of::<Entry>()
@@ -273,7 +280,7 @@ impl Lexicon {
         }
     }
 
-    pub fn entries(&self) -> &[Entry] {
+    pub fn entries(&self) -> &crate::Entries {
         &self.entries
     }
 

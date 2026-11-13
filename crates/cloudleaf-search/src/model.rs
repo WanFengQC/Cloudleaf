@@ -152,7 +152,7 @@ pub struct ModelMetadata {
 #[derive(Clone, Debug)]
 pub struct LanguageModelSnapshot {
     metadata: ModelMetadata,
-    model: BigramModel,
+    model: std::sync::Arc<BigramModel>,
 }
 
 const META_KEYS: [&str; 8] = [
@@ -167,6 +167,22 @@ const META_KEYS: [&str; 8] = [
 ];
 
 impl LanguageModelSnapshot {
+    /// 基础计数和来源元数据保留；只在装载阶段为同一基础的用户扩展重编译entry缓存。
+    pub fn for_extension(&self, base: &Lexicon, target: &Lexicon) -> Result<Self, SearchError> {
+        if !target.is_extension_of(base) || !self.model.is_compatible_lexicon(base) {
+            return Err(SearchError::new(
+                ErrorKind::InvalidModel,
+                "模型基础索引或用户层身份不符",
+            ));
+        }
+        let mut next = self.clone();
+        if let Some(character) = &self.model.character {
+            let mut model = (*self.model).clone();
+            model.character = Some(character.rebound(target));
+            next.model = std::sync::Arc::new(model);
+        }
+        Ok(next)
+    }
     pub fn metadata(&self) -> &ModelMetadata {
         &self.metadata
     }
@@ -357,7 +373,10 @@ impl LanguageModelSnapshot {
             model.totals.clear();
             model.vocabulary = BTreeSet::from([EOS.into(), UNK.into()]);
         }
-        Ok(Self { metadata, model })
+        Ok(Self {
+            metadata,
+            model: std::sync::Arc::new(model),
+        })
     }
 
     /// 离线调用，元数据和序列只在边界校验，输入查询不调用训练器。

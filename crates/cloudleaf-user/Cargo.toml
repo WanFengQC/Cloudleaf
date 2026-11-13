@@ -1,0 +1,15 @@
+[package]
+name = "cloudleaf-user"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+description = "云笺独立有界用户词库及本地偏好存储"
+
+[dependencies]
+cloudleaf-pinyin.workspace = true
+ring = { version = "=0.17.14", default-features = false }
+
+[lints]
+workspace = true

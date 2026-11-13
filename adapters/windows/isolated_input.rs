@@ -17,9 +17,14 @@ use windows::Win32::{
     },
 };
 use windows_core::{PCWSTR, w};
+#[path = "user_panel.rs"]
+mod user_panel;
+#[path = "user_worker.rs"]
+mod user_worker;
 
 #[derive(Default, Debug)]
 pub(crate) struct Sample {
+    selection: Option<cloudleaf_input::SelectionEvidence>,
     pub core_ns: u128,
     pub projection_ns: u128,
     pub comparison_ns: u128,
@@ -167,6 +172,7 @@ impl LocalHost {
             };
             match outcome {
                 CommitOutcome::Applied => {
+                    sample.selection = self.host.engine.borrow().pending_selection().cloned();
                     *self.document.borrow_mut() = document;
                     self.host
                         .engine
@@ -242,6 +248,15 @@ struct Window {
     status: Cell<HWND>,
     fault: Cell<bool>,
     ui: RefCell<Option<CandidateUi>>,
+    users: RefCell<Option<UserState>>,
+}
+struct UserState {
+    panel: Rc<user_panel::Panel>,
+    worker: user_worker::Worker,
+    active: Option<user_worker::Prepared>,
+    pending: Option<user_worker::Prepared>,
+    busy: bool,
+    session: String,
 }
 fn wide(text: &str) -> Vec<u16> {
     text.encode_utf16().chain([0]).collect()
@@ -271,6 +286,30 @@ impl Window {
             .process(event, selection, &|document| self.sink(document))
         {
             Ok((frame, sample)) => {
+                if let Some(evidence) = &sample.selection
+                    && let Some(users) = &mut *self.users.borrow_mut()
+                    && let Some(active) = &users.active
+                    && active.learning
+                {
+                    if users.busy || evidence.snapshot_version != active.snapshot.version() {
+                        users.panel.refresh(
+                            &active.listing,
+                            "本次提交已完成；后台任务未完成或版本已过期，此次学习未记录",
+                        );
+                    } else {
+                        let event =
+                            user_worker::learning_event(evidence, &users.session, active.epoch);
+                        match users.worker.send(user_worker::Work::Learn {
+                            event,
+                            generation: active.generation,
+                        }) {
+                            Ok(()) => users.busy = true,
+                            Err(e) => {
+                                users.panel.refresh(&active.listing, e);
+                            }
+                        }
+                    }
+                }
                 let now = Instant::now();
                 self.update(frame)?;
                 println!(
@@ -290,6 +329,153 @@ impl Window {
                 Err(error)
             }
         }
+    }
+    fn open_users(self: &Rc<Self>) -> Result<()> {
+        if let Some(users) = &*self.users.borrow() {
+            users.panel.show();
+            return Ok(());
+        }
+        let (base, language) = self
+            .local
+            .host
+            .engine
+            .borrow()
+            .search_resources()
+            .ok_or_else(|| Error::new(E_FAIL, "没有可管理的搜索快照"))?;
+        let weak = Rc::downgrade(self);
+        let panel = user_panel::Panel::open(
+            self.window.get(),
+            Rc::new(move |command| {
+                if let Some(view) = weak.upgrade() {
+                    view.user_command(command);
+                }
+            }),
+        )?;
+        let path = user_directory()?;
+        let worker = user_worker::Worker::start(base, language, path);
+        *self.users.borrow_mut() = Some(UserState {
+            panel,
+            worker,
+            active: None,
+            pending: None,
+            busy: true,
+            session: format!(
+                "{}-{}",
+                std::process::id(),
+                std::time::SystemTime::now()
+                    .duration_since(std::time::UNIX_EPOCH)
+                    .unwrap_or_default()
+                    .as_nanos()
+            ),
+        });
+        self.users.borrow().as_ref().unwrap().panel.show();
+        unsafe {
+            SetTimer(Some(self.window.get()), 19, 100, None);
+        }
+        Ok(())
+    }
+    fn user_command(self: &Rc<Self>, command: user_panel::Command) {
+        let mut users = self.users.borrow_mut();
+        let Some(users) = users.as_mut() else { return };
+        if users.busy || users.pending.is_some() {
+            users.panel.refresh("", "任务仍在进行，稍后重试");
+            return;
+        }
+        let engine = self.local.host.engine.borrow();
+        let frame = engine.frame();
+        if self.local.host.quarantined.get()
+            || engine.failed_commit().is_some()
+            || frame.state == cloudleaf_types::InputState::Committing
+        {
+            users
+                .panel
+                .refresh("", "未决提交阻止用户词库变更，请先核对或取消");
+            return;
+        }
+        if matches!(
+            command,
+            user_panel::Command::ToggleLearning
+                | user_panel::Command::ClearLearning
+                | user_panel::Command::ClearAll
+        ) && let Some(active) = &mut users.active
+        {
+            active.learning = false;
+        }
+        match users.worker.send(user_worker::Work::Manage(command)) {
+            Ok(()) => {
+                users.busy = true;
+                users
+                    .panel
+                    .refresh("", "正在后台保存和构建，输入不等待磁盘");
+            }
+            Err(e) => {
+                users.panel.refresh("", e);
+            }
+        }
+    }
+    fn poll_users(self: &Rc<Self>) -> Result<()> {
+        let mut state = self.users.borrow_mut();
+        let Some(users) = state.as_mut() else {
+            return Ok(());
+        };
+        if let Some(reply) = users.worker.poll() {
+            users.busy = false;
+            match reply {
+                user_worker::Reply::Error(e) => {
+                    let listing = users.active.as_ref().map_or("", |a| a.listing.as_str());
+                    users.panel.refresh(listing, &e);
+                }
+                user_worker::Reply::Ready(p) => users.pending = Some(p),
+            }
+        }
+        let Some(p) = users.pending.as_ref() else {
+            return Ok(());
+        };
+        if self.local.host.quarantined.get() {
+            users
+                .panel
+                .refresh(&p.listing, "已保存，提交结果未知；核对新会话后才发布快照");
+            return Ok(());
+        }
+        for engine in [&self.local.host.engine, &self.local.host.projection] {
+            let current = engine.borrow().search_capacity_bounds().unwrap();
+            let next = engine
+                .borrow()
+                .replacement_capacity_bounds(p.snapshot.clone(), p.language.clone())
+                .map_err(|_| Error::new(E_FAIL, "用户快照容量或模型无效"))?;
+            if next.max_frame_bytes > current.max_frame_bytes
+                || next.max_diagnostic_bytes > current.max_diagnostic_bytes
+            {
+                users.panel.refresh(
+                    &p.listing,
+                    "已保存但帧/恢复材料超过原Host容量，未发布；请重启构建新Host",
+                );
+                return Ok(());
+            }
+            if engine
+                .borrow()
+                .validate_search_resources(p.snapshot.clone(), p.language.clone())
+                .is_err()
+            {
+                users
+                    .panel
+                    .refresh(&p.listing, "已保存，等待未决或失败事务收尾后发布");
+                return Ok(());
+            }
+        }
+        // 两个实际引擎已共同预检，当前STA中间不分派其他消息。
+        for engine in [&self.local.host.engine, &self.local.host.projection] {
+            engine
+                .borrow_mut()
+                .replace_search_resources(p.snapshot.clone(), p.language.clone())
+                .map_err(|_| Error::new(E_FAIL, "用户快照发布失败"))?;
+        }
+        let p = users.pending.take().unwrap();
+        users.panel.refresh(&p.listing, &p.status);
+        users.active = Some(p);
+        drop(state);
+        let frame = self.local.host.engine.borrow().frame();
+        self.update(frame)
     }
     fn settings_key(self: &Rc<Self>, key: u16) -> Result<()> {
         use cloudleaf_input::{
@@ -406,6 +592,33 @@ impl Window {
         self.ui.borrow_mut().as_mut().unwrap().update(frame, rect)
     }
 }
+fn user_directory() -> Result<std::path::PathBuf> {
+    use windows::Win32::UI::Shell::{
+        FOLDERID_LocalAppData, KNOWN_FOLDER_FLAG, SHGetKnownFolderPath,
+    };
+    // 安全：当前用户标准目录的COM分配字符串转换后立即归还。
+    unsafe {
+        let path = SHGetKnownFolderPath(&FOLDERID_LocalAppData, KNOWN_FOLDER_FLAG(0), None)?;
+        let value = path.to_string();
+        windows::Win32::System::Com::CoTaskMemFree(Some(path.0.cast()));
+        let mut root = std::path::PathBuf::from(value?);
+        root.push("Cloudleaf");
+        if let Ok(profile) = std::env::var("CLOUDLEAF_USER_TEST_PROFILE") {
+            if profile.is_empty()
+                || profile.len() > 64
+                || !profile
+                    .bytes()
+                    .all(|b| b.is_ascii_alphanumeric() || b == b'-')
+            {
+                return Err(Error::new(E_INVALIDARG, "测试档案标识无效"));
+            }
+            root.push("Research");
+            root.push(profile);
+        }
+        root.push("user-dictionary");
+        Ok(root)
+    }
+}
 
 unsafe extern "system" fn window_proc(
     window: HWND,
@@ -428,6 +641,7 @@ unsafe extern "system" fn window_proc(
                     for (id,label,x,width) in [(1,"下一次提交注入Unknown",12,230),(2,"核对后开始新会话",260,210),(3,"纠错开关",485,200)] {
                         CreateWindowExW(WINDOW_EX_STYLE::default(),w!("BUTTON"),PCWSTR(wide(label).as_ptr()),WS_CHILD|WS_VISIBLE,x,128,width,30,Some(window),Some(HMENU(id as *mut _)),None,None)?;
                     }
+                    CreateWindowExW(WINDOW_EX_STYLE::default(),w!("BUTTON"),w!("用户词库 / 本地学习"),WS_CHILD|WS_VISIBLE|WS_TABSTOP,485,164,220,30,Some(window),Some(HMENU(4usize as *mut _)),None,None)?;
                     view.document.set(CreateWindowExW(WS_EX_CLIENTEDGE,w!("EDIT"),w!(""),WS_CHILD|WS_VISIBLE|WS_VSCROLL|WINDOW_STYLE(ES_READONLY as u32|ES_MULTILINE as u32|ES_AUTOVSCROLL as u32),12,320,720,200,Some(window),None,None,None)?);
                     // 只解绑本窗口及已创建子控件的继承IME；拼音由本隔离核心处理，不改变系统布局。
                     if !ImmAssociateContextEx(window, HIMC::default(), 0).as_bool()
@@ -461,6 +675,7 @@ unsafe extern "system" fn window_proc(
                 }
                 WM_COMMAND if wparam.0&0xffff==1 => { view.fault.set(true); let _=SetFocus(Some(window)); Ok(LRESULT(0)) }
                 WM_COMMAND if wparam.0&0xffff==2 => {
+                    if let Some(users)=view.users.borrow().as_ref(){users.worker.cancel_learning();}
                     view.ui.borrow_mut().take();
                     // 明确新会话接受当前本窗口文档，旧Unknown请求只失效，不重发。
                     *view.local.document.borrow_mut()=text(view.document.get());
@@ -473,10 +688,12 @@ unsafe extern "system" fn window_proc(
                     }
                     let _=SetFocus(Some(window)); Ok(LRESULT(0))
                 }
+                WM_COMMAND if wparam.0&0xffff==4 => {view.open_users()?;Ok(LRESULT(0))}
+                WM_TIMER if wparam.0==19 => {view.poll_users()?;Ok(LRESULT(0))}
                 // 顶层激活状态覆盖EDIT/按钮持有焦点时的外部切换，子控件间切换不取消组合。
                 WM_ACTIVATE if wparam.0 & 0xffff == WA_INACTIVE as usize => { if !view.local.host.quarantined.get() { view.process(InputEvent::FocusLost,None)?; } Ok(LRESULT(0)) }
                 WM_SETFOCUS => { if !view.local.host.quarantined.get() { view.process(InputEvent::Activate,None)?; } Ok(LRESULT(0)) }
-                WM_CLOSE => { view.ui.borrow_mut().take(); DestroyWindow(window)?; Ok(LRESULT(0)) }
+                WM_CLOSE => { view.ui.borrow_mut().take();if let Some(mut users)=view.users.borrow_mut().take(){users.panel.close();users.worker.shutdown();} DestroyWindow(window)?; Ok(LRESULT(0)) }
                 WM_DESTROY => { PostQuitMessage(0); Ok(LRESULT(0)) }
                 WM_NCDESTROY => { SetWindowLongPtrW(window,GWLP_USERDATA,0); Ok(DefWindowProcW(window,message,wparam,lparam)) }
                 _ => Ok(DefWindowProcW(window,message,wparam,lparam)),
@@ -494,6 +711,7 @@ pub(crate) fn run(runtime: &str, runtime_sha: &str, model: Option<(&str, &str)>)
         status: Cell::new(HWND::default()),
         fault: Cell::new(false),
         ui: RefCell::new(None),
+        users: RefCell::new(None),
     });
     // 安全：创建、运行和销毁本进程普通Win32窗口；没有任何注册或TSF激活动作。
     unsafe {
@@ -728,6 +946,7 @@ mod tests {
             status: Cell::new(HWND::default()),
             fault: Cell::new(false),
             ui: RefCell::new(None),
+            users: RefCell::new(None),
         });
         type_text(&view.local, "nihao");
         let frame = view.local.host.engine.borrow().frame();
@@ -797,6 +1016,7 @@ mod tests {
             status: Cell::new(HWND::default()),
             fault: Cell::new(false),
             ui: RefCell::new(None),
+            users: RefCell::new(None),
         });
         // 安全：检查本测试隐藏父子窗口的上下文；不切换用户布局或其他窗口的输入法。
         unsafe {

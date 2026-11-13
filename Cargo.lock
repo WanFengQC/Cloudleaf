@@ -78,6 +78,14 @@ name = "cloudleaf-types"
 version = "0.1.0"
 
 [[package]]
+name = "cloudleaf-user"
+version = "0.1.0"
+dependencies = [
+ "cloudleaf-pinyin",
+ "ring",
+]
+
+[[package]]
 name = "cloudleaf-windows-ime"
 version = "0.1.0"
 dependencies = [
@@ -85,6 +93,7 @@ dependencies = [
  "cloudleaf-input",
  "cloudleaf-search",
  "cloudleaf-types",
+ "cloudleaf-user",
  "windows",
  "windows-core",
 ]

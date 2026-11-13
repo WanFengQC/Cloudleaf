@@ -18,6 +18,7 @@ pub struct SearchSnapshot {
     version: String,
     max_text_bytes: usize,
     max_edge_source_bytes: usize,
+    base_version: Option<String>,
 }
 
 impl SearchSnapshot {
@@ -62,6 +63,7 @@ impl SearchSnapshot {
             version: actual,
             max_text_bytes,
             max_edge_source_bytes,
+            base_version: None,
         })
     }
 
@@ -69,8 +71,81 @@ impl SearchSnapshot {
         &self.version
     }
 
-    pub fn entries(&self) -> &[cloudleaf_search::Entry] {
+    pub fn entries(&self) -> &cloudleaf_search::Entries {
         self.lexicon.entries()
+    }
+
+    /// 持久generation、记录revision与学习epoch变化也必须使旧候选身份失效。
+    pub fn bind_user_state(&mut self, state: &[u8]) -> Result<(), CoreError> {
+        let base = self
+            .base_version
+            .as_ref()
+            .ok_or_else(|| CoreError::new(ErrorCode::InvalidConfig, "基础快照不能绑定用户状态"))?;
+        let mut hash = Context::new(&SHA256);
+        hash.update(b"cloudleaf-user-state-v1");
+        hash.update(base.as_bytes());
+        hash.update(state);
+        self.version = hex(hash.finish().as_ref());
+        Ok(())
+    }
+
+    pub fn with_user_layer(
+        &self,
+        text: &str,
+        preferences: &std::collections::BTreeMap<String, u32>,
+    ) -> Result<Self, CoreError> {
+        let lexicon = self
+            .lexicon
+            .with_user_layer(text, preferences)
+            .map_err(|_| CoreError::new(ErrorCode::InvalidDictionary, "用户层索引或偏好无效"))?;
+        let mut hash = Context::new(&SHA256);
+        hash.update(self.version.as_bytes());
+        hash.update(text.as_bytes());
+        for (id, units) in preferences {
+            hash.update(&(id.len() as u64).to_le_bytes());
+            hash.update(id.as_bytes());
+            hash.update(&units.to_le_bytes());
+        }
+        let max_text_bytes = lexicon
+            .entries()
+            .iter()
+            .map(|entry| entry.text.len().div_ceil(entry.pinyin.split(' ').count()))
+            .max()
+            .unwrap_or(0)
+            .max(self.max_text_bytes);
+        let max_edge_source_bytes = lexicon
+            .entries()
+            .iter()
+            .map(|entry| {
+                entry.id.len()
+                    + entry.source.len()
+                    + entry.source_record_id.len()
+                    + entry.license_id.len()
+            })
+            .max()
+            .unwrap_or(0);
+        Ok(Self {
+            lexicon,
+            version: hex(hash.finish().as_ref()),
+            max_text_bytes,
+            max_edge_source_bytes,
+            base_version: Some(self.version.clone()),
+        })
+    }
+
+    pub fn incremental_estimated_bytes(&self) -> usize {
+        self.lexicon.incremental_estimated_bytes()
+            + std::mem::size_of::<Self>()
+            + self.version.capacity()
+            + self.base_version.as_ref().map_or(0, String::capacity)
+            + 32
+    }
+
+    pub fn entry_fingerprint(&self, id: &str) -> Option<String> {
+        self.entries()
+            .iter()
+            .find(|e| e.id == id)
+            .map(|e| entry_fingerprint(&e.text, &e.pinyin))
     }
 
     /// 容器容量与固定工具链树节点估计，包含32字节的本对象余量；不是RSS硬上界。
@@ -123,9 +198,25 @@ impl SearchSnapshot {
 pub struct LanguageSnapshot {
     snapshot: LanguageModelSnapshot,
     version: String,
+    binding: String,
 }
 
 impl LanguageSnapshot {
+    pub fn bind_user_state(&mut self, snapshot: &SearchSnapshot) -> Result<(), CoreError> {
+        if snapshot.base_version.as_deref() != Some(self.metadata().lexicon_sha256.as_str())
+            || !self
+                .snapshot
+                .model()
+                .is_compatible_lexicon(&snapshot.lexicon)
+        {
+            return Err(CoreError::new(
+                ErrorCode::InvalidConfig,
+                "用户状态模型索引不匹配",
+            ));
+        }
+        self.binding = snapshot.version.clone();
+        Ok(())
+    }
     pub fn from_verified_tsv(
         text: &str,
         expected_sha256: &str,
@@ -142,7 +233,11 @@ impl LanguageSnapshot {
             .map_err(|_| {
             CoreError::new(ErrorCode::InvalidConfig, "语言模型格式、范围或词典版本不符")
         })?;
-        Ok(Self { snapshot, version })
+        Ok(Self {
+            snapshot,
+            version,
+            binding: lexicon.version.clone(),
+        })
     }
 
     pub fn version(&self) -> &str {
@@ -153,8 +248,31 @@ impl LanguageSnapshot {
         self.snapshot.metadata()
     }
 
+    pub fn for_user_layer(
+        &self,
+        base: &SearchSnapshot,
+        target: &SearchSnapshot,
+    ) -> Result<Self, CoreError> {
+        let snapshot = self
+            .snapshot
+            .for_extension(&base.lexicon, &target.lexicon)
+            .map_err(|_| CoreError::new(ErrorCode::InvalidConfig, "模型不属于用户层基础快照"))?;
+        if self.binding != base.version || target.base_version.as_deref() != Some(base.version()) {
+            return Err(CoreError::new(ErrorCode::InvalidConfig, "模型基础身份不符"));
+        }
+        Ok(Self {
+            snapshot,
+            version: self.version.clone(),
+            binding: target.version.clone(),
+        })
+    }
+
     pub fn estimated_bytes(&self) -> usize {
-        self.snapshot.estimated_bytes() + std::mem::size_of::<Self>() + self.version.capacity() + 32
+        self.snapshot.estimated_bytes()
+            + std::mem::size_of::<Self>()
+            + self.version.capacity()
+            + self.binding.capacity()
+            + 32
     }
 }
 
@@ -252,7 +370,7 @@ impl SentenceBackend {
         };
         if !valid_model
             || language.as_ref().is_some_and(|value| {
-                value.metadata().lexicon_sha256 != snapshot.version
+                value.binding != snapshot.version
                     || !value
                         .snapshot
                         .model()
@@ -260,10 +378,7 @@ impl SentenceBackend {
             })
             || left_word.as_ref().is_some_and(|id| {
                 config.ranker != Ranker::ContextRerank
-                    || snapshot
-                        .entries()
-                        .binary_search_by(|entry| entry.id.cmp(id))
-                        .is_err()
+                    || !snapshot.entries().iter().any(|entry| &entry.id == id)
             })
         {
             return Err(CoreError::new(
@@ -285,7 +400,7 @@ impl SentenceBackend {
         snapshot: Arc<SearchSnapshot>,
     ) -> Result<(), CoreError> {
         if self.language.as_ref().is_some_and(|value| {
-            value.metadata().lexicon_sha256 != snapshot.version
+            value.binding != snapshot.version
                 || !value
                     .snapshot
                     .model()
@@ -309,6 +424,25 @@ impl SentenceBackend {
         let mut replacement = Self::configured(self.snapshot.clone(), config, language, left_word)?;
         replacement.scheme = self.scheme.clone();
         Ok(replacement)
+    }
+
+    pub(crate) fn resources(
+        &self,
+        snapshot: Arc<SearchSnapshot>,
+        language: Option<Arc<LanguageSnapshot>>,
+    ) -> Result<Self, CoreError> {
+        let mut replacement = Self::configured(
+            snapshot,
+            self.config.clone(),
+            language,
+            self.left_word.clone(),
+        )?;
+        replacement.scheme = self.scheme.clone();
+        Ok(replacement)
+    }
+
+    pub(crate) fn snapshots(&self) -> (Arc<SearchSnapshot>, Option<Arc<LanguageSnapshot>>) {
+        (self.snapshot.clone(), self.language.clone())
     }
 
     pub(crate) fn scheme(&self) -> &cloudleaf_pinyin::SchemeConfig {
@@ -478,4 +612,12 @@ fn candidate_id(
 
 fn hex(bytes: &[u8]) -> String {
     bytes.iter().map(|byte| format!("{byte:02x}")).collect()
+}
+
+pub fn entry_fingerprint(text: &str, pinyin: &str) -> String {
+    let mut hash = Context::new(&SHA256);
+    hash.update(text.as_bytes());
+    hash.update(&[0]);
+    hash.update(pinyin.as_bytes());
+    hex(hash.finish().as_ref())
 }

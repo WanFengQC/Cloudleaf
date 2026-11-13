@@ -6,10 +6,10 @@ const EOS: u32 = 0x110001;
 const UNK: u32 = 0x110002;
 
 #[derive(Clone, Debug)]
-struct Row {
-    key: u64,
+pub(crate) struct Row {
+    pub(crate) key: u64,
     count: u64,
-    units: i64,
+    pub(crate) units: i64,
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -137,26 +137,63 @@ impl CharacterModel {
             unigram,
             entries: Vec::with_capacity(lexicon.entries().len()),
         };
+        model.compile_entries(lexicon);
+        model
+    }
+
+    /// 新词层仅重编译词条字符缓存；原观测、概率和未知字符映射保持不变。
+    pub(crate) fn rebound(&self, lexicon: &Lexicon) -> Self {
+        let mut model = self.clone();
+        model.lexicon_identity = lexicon.identity.clone();
+        model.entries = Vec::with_capacity(lexicon.entries().len());
+        model.compile_entries(lexicon);
+        model
+    }
+
+    fn compile_entries(&mut self, lexicon: &Lexicon) {
         for entry in lexicon.entries() {
             let mut characters = entry.text.chars();
-            let first = model.known(characters.next().unwrap());
+            let first = self.known(characters.next().unwrap());
             let mut score = EntryScore {
                 first,
                 last: first,
                 internal: 0,
                 characters: 1,
-                unknown: usize::from(first as usize == model.vocabulary.len() - 1),
+                unknown: usize::from(first as usize == self.vocabulary.len() - 1),
             };
             for character in characters {
-                let next = model.known(character);
-                score.internal += model.transition(score.last, next);
+                let next = self.known(character);
+                score.internal += self.transition(score.last, next);
                 score.last = next;
                 score.characters += 1;
-                score.unknown += usize::from(next as usize == model.vocabulary.len() - 1);
+                score.unknown += usize::from(next as usize == self.vocabulary.len() - 1);
             }
-            model.entries.push(score);
+            self.entries.push(score);
         }
-        model
+    }
+
+    pub(crate) fn transition_row(&self, previous: u32) -> &[Row] {
+        let index = if previous == BOS {
+            self.vocabulary.len()
+        } else {
+            previous as usize
+        };
+        &self.rows[self.starts[index]..self.starts[index + 1]]
+    }
+    pub(crate) fn unobserved_bias(&self, previous: u32) -> i64 {
+        let index = if previous == BOS {
+            self.vocabulary.len()
+        } else {
+            previous as usize
+        };
+        -self.denominators[index]
+    }
+    pub(crate) fn unobserved_next(&self, next: u32) -> i64 {
+        if self.unigram.is_empty() {
+            0
+        } else {
+            self.unigram[next as usize]
+        }
     }
 
     fn known(&self, value: char) -> u32 {
@@ -245,6 +282,68 @@ mod tests {
                 .map(|next| 2_f64.powf(model.transition(previous, next) as f64 / 1024.0))
                 .sum();
             assert!((sum - 1.0).abs() < 0.003, "{previous}: {sum}");
+        }
+    }
+}
+
+#[cfg(test)]
+mod rebound_tests {
+    use super::BOS;
+    use crate::{LanguageModelSnapshot, Lexicon};
+    use std::sync::Arc;
+
+    #[test]
+    fn user_entries_recompile_character_cache_without_rebinding_old_indices() {
+        let header = "# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\n";
+        let base = format!(
+            "{header}a\tni\t你\t\tunknown\t\tmechanical\ta\tMIT\nb\thao\t好\t\tunknown\t\tmechanical\tb\tMIT\n"
+        );
+        let combined =
+            format!("{base}user:1\tni hao\t你好\t\tunknown\t\tuser\tuser:1\tuser-private\n");
+        let lexicon = Lexicon::from_tsv(&base).unwrap();
+        let target = Lexicon::from_tsv(&combined).unwrap();
+        let sha = "7".repeat(64);
+        for kind in ["character_bigram", "character_bigram_witten_bell"] {
+            let metadata = format!(
+                "# cloudleaf-language-v1\nlexicon_sha256\t{sha}\nsource_sha256\t{sha}\nsource_id\tcloudleaf:mechanical-rebound\nlicense_id\tMIT\ntokenization\tunicode-scalar-v1\nusage\tmechanical\nkind\t{kind}\ntraining_split\ttrain\nprevious\tnext\tcount\n"
+            );
+            let model = LanguageModelSnapshot::train(
+                &metadata,
+                &lexicon,
+                &sha,
+                &[
+                    vec!["你".into(), "好".into()],
+                    vec!["你".into(), "你".into()],
+                ],
+            )
+            .unwrap();
+            let original = model.model().character.as_ref().unwrap();
+            let rebound = original.rebound(&target);
+            assert_eq!(original.entries.len(), 2);
+            assert_eq!(rebound.entries.len(), 3);
+            assert!(Arc::ptr_eq(&rebound.lexicon_identity, &target.identity));
+            assert!(!Arc::ptr_eq(
+                &rebound.lexicon_identity,
+                &original.lexicon_identity
+            ));
+            for previous in std::iter::once(BOS).chain(0..original.vocabulary.len() as u32) {
+                for next in 0..original.vocabulary.len() as u32 {
+                    assert_eq!(
+                        original.transition(previous, next),
+                        rebound.transition(previous, next)
+                    );
+                }
+            }
+            let a = original.entry(0);
+            let b = original.entry(1);
+            let added = rebound.entry(2);
+            assert_eq!(
+                (added.first, added.last, added.characters),
+                (a.first, b.last, 2)
+            );
+            assert_eq!(added.internal, original.transition(a.last, b.first));
+            assert_eq!(added.unknown, a.unknown + b.unknown);
+            assert_eq!(rebound.entry(0).internal, original.entry(0).internal);
         }
     }
 }

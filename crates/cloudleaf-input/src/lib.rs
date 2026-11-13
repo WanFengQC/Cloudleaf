@@ -3,7 +3,7 @@
 mod sentence;
 pub use sentence::{
     EdgeSource, LanguageSnapshot, SearchCapacityBounds, SearchDiagnostic, SearchPath,
-    SearchSnapshot,
+    SearchSnapshot, entry_fingerprint,
 };
 
 use cloudleaf_dictionary::Dictionary;
@@ -54,6 +54,19 @@ pub struct InputEngine {
     next_commit_id: u64,
     pending_commit: Option<CommitRequest>,
     failed_commit: Option<CommitRequest>,
+    pending_selection: Option<SelectionEvidence>,
+}
+
+/// 只证明当前引擎确实选择过候选；本对象不证明宿主Applied，不能自行触发学习。
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct SelectionEvidence {
+    pub commit_id: u64,
+    pub revision: u64,
+    pub candidate_id: String,
+    pub snapshot_version: String,
+    pub model_version: Option<String>,
+    pub scheme_version: Option<String>,
+    pub entries: Vec<(String, String)>,
 }
 
 impl InputEngine {
@@ -88,6 +101,7 @@ impl InputEngine {
             next_commit_id: 1,
             pending_commit: None,
             failed_commit: None,
+            pending_selection: None,
         })
     }
 
@@ -111,6 +125,55 @@ impl InputEngine {
 
     pub fn search_diagnostic(&self) -> Option<&SearchDiagnostic> {
         self.search_diagnostic.as_ref()
+    }
+
+    pub fn pending_selection(&self) -> Option<&SelectionEvidence> {
+        self.pending_selection.as_ref()
+    }
+    pub fn search_resources(&self) -> Option<(Arc<SearchSnapshot>, Option<Arc<LanguageSnapshot>>)> {
+        self.sentence
+            .as_ref()
+            .map(sentence::SentenceBackend::snapshots)
+    }
+
+    pub fn validate_search_resources(
+        &self,
+        snapshot: Arc<SearchSnapshot>,
+        language: Option<Arc<LanguageSnapshot>>,
+    ) -> Result<(), CoreError> {
+        if self.pending_commit.is_some() || self.failed_commit.is_some() {
+            return Err(CoreError::new(
+                ErrorCode::CommitPending,
+                "未决事务不能发布用户词库",
+            ));
+        }
+        if self.revision == u64::MAX {
+            return Err(CoreError::new(ErrorCode::InvalidInput, "修订号耗尽"));
+        }
+        self.sentence
+            .as_ref()
+            .ok_or_else(|| CoreError::new(ErrorCode::InvalidConfig, "非整句后端"))?
+            .resources(snapshot, language)?;
+        Ok(())
+    }
+    pub fn replace_search_resources(
+        &mut self,
+        snapshot: Arc<SearchSnapshot>,
+        language: Option<Arc<LanguageSnapshot>>,
+    ) -> Result<(), CoreError> {
+        self.validate_search_resources(snapshot.clone(), language.clone())?;
+        self.sentence = Some(
+            self.sentence
+                .as_ref()
+                .unwrap()
+                .resources(snapshot, language)?,
+        );
+        let inactive = self.state == InputState::Inactive;
+        self.refresh();
+        if inactive {
+            self.state = InputState::Inactive
+        }
+        Ok(())
     }
 
     /// 显式研发模型；构造前由宿主完成文件读取与模型身份核验。
@@ -173,6 +236,18 @@ impl InputEngine {
         self.sentence
             .as_ref()
             .map(sentence::SentenceBackend::capacity_bounds)
+    }
+
+    pub fn replacement_capacity_bounds(
+        &self,
+        snapshot: Arc<SearchSnapshot>,
+        language: Option<Arc<LanguageSnapshot>>,
+    ) -> Result<SearchCapacityBounds, CoreError> {
+        self.sentence
+            .as_ref()
+            .ok_or_else(|| CoreError::new(ErrorCode::InvalidConfig, "非整句后端"))?
+            .resources(snapshot, language)
+            .map(|b| b.capacity_bounds())
     }
 
     pub fn pinyin_scheme(&self) -> Option<&SchemeConfig> {
@@ -354,7 +429,12 @@ impl InputEngine {
                 )),
             );
         };
-        self.begin_commit(candidate.text.clone())
+        let index = self
+            .candidates
+            .iter()
+            .position(|c| c.id == candidate.id)
+            .unwrap();
+        self.begin_candidate_commit(index)
     }
 
     /// 处理一个事件，不执行文件读写、网络访问或系统文本提交。
@@ -440,8 +520,10 @@ impl InputEngine {
             Key::Char(' ') | Key::Space | Key::Char('\n') | Key::Enter => {
                 if self.preedit.is_empty() {
                     self.result(false, None, None)
+                } else if let Some(index) = self.highlighted {
+                    self.begin_candidate_commit(index)
                 } else {
-                    self.begin_commit(self.confirmed_text())
+                    self.begin_commit(self.preedit.clone())
                 }
             }
             Key::Char(character) => self.handle_character(character),
@@ -511,7 +593,7 @@ impl InputEngine {
             let index = self.page_start + digit as usize - 1;
             let page_end = (self.page_start + self.config.page_size).min(self.candidates.len());
             if index < page_end {
-                return self.begin_commit(self.candidates[index].text.clone());
+                return self.begin_candidate_commit(index);
             }
         }
 
@@ -585,10 +667,46 @@ impl InputEngine {
         };
         self.next_commit_id = next_id;
         self.failed_commit = None;
+        self.pending_selection = None;
         self.pending_commit = Some(request.clone());
         self.state = InputState::Committing;
         self.advance_revision();
         self.result(true, Some(request), None)
+    }
+
+    fn begin_candidate_commit(&mut self, index: usize) -> EventResult {
+        let candidate = &self.candidates[index];
+        let id = candidate.id.clone();
+        let evidence = self.search_diagnostic.as_ref().and_then(|d| {
+            let path = d.paths.iter().find(|p| p.candidate_id == id)?;
+            let backend = self.sentence.as_ref()?;
+            let (snapshot, _) = backend.snapshots();
+            let entries = path
+                .edges
+                .iter()
+                .map(|e| {
+                    let entry = &snapshot.entries()[e.entry_index];
+                    (
+                        entry.id.clone(),
+                        entry_fingerprint(&entry.text, &entry.pinyin),
+                    )
+                })
+                .collect();
+            Some(SelectionEvidence {
+                commit_id: self.next_commit_id,
+                revision: self.revision,
+                candidate_id: id,
+                snapshot_version: d.snapshot_version.clone(),
+                model_version: d.model_version.clone(),
+                scheme_version: d.scheme_version.clone(),
+                entries,
+            })
+        });
+        let result = self.begin_commit(candidate.text.clone());
+        if result.commit.is_some() {
+            self.pending_selection = evidence;
+        }
+        result
     }
 
     fn acknowledge_commit(&mut self, id: u64, success: bool) -> EventResult {
@@ -632,7 +750,15 @@ impl InputEngine {
             );
         }
         if let Some(failed) = self.failed_commit.as_ref() {
-            self.begin_commit(failed.text.clone())
+            let mut evidence = self.pending_selection.clone();
+            let result = self.begin_commit(failed.text.clone());
+            if let Some(request) = &result.commit {
+                if let Some(value) = &mut evidence {
+                    value.commit_id = request.id;
+                }
+                self.pending_selection = evidence;
+            }
+            result
         } else {
             self.result(
                 false,
@@ -696,6 +822,7 @@ impl InputEngine {
         self.page_start = 0;
         self.pending_commit = None;
         self.failed_commit = None;
+        self.pending_selection = None;
         self.state = state;
         self.advance_revision();
     }

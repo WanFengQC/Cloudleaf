@@ -2,6 +2,7 @@
 mod cancellation;
 mod character;
 mod lattice;
+mod layer;
 mod lexicon;
 mod model;
 mod profiling;
@@ -10,6 +11,7 @@ mod search;
 
 pub use cancellation::Cancellation;
 pub use lattice::{Edge, Lattice, MatchKind};
+pub use layer::Entries;
 pub use lexicon::{Entry, FrequencyKind, Lexicon, LexiconMemory, LoadLimits};
 pub use model::{BigramModel, LanguageModelSnapshot, ModelMetadata};
 pub use profiling::{Measurement, Phase, Profile, profile_query, profile_scheme_query};
