@@ -10,6 +10,12 @@ pub struct Store {
     root: PathBuf,
     _guard: File,
 }
+impl Drop for Store {
+    fn drop(&mut self) {
+        // Unix重复文件描述可能延长flock生命周期；明确交还所有权后再关闭本句柄。
+        let _ = self._guard.unlock();
+    }
+}
 
 impl std::fmt::Debug for Store {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -371,4 +377,28 @@ fn is_pending(name: &str) -> bool {
         && generation.bytes().all(|b| b.is_ascii_digit())
         && slot.len() == 2
         && slot.parse::<u8>().is_ok_and(|slot| slot < 32)
+}
+
+#[cfg(test)]
+mod lock_lifetime_tests {
+    use super::*;
+    #[test]
+    fn dropping_store_unlocks_even_when_a_duplicate_descriptor_survives() {
+        let root = std::env::temp_dir().join(format!(
+            "Cloudleaf-lock-drop-{}-{}",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_nanos()
+        ));
+        let store = Store::open(root.clone()).unwrap();
+        let duplicate = store._guard.try_clone().unwrap();
+        drop(store);
+        let reopened =
+            Store::open(root.clone()).expect("重复描述不能延长已经结束的Store写者生命周期");
+        drop(reopened);
+        drop(duplicate);
+        fs::remove_dir_all(root).unwrap();
+    }
 }
