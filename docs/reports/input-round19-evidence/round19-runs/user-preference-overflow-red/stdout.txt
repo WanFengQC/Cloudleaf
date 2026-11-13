@@ -1,0 +1,19 @@
+
+running 2 tests
+test overlay_preserves_base_indices_and_puts_user_words_inside_the_lattice ... ok
+test foreign_or_conflicting_user_sources_and_unknown_preference_ids_are_rejected ... FAILED
+
+failures:
+
+---- foreign_or_conflicting_user_sources_and_unknown_preference_ids_are_rejected stdout ----
+
+thread 'foreign_or_conflicting_user_sources_and_unknown_preference_ids_are_rejected' panicked at crates\cloudleaf-search\src\layer.rs:84:13:
+attempt to add with overflow
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    foreign_or_conflicting_user_sources_and_unknown_preference_ids_are_rejected
+
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

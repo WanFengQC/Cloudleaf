@@ -1,0 +1,25 @@
+   Compiling cloudleaf-search v0.1.0 (C:\Users\EDY\.codex\tmp\r19-search\source\crates\cloudleaf-search)
+warning: methods `rebound`, `transition_row`, `unobserved_bias`, and `unobserved_next` are never used
+   --> crates\cloudleaf-search\src\character.rs:145:19
+    |
+ 58 | impl CharacterModel {
+    | ------------------- methods in this implementation
+...
+145 |     pub(crate) fn rebound(&self, lexicon: &Lexicon) -> Self {
+    |                   ^^^^^^^
+...
+175 |     pub(crate) fn transition_row(&self, previous: u32) -> &[Row] {
+    |                   ^^^^^^^^^^^^^^
+...
+183 |     pub(crate) fn unobserved_bias(&self, previous: u32) -> i64 {
+    |                   ^^^^^^^^^^^^^^^
+...
+191 |     pub(crate) fn unobserved_next(&self, next: u32) -> i64 {
+    |                   ^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `cloudleaf-search` (lib) generated 1 warning
+    Finished `release` profile [optimized] target(s) in 11.04s
+     Running tests\interpreted_resources.rs (target\release\deps\interpreted_resources-18439e8690e6b329.exe)
+error: test failed, to rerun pass `-p cloudleaf-search --test interpreted_resources`

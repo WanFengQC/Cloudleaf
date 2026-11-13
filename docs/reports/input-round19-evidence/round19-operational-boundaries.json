@@ -1,0 +1,19 @@
+{
+  "preserve_failures": [
+    "缺失用户层API编译失败",
+    "缺失快照/来源API编译失败",
+    "用户偏好上界溢出反例",
+    "Entries旧Eq兼容编译失败",
+    "Clippy与Shell功能编译反馈",
+    "8418738 Linux Store重开Busy",
+    "独立面板前自动化字段误落及外部焦点干扰"
+  ],
+  "not_success_evidence": [
+    "错误过滤运行0个测试",
+    "PowerShell命令引号/工具调用错误",
+    "未命名或未授权外部窗口",
+    "构造Isolated来源的worker测试"
+  ],
+  "corrections": "按真实过滤重新运行专项和完整回归；不将工具或焦点失败计作产品通过",
+  "GUI": "用户明确暂停，后续只进行代码、证据和CI"
+}

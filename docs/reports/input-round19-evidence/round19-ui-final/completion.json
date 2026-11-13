@@ -1,0 +1,28 @@
+{
+  "status": "partial",
+  "paused_by_user": true,
+  "user_instruction": "先暂停窗口自动化，继续代码和 CI",
+  "source": "84187386ea36e8fdb3cf88300c0d35aa86c91cb6",
+  "binary_sha256": "cb751c039598c1738f7159638c6b300c0b2bf80919ffd33b4761cb13ac4d07aa",
+  "profile": "Round19-A",
+  "observed": [
+    "独立管理窗",
+    "添加自有词云笺/yun jian并保存generation1",
+    "明确开启学习并保存generation2",
+    "全拼yunjian首选云笺",
+    "简拼yj首选云笺"
+  ],
+  "not_completed": [
+    "可信Applied后真实学习计数",
+    "窗口重启持久化",
+    "关闭学习再次选择",
+    "实际编辑/停用/删除/导入/导出/恢复/清除按钮闭环",
+    "Unknown/NotApplied与学习窗口组合"
+  ],
+  "interference": "外部窗口及焦点丢失已观察；Space尝试后原拼音进入恢复区，未记为中文Applied或学习通过",
+  "closed_owned_window_observed": false,
+  "TSF": false,
+  "after_pause": "不再发送窗口输入，也不关闭用户当前窗口；继续代码和CI",
+  "private_AppData_read_or_copied": false,
+  "recorded_at_utc": "2026-11-13T08:53:04.695418+00:00"
+}

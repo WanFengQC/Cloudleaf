@@ -1,0 +1,34 @@
+
+running 11 tests
+test store_child_phase ... ok
+test malformed_utf8_crlf_duplicate_ids_pairs_and_capacity_are_rejected ... FAILED
+test changes_and_import_conflicts_are_atomic_and_do_not_enable_imported_learning ... ok
+test relative_parent_and_git_paths_are_rejected_before_creation ... ok
+test learning_is_bounded_off_switch_epoch_and_clear_persist ... ok
+test migration_v1_is_explicit_and_preserves_original_file ... ok
+test missing_empty_future_and_damaged_backup_have_explicit_outcomes ... ok
+test corrupted_latest_never_becomes_empty_and_recovery_preserves_originals ... FAILED
+test real_crud_save_restart_import_export_and_private_backups ... ok
+test writer_lock_is_real_and_process_interruption_releases_it ... ok
+test save_faults_preserve_previous_and_unknown_requires_reload ... ok
+
+failures:
+
+---- malformed_utf8_crlf_duplicate_ids_pairs_and_capacity_are_rejected stdout ----
+
+thread 'malformed_utf8_crlf_duplicate_ids_pairs_and_capacity_are_rejected' panicked at crates\cloudleaf-user\tests\storage.rs:117:59:
+called `Result::unwrap_err()` on an `Ok` value: UserDictionary { generation: 0, entries: 1, preferences: 0, learning_enabled: false, .. }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- corrupted_latest_never_becomes_empty_and_recovery_preserves_originals stdout ----
+
+thread 'corrupted_latest_never_becomes_empty_and_recovery_preserves_originals' panicked at crates\cloudleaf-user\tests\storage.rs:81:45:
+called `Result::unwrap()` on an `Err` value: Os { code: 2, kind: NotFound, message: "系统找不到指定的文件。" }
+
+
+failures:
+    corrupted_latest_never_becomes_empty_and_recovery_preserves_originals
+    malformed_utf8_crlf_duplicate_ids_pairs_and_capacity_are_rejected
+
+test result: FAILED. 9 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+

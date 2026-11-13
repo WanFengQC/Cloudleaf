@@ -1,0 +1,19 @@
+
+running 2 tests
+test manual_entries_roundtrip_and_learning_requires_trusted_current_event ... ok
+test queued_old_user_selection_cannot_revive_deleted_or_changed_words ... FAILED
+
+failures:
+
+---- queued_old_user_selection_cannot_revive_deleted_or_changed_words stdout ----
+
+thread 'queued_old_user_selection_cannot_revive_deleted_or_changed_words' panicked at crates\cloudleaf-user\tests\contract.rs:44:9:
+assertion failed: !dictionary.record_selection(&event).unwrap()
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    queued_old_user_selection_cannot_revive_deleted_or_changed_words
+
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

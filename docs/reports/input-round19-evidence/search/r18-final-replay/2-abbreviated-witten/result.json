@@ -1,0 +1,169 @@
+{
+  "iteration": 2,
+  "scheme": "abbreviated",
+  "kind": "witten",
+  "command": [
+    "C:\\Users\\EDY\\.codex\\tmp\\r19-search\\source\\target\\release\\r19-search-probe.exe",
+    "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+    "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+    "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character-witten.tsv",
+    "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\docs\\reports\\input-round18-evidence\\performance\\abbreviated-cases.tsv",
+    "abbreviated"
+  ],
+  "returncode": 0,
+  "seconds": 1.3190614999912214,
+  "runtime_sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+  "model_sha256": "516d78a23786470c5ba7c1c7ee45e82c80eaaccd7eb1e3b541faf55d8f93b44b",
+  "cases_sha256": "141327bc03e270974aa86c676e1db1414379bd66a3716366e718a4f218f05f0b",
+  "binary_sha256": "2333868fcd1ad0fcf774d46e9db2f3e554fbd25a0633bc241092199db055d507",
+  "source_sha256": {
+    "search.rs": "32793b6327ee8cfeb3a7e0f754a6df89267d10d8aa1604cbde4286da6510636e",
+    "character.rs": "502bf49303e19d6e4da04cb2c7e2d1ede2fbfe9a253502c3ca86a2211a4bf0e7",
+    "lexicon.rs": "9b5c45b87c0ee693f33d9f9752f5aab7adc0d46d82461060c915ca7c1ab0069a",
+    "layer.rs": "efdbad4ff3e827bada757f49703a8da07bd81bddf5701d123ce44423df8cf457"
+  },
+  "queries": [
+    {
+      "case": "zgr",
+      "raw": "zgr",
+      "lattice_ns": 2207300,
+      "search_ns": 6363600,
+      "budget": "None"
+    },
+    {
+      "case": "bjdx",
+      "raw": "bjdx",
+      "lattice_ns": 3257500,
+      "search_ns": 25309800,
+      "budget": "None"
+    },
+    {
+      "case": "zg",
+      "raw": "zg",
+      "lattice_ns": 1179000,
+      "search_ns": 7077000,
+      "budget": "None"
+    },
+    {
+      "case": "zhg",
+      "raw": "zhg",
+      "lattice_ns": 2170900,
+      "search_ns": 8752000,
+      "budget": "None"
+    },
+    {
+      "case": "zhonggr",
+      "raw": "zhonggr",
+      "lattice_ns": 4705200,
+      "search_ns": 12368000,
+      "budget": "None"
+    },
+    {
+      "case": "wzgs",
+      "raw": "wzgs",
+      "lattice_ns": 3488200,
+      "search_ns": 20212300,
+      "budget": "None"
+    },
+    {
+      "case": "nihao",
+      "raw": "nihao",
+      "lattice_ns": 1244300,
+      "search_ns": 5187400,
+      "budget": "None"
+    },
+    {
+      "case": "nh",
+      "raw": "nh",
+      "lattice_ns": 567800,
+      "search_ns": 2200800,
+      "budget": "None"
+    },
+    {
+      "case": "full-zhongguoren",
+      "raw": "zhongguoren",
+      "lattice_ns": 3506900,
+      "search_ns": 6335000,
+      "budget": "None"
+    },
+    {
+      "case": "full-beijingdaxue",
+      "raw": "beijingdaxue",
+      "lattice_ns": 5178200,
+      "search_ns": 12433800,
+      "budget": "None"
+    },
+    {
+      "case": "fuzzy-lin",
+      "raw": "lin",
+      "lattice_ns": 893300,
+      "search_ns": 790900,
+      "budget": "None"
+    },
+    {
+      "case": "fuzzy-lilan",
+      "raw": "lilan",
+      "lattice_ns": 2159100,
+      "search_ns": 13625100,
+      "budget": "None"
+    },
+    {
+      "case": "typo-omission",
+      "raw": "zhnogguo",
+      "lattice_ns": 2856100,
+      "search_ns": 13613100,
+      "budget": "None"
+    },
+    {
+      "case": "typo-adjacent",
+      "raw": "nihso",
+      "lattice_ns": 1898000,
+      "search_ns": 10967400,
+      "budget": "None"
+    },
+    {
+      "case": "typo-transpose",
+      "raw": "nihoa",
+      "lattice_ns": 675100,
+      "search_ns": 2769400,
+      "budget": "None"
+    },
+    {
+      "case": "typo-long",
+      "raw": "jintiantiqnqihenhao",
+      "lattice_ns": 6720100,
+      "search_ns": 38694300,
+      "budget": "None"
+    },
+    {
+      "case": "raw-unknown",
+      "raw": "qz",
+      "lattice_ns": 1203100,
+      "search_ns": 12160900,
+      "budget": "None"
+    },
+    {
+      "case": "separated",
+      "raw": "xi'an",
+      "lattice_ns": 1233200,
+      "search_ns": 2038200,
+      "budget": "None"
+    },
+    {
+      "case": "waiting",
+      "raw": "ni'",
+      "lattice_ns": 4900,
+      "search_ns": 500,
+      "budget": "None"
+    },
+    {
+      "case": "limit-budget",
+      "raw": "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",
+      "lattice_ns": 4958100,
+      "search_ns": 52283800,
+      "budget": "Some(ResidentPaths)"
+    }
+  ],
+  "stdout_sha256": "8353cce951fe09bf6dd57de999d3240c9bab2a68fe69ade34a5b8b65a6fa0a4c",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

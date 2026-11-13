@@ -1,0 +1,178 @@
+{
+  "label": "host-1-addone",
+  "command": [
+    "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\build\\release\\cloudleaf-ime.exe",
+    "--benchmark-input-host",
+    "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+    "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+    "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character.tsv",
+    "5f28834165fcf83b22458e701b3608b403cb9bf7a9be8ba3c686fd158c53d6b9",
+    "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\tests\\fixtures\\input-round14-events.tsv"
+  ],
+  "returncode": 0,
+  "seconds": 1.2765936999931,
+  "input_sha256": null,
+  "stdout": {
+    "path": "C:\\Users\\EDY\\.codex\\tmp\\r19-engine-perf\\runs\\host-1-addone\\stdout.txt",
+    "bytes": 155090,
+    "sha256": "aef70d70333ddf49eb87ee832e83a26829b5542f7f8ddedcc771c09adb918e0e"
+  },
+  "stderr": {
+    "path": "C:\\Users\\EDY\\.codex\\tmp\\r19-engine-perf\\runs\\host-1-addone\\stderr.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "resource_scope": "Entire child process incl preload/raw data/buffers/index/model/diagnostics; not single-algorithm allocation or Host internal budget",
+  "resource_samples": [
+    {
+      "t": 0.012813600013032556,
+      "working": 3055616,
+      "private": 385024,
+      "OS_peak_working": 3055616
+    },
+    {
+      "t": 0.0630988999910187,
+      "working": 32227328,
+      "private": 24977408,
+      "OS_peak_working": 32227328
+    },
+    {
+      "t": 0.11358390000532381,
+      "working": 44134400,
+      "private": 37429248,
+      "OS_peak_working": 44134400
+    },
+    {
+      "t": 0.1641615999978967,
+      "working": 58867712,
+      "private": 59387904,
+      "OS_peak_working": 64389120
+    },
+    {
+      "t": 0.21464140000171028,
+      "working": 73981952,
+      "private": 70148096,
+      "OS_peak_working": 73981952
+    },
+    {
+      "t": 0.26516650000121444,
+      "working": 89436160,
+      "private": 96559104,
+      "OS_peak_working": 96219136
+    },
+    {
+      "t": 0.3156820999865886,
+      "working": 106721280,
+      "private": 108871680,
+      "OS_peak_working": 106721280
+    },
+    {
+      "t": 0.3661773999920115,
+      "working": 123830272,
+      "private": 135524352,
+      "OS_peak_working": 123830272
+    },
+    {
+      "t": 0.4167552999861073,
+      "working": 155074560,
+      "private": 161230848,
+      "OS_peak_working": 161075200
+    },
+    {
+      "t": 0.46729010000126436,
+      "working": 197947392,
+      "private": 216068096,
+      "OS_peak_working": 197947392
+    },
+    {
+      "t": 0.5178919000027236,
+      "working": 191488000,
+      "private": 188710912,
+      "OS_peak_working": 198799360
+    },
+    {
+      "t": 0.5684995999909006,
+      "working": 197177344,
+      "private": 194551808,
+      "OS_peak_working": 198799360
+    },
+    {
+      "t": 0.6191026000014972,
+      "working": 204623872,
+      "private": 202309632,
+      "OS_peak_working": 204623872
+    },
+    {
+      "t": 0.6697582000051625,
+      "working": 211730432,
+      "private": 209678336,
+      "OS_peak_working": 211730432
+    },
+    {
+      "t": 0.7203380000137258,
+      "working": 217772032,
+      "private": 216150016,
+      "OS_peak_working": 220454912
+    },
+    {
+      "t": 0.7709039000037592,
+      "working": 218066944,
+      "private": 216150016,
+      "OS_peak_working": 221278208
+    },
+    {
+      "t": 0.8215177000092808,
+      "working": 223186944,
+      "private": 223567872,
+      "OS_peak_working": 223186944
+    },
+    {
+      "t": 0.8721439999935683,
+      "working": 176820224,
+      "private": 174395392,
+      "OS_peak_working": 225492992
+    },
+    {
+      "t": 0.9226910000143107,
+      "working": 178331648,
+      "private": 176439296,
+      "OS_peak_working": 225492992
+    },
+    {
+      "t": 0.9733231000136584,
+      "working": 177696768,
+      "private": 175771648,
+      "OS_peak_working": 225492992
+    },
+    {
+      "t": 1.0238316000031773,
+      "working": 177696768,
+      "private": 175771648,
+      "OS_peak_working": 225492992
+    },
+    {
+      "t": 1.0744893999944907,
+      "working": 178577408,
+      "private": 176721920,
+      "OS_peak_working": 225492992
+    },
+    {
+      "t": 1.1250825999886729,
+      "working": 178835456,
+      "private": 176943104,
+      "OS_peak_working": 225492992
+    },
+    {
+      "t": 1.1756304999871645,
+      "working": 178917376,
+      "private": 176971776,
+      "OS_peak_working": 225492992
+    },
+    {
+      "t": 1.2262415000004694,
+      "working": 79560704,
+      "private": 74846208,
+      "OS_peak_working": 225492992
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+   Compiling cloudleaf-types v0.1.0 (C:\Users\EDY\.codex\tmp\r19-search\layout-exploration\crates\cloudleaf-types)
+   Compiling cloudleaf-pinyin v0.1.0 (C:\Users\EDY\.codex\tmp\r19-search\layout-exploration\crates\cloudleaf-pinyin)
+   Compiling cloudleaf-search v0.1.0 (C:\Users\EDY\.codex\tmp\r19-search\layout-exploration\crates\cloudleaf-search)
+warning: methods `transition_row`, `unobserved_bias`, and `unobserved_next` are never used
+   --> crates\cloudleaf-search\src\character.rs:175:19
+    |
+ 58 | impl CharacterModel {
+    | ------------------- methods in this implementation
+...
+175 |     pub(crate) fn transition_row(&self, previous: u32) -> &[Row] {
+    |                   ^^^^^^^^^^^^^^
+...
+183 |     pub(crate) fn unobserved_bias(&self, previous: u32) -> i64 {
+    |                   ^^^^^^^^^^^^^^^
+...
+191 |     pub(crate) fn unobserved_next(&self, next: u32) -> i64 {
+    |                   ^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `cloudleaf-search` (lib) generated 1 warning
+   Compiling r19-search-probe v0.1.0 (C:\Users\EDY\.codex\tmp\r19-search\layout-exploration\probe)
+    Finished `release` profile [optimized] target(s) in 15.62s

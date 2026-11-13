@@ -1,0 +1,36 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+   Compiling cloudleaf-types v0.1.0 (C:\Users\EDY\.codex\tmp\r19-search\source\crates\cloudleaf-types)
+   Compiling cloudleaf-pinyin v0.1.0 (C:\Users\EDY\.codex\tmp\r19-search\source\crates\cloudleaf-pinyin)
+   Compiling cloudleaf-search v0.1.0 (C:\Users\EDY\.codex\tmp\r19-search\source\crates\cloudleaf-search)
+warning: method `rebound` is never used
+   --> crates\cloudleaf-search\src\character.rs:145:19
+    |
+ 58 | impl CharacterModel {
+    | ------------------- method in this implementation
+...
+145 |     pub(crate) fn rebound(&self, lexicon: &Lexicon) -> Self {
+    |                   ^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `cloudleaf-search` (lib) generated 1 warning
+   Compiling r19-search-probe v0.1.0 (C:\Users\EDY\.codex\tmp\r19-search\source\probe)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 9.17s
+     Running unittests src\lib.rs (target\debug\deps\cloudleaf_pinyin-6d9594f965da5b78.exe)
+     Running tests\scheme_negatives.rs (target\debug\deps\scheme_negatives-502d3a24711b7456.exe)
+     Running unittests src\lib.rs (target\debug\deps\cloudleaf_search-3634ab27c777b10d.exe)
+     Running tests\character_model.rs (target\debug\deps\character_model-4b7da84ff698b4d5.exe)
+     Running tests\deferred_materialization.rs (target\debug\deps\deferred_materialization-d55bc629ffcd5916.exe)
+     Running tests\language_model.rs (target\debug\deps\language_model-4938dac0bb4efb32.exe)
+     Running tests\profiling.rs (target\debug\deps\profiling-4ac8a294a9271235.exe)
+     Running tests\resource_contract.rs (target\debug\deps\resource_contract-50eeee1574060199.exe)
+     Running tests\scheme_contract.rs (target\debug\deps\scheme_contract-ba5740d5dd0e4b0b.exe)
+     Running tests\scheme_provenance.rs (target\debug\deps\scheme_provenance-47743d5faa04ee8f.exe)
+     Running tests\search_contract.rs (target\debug\deps\search_contract-40be5d70b918624e.exe)
+     Running unittests examples\resource_phase_probe.rs (target\debug\examples\resource_phase_probe-ace46641929ee712.exe)
+     Running unittests examples\resource_probe.rs (target\debug\examples\resource_probe-57a965b9662559e4.exe)
+     Running unittests examples\search_probe.rs (target\debug\examples\search_probe-65e8423dee404a5c.exe)
+     Running unittests src\lib.rs (target\debug\deps\cloudleaf_types-1b7cfb7fea61cc5d.exe)
+     Running unittests src\bin\diff.rs (target\debug\deps\diff-fcd5865406304dde.exe)
+     Running unittests src\main.rs (target\debug\deps\r19_search_probe-2e300e94f1a243ad.exe)

@@ -1,0 +1,65 @@
+diff --git a/adapters/windows/isolated_input.rs b/adapters/windows/isolated_input.rs
+index 1fe565b..0b3893c 100644
+--- a/adapters/windows/isolated_input.rs
++++ b/adapters/windows/isolated_input.rs
+@@ -258,6 +258,9 @@ struct UserState {
+     busy: bool,
+     session: String,
+ }
++impl Drop for UserState{
++    fn drop(&mut self){self.panel.close();self.worker.shutdown();}
++}
+ fn wide(text: &str) -> Vec<u16> {
+     text.encode_utf16().chain([0]).collect()
+ }
+@@ -343,6 +346,7 @@ impl Window {
+             .search_resources()
+             .ok_or_else(|| Error::new(E_FAIL, "没有可管理的搜索快照"))?;
+         let weak = Rc::downgrade(self);
++        let path=user_directory()?;
+         let panel = user_panel::Panel::open(
+             self.window.get(),
+             Rc::new(move |command| {
+@@ -351,7 +355,6 @@ impl Window {
+                 }
+             }),
+         )?;
+-        let path = user_directory()?;
+         let worker = user_worker::Worker::start(base, language, path);
+         *self.users.borrow_mut() = Some(UserState {
+             panel,
+diff --git a/adapters/windows/user_panel.rs b/adapters/windows/user_panel.rs
+index 7925c18..0c0c23b 100644
+--- a/adapters/windows/user_panel.rs
++++ b/adapters/windows/user_panel.rs
+@@ -101,7 +101,7 @@ impl Panel {
+                 creation_error: RefCell::new(None),
+             });
+             let lease = Rc::into_raw(panel.clone());
+-            // 独立的owned顶层窗口保留正常IME；不是已解绑IME的输入窗口子控件。
++            // 独立顶层窗口可单独聚焦；生命周期由UserState显式管理，保持正常IME。
+             let created = CreateWindowExW(
+                 WINDOW_EX_STYLE::default(),
+                 PCWSTR(panel.class.as_ptr()),
+@@ -111,7 +111,7 @@ impl Panel {
+                 CW_USEDEFAULT,
+                 970,
+                 830,
+-                Some(owner),
++                None,
+                 None,
+                 Some(instance),
+                 Some(lease.cast()),
+diff --git a/docs/input-round19-design.md b/docs/input-round19-design.md
+index e28c75d..72224b2 100644
+--- a/docs/input-round19-design.md
++++ b/docs/input-round19-design.md
+@@ -40,6 +40,8 @@ InputEngine在明确候选选择时、清除组合前保留SelectionEvidence，
+ 
+ 单worker、固定容量命令和结果队列，在输入路径外读写、迁移、构建索引；UI只try_send/轮询结果。不等待磁盘或每次选词开线程。管理操作有明确成功/失败/未发布状态；存储损坏或保存失败保留内存和基础输入。手工保存/reload/export/import及管理修改由用户操作触发。管理中文EDIT保留正常IME，不能继承测试输入窗口的IMM解绑；仅用户打开管理入口时显示，不自动抢焦点。
+ 
++2026-11-13实际窗口验证发现：owned管理窗在桌面自动化API中只随父窗返回，激活输入目标会切回父窗，UIA设置还误落恢复字段；没有将该操作计为词条成功。管理窗改为应用显式持有的独立顶层窗口，独立焦点与可访问目标；UserState析构显式关闭面板和worker，不依赖Win32 owner自动销毁。正常输入宿主和候选窗口不变。
++
+ ## 简拼优化及证据
+ 
+ R18热点在遍历/评分，其次交集，原30唯一×3失败完整保留。先研究低复杂度的精确剪枝：利用任意K个完整不同正文的最大解释成本作为全局成本上限，结合按位置/剩余编辑预算的最小后缀成本排除必不可能进入TopK的路径。预处理和种子搜索计入同一200000展开/驻留预算。该剪枝不依赖概率或偏好，只删成本严格更差路径，平局完整保留；不能返回不完整Reference作为证明。

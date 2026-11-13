@@ -1,0 +1,745 @@
+--- a/crates/cloudleaf-search/src/search.rs
++++ b/crates/cloudleaf-search/src/search.rs
+@@ -9,6 +9,7 @@
+ #[derive(Clone, Debug, Default, Eq, PartialEq)]
+ pub struct Features {
+     pub interpretation_cost: InterpretationCost,
++    pub user_preference_units: u32,
+     pub words: usize,
+     pub prefixes: usize,
+     pub frequency_units: i64,
+@@ -68,6 +69,11 @@
+     a.features
+         .interpretation_cost
+         .cmp(&b.features.interpretation_cost)
++        .then_with(|| {
++            b.features
++                .user_preference_units
++                .cmp(&a.features.user_preference_units)
++        })
+         .then_with(|| b.score.cmp(&a.score))
+         .then_with(|| b.features.lexical_units.cmp(&a.features.lexical_units))
+         .then_with(|| a.ids.cmp(&b.ids))
+@@ -111,6 +117,7 @@
+             observer.stop(Phase::Scoring, stamp);
+             return None;
+         }
++        features.user_preference_units += self.lexicon.user_preference(edge.entry);
+         let mut score = path.score;
+         features.structural_units -= 100;
+         if self.ranker != Ranker::CharacterBigram {
+@@ -176,6 +183,12 @@
+             features
+                 .interpretation_cost
+                 .cmp(&worst.features.interpretation_cost)
++                .then_with(|| {
++                    worst
++                        .features
++                        .user_preference_units
++                        .cmp(&features.user_preference_units)
++                })
+                 .then_with(|| worst.score.cmp(&score))
+                 .then_with(|| worst.features.lexical_units.cmp(&features.lexical_units))
+                 .then_with(|| {
+@@ -719,6 +732,324 @@
+             pending.push(BoundedPath {
+                 bound,
+                 best_ids,
++                order,
++                position: edge.end,
++                path: next,
++            });
++        }
++    }
++    complete
++}
++
++#[derive(Clone, Debug, Eq, PartialEq)]
++struct InterpretedSuffix {
++    cost: InterpretationCost,
++    preference: u32,
++    score: i64,
++    ids: Vec<usize>,
++    edges: Vec<usize>,
++}
++
++fn suffix_order(a: &InterpretedSuffix, b: &InterpretedSuffix) -> Ordering {
++    a.cost
++        .cmp(&b.cost)
++        .then_with(|| b.preference.cmp(&a.preference))
++        .then_with(|| b.score.cmp(&a.score))
++        .then_with(|| a.ids.cmp(&b.ids))
++        .then_with(|| a.edges.cmp(&b.edges))
++}
++
++impl InterpretedSuffix {
++    fn prefix(path: &Path) -> Self {
++        Self {
++            cost: path.features.interpretation_cost,
++            preference: path.features.user_preference_units,
++            score: path.score,
++            ids: path.ids.clone(),
++            edges: path.edges.clone(),
++        }
++    }
++    fn completed(path: &Path, rest: &Self) -> Self {
++        Self {
++            cost: path.features.interpretation_cost.plus(rest.cost),
++            preference: path.features.user_preference_units + rest.preference,
++            score: path.score + rest.score,
++            ids: path.ids.iter().chain(&rest.ids).copied().collect(),
++            edges: path.edges.iter().chain(&rest.edges).copied().collect(),
++        }
++    }
++}
++
++struct InterpretedPending {
++    bound: InterpretedSuffix,
++    order: usize,
++    position: usize,
++    path: Path,
++}
++impl PartialEq for InterpretedPending {
++    fn eq(&self, other: &Self) -> bool {
++        self.order == other.order
++    }
++}
++impl Eq for InterpretedPending {}
++impl PartialOrd for InterpretedPending {
++    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
++        Some(self.cmp(other))
++    }
++}
++impl Ord for InterpretedPending {
++    fn cmp(&self, other: &Self) -> Ordering {
++        suffix_order(&other.bound, &self.bound).then_with(|| other.order.cmp(&self.order))
++    }
++}
++
++/// 完整解释成本/偏好与字符历史共同决定后缀；稀疏转移避免历史和词条的笛卡尔展开。
++fn interpreted_character_exact<O: Observer>(
++    scorer: &Scorer<'_>,
++    config: &Config,
++    stats: &mut Statistics,
++    k: usize,
++    observer: &mut O,
++) -> Vec<Path> {
++    let model = scorer.model.unwrap().character.as_ref().unwrap();
++    let end = scorer.graph.letters.len();
++    let max_edits = scorer.graph.max_edit_cost();
++    let mut suffix = vec![BTreeMap::<(u32, u16), Option<InterpretedSuffix>>::new(); end + 1];
++    suffix[0].insert((crate::character::BOS, max_edits), None);
++    let mut labels = 1;
++    for edge in &scorer.graph.edges {
++        for remaining in 0..=max_edits {
++            if scorer.cancelled() || !expand_allowed(stats, config) {
++                return Vec::new();
++            }
++            if suffix[edge.end]
++                .insert((model.entry(edge.entry).last, remaining), None)
++                .is_none()
++            {
++                labels += 1;
++                if !resident_allowed(stats, labels + 1, config) {
++                    return Vec::new();
++                }
++            }
++        }
++    }
++    for (&(previous, _), value) in &mut suffix[end] {
++        *value = Some(InterpretedSuffix {
++            cost: InterpretationCost::default(),
++            preference: 0,
++            score: model.finish(previous),
++            ids: Vec::new(),
++            edges: Vec::new(),
++        });
++    }
++    for position in (0..end).rev() {
++        for remaining in 0..=max_edits {
++            let mut groups = BTreeMap::<u32, InterpretedSuffix>::new();
++            for edge_index in &scorer.graph.outgoing[position] {
++                if scorer.cancelled() || !expand_allowed(stats, config) {
++                    return Vec::new();
++                }
++                let edge = &scorer.graph.edges[*edge_index];
++                let cost = scorer.graph.interpretation_cost(*edge_index);
++                if cost.edits > remaining {
++                    continue;
++                }
++                let entry = model.entry(edge.entry);
++                let Some(rest) = suffix[edge.end]
++                    .get(&(entry.last, remaining - cost.edits))
++                    .and_then(Option::as_ref)
++                else {
++                    continue;
++                };
++                let candidate = InterpretedSuffix {
++                    cost: cost.plus(rest.cost),
++                    preference: scorer.lexicon.user_preference(edge.entry) + rest.preference,
++                    score: entry.internal + rest.score,
++                    ids: std::iter::once(edge.entry)
++                        .chain(rest.ids.iter().copied())
++                        .collect(),
++                    edges: std::iter::once(*edge_index)
++                        .chain(rest.edges.iter().copied())
++                        .collect(),
++                };
++                if groups
++                    .get(&entry.first)
++                    .is_none_or(|old| suffix_order(&candidate, old) == Ordering::Less)
++                {
++                    if !resident_allowed(stats, labels + groups.len() + 2, config) {
++                        return Vec::new();
++                    }
++                    groups.insert(entry.first, candidate);
++                }
++            }
++            let Some(class) = groups.values().min_by(|a, b| {
++                a.cost
++                    .cmp(&b.cost)
++                    .then_with(|| b.preference.cmp(&a.preference))
++            }) else {
++                continue;
++            };
++            let (cost, preference) = (class.cost, class.preference);
++            groups.retain(|_, s| s.cost == cost && s.preference == preference);
++            let mut fallback: Vec<_> = groups.iter().collect();
++            fallback.sort_by(|(a_key, a), (b_key, b)| {
++                (b.score + model.unobserved_next(**b_key))
++                    .cmp(&(a.score + model.unobserved_next(**a_key)))
++                    .then_with(|| a.ids.cmp(&b.ids))
++                    .then_with(|| a.edges.cmp(&b.edges))
++            });
++            if !resident_allowed(stats, labels + groups.len() + fallback.len() + 1, config) {
++                return Vec::new();
++            }
++            let histories: Vec<_> = suffix[position]
++                .keys()
++                .filter(|(_, r)| *r == remaining)
++                .copied()
++                .collect();
++            for (previous, remaining) in histories {
++                let stamp = observer.start(Phase::Scoring);
++                let rows = model.transition_row(previous);
++                let mut best: Option<(&InterpretedSuffix, i64)> = None;
++                for row in rows {
++                    if scorer.cancelled() || !expand_allowed(stats, config) {
++                        observer.stop(Phase::Scoring, stamp);
++                        return Vec::new();
++                    }
++                    if let Some(group) = groups.get(&(row.key as u32)) {
++                        let score = group.score + row.units;
++                        if best.is_none_or(|(old, value)| {
++                            score > value
++                                || (score == value
++                                    && (group.ids.as_slice(), group.edges.as_slice())
++                                        < (old.ids.as_slice(), old.edges.as_slice()))
++                        }) {
++                            best = Some((group, score));
++                        }
++                    }
++                }
++                for (next, group) in &fallback {
++                    if scorer.cancelled() || !expand_allowed(stats, config) {
++                        observer.stop(Phase::Scoring, stamp);
++                        return Vec::new();
++                    }
++                    if rows
++                        .binary_search_by_key(*next, |row| row.key as u32)
++                        .is_err()
++                    {
++                        let score = group.score
++                            + model.unobserved_bias(previous)
++                            + model.unobserved_next(**next);
++                        if best.is_none_or(|(old, value)| {
++                            score > value
++                                || (score == value
++                                    && (group.ids.as_slice(), group.edges.as_slice())
++                                        < (old.ids.as_slice(), old.edges.as_slice()))
++                        }) {
++                            best = Some((group, score));
++                        }
++                        break;
++                    }
++                }
++                let best = best.map(|(value, score)| {
++                    let mut result = value.clone();
++                    result.score = score;
++                    result
++                });
++                observer.stop(Phase::Scoring, stamp);
++                suffix[position].insert((previous, remaining), best);
++            }
++        }
++    }
++    let Some(best) = suffix[0]
++        .get(&(crate::character::BOS, max_edits))
++        .and_then(Option::as_ref)
++    else {
++        return Vec::new();
++    };
++    let mut pending = BinaryHeap::from([InterpretedPending {
++        bound: best.clone(),
++        order: 0,
++        position: 0,
++        path: Path::default(),
++    }]);
++    let mut order = 0;
++    let mut complete = Vec::<Path>::new();
++    let mut seen =
++        vec![
++            vec![BTreeMap::<String, InterpretedSuffix>::new(); usize::from(max_edits) + 1];
++            end + 1
++        ];
++    seen[0][0].insert(String::new(), InterpretedSuffix::prefix(&Path::default()));
++    let mut seen_count = 1;
++    while let Some(current) = pending.pop() {
++        if scorer.cancelled() {
++            return Vec::new();
++        }
++        let edits = current.path.features.interpretation_cost.edits;
++        let signature = InterpretedSuffix::prefix(&current.path);
++        if seen[current.position][usize::from(edits)].get(&current.path.text) != Some(&signature) {
++            continue;
++        }
++        if complete.len() == k
++            && suffix_order(
++                &current.bound,
++                &InterpretedSuffix::prefix(complete.last().unwrap()),
++            ) != Ordering::Less
++        {
++            break;
++        }
++        if current.position == end {
++            let finished = scorer.finish(current.path, observer);
++            insert_unique(&mut complete, finished, k, observer);
++            continue;
++        }
++        for edge_index in &scorer.graph.outgoing[current.position] {
++            if scorer.cancelled() || !expand_allowed(stats, config) {
++                return Vec::new();
++            }
++            let edge = &scorer.graph.edges[*edge_index];
++            let used = edits + scorer.graph.interpretation_cost(*edge_index).edits;
++            if used > max_edits {
++                continue;
++            }
++            let entry = model.entry(edge.entry);
++            let Some(rest) = suffix[edge.end]
++                .get(&(entry.last, max_edits - used))
++                .and_then(Option::as_ref)
++            else {
++                continue;
++            };
++            if !resident_allowed(
++                stats,
++                labels + seen_count + pending.len() + complete.len() + 3,
++                config,
++            ) {
++                return Vec::new();
++            }
++            let Some(next) = scorer.extend(&current.path, *edge_index, None, observer) else {
++                continue;
++            };
++            let bound = InterpretedSuffix::completed(&next, rest);
++            if complete.len() == k
++                && suffix_order(&bound, &InterpretedSuffix::prefix(complete.last().unwrap()))
++                    != Ordering::Less
++            {
++                continue;
++            }
++            let signature = InterpretedSuffix::prefix(&next);
++            let bucket = &mut seen[edge.end][usize::from(used)];
++            if bucket
++                .get(next.text.as_str())
++                .is_some_and(|old| suffix_order(&signature, old) != Ordering::Less)
++            {
++                continue;
++            }
++            if bucket.insert(next.text.clone(), signature).is_none() {
++                seen_count += 1;
++            }
++            order += 1;
++            pending.push(InterpretedPending {
++                bound,
+                 order,
+                 position: edge.end,
+                 path: next,
+@@ -839,7 +1170,12 @@
+         Vec::new()
+     } else if config.method == Method::Reference {
+         reference(&scorer, config, &mut statistics, k, observer)
+-    } else if graph.is_interpreted() {
++    } else if config.method == Method::ExactDag
++        && config.ranker == Ranker::CharacterBigram
++        && (graph.is_interpreted() || lexicon.has_user_preferences())
++    {
++        interpreted_character_exact(&scorer, config, &mut statistics, k, observer)
++    } else if graph.is_interpreted() || lexicon.has_user_preferences() {
+         interpreted_dynamic(&scorer, config, &mut statistics, k, observer)
+     } else if config.method == Method::PositionDag {
+         position_dynamic(&scorer, config, &mut statistics, k, observer)
+--- a/crates/cloudleaf-search/src/character.rs
++++ b/crates/cloudleaf-search/src/character.rs
+@@ -6,10 +6,10 @@
+ const UNK: u32 = 0x110002;
+ 
+ #[derive(Clone, Debug)]
+-struct Row {
+-    key: u64,
++pub(crate) struct Row {
++    pub(crate) key: u64,
+     count: u64,
+-    units: i64,
++    pub(crate) units: i64,
+ }
+ 
+ #[derive(Clone, Copy, Debug)]
+@@ -137,26 +137,63 @@
+             unigram,
+             entries: Vec::with_capacity(lexicon.entries().len()),
+         };
++        model.compile_entries(lexicon);
++        model
++    }
++
++    /// 新词层仅重编译词条字符缓存；原观测、概率和未知字符映射保持不变。
++    pub(crate) fn rebound(&self, lexicon: &Lexicon) -> Self {
++        let mut model = self.clone();
++        model.lexicon_identity = lexicon.identity.clone();
++        model.entries = Vec::with_capacity(lexicon.entries().len());
++        model.compile_entries(lexicon);
++        model
++    }
++
++    fn compile_entries(&mut self, lexicon: &Lexicon) {
+         for entry in lexicon.entries() {
+             let mut characters = entry.text.chars();
+-            let first = model.known(characters.next().unwrap());
++            let first = self.known(characters.next().unwrap());
+             let mut score = EntryScore {
+                 first,
+                 last: first,
+                 internal: 0,
+                 characters: 1,
+-                unknown: usize::from(first as usize == model.vocabulary.len() - 1),
++                unknown: usize::from(first as usize == self.vocabulary.len() - 1),
+             };
+             for character in characters {
+-                let next = model.known(character);
+-                score.internal += model.transition(score.last, next);
++                let next = self.known(character);
++                score.internal += self.transition(score.last, next);
+                 score.last = next;
+                 score.characters += 1;
+-                score.unknown += usize::from(next as usize == model.vocabulary.len() - 1);
++                score.unknown += usize::from(next as usize == self.vocabulary.len() - 1);
+             }
+-            model.entries.push(score);
+-        }
+-        model
++            self.entries.push(score);
++        }
++    }
++
++    pub(crate) fn transition_row(&self, previous: u32) -> &[Row] {
++        let index = if previous == BOS {
++            self.vocabulary.len()
++        } else {
++            previous as usize
++        };
++        &self.rows[self.starts[index]..self.starts[index + 1]]
++    }
++    pub(crate) fn unobserved_bias(&self, previous: u32) -> i64 {
++        let index = if previous == BOS {
++            self.vocabulary.len()
++        } else {
++            previous as usize
++        };
++        -self.denominators[index]
++    }
++    pub(crate) fn unobserved_next(&self, next: u32) -> i64 {
++        if self.unigram.is_empty() {
++            0
++        } else {
++            self.unigram[next as usize]
++        }
+     }
+ 
+     fn known(&self, value: char) -> u32 {
+@@ -248,3 +285,65 @@
+         }
+     }
+ }
++
++#[cfg(test)]
++mod rebound_tests {
++    use super::BOS;
++    use crate::{LanguageModelSnapshot, Lexicon};
++    use std::sync::Arc;
++
++    #[test]
++    fn user_entries_recompile_character_cache_without_rebinding_old_indices() {
++        let header = "# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\n";
++        let base = format!(
++            "{header}a\tni\t你\t\tunknown\t\tmechanical\ta\tMIT\nb\thao\t好\t\tunknown\t\tmechanical\tb\tMIT\n"
++        );
++        let combined =
++            format!("{base}user:1\tni hao\t你好\t\tunknown\t\tuser\tuser:1\tuser-private\n");
++        let lexicon = Lexicon::from_tsv(&base).unwrap();
++        let target = Lexicon::from_tsv(&combined).unwrap();
++        let sha = "7".repeat(64);
++        for kind in ["character_bigram", "character_bigram_witten_bell"] {
++            let metadata = format!(
++                "# cloudleaf-language-v1\nlexicon_sha256\t{sha}\nsource_sha256\t{sha}\nsource_id\tcloudleaf:mechanical-rebound\nlicense_id\tMIT\ntokenization\tunicode-scalar-v1\nusage\tmechanical\nkind\t{kind}\ntraining_split\ttrain\nprevious\tnext\tcount\n"
++            );
++            let model = LanguageModelSnapshot::train(
++                &metadata,
++                &lexicon,
++                &sha,
++                &[
++                    vec!["你".into(), "好".into()],
++                    vec!["你".into(), "你".into()],
++                ],
++            )
++            .unwrap();
++            let original = model.model().character.as_ref().unwrap();
++            let rebound = original.rebound(&target);
++            assert_eq!(original.entries.len(), 2);
++            assert_eq!(rebound.entries.len(), 3);
++            assert!(Arc::ptr_eq(&rebound.lexicon_identity, &target.identity));
++            assert!(!Arc::ptr_eq(
++                &rebound.lexicon_identity,
++                &original.lexicon_identity
++            ));
++            for previous in std::iter::once(BOS).chain(0..original.vocabulary.len() as u32) {
++                for next in 0..original.vocabulary.len() as u32 {
++                    assert_eq!(
++                        original.transition(previous, next),
++                        rebound.transition(previous, next)
++                    );
++                }
++            }
++            let a = original.entry(0);
++            let b = original.entry(1);
++            let added = rebound.entry(2);
++            assert_eq!(
++                (added.first, added.last, added.characters),
++                (a.first, b.last, 2)
++            );
++            assert_eq!(added.internal, original.transition(a.last, b.first));
++            assert_eq!(added.unknown, a.unknown + b.unknown);
++            assert_eq!(rebound.entry(0).internal, original.entry(0).internal);
++        }
++    }
++}
+--- /dev/null
++++ b/crates/cloudleaf-search/tests/interpreted_resources.rs
+@@ -0,0 +1,68 @@
++use cloudleaf_pinyin::{PinyinScheme, SchemeConfig};
++use cloudleaf_search::{
++    Config, LanguageModelSnapshot, Lattice, Lexicon, Method, Ranker, search_graph,
++};
++
++fn fixture(kind: &str) -> (Lexicon, String, Vec<Vec<String>>) {
++    let mut tsv="# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\n".to_owned();
++    let mut sequences = Vec::new();
++    for i in 0..24 {
++        let a = char::from_u32(0x4e00 + i).unwrap().to_string();
++        let b = char::from_u32(0x4f00 + i).unwrap().to_string();
++        tsv.push_str(&format!(
++            "n{i:02}\tni\t{a}\t\tunknown\t\tmechanical\tn{i:02}\tMIT\n"
++        ));
++        tsv.push_str(&format!(
++            "h{i:02}\thao\t{b}\t\tunknown\t\tmechanical\th{i:02}\tMIT\n"
++        ));
++        sequences.push(vec![a, b]);
++    }
++    let sha = "7".repeat(64);
++    let metadata = format!(
++        "# cloudleaf-language-v1\nlexicon_sha256\t{sha}\nsource_sha256\t{sha}\nsource_id\tcloudleaf:mechanical-resource\nlicense_id\tMIT\ntokenization\tunicode-scalar-v1\nusage\tmechanical\nkind\t{kind}\ntraining_split\ttrain\nprevious\tnext\tcount\n"
++    );
++    (Lexicon::from_tsv(&tsv).unwrap(), metadata, sequences)
++}
++
++#[test]
++fn interpreted_character_topk_avoids_repeating_every_history_edge_pair() {
++    let scheme = SchemeConfig {
++        scheme: PinyinScheme::AbbreviatedPinyin,
++        ..Default::default()
++    };
++    for kind in ["character_bigram", "character_bigram_witten_bell"] {
++        let (lexicon, metadata, sequences) = fixture(kind);
++        let model =
++            LanguageModelSnapshot::train(&metadata, &lexicon, &"7".repeat(64), &sequences).unwrap();
++        let config = Config {
++            ranker: Ranker::CharacterBigram,
++            output_k: 10,
++            max_expansions: 900,
++            ..Default::default()
++        };
++        let graph = Lattice::build_with_scheme(&lexicon, "nihao", &config, &scheme).unwrap();
++        let result = search_graph(&lexicon, &graph, &config, Some(model.model()), None).unwrap();
++        assert!(result.guaranteed, "{kind}: {:?}", result.statistics);
++        assert_eq!(result.candidates.len(), 10);
++        // 完整参考对照另用两算法完全相同的预算，不能拿截断Reference当正确答案。
++        let complete = Config {
++            max_expansions: 10000,
++            ..config
++        };
++        let reference = search_graph(
++            &lexicon,
++            &graph,
++            &Config {
++                method: Method::Reference,
++                ..complete.clone()
++            },
++            Some(model.model()),
++            None,
++        )
++        .unwrap();
++        let exact = search_graph(&lexicon, &graph, &complete, Some(model.model()), None).unwrap();
++        assert!(reference.guaranteed && exact.guaranteed);
++        assert_eq!(reference.candidates, exact.candidates);
++        assert_eq!(reference.candidates, result.candidates);
++    }
++}
+--- /dev/null
++++ b/crates/cloudleaf-search/tests/user_preferences.rs
+@@ -0,0 +1,135 @@
++use cloudleaf_pinyin::{FuzzyDirection, FuzzyPair, FuzzyRule, PinyinScheme, SchemeConfig};
++use cloudleaf_search::{
++    Config, LanguageModelSnapshot, Lattice, Lexicon, Method, Ranker, search_graph,
++};
++use std::collections::BTreeMap;
++
++const HEADER: &str = "# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\n";
++
++#[test]
++fn explicit_preferences_change_order_without_rewriting_interpretation_or_frequency() {
++    let source = format!(
++        "{HEADER}a\tni\t你\t\tunknown\t\tmechanical\ta\tMIT\nb\tni\t尼\t\tunknown\t\tmechanical\tb\tMIT\nc\tli\t李\t\tunknown\t\tmechanical\tc\tMIT\n"
++    );
++    let base = Lexicon::from_tsv(&source).unwrap();
++    let original = Lattice::build(&base, "ni", &Config::default()).unwrap();
++    let baseline = search_graph(&base, &original, &Config::default(), None, None).unwrap();
++    assert_eq!(baseline.candidates[0].text, "你");
++    let layer = base
++        .with_user_layer(HEADER, &BTreeMap::from([("b".into(), 8), ("c".into(), 8)]))
++        .unwrap();
++    for scheme in [
++        SchemeConfig::default(),
++        SchemeConfig {
++            scheme: PinyinScheme::AbbreviatedPinyin,
++            ..Default::default()
++        },
++        SchemeConfig {
++            fuzzy: vec![FuzzyRule {
++                pair: FuzzyPair::NL,
++                direction: FuzzyDirection::Both,
++            }],
++            ..Default::default()
++        },
++    ] {
++        let graph = Lattice::build_with_scheme(&layer, "ni", &Config::default(), &scheme).unwrap();
++        for method in [
++            Method::Reference,
++            Method::ExactDag,
++            Method::PositionDag,
++            Method::Beam,
++        ] {
++            let result = search_graph(
++                &layer,
++                &graph,
++                &Config {
++                    method,
++                    ..Default::default()
++                },
++                None,
++                None,
++            )
++            .unwrap();
++            assert!(result.guaranteed);
++            assert_eq!(result.candidates[0].text, "尼");
++            assert_eq!(result.candidates[0].features.user_preference_units, 8);
++            assert!(
++                result
++                    .candidates
++                    .iter()
++                    .filter(|p| p.text == "李")
++                    .all(|p| p.features.interpretation_cost
++                        > result.candidates[0].features.interpretation_cost)
++            );
++        }
++    }
++    assert!(layer.entries().iter().all(|e| e.frequency.is_none()));
++    let clear = base.with_user_layer(HEADER, &BTreeMap::new()).unwrap();
++    let graph = Lattice::build(&clear, "ni", &Config::default()).unwrap();
++    assert_eq!(
++        baseline.candidates,
++        search_graph(&clear, &graph, &Config::default(), None, None)
++            .unwrap()
++            .candidates
++    );
++}
++
++#[test]
++fn user_words_and_existing_statistics_have_identical_complete_reference_and_exact_results() {
++    let base=Lexicon::from_tsv(&format!("{HEADER}a\tni\t你\t\tunknown\t\tmechanical\ta\tMIT\nb\thao\t好\t\tunknown\t\tmechanical\tb\tMIT\nc\tni hao\t你好\t\tunknown\t\tmechanical\tc\tMIT\n")).unwrap();
++    let layer = base
++        .with_user_layer(
++            &format!(
++                "{HEADER}user:1\tni hao\t拟好\t\tunknown\t\tuser\tuser:1\tLicenseRef-User-Private\n"
++            ),
++            &BTreeMap::from([("user:1".into(), 8), ("a".into(), 3)]),
++        )
++        .unwrap();
++    for kind in ["character_bigram", "character_bigram_witten_bell"] {
++        let sha = "7".repeat(64);
++        let metadata = format!(
++            "# cloudleaf-language-v1\nlexicon_sha256\t{sha}\nsource_sha256\t{sha}\nsource_id\tcloudleaf:mechanical-pref\nlicense_id\tMIT\ntokenization\tunicode-scalar-v1\nusage\tmechanical\nkind\t{kind}\ntraining_split\ttrain\nprevious\tnext\tcount\n"
++        );
++        let model = LanguageModelSnapshot::train(
++            &metadata,
++            &layer,
++            &sha,
++            &[
++                vec!["你".into(), "好".into()],
++                vec!["你".into(), "你".into()],
++            ],
++        )
++        .unwrap();
++        for scheme in [
++            SchemeConfig::default(),
++            SchemeConfig {
++                scheme: PinyinScheme::AbbreviatedPinyin,
++                ..Default::default()
++            },
++        ] {
++            for raw in ["nihao", "nh", "nihaonihao", "nhnh"] {
++                let config = Config {
++                    ranker: Ranker::CharacterBigram,
++                    output_k: 10,
++                    ..Default::default()
++                };
++                let graph = Lattice::build_with_scheme(&layer, raw, &config, &scheme).unwrap();
++                let reference = search_graph(
++                    &layer,
++                    &graph,
++                    &Config {
++                        method: Method::Reference,
++                        ..config.clone()
++                    },
++                    Some(model.model()),
++                    None,
++                )
++                .unwrap();
++                let exact =
++                    search_graph(&layer, &graph, &config, Some(model.model()), None).unwrap();
++                assert!(reference.guaranteed && exact.guaranteed, "{raw}");
++                assert_eq!(reference.candidates, exact.candidates, "{kind}: {raw}");
++            }
++        }
++    }
++}

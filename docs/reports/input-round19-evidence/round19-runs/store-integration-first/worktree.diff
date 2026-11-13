@@ -1,0 +1,462 @@
+diff --git a/Cargo.toml b/Cargo.toml
+index c9f480c..273fa93 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -6,6 +6,7 @@ members = [
+     "crates/cloudleaf-candidate",
+     "crates/cloudleaf-input",
+     "crates/cloudleaf-search",
++    "crates/cloudleaf-user",
+     "apps/cloudleaf-cli",
+     "apps/windows-ime",
+ ]
+@@ -25,6 +26,7 @@ cloudleaf-dictionary = { path = "crates/cloudleaf-dictionary", version = "=0.1.0
+ cloudleaf-candidate = { path = "crates/cloudleaf-candidate", version = "=0.1.0" }
+ cloudleaf-input = { path = "crates/cloudleaf-input", version = "=0.1.0" }
+ cloudleaf-search = { path = "crates/cloudleaf-search", version = "=0.1.0" }
++cloudleaf-user = { path = "crates/cloudleaf-user", version = "=0.1.0" }
+ 
+ [workspace.lints.rust]
+ unsafe_code = "forbid"
+diff --git a/apps/windows-ime/Cargo.toml b/apps/windows-ime/Cargo.toml
+index c259597..1b57687 100644
+--- a/apps/windows-ime/Cargo.toml
++++ b/apps/windows-ime/Cargo.toml
+@@ -19,6 +19,7 @@ cloudleaf-types.workspace = true
+ cloudleaf-input.workspace = true
+ cloudleaf-search.workspace = true
+ cloudleaf-dictionary.workspace = true
++cloudleaf-user.workspace = true
+ 
+ [target.'cfg(windows)'.dependencies]
+ windows = { version = "=0.62.2", features = ["Win32_Foundation", "Win32_System_Com", "Win32_System_Ole", "Win32_System_Variant", "Win32_System_LibraryLoader", "Win32_System_Registry", "Win32_System_Threading", "Win32_UI_Controls", "Win32_UI_TextServices", "Win32_UI_Input_KeyboardAndMouse", "Win32_UI_Input_Ime", "Win32_UI_WindowsAndMessaging", "Win32_Graphics_Gdi", "Win32_Security"] }
+diff --git a/crates/cloudleaf-input/src/lib.rs b/crates/cloudleaf-input/src/lib.rs
+index b54b915..8c59b2d 100644
+--- a/crates/cloudleaf-input/src/lib.rs
++++ b/crates/cloudleaf-input/src/lib.rs
+@@ -4,6 +4,7 @@ mod sentence;
+ pub use sentence::{
+     EdgeSource, LanguageSnapshot, SearchCapacityBounds, SearchDiagnostic, SearchPath,
+     SearchSnapshot,
++    entry_fingerprint,
+ };
+ 
+ use cloudleaf_dictionary::Dictionary;
+@@ -54,6 +55,19 @@ pub struct InputEngine {
+     next_commit_id: u64,
+     pending_commit: Option<CommitRequest>,
+     failed_commit: Option<CommitRequest>,
++    pending_selection: Option<SelectionEvidence>,
++}
++
++/// 只证明当前引擎确实选择过候选；本对象不证明宿主Applied，不能自行触发学习。
++#[derive(Clone,Debug,Eq,PartialEq)]
++pub struct SelectionEvidence {
++    pub commit_id:u64,
++    pub revision:u64,
++    pub candidate_id:String,
++    pub snapshot_version:String,
++    pub model_version:Option<String>,
++    pub scheme_version:Option<String>,
++    pub entries:Vec<(String,String)>,
+ }
+ 
+ impl InputEngine {
+@@ -88,6 +102,7 @@ impl InputEngine {
+             next_commit_id: 1,
+             pending_commit: None,
+             failed_commit: None,
++            pending_selection: None,
+         })
+     }
+ 
+@@ -113,6 +128,20 @@ impl InputEngine {
+         self.search_diagnostic.as_ref()
+     }
+ 
++    pub fn pending_selection(&self)->Option<&SelectionEvidence>{self.pending_selection.as_ref()}
++    pub fn search_resources(&self)->Option<(Arc<SearchSnapshot>,Option<Arc<LanguageSnapshot>>)>{self.sentence.as_ref().map(sentence::SentenceBackend::snapshots)}
++
++    pub fn validate_search_resources(&self,snapshot:Arc<SearchSnapshot>,language:Option<Arc<LanguageSnapshot>>)->Result<(),CoreError>{
++        if self.pending_commit.is_some()||self.failed_commit.is_some(){return Err(CoreError::new(ErrorCode::CommitPending,"未决事务不能发布用户词库"))}
++        if self.revision==u64::MAX{return Err(CoreError::new(ErrorCode::InvalidInput,"修订号耗尽"))}
++        self.sentence.as_ref().ok_or_else(||CoreError::new(ErrorCode::InvalidConfig,"非整句后端"))?.resources(snapshot,language)?;Ok(())
++    }
++    pub fn replace_search_resources(&mut self,snapshot:Arc<SearchSnapshot>,language:Option<Arc<LanguageSnapshot>>)->Result<(),CoreError>{
++        self.validate_search_resources(snapshot.clone(),language.clone())?;
++        self.sentence=Some(self.sentence.as_ref().unwrap().resources(snapshot,language)?);
++        let inactive=self.state==InputState::Inactive;self.refresh();if inactive{self.state=InputState::Inactive}Ok(())
++    }
++
+     /// 显式研发模型；构造前由宿主完成文件读取与模型身份核验。
+     pub fn with_language(
+         snapshot: Arc<SearchSnapshot>,
+@@ -354,7 +383,8 @@ impl InputEngine {
+                 )),
+             );
+         };
+-        self.begin_commit(candidate.text.clone())
++        let index=self.candidates.iter().position(|c|c.id==candidate.id).unwrap();
++        self.begin_candidate_commit(index)
+     }
+ 
+     /// 处理一个事件，不执行文件读写、网络访问或系统文本提交。
+@@ -441,7 +471,7 @@ impl InputEngine {
+                 if self.preedit.is_empty() {
+                     self.result(false, None, None)
+                 } else {
+-                    self.begin_commit(self.confirmed_text())
++                    if let Some(index)=self.highlighted {self.begin_candidate_commit(index)}else{self.begin_commit(self.preedit.clone())}
+                 }
+             }
+             Key::Char(character) => self.handle_character(character),
+@@ -511,7 +541,7 @@ impl InputEngine {
+             let index = self.page_start + digit as usize - 1;
+             let page_end = (self.page_start + self.config.page_size).min(self.candidates.len());
+             if index < page_end {
+-                return self.begin_commit(self.candidates[index].text.clone());
++                return self.begin_candidate_commit(index);
+             }
+         }
+ 
+@@ -585,12 +615,23 @@ impl InputEngine {
+         };
+         self.next_commit_id = next_id;
+         self.failed_commit = None;
++        self.pending_selection=None;
+         self.pending_commit = Some(request.clone());
+         self.state = InputState::Committing;
+         self.advance_revision();
+         self.result(true, Some(request), None)
+     }
+ 
++    fn begin_candidate_commit(&mut self,index:usize)->EventResult{
++        let candidate=&self.candidates[index];let id=candidate.id.clone();
++        let evidence=self.search_diagnostic.as_ref().and_then(|d|{
++            let path=d.paths.iter().find(|p|p.candidate_id==id)?;let backend=self.sentence.as_ref()?;let (snapshot,_)=backend.snapshots();
++            let entries=path.edges.iter().map(|e|{let entry=&snapshot.entries()[e.entry_index];(entry.id.clone(),entry_fingerprint(&entry.text,&entry.pinyin))}).collect();
++            Some(SelectionEvidence{commit_id:self.next_commit_id,revision:self.revision,candidate_id:id,snapshot_version:d.snapshot_version.clone(),model_version:d.model_version.clone(),scheme_version:d.scheme_version.clone(),entries})
++        });
++        let result=self.begin_commit(candidate.text.clone());if result.commit.is_some(){self.pending_selection=evidence;}result
++    }
++
+     fn acknowledge_commit(&mut self, id: u64, success: bool) -> EventResult {
+         if self.pending_commit.as_ref().map(|request| request.id) != Some(id) {
+             return self.result(
+@@ -632,7 +673,10 @@ impl InputEngine {
+             );
+         }
+         if let Some(failed) = self.failed_commit.as_ref() {
+-            self.begin_commit(failed.text.clone())
++            let mut evidence=self.pending_selection.clone();
++            let result=self.begin_commit(failed.text.clone());
++            if let Some(request)=&result.commit {if let Some(value)=&mut evidence{value.commit_id=request.id;}self.pending_selection=evidence;}
++            result
+         } else {
+             self.result(
+                 false,
+@@ -696,6 +740,7 @@ impl InputEngine {
+         self.page_start = 0;
+         self.pending_commit = None;
+         self.failed_commit = None;
++        self.pending_selection=None;
+         self.state = state;
+         self.advance_revision();
+     }
+diff --git a/crates/cloudleaf-input/src/sentence.rs b/crates/cloudleaf-input/src/sentence.rs
+index 9cde385..90f362f 100644
+--- a/crates/cloudleaf-input/src/sentence.rs
++++ b/crates/cloudleaf-input/src/sentence.rs
+@@ -18,6 +18,7 @@ pub struct SearchSnapshot {
+     version: String,
+     max_text_bytes: usize,
+     max_edge_source_bytes: usize,
++    base_version: Option<String>,
+ }
+ 
+ impl SearchSnapshot {
+@@ -62,6 +63,7 @@ impl SearchSnapshot {
+             version: actual,
+             max_text_bytes,
+             max_edge_source_bytes,
++            base_version: None,
+         })
+     }
+ 
+@@ -69,10 +71,23 @@ impl SearchSnapshot {
+         &self.version
+     }
+ 
+-    pub fn entries(&self) -> &[cloudleaf_search::Entry] {
++    pub fn entries(&self) -> &cloudleaf_search::Entries {
+         self.lexicon.entries()
+     }
+ 
++    pub fn with_user_layer(&self,text:&str,preferences:&std::collections::BTreeMap<String,u32>)->Result<Self,CoreError>{
++        let lexicon=self.lexicon.with_user_layer(text,preferences).map_err(|_|CoreError::new(ErrorCode::InvalidDictionary,"用户层索引或偏好无效"))?;
++        let mut hash=Context::new(&SHA256);hash.update(self.version.as_bytes());hash.update(text.as_bytes());
++        for (id,units)in preferences{hash.update(&(id.len()as u64).to_le_bytes());hash.update(id.as_bytes());hash.update(&units.to_le_bytes());}
++        let max_text_bytes=lexicon.entries().iter().map(|entry|entry.text.len().div_ceil(entry.pinyin.split(' ').count())).max().unwrap_or(0).max(self.max_text_bytes);
++        let max_edge_source_bytes=lexicon.entries().iter().map(|entry|entry.id.len()+entry.source.len()+entry.source_record_id.len()+entry.license_id.len()).max().unwrap_or(0);
++        Ok(Self{lexicon,version:hex(hash.finish().as_ref()),max_text_bytes,max_edge_source_bytes,base_version:Some(self.version.clone())})
++    }
++
++    pub fn incremental_estimated_bytes(&self)->usize{self.lexicon.incremental_estimated_bytes()+std::mem::size_of::<Self>()+self.version.capacity()+self.base_version.as_ref().map_or(0,String::capacity)+32}
++
++    pub fn entry_fingerprint(&self,id:&str)->Option<String>{self.entries().iter().find(|e|e.id==id).map(|e|entry_fingerprint(&e.text,&e.pinyin))}
++
+     /// 容器容量与固定工具链树节点估计，包含32字节的本对象余量；不是RSS硬上界。
+     pub fn estimated_bytes(&self) -> usize {
+         self.lexicon.memory_estimate().total_estimated_bytes
+@@ -123,6 +138,7 @@ impl SearchSnapshot {
+ pub struct LanguageSnapshot {
+     snapshot: LanguageModelSnapshot,
+     version: String,
++    binding: String,
+ }
+ 
+ impl LanguageSnapshot {
+@@ -142,7 +158,7 @@ impl LanguageSnapshot {
+             .map_err(|_| {
+             CoreError::new(ErrorCode::InvalidConfig, "语言模型格式、范围或词典版本不符")
+         })?;
+-        Ok(Self { snapshot, version })
++        Ok(Self { snapshot, version, binding:lexicon.version.clone() })
+     }
+ 
+     pub fn version(&self) -> &str {
+@@ -153,8 +169,14 @@ impl LanguageSnapshot {
+         self.snapshot.metadata()
+     }
+ 
++    pub fn for_user_layer(&self,base:&SearchSnapshot,target:&SearchSnapshot)->Result<Self,CoreError>{
++        let snapshot=self.snapshot.for_extension(&base.lexicon,&target.lexicon).map_err(|_|CoreError::new(ErrorCode::InvalidConfig,"模型不属于用户层基础快照"))?;
++        if self.binding!=base.version || target.base_version.as_deref()!=Some(base.version()) {return Err(CoreError::new(ErrorCode::InvalidConfig,"模型基础身份不符"))}
++        Ok(Self{snapshot,version:self.version.clone(),binding:target.version.clone()})
++    }
++
+     pub fn estimated_bytes(&self) -> usize {
+-        self.snapshot.estimated_bytes() + std::mem::size_of::<Self>() + self.version.capacity() + 32
++        self.snapshot.estimated_bytes() + std::mem::size_of::<Self>() + self.version.capacity()+self.binding.capacity() + 32
+     }
+ }
+ 
+@@ -252,7 +274,7 @@ impl SentenceBackend {
+         };
+         if !valid_model
+             || language.as_ref().is_some_and(|value| {
+-                value.metadata().lexicon_sha256 != snapshot.version
++                value.binding != snapshot.version
+                     || !value
+                         .snapshot
+                         .model()
+@@ -260,10 +282,7 @@ impl SentenceBackend {
+             })
+             || left_word.as_ref().is_some_and(|id| {
+                 config.ranker != Ranker::ContextRerank
+-                    || snapshot
+-                        .entries()
+-                        .binary_search_by(|entry| entry.id.cmp(id))
+-                        .is_err()
++                    || !snapshot.entries().iter().any(|entry| &entry.id == id)
+             })
+         {
+             return Err(CoreError::new(
+@@ -285,7 +304,7 @@ impl SentenceBackend {
+         snapshot: Arc<SearchSnapshot>,
+     ) -> Result<(), CoreError> {
+         if self.language.as_ref().is_some_and(|value| {
+-            value.metadata().lexicon_sha256 != snapshot.version
++            value.binding != snapshot.version
+                 || !value
+                     .snapshot
+                     .model()
+@@ -311,6 +330,13 @@ impl SentenceBackend {
+         Ok(replacement)
+     }
+ 
++    pub(crate) fn resources(&self,snapshot:Arc<SearchSnapshot>,language:Option<Arc<LanguageSnapshot>>)->Result<Self,CoreError>{
++        let mut replacement=Self::configured(snapshot,self.config.clone(),language,self.left_word.clone())?;
++        replacement.scheme=self.scheme.clone();Ok(replacement)
++    }
++
++    pub(crate) fn snapshots(&self)->(Arc<SearchSnapshot>,Option<Arc<LanguageSnapshot>>){(self.snapshot.clone(),self.language.clone())}
++
+     pub(crate) fn scheme(&self) -> &cloudleaf_pinyin::SchemeConfig {
+         &self.scheme
+     }
+@@ -479,3 +505,5 @@ fn candidate_id(
+ fn hex(bytes: &[u8]) -> String {
+     bytes.iter().map(|byte| format!("{byte:02x}")).collect()
+ }
++
++pub fn entry_fingerprint(text:&str,pinyin:&str)->String{let mut hash=Context::new(&SHA256);hash.update(text.as_bytes());hash.update(&[0]);hash.update(pinyin.as_bytes());hex(hash.finish().as_ref())}
+diff --git a/crates/cloudleaf-search/src/lexicon.rs b/crates/cloudleaf-search/src/lexicon.rs
+index 6353398..6339f95 100644
+--- a/crates/cloudleaf-search/src/lexicon.rs
++++ b/crates/cloudleaf-search/src/lexicon.rs
+@@ -33,9 +33,11 @@ pub(crate) struct TrieNode {
+ /// 只读词条与读音索引，装载后可在多个查询之间复用。
+ #[derive(Clone, Debug)]
+ pub struct Lexicon {
+-    pub(crate) entries: Vec<Entry>,
+-    pub(crate) trie: Vec<TrieNode>,
++    pub(crate) entries: crate::layer::Entries,
++    pub(crate) trie: crate::layer::Trie,
+     pub(crate) identity: std::sync::Arc<()>,
++    pub(crate) preferences: Option<Vec<u32>>,
++    pub(crate) base_memory: Option<LexiconMemory>,
+ }
+ 
+ /// 固定Rust1.90容器布局的保守预估，不是RSS或allocator硬上界。
+@@ -238,13 +240,18 @@ impl Lexicon {
+             node.prefix.shrink_to_fit();
+         }
+         Ok(Self {
+-            entries,
+-            trie,
++            entries: crate::layer::Entries::new(entries),
++            trie: crate::layer::Trie::new(trie),
+             identity: std::sync::Arc::new(()),
++            preferences: None,
++            base_memory: None,
+         })
+     }
+ 
+     pub fn memory_estimate(&self) -> LexiconMemory {
++        if let Some(memory) = self.layered_memory() {
++            return memory;
++        }
+         let mut owned = std::mem::size_of::<Self>()
+             + 2 * std::mem::size_of::<usize>()
+             + self.entries.capacity() * std::mem::size_of::<Entry>()
+@@ -273,7 +280,7 @@ impl Lexicon {
+         }
+     }
+ 
+-    pub fn entries(&self) -> &[Entry] {
++    pub fn entries(&self) -> &crate::Entries {
+         &self.entries
+     }
+ 
+diff --git a/crates/cloudleaf-search/src/lib.rs b/crates/cloudleaf-search/src/lib.rs
+index 179e522..d6ff801 100644
+--- a/crates/cloudleaf-search/src/lib.rs
++++ b/crates/cloudleaf-search/src/lib.rs
+@@ -2,6 +2,7 @@
+ mod cancellation;
+ mod character;
+ mod lattice;
++mod layer;
+ mod lexicon;
+ mod model;
+ mod profiling;
+@@ -10,6 +11,7 @@ mod search;
+ 
+ pub use cancellation::Cancellation;
+ pub use lattice::{Edge, Lattice, MatchKind};
++pub use layer::Entries;
+ pub use lexicon::{Entry, FrequencyKind, Lexicon, LexiconMemory, LoadLimits};
+ pub use model::{BigramModel, LanguageModelSnapshot, ModelMetadata};
+ pub use profiling::{Measurement, Phase, Profile, profile_query, profile_scheme_query};
+diff --git a/crates/cloudleaf-search/src/model.rs b/crates/cloudleaf-search/src/model.rs
+index fcc21ce..b93077c 100644
+--- a/crates/cloudleaf-search/src/model.rs
++++ b/crates/cloudleaf-search/src/model.rs
+@@ -152,7 +152,7 @@ pub struct ModelMetadata {
+ #[derive(Clone, Debug)]
+ pub struct LanguageModelSnapshot {
+     metadata: ModelMetadata,
+-    model: BigramModel,
++    model: std::sync::Arc<BigramModel>,
+ }
+ 
+ const META_KEYS: [&str; 8] = [
+@@ -167,6 +167,13 @@ const META_KEYS: [&str; 8] = [
+ ];
+ 
+ impl LanguageModelSnapshot {
++    /// 基础计数和来源元数据保留；只在装载阶段为同一基础的用户扩展重编译entry缓存。
++    pub fn for_extension(&self,base:&Lexicon,target:&Lexicon)->Result<Self,SearchError>{
++        if !target.is_extension_of(base)||!self.model.is_compatible_lexicon(base){return Err(SearchError::new(ErrorKind::InvalidModel,"模型基础索引或用户层身份不符"))}
++        let mut next=self.clone();
++        if let Some(character)=&self.model.character{let mut model=(*self.model).clone();model.character=Some(character.rebound(target));next.model=std::sync::Arc::new(model);}
++        Ok(next)
++    }
+     pub fn metadata(&self) -> &ModelMetadata {
+         &self.metadata
+     }
+@@ -357,7 +364,7 @@ impl LanguageModelSnapshot {
+             model.totals.clear();
+             model.vocabulary = BTreeSet::from([EOS.into(), UNK.into()]);
+         }
+-        Ok(Self { metadata, model })
++        Ok(Self { metadata, model:std::sync::Arc::new(model) })
+     }
+ 
+     /// 离线调用，元数据和序列只在边界校验，输入查询不调用训练器。
+diff --git a/crates/cloudleaf-search/tests/user_layer.rs b/crates/cloudleaf-search/tests/user_layer.rs
+index 687c1e7..5aff897 100644
+--- a/crates/cloudleaf-search/tests/user_layer.rs
++++ b/crates/cloudleaf-search/tests/user_layer.rs
+@@ -5,8 +5,13 @@ const HEADER: &str = "# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequ
+ 
+ #[test]
+ fn overlay_preserves_base_indices_and_puts_user_words_inside_the_lattice() {
+-    let base = Lexicon::from_tsv(&format!("{HEADER}z-base\tyun\t云\t\tunknown\t\tfixture\tz-base\tMIT\n")).unwrap();
+-    let users = format!("{HEADER}user:1\tyun jian\t云笺\t\tunknown\t\tuser\tuser:1\tLicenseRef-User-Private\n");
++    let base = Lexicon::from_tsv(&format!(
++        "{HEADER}z-base\tyun\t云\t\tunknown\t\tfixture\tz-base\tMIT\n"
++    ))
++    .unwrap();
++    let users = format!(
++        "{HEADER}user:1\tyun jian\t云笺\t\tunknown\t\tuser\tuser:1\tLicenseRef-User-Private\n"
++    );
+     let combined = base.with_user_layer(&users, &BTreeMap::new()).unwrap();
+     assert_eq!(combined.entries()[0], base.entries()[0]);
+     assert_eq!(combined.entries()[1].id, "user:1");
+@@ -15,7 +20,12 @@ fn overlay_preserves_base_indices_and_puts_user_words_inside_the_lattice() {
+     assert_eq!(combined.user_preference(0), 0);
+     assert_eq!(combined.user_preference(1), 1);
+     let graph = Lattice::build(&combined, "yunjian", &Config::default()).unwrap();
+-    assert!(graph.edges().iter().any(|e| e.start == 0 && e.end == 7 && e.entry == 1));
++    assert!(
++        graph
++            .edges()
++            .iter()
++            .any(|e| e.start == 0 && e.end == 7 && e.entry == 1)
++    );
+     assert!(base.entries().iter().all(|e| e.source != "user"));
+     assert!(combined.shares_base_with(&base));
+     assert!(combined.incremental_estimated_bytes() < 16384);
+@@ -23,12 +33,27 @@ fn overlay_preserves_base_indices_and_puts_user_words_inside_the_lattice() {
+ 
+ #[test]
+ fn foreign_or_conflicting_user_sources_and_unknown_preference_ids_are_rejected() {
+-    let base = Lexicon::from_tsv(&format!("{HEADER}base\tyun\t云\t\tunknown\t\tfixture\tbase\tMIT\n")).unwrap();
++    let base = Lexicon::from_tsv(&format!(
++        "{HEADER}base\tyun\t云\t\tunknown\t\tfixture\tbase\tMIT\n"
++    ))
++    .unwrap();
+     for bad in [
+         "user:1\tyun\t云\t\tunknown\t\tforeign\tuser:1\tMIT\n",
+         "base\tyun\t云\t\tunknown\t\tuser\tbase\tLicenseRef-User-Private\n",
+     ] {
+-        assert!(base.with_user_layer(&format!("{HEADER}{bad}"), &BTreeMap::new()).is_err());
++        assert!(
++            base.with_user_layer(&format!("{HEADER}{bad}"), &BTreeMap::new())
++                .is_err()
++        );
+     }
+-    assert!(base.with_user_layer(HEADER, &BTreeMap::from([("missing".into(), 1)])).is_err());
++    assert!(
++        base.with_user_layer(HEADER, &BTreeMap::from([("missing".into(), 1)]))
++            .is_err()
++    );
++    let user =
++        format!("{HEADER}user:1\tyun\t云\t\tunknown\t\tuser\tuser:1\tLicenseRef-User-Private\n");
++    assert!(
++        base.with_user_layer(&user, &BTreeMap::from([("user:1".into(), u32::MAX)]))
++            .is_err()
++    );
+ }

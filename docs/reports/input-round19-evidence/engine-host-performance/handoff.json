@@ -1,0 +1,377 @@
+{
+  "scope": "Default Engine K10, 171 events per process, 5 fresh processes/model/version, same desktop and inputs; all warmup/tails retained. Timing only Rust engine.handle. Host separately K5 two engines no HWND, memory sink. No user store, GUI, TSF or formal quality. Ordinary shared Windows desktop, not controlled dedicated latency acceptance.",
+  "source_head": "84187386ea36e8fdb3cf88300c0d35aa86c91cb6",
+  "old_head": "cf54c84d400b627dfa9b246b3800a82d65f061b8",
+  "engine_events": 5130,
+  "host_events": 2052,
+  "runs": 42,
+  "all_returncodes_zero": true,
+  "engine_pairs_all_equal": true,
+  "engine": {
+    "old-lexical": {
+      "n": 855,
+      "p50": 714200,
+      "p95": 3540600,
+      "p99": 5101600,
+      "max": 8538700
+    },
+    "old-addone": {
+      "n": 855,
+      "p50": 655300,
+      "p95": 5224100,
+      "p99": 11844700,
+      "max": 16753700
+    },
+    "old-witten": {
+      "n": 855,
+      "p50": 715300,
+      "p95": 4931200,
+      "p99": 12814400,
+      "max": 15405000
+    },
+    "new-lexical": {
+      "n": 855,
+      "p50": 686100,
+      "p95": 3630300,
+      "p99": 5010400,
+      "max": 6217200
+    },
+    "new-addone": {
+      "n": 855,
+      "p50": 667000,
+      "p95": 5203400,
+      "p99": 11099600,
+      "max": 15125500
+    },
+    "new-witten": {
+      "n": 855,
+      "p50": 726400,
+      "p95": 5182300,
+      "p99": 10899000,
+      "max": 14139000
+    }
+  },
+  "p95_change_percent": {
+    "lexical": 2.533468903575664,
+    "addone": -0.3962405007561065,
+    "witten": 5.092066839714482
+  },
+  "host": {
+    "addone": {
+      "core": {
+        "n": 513,
+        "p50": 600500,
+        "p95": 3900600,
+        "p99": 6817200,
+        "max": 11428600
+      },
+      "projection": {
+        "n": 513,
+        "p50": 536300,
+        "p95": 3826400,
+        "p99": 6678700,
+        "max": 14442500
+      },
+      "compare": {
+        "n": 513,
+        "p50": 1300,
+        "p95": 2400,
+        "p99": 4900,
+        "max": 18500
+      },
+      "transaction": {
+        "n": 513,
+        "p50": 100,
+        "p95": 400,
+        "p99": 4200,
+        "max": 30900
+      },
+      "frame": {
+        "n": 513,
+        "p50": 500,
+        "p95": 1000,
+        "p99": 2600,
+        "max": 16600
+      },
+      "total": {
+        "n": 513,
+        "p50": 1148900,
+        "p95": 7741800,
+        "p99": 13438400,
+        "max": 25878400
+      }
+    },
+    "witten": {
+      "core": {
+        "n": 513,
+        "p50": 603500,
+        "p95": 3663100,
+        "p99": 6185400,
+        "max": 10788100
+      },
+      "projection": {
+        "n": 513,
+        "p50": 537000,
+        "p95": 3670000,
+        "p99": 6281900,
+        "max": 11317200
+      },
+      "compare": {
+        "n": 513,
+        "p50": 1300,
+        "p95": 2300,
+        "p99": 4100,
+        "max": 17200
+      },
+      "transaction": {
+        "n": 513,
+        "p50": 100,
+        "p95": 400,
+        "p99": 4200,
+        "max": 18500
+      },
+      "frame": {
+        "n": 513,
+        "p50": 500,
+        "p95": 1000,
+        "p99": 2200,
+        "max": 13300
+      },
+      "total": {
+        "n": 513,
+        "p50": 1152500,
+        "p95": 7341600,
+        "p99": 13047800,
+        "max": 20966100
+      }
+    },
+    "supplement-addone": {
+      "core": {
+        "n": 513,
+        "p50": 818700,
+        "p95": 6961700,
+        "p99": 11974600,
+        "max": 17088800
+      },
+      "projection": {
+        "n": 513,
+        "p50": 763900,
+        "p95": 7517000,
+        "p99": 11188700,
+        "max": 19831800
+      },
+      "compare": {
+        "n": 513,
+        "p50": 1300,
+        "p95": 2400,
+        "p99": 5400,
+        "max": 15900
+      },
+      "transaction": {
+        "n": 513,
+        "p50": 100,
+        "p95": 500,
+        "p99": 4800,
+        "max": 30200
+      },
+      "frame": {
+        "n": 513,
+        "p50": 500,
+        "p95": 1200,
+        "p99": 2600,
+        "max": 17300
+      },
+      "total": {
+        "n": 513,
+        "p50": 1641100,
+        "p95": 14144000,
+        "p99": 22715100,
+        "max": 35506200
+      }
+    },
+    "lexical": {
+      "core": {
+        "n": 513,
+        "p50": 484700,
+        "p95": 2091000,
+        "p99": 2791900,
+        "max": 4023800
+      },
+      "projection": {
+        "n": 513,
+        "p50": 397500,
+        "p95": 1818000,
+        "p99": 2712700,
+        "max": 6442600
+      },
+      "compare": {
+        "n": 513,
+        "p50": 1300,
+        "p95": 2700,
+        "p99": 9200,
+        "max": 18200
+      },
+      "transaction": {
+        "n": 513,
+        "p50": 0,
+        "p95": 300,
+        "p99": 4100,
+        "max": 7600
+      },
+      "frame": {
+        "n": 513,
+        "p50": 500,
+        "p95": 1100,
+        "p99": 2000,
+        "max": 16100
+      },
+      "total": {
+        "n": 513,
+        "p50": 892800,
+        "p95": 3735300,
+        "p99": 5747600,
+        "max": 9878900
+      }
+    }
+  },
+  "resources": {
+    "engine-old-lexical": {
+      "processes": 5,
+      "samples": 79,
+      "working": 194306048,
+      "private": 215412736,
+      "OS_peak_working": 194576384
+    },
+    "engine-new-lexical": {
+      "processes": 5,
+      "samples": 79,
+      "working": 192962560,
+      "private": 215552000,
+      "OS_peak_working": 194695168
+    },
+    "engine-old-addone": {
+      "processes": 5,
+      "samples": 110,
+      "working": 220614656,
+      "private": 223027200,
+      "OS_peak_working": 222011392
+    },
+    "engine-new-addone": {
+      "processes": 5,
+      "samples": 111,
+      "working": 218980352,
+      "private": 223080448,
+      "OS_peak_working": 221532160
+    },
+    "engine-old-witten": {
+      "processes": 5,
+      "samples": 111,
+      "working": 221442048,
+      "private": 223035392,
+      "OS_peak_working": 221511680
+    },
+    "engine-new-witten": {
+      "processes": 5,
+      "samples": 118,
+      "working": 221118464,
+      "private": 223092736,
+      "OS_peak_working": 221536256
+    },
+    "host-lexical": {
+      "processes": 3,
+      "samples": 48,
+      "working": 197570560,
+      "private": 216133632,
+      "OS_peak_working": 198844416
+    },
+    "host-addone": {
+      "processes": 3,
+      "samples": 74,
+      "working": 224395264,
+      "private": 224325632,
+      "OS_peak_working": 226197504
+    },
+    "host-witten": {
+      "processes": 3,
+      "samples": 75,
+      "working": 222625792,
+      "private": 223559680,
+      "OS_peak_working": 226037760
+    },
+    "host-supplement-addone": {
+      "processes": 3,
+      "samples": 88,
+      "working": 226623488,
+      "private": 227483648,
+      "OS_peak_working": 228962304
+    }
+  },
+  "binaries": {
+    "old": {
+      "path": "C:\\Users\\EDY\\.codex\\tmp\\r19-engine-perf\\baseline-input_trace.exe",
+      "bytes": 707072,
+      "sha256": "97958b951dfa295e947104b6bdca194186e1315930267acd1e5f4523596d979f"
+    },
+    "new": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\build\\release\\examples\\input_trace.exe",
+      "bytes": 806912,
+      "sha256": "10dc723f1c4e66f2792182cfffb1577ce4b0f8162fd2f67baf564a880ecfefdf"
+    },
+    "host": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\build\\release\\cloudleaf-ime.exe",
+      "bytes": 1483776,
+      "sha256": "cb751c039598c1738f7159638c6b300c0b2bf80919ffd33b4761cb13ac4d07aa"
+    }
+  },
+  "data": {
+    "runtime": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+      "bytes": 23602173,
+      "sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+    },
+    "events": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\tests\\fixtures\\input-round14-events.tsv",
+      "bytes": 863,
+      "sha256": "e087cc965bd2f6c889a84f3db89b3829ccfda452f436d7b3cf562bbb965602ad"
+    },
+    "models": {
+      "lexical": {
+        "path": "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+        "bytes": 3034818,
+        "sha256": "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5"
+      },
+      "addone": {
+        "path": "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character.tsv",
+        "bytes": 1459894,
+        "sha256": "5f28834165fcf83b22458e701b3608b403cb9bf7a9be8ba3c686fd158c53d6b9"
+      },
+      "witten": {
+        "path": "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character-witten.tsv",
+        "bytes": 1459906,
+        "sha256": "516d78a23786470c5ba7c1c7ee45e82c80eaaccd7eb1e3b541faf55d8f93b44b"
+      }
+    }
+  },
+  "versions": {
+    "C:\\Users\\EDY\\.cargo\\bin\\rustc.exe -Vv": {
+      "returncode": 0,
+      "stdout": "rustc 1.90.0 (1159e78c4 2025-09-14)\nbinary: rustc\ncommit-hash: 1159e78c4747b02ef996e55082b704c09b970588\ncommit-date: 2025-09-14\nhost: x86_64-pc-windows-msvc\nrelease: 1.90.0\nLLVM version: 20.1.8\n",
+      "stderr": ""
+    },
+    "C:\\Users\\EDY\\.cargo\\bin\\cargo.exe -V": {
+      "returncode": 0,
+      "stdout": "cargo 1.90.0 (840b83a10 2025-07-30)\n",
+      "stderr": ""
+    },
+    "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe --version": {
+      "returncode": 0,
+      "stdout": "Python 3.12.10\r\n",
+      "stderr": ""
+    }
+  },
+  "formal_metrics": {
+    "top1": null,
+    "top5": null,
+    "mrr": null
+  }
+}

@@ -1,0 +1,29 @@
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 2 tests
+test manual_entries_roundtrip_and_learning_requires_trusted_current_event ... ok
+test queued_old_user_selection_cannot_revive_deleted_or_changed_words ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 12 tests
+test store_child_phase ... ok
+test changes_and_import_conflicts_are_atomic_and_do_not_enable_imported_learning ... ok
+test malformed_utf8_crlf_duplicate_ids_pairs_and_capacity_are_rejected ... ok
+test relative_parent_and_git_paths_are_rejected_before_creation ... ok
+test learning_is_bounded_off_switch_epoch_and_clear_persist ... ok
+test migration_v1_is_explicit_and_preserves_original_file ... ok
+test missing_empty_future_and_damaged_backup_have_explicit_outcomes ... ok
+test explicit_clear_all_can_reset_corruption_but_stale_reset_and_valid_rollback_are_rejected ... ok
+test corrupted_latest_never_becomes_empty_and_recovery_preserves_originals ... ok
+test writer_lock_is_real_and_process_interruption_releases_it ... ok
+test real_crud_save_restart_import_export_and_private_backups ... ok
+test save_faults_preserve_previous_and_unknown_requires_reload ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+

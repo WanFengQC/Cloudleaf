@@ -1,0 +1,29 @@
+   Compiling find-msvc-tools v0.1.15
+   Compiling shlex v2.0.1
+   Compiling cfg-if v1.0.5
+   Compiling untrusted v0.9.0
+   Compiling cloudleaf-types v0.1.0 (C:\Users\EDY\.codex\tmp\r19-user\source\crates\cloudleaf-types)
+   Compiling getrandom v0.2.17
+   Compiling cloudleaf-pinyin v0.1.0 (C:\Users\EDY\.codex\tmp\r19-user\source\crates\cloudleaf-pinyin)
+   Compiling cc v1.10.0
+   Compiling ring v0.17.14
+   Compiling cloudleaf-user v0.1.0 (C:\Users\EDY\.codex\tmp\r19-user\source\crates\cloudleaf-user)
+error[E0432]: unresolved imports `cloudleaf_user::SelectionEvent`, `cloudleaf_user::SelectionOrigin`, `cloudleaf_user::UserDictionary`
+ --> crates\cloudleaf-user\tests\contract.rs:1:22
+  |
+1 | use cloudleaf_user::{SelectionEvent, SelectionOrigin, UserDictionary};
+  |                      ^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^ no `UserDictionary` in the root
+  |                      |               |
+  |                      |               no `SelectionOrigin` in the root
+  |                      no `SelectionEvent` in the root
+
+error[E0425]: cannot find function `fingerprint` in crate `cloudleaf_user`
+  --> crates\cloudleaf-user\tests\contract.rs:13:52
+   |
+13 |         entries: vec![(id.clone(), cloudleaf_user::fingerprint("云笺", "yun jian"))],
+   |                                                    ^^^^^^^^^^^ not found in `cloudleaf_user`
+
+Some errors have detailed explanations: E0425, E0432.
+For more information about an error, try `rustc --explain E0425`.
+error: could not compile `cloudleaf-user` (test "contract") due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...

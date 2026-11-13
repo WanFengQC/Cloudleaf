@@ -1,0 +1,46 @@
+   Compiling cloudleaf-search v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-search)
+   Compiling cloudleaf-input v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-input)
+error[E0599]: no method named `with_user_layer` found for struct `Arc<SearchSnapshot>` in the current scope
+  --> crates\cloudleaf-input\tests\user_snapshot.rs:11:28
+   |
+11 |     let user=Arc::new(base.with_user_layer(&users,&BTreeMap::new()).unwrap());
+   |                            ^^^^^^^^^^^^^^^ method not found in `Arc<SearchSnapshot>`
+
+error[E0599]: no method named `replace_search_resources` found for struct `InputEngine` in the current scope
+  --> crates\cloudleaf-input\tests\user_snapshot.rs:15:35
+   |
+15 |     let old=engine.frame();engine.replace_search_resources(user,None).unwrap();
+   |                                   ^^^^^^^^^^^^^^^^^^^^^^^^ method not found in `InputEngine`
+
+error[E0599]: no method named `pending_selection` found for struct `InputEngine` in the current scope
+  --> crates\cloudleaf-input\tests\user_snapshot.rs:19:55
+   |
+19 |     assert_eq!(request.text,"云笺");let evidence=engine.pending_selection().unwrap().clone();
+   |                                                         ^^^^^^^^^^^^^^^^^ method not found in `InputEngine`
+
+error[E0599]: no method named `replace_search_resources` found for struct `InputEngine` in the current scope
+  --> crates\cloudleaf-input\tests\user_snapshot.rs:21:20
+   |
+21 |     assert!(engine.replace_search_resources(base,None).is_err());
+   |                    ^^^^^^^^^^^^^^^^^^^^^^^^ method not found in `InputEngine`
+
+error[E0599]: no method named `pending_selection` found for struct `InputEngine` in the current scope
+  --> crates\cloudleaf-input\tests\user_snapshot.rs:22:78
+   |
+22 |     engine.handle(InputEvent::CommitSucceeded{id:request.id});assert!(engine.pending_selection().is_none());
+   |                                                                              ^^^^^^^^^^^^^^^^^ method not found in `InputEngine`
+
+error[E0599]: no method named `pending_selection` found for struct `InputEngine` in the current scope
+  --> crates\cloudleaf-input\tests\user_snapshot.rs:27:116
+   |
+27 | ...e(InputEvent::Key(Key::Enter));assert!(e.pending_selection().is_none());
+   |                                             ^^^^^^^^^^^^^^^^^ method not found in `InputEngine`
+
+error[E0599]: no method named `pending_selection` found for struct `InputEngine` in the current scope
+  --> crates\cloudleaf-input\tests\user_snapshot.rs:28:160
+   |
+28 | ...putEvent::Key(Key::Char('.')));assert!(e.pending_selection().is_none());
+   |                                             ^^^^^^^^^^^^^^^^^ method not found in `InputEngine`
+
+For more information about this error, try `rustc --explain E0599`.
+error: could not compile `cloudleaf-input` (test "user_snapshot") due to 7 previous errors

@@ -1,0 +1,124 @@
+{
+  "label": "host-1-lexical",
+  "command": [
+    "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\build\\release\\cloudleaf-ime.exe",
+    "--benchmark-input-host",
+    "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+    "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+    "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+    "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5",
+    "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\tests\\fixtures\\input-round14-events.tsv"
+  ],
+  "returncode": 0,
+  "seconds": 0.8204492999939248,
+  "input_sha256": null,
+  "stdout": {
+    "path": "C:\\Users\\EDY\\.codex\\tmp\\r19-engine-perf\\runs\\host-1-lexical\\stdout.txt",
+    "bytes": 136255,
+    "sha256": "3790ddfde2022a95ce1ede14cc186f6b3ed5764ff69fc2a24c25fbc9189a82a3"
+  },
+  "stderr": {
+    "path": "C:\\Users\\EDY\\.codex\\tmp\\r19-engine-perf\\runs\\host-1-lexical\\stderr.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "resource_scope": "Entire child process incl preload/raw data/buffers/index/model/diagnostics; not single-algorithm allocation or Host internal budget",
+  "resource_samples": [
+    {
+      "t": 0.01208829999086447,
+      "working": 3047424,
+      "private": 389120,
+      "OS_peak_working": 3047424
+    },
+    {
+      "t": 0.06219039999996312,
+      "working": 32219136,
+      "private": 24973312,
+      "OS_peak_working": 32219136
+    },
+    {
+      "t": 0.11280429997714236,
+      "working": 47525888,
+      "private": 43524096,
+      "OS_peak_working": 48488448
+    },
+    {
+      "t": 0.1629438999807462,
+      "working": 65245184,
+      "private": 63893504,
+      "OS_peak_working": 65245184
+    },
+    {
+      "t": 0.21368929999880493,
+      "working": 82587648,
+      "private": 91619328,
+      "OS_peak_working": 96174080
+    },
+    {
+      "t": 0.26415849998011254,
+      "working": 100573184,
+      "private": 104570880,
+      "OS_peak_working": 100573184
+    },
+    {
+      "t": 0.314691599982325,
+      "working": 118759424,
+      "private": 117420032,
+      "OS_peak_working": 118759424
+    },
+    {
+      "t": 0.3652674999902956,
+      "working": 152666112,
+      "private": 159666176,
+      "OS_peak_working": 161021952
+    },
+    {
+      "t": 0.4158164999971632,
+      "working": 180609024,
+      "private": 197623808,
+      "OS_peak_working": 198680576
+    },
+    {
+      "t": 0.46635089998017065,
+      "working": 191688704,
+      "private": 188895232,
+      "OS_peak_working": 198680576
+    },
+    {
+      "t": 0.5168971999955829,
+      "working": 171192320,
+      "private": 168411136,
+      "OS_peak_working": 198680576
+    },
+    {
+      "t": 0.5674720999959391,
+      "working": 171204608,
+      "private": 168411136,
+      "OS_peak_working": 198680576
+    },
+    {
+      "t": 0.6180996999901254,
+      "working": 171212800,
+      "private": 168411136,
+      "OS_peak_working": 198680576
+    },
+    {
+      "t": 0.6686717999982648,
+      "working": 171212800,
+      "private": 168411136,
+      "OS_peak_working": 198680576
+    },
+    {
+      "t": 0.7193178999878,
+      "working": 171212800,
+      "private": 168411136,
+      "OS_peak_working": 198680576
+    },
+    {
+      "t": 0.769942999992054,
+      "working": 85282816,
+      "private": 82489344,
+      "OS_peak_working": 198680576
+    }
+  ]
+}

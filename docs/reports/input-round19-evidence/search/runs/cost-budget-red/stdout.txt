@@ -1,0 +1,18 @@
+
+running 1 test
+test interpreted_character_topk_avoids_repeating_every_history_edge_pair ... FAILED
+
+failures:
+
+---- interpreted_character_topk_avoids_repeating_every_history_edge_pair stdout ----
+
+thread 'interpreted_character_topk_avoids_repeating_every_history_edge_pair' panicked at crates\cloudleaf-search\tests\interpreted_resources.rs:28:9:
+character_bigram: Statistics { graph_edges: 96, expansions: 900, resident_high_water: 495, beam_pruned: 0, budget: Some(Expansions) }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    interpreted_character_topk_avoids_repeating_every_history_edge_pair
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

@@ -1,0 +1,15 @@
+   Compiling cloudleaf-search v0.1.0 (C:\Users\EDY\.codex\tmp\r19-search\source\crates\cloudleaf-search)
+warning: method `rebound` is never used
+   --> crates\cloudleaf-search\src\character.rs:145:19
+    |
+ 58 | impl CharacterModel {
+    | ------------------- method in this implementation
+...
+145 |     pub(crate) fn rebound(&self, lexicon: &Lexicon) -> Self {
+    |                   ^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `cloudleaf-search` (lib) generated 1 warning
+   Compiling r19-search-probe v0.1.0 (C:\Users\EDY\.codex\tmp\r19-search\source\probe)
+    Finished `release` profile [optimized] target(s) in 13.26s

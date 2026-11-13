@@ -1,0 +1,271 @@
+{
+  "iteration": 3,
+  "scheme": "full",
+  "kind": "lexical",
+  "variant": "new",
+  "command": [
+    "C:\\Users\\EDY\\.codex\\tmp\\r19-search\\source\\target\\release\\r19-search-probe.exe",
+    "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+    "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+    "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+    "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\docs\\reports\\input-round18-evidence\\performance\\abbreviated-cases.tsv",
+    "full"
+  ],
+  "returncode": 0,
+  "seconds": 0.7246863999753259,
+  "binary_sha256": "55590f339c54eb6302cb3cab6313732eb74a5d2c771570cadcbdcf29ee24c917",
+  "runtime_sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+  "model_sha256": "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5",
+  "case_file_sha256": "141327bc03e270974aa86c676e1db1414379bd66a3716366e718a4f218f05f0b",
+  "resources_scope": "Whole process: raw loaded originals, model, sharedindex, search, diagnostics; not algorithm allocation or Host budget",
+  "samples": [
+    {
+      "t": 0.007976399996550754,
+      "working": 2080768,
+      "private": 385024,
+      "peak_working": 2080768
+    },
+    {
+      "t": 0.05838399997446686,
+      "working": 27934720,
+      "private": 24326144,
+      "peak_working": 27934720
+    },
+    {
+      "t": 0.10889769997447729,
+      "working": 43356160,
+      "private": 43024384,
+      "peak_working": 44232704
+    },
+    {
+      "t": 0.15936319998581894,
+      "working": 58208256,
+      "private": 61304832,
+      "peak_working": 60059648
+    },
+    {
+      "t": 0.20989060000283644,
+      "working": 74158080,
+      "private": 72732672,
+      "peak_working": 74158080
+    },
+    {
+      "t": 0.2607537999865599,
+      "working": 89481216,
+      "private": 98902016,
+      "peak_working": 91815936
+    },
+    {
+      "t": 0.31092969997553155,
+      "working": 106622976,
+      "private": 111288320,
+      "peak_working": 106622976
+    },
+    {
+      "t": 0.3614952999923844,
+      "working": 125239296,
+      "private": 126767104,
+      "peak_working": 125239296
+    },
+    {
+      "t": 0.41206899998360313,
+      "working": 152338432,
+      "private": 161652736,
+      "peak_working": 156807168
+    },
+    {
+      "t": 0.46263499997439794,
+      "working": 186826752,
+      "private": 215511040,
+      "peak_working": 186826752
+    },
+    {
+      "t": 0.5132483999768738,
+      "working": 185020416,
+      "private": 185536512,
+      "peak_working": 194560000
+    },
+    {
+      "t": 0.5637004000018351,
+      "working": 192040960,
+      "private": 192827392,
+      "peak_working": 194560000
+    },
+    {
+      "t": 0.614252100000158,
+      "working": 157945856,
+      "private": 158781440,
+      "peak_working": 194560000
+    },
+    {
+      "t": 0.6648213999869768,
+      "working": 20803584,
+      "private": 26456064,
+      "peak_working": 194560000
+    }
+  ],
+  "queries": [
+    {
+      "case": "zgr",
+      "raw": "zgr",
+      "lattice_ns": 67900,
+      "search_ns": 20500,
+      "budget": "None",
+      "result": "SearchResult { candidates: [], raw_fallback: \"zgr\", waiting: false, guaranteed: true, finite_pool_only: false, statistics: Statistics { graph_edges: 203, expansions: 0, resident_high_water: 1, beam_pruned: 0, budget: None } }"
+    },
+    {
+      "case": "bjdx",
+      "raw": "bjdx",
+      "lattice_ns": 47200,
+      "search_ns": 2200,
+      "budget": "None",
+      "result": "SearchResult { candidates: [], raw_fallback: \"bjdx\", waiting: false, guaranteed: true, finite_pool_only: false, statistics: Statistics { graph_edges: 856, expansions: 0, resident_high_water: 1, beam_pruned: 0, budget: None } }"
+    },
+    {
+      "case": "zg",
+      "raw": "zg",
+      "lattice_ns": 16100,
+      "search_ns": 1000,
+      "budget": "None",
+      "result": "SearchResult { candidates: [], raw_fallback: \"zg\", waiting: false, guaranteed: true, finite_pool_only: false, statistics: Statistics { graph_edges: 578, expansions: 0, resident_high_water: 1, beam_pruned: 0, budget: None } }"
+    },
+    {
+      "case": "zhg",
+      "raw": "zhg",
+      "lattice_ns": 21700,
+      "search_ns": 2800,
+      "budget": "None",
+      "result": "SearchResult { candidates: [], raw_fallback: \"zhg\", waiting: false, guaranteed: true, finite_pool_only: false, statistics: Statistics { graph_edges: 578, expansions: 0, resident_high_water: 1, beam_pruned: 0, budget: None } }"
+    },
+    {
+      "case": "zhonggr",
+      "raw": "zhonggr",
+      "lattice_ns": 14700,
+      "search_ns": 110600,
+      "budget": "None",
+      "result": "SearchResult { candidates: [], raw_fallback: \"zhonggr\", waiting: false, guaranteed: true, finite_pool_only: false, statistics: Statistics { graph_edges: 291, expansions: 36, resident_high_water: 12, beam_pruned: 0, budget: None } }"
+    },
+    {
+      "case": "wzgs",
+      "raw": "wzgs",
+      "lattice_ns": 16800,
+      "search_ns": 1000,
+      "budget": "None",
+      "result": "SearchResult { candidates: [], raw_fallback: \"wzgs\", waiting: false, guaranteed: true, finite_pool_only: false, statistics: Statistics { graph_edges: 890, expansions: 0, resident_high_water: 1, beam_pruned: 0, budget: None } }"
+    },
+    {
+      "case": "nihao",
+      "raw": "nihao",
+      "lattice_ns": 11800,
+      "search_ns": 326300,
+      "budget": "None",
+      "result": "SearchResult { candidates: [Candidate { text: \"你好\", score: -100, entry_ids: [\"entry:3b13f04de17483dca3dfe7890353ed90\"], edge_indices: [45], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 1, prefixes: 0, frequency_units: 0, missing_frequencies: 1, lexical_units: 10235, lexical_observed: 1, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -100, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"呢好\", score: -200, entry_ids: [\"entry:bed86b8d5e6f457d39c758a1a390ecc8\", \"entry:4e007ab77d9475879c5a1f9b6bed0f17\"], edge_indices: [33, 63], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 41810, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"你号\", score: -200, entry_ids: [\"entry:4e3f132bbbd6f7b522b40ff1b0749f20\", \"entry:4887bef15ad179de321af626347e7c33\"], edge_indices: [10, 62], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 40912, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"尼好\", score: -200, entry_ids: [\"entry:b0d1a806e1764366b7d12188a44a86f4\", \"entry:4e007ab77d9475879c5a1f9b6bed0f17\"], edge_indices: [31, 63], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 39546, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"拟好\", score: -200, entry_ids: [\"entry:cd8e8606b5401e30618a34ce2e5a6b22\", \"entry:4e007ab77d9475879c5a1f9b6bed0f17\"], edge_indices: [39, 63], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 39300, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"呢号\", score: -200, entry_ids: [\"entry:bed86b8d5e6f457d39c758a1a390ecc8\", \"entry:4887bef15ad179de321af626347e7c33\"], edge_indices: [33, 62], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 39209, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"你毫\", score: -200, entry_ids: [\"entry:4e3f132bbbd6f7b522b40ff1b0749f20\", \"entry:0ac7c04b866bbe8ceeba409207ef0176\"], edge_indices: [10, 54], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 38921, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"你耗\", score: -200, entry_ids: [\"entry:4e3f132bbbd6f7b522b40ff1b0749f20\", \"entry:b99b242235acffc29e333052508956a0\"], edge_indices: [10, 80], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 37761, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"呢毫\", score: -200, entry_ids: [\"entry:bed86b8d5e6f457d39c758a1a390ecc8\", \"entry:0ac7c04b866bbe8ceeba409207ef0176\"], edge_indices: [33, 54], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 37218, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"尼号\", score: -200, entry_ids: [\"entry:b0d1a806e1764366b7d12188a44a86f4\", \"entry:4887bef15ad179de321af626347e7c33\"], edge_indices: [31, 62], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 36945, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }], raw_fallback: \"nihao\", waiting: false, guaranteed: true, finite_pool_only: false, statistics: Statistics { graph_edges: 172, expansions: 756, resident_high_water: 29, beam_pruned: 0, budget: None } }"
+    },
+    {
+      "case": "nh",
+      "raw": "nh",
+      "lattice_ns": 18300,
+      "search_ns": 800,
+      "budget": "None",
+      "result": "SearchResult { candidates: [], raw_fallback: \"nh\", waiting: false, guaranteed: true, finite_pool_only: false, statistics: Statistics { graph_edges: 670, expansions: 0, resident_high_water: 1, beam_pruned: 0, budget: None } }"
+    },
+    {
+      "case": "full-zhongguoren",
+      "raw": "zhongguoren",
+      "lattice_ns": 34300,
+      "search_ns": 1349200,
+      "budget": "None",
+      "result": "SearchResult { candidates: [Candidate { text: \"中国人\", score: -100, entry_ids: [\"entry:3a1d57c4e72d9b3c78ba8f0b2c9aca22\"], edge_indices: [39], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 1, prefixes: 0, frequency_units: 0, missing_frequencies: 1, lexical_units: 0, lexical_observed: 0, lexical_missing: 1, bigram_units: 0, context_units: 0, structural_units: -100, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"中国任\", score: -200, entry_ids: [\"entry:5af919e4418f70f92f18bc7f98469172\", \"entry:b034116ff86ae74d1af76f6f2275057e\"], edge_indices: [38, 247], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 44294, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"中国认\", score: -200, entry_ids: [\"entry:5af919e4418f70f92f18bc7f98469172\", \"entry:2b99a9c5013750cccac1cbce77f06fed\"], edge_indices: [38, 228], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 43397, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"种国人\", score: -200, entry_ids: [\"entry:202ece66dee87563f8598251510448db\", \"entry:10cedd4b2764d5b08ccd381546f94aad\"], edge_indices: [6, 208], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 39939, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"中国仁\", score: -200, entry_ids: [\"entry:5af919e4418f70f92f18bc7f98469172\", \"entry:950637be7557c8af3d6e00b09b49ddb8\"], edge_indices: [38, 244], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 38852, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"中国刃\", score: -200, entry_ids: [\"entry:5af919e4418f70f92f18bc7f98469172\", \"entry:eb8ef21bcb9ae94fcbd8ce71866ec30e\"], edge_indices: [38, 252], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 38144, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"中国忍\", score: -200, entry_ids: [\"entry:5af919e4418f70f92f18bc7f98469172\", \"entry:84b2ad9e7e034326c76950bc56ba48ed\"], edge_indices: [38, 239], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 37309, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"重国人\", score: -200, entry_ids: [\"entry:e4d4b57d0e7bb339d93729c7d7932f81\", \"entry:10cedd4b2764d5b08ccd381546f94aad\"], edge_indices: [30, 208], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 36512, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"中过人\", score: -200, entry_ids: [\"entry:07ce77a1db3405136caed18a8c02fe7e\", \"entry:6871a80593c534adefd5e5d949b289b9\"], edge_indices: [0, 209], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 35142, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"中国韧\", score: -200, entry_ids: [\"entry:5af919e4418f70f92f18bc7f98469172\", \"entry:041785d092bf4036c24ce8ec37fceddc\"], edge_indices: [38, 223], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 34711, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }], raw_fallback: \"zhongguoren\", waiting: false, guaranteed: true, finite_pool_only: false, statistics: Statistics { graph_edges: 659, expansions: 4870, resident_high_water: 42, beam_pruned: 0, budget: None } }"
+    },
+    {
+      "case": "full-beijingdaxue",
+      "raw": "beijingdaxue",
+      "lattice_ns": 39300,
+      "search_ns": 1844500,
+      "budget": "None",
+      "result": "SearchResult { candidates: [Candidate { text: \"北京大学\", score: -100, entry_ids: [\"entry:a9cd1976f0ae722a23f4ec3cf5c4fa00\"], edge_indices: [46], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 1, prefixes: 0, frequency_units: 0, missing_frequencies: 1, lexical_units: 14145, lexical_observed: 1, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -100, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"背景大学\", score: -200, entry_ids: [\"entry:22b44fe797c73646aac1879bbabc91f5\", \"entry:2506dc1a4704b73e02600523f707459a\"], edge_indices: [44, 484], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 40664, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"北京大雪\", score: -200, entry_ids: [\"entry:4a1a21408f726c2425ed9ac475e5de84\", \"entry:fd5f03ff7bcefe3d37ebe74c59dadd63\"], edge_indices: [45, 486], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 31681, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"背景大雪\", score: -200, entry_ids: [\"entry:22b44fe797c73646aac1879bbabc91f5\", \"entry:fd5f03ff7bcefe3d37ebe74c59dadd63\"], edge_indices: [44, 486], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 30028, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"被经大学\", score: -300, entry_ids: [\"entry:7ef9d83d03fa00eb13344c198c0f7a5f\", \"entry:2c23dba6c5ee12c5d8ed97a2c57c6516\", \"entry:2506dc1a4704b73e02600523f707459a\"], edge_indices: [19, 390, 484], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 3, prefixes: 0, frequency_units: 0, missing_frequencies: 3, lexical_units: 65133, lexical_observed: 3, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -300, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"北京达学\", score: -300, entry_ids: [\"entry:4a1a21408f726c2425ed9ac475e5de84\", \"entry:593716e9fd7f7e603a99017244aca8f4\", \"entry:d16cd2db5e46b1d5362bc33b3bb42f8d\"], edge_indices: [45, 464, 598], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 3, prefixes: 0, frequency_units: 0, missing_frequencies: 3, lexical_units: 63478, lexical_observed: 3, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -300, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"被境大学\", score: -300, entry_ids: [\"entry:7ef9d83d03fa00eb13344c198c0f7a5f\", \"entry:efef6dd81b80c22cf5f266bc01c5de81\", \"entry:2506dc1a4704b73e02600523f707459a\"], edge_indices: [19, 444, 484], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 3, prefixes: 0, frequency_units: 0, missing_frequencies: 3, lexical_units: 62325, lexical_observed: 3, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -300, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"北京打学\", score: -300, entry_ids: [\"entry:4a1a21408f726c2425ed9ac475e5de84\", \"entry:6cd4cc23a29d761825ab89e2a5f885fe\", \"entry:d16cd2db5e46b1d5362bc33b3bb42f8d\"], edge_indices: [45, 467, 598], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 3, prefixes: 0, frequency_units: 0, missing_frequencies: 3, lexical_units: 61839, lexical_observed: 3, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -300, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"背景达学\", score: -300, entry_ids: [\"entry:22b44fe797c73646aac1879bbabc91f5\", \"entry:593716e9fd7f7e603a99017244aca8f4\", \"entry:d16cd2db5e46b1d5362bc33b3bb42f8d\"], edge_indices: [44, 464, 598], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 3, prefixes: 0, frequency_units: 0, missing_frequencies: 3, lexical_units: 61825, lexical_observed: 3, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -300, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"被京大学\", score: -300, entry_ids: [\"entry:7ef9d83d03fa00eb13344c198c0f7a5f\", \"entry:526ebb31bb4d40e121b69ac3e67d8c08\", \"entry:2506dc1a4704b73e02600523f707459a\"], edge_indices: [19, 399, 484], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 3, prefixes: 0, frequency_units: 0, missing_frequencies: 3, lexical_units: 61706, lexical_observed: 3, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -300, character_units: 0, character_count: 0, character_unknown: 0 } }], raw_fallback: \"beijingdaxue\", waiting: false, guaranteed: true, finite_pool_only: false, statistics: Statistics { graph_edges: 721, expansions: 5907, resident_high_water: 42, beam_pruned: 0, budget: None } }"
+    },
+    {
+      "case": "fuzzy-lin",
+      "raw": "lin",
+      "lattice_ns": 12500,
+      "search_ns": 1200000,
+      "budget": "None",
+      "result": "SearchResult { candidates: [Candidate { text: \"林\", score: -100, entry_ids: [\"entry:365eaab86754f2f673fc37865686077c\"], edge_indices: [156], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 1, prefixes: 0, frequency_units: 0, missing_frequencies: 1, lexical_units: 18180, lexical_observed: 1, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -100, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"临\", score: -100, entry_ids: [\"entry:bd8304a816e4bdcb5de853ff89aaaf93\"], edge_indices: [185], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 1, prefixes: 0, frequency_units: 0, missing_frequencies: 1, lexical_units: 16073, lexical_observed: 1, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -100, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"邻\", score: -100, entry_ids: [\"entry:ab80f06f225a54352bb615f65f3eb83e\"], edge_indices: [183], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 1, prefixes: 0, frequency_units: 0, missing_frequencies: 1, lexical_units: 15956, lexical_observed: 1, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -100, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"磷\", score: -100, entry_ids: [\"entry:331ad7234705d51ae13f8dbcffb3c644\"], edge_indices: [155], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 1, prefixes: 0, frequency_units: 0, missing_frequencies: 1, lexical_units: 13562, lexical_observed: 1, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -100, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"赁\", score: -100, entry_ids: [\"entry:556852d1427478032b1e209ce0b7ef33\"], edge_indices: [165], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 1, prefixes: 0, frequency_units: 0, missing_frequencies: 1, lexical_units: 13153, lexical_observed: 1, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -100, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"琳\", score: -100, entry_ids: [\"entry:febb9b1adb223663340a075b823b85e3\"], edge_indices: [196], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 1, prefixes: 0, frequency_units: 0, missing_frequencies: 1, lexical_units: 12635, lexical_observed: 1, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -100, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"麟\", score: -100, entry_ids: [\"entry:6aed013deda3b6776a02de3f986b3d85\"], edge_indices: [169], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 1, prefixes: 0, frequency_units: 0, missing_frequencies: 1, lexical_units: 11358, lexical_observed: 1, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -100, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"淋\", score: -100, entry_ids: [\"entry:43f9a0231923454f1c27aa5da0419740\"], edge_indices: [160], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 1, prefixes: 0, frequency_units: 0, missing_frequencies: 1, lexical_units: 10828, lexical_observed: 1, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -100, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"霖\", score: -100, entry_ids: [\"entry:8066ad8cfb80725e9fce843d74f518b3\"], edge_indices: [174], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 1, prefixes: 0, frequency_units: 0, missing_frequencies: 1, lexical_units: 10414, lexical_observed: 1, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -100, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"鳞\", score: -100, entry_ids: [\"entry:99c0db6900a4ace39af717f5ead01b39\"], edge_indices: [181], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 1, prefixes: 0, frequency_units: 0, missing_frequencies: 1, lexical_units: 10135, lexical_observed: 1, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -100, character_units: 0, character_count: 0, character_unknown: 0 } }], raw_fallback: \"lin\", waiting: false, guaranteed: true, finite_pool_only: false, statistics: Statistics { graph_edges: 571, expansions: 3388, resident_high_water: 22, beam_pruned: 0, budget: None } }"
+    },
+    {
+      "case": "fuzzy-lilan",
+      "raw": "lilan",
+      "lattice_ns": 93600,
+      "search_ns": 2466300,
+      "budget": "None",
+      "result": "SearchResult { candidates: [Candidate { text: \"力兰\", score: -200, entry_ids: [\"entry:564c722704f156167f60c9fc7472261b\", \"entry:c0e28c0844292ecf2f7cca35bc60437e\"], edge_indices: [47, 208], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 38490, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"里兰\", score: -200, entry_ids: [\"entry:311f3e85e9da583d29876cc7948acab4\", \"entry:c0e28c0844292ecf2f7cca35bc60437e\"], edge_indices: [26, 208], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 37660, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"力栏\", score: -200, entry_ids: [\"entry:564c722704f156167f60c9fc7472261b\", \"entry:f16bf08deeaf9ddee4f6f999713f5fab\"], edge_indices: [47, 216], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 37531, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"理兰\", score: -200, entry_ids: [\"entry:f309e68711f78ad936db1872fd601c8e\", \"entry:c0e28c0844292ecf2f7cca35bc60437e\"], edge_indices: [142, 208], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 37469, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"利兰\", score: -200, entry_ids: [\"entry:52c8cea957a2b603c1a01cfd0a20423c\", \"entry:c0e28c0844292ecf2f7cca35bc60437e\"], edge_indices: [45, 208], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 36856, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"里栏\", score: -200, entry_ids: [\"entry:311f3e85e9da583d29876cc7948acab4\", \"entry:f16bf08deeaf9ddee4f6f999713f5fab\"], edge_indices: [26, 216], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 36701, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"理栏\", score: -200, entry_ids: [\"entry:f309e68711f78ad936db1872fd601c8e\", \"entry:f16bf08deeaf9ddee4f6f999713f5fab\"], edge_indices: [142, 216], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 36510, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"力蓝\", score: -200, entry_ids: [\"entry:564c722704f156167f60c9fc7472261b\", \"entry:8a3e70261394d8f7c91a3caedee39023\"], edge_indices: [47, 202], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 36224, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"立兰\", score: -200, entry_ids: [\"entry:017050ed5a78527470d8beccab647931\", \"entry:c0e28c0844292ecf2f7cca35bc60437e\"], edge_indices: [1, 208], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 36196, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"力滥\", score: -200, entry_ids: [\"entry:564c722704f156167f60c9fc7472261b\", \"entry:2b5f689583c439a61a574a913c4c1fc7\"], edge_indices: [47, 190], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 35938, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }], raw_fallback: \"lilan\", waiting: false, guaranteed: true, finite_pool_only: false, statistics: Statistics { graph_edges: 618, expansions: 4280, resident_high_water: 31, beam_pruned: 0, budget: None } }"
+    },
+    {
+      "case": "typo-omission",
+      "raw": "zhnogguo",
+      "lattice_ns": 19600,
+      "search_ns": 2800,
+      "budget": "None",
+      "result": "SearchResult { candidates: [], raw_fallback: \"zhnogguo\", waiting: false, guaranteed: true, finite_pool_only: false, statistics: Statistics { graph_edges: 147, expansions: 0, resident_high_water: 1, beam_pruned: 0, budget: None } }"
+    },
+    {
+      "case": "typo-adjacent",
+      "raw": "nihso",
+      "lattice_ns": 8400,
+      "search_ns": 35700,
+      "budget": "None",
+      "result": "SearchResult { candidates: [], raw_fallback: \"nihso\", waiting: false, guaranteed: true, finite_pool_only: false, statistics: Statistics { graph_edges: 127, expansions: 45, resident_high_water: 12, beam_pruned: 0, budget: None } }"
+    },
+    {
+      "case": "typo-transpose",
+      "raw": "nihoa",
+      "lattice_ns": 6500,
+      "search_ns": 14200,
+      "budget": "None",
+      "result": "SearchResult { candidates: [], raw_fallback: \"nihoa\", waiting: false, guaranteed: true, finite_pool_only: false, statistics: Statistics { graph_edges: 194, expansions: 45, resident_high_water: 12, beam_pruned: 0, budget: None } }"
+    },
+    {
+      "case": "typo-long",
+      "raw": "jintiantiqnqihenhao",
+      "lattice_ns": 53800,
+      "search_ns": 879100,
+      "budget": "None",
+      "result": "SearchResult { candidates: [], raw_fallback: \"jintiantiqnqihenhao\", waiting: false, guaranteed: true, finite_pool_only: false, statistics: Statistics { graph_edges: 863, expansions: 2124, resident_high_water: 40, beam_pruned: 0, budget: None } }"
+    },
+    {
+      "case": "raw-unknown",
+      "raw": "qz",
+      "lattice_ns": 46200,
+      "search_ns": 1100,
+      "budget": "None",
+      "result": "SearchResult { candidates: [], raw_fallback: \"qz\", waiting: false, guaranteed: true, finite_pool_only: false, statistics: Statistics { graph_edges: 1090, expansions: 0, resident_high_water: 1, beam_pruned: 0, budget: None } }"
+    },
+    {
+      "case": "separated",
+      "raw": "xi'an",
+      "lattice_ns": 31100,
+      "search_ns": 1412200,
+      "budget": "None",
+      "result": "SearchResult { candidates: [Candidate { text: \"西安\", score: -100, entry_ids: [\"entry:8b4baeabb83ff7c0c882268c9b85e2f5\"], edge_indices: [182], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 1, prefixes: 0, frequency_units: 0, missing_frequencies: 1, lexical_units: 16367, lexical_observed: 1, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -100, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"锡安\", score: -100, entry_ids: [\"entry:2013b7bb130bf7daf394540c85cce0b1\"], edge_indices: [181], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 1, prefixes: 0, frequency_units: 0, missing_frequencies: 1, lexical_units: 8259, lexical_observed: 1, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -100, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"系按\", score: -200, entry_ids: [\"entry:2f69182c2ce8faad2d57d93c83159244\", \"entry:e6751a9a3d870f757131cbaea190c3ba\"], edge_indices: [31, 223], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 40861, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"系案\", score: -200, entry_ids: [\"entry:2f69182c2ce8faad2d57d93c83159244\", \"entry:f2118615bfc97b1e561647305c1976de\"], edge_indices: [31, 226], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 39545, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"西按\", score: -200, entry_ids: [\"entry:1be4af7040fabac9792fc8a64208d2a2\", \"entry:e6751a9a3d870f757131cbaea190c3ba\"], edge_indices: [21, 223], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 39340, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"息按\", score: -200, entry_ids: [\"entry:0fbf8e2b233e56cc6608563700abd5e0\", \"entry:e6751a9a3d870f757131cbaea190c3ba\"], edge_indices: [11, 223], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 39080, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"系安\", score: -200, entry_ids: [\"entry:2f69182c2ce8faad2d57d93c83159244\", \"entry:d929a7c1456f517f3438fcbad688172d\"], edge_indices: [31, 218], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 38939, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"西案\", score: -200, entry_ids: [\"entry:1be4af7040fabac9792fc8a64208d2a2\", \"entry:f2118615bfc97b1e561647305c1976de\"], edge_indices: [21, 226], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 38024, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"细按\", score: -200, entry_ids: [\"entry:8a9f4464f31910fe66437e2bdff156a1\", \"entry:e6751a9a3d870f757131cbaea190c3ba\"], edge_indices: [101, 223], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 37863, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }, Candidate { text: \"息案\", score: -200, entry_ids: [\"entry:0fbf8e2b233e56cc6608563700abd5e0\", \"entry:f2118615bfc97b1e561647305c1976de\"], edge_indices: [11, 226], features: Features { interpretation_cost: InterpretationCost { edits: 0, fuzzy: 0, abbreviations: 0, prefixes: 0 }, user_preference_units: 0, words: 2, prefixes: 0, frequency_units: 0, missing_frequencies: 2, lexical_units: 37764, lexical_observed: 2, lexical_missing: 0, bigram_units: 0, context_units: 0, structural_units: -200, character_units: 0, character_count: 0, character_unknown: 0 } }], raw_fallback: \"xi'an\", waiting: false, guaranteed: true, finite_pool_only: false, statistics: Statistics { graph_edges: 551, expansions: 3863, resident_high_water: 30, beam_pruned: 0, budget: None } }"
+    },
+    {
+      "case": "waiting",
+      "raw": "ni'",
+      "lattice_ns": 6600,
+      "search_ns": 1000,
+      "budget": "None",
+      "result": "SearchResult { candidates: [], raw_fallback: \"ni'\", waiting: true, guaranteed: true, finite_pool_only: false, statistics: Statistics { graph_edges: 0, expansions: 0, resident_high_water: 0, beam_pruned: 0, budget: None } }"
+    },
+    {
+      "case": "limit-budget",
+      "raw": "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",
+      "lattice_ns": 23900,
+      "search_ns": 3300,
+      "budget": "None",
+      "result": "SearchResult { candidates: [], raw_fallback: \"nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn\", waiting: false, guaranteed: true, finite_pool_only: false, statistics: Statistics { graph_edges: 313, expansions: 0, resident_high_water: 1, beam_pruned: 0, budget: None } }"
+    }
+  ],
+  "stdout_sha256": "3b105d4febdbea4046bfa4167583ce35a575d0d238d6c59083a02cd8de11da08",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

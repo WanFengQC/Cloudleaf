@@ -1,0 +1,91 @@
+diff --git a/crates/cloudleaf-input/src/sentence.rs b/crates/cloudleaf-input/src/sentence.rs
+index 9cde385..7f7e825 100644
+--- a/crates/cloudleaf-input/src/sentence.rs
++++ b/crates/cloudleaf-input/src/sentence.rs
+@@ -69,7 +69,7 @@ impl SearchSnapshot {
+         &self.version
+     }
+ 
+-    pub fn entries(&self) -> &[cloudleaf_search::Entry] {
++    pub fn entries(&self) -> &cloudleaf_search::Entries {
+         self.lexicon.entries()
+     }
+ 
+@@ -260,10 +260,7 @@ impl SentenceBackend {
+             })
+             || left_word.as_ref().is_some_and(|id| {
+                 config.ranker != Ranker::ContextRerank
+-                    || snapshot
+-                        .entries()
+-                        .binary_search_by(|entry| entry.id.cmp(id))
+-                        .is_err()
++                    || !snapshot.entries().iter().any(|entry| &entry.id==id)
+             })
+         {
+             return Err(CoreError::new(
+diff --git a/crates/cloudleaf-search/src/lexicon.rs b/crates/cloudleaf-search/src/lexicon.rs
+index 6353398..91eea1a 100644
+--- a/crates/cloudleaf-search/src/lexicon.rs
++++ b/crates/cloudleaf-search/src/lexicon.rs
+@@ -33,9 +33,11 @@ pub(crate) struct TrieNode {
+ /// 只读词条与读音索引，装载后可在多个查询之间复用。
+ #[derive(Clone, Debug)]
+ pub struct Lexicon {
+-    pub(crate) entries: Vec<Entry>,
+-    pub(crate) trie: Vec<TrieNode>,
++    pub(crate) entries: crate::layer::Entries,
++    pub(crate) trie: crate::layer::Trie,
+     pub(crate) identity: std::sync::Arc<()>,
++    pub(crate) preferences: Option<Vec<u32>>,
++    pub(crate) base_memory: Option<LexiconMemory>,
+ }
+ 
+ /// 固定Rust1.90容器布局的保守预估，不是RSS或allocator硬上界。
+@@ -238,13 +240,16 @@ impl Lexicon {
+             node.prefix.shrink_to_fit();
+         }
+         Ok(Self {
+-            entries,
+-            trie,
++            entries: crate::layer::Entries::new(entries),
++            trie: crate::layer::Trie::new(trie),
+             identity: std::sync::Arc::new(()),
++            preferences: None,
++            base_memory: None,
+         })
+     }
+ 
+     pub fn memory_estimate(&self) -> LexiconMemory {
++        if let Some(memory)=self.layered_memory(){return memory}
+         let mut owned = std::mem::size_of::<Self>()
+             + 2 * std::mem::size_of::<usize>()
+             + self.entries.capacity() * std::mem::size_of::<Entry>()
+@@ -273,7 +278,7 @@ impl Lexicon {
+         }
+     }
+ 
+-    pub fn entries(&self) -> &[Entry] {
++    pub fn entries(&self) -> &crate::Entries {
+         &self.entries
+     }
+ 
+diff --git a/crates/cloudleaf-search/src/lib.rs b/crates/cloudleaf-search/src/lib.rs
+index 179e522..ece816d 100644
+--- a/crates/cloudleaf-search/src/lib.rs
++++ b/crates/cloudleaf-search/src/lib.rs
+@@ -3,6 +3,7 @@ mod cancellation;
+ mod character;
+ mod lattice;
+ mod lexicon;
++mod layer;
+ mod model;
+ mod profiling;
+ mod schemes;
+@@ -11,6 +12,7 @@ mod search;
+ pub use cancellation::Cancellation;
+ pub use lattice::{Edge, Lattice, MatchKind};
+ pub use lexicon::{Entry, FrequencyKind, Lexicon, LexiconMemory, LoadLimits};
++pub use layer::Entries;
+ pub use model::{BigramModel, LanguageModelSnapshot, ModelMetadata};
+ pub use profiling::{Measurement, Phase, Profile, profile_query, profile_scheme_query};
+ pub use schemes::{EdgeInterpretation, InterpretationCost, SchemeStatistics};

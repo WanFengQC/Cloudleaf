@@ -1,0 +1,523 @@
+{
+  "created_utc": "2026-11-13T07:50:23.534059+00:00",
+  "actual_repository_modified": false,
+  "design_commits": [
+    "8dd3505",
+    "d334f45",
+    "47ec379"
+  ],
+  "source": "C:\\Users\\EDY\\.codex\\tmp\\r19-user\\source\\crates\\cloudleaf-user",
+  "files": {
+    "Cargo.toml": {
+      "bytes": 366,
+      "sha256": "f2a2b07319a3529905af0d29e4e28835599d6380c7798fd17dea7970f81a1936"
+    },
+    "src/lib.rs": {
+      "bytes": 23018,
+      "sha256": "4834257d9e8b9ce641ad851dea541b687fe7dcd9bc6b5f5ea6fe8e3ea9fa1a85"
+    },
+    "src/store.rs": {
+      "bytes": 13017,
+      "sha256": "94ffa2bcf6e744753c4e6c55cdcb57facc242855cb95342fad4dc5590a1da78a"
+    },
+    "tests/contract.rs": {
+      "bytes": 2497,
+      "sha256": "3a0a5592a5b7610b19a9c714eda36894803dd1f804c455417cefa3e6c99de2fe"
+    },
+    "tests/storage.rs": {
+      "bytes": 16585,
+      "sha256": "61bd6e29632876e4d619bea36ec55999e8220367f8b51379de576b5f6cab9e1a"
+    }
+  },
+  "tests": {
+    "contract": 2,
+    "storage": 14,
+    "failed": 0,
+    "ignored": 0
+  },
+  "final_commands": {
+    "storage-final": {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "test",
+        "-p",
+        "cloudleaf-user",
+        "--all-targets",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 2.5648260999878403,
+      "source": {
+        "crates\\cloudleaf-user\\Cargo.toml": "f2a2b07319a3529905af0d29e4e28835599d6380c7798fd17dea7970f81a1936",
+        "crates\\cloudleaf-user\\src\\lib.rs": "4834257d9e8b9ce641ad851dea541b687fe7dcd9bc6b5f5ea6fe8e3ea9fa1a85",
+        "crates\\cloudleaf-user\\src\\store.rs": "94ffa2bcf6e744753c4e6c55cdcb57facc242855cb95342fad4dc5590a1da78a",
+        "crates\\cloudleaf-user\\tests\\contract.rs": "3a0a5592a5b7610b19a9c714eda36894803dd1f804c455417cefa3e6c99de2fe",
+        "crates\\cloudleaf-user\\tests\\storage.rs": "61bd6e29632876e4d619bea36ec55999e8220367f8b51379de576b5f6cab9e1a"
+      },
+      "design_head": "8dd3505",
+      "stdout_sha256": "4f6b5b3bd1ab36af05400004ccfd62db59181f8ab5db582498e2eb28707ade79",
+      "stderr_sha256": "2ad039a8015e910a3b5fcf109e47f19f5ec0469e152c45b76a0b5d6d062f4093"
+    },
+    "storage-final-lint": {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "clippy",
+        "-p",
+        "cloudleaf-user",
+        "--all-targets",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "returncode": 0,
+      "seconds": 1.2945427999948151,
+      "source": {
+        "crates\\cloudleaf-user\\Cargo.toml": "f2a2b07319a3529905af0d29e4e28835599d6380c7798fd17dea7970f81a1936",
+        "crates\\cloudleaf-user\\src\\lib.rs": "4834257d9e8b9ce641ad851dea541b687fe7dcd9bc6b5f5ea6fe8e3ea9fa1a85",
+        "crates\\cloudleaf-user\\src\\store.rs": "94ffa2bcf6e744753c4e6c55cdcb57facc242855cb95342fad4dc5590a1da78a",
+        "crates\\cloudleaf-user\\tests\\contract.rs": "3a0a5592a5b7610b19a9c714eda36894803dd1f804c455417cefa3e6c99de2fe",
+        "crates\\cloudleaf-user\\tests\\storage.rs": "61bd6e29632876e4d619bea36ec55999e8220367f8b51379de576b5f6cab9e1a"
+      },
+      "design_head": "8dd3505",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "dc723c6dde34f6c04e94c48d6322cdf016c9c7d58700c85aaa0e24997c7ce6fb"
+    },
+    "storage-final-doc": {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "test",
+        "-p",
+        "cloudleaf-user",
+        "--doc",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 0.415830999991158,
+      "source": {
+        "crates\\cloudleaf-user\\Cargo.toml": "f2a2b07319a3529905af0d29e4e28835599d6380c7798fd17dea7970f81a1936",
+        "crates\\cloudleaf-user\\src\\lib.rs": "4834257d9e8b9ce641ad851dea541b687fe7dcd9bc6b5f5ea6fe8e3ea9fa1a85",
+        "crates\\cloudleaf-user\\src\\store.rs": "94ffa2bcf6e744753c4e6c55cdcb57facc242855cb95342fad4dc5590a1da78a",
+        "crates\\cloudleaf-user\\tests\\contract.rs": "3a0a5592a5b7610b19a9c714eda36894803dd1f804c455417cefa3e6c99de2fe",
+        "crates\\cloudleaf-user\\tests\\storage.rs": "61bd6e29632876e4d619bea36ec55999e8220367f8b51379de576b5f6cab9e1a"
+      },
+      "design_head": "8dd3505",
+      "stdout_sha256": "df166913f47ff1f04202cae9b31df67ed272d692d99a0023a8117dc3029100dd",
+      "stderr_sha256": "ef0c527fcd8ff8332858a986d3c2e8dcbaede764b088227243f0569ed65cee3b"
+    },
+    "capacity-final-format": {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "fmt",
+        "--all"
+      ],
+      "returncode": 0,
+      "seconds": 0.45042400000966154,
+      "source": {
+        "crates\\cloudleaf-user\\Cargo.toml": "f2a2b07319a3529905af0d29e4e28835599d6380c7798fd17dea7970f81a1936",
+        "crates\\cloudleaf-user\\src\\lib.rs": "4834257d9e8b9ce641ad851dea541b687fe7dcd9bc6b5f5ea6fe8e3ea9fa1a85",
+        "crates\\cloudleaf-user\\src\\store.rs": "94ffa2bcf6e744753c4e6c55cdcb57facc242855cb95342fad4dc5590a1da78a",
+        "crates\\cloudleaf-user\\tests\\contract.rs": "3a0a5592a5b7610b19a9c714eda36894803dd1f804c455417cefa3e6c99de2fe",
+        "crates\\cloudleaf-user\\tests\\storage.rs": "61bd6e29632876e4d619bea36ec55999e8220367f8b51379de576b5f6cab9e1a"
+      },
+      "design_head": "8dd3505",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "all_runs": {
+    "api-red": {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "test",
+        "-p",
+        "cloudleaf-user",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 101,
+      "seconds": 8.230695499994908,
+      "source": {
+        "crates\\cloudleaf-user\\Cargo.toml": "f2a2b07319a3529905af0d29e4e28835599d6380c7798fd17dea7970f81a1936",
+        "crates\\cloudleaf-user\\src\\lib.rs": "ac02b55afd84e03c493d5b0947c83cd657c7b20ac8ad3646b2ee49100442cef7",
+        "crates\\cloudleaf-user\\tests\\contract.rs": "6482ae23e77317c84f75f9af8ea58473c8ce426e47f81339b4ec589b114201c9"
+      },
+      "design_head": "8dd3505",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "fc3236e9d14dd6bf1d464af9acb31de46a093795e6d81feb0552578ca38ea411"
+    },
+    "capacity-final-format": {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "fmt",
+        "--all"
+      ],
+      "returncode": 0,
+      "seconds": 0.45042400000966154,
+      "source": {
+        "crates\\cloudleaf-user\\Cargo.toml": "f2a2b07319a3529905af0d29e4e28835599d6380c7798fd17dea7970f81a1936",
+        "crates\\cloudleaf-user\\src\\lib.rs": "4834257d9e8b9ce641ad851dea541b687fe7dcd9bc6b5f5ea6fe8e3ea9fa1a85",
+        "crates\\cloudleaf-user\\src\\store.rs": "94ffa2bcf6e744753c4e6c55cdcb57facc242855cb95342fad4dc5590a1da78a",
+        "crates\\cloudleaf-user\\tests\\contract.rs": "3a0a5592a5b7610b19a9c714eda36894803dd1f804c455417cefa3e6c99de2fe",
+        "crates\\cloudleaf-user\\tests\\storage.rs": "61bd6e29632876e4d619bea36ec55999e8220367f8b51379de576b5f6cab9e1a"
+      },
+      "design_head": "8dd3505",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fault-negative-red": {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "test",
+        "-p",
+        "cloudleaf-user",
+        "--locked",
+        "--offline",
+        "--test",
+        "storage"
+      ],
+      "returncode": 101,
+      "seconds": 1.2435358000075212,
+      "source": {
+        "crates\\cloudleaf-user\\Cargo.toml": "f2a2b07319a3529905af0d29e4e28835599d6380c7798fd17dea7970f81a1936",
+        "crates\\cloudleaf-user\\src\\lib.rs": "00083011861d8dd05dff1c1bcfb7c2c15f838387dcff5cc15d6db23d08fdf3e3",
+        "crates\\cloudleaf-user\\src\\store.rs": "da546f56ee8c99151e44adc42be351813c6a5720e9bfbec648934205abfe237a",
+        "crates\\cloudleaf-user\\tests\\contract.rs": "6482ae23e77317c84f75f9af8ea58473c8ce426e47f81339b4ec589b114201c9",
+        "crates\\cloudleaf-user\\tests\\storage.rs": "72bfcf1952e3bdaab1ad2bd8621d1ed33a242a8c7547e719769a251d13d6f454"
+      },
+      "design_head": "8dd3505",
+      "stdout_sha256": "8093de041884bcd3697a9d8a893a8c00e69e7e0b2db1e01e4f1cac5cc877272d",
+      "stderr_sha256": "56f7cf4b31603c8ece944503dd0b960d4c6c9273bc75a911d225d7d7ea9a6618"
+    },
+    "format": {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "fmt",
+        "--all"
+      ],
+      "returncode": 0,
+      "seconds": 0.4403920999902766,
+      "source": {
+        "crates\\cloudleaf-user\\Cargo.toml": "f2a2b07319a3529905af0d29e4e28835599d6380c7798fd17dea7970f81a1936",
+        "crates\\cloudleaf-user\\src\\lib.rs": "78821ccf41e555924776a6783837983e486ef5e8c8e2a0965dab7c7f7dc89d42",
+        "crates\\cloudleaf-user\\src\\store.rs": "94ffa2bcf6e744753c4e6c55cdcb57facc242855cb95342fad4dc5590a1da78a",
+        "crates\\cloudleaf-user\\tests\\contract.rs": "927ce2d70d05c909a4700b14ece4edebe5a009b3dea45947e47a7f0e31dd9416",
+        "crates\\cloudleaf-user\\tests\\storage.rs": "0bc40c26fdcc8df6f3e2062bbc3b6d8b62a81a131a67ccacea9bbf9c2b7c92c2"
+      },
+      "design_head": "8dd3505",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "format-final": {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "fmt",
+        "--all"
+      ],
+      "returncode": 0,
+      "seconds": 0.45829409998259507,
+      "source": {
+        "crates\\cloudleaf-user\\Cargo.toml": "f2a2b07319a3529905af0d29e4e28835599d6380c7798fd17dea7970f81a1936",
+        "crates\\cloudleaf-user\\src\\lib.rs": "1c6fc8361cb6f3ba1aaf545d491625dcb42941cd8de6b4ebe508eb4972e04b81",
+        "crates\\cloudleaf-user\\src\\store.rs": "94ffa2bcf6e744753c4e6c55cdcb57facc242855cb95342fad4dc5590a1da78a",
+        "crates\\cloudleaf-user\\tests\\contract.rs": "3a0a5592a5b7610b19a9c714eda36894803dd1f804c455417cefa3e6c99de2fe",
+        "crates\\cloudleaf-user\\tests\\storage.rs": "0bc40c26fdcc8df6f3e2062bbc3b6d8b62a81a131a67ccacea9bbf9c2b7c92c2"
+      },
+      "design_head": "8dd3505",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "implementation-first": {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "test",
+        "-p",
+        "cloudleaf-user",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 2.6562678000045707,
+      "source": {
+        "crates\\cloudleaf-user\\Cargo.toml": "f2a2b07319a3529905af0d29e4e28835599d6380c7798fd17dea7970f81a1936",
+        "crates\\cloudleaf-user\\src\\lib.rs": "00083011861d8dd05dff1c1bcfb7c2c15f838387dcff5cc15d6db23d08fdf3e3",
+        "crates\\cloudleaf-user\\src\\store.rs": "da546f56ee8c99151e44adc42be351813c6a5720e9bfbec648934205abfe237a",
+        "crates\\cloudleaf-user\\tests\\contract.rs": "6482ae23e77317c84f75f9af8ea58473c8ce426e47f81339b4ec589b114201c9"
+      },
+      "design_head": "8dd3505",
+      "stdout_sha256": "a2e568a23c548ec3fb027c93debfad21fdc3e69d7aa64bef3fa1e0180d205a01",
+      "stderr_sha256": "ba61d800ea143747ba28b51cad68ec89fa5576f7b3a430479a9b3a6a64949242"
+    },
+    "lint-final": {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "clippy",
+        "-p",
+        "cloudleaf-user",
+        "--all-targets",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "returncode": 0,
+      "seconds": 1.0766875999979675,
+      "source": {
+        "crates\\cloudleaf-user\\Cargo.toml": "f2a2b07319a3529905af0d29e4e28835599d6380c7798fd17dea7970f81a1936",
+        "crates\\cloudleaf-user\\src\\lib.rs": "1c6fc8361cb6f3ba1aaf545d491625dcb42941cd8de6b4ebe508eb4972e04b81",
+        "crates\\cloudleaf-user\\src\\store.rs": "94ffa2bcf6e744753c4e6c55cdcb57facc242855cb95342fad4dc5590a1da78a",
+        "crates\\cloudleaf-user\\tests\\contract.rs": "3a0a5592a5b7610b19a9c714eda36894803dd1f804c455417cefa3e6c99de2fe",
+        "crates\\cloudleaf-user\\tests\\storage.rs": "0bc40c26fdcc8df6f3e2062bbc3b6d8b62a81a131a67ccacea9bbf9c2b7c92c2"
+      },
+      "design_head": "8dd3505",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "9c7efc73223b89450fb16aed0a80f55d2ff9d3b08e504874258ad4c85ac6be7c"
+    },
+    "lint-first": {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "clippy",
+        "-p",
+        "cloudleaf-user",
+        "--all-targets",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "returncode": 0,
+      "seconds": 4.581245600013062,
+      "source": {
+        "crates\\cloudleaf-user\\Cargo.toml": "f2a2b07319a3529905af0d29e4e28835599d6380c7798fd17dea7970f81a1936",
+        "crates\\cloudleaf-user\\src\\lib.rs": "78821ccf41e555924776a6783837983e486ef5e8c8e2a0965dab7c7f7dc89d42",
+        "crates\\cloudleaf-user\\src\\store.rs": "94ffa2bcf6e744753c4e6c55cdcb57facc242855cb95342fad4dc5590a1da78a",
+        "crates\\cloudleaf-user\\tests\\contract.rs": "927ce2d70d05c909a4700b14ece4edebe5a009b3dea45947e47a7f0e31dd9416",
+        "crates\\cloudleaf-user\\tests\\storage.rs": "0bc40c26fdcc8df6f3e2062bbc3b6d8b62a81a131a67ccacea9bbf9c2b7c92c2"
+      },
+      "design_head": "8dd3505",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "5667ce181061533d48969b8899b534153ff7bf4cfe2ffb4ee7b63e411f614e7b"
+    },
+    "lock": {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "generate-lockfile",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 0.2499658000015188,
+      "source": {
+        "crates\\cloudleaf-user\\Cargo.toml": "f2a2b07319a3529905af0d29e4e28835599d6380c7798fd17dea7970f81a1936",
+        "crates\\cloudleaf-user\\src\\lib.rs": "ac02b55afd84e03c493d5b0947c83cd657c7b20ac8ad3646b2ee49100442cef7",
+        "crates\\cloudleaf-user\\tests\\contract.rs": "6482ae23e77317c84f75f9af8ea58473c8ce426e47f81339b4ec589b114201c9"
+      },
+      "design_head": "8dd3505",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e5b478ffc2a64abd9250493f557b01414cec8710700f0c401683d9bc911a43f2"
+    },
+    "reset-red": {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "test",
+        "-p",
+        "cloudleaf-user",
+        "--test",
+        "storage",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 101,
+      "seconds": 2.0370998999860603,
+      "source": {
+        "crates\\cloudleaf-user\\Cargo.toml": "f2a2b07319a3529905af0d29e4e28835599d6380c7798fd17dea7970f81a1936",
+        "crates\\cloudleaf-user\\src\\lib.rs": "00083011861d8dd05dff1c1bcfb7c2c15f838387dcff5cc15d6db23d08fdf3e3",
+        "crates\\cloudleaf-user\\src\\store.rs": "da546f56ee8c99151e44adc42be351813c6a5720e9bfbec648934205abfe237a",
+        "crates\\cloudleaf-user\\tests\\contract.rs": "6482ae23e77317c84f75f9af8ea58473c8ce426e47f81339b4ec589b114201c9",
+        "crates\\cloudleaf-user\\tests\\storage.rs": "faa83b590f37ce2799f1bea5c4b4893dbe9d5149c2ef1dba3121219067cf6f61"
+      },
+      "design_head": "8dd3505",
+      "stdout_sha256": "d72968dc2af9782da01bc113548c290cd395107ea1e834b956d72ce38ba1b063",
+      "stderr_sha256": "b6345f8fdacc79eb1a8d908d6b80ae045f64c0ca92ddaad1620204034a7aa044"
+    },
+    "stale-user-event-green": {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "test",
+        "-p",
+        "cloudleaf-user",
+        "--all-targets",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 2.6525646999944,
+      "source": {
+        "crates\\cloudleaf-user\\Cargo.toml": "f2a2b07319a3529905af0d29e4e28835599d6380c7798fd17dea7970f81a1936",
+        "crates\\cloudleaf-user\\src\\lib.rs": "6dc2692244d0aca40e56781fa4653aaf3f0c8c6479aa13da32c6ef8dd6ebf889",
+        "crates\\cloudleaf-user\\src\\store.rs": "94ffa2bcf6e744753c4e6c55cdcb57facc242855cb95342fad4dc5590a1da78a",
+        "crates\\cloudleaf-user\\tests\\contract.rs": "9794fd471370cb8039458030b5ca478f3e650e8cc0fcb883b87bd7284add59c7",
+        "crates\\cloudleaf-user\\tests\\storage.rs": "0bc40c26fdcc8df6f3e2062bbc3b6d8b62a81a131a67ccacea9bbf9c2b7c92c2"
+      },
+      "design_head": "8dd3505",
+      "stdout_sha256": "5b9bf1302b00a65e41533155b5a655804b265e7437ff18ba94ac6baab261677d",
+      "stderr_sha256": "b4f990096f7482ce93a156ba4956fce8825f5e2b7038740e7fc9346902ca9000"
+    },
+    "stale-user-event-red": {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "test",
+        "-p",
+        "cloudleaf-user",
+        "--test",
+        "contract",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 101,
+      "seconds": 1.7257799000071827,
+      "source": {
+        "crates\\cloudleaf-user\\Cargo.toml": "f2a2b07319a3529905af0d29e4e28835599d6380c7798fd17dea7970f81a1936",
+        "crates\\cloudleaf-user\\src\\lib.rs": "78821ccf41e555924776a6783837983e486ef5e8c8e2a0965dab7c7f7dc89d42",
+        "crates\\cloudleaf-user\\src\\store.rs": "94ffa2bcf6e744753c4e6c55cdcb57facc242855cb95342fad4dc5590a1da78a",
+        "crates\\cloudleaf-user\\tests\\contract.rs": "9794fd471370cb8039458030b5ca478f3e650e8cc0fcb883b87bd7284add59c7",
+        "crates\\cloudleaf-user\\tests\\storage.rs": "0bc40c26fdcc8df6f3e2062bbc3b6d8b62a81a131a67ccacea9bbf9c2b7c92c2"
+      },
+      "design_head": "8dd3505",
+      "stdout_sha256": "de234dbb5aa02e7963a9941c0eef46a9a3a93c2bd89d319f8e9b1f1092151038",
+      "stderr_sha256": "787f276528a06d4e714b13ce61bea0129dcfb0ce70e33a7bb7a4fb8dee0a17be"
+    },
+    "storage-final": {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "test",
+        "-p",
+        "cloudleaf-user",
+        "--all-targets",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 2.5648260999878403,
+      "source": {
+        "crates\\cloudleaf-user\\Cargo.toml": "f2a2b07319a3529905af0d29e4e28835599d6380c7798fd17dea7970f81a1936",
+        "crates\\cloudleaf-user\\src\\lib.rs": "4834257d9e8b9ce641ad851dea541b687fe7dcd9bc6b5f5ea6fe8e3ea9fa1a85",
+        "crates\\cloudleaf-user\\src\\store.rs": "94ffa2bcf6e744753c4e6c55cdcb57facc242855cb95342fad4dc5590a1da78a",
+        "crates\\cloudleaf-user\\tests\\contract.rs": "3a0a5592a5b7610b19a9c714eda36894803dd1f804c455417cefa3e6c99de2fe",
+        "crates\\cloudleaf-user\\tests\\storage.rs": "61bd6e29632876e4d619bea36ec55999e8220367f8b51379de576b5f6cab9e1a"
+      },
+      "design_head": "8dd3505",
+      "stdout_sha256": "4f6b5b3bd1ab36af05400004ccfd62db59181f8ab5db582498e2eb28707ade79",
+      "stderr_sha256": "2ad039a8015e910a3b5fcf109e47f19f5ec0469e152c45b76a0b5d6d062f4093"
+    },
+    "storage-final-doc": {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "test",
+        "-p",
+        "cloudleaf-user",
+        "--doc",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 0.415830999991158,
+      "source": {
+        "crates\\cloudleaf-user\\Cargo.toml": "f2a2b07319a3529905af0d29e4e28835599d6380c7798fd17dea7970f81a1936",
+        "crates\\cloudleaf-user\\src\\lib.rs": "4834257d9e8b9ce641ad851dea541b687fe7dcd9bc6b5f5ea6fe8e3ea9fa1a85",
+        "crates\\cloudleaf-user\\src\\store.rs": "94ffa2bcf6e744753c4e6c55cdcb57facc242855cb95342fad4dc5590a1da78a",
+        "crates\\cloudleaf-user\\tests\\contract.rs": "3a0a5592a5b7610b19a9c714eda36894803dd1f804c455417cefa3e6c99de2fe",
+        "crates\\cloudleaf-user\\tests\\storage.rs": "61bd6e29632876e4d619bea36ec55999e8220367f8b51379de576b5f6cab9e1a"
+      },
+      "design_head": "8dd3505",
+      "stdout_sha256": "df166913f47ff1f04202cae9b31df67ed272d692d99a0023a8117dc3029100dd",
+      "stderr_sha256": "ef0c527fcd8ff8332858a986d3c2e8dcbaede764b088227243f0569ed65cee3b"
+    },
+    "storage-final-lint": {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "clippy",
+        "-p",
+        "cloudleaf-user",
+        "--all-targets",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "returncode": 0,
+      "seconds": 1.2945427999948151,
+      "source": {
+        "crates\\cloudleaf-user\\Cargo.toml": "f2a2b07319a3529905af0d29e4e28835599d6380c7798fd17dea7970f81a1936",
+        "crates\\cloudleaf-user\\src\\lib.rs": "4834257d9e8b9ce641ad851dea541b687fe7dcd9bc6b5f5ea6fe8e3ea9fa1a85",
+        "crates\\cloudleaf-user\\src\\store.rs": "94ffa2bcf6e744753c4e6c55cdcb57facc242855cb95342fad4dc5590a1da78a",
+        "crates\\cloudleaf-user\\tests\\contract.rs": "3a0a5592a5b7610b19a9c714eda36894803dd1f804c455417cefa3e6c99de2fe",
+        "crates\\cloudleaf-user\\tests\\storage.rs": "61bd6e29632876e4d619bea36ec55999e8220367f8b51379de576b5f6cab9e1a"
+      },
+      "design_head": "8dd3505",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "dc723c6dde34f6c04e94c48d6322cdf016c9c7d58700c85aaa0e24997c7ce6fb"
+    },
+    "storage-green": {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+        "test",
+        "-p",
+        "cloudleaf-user",
+        "--all-targets",
+        "--locked",
+        "--offline"
+      ],
+      "returncode": 0,
+      "seconds": 3.39282739997725,
+      "source": {
+        "crates\\cloudleaf-user\\Cargo.toml": "f2a2b07319a3529905af0d29e4e28835599d6380c7798fd17dea7970f81a1936",
+        "crates\\cloudleaf-user\\src\\lib.rs": "14181932a3f5ec4adc06b730ca35c8f5210a3abaf35987c894aebc523d12440c",
+        "crates\\cloudleaf-user\\src\\store.rs": "aff4f0b79954dc990c2fc1d2c67b4588180fb8fc6d843d80677047e60950fe8f",
+        "crates\\cloudleaf-user\\tests\\contract.rs": "6482ae23e77317c84f75f9af8ea58473c8ce426e47f81339b4ec589b114201c9",
+        "crates\\cloudleaf-user\\tests\\storage.rs": "faa83b590f37ce2799f1bea5c4b4893dbe9d5149c2ef1dba3121219067cf6f61"
+      },
+      "design_head": "8dd3505",
+      "stdout_sha256": "46ae63dd8bb0c320f98272b9128f964e4da75339fd3805c5c13003e4a3da22c7",
+      "stderr_sha256": "565c155552fd95b0c01c74384d984c3d4fb26534ad328470f7b8f04e96050db0"
+    }
+  },
+  "toolchain": {
+    "cargo": {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.exe",
+        "--version"
+      ],
+      "returncode": 0,
+      "stdout": "cargo 1.90.0 (840b83a10 2025-07-30)"
+    },
+    "rustc": {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\rustc.exe",
+        "--version"
+      ],
+      "returncode": 0,
+      "stdout": "rustc 1.90.0 (1159e78c4 2025-09-14)"
+    }
+  },
+  "standalone_lock_sha256": "f2b4444b00e377780bd57c70f3faff9afd7e15eac8bdce3649dac38ce603401c",
+  "tools": {
+    "run.py": "e9f68a2728ea3025b3ed097e1980c090c7224567823b1ad2b56d560163835da7",
+    "deliver.py": "2918f3bfc205a578bedd93d505a660770fc0954e0162664181551302a1d7c7ce"
+  },
+  "limitations": [
+    "Temp Windows tests only; full actual workspace and Linux push CI remain parent work",
+    "File StorageFull fault writes actual half payload but injects std ErrorKind::StorageFull; no real disk exhaustion claim",
+    "Process exit/interruption tests are not physical power-loss validation",
+    "Store path root supplied by host; Windows LocalAppData resolution and owned UI are parent work",
+    "User entries are plaintext; no encryption or SSD erasure claim",
+    "SelectionOrigin enum is descriptive, not authorization proof; actual host must verify Applied/session/revision/snapshot and reject duplicate callback before writing",
+    "Recent-event cache bounded256 and ephemeral; host must never reuse a session/commit token after restart",
+    "Windows directory durability not proven; normal save syncs payload before unused-generation rename",
+    "Symlink/reparse and lexical parent traversal rejected; no claim of hostile hardlink or external concurrent tamper protection"
+  ]
+}

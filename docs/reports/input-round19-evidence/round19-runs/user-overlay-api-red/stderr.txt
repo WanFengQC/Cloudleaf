@@ -1,0 +1,21 @@
+   Compiling cloudleaf-search v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-search)
+error[E0599]: no method named `with_user_layer` found for struct `Lexicon` in the current scope
+  --> crates\cloudleaf-search\tests\user_layer.rs:10:25
+   |
+10 |     let combined = base.with_user_layer(&users, &BTreeMap::new()).unwrap();
+   |                         ^^^^^^^^^^^^^^^ method not found in `Lexicon`
+
+error[E0599]: no method named `with_user_layer` found for struct `Lexicon` in the current scope
+  --> crates\cloudleaf-search\tests\user_layer.rs:31:22
+   |
+31 |         assert!(base.with_user_layer(&format!("{HEADER}{bad}"), &BTreeMap::new()).is_err());
+   |                      ^^^^^^^^^^^^^^^ method not found in `Lexicon`
+
+error[E0599]: no method named `with_user_layer` found for struct `Lexicon` in the current scope
+  --> crates\cloudleaf-search\tests\user_layer.rs:33:18
+   |
+33 |     assert!(base.with_user_layer(HEADER, &BTreeMap::from([("missing".into(), 1)])).is_err());
+   |                  ^^^^^^^^^^^^^^^ method not found in `Lexicon`
+
+For more information about this error, try `rustc --explain E0599`.
+error: could not compile `cloudleaf-search` (test "user_layer") due to 3 previous errors

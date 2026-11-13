@@ -1,0 +1,1586 @@
+diff --git a/Cargo.lock b/Cargo.lock
+index 5754c7b..2247857 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -77,6 +77,14 @@ dependencies = [
+ name = "cloudleaf-types"
+ version = "0.1.0"
+ 
++[[package]]
++name = "cloudleaf-user"
++version = "0.1.0"
++dependencies = [
++ "cloudleaf-pinyin",
++ "ring",
++]
++
+ [[package]]
+ name = "cloudleaf-windows-ime"
+ version = "0.1.0"
+@@ -85,6 +93,7 @@ dependencies = [
+  "cloudleaf-input",
+  "cloudleaf-search",
+  "cloudleaf-types",
++ "cloudleaf-user",
+  "windows",
+  "windows-core",
+ ]
+diff --git a/Cargo.toml b/Cargo.toml
+index c9f480c..273fa93 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -6,6 +6,7 @@ members = [
+     "crates/cloudleaf-candidate",
+     "crates/cloudleaf-input",
+     "crates/cloudleaf-search",
++    "crates/cloudleaf-user",
+     "apps/cloudleaf-cli",
+     "apps/windows-ime",
+ ]
+@@ -25,6 +26,7 @@ cloudleaf-dictionary = { path = "crates/cloudleaf-dictionary", version = "=0.1.0
+ cloudleaf-candidate = { path = "crates/cloudleaf-candidate", version = "=0.1.0" }
+ cloudleaf-input = { path = "crates/cloudleaf-input", version = "=0.1.0" }
+ cloudleaf-search = { path = "crates/cloudleaf-search", version = "=0.1.0" }
++cloudleaf-user = { path = "crates/cloudleaf-user", version = "=0.1.0" }
+ 
+ [workspace.lints.rust]
+ unsafe_code = "forbid"
+diff --git a/adapters/windows/isolated_input.rs b/adapters/windows/isolated_input.rs
+index ec74783..6b7b1ad 100644
+--- a/adapters/windows/isolated_input.rs
++++ b/adapters/windows/isolated_input.rs
+@@ -17,9 +17,14 @@ use windows::Win32::{
+     },
+ };
+ use windows_core::{PCWSTR, w};
++#[path = "user_panel.rs"]
++mod user_panel;
++#[path = "user_worker.rs"]
++mod user_worker;
+ 
+ #[derive(Default, Debug)]
+ pub(crate) struct Sample {
++    selection: Option<cloudleaf_input::SelectionEvidence>,
+     pub core_ns: u128,
+     pub projection_ns: u128,
+     pub comparison_ns: u128,
+@@ -167,6 +172,7 @@ impl LocalHost {
+             };
+             match outcome {
+                 CommitOutcome::Applied => {
++                    sample.selection = self.host.engine.borrow().pending_selection().cloned();
+                     *self.document.borrow_mut() = document;
+                     self.host
+                         .engine
+@@ -242,6 +248,15 @@ struct Window {
+     status: Cell<HWND>,
+     fault: Cell<bool>,
+     ui: RefCell<Option<CandidateUi>>,
++    users: RefCell<Option<UserState>>,
++}
++struct UserState {
++    panel: Rc<user_panel::Panel>,
++    worker: user_worker::Worker,
++    active: Option<user_worker::Prepared>,
++    pending: Option<user_worker::Prepared>,
++    busy: bool,
++    session: String,
+ }
+ fn wide(text: &str) -> Vec<u16> {
+     text.encode_utf16().chain([0]).collect()
+@@ -271,6 +286,31 @@ impl Window {
+             .process(event, selection, &|document| self.sink(document))
+         {
+             Ok((frame, sample)) => {
++                if let Some(evidence) = &sample.selection {
++                    if let Some(users) = &mut *self.users.borrow_mut() {
++                        if let Some(active) = &users.active {
++                            if active.learning
++                                && !users.busy
++                                && evidence.snapshot_version == active.snapshot.version()
++                            {
++                                let event = user_worker::learning_event(
++                                    evidence,
++                                    &users.session,
++                                    active.epoch,
++                                );
++                                match users.worker.send(user_worker::Work::Learn {
++                                    event,
++                                    generation: active.generation,
++                                }) {
++                                    Ok(()) => users.busy = true,
++                                    Err(e) => {
++                                        users.panel.refresh(&active.listing, e);
++                                    }
++                                }
++                            }
++                        }
++                    }
++                }
+                 let now = Instant::now();
+                 self.update(frame)?;
+                 println!(
+@@ -291,6 +331,133 @@ impl Window {
+             }
+         }
+     }
++    fn open_users(self: &Rc<Self>) -> Result<()> {
++        if let Some(users) = &*self.users.borrow() {
++            users.panel.show();
++            return Ok(());
++        }
++        let (base, language) = self
++            .local
++            .host
++            .engine
++            .borrow()
++            .search_resources()
++            .ok_or_else(|| Error::new(E_FAIL, "没有可管理的搜索快照"))?;
++        let weak = Rc::downgrade(self);
++        let panel = user_panel::Panel::open(
++            self.window.get(),
++            Rc::new(move |command| {
++                if let Some(view) = weak.upgrade() {
++                    view.user_command(command);
++                }
++            }),
++        )?;
++        let path = user_directory()?;
++        let worker = user_worker::Worker::start(base, language, path);
++        *self.users.borrow_mut() = Some(UserState {
++            panel,
++            worker,
++            active: None,
++            pending: None,
++            busy: true,
++            session: format!(
++                "{}-{}",
++                std::process::id(),
++                std::time::SystemTime::now()
++                    .duration_since(std::time::UNIX_EPOCH)
++                    .unwrap_or_default()
++                    .as_nanos()
++            ),
++        });
++        unsafe {
++            SetTimer(Some(self.window.get()), 19, 100, None);
++        }
++        Ok(())
++    }
++    fn user_command(self: &Rc<Self>, command: user_panel::Command) {
++        let mut users = self.users.borrow_mut();
++        let Some(users) = users.as_mut() else { return };
++        if users.busy || users.pending.is_some() {
++            users.panel.refresh("", "任务仍在进行，稍后重试");
++            return;
++        }
++        let engine = self.local.host.engine.borrow();
++        let frame = engine.frame();
++        if self.local.host.quarantined.get()
++            || engine.failed_commit().is_some()
++            || frame.state == cloudleaf_types::InputState::Committing
++        {
++            users
++                .panel
++                .refresh("", "未决提交阻止用户词库变更，请先核对或取消");
++            return;
++        }
++        if matches!(
++            command,
++            user_panel::Command::ToggleLearning
++                | user_panel::Command::ClearLearning
++                | user_panel::Command::ClearAll
++        ) {
++            if let Some(active) = &mut users.active {
++                active.learning = false;
++            }
++        }
++        match users.worker.send(user_worker::Work::Manage(command)) {
++            Ok(()) => {
++                users.busy = true;
++                users
++                    .panel
++                    .refresh("", "正在后台保存和构建，输入不等待磁盘");
++            }
++            Err(e) => {
++                users.panel.refresh("", e);
++            }
++        }
++    }
++    fn poll_users(self: &Rc<Self>) -> Result<()> {
++        let mut state = self.users.borrow_mut();
++        let Some(users) = state.as_mut() else {
++            return Ok(());
++        };
++        if let Some(reply) = users.worker.poll() {
++            users.busy = false;
++            match reply {
++                user_worker::Reply::Error(e) => {
++                    let listing = users.active.as_ref().map_or("", |a| a.listing.as_str());
++                    users.panel.refresh(listing, &e);
++                }
++                user_worker::Reply::Ready(p) => users.pending = Some(p),
++            }
++        }
++        let Some(p) = users.pending.as_ref() else {
++            return Ok(());
++        };
++        if self.local.host.quarantined.get() {
++            return Ok(());
++        }
++        for engine in [&self.local.host.engine, &self.local.host.projection] {
++            if engine
++                .borrow()
++                .validate_search_resources(p.snapshot.clone(), p.language.clone())
++                .is_err()
++            {
++                return Ok(());
++            }
++        }
++        // 两个实际引擎已共同预检，当前STA中间不分派其他消息。
++        for engine in [&self.local.host.engine, &self.local.host.projection] {
++            engine
++                .borrow_mut()
++                .replace_search_resources(p.snapshot.clone(), p.language.clone())
++                .map_err(|_| Error::new(E_FAIL, "用户快照发布失败"))?;
++        }
++        let p = users.pending.take().unwrap();
++        users.panel.refresh(&p.listing, &p.status);
++        users.active = Some(p);
++        drop(state);
++        let frame = self.local.host.engine.borrow().frame();
++        self.update(frame)
++    }
+     fn settings_key(self: &Rc<Self>, key: u16) -> Result<()> {
+         use cloudleaf_input::{
+             CorrectionConfig, DoublePinyinLayout, FuzzyDirection, FuzzyPair, FuzzyRule,
+@@ -406,6 +573,33 @@ impl Window {
+         self.ui.borrow_mut().as_mut().unwrap().update(frame, rect)
+     }
+ }
++fn user_directory() -> Result<std::path::PathBuf> {
++    use windows::Win32::UI::Shell::{
++        FOLDERID_LocalAppData, KNOWN_FOLDER_FLAG, SHGetKnownFolderPath,
++    };
++    // 安全：当前用户标准目录的COM分配字符串转换后立即归还。
++    unsafe {
++        let path = SHGetKnownFolderPath(&FOLDERID_LocalAppData, KNOWN_FOLDER_FLAG(0), None)?;
++        let value = path.to_string();
++        windows::Win32::System::Com::CoTaskMemFree(Some(path.0.cast()));
++        let mut root = std::path::PathBuf::from(value?);
++        root.push("Cloudleaf");
++        if let Ok(profile) = std::env::var("CLOUDLEAF_USER_TEST_PROFILE") {
++            if profile.is_empty()
++                || profile.len() > 64
++                || !profile
++                    .bytes()
++                    .all(|b| b.is_ascii_alphanumeric() || b == b'-')
++            {
++                return Err(Error::new(E_INVALIDARG, "测试档案标识无效"));
++            }
++            root.push("Research");
++            root.push(profile);
++        }
++        root.push("user-dictionary");
++        Ok(root)
++    }
++}
+ 
+ unsafe extern "system" fn window_proc(
+     window: HWND,
+@@ -428,6 +622,7 @@ unsafe extern "system" fn window_proc(
+                     for (id,label,x,width) in [(1,"下一次提交注入Unknown",12,230),(2,"核对后开始新会话",260,210),(3,"纠错开关",485,200)] {
+                         CreateWindowExW(WINDOW_EX_STYLE::default(),w!("BUTTON"),PCWSTR(wide(label).as_ptr()),WS_CHILD|WS_VISIBLE,x,128,width,30,Some(window),Some(HMENU(id as *mut _)),None,None)?;
+                     }
++                    CreateWindowExW(WINDOW_EX_STYLE::default(),w!("BUTTON"),w!("用户词库 / 本地学习"),WS_CHILD|WS_VISIBLE|WS_TABSTOP,485,164,220,30,Some(window),Some(HMENU(4usize as *mut _)),None,None)?;
+                     view.document.set(CreateWindowExW(WS_EX_CLIENTEDGE,w!("EDIT"),w!(""),WS_CHILD|WS_VISIBLE|WS_VSCROLL|WINDOW_STYLE(ES_READONLY as u32|ES_MULTILINE as u32|ES_AUTOVSCROLL as u32),12,320,720,200,Some(window),None,None,None)?);
+                     // 只解绑本窗口及已创建子控件的继承IME；拼音由本隔离核心处理，不改变系统布局。
+                     if !ImmAssociateContextEx(window, HIMC::default(), 0).as_bool()
+@@ -473,10 +668,12 @@ unsafe extern "system" fn window_proc(
+                     }
+                     let _=SetFocus(Some(window)); Ok(LRESULT(0))
+                 }
++                WM_COMMAND if wparam.0&0xffff==4 => {view.open_users()?;Ok(LRESULT(0))}
++                WM_TIMER if wparam.0==19 => {view.poll_users()?;Ok(LRESULT(0))}
+                 // 顶层激活状态覆盖EDIT/按钮持有焦点时的外部切换，子控件间切换不取消组合。
+                 WM_ACTIVATE if wparam.0 & 0xffff == WA_INACTIVE as usize => { if !view.local.host.quarantined.get() { view.process(InputEvent::FocusLost,None)?; } Ok(LRESULT(0)) }
+                 WM_SETFOCUS => { if !view.local.host.quarantined.get() { view.process(InputEvent::Activate,None)?; } Ok(LRESULT(0)) }
+-                WM_CLOSE => { view.ui.borrow_mut().take(); DestroyWindow(window)?; Ok(LRESULT(0)) }
++                WM_CLOSE => { view.ui.borrow_mut().take();if let Some(mut users)=view.users.borrow_mut().take(){users.panel.close();users.worker.shutdown();} DestroyWindow(window)?; Ok(LRESULT(0)) }
+                 WM_DESTROY => { PostQuitMessage(0); Ok(LRESULT(0)) }
+                 WM_NCDESTROY => { SetWindowLongPtrW(window,GWLP_USERDATA,0); Ok(DefWindowProcW(window,message,wparam,lparam)) }
+                 _ => Ok(DefWindowProcW(window,message,wparam,lparam)),
+@@ -494,6 +691,7 @@ pub(crate) fn run(runtime: &str, runtime_sha: &str, model: Option<(&str, &str)>)
+         status: Cell::new(HWND::default()),
+         fault: Cell::new(false),
+         ui: RefCell::new(None),
++        users: RefCell::new(None),
+     });
+     // 安全：创建、运行和销毁本进程普通Win32窗口；没有任何注册或TSF激活动作。
+     unsafe {
+@@ -728,6 +926,7 @@ mod tests {
+             status: Cell::new(HWND::default()),
+             fault: Cell::new(false),
+             ui: RefCell::new(None),
++            users: RefCell::new(None),
+         });
+         type_text(&view.local, "nihao");
+         let frame = view.local.host.engine.borrow().frame();
+@@ -797,6 +996,7 @@ mod tests {
+             status: Cell::new(HWND::default()),
+             fault: Cell::new(false),
+             ui: RefCell::new(None),
++            users: RefCell::new(None),
+         });
+         // 安全：检查本测试隐藏父子窗口的上下文；不切换用户布局或其他窗口的输入法。
+         unsafe {
+diff --git a/apps/windows-ime/Cargo.toml b/apps/windows-ime/Cargo.toml
+index c259597..65bf201 100644
+--- a/apps/windows-ime/Cargo.toml
++++ b/apps/windows-ime/Cargo.toml
+@@ -19,9 +19,10 @@ cloudleaf-types.workspace = true
+ cloudleaf-input.workspace = true
+ cloudleaf-search.workspace = true
+ cloudleaf-dictionary.workspace = true
++cloudleaf-user.workspace = true
+ 
+ [target.'cfg(windows)'.dependencies]
+-windows = { version = "=0.62.2", features = ["Win32_Foundation", "Win32_System_Com", "Win32_System_Ole", "Win32_System_Variant", "Win32_System_LibraryLoader", "Win32_System_Registry", "Win32_System_Threading", "Win32_UI_Controls", "Win32_UI_TextServices", "Win32_UI_Input_KeyboardAndMouse", "Win32_UI_Input_Ime", "Win32_UI_WindowsAndMessaging", "Win32_Graphics_Gdi", "Win32_Security"] }
++windows = { version = "=0.62.2", features = ["Win32_Foundation", "Win32_System_Com", "Win32_System_Ole", "Win32_System_Variant", "Win32_System_LibraryLoader", "Win32_System_Registry", "Win32_System_Threading", "Win32_UI_Controls", "Win32_UI_Shell", "Win32_UI_TextServices", "Win32_UI_Input_KeyboardAndMouse", "Win32_UI_Input_Ime", "Win32_UI_WindowsAndMessaging", "Win32_Graphics_Gdi", "Win32_Security"] }
+ windows-core = "=0.62.2"
+ 
+ [lints.rust]
+diff --git a/crates/cloudleaf-input/src/lib.rs b/crates/cloudleaf-input/src/lib.rs
+index b54b915..704d57a 100644
+--- a/crates/cloudleaf-input/src/lib.rs
++++ b/crates/cloudleaf-input/src/lib.rs
+@@ -3,7 +3,7 @@
+ mod sentence;
+ pub use sentence::{
+     EdgeSource, LanguageSnapshot, SearchCapacityBounds, SearchDiagnostic, SearchPath,
+-    SearchSnapshot,
++    SearchSnapshot, entry_fingerprint,
+ };
+ 
+ use cloudleaf_dictionary::Dictionary;
+@@ -54,6 +54,19 @@ pub struct InputEngine {
+     next_commit_id: u64,
+     pending_commit: Option<CommitRequest>,
+     failed_commit: Option<CommitRequest>,
++    pending_selection: Option<SelectionEvidence>,
++}
++
++/// 只证明当前引擎确实选择过候选；本对象不证明宿主Applied，不能自行触发学习。
++#[derive(Clone, Debug, Eq, PartialEq)]
++pub struct SelectionEvidence {
++    pub commit_id: u64,
++    pub revision: u64,
++    pub candidate_id: String,
++    pub snapshot_version: String,
++    pub model_version: Option<String>,
++    pub scheme_version: Option<String>,
++    pub entries: Vec<(String, String)>,
+ }
+ 
+ impl InputEngine {
+@@ -88,6 +101,7 @@ impl InputEngine {
+             next_commit_id: 1,
+             pending_commit: None,
+             failed_commit: None,
++            pending_selection: None,
+         })
+     }
+ 
+@@ -113,6 +127,55 @@ impl InputEngine {
+         self.search_diagnostic.as_ref()
+     }
+ 
++    pub fn pending_selection(&self) -> Option<&SelectionEvidence> {
++        self.pending_selection.as_ref()
++    }
++    pub fn search_resources(&self) -> Option<(Arc<SearchSnapshot>, Option<Arc<LanguageSnapshot>>)> {
++        self.sentence
++            .as_ref()
++            .map(sentence::SentenceBackend::snapshots)
++    }
++
++    pub fn validate_search_resources(
++        &self,
++        snapshot: Arc<SearchSnapshot>,
++        language: Option<Arc<LanguageSnapshot>>,
++    ) -> Result<(), CoreError> {
++        if self.pending_commit.is_some() || self.failed_commit.is_some() {
++            return Err(CoreError::new(
++                ErrorCode::CommitPending,
++                "未决事务不能发布用户词库",
++            ));
++        }
++        if self.revision == u64::MAX {
++            return Err(CoreError::new(ErrorCode::InvalidInput, "修订号耗尽"));
++        }
++        self.sentence
++            .as_ref()
++            .ok_or_else(|| CoreError::new(ErrorCode::InvalidConfig, "非整句后端"))?
++            .resources(snapshot, language)?;
++        Ok(())
++    }
++    pub fn replace_search_resources(
++        &mut self,
++        snapshot: Arc<SearchSnapshot>,
++        language: Option<Arc<LanguageSnapshot>>,
++    ) -> Result<(), CoreError> {
++        self.validate_search_resources(snapshot.clone(), language.clone())?;
++        self.sentence = Some(
++            self.sentence
++                .as_ref()
++                .unwrap()
++                .resources(snapshot, language)?,
++        );
++        let inactive = self.state == InputState::Inactive;
++        self.refresh();
++        if inactive {
++            self.state = InputState::Inactive
++        }
++        Ok(())
++    }
++
+     /// 显式研发模型；构造前由宿主完成文件读取与模型身份核验。
+     pub fn with_language(
+         snapshot: Arc<SearchSnapshot>,
+@@ -354,7 +417,12 @@ impl InputEngine {
+                 )),
+             );
+         };
+-        self.begin_commit(candidate.text.clone())
++        let index = self
++            .candidates
++            .iter()
++            .position(|c| c.id == candidate.id)
++            .unwrap();
++        self.begin_candidate_commit(index)
+     }
+ 
+     /// 处理一个事件，不执行文件读写、网络访问或系统文本提交。
+@@ -441,7 +509,11 @@ impl InputEngine {
+                 if self.preedit.is_empty() {
+                     self.result(false, None, None)
+                 } else {
+-                    self.begin_commit(self.confirmed_text())
++                    if let Some(index) = self.highlighted {
++                        self.begin_candidate_commit(index)
++                    } else {
++                        self.begin_commit(self.preedit.clone())
++                    }
+                 }
+             }
+             Key::Char(character) => self.handle_character(character),
+@@ -511,7 +583,7 @@ impl InputEngine {
+             let index = self.page_start + digit as usize - 1;
+             let page_end = (self.page_start + self.config.page_size).min(self.candidates.len());
+             if index < page_end {
+-                return self.begin_commit(self.candidates[index].text.clone());
++                return self.begin_candidate_commit(index);
+             }
+         }
+ 
+@@ -585,12 +657,48 @@ impl InputEngine {
+         };
+         self.next_commit_id = next_id;
+         self.failed_commit = None;
++        self.pending_selection = None;
+         self.pending_commit = Some(request.clone());
+         self.state = InputState::Committing;
+         self.advance_revision();
+         self.result(true, Some(request), None)
+     }
+ 
++    fn begin_candidate_commit(&mut self, index: usize) -> EventResult {
++        let candidate = &self.candidates[index];
++        let id = candidate.id.clone();
++        let evidence = self.search_diagnostic.as_ref().and_then(|d| {
++            let path = d.paths.iter().find(|p| p.candidate_id == id)?;
++            let backend = self.sentence.as_ref()?;
++            let (snapshot, _) = backend.snapshots();
++            let entries = path
++                .edges
++                .iter()
++                .map(|e| {
++                    let entry = &snapshot.entries()[e.entry_index];
++                    (
++                        entry.id.clone(),
++                        entry_fingerprint(&entry.text, &entry.pinyin),
++                    )
++                })
++                .collect();
++            Some(SelectionEvidence {
++                commit_id: self.next_commit_id,
++                revision: self.revision,
++                candidate_id: id,
++                snapshot_version: d.snapshot_version.clone(),
++                model_version: d.model_version.clone(),
++                scheme_version: d.scheme_version.clone(),
++                entries,
++            })
++        });
++        let result = self.begin_commit(candidate.text.clone());
++        if result.commit.is_some() {
++            self.pending_selection = evidence;
++        }
++        result
++    }
++
+     fn acknowledge_commit(&mut self, id: u64, success: bool) -> EventResult {
+         if self.pending_commit.as_ref().map(|request| request.id) != Some(id) {
+             return self.result(
+@@ -632,7 +740,15 @@ impl InputEngine {
+             );
+         }
+         if let Some(failed) = self.failed_commit.as_ref() {
+-            self.begin_commit(failed.text.clone())
++            let mut evidence = self.pending_selection.clone();
++            let result = self.begin_commit(failed.text.clone());
++            if let Some(request) = &result.commit {
++                if let Some(value) = &mut evidence {
++                    value.commit_id = request.id;
++                }
++                self.pending_selection = evidence;
++            }
++            result
+         } else {
+             self.result(
+                 false,
+@@ -696,6 +812,7 @@ impl InputEngine {
+         self.page_start = 0;
+         self.pending_commit = None;
+         self.failed_commit = None;
++        self.pending_selection = None;
+         self.state = state;
+         self.advance_revision();
+     }
+diff --git a/crates/cloudleaf-input/src/sentence.rs b/crates/cloudleaf-input/src/sentence.rs
+index 9cde385..f1b2519 100644
+--- a/crates/cloudleaf-input/src/sentence.rs
++++ b/crates/cloudleaf-input/src/sentence.rs
+@@ -18,6 +18,7 @@ pub struct SearchSnapshot {
+     version: String,
+     max_text_bytes: usize,
+     max_edge_source_bytes: usize,
++    base_version: Option<String>,
+ }
+ 
+ impl SearchSnapshot {
+@@ -62,6 +63,7 @@ impl SearchSnapshot {
+             version: actual,
+             max_text_bytes,
+             max_edge_source_bytes,
++            base_version: None,
+         })
+     }
+ 
+@@ -69,10 +71,69 @@ impl SearchSnapshot {
+         &self.version
+     }
+ 
+-    pub fn entries(&self) -> &[cloudleaf_search::Entry] {
++    pub fn entries(&self) -> &cloudleaf_search::Entries {
+         self.lexicon.entries()
+     }
+ 
++    pub fn with_user_layer(
++        &self,
++        text: &str,
++        preferences: &std::collections::BTreeMap<String, u32>,
++    ) -> Result<Self, CoreError> {
++        let lexicon = self
++            .lexicon
++            .with_user_layer(text, preferences)
++            .map_err(|_| CoreError::new(ErrorCode::InvalidDictionary, "用户层索引或偏好无效"))?;
++        let mut hash = Context::new(&SHA256);
++        hash.update(self.version.as_bytes());
++        hash.update(text.as_bytes());
++        for (id, units) in preferences {
++            hash.update(&(id.len() as u64).to_le_bytes());
++            hash.update(id.as_bytes());
++            hash.update(&units.to_le_bytes());
++        }
++        let max_text_bytes = lexicon
++            .entries()
++            .iter()
++            .map(|entry| entry.text.len().div_ceil(entry.pinyin.split(' ').count()))
++            .max()
++            .unwrap_or(0)
++            .max(self.max_text_bytes);
++        let max_edge_source_bytes = lexicon
++            .entries()
++            .iter()
++            .map(|entry| {
++                entry.id.len()
++                    + entry.source.len()
++                    + entry.source_record_id.len()
++                    + entry.license_id.len()
++            })
++            .max()
++            .unwrap_or(0);
++        Ok(Self {
++            lexicon,
++            version: hex(hash.finish().as_ref()),
++            max_text_bytes,
++            max_edge_source_bytes,
++            base_version: Some(self.version.clone()),
++        })
++    }
++
++    pub fn incremental_estimated_bytes(&self) -> usize {
++        self.lexicon.incremental_estimated_bytes()
++            + std::mem::size_of::<Self>()
++            + self.version.capacity()
++            + self.base_version.as_ref().map_or(0, String::capacity)
++            + 32
++    }
++
++    pub fn entry_fingerprint(&self, id: &str) -> Option<String> {
++        self.entries()
++            .iter()
++            .find(|e| e.id == id)
++            .map(|e| entry_fingerprint(&e.text, &e.pinyin))
++    }
++
+     /// 容器容量与固定工具链树节点估计，包含32字节的本对象余量；不是RSS硬上界。
+     pub fn estimated_bytes(&self) -> usize {
+         self.lexicon.memory_estimate().total_estimated_bytes
+@@ -123,6 +184,7 @@ impl SearchSnapshot {
+ pub struct LanguageSnapshot {
+     snapshot: LanguageModelSnapshot,
+     version: String,
++    binding: String,
+ }
+ 
+ impl LanguageSnapshot {
+@@ -142,7 +204,11 @@ impl LanguageSnapshot {
+             .map_err(|_| {
+             CoreError::new(ErrorCode::InvalidConfig, "语言模型格式、范围或词典版本不符")
+         })?;
+-        Ok(Self { snapshot, version })
++        Ok(Self {
++            snapshot,
++            version,
++            binding: lexicon.version.clone(),
++        })
+     }
+ 
+     pub fn version(&self) -> &str {
+@@ -153,8 +219,31 @@ impl LanguageSnapshot {
+         self.snapshot.metadata()
+     }
+ 
++    pub fn for_user_layer(
++        &self,
++        base: &SearchSnapshot,
++        target: &SearchSnapshot,
++    ) -> Result<Self, CoreError> {
++        let snapshot = self
++            .snapshot
++            .for_extension(&base.lexicon, &target.lexicon)
++            .map_err(|_| CoreError::new(ErrorCode::InvalidConfig, "模型不属于用户层基础快照"))?;
++        if self.binding != base.version || target.base_version.as_deref() != Some(base.version()) {
++            return Err(CoreError::new(ErrorCode::InvalidConfig, "模型基础身份不符"));
++        }
++        Ok(Self {
++            snapshot,
++            version: self.version.clone(),
++            binding: target.version.clone(),
++        })
++    }
++
+     pub fn estimated_bytes(&self) -> usize {
+-        self.snapshot.estimated_bytes() + std::mem::size_of::<Self>() + self.version.capacity() + 32
++        self.snapshot.estimated_bytes()
++            + std::mem::size_of::<Self>()
++            + self.version.capacity()
++            + self.binding.capacity()
++            + 32
+     }
+ }
+ 
+@@ -252,7 +341,7 @@ impl SentenceBackend {
+         };
+         if !valid_model
+             || language.as_ref().is_some_and(|value| {
+-                value.metadata().lexicon_sha256 != snapshot.version
++                value.binding != snapshot.version
+                     || !value
+                         .snapshot
+                         .model()
+@@ -260,10 +349,7 @@ impl SentenceBackend {
+             })
+             || left_word.as_ref().is_some_and(|id| {
+                 config.ranker != Ranker::ContextRerank
+-                    || snapshot
+-                        .entries()
+-                        .binary_search_by(|entry| entry.id.cmp(id))
+-                        .is_err()
++                    || !snapshot.entries().iter().any(|entry| &entry.id == id)
+             })
+         {
+             return Err(CoreError::new(
+@@ -285,7 +371,7 @@ impl SentenceBackend {
+         snapshot: Arc<SearchSnapshot>,
+     ) -> Result<(), CoreError> {
+         if self.language.as_ref().is_some_and(|value| {
+-            value.metadata().lexicon_sha256 != snapshot.version
++            value.binding != snapshot.version
+                 || !value
+                     .snapshot
+                     .model()
+@@ -311,6 +397,25 @@ impl SentenceBackend {
+         Ok(replacement)
+     }
+ 
++    pub(crate) fn resources(
++        &self,
++        snapshot: Arc<SearchSnapshot>,
++        language: Option<Arc<LanguageSnapshot>>,
++    ) -> Result<Self, CoreError> {
++        let mut replacement = Self::configured(
++            snapshot,
++            self.config.clone(),
++            language,
++            self.left_word.clone(),
++        )?;
++        replacement.scheme = self.scheme.clone();
++        Ok(replacement)
++    }
++
++    pub(crate) fn snapshots(&self) -> (Arc<SearchSnapshot>, Option<Arc<LanguageSnapshot>>) {
++        (self.snapshot.clone(), self.language.clone())
++    }
++
+     pub(crate) fn scheme(&self) -> &cloudleaf_pinyin::SchemeConfig {
+         &self.scheme
+     }
+@@ -479,3 +584,11 @@ fn candidate_id(
+ fn hex(bytes: &[u8]) -> String {
+     bytes.iter().map(|byte| format!("{byte:02x}")).collect()
+ }
++
++pub fn entry_fingerprint(text: &str, pinyin: &str) -> String {
++    let mut hash = Context::new(&SHA256);
++    hash.update(text.as_bytes());
++    hash.update(&[0]);
++    hash.update(pinyin.as_bytes());
++    hex(hash.finish().as_ref())
++}
+diff --git a/crates/cloudleaf-input/tests/user_snapshot.rs b/crates/cloudleaf-input/tests/user_snapshot.rs
+index 3e3414a..ecf976a 100644
+--- a/crates/cloudleaf-input/tests/user_snapshot.rs
++++ b/crates/cloudleaf-input/tests/user_snapshot.rs
+@@ -1,29 +1,67 @@
+-use cloudleaf_input::{InputConfig,InputEngine,SearchSnapshot};
+-use cloudleaf_types::{InputEvent,Key};
++use cloudleaf_input::{InputConfig, InputEngine, SearchSnapshot};
+ use cloudleaf_search::Config;
+-use ring::digest::{digest,SHA256};
+-use std::{sync::Arc,collections::BTreeMap};
+-const HEADER:&str="# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\n";
+-fn base()->Arc<SearchSnapshot>{let t=format!("{HEADER}base\tyun\t云\t\tunknown\t\tfixture\tbase\tMIT\n");let sha:String=digest(&SHA256,t.as_bytes()).as_ref().iter().map(|b|format!("{b:02x}")).collect();Arc::new(SearchSnapshot::from_verified_tsv(&t,&sha).unwrap())}
++use cloudleaf_types::{InputEvent, Key};
++use ring::digest::{SHA256, digest};
++use std::{collections::BTreeMap, sync::Arc};
++const HEADER: &str = "# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\n";
++fn base() -> Arc<SearchSnapshot> {
++    let t = format!("{HEADER}base\tyun\t云\t\tunknown\t\tfixture\tbase\tMIT\n");
++    let sha: String = digest(&SHA256, t.as_bytes())
++        .as_ref()
++        .iter()
++        .map(|b| format!("{b:02x}"))
++        .collect();
++    Arc::new(SearchSnapshot::from_verified_tsv(&t, &sha).unwrap())
++}
+ #[test]
+ fn user_snapshot_switch_invalidates_old_candidate_and_pending_evidence_is_exact() {
+-    let base=base();let users=format!("{HEADER}user:1\tyun jian\t云笺\t\tunknown\t\tuser\tuser:1\tLicenseRef-User-Private\n");
+-    let user=Arc::new(base.with_user_layer(&users,&BTreeMap::new()).unwrap());
+-    let mut engine=InputEngine::with_search(base.clone(),Config::default(),InputConfig::default()).unwrap();
++    let base = base();
++    let users = format!(
++        "{HEADER}user:1\tyun jian\t云笺\t\tunknown\t\tuser\tuser:1\tLicenseRef-User-Private\n"
++    );
++    let user = Arc::new(base.with_user_layer(&users, &BTreeMap::new()).unwrap());
++    let mut engine =
++        InputEngine::with_search(base.clone(), Config::default(), InputConfig::default()).unwrap();
+     engine.handle(InputEvent::Activate);
+-    for c in "yun".chars(){engine.handle(InputEvent::Key(Key::Char(c)));}
+-    let old=engine.frame();engine.replace_search_resources(user,None).unwrap();
+-    assert!(engine.select_candidate(old.revision,&old.candidates[0].id).error.is_some());
+-    for c in "jian".chars(){engine.handle(InputEvent::Key(Key::Char(c)));}
+-    let result=engine.handle(InputEvent::Key(Key::Space));let request=result.commit.unwrap();
+-    assert_eq!(request.text,"云笺");let evidence=engine.pending_selection().unwrap().clone();
+-    assert_eq!(evidence.commit_id,request.id);assert_eq!(evidence.entries.len(),1);assert_eq!(evidence.entries[0].0,"user:1");
+-    assert!(engine.replace_search_resources(base,None).is_err());
+-    engine.handle(InputEvent::CommitSucceeded{id:request.id});assert!(engine.pending_selection().is_none());
++    for c in "yun".chars() {
++        engine.handle(InputEvent::Key(Key::Char(c)));
++    }
++    let old = engine.frame();
++    engine.replace_search_resources(user, None).unwrap();
++    assert!(
++        engine
++            .select_candidate(old.revision, &old.candidates[0].id)
++            .error
++            .is_some()
++    );
++    for c in "jian".chars() {
++        engine.handle(InputEvent::Key(Key::Char(c)));
++    }
++    let result = engine.handle(InputEvent::Key(Key::Space));
++    let request = result.commit.unwrap();
++    assert_eq!(request.text, "云笺");
++    let evidence = engine.pending_selection().unwrap().clone();
++    assert_eq!(evidence.commit_id, request.id);
++    assert_eq!(evidence.entries.len(), 1);
++    assert_eq!(evidence.entries[0].0, "user:1");
++    assert!(engine.replace_search_resources(base, None).is_err());
++    engine.handle(InputEvent::CommitSucceeded { id: request.id });
++    assert!(engine.pending_selection().is_none());
+ }
+ #[test]
+-fn raw_fallback_and_punctuation_do_not_create_learning_evidence(){
+-    let mut e=InputEngine::with_search(base(),Config::default(),InputConfig::default()).unwrap();e.handle(InputEvent::Activate);
+-    for c in "qz".chars(){e.handle(InputEvent::Key(Key::Char(c)));}e.handle(InputEvent::Key(Key::Enter));assert!(e.pending_selection().is_none());
+-    e.handle(InputEvent::Key(Key::Escape));for c in "yun".chars(){e.handle(InputEvent::Key(Key::Char(c)));}e.handle(InputEvent::Key(Key::Char('.')));assert!(e.pending_selection().is_none());
++fn raw_fallback_and_punctuation_do_not_create_learning_evidence() {
++    let mut e =
++        InputEngine::with_search(base(), Config::default(), InputConfig::default()).unwrap();
++    e.handle(InputEvent::Activate);
++    for c in "qz".chars() {
++        e.handle(InputEvent::Key(Key::Char(c)));
++    }
++    e.handle(InputEvent::Key(Key::Enter));
++    assert!(e.pending_selection().is_none());
++    e.handle(InputEvent::Key(Key::Escape));
++    for c in "yun".chars() {
++        e.handle(InputEvent::Key(Key::Char(c)));
++    }
++    e.handle(InputEvent::Key(Key::Char('.')));
++    assert!(e.pending_selection().is_none());
+ }
+diff --git a/crates/cloudleaf-search/src/character.rs b/crates/cloudleaf-search/src/character.rs
+index fd0ec86..92f7b21 100644
+--- a/crates/cloudleaf-search/src/character.rs
++++ b/crates/cloudleaf-search/src/character.rs
+@@ -6,10 +6,10 @@ const EOS: u32 = 0x110001;
+ const UNK: u32 = 0x110002;
+ 
+ #[derive(Clone, Debug)]
+-struct Row {
+-    key: u64,
++pub(crate) struct Row {
++    pub(crate) key: u64,
+     count: u64,
+-    units: i64,
++    pub(crate) units: i64,
+ }
+ 
+ #[derive(Clone, Copy, Debug)]
+@@ -137,26 +137,63 @@ impl CharacterModel {
+             unigram,
+             entries: Vec::with_capacity(lexicon.entries().len()),
+         };
++        model.compile_entries(lexicon);
++        model
++    }
++
++    /// 新词层仅重编译词条字符缓存；原观测、概率和未知字符映射保持不变。
++    pub(crate) fn rebound(&self, lexicon: &Lexicon) -> Self {
++        let mut model = self.clone();
++        model.lexicon_identity = lexicon.identity.clone();
++        model.entries = Vec::with_capacity(lexicon.entries().len());
++        model.compile_entries(lexicon);
++        model
++    }
++
++    fn compile_entries(&mut self, lexicon: &Lexicon) {
+         for entry in lexicon.entries() {
+             let mut characters = entry.text.chars();
+-            let first = model.known(characters.next().unwrap());
++            let first = self.known(characters.next().unwrap());
+             let mut score = EntryScore {
+                 first,
+                 last: first,
+                 internal: 0,
+                 characters: 1,
+-                unknown: usize::from(first as usize == model.vocabulary.len() - 1),
++                unknown: usize::from(first as usize == self.vocabulary.len() - 1),
+             };
+             for character in characters {
+-                let next = model.known(character);
+-                score.internal += model.transition(score.last, next);
++                let next = self.known(character);
++                score.internal += self.transition(score.last, next);
+                 score.last = next;
+                 score.characters += 1;
+-                score.unknown += usize::from(next as usize == model.vocabulary.len() - 1);
++                score.unknown += usize::from(next as usize == self.vocabulary.len() - 1);
+             }
+-            model.entries.push(score);
++            self.entries.push(score);
++        }
++    }
++
++    pub(crate) fn transition_row(&self, previous: u32) -> &[Row] {
++        let index = if previous == BOS {
++            self.vocabulary.len()
++        } else {
++            previous as usize
++        };
++        &self.rows[self.starts[index]..self.starts[index + 1]]
++    }
++    pub(crate) fn unobserved_bias(&self, previous: u32) -> i64 {
++        let index = if previous == BOS {
++            self.vocabulary.len()
++        } else {
++            previous as usize
++        };
++        -self.denominators[index]
++    }
++    pub(crate) fn unobserved_next(&self, next: u32) -> i64 {
++        if self.unigram.is_empty() {
++            0
++        } else {
++            self.unigram[next as usize]
+         }
+-        model
+     }
+ 
+     fn known(&self, value: char) -> u32 {
+@@ -248,3 +285,65 @@ mod tests {
+         }
+     }
+ }
++
++#[cfg(test)]
++mod rebound_tests {
++    use super::BOS;
++    use crate::{LanguageModelSnapshot, Lexicon};
++    use std::sync::Arc;
++
++    #[test]
++    fn user_entries_recompile_character_cache_without_rebinding_old_indices() {
++        let header = "# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\n";
++        let base = format!(
++            "{header}a\tni\t你\t\tunknown\t\tmechanical\ta\tMIT\nb\thao\t好\t\tunknown\t\tmechanical\tb\tMIT\n"
++        );
++        let combined =
++            format!("{base}user:1\tni hao\t你好\t\tunknown\t\tuser\tuser:1\tuser-private\n");
++        let lexicon = Lexicon::from_tsv(&base).unwrap();
++        let target = Lexicon::from_tsv(&combined).unwrap();
++        let sha = "7".repeat(64);
++        for kind in ["character_bigram", "character_bigram_witten_bell"] {
++            let metadata = format!(
++                "# cloudleaf-language-v1\nlexicon_sha256\t{sha}\nsource_sha256\t{sha}\nsource_id\tcloudleaf:mechanical-rebound\nlicense_id\tMIT\ntokenization\tunicode-scalar-v1\nusage\tmechanical\nkind\t{kind}\ntraining_split\ttrain\nprevious\tnext\tcount\n"
++            );
++            let model = LanguageModelSnapshot::train(
++                &metadata,
++                &lexicon,
++                &sha,
++                &[
++                    vec!["你".into(), "好".into()],
++                    vec!["你".into(), "你".into()],
++                ],
++            )
++            .unwrap();
++            let original = model.model().character.as_ref().unwrap();
++            let rebound = original.rebound(&target);
++            assert_eq!(original.entries.len(), 2);
++            assert_eq!(rebound.entries.len(), 3);
++            assert!(Arc::ptr_eq(&rebound.lexicon_identity, &target.identity));
++            assert!(!Arc::ptr_eq(
++                &rebound.lexicon_identity,
++                &original.lexicon_identity
++            ));
++            for previous in std::iter::once(BOS).chain(0..original.vocabulary.len() as u32) {
++                for next in 0..original.vocabulary.len() as u32 {
++                    assert_eq!(
++                        original.transition(previous, next),
++                        rebound.transition(previous, next)
++                    );
++                }
++            }
++            let a = original.entry(0);
++            let b = original.entry(1);
++            let added = rebound.entry(2);
++            assert_eq!(
++                (added.first, added.last, added.characters),
++                (a.first, b.last, 2)
++            );
++            assert_eq!(added.internal, original.transition(a.last, b.first));
++            assert_eq!(added.unknown, a.unknown + b.unknown);
++            assert_eq!(rebound.entry(0).internal, original.entry(0).internal);
++        }
++    }
++}
+diff --git a/crates/cloudleaf-search/src/lexicon.rs b/crates/cloudleaf-search/src/lexicon.rs
+index 6353398..6339f95 100644
+--- a/crates/cloudleaf-search/src/lexicon.rs
++++ b/crates/cloudleaf-search/src/lexicon.rs
+@@ -33,9 +33,11 @@ pub(crate) struct TrieNode {
+ /// 只读词条与读音索引，装载后可在多个查询之间复用。
+ #[derive(Clone, Debug)]
+ pub struct Lexicon {
+-    pub(crate) entries: Vec<Entry>,
+-    pub(crate) trie: Vec<TrieNode>,
++    pub(crate) entries: crate::layer::Entries,
++    pub(crate) trie: crate::layer::Trie,
+     pub(crate) identity: std::sync::Arc<()>,
++    pub(crate) preferences: Option<Vec<u32>>,
++    pub(crate) base_memory: Option<LexiconMemory>,
+ }
+ 
+ /// 固定Rust1.90容器布局的保守预估，不是RSS或allocator硬上界。
+@@ -238,13 +240,18 @@ impl Lexicon {
+             node.prefix.shrink_to_fit();
+         }
+         Ok(Self {
+-            entries,
+-            trie,
++            entries: crate::layer::Entries::new(entries),
++            trie: crate::layer::Trie::new(trie),
+             identity: std::sync::Arc::new(()),
++            preferences: None,
++            base_memory: None,
+         })
+     }
+ 
+     pub fn memory_estimate(&self) -> LexiconMemory {
++        if let Some(memory) = self.layered_memory() {
++            return memory;
++        }
+         let mut owned = std::mem::size_of::<Self>()
+             + 2 * std::mem::size_of::<usize>()
+             + self.entries.capacity() * std::mem::size_of::<Entry>()
+@@ -273,7 +280,7 @@ impl Lexicon {
+         }
+     }
+ 
+-    pub fn entries(&self) -> &[Entry] {
++    pub fn entries(&self) -> &crate::Entries {
+         &self.entries
+     }
+ 
+diff --git a/crates/cloudleaf-search/src/lib.rs b/crates/cloudleaf-search/src/lib.rs
+index 179e522..d6ff801 100644
+--- a/crates/cloudleaf-search/src/lib.rs
++++ b/crates/cloudleaf-search/src/lib.rs
+@@ -2,6 +2,7 @@
+ mod cancellation;
+ mod character;
+ mod lattice;
++mod layer;
+ mod lexicon;
+ mod model;
+ mod profiling;
+@@ -10,6 +11,7 @@ mod search;
+ 
+ pub use cancellation::Cancellation;
+ pub use lattice::{Edge, Lattice, MatchKind};
++pub use layer::Entries;
+ pub use lexicon::{Entry, FrequencyKind, Lexicon, LexiconMemory, LoadLimits};
+ pub use model::{BigramModel, LanguageModelSnapshot, ModelMetadata};
+ pub use profiling::{Measurement, Phase, Profile, profile_query, profile_scheme_query};
+diff --git a/crates/cloudleaf-search/src/model.rs b/crates/cloudleaf-search/src/model.rs
+index fcc21ce..f4aa833 100644
+--- a/crates/cloudleaf-search/src/model.rs
++++ b/crates/cloudleaf-search/src/model.rs
+@@ -152,7 +152,7 @@ pub struct ModelMetadata {
+ #[derive(Clone, Debug)]
+ pub struct LanguageModelSnapshot {
+     metadata: ModelMetadata,
+-    model: BigramModel,
++    model: std::sync::Arc<BigramModel>,
+ }
+ 
+ const META_KEYS: [&str; 8] = [
+@@ -167,6 +167,22 @@ const META_KEYS: [&str; 8] = [
+ ];
+ 
+ impl LanguageModelSnapshot {
++    /// 基础计数和来源元数据保留；只在装载阶段为同一基础的用户扩展重编译entry缓存。
++    pub fn for_extension(&self, base: &Lexicon, target: &Lexicon) -> Result<Self, SearchError> {
++        if !target.is_extension_of(base) || !self.model.is_compatible_lexicon(base) {
++            return Err(SearchError::new(
++                ErrorKind::InvalidModel,
++                "模型基础索引或用户层身份不符",
++            ));
++        }
++        let mut next = self.clone();
++        if let Some(character) = &self.model.character {
++            let mut model = (*self.model).clone();
++            model.character = Some(character.rebound(target));
++            next.model = std::sync::Arc::new(model);
++        }
++        Ok(next)
++    }
+     pub fn metadata(&self) -> &ModelMetadata {
+         &self.metadata
+     }
+@@ -357,7 +373,10 @@ impl LanguageModelSnapshot {
+             model.totals.clear();
+             model.vocabulary = BTreeSet::from([EOS.into(), UNK.into()]);
+         }
+-        Ok(Self { metadata, model })
++        Ok(Self {
++            metadata,
++            model: std::sync::Arc::new(model),
++        })
+     }
+ 
+     /// 离线调用，元数据和序列只在边界校验，输入查询不调用训练器。
+diff --git a/crates/cloudleaf-search/src/search.rs b/crates/cloudleaf-search/src/search.rs
+index 5b85d7e..cbad198 100644
+--- a/crates/cloudleaf-search/src/search.rs
++++ b/crates/cloudleaf-search/src/search.rs
+@@ -9,6 +9,7 @@ use std::collections::{BTreeMap, BinaryHeap};
+ #[derive(Clone, Debug, Default, Eq, PartialEq)]
+ pub struct Features {
+     pub interpretation_cost: InterpretationCost,
++    pub user_preference_units: u32,
+     pub words: usize,
+     pub prefixes: usize,
+     pub frequency_units: i64,
+@@ -68,6 +69,11 @@ fn compare(a: &Path, b: &Path) -> Ordering {
+     a.features
+         .interpretation_cost
+         .cmp(&b.features.interpretation_cost)
++        .then_with(|| {
++            b.features
++                .user_preference_units
++                .cmp(&a.features.user_preference_units)
++        })
+         .then_with(|| b.score.cmp(&a.score))
+         .then_with(|| b.features.lexical_units.cmp(&a.features.lexical_units))
+         .then_with(|| a.ids.cmp(&b.ids))
+@@ -111,6 +117,7 @@ impl Scorer<'_> {
+             observer.stop(Phase::Scoring, stamp);
+             return None;
+         }
++        features.user_preference_units += self.lexicon.user_preference(edge.entry);
+         let mut score = path.score;
+         features.structural_units -= 100;
+         if self.ranker != Ranker::CharacterBigram {
+@@ -176,6 +183,12 @@ impl Scorer<'_> {
+             features
+                 .interpretation_cost
+                 .cmp(&worst.features.interpretation_cost)
++                .then_with(|| {
++                    worst
++                        .features
++                        .user_preference_units
++                        .cmp(&features.user_preference_units)
++                })
+                 .then_with(|| worst.score.cmp(&score))
+                 .then_with(|| worst.features.lexical_units.cmp(&features.lexical_units))
+                 .then_with(|| {
+@@ -728,6 +741,324 @@ fn character_exact<O: Observer>(
+     complete
+ }
+ 
++#[derive(Clone, Debug, Eq, PartialEq)]
++struct InterpretedSuffix {
++    cost: InterpretationCost,
++    preference: u32,
++    score: i64,
++    ids: Vec<usize>,
++    edges: Vec<usize>,
++}
++
++fn suffix_order(a: &InterpretedSuffix, b: &InterpretedSuffix) -> Ordering {
++    a.cost
++        .cmp(&b.cost)
++        .then_with(|| b.preference.cmp(&a.preference))
++        .then_with(|| b.score.cmp(&a.score))
++        .then_with(|| a.ids.cmp(&b.ids))
++        .then_with(|| a.edges.cmp(&b.edges))
++}
++
++impl InterpretedSuffix {
++    fn prefix(path: &Path) -> Self {
++        Self {
++            cost: path.features.interpretation_cost,
++            preference: path.features.user_preference_units,
++            score: path.score,
++            ids: path.ids.clone(),
++            edges: path.edges.clone(),
++        }
++    }
++    fn completed(path: &Path, rest: &Self) -> Self {
++        Self {
++            cost: path.features.interpretation_cost.plus(rest.cost),
++            preference: path.features.user_preference_units + rest.preference,
++            score: path.score + rest.score,
++            ids: path.ids.iter().chain(&rest.ids).copied().collect(),
++            edges: path.edges.iter().chain(&rest.edges).copied().collect(),
++        }
++    }
++}
++
++struct InterpretedPending {
++    bound: InterpretedSuffix,
++    order: usize,
++    position: usize,
++    path: Path,
++}
++impl PartialEq for InterpretedPending {
++    fn eq(&self, other: &Self) -> bool {
++        self.order == other.order
++    }
++}
++impl Eq for InterpretedPending {}
++impl PartialOrd for InterpretedPending {
++    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
++        Some(self.cmp(other))
++    }
++}
++impl Ord for InterpretedPending {
++    fn cmp(&self, other: &Self) -> Ordering {
++        suffix_order(&other.bound, &self.bound).then_with(|| other.order.cmp(&self.order))
++    }
++}
++
++/// 完整解释成本/偏好与字符历史共同决定后缀；稀疏转移避免历史和词条的笛卡尔展开。
++fn interpreted_character_exact<O: Observer>(
++    scorer: &Scorer<'_>,
++    config: &Config,
++    stats: &mut Statistics,
++    k: usize,
++    observer: &mut O,
++) -> Vec<Path> {
++    let model = scorer.model.unwrap().character.as_ref().unwrap();
++    let end = scorer.graph.letters.len();
++    let max_edits = scorer.graph.max_edit_cost();
++    let mut suffix = vec![BTreeMap::<(u32, u16), Option<InterpretedSuffix>>::new(); end + 1];
++    suffix[0].insert((crate::character::BOS, max_edits), None);
++    let mut labels = 1;
++    for edge in &scorer.graph.edges {
++        for remaining in 0..=max_edits {
++            if scorer.cancelled() || !expand_allowed(stats, config) {
++                return Vec::new();
++            }
++            if suffix[edge.end]
++                .insert((model.entry(edge.entry).last, remaining), None)
++                .is_none()
++            {
++                labels += 1;
++                if !resident_allowed(stats, labels + 1, config) {
++                    return Vec::new();
++                }
++            }
++        }
++    }
++    for (&(previous, _), value) in &mut suffix[end] {
++        *value = Some(InterpretedSuffix {
++            cost: InterpretationCost::default(),
++            preference: 0,
++            score: model.finish(previous),
++            ids: Vec::new(),
++            edges: Vec::new(),
++        });
++    }
++    for position in (0..end).rev() {
++        for remaining in 0..=max_edits {
++            let mut groups = BTreeMap::<u32, InterpretedSuffix>::new();
++            for edge_index in &scorer.graph.outgoing[position] {
++                if scorer.cancelled() || !expand_allowed(stats, config) {
++                    return Vec::new();
++                }
++                let edge = &scorer.graph.edges[*edge_index];
++                let cost = scorer.graph.interpretation_cost(*edge_index);
++                if cost.edits > remaining {
++                    continue;
++                }
++                let entry = model.entry(edge.entry);
++                let Some(rest) = suffix[edge.end]
++                    .get(&(entry.last, remaining - cost.edits))
++                    .and_then(Option::as_ref)
++                else {
++                    continue;
++                };
++                let candidate = InterpretedSuffix {
++                    cost: cost.plus(rest.cost),
++                    preference: scorer.lexicon.user_preference(edge.entry) + rest.preference,
++                    score: entry.internal + rest.score,
++                    ids: std::iter::once(edge.entry)
++                        .chain(rest.ids.iter().copied())
++                        .collect(),
++                    edges: std::iter::once(*edge_index)
++                        .chain(rest.edges.iter().copied())
++                        .collect(),
++                };
++                if groups
++                    .get(&entry.first)
++                    .is_none_or(|old| suffix_order(&candidate, old) == Ordering::Less)
++                {
++                    if !resident_allowed(stats, labels + groups.len() + 2, config) {
++                        return Vec::new();
++                    }
++                    groups.insert(entry.first, candidate);
++                }
++            }
++            let Some(class) = groups.values().min_by(|a, b| {
++                a.cost
++                    .cmp(&b.cost)
++                    .then_with(|| b.preference.cmp(&a.preference))
++            }) else {
++                continue;
++            };
++            let (cost, preference) = (class.cost, class.preference);
++            groups.retain(|_, s| s.cost == cost && s.preference == preference);
++            let mut fallback: Vec<_> = groups.iter().collect();
++            fallback.sort_by(|(a_key, a), (b_key, b)| {
++                (b.score + model.unobserved_next(**b_key))
++                    .cmp(&(a.score + model.unobserved_next(**a_key)))
++                    .then_with(|| a.ids.cmp(&b.ids))
++                    .then_with(|| a.edges.cmp(&b.edges))
++            });
++            if !resident_allowed(stats, labels + groups.len() + fallback.len() + 1, config) {
++                return Vec::new();
++            }
++            let histories: Vec<_> = suffix[position]
++                .keys()
++                .filter(|(_, r)| *r == remaining)
++                .copied()
++                .collect();
++            for (previous, remaining) in histories {
++                let stamp = observer.start(Phase::Scoring);
++                let rows = model.transition_row(previous);
++                let mut best: Option<(&InterpretedSuffix, i64)> = None;
++                for row in rows {
++                    if scorer.cancelled() || !expand_allowed(stats, config) {
++                        observer.stop(Phase::Scoring, stamp);
++                        return Vec::new();
++                    }
++                    if let Some(group) = groups.get(&(row.key as u32)) {
++                        let score = group.score + row.units;
++                        if best.is_none_or(|(old, value)| {
++                            score > value
++                                || (score == value
++                                    && (group.ids.as_slice(), group.edges.as_slice())
++                                        < (old.ids.as_slice(), old.edges.as_slice()))
++                        }) {
++                            best = Some((group, score));
++                        }
++                    }
++                }
++                for (next, group) in &fallback {
++                    if scorer.cancelled() || !expand_allowed(stats, config) {
++                        observer.stop(Phase::Scoring, stamp);
++                        return Vec::new();
++                    }
++                    if rows
++                        .binary_search_by_key(*next, |row| row.key as u32)
++                        .is_err()
++                    {
++                        let score = group.score
++                            + model.unobserved_bias(previous)
++                            + model.unobserved_next(**next);
++                        if best.is_none_or(|(old, value)| {
++                            score > value
++                                || (score == value
++                                    && (group.ids.as_slice(), group.edges.as_slice())
++                                        < (old.ids.as_slice(), old.edges.as_slice()))
++                        }) {
++                            best = Some((group, score));
++                        }
++                        break;
++                    }
++                }
++                let best = best.map(|(value, score)| {
++                    let mut result = value.clone();
++                    result.score = score;
++                    result
++                });
++                observer.stop(Phase::Scoring, stamp);
++                suffix[position].insert((previous, remaining), best);
++            }
++        }
++    }
++    let Some(best) = suffix[0]
++        .get(&(crate::character::BOS, max_edits))
++        .and_then(Option::as_ref)
++    else {
++        return Vec::new();
++    };
++    let mut pending = BinaryHeap::from([InterpretedPending {
++        bound: best.clone(),
++        order: 0,
++        position: 0,
++        path: Path::default(),
++    }]);
++    let mut order = 0;
++    let mut complete = Vec::<Path>::new();
++    let mut seen =
++        vec![
++            vec![BTreeMap::<String, InterpretedSuffix>::new(); usize::from(max_edits) + 1];
++            end + 1
++        ];
++    seen[0][0].insert(String::new(), InterpretedSuffix::prefix(&Path::default()));
++    let mut seen_count = 1;
++    while let Some(current) = pending.pop() {
++        if scorer.cancelled() {
++            return Vec::new();
++        }
++        let edits = current.path.features.interpretation_cost.edits;
++        let signature = InterpretedSuffix::prefix(&current.path);
++        if seen[current.position][usize::from(edits)].get(&current.path.text) != Some(&signature) {
++            continue;
++        }
++        if complete.len() == k
++            && suffix_order(
++                &current.bound,
++                &InterpretedSuffix::prefix(complete.last().unwrap()),
++            ) != Ordering::Less
++        {
++            break;
++        }
++        if current.position == end {
++            let finished = scorer.finish(current.path, observer);
++            insert_unique(&mut complete, finished, k, observer);
++            continue;
++        }
++        for edge_index in &scorer.graph.outgoing[current.position] {
++            if scorer.cancelled() || !expand_allowed(stats, config) {
++                return Vec::new();
++            }
++            let edge = &scorer.graph.edges[*edge_index];
++            let used = edits + scorer.graph.interpretation_cost(*edge_index).edits;
++            if used > max_edits {
++                continue;
++            }
++            let entry = model.entry(edge.entry);
++            let Some(rest) = suffix[edge.end]
++                .get(&(entry.last, max_edits - used))
++                .and_then(Option::as_ref)
++            else {
++                continue;
++            };
++            if !resident_allowed(
++                stats,
++                labels + seen_count + pending.len() + complete.len() + 3,
++                config,
++            ) {
++                return Vec::new();
++            }
++            let Some(next) = scorer.extend(&current.path, *edge_index, None, observer) else {
++                continue;
++            };
++            let bound = InterpretedSuffix::completed(&next, rest);
++            if complete.len() == k
++                && suffix_order(&bound, &InterpretedSuffix::prefix(complete.last().unwrap()))
++                    != Ordering::Less
++            {
++                continue;
++            }
++            let signature = InterpretedSuffix::prefix(&next);
++            let bucket = &mut seen[edge.end][usize::from(used)];
++            if bucket
++                .get(next.text.as_str())
++                .is_some_and(|old| suffix_order(&signature, old) != Ordering::Less)
++            {
++                continue;
++            }
++            if bucket.insert(next.text.clone(), signature).is_none() {
++                seen_count += 1;
++            }
++            order += 1;
++            pending.push(InterpretedPending {
++                bound,
++                order,
++                position: edge.end,
++                path: next,
++            });
++        }
++    }
++    complete
++}
++
+ /// 在同一个只读词条图上比较搜索方法。输入/模型载入和评估IO由宿主负责。
+ pub fn search_graph(
+     lexicon: &Lexicon,
+@@ -839,7 +1170,12 @@ pub(crate) fn search_controlled_observed<O: Observer>(
+         Vec::new()
+     } else if config.method == Method::Reference {
+         reference(&scorer, config, &mut statistics, k, observer)
+-    } else if graph.is_interpreted() {
++    } else if config.method == Method::ExactDag
++        && config.ranker == Ranker::CharacterBigram
++        && (graph.is_interpreted() || lexicon.has_user_preferences())
++    {
++        interpreted_character_exact(&scorer, config, &mut statistics, k, observer)
++    } else if graph.is_interpreted() || lexicon.has_user_preferences() {
+         interpreted_dynamic(&scorer, config, &mut statistics, k, observer)
+     } else if config.method == Method::PositionDag {
+         position_dynamic(&scorer, config, &mut statistics, k, observer)
+diff --git a/crates/cloudleaf-search/tests/user_layer.rs b/crates/cloudleaf-search/tests/user_layer.rs
+index 687c1e7..5aff897 100644
+--- a/crates/cloudleaf-search/tests/user_layer.rs
++++ b/crates/cloudleaf-search/tests/user_layer.rs
+@@ -5,8 +5,13 @@ const HEADER: &str = "# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequ
+ 
+ #[test]
+ fn overlay_preserves_base_indices_and_puts_user_words_inside_the_lattice() {
+-    let base = Lexicon::from_tsv(&format!("{HEADER}z-base\tyun\t云\t\tunknown\t\tfixture\tz-base\tMIT\n")).unwrap();
+-    let users = format!("{HEADER}user:1\tyun jian\t云笺\t\tunknown\t\tuser\tuser:1\tLicenseRef-User-Private\n");
++    let base = Lexicon::from_tsv(&format!(
++        "{HEADER}z-base\tyun\t云\t\tunknown\t\tfixture\tz-base\tMIT\n"
++    ))
++    .unwrap();
++    let users = format!(
++        "{HEADER}user:1\tyun jian\t云笺\t\tunknown\t\tuser\tuser:1\tLicenseRef-User-Private\n"
++    );
+     let combined = base.with_user_layer(&users, &BTreeMap::new()).unwrap();
+     assert_eq!(combined.entries()[0], base.entries()[0]);
+     assert_eq!(combined.entries()[1].id, "user:1");
+@@ -15,7 +20,12 @@ fn overlay_preserves_base_indices_and_puts_user_words_inside_the_lattice() {
+     assert_eq!(combined.user_preference(0), 0);
+     assert_eq!(combined.user_preference(1), 1);
+     let graph = Lattice::build(&combined, "yunjian", &Config::default()).unwrap();
+-    assert!(graph.edges().iter().any(|e| e.start == 0 && e.end == 7 && e.entry == 1));
++    assert!(
++        graph
++            .edges()
++            .iter()
++            .any(|e| e.start == 0 && e.end == 7 && e.entry == 1)
++    );
+     assert!(base.entries().iter().all(|e| e.source != "user"));
+     assert!(combined.shares_base_with(&base));
+     assert!(combined.incremental_estimated_bytes() < 16384);
+@@ -23,12 +33,27 @@ fn overlay_preserves_base_indices_and_puts_user_words_inside_the_lattice() {
+ 
+ #[test]
+ fn foreign_or_conflicting_user_sources_and_unknown_preference_ids_are_rejected() {
+-    let base = Lexicon::from_tsv(&format!("{HEADER}base\tyun\t云\t\tunknown\t\tfixture\tbase\tMIT\n")).unwrap();
++    let base = Lexicon::from_tsv(&format!(
++        "{HEADER}base\tyun\t云\t\tunknown\t\tfixture\tbase\tMIT\n"
++    ))
++    .unwrap();
+     for bad in [
+         "user:1\tyun\t云\t\tunknown\t\tforeign\tuser:1\tMIT\n",
+         "base\tyun\t云\t\tunknown\t\tuser\tbase\tLicenseRef-User-Private\n",
+     ] {
+-        assert!(base.with_user_layer(&format!("{HEADER}{bad}"), &BTreeMap::new()).is_err());
++        assert!(
++            base.with_user_layer(&format!("{HEADER}{bad}"), &BTreeMap::new())
++                .is_err()
++        );
+     }
+-    assert!(base.with_user_layer(HEADER, &BTreeMap::from([("missing".into(), 1)])).is_err());
++    assert!(
++        base.with_user_layer(HEADER, &BTreeMap::from([("missing".into(), 1)]))
++            .is_err()
++    );
++    let user =
++        format!("{HEADER}user:1\tyun\t云\t\tunknown\t\tuser\tuser:1\tLicenseRef-User-Private\n");
++    assert!(
++        base.with_user_layer(&user, &BTreeMap::from([("user:1".into(), u32::MAX)]))
++            .is_err()
++    );
+ }

@@ -1,0 +1,94 @@
+    Checking cloudleaf-input v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-input)
+    Checking cloudleaf-windows-ime v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\apps\windows-ime)
+    Checking cloudleaf-cli v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\apps\cloudleaf-cli)
+error: this `if` statement can be collapsed
+   --> apps\windows-ime\src\..\..\..\adapters\windows\isolated_input.rs:289:17
+    |
+289 | /                 if let Some(evidence) = &sample.selection {
+290 | |                     if let Some(users) = &mut *self.users.borrow_mut() {
+291 | |                         if let Some(active) = &users.active {
+292 | |                             if active.learning
+...   |
+313 | |                 }
+    | |_________________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#collapsible_if
+    = note: `-D clippy::collapsible-if` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::collapsible_if)]`
+help: collapse nested if block
+    |
+289 ~                 if let Some(evidence) = &sample.selection
+290 ~                     && let Some(users) = &mut *self.users.borrow_mut() {
+291 |                         if let Some(active) = &users.active {
+...
+311 |                         }
+312 ~                     }
+    |
+
+error: this `if` statement can be collapsed
+   --> apps\windows-ime\src\..\..\..\adapters\windows\isolated_input.rs:290:21
+    |
+290 | /                     if let Some(users) = &mut *self.users.borrow_mut() {
+291 | |                         if let Some(active) = &users.active {
+292 | |                             if active.learning
+293 | |                                 && !users.busy
+...   |
+312 | |                     }
+    | |_____________________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#collapsible_if
+help: collapse nested if block
+    |
+290 ~                     if let Some(users) = &mut *self.users.borrow_mut()
+291 ~                         && let Some(active) = &users.active {
+292 |                             if active.learning
+...
+310 |                             }
+311 ~                         }
+    |
+
+error: this `if` statement can be collapsed
+   --> apps\windows-ime\src\..\..\..\adapters\windows\isolated_input.rs:291:25
+    |
+291 | /                         if let Some(active) = &users.active {
+292 | |                             if active.learning
+293 | |                                 && !users.busy
+294 | |                                 && evidence.snapshot_version == active.snapshot.version()
+...   |
+311 | |                         }
+    | |_________________________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#collapsible_if
+help: collapse nested if block
+    |
+291 ~                         if let Some(active) = &users.active
+292 ~                             && active.learning
+293 |                                 && !users.busy
+...
+309 |                                 }
+310 ~                             }
+    |
+
+error: this `if` statement can be collapsed
+   --> apps\windows-ime\src\..\..\..\adapters\windows\isolated_input.rs:395:9
+    |
+395 | /         if matches!(
+396 | |             command,
+397 | |             user_panel::Command::ToggleLearning
+398 | |                 | user_panel::Command::ClearLearning
+...   |
+404 | |         }
+    | |_________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#collapsible_if
+help: collapse nested if block
+    |
+400 ~         )
+401 ~             && let Some(active) = &mut users.active {
+402 |                 active.learning = false;
+403 ~             }
+    |
+
+error: could not compile `cloudleaf-windows-ime` (lib) due to 4 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `cloudleaf-windows-ime` (lib test) due to 4 previous errors

@@ -1,0 +1,41 @@
+    Checking cloudleaf-types v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-types)
+    Checking cloudleaf-pinyin v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-pinyin)
+    Checking cloudleaf-search v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-search)
+    Checking cloudleaf-dictionary v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-dictionary)
+    Checking cloudleaf-user v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-user)
+    Checking cloudleaf-candidate v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-candidate)
+    Checking cloudleaf-input v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-input)
+    Checking cloudleaf-windows-ime v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\apps\windows-ime)
+    Checking cloudleaf-cli v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\apps\cloudleaf-cli)
+error[E0432]: unresolved import `windows::Win32::UI::Shell`
+   --> apps\windows-ime\src\..\..\..\adapters\windows\isolated_input.rs:458:29
+    |
+458 |     use windows::Win32::UI::Shell::{SHGetKnownFolderPath,FOLDERID_LocalAppData,KNOWN_FOLDER_FLAG};
+    |                             ^^^^^ could not find `Shell` in `UI`
+    |
+note: found an item that was configured out
+   --> C:\Users\EDY\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\windows-0.62.2\src\Windows\Win32\UI\mod.rs:24:9
+    |
+ 23 | #[cfg(feature = "Win32_UI_Shell")]
+    |       -------------------------- the item is gated behind the `Win32_UI_Shell` feature
+ 24 | pub mod Shell;
+    |         ^^^^^
+
+For more information about this error, try `rustc --explain E0432`.
+error: could not compile `cloudleaf-windows-ime` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error[E0063]: missing field `users` in initializer of `isolated_input::Window`
+   --> apps\windows-ime\src\..\..\..\adapters\windows\isolated_input.rs:790:28
+    |
+790 |         let view = Rc::new(Window {
+    |                            ^^^^^^ missing `users`
+
+error[E0063]: missing field `users` in initializer of `isolated_input::Window`
+   --> apps\windows-ime\src\..\..\..\adapters\windows\isolated_input.rs:859:28
+    |
+859 |         let view = Rc::new(Window {
+    |                            ^^^^^^ missing `users`
+
+Some errors have detailed explanations: E0063, E0432.
+For more information about an error, try `rustc --explain E0063`.
+error: could not compile `cloudleaf-windows-ime` (lib test) due to 3 previous errors
