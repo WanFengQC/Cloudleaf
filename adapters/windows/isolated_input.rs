@@ -1243,4 +1243,64 @@ mod tests {
         assert_eq!(local.document.borrow().as_str(), expected);
         assert_eq!(local.host.engine.borrow().frame().preedit, "");
     }
+
+    #[test]
+    fn selection_proof_is_returned_only_after_applied_and_retry_has_new_identity() {
+        let local = scheme_local();
+        type_text(&local, "nihao");
+        let (_, rejected) = local
+            .process(InputEvent::Key(Key::Space), None, &|_| {
+                CommitOutcome::NotApplied
+            })
+            .unwrap();
+        assert!(rejected.selection.is_none());
+        let failed = local
+            .host
+            .engine
+            .borrow()
+            .pending_selection()
+            .unwrap()
+            .clone();
+        assert!(local.document.borrow().is_empty());
+        let (_, applied) = local
+            .process(InputEvent::RetryCommit, None, &|_| CommitOutcome::Applied)
+            .unwrap();
+        let selected = applied.selection.unwrap();
+        assert_ne!(selected.commit_id, failed.commit_id);
+        assert_eq!(selected.entries, failed.entries);
+        assert_eq!(selected.candidate_id, failed.candidate_id);
+        assert!(local.host.engine.borrow().pending_selection().is_none());
+        let before = local.document.borrow().clone();
+        assert!(
+            local
+                .process(
+                    InputEvent::CommitSucceeded {
+                        id: failed.commit_id
+                    },
+                    None,
+                    &|_| { panic!("迟到确认不能再次调用写入端") }
+                )
+                .is_err()
+        );
+        assert_eq!(*local.document.borrow(), before);
+
+        let unknown = scheme_local();
+        type_text(&unknown, "nihao");
+        let (_, uncertain) = unknown
+            .process(InputEvent::Key(Key::Space), None, &|_| {
+                CommitOutcome::Unknown
+            })
+            .unwrap();
+        assert!(uncertain.selection.is_none());
+        assert!(unknown.host.quarantined.get());
+        assert!(unknown.document.borrow().is_empty());
+        assert!(
+            unknown
+                .process(InputEvent::RetryCommit, None, &|_| {
+                    panic!("Unknown不能自动重放或产生学习凭据")
+                })
+                .is_err()
+        );
+        assert!(unknown.retained.borrow().contains("nihao"));
+    }
 }

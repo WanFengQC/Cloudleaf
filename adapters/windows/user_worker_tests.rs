@@ -197,3 +197,94 @@ fn actual_worker_persists_user_candidates_and_gates_learning_across_restart() {
     assert_eq!(directory.parent().unwrap().canonicalize().unwrap(), temp);
     std::fs::remove_dir_all(directory).unwrap();
 }
+
+#[test]
+fn full_worker_queues_refuse_more_work_and_shutdown_releases_the_actual_store_lock() {
+    let temp = std::env::temp_dir().canonicalize().unwrap();
+    let directory = temp.join(format!(
+        "cloudleaf-r20-backpressure-{}-{}",
+        std::process::id(),
+        SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .unwrap()
+            .as_nanos()
+    ));
+    std::fs::create_dir(&directory).unwrap();
+    let base = Arc::new(SearchSnapshot::from_verified_tsv(BASE, BASE_SHA).unwrap());
+    let mut worker = Worker::start(base, None, directory.clone());
+    drop(ready(&worker));
+    let mut accepted = 0;
+    let mut refused = false;
+    // 不消费真实结果队列，worker最终在有界回传处等待；派发仍只能try_send。
+    for _ in 0..64 {
+        match worker.send(Work::Manage(user_panel::Command::Save)) {
+            Ok(()) => accepted += 1,
+            Err(_) => {
+                refused = true;
+                break;
+            }
+        }
+    }
+    assert!(refused && accepted > 0);
+    worker.shutdown();
+    let mut store = Store::open(directory.clone()).unwrap();
+    assert_eq!(store.load().unwrap().generation(), accepted);
+    drop(store);
+    assert_eq!(directory.parent().unwrap().canonicalize().unwrap(), temp);
+    std::fs::remove_dir_all(directory).unwrap();
+}
+
+#[test]
+fn invalid_import_preserves_the_saved_user_layer_and_worker_remains_usable() {
+    let temp = std::env::temp_dir().canonicalize().unwrap();
+    let directory = temp.join(format!(
+        "cloudleaf-r20-import-{}-{}",
+        std::process::id(),
+        SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .unwrap()
+            .as_nanos()
+    ));
+    std::fs::create_dir(&directory).unwrap();
+    let invalid = directory.join("own-invalid-fixture.tsv");
+    std::fs::write(&invalid, b"invalid package").unwrap();
+    let base = Arc::new(SearchSnapshot::from_verified_tsv(BASE, BASE_SHA).unwrap());
+    let mut worker = Worker::start(base, None, directory.clone());
+    drop(ready(&worker));
+    worker
+        .send(Work::Manage(user_panel::Command::Add {
+            text: "云笺".into(),
+            pinyin: "yun jian".into(),
+        }))
+        .unwrap();
+    let saved = ready(&worker);
+    let generation = saved.generation;
+    let version = saved.snapshot.version().to_owned();
+    drop(saved);
+    worker
+        .send(Work::Manage(user_panel::Command::Import {
+            path: invalid.to_string_lossy().into_owned(),
+        }))
+        .unwrap();
+    assert!(matches!(receive(&worker), Reply::Error(_)));
+    worker
+        .send(Work::Manage(user_panel::Command::Reload))
+        .unwrap();
+    let reloaded = ready(&worker);
+    assert_eq!(reloaded.generation, generation);
+    assert_eq!(reloaded.snapshot.version(), version);
+    assert!(
+        reloaded
+            .snapshot
+            .entries()
+            .iter()
+            .any(|entry| entry.id == "user:1")
+    );
+    drop(reloaded);
+    worker.shutdown();
+    let mut store = Store::open(directory.clone()).unwrap();
+    assert_eq!(store.load().unwrap().generation(), generation);
+    drop(store);
+    assert_eq!(directory.parent().unwrap().canonicalize().unwrap(), temp);
+    std::fs::remove_dir_all(directory).unwrap();
+}
