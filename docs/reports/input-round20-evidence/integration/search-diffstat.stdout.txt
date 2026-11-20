@@ -1,0 +1,688 @@
+ .github/workflows/ci.yml                           |      3 +
+ Cargo.lock                                         |      7 +
+ Cargo.toml                                         |      1 +
+ README.md                                          |     57 +-
+ THIRD_PARTY_NOTICES.md                             |      3 +
+ config/audits/search.json                          |     33 +
+ config/evaluation/ime-task-handoff-v1.json         |     14 +
+ config/evaluation/language-readiness-v1.json       |     29 +
+ config/evaluation/quality-preparation-v1.json      |     17 +
+ crates/cloudleaf-search/Cargo.toml                 |     14 +
+ .../examples/resource_phase_probe.rs               |    279 +
+ crates/cloudleaf-search/examples/resource_probe.rs |    198 +
+ crates/cloudleaf-search/examples/search_probe.rs   |    206 +
+ crates/cloudleaf-search/src/lattice.rs             |    186 +
+ crates/cloudleaf-search/src/lexicon.rs             |    232 +
+ crates/cloudleaf-search/src/lib.rs                 |    136 +
+ crates/cloudleaf-search/src/model.rs               |    105 +
+ crates/cloudleaf-search/src/profiling.rs           |    106 +
+ crates/cloudleaf-search/src/search.rs              |    473 +
+ crates/cloudleaf-search/tests/profiling.rs         |    180 +
+ crates/cloudleaf-search/tests/resource_contract.rs |     71 +
+ crates/cloudleaf-search/tests/search_contract.rs   |    516 +
+ data/manifests/search-cases.json                   |     12 +
+ data/manifests/search-lexicon.json                 |     12 +
+ data/manifests/search-resource-cases.json          |     12 +
+ data/manifests/search-train.json                   |     12 +
+ docs/acceptance/cl008-round8/README.md             |     67 +
+ .../cl008-round8/context-review.template.json      |     17 +
+ docs/acceptance/cl008-round8/handoff.template.json |     22 +
+ docs/acceptance/cl008-round8/intake-checklist.tsv  |     14 +
+ docs/acceptance/cl008-round9/README.md             |     38 +
+ docs/cl008-design.md                               |     61 +
+ docs/cl008-position-dag-design.md                  |     35 +
+ docs/cl008-real-resource-protocol.md               |     42 +
+ docs/cl008-round10-resource-contract.md            |     21 +
+ docs/cl008-round3-analysis-design.md               |     39 +
+ docs/cl008-round4-cccedict-resource.md             |     13 +
+ docs/cl008-round4-evaluation-gates.md              |     35 +
+ docs/cl008-round4-global-near-duplicate-groups.md  |     19 +
+ docs/cl008-round5-profiling-design.md              |     29 +
+ docs/cl008-round5-quality-preparation.md           |     13 +
+ docs/cl008-round6-search-design.md                 |     27 +
+ docs/cl008-round7-design.md                        |     43 +
+ docs/cl008-round8-external-handoff-design.md       |     21 +
+ docs/cl008-round9-authoring-queue.md               |     25 +
+ docs/reports/cl008-checks.json                     |     97 +
+ docs/reports/cl008-progress.md                     |     70 +
+ docs/reports/cl008-real/CC-BY-SA-4.0.txt           |    428 +
+ docs/reports/cl008-real/README.md                  |     61 +
+ docs/reports/cl008-real/Unicode-3.0.txt            |     39 +
+ docs/reports/cl008-real/mechanical-search.json     |  13759 ++
+ docs/reports/cl008-real/per-case.md                |     61 +
+ docs/reports/cl008-real/prototype-performance.json |     39 +
+ docs/reports/cl008-real/unihan-after.json          |  49414 ++++++++
+ docs/reports/cl008-real/unihan-before.json         |  32729 +++++
+ .../cl008-real/validation-db5397d-local.json       |     99 +
+ docs/reports/cl008-real/validation.json            |     99 +
+ docs/reports/cl008-real/wiktionary-NOTICE.txt      |      5 +
+ .../cl008-real/wiktionary-build-manifest.json      |      1 +
+ .../wiktionary-candidate-attributions.json         |     83 +
+ docs/reports/cl008-real/wiktionary-prefix.json     |  25336 ++++
+ docs/reports/cl008-real/wiktionary-quality.json    |      1 +
+ .../reports/cl008-real/wiktionary-source-lock.json |      1 +
+ docs/reports/cl008-round10-status.md               |     53 +
+ .../reports/cl008-round10/baseline-red/result.json |     18 +
+ docs/reports/cl008-round10/baseline-red/stderr.txt |     44 +
+ docs/reports/cl008-round10/baseline-red/stdout.txt |      0
+ docs/reports/cl008-round10/checksums.json          |    170 +
+ .../cl008-round10/completeness-red/result.json     |     17 +
+ .../cl008-round10/completeness-red/stderr.txt      |     18 +
+ .../cl008-round10/completeness-red/stdout.txt      |      0
+ .../final-checks/command-01-stderr.txt             |      0
+ .../final-checks/command-01-stdout.txt             |      1 +
+ .../final-checks/command-02-stderr.txt             |      0
+ .../final-checks/command-02-stdout.txt             |      0
+ .../final-checks/command-03-stderr.txt             |      0
+ .../final-checks/command-03-stdout.txt             |      0
+ .../final-checks/command-04-stderr.txt             |      0
+ .../final-checks/command-04-stdout.txt             |      0
+ .../final-checks/command-05-stderr.txt             |      1 +
+ .../final-checks/command-05-stdout.txt             |      0
+ .../final-checks/command-06-stderr.txt             |     18 +
+ .../final-checks/command-06-stdout.txt             |    167 +
+ .../final-checks/command-07-stderr.txt             |      7 +
+ .../final-checks/command-07-stdout.txt             |     29 +
+ .../final-checks/command-08-stderr.txt             |      1 +
+ .../final-checks/command-08-stdout.txt             |      0
+ .../final-checks/command-09-stderr.txt             |      0
+ .../final-checks/command-09-stdout.txt             |      8 +
+ .../final-checks/command-10-stderr.txt             |     94 +
+ .../final-checks/command-10-stdout.txt             |      1 +
+ .../final-checks/command-11-stderr.txt             |      0
+ .../final-checks/command-11-stdout.txt             |      1 +
+ .../cl008-round10/final-checks/validation.json     |    179 +
+ .../final-matrix/edges128-beam.command.json        |     19 +
+ .../final-matrix/edges128-beam.stderr.txt          |      0
+ .../final-matrix/edges128-beam.stdout.json         |   1786 +
+ .../final-matrix/edges128-exact.command.json       |     19 +
+ .../final-matrix/edges128-exact.stderr.txt         |      0
+ .../final-matrix/edges128-exact.stdout.json        |   1786 +
+ .../final-matrix/edges128-position.command.json    |     19 +
+ .../final-matrix/edges128-position.stderr.txt      |      0
+ .../final-matrix/edges128-position.stdout.json     |   1786 +
+ .../final-matrix/edges128-reference.command.json   |     19 +
+ .../final-matrix/edges128-reference.stderr.txt     |      0
+ .../final-matrix/edges128-reference.stdout.json    |   1786 +
+ .../final-matrix/expansions500-beam.command.json   |     19 +
+ .../final-matrix/expansions500-beam.stderr.txt     |      0
+ .../final-matrix/expansions500-beam.stdout.json    |   1189 +
+ .../final-matrix/expansions500-exact.command.json  |     19 +
+ .../final-matrix/expansions500-exact.stderr.txt    |      0
+ .../final-matrix/expansions500-exact.stdout.json   |   1189 +
+ .../expansions500-position.command.json            |     19 +
+ .../final-matrix/expansions500-position.stderr.txt |      0
+ .../expansions500-position.stdout.json             |   1189 +
+ .../expansions500-reference.command.json           |     19 +
+ .../expansions500-reference.stderr.txt             |      0
+ .../expansions500-reference.stdout.json            |   3230 +
+ .../final-matrix/resident128-beam.command.json     |     19 +
+ .../final-matrix/resident128-beam.stderr.txt       |      0
+ .../final-matrix/resident128-beam.stdout.json      |   1189 +
+ .../final-matrix/resident128-exact.command.json    |     19 +
+ .../final-matrix/resident128-exact.stderr.txt      |      0
+ .../final-matrix/resident128-exact.stdout.json     |   1189 +
+ .../final-matrix/resident128-position.command.json |     19 +
+ .../final-matrix/resident128-position.stderr.txt   |      0
+ .../final-matrix/resident128-position.stdout.json  |   3633 +
+ .../resident128-reference.command.json             |     19 +
+ .../final-matrix/resident128-reference.stderr.txt  |      0
+ .../final-matrix/resident128-reference.stdout.json |   1776 +
+ .../final-matrix/standard-beam.command.json        |     19 +
+ .../final-matrix/standard-beam.stderr.txt          |      0
+ .../final-matrix/standard-beam.stdout.json         |   3633 +
+ .../final-matrix/standard-exact.command.json       |     19 +
+ .../final-matrix/standard-exact.stderr.txt         |      0
+ .../final-matrix/standard-exact.stdout.json        |   2657 +
+ .../final-matrix/standard-position.command.json    |     19 +
+ .../final-matrix/standard-position.stderr.txt      |      0
+ .../final-matrix/standard-position.stdout.json     |   3633 +
+ .../final-matrix/standard-reference.command.json   |     19 +
+ .../final-matrix/standard-reference.stderr.txt     |      0
+ .../final-matrix/standard-reference.stdout.json    |   3675 +
+ .../cl008-round10/final-matrix/summary.json        |  12777 ++
+ .../first-checks/command-01-stderr.txt             |      0
+ .../first-checks/command-01-stdout.txt             |      1 +
+ .../first-checks/command-02-stderr.txt             |      0
+ .../first-checks/command-02-stdout.txt             |      0
+ .../first-checks/command-03-stderr.txt             |      0
+ .../first-checks/command-03-stdout.txt             |      0
+ .../first-checks/command-04-stderr.txt             |      0
+ .../first-checks/command-04-stdout.txt             |      0
+ .../first-checks/command-05-stderr.txt             |      2 +
+ .../first-checks/command-05-stdout.txt             |      0
+ .../first-checks/command-06-stderr.txt             |     19 +
+ .../first-checks/command-06-stdout.txt             |    167 +
+ .../first-checks/command-07-stderr.txt             |      7 +
+ .../first-checks/command-07-stdout.txt             |     29 +
+ .../first-checks/command-08-stderr.txt             |      1 +
+ .../first-checks/command-08-stdout.txt             |      0
+ .../first-checks/command-09-stderr.txt             |      0
+ .../first-checks/command-09-stdout.txt             |      8 +
+ .../first-checks/command-10-stderr.txt             |     93 +
+ .../first-checks/command-10-stdout.txt             |      1 +
+ .../first-checks/command-11-stderr.txt             |      0
+ .../first-checks/command-11-stdout.txt             |      1 +
+ .../cl008-round10/first-checks/validation.json     |    179 +
+ .../first-matrix/edges128-beam.command.json        |     19 +
+ .../first-matrix/edges128-beam.stderr.txt          |      0
+ .../first-matrix/edges128-beam.stdout.json         |   1786 +
+ .../first-matrix/edges128-exact.command.json       |     19 +
+ .../first-matrix/edges128-exact.stderr.txt         |      0
+ .../first-matrix/edges128-exact.stdout.json        |   1786 +
+ .../first-matrix/edges128-position.command.json    |     19 +
+ .../first-matrix/edges128-position.stderr.txt      |      0
+ .../first-matrix/edges128-position.stdout.json     |   1786 +
+ .../first-matrix/edges128-reference.command.json   |     19 +
+ .../first-matrix/edges128-reference.stderr.txt     |      0
+ .../first-matrix/edges128-reference.stdout.json    |   1786 +
+ .../first-matrix/expansions500-beam.command.json   |     19 +
+ .../first-matrix/expansions500-beam.stderr.txt     |      0
+ .../first-matrix/expansions500-beam.stdout.json    |   1189 +
+ .../first-matrix/expansions500-exact.command.json  |     19 +
+ .../first-matrix/expansions500-exact.stderr.txt    |      0
+ .../first-matrix/expansions500-exact.stdout.json   |   1189 +
+ .../expansions500-position.command.json            |     19 +
+ .../first-matrix/expansions500-position.stderr.txt |      0
+ .../expansions500-position.stdout.json             |   1189 +
+ .../expansions500-reference.command.json           |     19 +
+ .../expansions500-reference.stderr.txt             |      0
+ .../expansions500-reference.stdout.json            |   3230 +
+ .../first-matrix/resident128-beam.command.json     |     19 +
+ .../first-matrix/resident128-beam.stderr.txt       |      0
+ .../first-matrix/resident128-beam.stdout.json      |   1189 +
+ .../first-matrix/resident128-exact.command.json    |     19 +
+ .../first-matrix/resident128-exact.stderr.txt      |      0
+ .../first-matrix/resident128-exact.stdout.json     |   1189 +
+ .../first-matrix/resident128-position.command.json |     19 +
+ .../first-matrix/resident128-position.stderr.txt   |      0
+ .../first-matrix/resident128-position.stdout.json  |   3633 +
+ .../resident128-reference.command.json             |     19 +
+ .../first-matrix/resident128-reference.stderr.txt  |      0
+ .../first-matrix/resident128-reference.stdout.json |   1776 +
+ .../first-matrix/standard-beam.command.json        |     19 +
+ .../first-matrix/standard-beam.stderr.txt          |      0
+ .../first-matrix/standard-beam.stdout.json         |   3633 +
+ .../first-matrix/standard-exact.command.json       |     19 +
+ .../first-matrix/standard-exact.stderr.txt         |      0
+ .../first-matrix/standard-exact.stdout.json        |   2657 +
+ .../first-matrix/standard-position.command.json    |     19 +
+ .../first-matrix/standard-position.stderr.txt      |      0
+ .../first-matrix/standard-position.stdout.json     |   3633 +
+ .../first-matrix/standard-reference.command.json   |     19 +
+ .../first-matrix/standard-reference.stderr.txt     |      0
+ .../first-matrix/standard-reference.stdout.json    |   3675 +
+ .../cl008-round10/first-matrix/summary.json        |  12777 ++
+ docs/reports/cl008-round10/identity.json           |     25 +
+ .../cl008-round10/preparation-limitations.json     |     20 +
+ docs/reports/cl008-round10/preservation.json       |     19 +
+ docs/reports/cl008-round10/provenance.json         |     10 +
+ docs/reports/cl008-round10/raw-artifacts.json      |    959 +
+ docs/reports/cl008-round10/runners.json            |     41 +
+ docs/reports/cl008-round10/targeted/0-stderr.txt   |      0
+ docs/reports/cl008-round10/targeted/0-stdout.txt   |      0
+ docs/reports/cl008-round10/targeted/1-stderr.txt   |     15 +
+ docs/reports/cl008-round10/targeted/1-stdout.txt   |      0
+ docs/reports/cl008-round10/targeted/2-stderr.txt   |      8 +
+ docs/reports/cl008-round10/targeted/2-stdout.txt   |      0
+ docs/reports/cl008-round10/targeted/3-stderr.txt   |      3 +
+ docs/reports/cl008-round10/targeted/3-stdout.txt   |      6 +
+ docs/reports/cl008-round10/targeted/results.json   |     59 +
+ docs/reports/cl008-round3/.gitattributes           |      3 +
+ docs/reports/cl008-round3/README.md                |    111 +
+ docs/reports/cl008-round3/analysis.json            | 118215 ++++++++++++++++++
+ docs/reports/cl008-round3/command-01.log           |      0
+ docs/reports/cl008-round3/command-02.log           |      1 +
+ docs/reports/cl008-round3/command-03.log           |      0
+ docs/reports/cl008-round3/command-04.log           |      2 +
+ docs/reports/cl008-round3/command-05.log           |    160 +
+ docs/reports/cl008-round3/command-06.log           |     37 +
+ docs/reports/cl008-round3/command-07.log           |      8 +
+ docs/reports/cl008-round3/command-08.log           |     45 +
+ docs/reports/cl008-round3/command-09.log           |      1 +
+ docs/reports/cl008-round3/command-10.log           |      1 +
+ docs/reports/cl008-round3/command-11.log           |      1 +
+ docs/reports/cl008-round3/command-12.log           |      1 +
+ docs/reports/cl008-round3/command-13.log           |      1 +
+ docs/reports/cl008-round3/groups.md                |    128 +
+ docs/reports/cl008-round3/mechanical.json          |  34975 ++++++
+ docs/reports/cl008-round3/provenance.json          |    181 +
+ .../cl008-round3/source-evidence-validation.json   |     84 +
+ docs/reports/cl008-round3/unihan.json              |  49414 ++++++++
+ docs/reports/cl008-round3/validation.json          |    214 +
+ docs/reports/cl008-round3/wiktionary.json          |  25336 ++++
+ docs/reports/cl008-round4-followup/.gitattributes  |      2 +
+ docs/reports/cl008-round4-followup/README.md       |     31 +
+ .../cl008-round4-followup/checks/command-01.log    |      0
+ .../cl008-round4-followup/checks/command-02.log    |      1 +
+ .../cl008-round4-followup/checks/command-03.log    |      0
+ .../cl008-round4-followup/checks/command-04.log    |      1 +
+ .../cl008-round4-followup/checks/command-05.log    |    159 +
+ .../cl008-round4-followup/checks/command-06.log    |     37 +
+ .../cl008-round4-followup/checks/command-07.log    |      8 +
+ .../cl008-round4-followup/checks/command-08.log    |     58 +
+ .../cl008-round4-followup/checks/command-09.log    |      1 +
+ .../cl008-round4-followup/checks/command-10.log    |      1 +
+ .../checks/language-readiness.json                 |     69 +
+ .../cl008-round4-followup/checks/validation.json   |    165 +
+ .../historical-evidence-preserved.json             |    189 +
+ docs/reports/cl008-round4-followup/provenance.json |    130 +
+ .../publication-first-attempt.json                 |     13 +
+ docs/reports/cl008-round4-followup/raw-logs.json   |     62 +
+ .../regression-after-fix.json                      |     19 +
+ .../cl008-round4-followup/regression-after-fix.log |     14 +
+ .../regression-before-fix.json                     |     22 +
+ .../regression-before-fix.log                      |     41 +
+ docs/reports/cl008-round4/.gitattributes           |      3 +
+ docs/reports/cl008-round4/README.md                |     84 +
+ docs/reports/cl008-round4/cccedict-analysis.json   |  59908 +++++++++
+ .../cl008-round4/cccedict-evidence-validation.json |     46 +
+ docs/reports/cl008-round4/cccedict-full.json       |  48140 +++++++
+ .../cl008-round4/cccedict-source/LICENSE.txt       |    428 +
+ .../cl008-round4/cccedict-source/NOTICE.txt        |      5 +
+ .../cl008-round4/cccedict-source/evidence.json     |     52 +
+ .../cl008-round4/cccedict-source/manifest.json     |      1 +
+ .../cl008-round4/cccedict-source/quality.json      |      1 +
+ .../cccedict-source/received-from-c.json           |     42 +
+ .../cl008-round4/cccedict-source/source-lock.json  |      1 +
+ .../cccedict-source/upstream-documents.json        |      1 +
+ docs/reports/cl008-round4/command-01.log           |      0
+ docs/reports/cl008-round4/command-02.log           |      1 +
+ docs/reports/cl008-round4/command-03.log           |      0
+ docs/reports/cl008-round4/command-04.log           |      1 +
+ docs/reports/cl008-round4/command-05.log           |    159 +
+ docs/reports/cl008-round4/command-06.log           |     37 +
+ docs/reports/cl008-round4/command-07.log           |      8 +
+ docs/reports/cl008-round4/command-08.log           |     56 +
+ docs/reports/cl008-round4/command-09.log           |      1 +
+ docs/reports/cl008-round4/command-10.log           |      1 +
+ docs/reports/cl008-round4/command-11.log           |      1 +
+ docs/reports/cl008-round4/command-12.log           |      1 +
+ docs/reports/cl008-round4/command-13.log           |      1 +
+ docs/reports/cl008-round4/language-readiness.json  |     69 +
+ docs/reports/cl008-round4/mechanical.json          |  34975 ++++++
+ docs/reports/cl008-round4/provenance.json          |    247 +
+ docs/reports/cl008-round4/restricted/LICENSE-1.txt |     39 +
+ docs/reports/cl008-round4/restricted/cases.tsv     |     16 +
+ .../cl008-round4/restricted/restricted-runtime.tsv |     28 +
+ docs/reports/cl008-round4/restricted/results.json  |  32647 +++++
+ .../cl008-round4/restricted/source-evidence.json   |     34 +
+ docs/reports/cl008-round4/validation.json          |    215 +
+ docs/reports/cl008-round5/.gitattributes           |      4 +
+ docs/reports/cl008-round5/README.md                |     90 +
+ .../cl008-round5/cccedict-source/LICENSE.txt       |    427 +
+ .../cl008-round5/cccedict-source/NOTICE.txt        |      5 +
+ .../cl008-round5/cccedict-source/evidence.json     |     52 +
+ .../cl008-round5/cccedict-source/manifest.json     |      1 +
+ .../cl008-round5/cccedict-source/quality.json      |      1 +
+ .../cl008-round5/cccedict-source/source-lock.json  |      1 +
+ .../checks/algorithm-v1/case-comparison.tsv        |     84 +
+ .../checks/algorithm-v1/raw-results.tsv            |    167 +
+ .../cl008-round5/checks/algorithm-v1/report.md     |    157 +
+ .../cl008-round5/checks/algorithm-v1/summary.json  |   4366 +
+ docs/reports/cl008-round5/checks/command-01.log    |      1 +
+ docs/reports/cl008-round5/checks/command-02.log    |      1 +
+ docs/reports/cl008-round5/checks/command-03.log    |      1 +
+ docs/reports/cl008-round5/checks/command-04.log    |      1 +
+ docs/reports/cl008-round5/checks/command-05.log    |    173 +
+ docs/reports/cl008-round5/checks/command-06.log    |     36 +
+ docs/reports/cl008-round5/checks/command-07.log    |      8 +
+ docs/reports/cl008-round5/checks/command-08.log    |      6 +
+ docs/reports/cl008-round5/checks/command-09.log    |      1 +
+ docs/reports/cl008-round5/checks/command-10.log    |     39 +
+ docs/reports/cl008-round5/checks/command-11.log    |    111 +
+ docs/reports/cl008-round5/checks/command-12.log    |      1 +
+ docs/reports/cl008-round5/checks/command-13.log    |      1 +
+ docs/reports/cl008-round5/checks/command-14.log    |      1 +
+ docs/reports/cl008-round5/checks/command-15.log    |      1 +
+ .../cl008-round5/checks/language-readiness.json    |     69 +
+ docs/reports/cl008-round5/checks/mechanical.json   |  34975 ++++++
+ .../cl008-round5/checks/prototype-performance.json |     39 +
+ .../cl008-round5/checks/quality-preparation.json   |     90 +
+ docs/reports/cl008-round5/checks/validation.json   |    226 +
+ .../cl008-round5/failure-and-budget-index.json     |   1483 +
+ .../historical-evidence-preserved.json             |    477 +
+ docs/reports/cl008-round5/phases/beam1-stderr.txt  |      1 +
+ docs/reports/cl008-round5/phases/beam1-stdout.json |      1 +
+ docs/reports/cl008-round5/phases/beam1.json        |      1 +
+ docs/reports/cl008-round5/phases/beam64-stderr.txt |      1 +
+ .../reports/cl008-round5/phases/beam64-stdout.json |      1 +
+ docs/reports/cl008-round5/phases/beam64.json       |      1 +
+ docs/reports/cl008-round5/phases/beam8-stderr.txt  |      1 +
+ docs/reports/cl008-round5/phases/beam8-stdout.json |      1 +
+ docs/reports/cl008-round5/phases/beam8.json        |      1 +
+ .../cl008-round5/phases/exact-edges128-stderr.txt  |      1 +
+ .../cl008-round5/phases/exact-edges128-stdout.json |      1 +
+ .../cl008-round5/phases/exact-edges128.json        |      1 +
+ .../phases/exact-expansions500-stderr.txt          |      1 +
+ .../phases/exact-expansions500-stdout.json         |      1 +
+ .../cl008-round5/phases/exact-expansions500.json   |      1 +
+ .../phases/exact-resident128-stderr.txt            |      1 +
+ .../phases/exact-resident128-stdout.json           |      1 +
+ .../cl008-round5/phases/exact-resident128.json     |      1 +
+ docs/reports/cl008-round5/phases/exact-stderr.txt  |      1 +
+ docs/reports/cl008-round5/phases/exact-stdout.json |      1 +
+ docs/reports/cl008-round5/phases/exact.json        |      1 +
+ .../phases/position-edges128-stderr.txt            |      1 +
+ .../phases/position-edges128-stdout.json           |      1 +
+ .../cl008-round5/phases/position-edges128.json     |      1 +
+ .../phases/position-expansions500-stderr.txt       |      1 +
+ .../phases/position-expansions500-stdout.json      |      1 +
+ .../phases/position-expansions500.json             |      1 +
+ .../phases/position-resident128-stderr.txt         |      1 +
+ .../phases/position-resident128-stdout.json        |      1 +
+ .../cl008-round5/phases/position-resident128.json  |      1 +
+ .../cl008-round5/phases/position-stderr.txt        |      1 +
+ .../cl008-round5/phases/position-stdout.json       |      1 +
+ docs/reports/cl008-round5/phases/position.json     |      1 +
+ .../cl008-round5/phases/reference-stderr.txt       |      1 +
+ .../cl008-round5/phases/reference-stdout.json      |      1 +
+ docs/reports/cl008-round5/phases/reference.json    |      1 +
+ docs/reports/cl008-round5/phases/summary.json      |   7484 ++
+ docs/reports/cl008-round5/provenance.json          |    521 +
+ docs/reports/cl008-round5/raw-logs.json            |    198 +
+ .../cl008-round5/red/annotation-scope-red.txt      |     23 +
+ docs/reports/cl008-round5/red/count-units-red.txt  |     13 +
+ .../cl008-round5/red/profile-green-first.txt       |      9 +
+ docs/reports/cl008-round5/red/profile-red.txt      |     11 +
+ docs/reports/cl008-round5/red/quality-red.txt      |     23 +
+ docs/reports/cl008-round6/README.md                |     70 +
+ .../reports/cl008-round6/baseline/build-stderr.txt |      2 +
+ .../cl008-round6/baseline/build-stdout.jsonl       |      5 +
+ docs/reports/cl008-round6/baseline/green-0.txt     |      9 +
+ docs/reports/cl008-round6/baseline/green-1.txt     |      5 +
+ docs/reports/cl008-round6/baseline/green.json      |     28 +
+ docs/reports/cl008-round6/baseline/identity.json   |     19 +
+ .../cl008-round6/cccedict-source/evidence.json     |     52 +
+ .../cl008-round6/cccedict-source/manifest.json     |      1 +
+ .../cl008-round6/cccedict-source/quality.json      |      1 +
+ .../cl008-round6/cccedict-source/source-lock.json  |      1 +
+ .../checks/algorithm-v1/case-comparison.tsv        |     84 +
+ .../checks/algorithm-v1/raw-results.tsv            |    167 +
+ .../cl008-round6/checks/algorithm-v1/report.md     |    157 +
+ .../cl008-round6/checks/algorithm-v1/summary.json  |   4366 +
+ docs/reports/cl008-round6/checks/command-01.log    |      0
+ docs/reports/cl008-round6/checks/command-02.log    |      1 +
+ docs/reports/cl008-round6/checks/command-03.log    |      0
+ docs/reports/cl008-round6/checks/command-04.log    |      2 +
+ docs/reports/cl008-round6/checks/command-05.log    |    175 +
+ docs/reports/cl008-round6/checks/command-06.log    |     36 +
+ docs/reports/cl008-round6/checks/command-07.log    |      8 +
+ docs/reports/cl008-round6/checks/command-08.log    |      6 +
+ docs/reports/cl008-round6/checks/command-09.log    |      1 +
+ docs/reports/cl008-round6/checks/command-10.log    |     39 +
+ docs/reports/cl008-round6/checks/command-11.log    |    111 +
+ docs/reports/cl008-round6/checks/command-12.log    |      1 +
+ docs/reports/cl008-round6/checks/command-13.log    |      1 +
+ docs/reports/cl008-round6/checks/command-14.log    |      1 +
+ docs/reports/cl008-round6/checks/command-15.log    |      0
+ .../cl008-round6/checks/language-readiness.json    |     69 +
+ docs/reports/cl008-round6/checks/mechanical.json   |  34975 ++++++
+ .../cl008-round6/checks/prototype-performance.json |     39 +
+ .../cl008-round6/checks/quality-preparation.json   |     90 +
+ docs/reports/cl008-round6/checks/validation.json   |    226 +
+ docs/reports/cl008-round6/checksums.json           |    129 +
+ .../cl008-round6/failure-and-budget-index.json     |   3506 +
+ docs/reports/cl008-round6/history-preserved.json   |    789 +
+ .../cl008-round6/matrix/beam1-after-stderr.txt     |      0
+ .../cl008-round6/matrix/beam1-after-stdout.json    |      1 +
+ docs/reports/cl008-round6/matrix/beam1-after.json  |      1 +
+ .../cl008-round6/matrix/beam1-before-stderr.txt    |      0
+ .../cl008-round6/matrix/beam1-before-stdout.json   |      1 +
+ docs/reports/cl008-round6/matrix/beam1-before.json |      1 +
+ .../cl008-round6/matrix/beam64-after-stderr.txt    |      0
+ .../cl008-round6/matrix/beam64-after-stdout.json   |      1 +
+ docs/reports/cl008-round6/matrix/beam64-after.json |      1 +
+ .../cl008-round6/matrix/beam64-before-stderr.txt   |      0
+ .../cl008-round6/matrix/beam64-before-stdout.json  |      1 +
+ .../reports/cl008-round6/matrix/beam64-before.json |      1 +
+ .../cl008-round6/matrix/beam8-after-stderr.txt     |      0
+ .../cl008-round6/matrix/beam8-after-stdout.json    |      1 +
+ docs/reports/cl008-round6/matrix/beam8-after.json  |      1 +
+ .../cl008-round6/matrix/beam8-before-stderr.txt    |      0
+ .../cl008-round6/matrix/beam8-before-stdout.json   |      1 +
+ docs/reports/cl008-round6/matrix/beam8-before.json |      1 +
+ .../cl008-round6/matrix/exact-after-stderr.txt     |      0
+ .../cl008-round6/matrix/exact-after-stdout.json    |      1 +
+ docs/reports/cl008-round6/matrix/exact-after.json  |      1 +
+ .../cl008-round6/matrix/exact-before-stderr.txt    |      0
+ .../cl008-round6/matrix/exact-before-stdout.json   |      1 +
+ docs/reports/cl008-round6/matrix/exact-before.json |      1 +
+ .../matrix/exact-edges128-after-stderr.txt         |      0
+ .../matrix/exact-edges128-after-stdout.json        |      1 +
+ .../cl008-round6/matrix/exact-edges128-after.json  |      1 +
+ .../matrix/exact-edges128-before-stderr.txt        |      0
+ .../matrix/exact-edges128-before-stdout.json       |      1 +
+ .../cl008-round6/matrix/exact-edges128-before.json |      1 +
+ .../matrix/exact-expansions500-after-stderr.txt    |      0
+ .../matrix/exact-expansions500-after-stdout.json   |      1 +
+ .../matrix/exact-expansions500-after.json          |      1 +
+ .../matrix/exact-expansions500-before-stderr.txt   |      0
+ .../matrix/exact-expansions500-before-stdout.json  |      1 +
+ .../matrix/exact-expansions500-before.json         |      1 +
+ .../matrix/exact-resident128-after-stderr.txt      |      0
+ .../matrix/exact-resident128-after-stdout.json     |      1 +
+ .../matrix/exact-resident128-after.json            |      1 +
+ .../matrix/exact-resident128-before-stderr.txt     |      0
+ .../matrix/exact-resident128-before-stdout.json    |      1 +
+ .../matrix/exact-resident128-before.json           |      1 +
+ docs/reports/cl008-round6/matrix/execution.json    |     10 +
+ docs/reports/cl008-round6/matrix/identity.json     |     46 +
+ .../cl008-round6/matrix/partial-summary.json       |  16175 +++
+ .../cl008-round6/matrix/position-after-stderr.txt  |      0
+ .../cl008-round6/matrix/position-after-stdout.json |      1 +
+ .../cl008-round6/matrix/position-after.json        |      1 +
+ .../cl008-round6/matrix/position-before-stderr.txt |      0
+ .../matrix/position-before-stdout.json             |      1 +
+ .../cl008-round6/matrix/position-before.json       |      1 +
+ .../matrix/position-edges128-after-stderr.txt      |      0
+ .../matrix/position-edges128-after-stdout.json     |      1 +
+ .../matrix/position-edges128-after.json            |      1 +
+ .../matrix/position-edges128-before-stderr.txt     |      0
+ .../matrix/position-edges128-before-stdout.json    |      1 +
+ .../matrix/position-edges128-before.json           |      1 +
+ .../matrix/position-expansions500-after-stderr.txt |      0
+ .../position-expansions500-after-stdout.json       |      1 +
+ .../matrix/position-expansions500-after.json       |      1 +
+ .../position-expansions500-before-stderr.txt       |      0
+ .../position-expansions500-before-stdout.json      |      1 +
+ .../matrix/position-expansions500-before.json      |      1 +
+ .../matrix/position-resident128-after-stderr.txt   |      0
+ .../matrix/position-resident128-after-stdout.json  |      1 +
+ .../matrix/position-resident128-after.json         |      1 +
+ .../matrix/position-resident128-before-stderr.txt  |      0
+ .../matrix/position-resident128-before-stdout.json |      1 +
+ .../matrix/position-resident128-before.json        |      1 +
+ .../cl008-round6/matrix/reference-after-stderr.txt |      0
+ .../matrix/reference-after-stdout.json             |      1 +
+ .../cl008-round6/matrix/reference-after.json       |      1 +
+ .../matrix/reference-before-stderr.txt             |      0
+ .../matrix/reference-before-stdout.json            |      1 +
+ .../cl008-round6/matrix/reference-before.json      |      1 +
+ docs/reports/cl008-round6/matrix/summary.json      |  16186 +++
+ docs/reports/cl008-round6/original-artifacts.json  |     47 +
+ docs/reports/cl008-round6/original-logs.json       |    263 +
+ .../cl008-round6/position-resource-gates.json      |     22 +
+ docs/reports/cl008-round6/provenance.json          |    724 +
+ docs/reports/cl008-round6/red/full-result.txt      |     14 +
+ docs/reports/cl008-round6/red/identity.json        |     14 +
+ docs/reports/cl008-round6/tools/publish_round6.py  |     96 +
+ .../cl008-round6/tools/run_round6_checks.py        |     54 +
+ .../cl008-round6/tools/run_round6_matrix.py        |     82 +
+ docs/reports/cl008-round7-status.md                |     81 +
+ .../cl008-round7/cccedict-source/LICENSE.txt       |    427 +
+ .../cl008-round7/cccedict-source/NOTICE.txt        |      5 +
+ .../cl008-round7/cccedict-source/evidence.json     |     52 +
+ .../cl008-round7/cccedict-source/manifest.json     |      1 +
+ .../cl008-round7/cccedict-source/quality.json      |      1 +
+ .../cl008-round7/cccedict-source/source-lock.json  |      1 +
+ .../checks/algorithm-v1/case-comparison.tsv        |     84 +
+ .../checks/algorithm-v1/raw-results.tsv            |    167 +
+ .../cl008-round7/checks/algorithm-v1/report.md     |    157 +
+ .../cl008-round7/checks/algorithm-v1/summary.json  |   4366 +
+ docs/reports/cl008-round7/checks/command-01.txt    |      1 +
+ docs/reports/cl008-round7/checks/command-02.txt    |      0
+ docs/reports/cl008-round7/checks/command-03.txt    |      1 +
+ docs/reports/cl008-round7/checks/command-04.txt    |      0
+ docs/reports/cl008-round7/checks/command-05.txt    |      2 +
+ docs/reports/cl008-round7/checks/command-06.txt    |    178 +
+ docs/reports/cl008-round7/checks/command-07.txt    |     36 +
+ docs/reports/cl008-round7/checks/command-08.txt    |      1 +
+ docs/reports/cl008-round7/checks/command-09.txt    |      8 +
+ docs/reports/cl008-round7/checks/command-10.txt    |     82 +
+ docs/reports/cl008-round7/checks/command-11.txt    |      1 +
+ docs/reports/cl008-round7/checks/command-12.txt    |     39 +
+ docs/reports/cl008-round7/checks/command-13.txt    |    111 +
+ docs/reports/cl008-round7/checks/command-14.txt    |      1 +
+ docs/reports/cl008-round7/checks/command-15.txt    |      1 +
+ docs/reports/cl008-round7/checks/command-16.txt    |      1 +
+ docs/reports/cl008-round7/checks/command-17.txt    |      0
+ .../cl008-round7/checks/ime-task-handoff.json      |     92 +
+ .../cl008-round7/checks/language-readiness.json    |     69 +
+ docs/reports/cl008-round7/checks/mechanics.json    |  34975 ++++++
+ docs/reports/cl008-round7/checks/prototype.json    |     39 +
+ .../cl008-round7/checks/quality-preparation.json   |     90 +
+ docs/reports/cl008-round7/checks/validation.json   |    271 +
+ docs/reports/cl008-round7/checksums.json           |     81 +
+ .../cl008-round7/failure-and-budget-index.json     |  30263 +++++
+ docs/reports/cl008-round7/handoff-compat.json      |     16 +
+ docs/reports/cl008-round7/harness-preparation.json |      8 +
+ docs/reports/cl008-round7/history-preserved.json   |   1282 +
+ docs/reports/cl008-round7/original-artifacts.json  |     19 +
+ docs/reports/cl008-round7/original-logs.json       |    250 +
+ docs/reports/cl008-round7/phases/command.txt       |     12 +
+ docs/reports/cl008-round7/phases/comparison.json   |  55186 ++++++++
+ docs/reports/cl008-round7/phases/identity.json     |     25 +
+ .../cl008-round7/phases/matrix/beam1-stderr.txt    |      0
+ .../cl008-round7/phases/matrix/beam1-stdout.json   |      1 +
+ .../cl008-round7/phases/matrix/beam64-stderr.txt   |      0
+ .../cl008-round7/phases/matrix/beam64-stdout.json  |      1 +
+ .../cl008-round7/phases/matrix/beam8-stderr.txt    |      0
+ .../cl008-round7/phases/matrix/beam8-stdout.json   |      1 +
+ .../phases/matrix/exact-edges128-stderr.txt        |      0
+ .../phases/matrix/exact-edges128-stdout.json       |      1 +
+ .../phases/matrix/exact-expansions500-stderr.txt   |      0
+ .../phases/matrix/exact-expansions500-stdout.json  |      1 +
+ .../phases/matrix/exact-resident128-stderr.txt     |      0
+ .../phases/matrix/exact-resident128-stdout.json    |      1 +
+ .../cl008-round7/phases/matrix/exact-stderr.txt    |      0
+ .../cl008-round7/phases/matrix/exact-stdout.json   |      1 +
+ .../phases/matrix/position-edges128-stderr.txt     |      0
+ .../phases/matrix/position-edges128-stdout.json    |      1 +
+ .../matrix/position-expansions500-stderr.txt       |      0
+ .../matrix/position-expansions500-stdout.json      |      1 +
+ .../phases/matrix/position-resident128-stderr.txt  |      0
+ .../phases/matrix/position-resident128-stdout.json |      1 +
+ .../cl008-round7/phases/matrix/position-stderr.txt |      0
+ .../phases/matrix/position-stdout.json             |      1 +
+ .../phases/matrix/reference-stderr.txt             |      0
+ .../phases/matrix/reference-stdout.json            |      1 +
+ .../cl008-round7/phases/matrix/summary.json        |   7712 ++
+ docs/reports/cl008-round7/provenance.json          |    452 +
+ docs/reports/cl008-round7/red/fallback.txt         |     36 +
+ docs/reports/cl008-round7/red/identity.json        |     60 +
+ docs/reports/cl008-round7/red/scoring.txt          |     20 +
+ docs/reports/cl008-round7/red/task-handoff.txt     |     24 +
+ .../tools/audit_round7_handoff_compat.py           |     33 +
+ docs/reports/cl008-round7/tools/publish_round7.py  |    110 +
+ .../cl008-round7/tools/run_round7_checks.py        |     50 +
+ .../cl008-round7/tools/run_round7_phases.py        |     68 +
+ docs/reports/cl008-round7/tools/run_round7_red.py  |     33 +
+ docs/reports/cl008-round8-status.md                |     68 +
+ docs/reports/cl008-round8/base.json                |     69 +
+ docs/reports/cl008-round8/checksums.json           |     24 +
+ docs/reports/cl008-round8/command-01.stderr.txt    |      0
+ docs/reports/cl008-round8/command-01.stdout.txt    |      1 +
+ docs/reports/cl008-round8/command-02.stderr.txt    |      0
+ docs/reports/cl008-round8/command-02.stdout.txt    |      1 +
+ docs/reports/cl008-round8/command-03.stderr.txt    |      0
+ docs/reports/cl008-round8/command-03.stdout.txt    |      1 +
+ docs/reports/cl008-round8/command-04.stderr.txt    |      0
+ docs/reports/cl008-round8/command-04.stdout.txt    |      8 +
+ docs/reports/cl008-round8/command-05.stderr.txt    |      0
+ docs/reports/cl008-round8/command-05.stdout.txt    |      0
+ docs/reports/cl008-round8/handoff.json             |     92 +
+ docs/reports/cl008-round8/history-preserved.json   |      7 +
+ docs/reports/cl008-round8/original-artifacts.json  |     40 +
+ docs/reports/cl008-round8/original-logs.json       |     75 +
+ docs/reports/cl008-round8/packet-validation.json   |     56 +
+ docs/reports/cl008-round8/preparation.json         |     90 +
+ docs/reports/cl008-round8/provenance.json          |     87 +
+ docs/reports/cl008-round8/runners.json             |     29 +
+ docs/reports/cl008-round8/validation.json          |    138 +
+ docs/reports/cl008-round9-status.md                |     69 +
+ docs/reports/cl008-round9/checks/authoring.json    |    252 +
+ docs/reports/cl008-round9/checks/base.json         |     64 +
+ .../cl008-round9/checks/command-01-stderr.txt      |      0
+ .../cl008-round9/checks/command-01-stdout.txt      |      1 +
+ .../cl008-round9/checks/command-02-stderr.txt      |      0
+ .../cl008-round9/checks/command-02-stdout.txt      |      0
+ .../cl008-round9/checks/command-03-stderr.txt      |      0
+ .../cl008-round9/checks/command-03-stdout.txt      |      0
+ .../cl008-round9/checks/command-04-stderr.txt      |      0
+ .../cl008-round9/checks/command-04-stdout.txt      |      0
+ .../cl008-round9/checks/command-05-stderr.txt      |      1 +
+ .../cl008-round9/checks/command-05-stdout.txt      |      0
+ .../cl008-round9/checks/command-06-stderr.txt      |     17 +
+ .../cl008-round9/checks/command-06-stdout.txt      |    160 +
+ .../cl008-round9/checks/command-07-stderr.txt      |      7 +
+ .../cl008-round9/checks/command-07-stdout.txt      |     29 +
+ .../cl008-round9/checks/command-08-stderr.txt      |      1 +
+ .../cl008-round9/checks/command-08-stdout.txt      |      0
+ .../cl008-round9/checks/command-09-stderr.txt      |      0
+ .../cl008-round9/checks/command-09-stdout.txt      |      8 +
+ .../cl008-round9/checks/command-10-stderr.txt      |     89 +
+ .../cl008-round9/checks/command-10-stdout.txt      |      1 +
+ .../cl008-round9/checks/command-11-stderr.txt      |      0
+ .../cl008-round9/checks/command-11-stdout.txt      |      1 +
+ .../cl008-round9/checks/command-12-stderr.txt      |      0
+ .../cl008-round9/checks/command-12-stdout.txt      |      1 +
+ .../cl008-round9/checks/command-13-stderr.txt      |      0
+ .../cl008-round9/checks/command-13-stdout.txt      |      1 +
+ .../cl008-round9/checks/command-14-stderr.txt      |      0
+ .../cl008-round9/checks/command-14-stdout.txt      |      1 +
+ .../cl008-round9/checks/command-15-stderr.txt      |      0
+ .../cl008-round9/checks/command-15-stdout.txt      |      1 +
+ docs/reports/cl008-round9/checks/handoff.json      |     87 +
+ docs/reports/cl008-round9/checks/preparation.json  |     85 +
+ docs/reports/cl008-round9/checks/progress.json     |    278 +
+ docs/reports/cl008-round9/checks/validation.json   |    279 +
+ docs/reports/cl008-round9/checksums.json           |     49 +
+ docs/reports/cl008-round9/identity.json            |     21 +
+ docs/reports/cl008-round9/preservation.json        |     18 +
+ docs/reports/cl008-round9/provenance.json          |      8 +
+ docs/reports/cl008-round9/raw-artifacts.json       |    239 +
+ docs/reports/cl008-round9/red/result.json          |     19 +
+ docs/reports/cl008-round9/red/stderr.txt           |    134 +
+ docs/reports/cl008-round9/red/stdout.txt           |      0
+ docs/reports/cl008-round9/runners.json             |     17 +
+ docs/reports/cl008-search-mechanics-v1.json        |  13759 ++
+ docs/reports/cl008-unihan-v2-load.json             |     25 +
+ scripts/analyze_search_round3.py                   |    352 +
+ scripts/check_ime_task_handoff.py                  |    156 +
+ scripts/check_language_readiness.py                |    256 +
+ scripts/check_quality_preparation.py               |     87 +
+ scripts/check_search_resources.py                  |     73 +
+ scripts/evaluate_real_lexicon.py                   |    254 +
+ scripts/evaluate_restricted_oracle.py              |    240 +
+ scripts/evaluate_search.py                         |    179 +
+ scripts/evaluate_search_phases.py                  |    195 +
+ scripts/manage_ime_annotation_queue.py             |    195 +
+ scripts/search_resource_contract.py                |     50 +
+ tests/search-mechanics-v1/README.md                |     15 +
+ tests/search-mechanics-v1/cases.tsv                |     15 +
+ tests/search-mechanics-v1/lexicon.tsv              |     15 +
+ tests/search-mechanics-v1/train.tsv                |      5 +
+ tests/search-resources-v1/README.md                |      7 +
+ tests/search-resources-v1/cases.tsv                |     26 +
+ tests/test_annotation_queue.py                     |    190 +
+ tests/test_ime_task_handoff.py                     |    173 +
+ tests/test_language_readiness.py                   |    198 +
+ tests/test_quality_preparation.py                  |     97 +
+ tests/test_real_lexicon_evaluation.py              |    176 +
+ tests/test_restricted_oracle.py                    |     67 +
+ tests/test_search_evaluation.py                    |     50 +
+ tests/test_search_phases.py                        |    139 +
+ tests/test_search_resources.py                     |     61 +
+ tests/test_search_round3_analysis.py               |    188 +
+ 687 files changed, 919748 insertions(+), 1 deletion(-)

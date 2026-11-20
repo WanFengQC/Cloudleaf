@@ -1,0 +1,12 @@
+from pathlib import Path
+source=Path('C:/Users/EDY/.codex/tmp/r19-search/user-layer-probe.rs').read_text(encoding='utf-8')
+source=source.replace('Ranker,search_graph','Ranker,TransitionCache,search_graph')
+source=source.replace('    for iteration in 1..=3 {','    let mut cache=TransitionCache::default();\n    cache.set_enabled(args[5]=="on");\n    println!("CACHE_CAPACITY\\t{}",TransitionCache::capacity_bytes());\n    for iteration in 1..=3 {')
+source=source.replace('Lattice::build_with_scheme(&lexicon,raw,&config,&scheme)?','Lattice::build_with_scheme_cached(&lexicon,raw,&config,&scheme,&mut cache)?')
+source=source.replace('start.elapsed().as_nanos());\n            }','start.elapsed().as_nanos());\n                println!("CACHE\\t{iteration}\\t{label}\\t{case}\\t{:?}",cache.statistics());\n            }')
+Path('crates/cloudleaf-input/examples/transition_cache_probe.rs').write_text(source,encoding='utf-8',newline='\n')
+p=Path('crates/cloudleaf-input/examples/incremental_trace.rs')
+s=p.read_text(encoding='utf-8').replace('"<Right>" => vec![InputEvent::Key(Key::Right)],','"<Right>" => vec![InputEvent::Key(Key::Right)],\n                "<PageDown>" => vec![InputEvent::Key(Key::PageDown)],\n                "<Down>" => vec![InputEvent::Key(Key::Down)],')
+s=s.replace('"xiaohe" => PinyinScheme::DoublePinyin(DoublePinyinLayout::Xiaohe),','"xiaohe" => PinyinScheme::DoublePinyin(DoublePinyinLayout::Xiaohe),\n            "fuzzy-nl" | "correction" => PinyinScheme::FullPinyin,')
+s=s.replace('..SchemeConfig::default()','fuzzy: if args[4]=="fuzzy-nl" { vec![cloudleaf_input::FuzzyRule { pair: cloudleaf_input::FuzzyPair::NL, direction: cloudleaf_input::FuzzyDirection::Both }] } else { Vec::new() },\n        correction: (args[4]=="correction").then(cloudleaf_input::CorrectionConfig::default),\n        ..SchemeConfig::default()')
+p.write_text(s,encoding='utf-8',newline='\n')

@@ -1,0 +1,364 @@
+ .gitattributes                                     |     2 +
+ README.md                                          |     4 +-
+ THIRD_PARTY_NOTICES.md                             |     9 +-
+ config/audits/data.json                            |     8 +
+ data/licenses/CC-BY-SA-4.0.txt                     |   428 +
+ data/licenses/Unicode-3.0.txt                      |    39 +
+ data/manifests/data-source-review-v1.json          |    10 +
+ data/plans/ime-annotation-round6.json              |     1 +
+ data/plans/ime-human-gold-v1.json                  |    50 +
+ data/plans/round8-external-handoff.json            |    45 +
+ .../upstream-documents.json                        |     1 +
+ .../locks/cccedict-20260604-mirror7019e1c.json     |    58 +
+ data/sources/locks/unihan-17.0.0.json              |    22 +
+ .../wiktionary-zh-20261001-prefix8388608.json      |    44 +
+ data/sources/source-review.jsonl                   |     8 +
+ docs/acceptance/cl009-round10/README.md            |    31 +
+ docs/acceptance/cl009-round8/LICENSE.txt           |   427 +
+ docs/acceptance/cl009-round8/NOTICE.txt            |     7 +
+ docs/acceptance/cl009-round8/README.md             |    40 +
+ .../cl009-round8/bounded-acquisition-design.md     |     9 +
+ .../cl009-round8/google-books-2019-review.md       |    33 +
+ .../cl009-round8/google-source-evidence.json       |   107 +
+ .../cl009-round8/semantic-publisher-design.md      |    58 +
+ .../cl009-round8/semantic-review-queue.jsonl       |    20 +
+ docs/acceptance/cl009-round8/source-decisions.md   |    19 +
+ docs/cl009-design.md                               |    55 +
+ docs/cl009-formal-data-review.md                   |    59 +
+ docs/cl009-round10-semantic-bundle.md              |    63 +
+ docs/cl009-round4-design.md                        |    33 +
+ docs/cl009-round5-design.md                        |    37 +
+ docs/cl009-round5-frequency-and-annotation.md      |    44 +
+ docs/cl009-round6-annotation-handoff.md            |    25 +
+ docs/cl009-round6-design.md                        |    43 +
+ docs/cl009-round7-annotation-handoff.md            |    15 +
+ docs/cl009-round7-design.md                        |    27 +
+ docs/cl009-round7-semantic-release.md              |    36 +
+ docs/cl009-round8-design.md                        |    18 +
+ docs/cl009-round9-ngram-analysis.md                |    31 +
+ docs/cl009-word-data-design.md                     |    57 +
+ docs/reports/cl009-clean-replay.md                 |    27 +
+ docs/reports/cl009-data-pipeline.md                |    53 +
+ docs/reports/cl009-reading-audit.md                |    38 +
+ docs/reports/cl009-round10-status.md               |    67 +
+ docs/reports/cl009-round2.md                       |    85 +
+ docs/reports/cl009-round3.md                       |    63 +
+ docs/reports/cl009-round4.md                       |   123 +
+ docs/reports/cl009-round5.md                       |   111 +
+ docs/reports/cl009-round6.md                       |    85 +
+ docs/reports/cl009-round7-status.md                |    83 +
+ docs/reports/cl009-round8-status.md                |    93 +
+ docs/reports/cl009-round9-status.md                |    57 +
+ docs/reports/cl009/baseline-algorithm-summary.json |  4366 +++++++
+ docs/reports/cl009/clean-replay.json               |   381 +
+ docs/reports/cl009/index-performance.json          |     1 +
+ docs/reports/cl009/prototype-performance.json      |    39 +
+ docs/reports/cl009/quality.json                    |     1 +
+ docs/reports/cl009/real-acceptance.json            |     1 +
+ docs/reports/cl009/recovery-review-after.json      |    82 +
+ docs/reports/cl009/recovery-review-before.json     |    89 +
+ .../cl009/recovery-review-hardlink-before.json     |     7 +
+ docs/reports/cl009/recovery-review-pid.json        |    33 +
+ docs/reports/cl009/release-manifest.json           |     1 +
+ .../cl009/round10/checks/check-01-stderr.txt       |     0
+ .../cl009/round10/checks/check-01-stdout.txt       |     0
+ .../cl009/round10/checks/check-02-stderr.txt       |     0
+ .../cl009/round10/checks/check-02-stdout.txt       |     0
+ .../cl009/round10/checks/check-03-stderr.txt       |     0
+ .../cl009/round10/checks/check-03-stdout.txt       |     7 +
+ .../cl009/round10/checks/check-04-stderr.txt       |     0
+ .../cl009/round10/checks/check-04-stdout.txt       |     0
+ .../cl009/round10/checks/check-05-stderr.txt       |     1 +
+ .../cl009/round10/checks/check-05-stdout.txt       |     0
+ .../cl009/round10/checks/check-06-stderr.txt       |    11 +
+ .../cl009/round10/checks/check-06-stdout.txt       |   109 +
+ .../cl009/round10/checks/check-07-stderr.txt       |     6 +
+ .../cl009/round10/checks/check-07-stdout.txt       |    24 +
+ .../cl009/round10/checks/check-08-stderr.txt       |     1 +
+ .../cl009/round10/checks/check-08-stdout.txt       |     0
+ .../cl009/round10/checks/check-09-stderr.txt       |     0
+ .../cl009/round10/checks/check-09-stdout.txt       |     5 +
+ .../cl009/round10/checks/check-10-stderr.txt       |   113 +
+ .../cl009/round10/checks/check-10-stdout.txt       |     1 +
+ .../cl009/round10/checks/check-11-stderr.txt       |     4 +
+ .../cl009/round10/checks/check-11-stdout.txt       |     0
+ docs/reports/cl009/round10/checks/checks.json      |   166 +
+ docs/reports/cl009/round10/checksums.json          |    55 +
+ .../cl009/round10/fixture-error/result.json        |    17 +
+ .../reports/cl009/round10/fixture-error/stderr.txt |    32 +
+ .../reports/cl009/round10/fixture-error/stdout.txt |     0
+ .../fixture-error/test-before-fixture-reset.py     |   223 +
+ .../cl009/round10/followup/check-01-stderr.txt     |     0
+ .../cl009/round10/followup/check-01-stdout.txt     |     1 +
+ .../cl009/round10/followup/check-02-stderr.txt     |     0
+ .../cl009/round10/followup/check-02-stdout.txt     |     1 +
+ docs/reports/cl009/round10/followup/checks.json    |    39 +
+ .../round10/followup/pending-annotations.json      |    15 +
+ docs/reports/cl009/round10/identity.json           |    59 +
+ .../cl009/round10/pending-real-materials.json      |   110 +
+ docs/reports/cl009/round10/raw-artifacts.json      |   281 +
+ docs/reports/cl009/round10/red-api/result.json     |    19 +
+ docs/reports/cl009/round10/red-api/stderr.txt      |    21 +
+ docs/reports/cl009/round10/red-api/stdout.txt      |     0
+ docs/reports/cl009/round10/red-boolean/result.json |    19 +
+ docs/reports/cl009/round10/red-boolean/stderr.txt  |    23 +
+ docs/reports/cl009/round10/red-boolean/stdout.txt  |     0
+ .../cl009/round10/red-initial-recovery/result.json |    20 +
+ .../cl009/round10/red-initial-recovery/stderr.txt  |    15 +
+ .../cl009/round10/red-initial-recovery/stdout.txt  |     0
+ .../historical-semantic-bundle.py                  |   415 +
+ .../round10/red-recovery-commit-replay/result.json |    16 +
+ .../round10/red-recovery-commit-replay/stderr.txt  |    15 +
+ .../round10/red-recovery-commit-replay/stdout.txt  |     0
+ docs/reports/cl009/round10/runners.json            |    35 +
+ docs/reports/cl009/round2-clean-replay.json        |   563 +
+ docs/reports/cl009/round2-core-performance.json    |    39 +
+ docs/reports/cl009/round2-local-checks.json        |   117 +
+ docs/reports/cl009/round2-real-interruption.json   |   827 ++
+ docs/reports/cl009/round2-source-acquisition.json  |    67 +
+ docs/reports/cl009/round3-core-performance.json    |    39 +
+ docs/reports/cl009/round3-local-checks.json        |   131 +
+ docs/reports/cl009/round3-real-interruption.json   |   837 ++
+ docs/reports/cl009/round3-replay.json              |  1424 +++
+ docs/reports/cl009/round4-clean-replay.json        |   402 +
+ docs/reports/cl009/round4-closeout-audit.json      |    38 +
+ docs/reports/cl009/round4-final-clean-replay.json  |   402 +
+ .../cl009/round4-final-core-performance.json       |    39 +
+ docs/reports/cl009/round4-final-local-checks.json  |   131 +
+ .../cl009/round4-final-real-interruption.json      |   646 +
+ docs/reports/cl009/round4-local-checks.json        |   131 +
+ docs/reports/cl009/round4-safe-cache-copy.json     |    10 +
+ docs/reports/cl009/round4-source-acquisition.json  |    24 +
+ .../cl009/round4-source-review-closeout.json       |   161 +
+ .../cl009/round5-algorithm-v1/case-comparison.tsv  |    84 +
+ .../cl009/round5-algorithm-v1/raw-results.tsv      |   167 +
+ docs/reports/cl009/round5-algorithm-v1/report.md   |   157 +
+ .../reports/cl009/round5-algorithm-v1/summary.json |  4366 +++++++
+ docs/reports/cl009/round5-clean-replay.json        |   406 +
+ docs/reports/cl009/round5-core-performance.json    |    39 +
+ docs/reports/cl009/round5-delivery-files.json      |   202 +
+ docs/reports/cl009/round5-diagnostics.json         |    76 +
+ docs/reports/cl009/round5-evidence-index.json      |    80 +
+ docs/reports/cl009/round5-index-performance.json   |     1 +
+ docs/reports/cl009/round5-isolations/README.md     |     7 +
+ docs/reports/cl009/round5-isolations/records.jsonl |  1468 +++
+ docs/reports/cl009/round5-isolations/summary.json  |     1 +
+ .../round5-isolations/upstream-documents.json      |    20 +
+ docs/reports/cl009/round5-local-checks.json        |   131 +
+ docs/reports/cl009/round5-publication-check.json   |   160 +
+ docs/reports/cl009/round5-real-interruption.json   |   646 +
+ docs/reports/cl009/round5-red-evidence.json        |    70 +
+ docs/reports/cl009/round5-release-manifest.json    |     1 +
+ docs/reports/cl009/round5-release-quality.json     |     1 +
+ docs/reports/cl009/round5-runner-sources.json      |    72 +
+ docs/reports/cl009/round5-source-review.json       |   176 +
+ .../cl009/round6/algorithm-v1/case-comparison.tsv  |    84 +
+ .../cl009/round6/algorithm-v1/raw-results.tsv      |   167 +
+ docs/reports/cl009/round6/algorithm-v1/report.md   |   157 +
+ .../reports/cl009/round6/algorithm-v1/summary.json |  4366 +++++++
+ docs/reports/cl009/round6/checks.json              |   138 +
+ docs/reports/cl009/round6/checksums.json           |    38 +
+ docs/reports/cl009/round6/diagnostics.json         |   173 +
+ .../reports/cl009/round6/graph-audit-resource.json |    30 +
+ docs/reports/cl009/round6/graph-manifest.json      |    30 +
+ docs/reports/cl009/round6/history-integrity.json   |     7 +
+ docs/reports/cl009/round6/identity.json            |    47 +
+ docs/reports/cl009/round6/pending-audit.json       |    15 +
+ docs/reports/cl009/round6/prototype.json           |    39 +
+ docs/reports/cl009/round6/provenance.json          |   140 +
+ docs/reports/cl009/round6/raw-artifacts.json       |   179 +
+ .../red/round6-red-bound/annotation_workflow.py    |   161 +
+ .../red/round6-red-bound/annotation_workflow.txt   |    13 +
+ .../round6/red/round6-red-bound/corpus_gate.py     |    66 +
+ .../round6/red/round6-red-bound/corpus_gate.txt    |    13 +
+ .../round6/red/round6-red-bound/identity.json      |    36 +
+ .../annotation_workflow.py                         |   167 +
+ .../red/round6-red-source-behavior/identity.json   |    16 +
+ .../red/round6-red-source-behavior/output.txt      |    21 +
+ .../red/round6-red-source/annotation_workflow.py   |   163 +
+ .../round6/red/round6-red-source/identity.json     |    16 +
+ .../cl009/round6/red/round6-red-source/output.txt  |    82 +
+ .../cl009/round6/red/round6-red/annotation.txt     |    20 +
+ .../cl009/round6/red/round6-red/corpus_gate.txt    |    20 +
+ .../cl009/round6/red/round6-red/identity.json      |    14 +
+ .../cl009/round6/red/round6-red/other-red.json     |    31 +
+ .../round6/red/round6-red/source_assertions.txt    |    20 +
+ docs/reports/cl009/round6/runners.json             |    25 +
+ .../cl009/round6/wikipedia-acquisition.json        |    30 +
+ docs/reports/cl009/round6/wikipedia-gate.json      |    35 +
+ docs/reports/cl009/round7/checksums.json           |    42 +
+ docs/reports/cl009/round7/diagnostics.json         |   142 +
+ docs/reports/cl009/round7/history-integrity.json   |     7 +
+ docs/reports/cl009/round7/identity.json            |    48 +
+ docs/reports/cl009/round7/matrix-a.json            |   509 +
+ docs/reports/cl009/round7/matrix-b.json            |   509 +
+ docs/reports/cl009/round7/pending-audit.json       |    15 +
+ docs/reports/cl009/round7/provenance.json          |   157 +
+ docs/reports/cl009/round7/raw-artifacts.json       |   203 +
+ .../round7/red/round7-matrix-red/identity.json     |    20 +
+ .../cl009/round7/red/round7-matrix-red/output.txt  |    21 +
+ .../cl009/round7/red/round7-red/identity.json      |    20 +
+ .../reports/cl009/round7/red/round7-red/output.txt |    32 +
+ docs/reports/cl009/round7/runners.json             |    19 +
+ .../cl009/round7/validation/check-01-stderr.txt    |     0
+ .../cl009/round7/validation/check-01-stdout.txt    |     1 +
+ .../cl009/round7/validation/check-02-stderr.txt    |     0
+ .../cl009/round7/validation/check-02-stdout.txt    |     0
+ .../cl009/round7/validation/check-03-stderr.txt    |     1 +
+ .../cl009/round7/validation/check-03-stdout.txt    |     0
+ .../cl009/round7/validation/check-04-stderr.txt    |     0
+ .../cl009/round7/validation/check-04-stdout.txt    |     0
+ .../cl009/round7/validation/check-05-stderr.txt    |     1 +
+ .../cl009/round7/validation/check-05-stdout.txt    |     0
+ .../cl009/round7/validation/check-06-stderr.txt    |    11 +
+ .../cl009/round7/validation/check-06-stdout.txt    |   109 +
+ .../cl009/round7/validation/check-07-stderr.txt    |     6 +
+ .../cl009/round7/validation/check-07-stdout.txt    |    24 +
+ .../cl009/round7/validation/check-08-stderr.txt    |     0
+ .../cl009/round7/validation/check-08-stdout.txt    |     5 +
+ .../cl009/round7/validation/check-09-stderr.txt    |    94 +
+ .../cl009/round7/validation/check-09-stdout.txt    |     1 +
+ .../cl009/round7/validation/check-10-stderr.txt    |     1 +
+ .../cl009/round7/validation/check-10-stdout.txt    |     0
+ .../cl009/round7/validation/check-11-stderr.txt    |     0
+ .../cl009/round7/validation/check-11-stdout.txt    |     0
+ docs/reports/cl009/round7/validation/checks.json   |   176 +
+ docs/reports/cl009/round7/wikipedia-gate.json      |    35 +
+ .../acquisition.json                               |   354 +
+ .../check-01-stderr.txt                            |     0
+ .../check-01-stdout.txt                            |     1 +
+ .../check-02-stderr.txt                            |     0
+ .../check-02-stdout.txt                            |     5 +
+ .../check-03-stderr.txt                            |     0
+ .../check-03-stdout.txt                            |     0
+ .../check-04-stderr.txt                            |     0
+ .../check-04-stdout.txt                            |     1 +
+ .../round8-acquisition-diff-failure/checks.json    |    53 +
+ .../raw-artifacts.json                             |    66 +
+ .../review-before-eof-fix.json                     |     6 +
+ .../acquisition.json                               |   354 +
+ .../check-01-stderr.txt                            |     0
+ .../check-01-stdout.txt                            |     1 +
+ .../check-02-stderr.txt                            |     1 +
+ .../check-02-stdout.txt                            |     0
+ .../round8-acquisition-initial-check/checks.json   |    30 +
+ .../failure-note.json                              |     5 +
+ .../publish-before-path-fix.py                     |    58 +
+ .../raw-artifacts.json                             |    38 +
+ .../cl009/round8-acquisition/acquisition.json      |   354 +
+ .../cl009/round8-acquisition/check-01-stderr.txt   |     0
+ .../cl009/round8-acquisition/check-01-stdout.txt   |     1 +
+ .../cl009/round8-acquisition/check-02-stderr.txt   |     0
+ .../cl009/round8-acquisition/check-02-stdout.txt   |     5 +
+ .../cl009/round8-acquisition/check-03-stderr.txt   |     0
+ .../cl009/round8-acquisition/check-03-stdout.txt   |     0
+ .../cl009/round8-acquisition/check-04-stderr.txt   |     0
+ .../cl009/round8-acquisition/check-04-stdout.txt   |     0
+ docs/reports/cl009/round8-acquisition/checks.json  |    53 +
+ .../cl009/round8-acquisition/checksums.json        |    17 +
+ .../cl009/round8-acquisition/raw-artifacts.json    |    67 +
+ docs/reports/cl009/round8-acquisition/runners.json |    23 +
+ docs/reports/cl009/round8/checksums.json           |    26 +
+ docs/reports/cl009/round8/materials/identity.json  |    34 +
+ .../round8/materials/preparation-failures.json     |    21 +
+ .../round8/materials/prepare-before-license-fix.py |   112 +
+ docs/reports/cl009/round8/provenance.json          |    27 +
+ docs/reports/cl009/round8/raw-artifacts.json       |   113 +
+ docs/reports/cl009/round8/runners.json             |    53 +
+ .../cl009/round8/verification/check-01-stderr.txt  |     0
+ .../cl009/round8/verification/check-01-stdout.txt  |     1 +
+ .../cl009/round8/verification/check-02-stderr.txt  |     0
+ .../cl009/round8/verification/check-02-stdout.txt  |     0
+ .../cl009/round8/verification/check-03-stderr.txt  |     0
+ .../cl009/round8/verification/check-03-stdout.txt  |     5 +
+ .../cl009/round8/verification/check-04-stderr.txt  |     0
+ .../cl009/round8/verification/check-04-stdout.txt  |     1 +
+ .../cl009/round8/verification/check-05-stderr.txt  |     0
+ .../cl009/round8/verification/check-05-stdout.txt  |     1 +
+ .../cl009/round8/verification/check-06-stderr.txt  |     0
+ .../cl009/round8/verification/check-06-stdout.txt  |     0
+ docs/reports/cl009/round8/verification/checks.json |    99 +
+ .../cl009/round8/verification/materials.json       |    44 +
+ .../cl009/round8/verification/pending-audit.json   |    15 +
+ docs/reports/cl009/round9/checksums.json           |    52 +
+ .../cl009/round9/denominator-red/result.json       |     5 +
+ .../cl009/round9/denominator-red/stderr.txt        |    20 +
+ .../cl009/round9/denominator-red/stdout.txt        |     0
+ docs/reports/cl009/round9/identity.json            |    29 +
+ .../round9/publication-check/after-stderr.txt      |     0
+ .../round9/publication-check/after-stdout.txt      |     0
+ .../round9/publication-check/before-stderr.txt     |     0
+ .../round9/publication-check/before-stdout.txt     |     1 +
+ .../round9/publication-check/raw-artifacts.json    |    28 +
+ .../cl009/round9/publication-check/result.json     |    26 +
+ .../publication-followup/committed-diff-stderr.txt |     0
+ .../publication-followup/committed-diff-stdout.txt |     2 +
+ .../publication-followup/previous-manifest.json    |    47 +
+ .../round9/publication-followup/raw-artifacts.json |    28 +
+ .../cl009/round9/publication-followup/result.json  |    17 +
+ docs/reports/cl009/round9/raw-artifacts.json       |   203 +
+ docs/reports/cl009/round9/red/result.json          |    18 +
+ docs/reports/cl009/round9/red/stderr.txt           |    21 +
+ docs/reports/cl009/round9/red/stdout.txt           |     0
+ docs/reports/cl009/round9/runners.json             |    29 +
+ docs/reports/cl009/round9/validation/analysis.json | 12477 +++++++++++++++++++
+ .../cl009/round9/validation/check-01-stderr.txt    |     0
+ .../cl009/round9/validation/check-01-stdout.txt    |     0
+ .../cl009/round9/validation/check-02-stderr.txt    |     0
+ .../cl009/round9/validation/check-02-stdout.txt    |     0
+ .../cl009/round9/validation/check-03-stderr.txt    |     0
+ .../cl009/round9/validation/check-03-stdout.txt    |     0
+ .../cl009/round9/validation/check-04-stderr.txt    |     1 +
+ .../cl009/round9/validation/check-04-stdout.txt    |     0
+ .../cl009/round9/validation/check-05-stderr.txt    |    11 +
+ .../cl009/round9/validation/check-05-stdout.txt    |   109 +
+ .../cl009/round9/validation/check-06-stderr.txt    |     6 +
+ .../cl009/round9/validation/check-06-stdout.txt    |    24 +
+ .../cl009/round9/validation/check-07-stderr.txt    |     1 +
+ .../cl009/round9/validation/check-07-stdout.txt    |     0
+ .../cl009/round9/validation/check-08-stderr.txt    |     0
+ .../cl009/round9/validation/check-08-stdout.txt    |     5 +
+ .../cl009/round9/validation/check-09-stderr.txt    |   100 +
+ .../cl009/round9/validation/check-09-stdout.txt    |     1 +
+ .../cl009/round9/validation/check-10-stderr.txt    |     0
+ .../cl009/round9/validation/check-10-stdout.txt    |     1 +
+ .../cl009/round9/validation/check-11-stderr.txt    |     3 +
+ .../cl009/round9/validation/check-11-stdout.txt    |     0
+ .../cl009/round9/validation/check-12-stderr.txt    |     0
+ .../cl009/round9/validation/check-12-stdout.txt    |     1 +
+ docs/reports/cl009/round9/validation/checks.json   |   226 +
+ .../round9/validation/pending-annotations.json     |     1 +
+ docs/reports/cl009/unihan-reading-audit.json       |   753 ++
+ docs/reports/cl009/validation.json                 |     1 +
+ tests/test_annotation_workflow.py                  |   146 +
+ tests/test_cedict_source.py                        |   131 +
+ tests/test_corpus_gate.py                          |    67 +
+ tests/test_data_pipeline.py                        |   324 +
+ tests/test_data_recovery.py                        |   306 +
+ tests/test_isolation_audit.py                      |    91 +
+ tests/test_linguistic_sidecar.py                   |   164 +
+ tests/test_ngram_analysis.py                       |   121 +
+ tests/test_semantic_bundle.py                      |   287 +
+ tests/test_semantic_bundle_recovery.py             |   108 +
+ tests/test_source_assertions.py                    |    63 +
+ tests/test_source_review.py                        |    86 +
+ tests/test_word_source.py                          |    97 +
+ tools/data_pipeline/README.md                      |   134 +
+ tools/data_pipeline/__init__.py                    |     5 +
+ tools/data_pipeline/__main__.py                    |   153 +
+ tools/data_pipeline/annotation_workflow.py         |   180 +
+ tools/data_pipeline/audit_isolations.py            |   171 +
+ tools/data_pipeline/cedict_source.py               |   115 +
+ tools/data_pipeline/corpus_gate.py                 |    93 +
+ tools/data_pipeline/filesystem.py                  |    37 +
+ tools/data_pipeline/linguistic_sidecar.py          |   205 +
+ tools/data_pipeline/ngram_analysis.py              |   217 +
+ tools/data_pipeline/pipeline.py                    |   684 +
+ tools/data_pipeline/prefix_snapshot.py             |    55 +
+ tools/data_pipeline/reading_audit.py               |    55 +
+ tools/data_pipeline/recovery.py                    |   148 +
+ tools/data_pipeline/semantic_bundle.py             |   426 +
+ tools/data_pipeline/source_assertions.py           |    99 +
+ tools/data_pipeline/source_review.py               |   108 +
+ tools/data_pipeline/word_source.py                 |   211 +
+ 363 files changed, 54292 insertions(+), 2 deletions(-)

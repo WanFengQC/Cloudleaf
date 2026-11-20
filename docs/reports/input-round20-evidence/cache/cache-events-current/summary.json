@@ -1,0 +1,1291 @@
+{
+  "platform": "Windows-11-10.0.26300-SP0",
+  "binary": {
+    "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+    "bytes": 810496,
+    "sha256": "757c4077b0659b79af100bf58a9991bd152f55b29d73e9e7001026f2db1b3c16"
+  },
+  "tool": {
+    "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\replay_cache_events.py",
+    "bytes": 4550,
+    "sha256": "591b084e1bcc9c76b615031d74c1f40dc9ab255833d77b787583325c1b5fff9e"
+  },
+  "runtime": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+    "bytes": 23602173,
+    "sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+  },
+  "fixture": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\tests\\fixtures\\input-round14-events.tsv",
+    "bytes": 863,
+    "sha256": "e087cc965bd2f6c889a84f3db89b3829ccfda452f436d7b3cf562bbb965602ad"
+  },
+  "models": {
+    "lexical": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+      "bytes": 3034818,
+      "sha256": "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5"
+    },
+    "addone": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character.tsv",
+      "bytes": 1459894,
+      "sha256": "5f28834165fcf83b22458e701b3608b403cb9bf7a9be8ba3c686fd158c53d6b9"
+    },
+    "witten": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character-witten.tsv",
+      "bytes": 1459906,
+      "sha256": "516d78a23786470c5ba7c1c7ee45e82c80eaaccd7eb1e3b541faf55d8f93b44b"
+    }
+  },
+  "pairs": [
+    {
+      "model": "lexical",
+      "scheme": "full",
+      "complete_event_equality": true,
+      "off": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+          "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5",
+          "full",
+          "off"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\signal-full-off\\stdout.txt",
+          "bytes": 2441207,
+          "sha256": "ce12776b2332aab2cd34a8883e25d6ed6f94edcbaed9989e5888baac112212d4"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\signal-full-off\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 1545400,
+          "p95": 13653100,
+          "p99": 20607600,
+          "max": 27449100
+        },
+        "cache": {
+          "lookups": 0,
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "invalidations": 0,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 0
+      },
+      "on": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+          "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5",
+          "full",
+          "on"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\signal-full-on\\stdout.txt",
+          "bytes": 2441187,
+          "sha256": "6dabcc8b6232274de2609cb56d533498fae746ef12c23067a173a022555319c4"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\signal-full-on\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 1386100,
+          "p95": 7593900,
+          "p99": 11810000,
+          "max": 24306200
+        },
+        "cache": {
+          "lookups": 0,
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "invalidations": 0,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 0
+      }
+    },
+    {
+      "model": "lexical",
+      "scheme": "abbreviated",
+      "complete_event_equality": true,
+      "off": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+          "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5",
+          "abbreviated",
+          "off"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\signal-abbreviated-off\\stdout.txt",
+          "bytes": 3354741,
+          "sha256": "6b21810bada7d2911a41aa9242269a8e9ad04d0bda8ba632fe24b45f5d6531db"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\signal-abbreviated-off\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 9384900,
+          "p95": 152173000,
+          "p99": 194362800,
+          "max": 225788900
+        },
+        "cache": {
+          "lookups": 0,
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "invalidations": 0,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 0
+      },
+      "on": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+          "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5",
+          "abbreviated",
+          "on"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\signal-abbreviated-on\\stdout.txt",
+          "bytes": 3358372,
+          "sha256": "2891678b087145aeea1da966ad47a3f8da4935189c7e75cb482e03e32959c4a0"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\signal-abbreviated-on\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 11979400,
+          "p95": 101960200,
+          "p99": 141915400,
+          "max": 153217700
+        },
+        "cache": {
+          "lookups": 1228940,
+          "hits": 327859,
+          "misses": 901081,
+          "evictions": 873388,
+          "invalidations": 16,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 4090
+      }
+    },
+    {
+      "model": "lexical",
+      "scheme": "xiaohe",
+      "complete_event_equality": true,
+      "off": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+          "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5",
+          "xiaohe",
+          "off"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\signal-xiaohe-off\\stdout.txt",
+          "bytes": 2285372,
+          "sha256": "f353a0d3388a92678f0e4a9c6e43eda6c7b768ab6612cb14ad0526c7f1bbb468"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\signal-xiaohe-off\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 792000,
+          "p95": 3509000,
+          "p99": 6115200,
+          "max": 19726100
+        },
+        "cache": {
+          "lookups": 0,
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "invalidations": 0,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 0
+      },
+      "on": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+          "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5",
+          "xiaohe",
+          "on"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\signal-xiaohe-on\\stdout.txt",
+          "bytes": 2287264,
+          "sha256": "9cc62ec66d4bc5b0b3bb0e3441541b96bc8b5927aa704eeaa4a59ba303915487"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\signal-xiaohe-on\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 929300,
+          "p95": 3068700,
+          "p99": 4847700,
+          "max": 5579300
+        },
+        "cache": {
+          "lookups": 6070,
+          "hits": 2911,
+          "misses": 3159,
+          "evictions": 241,
+          "invalidations": 16,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 680
+      }
+    },
+    {
+      "model": "lexical",
+      "scheme": "fuzzy-nl",
+      "complete_event_equality": true,
+      "off": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+          "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5",
+          "fuzzy-nl",
+          "off"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\signal-fuzzy-nl-off\\stdout.txt",
+          "bytes": 3586515,
+          "sha256": "31d779c30c340030734734806c7a471f04ca8196abb3ae9176c78d2098c258c6"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\signal-fuzzy-nl-off\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 3371000,
+          "p95": 15675700,
+          "p99": 22611300,
+          "max": 25181000
+        },
+        "cache": {
+          "lookups": 0,
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "invalidations": 0,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 0
+      },
+      "on": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+          "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5",
+          "fuzzy-nl",
+          "on"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\signal-fuzzy-nl-on\\stdout.txt",
+          "bytes": 3588484,
+          "sha256": "fe1480025221bea0ba2f52f086be74c16d59c6f36ae50021539789b02a180360"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\signal-fuzzy-nl-on\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 3118200,
+          "p95": 15007300,
+          "p99": 25079300,
+          "max": 37363200
+        },
+        "cache": {
+          "lookups": 10316,
+          "hits": 5866,
+          "misses": 4450,
+          "evictions": 440,
+          "invalidations": 16,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 1070
+      }
+    },
+    {
+      "model": "lexical",
+      "scheme": "correction",
+      "complete_event_equality": true,
+      "off": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+          "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5",
+          "correction",
+          "off"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\signal-correction-off\\stdout.txt",
+          "bytes": 3029714,
+          "sha256": "8b0e3b315cc2997f4f0687f7034fd7fe4e39d975c48807df5be3a6d6088565e1"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\signal-correction-off\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 2575400,
+          "p95": 53927500,
+          "p99": 135436600,
+          "max": 142766000
+        },
+        "cache": {
+          "lookups": 0,
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "invalidations": 0,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 0
+      },
+      "on": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+          "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5",
+          "correction",
+          "on"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\signal-correction-on\\stdout.txt",
+          "bytes": 3032379,
+          "sha256": "d9a765ff2987401827c6bf5c1480c6d380afffe46d5006bec69824268fbee325"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\signal-correction-on\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 2683400,
+          "p95": 66460400,
+          "p99": 123923100,
+          "max": 135468500
+        },
+        "cache": {
+          "lookups": 34876,
+          "hits": 15289,
+          "misses": 19587,
+          "evictions": 7434,
+          "invalidations": 16,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 2904
+      }
+    },
+    {
+      "model": "addone",
+      "scheme": "full",
+      "complete_event_equality": true,
+      "off": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character.tsv",
+          "5f28834165fcf83b22458e701b3608b403cb9bf7a9be8ba3c686fd158c53d6b9",
+          "full",
+          "off"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-full-off\\stdout.txt",
+          "bytes": 2847773,
+          "sha256": "7ca705109cf712080a0a1540bf29dd89ec526db939214d2b22f75153cd652ab9"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-full-off\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 1132000,
+          "p95": 12373800,
+          "p99": 24276300,
+          "max": 25084300
+        },
+        "cache": {
+          "lookups": 0,
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "invalidations": 0,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 0
+      },
+      "on": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character.tsv",
+          "5f28834165fcf83b22458e701b3608b403cb9bf7a9be8ba3c686fd158c53d6b9",
+          "full",
+          "on"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-full-on\\stdout.txt",
+          "bytes": 2847790,
+          "sha256": "4369d0f417218065fcf4957f0d8330903643975b883ec1d3506a09bbeb7db26d"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-full-on\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 1681100,
+          "p95": 11236400,
+          "p99": 27995100,
+          "max": 34864400
+        },
+        "cache": {
+          "lookups": 0,
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "invalidations": 0,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 0
+      }
+    },
+    {
+      "model": "addone",
+      "scheme": "abbreviated",
+      "complete_event_equality": true,
+      "off": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character.tsv",
+          "5f28834165fcf83b22458e701b3608b403cb9bf7a9be8ba3c686fd158c53d6b9",
+          "abbreviated",
+          "off"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-abbreviated-off\\stdout.txt",
+          "bytes": 3506904,
+          "sha256": "4b25533c43cfa9e0f66f6d58840276d1b62fbf704e901255530fb10b5c756169"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-abbreviated-off\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 6769800,
+          "p95": 79474000,
+          "p99": 102807400,
+          "max": 105443300
+        },
+        "cache": {
+          "lookups": 0,
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "invalidations": 0,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 0
+      },
+      "on": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character.tsv",
+          "5f28834165fcf83b22458e701b3608b403cb9bf7a9be8ba3c686fd158c53d6b9",
+          "abbreviated",
+          "on"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-abbreviated-on\\stdout.txt",
+          "bytes": 3510552,
+          "sha256": "eed5754a7eba15ff3f74b632e95bda6e3c73fee4b3176062686e2bbad3384a25"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-abbreviated-on\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 9268700,
+          "p95": 104576200,
+          "p99": 124509500,
+          "max": 130480400
+        },
+        "cache": {
+          "lookups": 1228940,
+          "hits": 327859,
+          "misses": 901081,
+          "evictions": 873388,
+          "invalidations": 16,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 4090
+      }
+    },
+    {
+      "model": "addone",
+      "scheme": "xiaohe",
+      "complete_event_equality": true,
+      "off": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character.tsv",
+          "5f28834165fcf83b22458e701b3608b403cb9bf7a9be8ba3c686fd158c53d6b9",
+          "xiaohe",
+          "off"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-xiaohe-off\\stdout.txt",
+          "bytes": 2372333,
+          "sha256": "74e91945281ecc039e6291f52f5f2f4d5e7de21a0afd6196a2120195d286ed9a"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-xiaohe-off\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 1668200,
+          "p95": 7723600,
+          "p99": 18236800,
+          "max": 30873600
+        },
+        "cache": {
+          "lookups": 0,
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "invalidations": 0,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 0
+      },
+      "on": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character.tsv",
+          "5f28834165fcf83b22458e701b3608b403cb9bf7a9be8ba3c686fd158c53d6b9",
+          "xiaohe",
+          "on"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-xiaohe-on\\stdout.txt",
+          "bytes": 2374208,
+          "sha256": "93f96d696fe67a9681e079e4586a98d81526134c48c8b3b747e323080dd81094"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-xiaohe-on\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 1351300,
+          "p95": 9060700,
+          "p99": 14911700,
+          "max": 21666100
+        },
+        "cache": {
+          "lookups": 6070,
+          "hits": 2911,
+          "misses": 3159,
+          "evictions": 241,
+          "invalidations": 16,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 680
+      }
+    },
+    {
+      "model": "addone",
+      "scheme": "fuzzy-nl",
+      "complete_event_equality": true,
+      "off": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character.tsv",
+          "5f28834165fcf83b22458e701b3608b403cb9bf7a9be8ba3c686fd158c53d6b9",
+          "fuzzy-nl",
+          "off"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-fuzzy-nl-off\\stdout.txt",
+          "bytes": 4149390,
+          "sha256": "adadda5b02a928495865f82bdf57a6f6bf2244a76261f1635a1d78a4c39f9829"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-fuzzy-nl-off\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 1749600,
+          "p95": 16030200,
+          "p99": 31021300,
+          "max": 33755100
+        },
+        "cache": {
+          "lookups": 0,
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "invalidations": 0,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 0
+      },
+      "on": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character.tsv",
+          "5f28834165fcf83b22458e701b3608b403cb9bf7a9be8ba3c686fd158c53d6b9",
+          "fuzzy-nl",
+          "on"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-fuzzy-nl-on\\stdout.txt",
+          "bytes": 4151390,
+          "sha256": "f07ea2a6aea54fba15a8aa0d8fc40148e4413b641b348f2e73d1598b8858bbc5"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-fuzzy-nl-on\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 2803300,
+          "p95": 17079600,
+          "p99": 42517600,
+          "max": 43436900
+        },
+        "cache": {
+          "lookups": 10316,
+          "hits": 5866,
+          "misses": 4450,
+          "evictions": 440,
+          "invalidations": 16,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 1070
+      }
+    },
+    {
+      "model": "addone",
+      "scheme": "correction",
+      "complete_event_equality": true,
+      "off": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character.tsv",
+          "5f28834165fcf83b22458e701b3608b403cb9bf7a9be8ba3c686fd158c53d6b9",
+          "correction",
+          "off"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-correction-off\\stdout.txt",
+          "bytes": 3432257,
+          "sha256": "a4e5ea10d56dedce8ff25f45eb85c3b654fb527c7234b07ed25b182f7001e260"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-correction-off\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 2489300,
+          "p95": 21865800,
+          "p99": 51182300,
+          "max": 94502100
+        },
+        "cache": {
+          "lookups": 0,
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "invalidations": 0,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 0
+      },
+      "on": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character.tsv",
+          "5f28834165fcf83b22458e701b3608b403cb9bf7a9be8ba3c686fd158c53d6b9",
+          "correction",
+          "on"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-correction-on\\stdout.txt",
+          "bytes": 3434917,
+          "sha256": "d0a0132dea99b3af5415e381048794ae1c5771e86538ae8b9249a2e2882adeb1"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-correction-on\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 2439700,
+          "p95": 19934900,
+          "p99": 58849900,
+          "max": 66685600
+        },
+        "cache": {
+          "lookups": 34876,
+          "hits": 15289,
+          "misses": 19587,
+          "evictions": 7434,
+          "invalidations": 16,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 2904
+      }
+    },
+    {
+      "model": "witten",
+      "scheme": "full",
+      "complete_event_equality": true,
+      "off": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character-witten.tsv",
+          "516d78a23786470c5ba7c1c7ee45e82c80eaaccd7eb1e3b541faf55d8f93b44b",
+          "full",
+          "off"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-witten-full-off\\stdout.txt",
+          "bytes": 2831881,
+          "sha256": "f91c436f1dd36b08be77f18edf88b158e70850ceedf2a982f79ab8aeeb9547c1"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-witten-full-off\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 1637200,
+          "p95": 9515600,
+          "p99": 26273100,
+          "max": 27912600
+        },
+        "cache": {
+          "lookups": 0,
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "invalidations": 0,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 0
+      },
+      "on": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character-witten.tsv",
+          "516d78a23786470c5ba7c1c7ee45e82c80eaaccd7eb1e3b541faf55d8f93b44b",
+          "full",
+          "on"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-witten-full-on\\stdout.txt",
+          "bytes": 2831900,
+          "sha256": "d939f0a6beabc75cbbd9bf4455d8bcd3db382f346abcb84e1791a3b9594ce83f"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-witten-full-on\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 2159300,
+          "p95": 19183400,
+          "p99": 46160800,
+          "max": 54973900
+        },
+        "cache": {
+          "lookups": 0,
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "invalidations": 0,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 0
+      }
+    },
+    {
+      "model": "witten",
+      "scheme": "abbreviated",
+      "complete_event_equality": true,
+      "off": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character-witten.tsv",
+          "516d78a23786470c5ba7c1c7ee45e82c80eaaccd7eb1e3b541faf55d8f93b44b",
+          "abbreviated",
+          "off"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-witten-abbreviated-off\\stdout.txt",
+          "bytes": 3717483,
+          "sha256": "6783926dc12272869325b57dcb02bfbbefcbbeb7e02b185cc4e0880e3d51be84"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-witten-abbreviated-off\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 13715000,
+          "p95": 110453500,
+          "p99": 177601700,
+          "max": 212713900
+        },
+        "cache": {
+          "lookups": 0,
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "invalidations": 0,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 0
+      },
+      "on": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character-witten.tsv",
+          "516d78a23786470c5ba7c1c7ee45e82c80eaaccd7eb1e3b541faf55d8f93b44b",
+          "abbreviated",
+          "on"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-witten-abbreviated-on\\stdout.txt",
+          "bytes": 3721117,
+          "sha256": "6d515b6a1f844f56ac5c40f92039722ed6d7e79df5e4c62415a7baa856f92e41"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-witten-abbreviated-on\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 14295200,
+          "p95": 155419200,
+          "p99": 306159100,
+          "max": 333073300
+        },
+        "cache": {
+          "lookups": 1228940,
+          "hits": 327859,
+          "misses": 901081,
+          "evictions": 873388,
+          "invalidations": 16,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 4090
+      }
+    },
+    {
+      "model": "witten",
+      "scheme": "xiaohe",
+      "complete_event_equality": true,
+      "off": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character-witten.tsv",
+          "516d78a23786470c5ba7c1c7ee45e82c80eaaccd7eb1e3b541faf55d8f93b44b",
+          "xiaohe",
+          "off"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-witten-xiaohe-off\\stdout.txt",
+          "bytes": 2367711,
+          "sha256": "6a721b32c6d4af776f5b429b1a0b0548b8a6b64510995afb9a32abe476c87b7f"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-witten-xiaohe-off\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 2265400,
+          "p95": 12685500,
+          "p99": 26655400,
+          "max": 33575500
+        },
+        "cache": {
+          "lookups": 0,
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "invalidations": 0,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 0
+      },
+      "on": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character-witten.tsv",
+          "516d78a23786470c5ba7c1c7ee45e82c80eaaccd7eb1e3b541faf55d8f93b44b",
+          "xiaohe",
+          "on"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-witten-xiaohe-on\\stdout.txt",
+          "bytes": 2369595,
+          "sha256": "0f375f739b9612c287505f31f2a3d6d2d3be17cdf527509b862eff8f3ce120a7"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-witten-xiaohe-on\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 2168800,
+          "p95": 11905900,
+          "p99": 25122500,
+          "max": 62786200
+        },
+        "cache": {
+          "lookups": 6070,
+          "hits": 2911,
+          "misses": 3159,
+          "evictions": 241,
+          "invalidations": 16,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 680
+      }
+    },
+    {
+      "model": "witten",
+      "scheme": "fuzzy-nl",
+      "complete_event_equality": true,
+      "off": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character-witten.tsv",
+          "516d78a23786470c5ba7c1c7ee45e82c80eaaccd7eb1e3b541faf55d8f93b44b",
+          "fuzzy-nl",
+          "off"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-witten-fuzzy-nl-off\\stdout.txt",
+          "bytes": 4129194,
+          "sha256": "55fd668132ba009fe2cb437c87f6ecf4609e6299c86071485963d277dfd72b77"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-witten-fuzzy-nl-off\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 3070100,
+          "p95": 21625600,
+          "p99": 44868300,
+          "max": 55189600
+        },
+        "cache": {
+          "lookups": 0,
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "invalidations": 0,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 0
+      },
+      "on": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character-witten.tsv",
+          "516d78a23786470c5ba7c1c7ee45e82c80eaaccd7eb1e3b541faf55d8f93b44b",
+          "fuzzy-nl",
+          "on"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-witten-fuzzy-nl-on\\stdout.txt",
+          "bytes": 4131182,
+          "sha256": "578ef49b812edbe15e66ae89a2f97039f03169dcd2eaa4df65835f50b7c95cab"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-witten-fuzzy-nl-on\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 3380200,
+          "p95": 22318900,
+          "p99": 44760900,
+          "max": 46770700
+        },
+        "cache": {
+          "lookups": 10316,
+          "hits": 5866,
+          "misses": 4450,
+          "evictions": 440,
+          "invalidations": 16,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 1070
+      }
+    },
+    {
+      "model": "witten",
+      "scheme": "correction",
+      "complete_event_equality": true,
+      "off": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character-witten.tsv",
+          "516d78a23786470c5ba7c1c7ee45e82c80eaaccd7eb1e3b541faf55d8f93b44b",
+          "correction",
+          "off"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-witten-correction-off\\stdout.txt",
+          "bytes": 3417896,
+          "sha256": "6ad78cdc54999016870bb30b2d1035f3b6629e5aac87311a8520da6712f2c869"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-witten-correction-off\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 2423400,
+          "p95": 20783500,
+          "p99": 31776000,
+          "max": 62464200
+        },
+        "cache": {
+          "lookups": 0,
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "invalidations": 0,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 0
+      },
+      "on": {
+        "argv": [
+          "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental-target\\release\\examples\\incremental_trace.exe",
+          "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+          "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+          "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character-witten.tsv",
+          "516d78a23786470c5ba7c1c7ee45e82c80eaaccd7eb1e3b541faf55d8f93b44b",
+          "correction",
+          "on"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-witten-correction-on\\stdout.txt",
+          "bytes": 3420545,
+          "sha256": "a59b334f6a203ab252113efe1c0477c4caa53df7cd5d43914a4a65f8846011ac"
+        },
+        "stderr": {
+          "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-incremental\\cache-events-current\\character-witten-correction-on\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "events": 171,
+        "latency_ns": {
+          "n": 171,
+          "p50": 2105400,
+          "p95": 16580400,
+          "p99": 39863000,
+          "max": 54590300
+        },
+        "cache": {
+          "lookups": 34876,
+          "hits": 15289,
+          "misses": 19587,
+          "evictions": 7434,
+          "invalidations": 16,
+          "resident_entries": 0
+        },
+        "max_resident_entries": 2904
+      }
+    }
+  ],
+  "events_compared": 2565,
+  "observations": 5130,
+  "all_equal": true,
+  "scope": "InputEngine explicit synthetic trace, timings exclude stdout. No desktop, TSF or real commit learning."
+}

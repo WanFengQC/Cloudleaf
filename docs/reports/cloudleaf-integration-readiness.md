@@ -86,4 +86,4 @@ PR5的真实离线推理不能删去或降格成空接口；也不能因为它�
 
 不能简单依次merge五PR；也不能因输入已有较新核心就删除四个分叉PR。当前没有实际冲突解决树的编译/回归结果，依赖并集与应用交互尚未验证；正式数据、语言质量、长期和真实系统验收仍阻塞。PR1仅具备进一步人工审查条件，不表示批准合并。main不变、五PR保持Draft、无PR6；CL-010关闭。
 
-原始命令、返回码、完整Git预览和每公共文件SHA保存在本轮`integration/commands.json`、`summary.json`、`components.json`及相邻stdout/stderr，固定SHA可重放；不是CI或产品测试通过证据。
+原始命令、返回码、完整 Git 预览及公共文件 SHA 见[本轮证据索引](input-round20-evidence/index.json)下的 `integration/`。可按记录的 SHA 重放各次比较。

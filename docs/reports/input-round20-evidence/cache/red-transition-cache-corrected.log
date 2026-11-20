@@ -1,0 +1,139 @@
+   Compiling cloudleaf-search v0.1.0 (C:\Users\EDY\.codex\tmp\r20-incremental\crates\cloudleaf-search)
+error[E0432]: unresolved import `cloudleaf_search::TransitionCache`
+ --> crates\cloudleaf-search\tests\transition_cache.rs:2:50
+  |
+2 | use cloudleaf_search::{Config, Lattice, Lexicon, TransitionCache, search_graph};
+  |                                                  ^^^^^^^^^^^^^^^ no `TransitionCache` in the root
+
+error[E0599]: no function or associated item named `build_with_scheme_cached` found for struct `cloudleaf_search::Lattice` in the current scope
+  --> crates\cloudleaf-search\tests\transition_cache.rs:18:31
+   |
+18 |         let cached = Lattice::build_with_scheme_cached(&lex, raw, &config, &scheme, &mut cache).unwrap();
+   |                               ^^^^^^^^^^^^^^^^^^^^^^^^ function or associated item not found in `cloudleaf_search::Lattice<'_>`
+   |
+note: if you're trying to build a new `cloudleaf_search::Lattice<'_>` consider using one of the following associated functions:
+      cloudleaf_search::Lattice::<'a>::build
+      cloudleaf_search::Lattice::<'a>::build_cancellable
+      cloudleaf_search::schemes::<impl cloudleaf_search::Lattice<'a>>::build_with_scheme
+  --> C:\Users\EDY\.codex\tmp\r20-incremental\crates\cloudleaf-search\src\lattice.rs:38:5
+   |
+38 |       pub fn build(lexicon: &'a Lexicon, input: &str, config: &Config) -> Result<Self, SearchError> {
+   |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+42 | /     pub fn build_cancellable(
+43 | |         lexicon: &'a Lexicon,
+44 | |         input: &str,
+45 | |         config: &Config,
+46 | |         cancellation: &Cancellation,
+47 | |     ) -> Result<Self, SearchError> {
+   | |__________________________________^
+   |
+  ::: C:\Users\EDY\.codex\tmp\r20-incremental\crates\cloudleaf-search\src\schemes.rs:88:5
+   |
+88 | /     pub fn build_with_scheme(
+89 | |         lexicon: &'a Lexicon,
+90 | |         raw: &str,
+91 | |         config: &Config,
+92 | |         scheme: &SchemeConfig,
+93 | |     ) -> Result<Self, SearchError> {
+   | |__________________________________^
+help: there is an associated function `build_with_scheme` with a similar name
+  --> C:\Users\EDY\.codex\tmp\r20-incremental\crates\cloudleaf-search\src\schemes.rs:88:5
+   |
+88 | /     pub fn build_with_scheme(
+89 | |         lexicon: &'a Lexicon,
+90 | |         raw: &str,
+91 | |         config: &Config,
+92 | |         scheme: &SchemeConfig,
+93 | |     ) -> Result<Self, SearchError> {
+   | |__________________________________^
+
+error[E0599]: no function or associated item named `build_with_scheme_cached` found for struct `cloudleaf_search::Lattice` in the current scope
+  --> crates\cloudleaf-search\tests\transition_cache.rs:31:27
+   |
+31 |     let cached = Lattice::build_with_scheme_cached(&other, "nh", &config, &scheme, &mut cache).unwrap();
+   |                           ^^^^^^^^^^^^^^^^^^^^^^^^ function or associated item not found in `cloudleaf_search::Lattice<'_>`
+   |
+note: if you're trying to build a new `cloudleaf_search::Lattice<'_>` consider using one of the following associated functions:
+      cloudleaf_search::Lattice::<'a>::build
+      cloudleaf_search::Lattice::<'a>::build_cancellable
+      cloudleaf_search::schemes::<impl cloudleaf_search::Lattice<'a>>::build_with_scheme
+  --> C:\Users\EDY\.codex\tmp\r20-incremental\crates\cloudleaf-search\src\lattice.rs:38:5
+   |
+38 |       pub fn build(lexicon: &'a Lexicon, input: &str, config: &Config) -> Result<Self, SearchError> {
+   |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+42 | /     pub fn build_cancellable(
+43 | |         lexicon: &'a Lexicon,
+44 | |         input: &str,
+45 | |         config: &Config,
+46 | |         cancellation: &Cancellation,
+47 | |     ) -> Result<Self, SearchError> {
+   | |__________________________________^
+   |
+  ::: C:\Users\EDY\.codex\tmp\r20-incremental\crates\cloudleaf-search\src\schemes.rs:88:5
+   |
+88 | /     pub fn build_with_scheme(
+89 | |         lexicon: &'a Lexicon,
+90 | |         raw: &str,
+91 | |         config: &Config,
+92 | |         scheme: &SchemeConfig,
+93 | |     ) -> Result<Self, SearchError> {
+   | |__________________________________^
+help: there is an associated function `build_with_scheme` with a similar name
+  --> C:\Users\EDY\.codex\tmp\r20-incremental\crates\cloudleaf-search\src\schemes.rs:88:5
+   |
+88 | /     pub fn build_with_scheme(
+89 | |         lexicon: &'a Lexicon,
+90 | |         raw: &str,
+91 | |         config: &Config,
+92 | |         scheme: &SchemeConfig,
+93 | |     ) -> Result<Self, SearchError> {
+   | |__________________________________^
+
+error[E0599]: no function or associated item named `build_with_scheme_cached` found for struct `cloudleaf_search::Lattice` in the current scope
+  --> crates\cloudleaf-search\tests\transition_cache.rs:42:26
+   |
+42 |     let graph = Lattice::build_with_scheme_cached(&lex, "nihao", &Config::default(), &SchemeConfig::default(), &mut cache).unwrap();
+   |                          ^^^^^^^^^^^^^^^^^^^^^^^^ function or associated item not found in `cloudleaf_search::Lattice<'_>`
+   |
+note: if you're trying to build a new `cloudleaf_search::Lattice<'_>` consider using one of the following associated functions:
+      cloudleaf_search::Lattice::<'a>::build
+      cloudleaf_search::Lattice::<'a>::build_cancellable
+      cloudleaf_search::schemes::<impl cloudleaf_search::Lattice<'a>>::build_with_scheme
+  --> C:\Users\EDY\.codex\tmp\r20-incremental\crates\cloudleaf-search\src\lattice.rs:38:5
+   |
+38 |       pub fn build(lexicon: &'a Lexicon, input: &str, config: &Config) -> Result<Self, SearchError> {
+   |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+42 | /     pub fn build_cancellable(
+43 | |         lexicon: &'a Lexicon,
+44 | |         input: &str,
+45 | |         config: &Config,
+46 | |         cancellation: &Cancellation,
+47 | |     ) -> Result<Self, SearchError> {
+   | |__________________________________^
+   |
+  ::: C:\Users\EDY\.codex\tmp\r20-incremental\crates\cloudleaf-search\src\schemes.rs:88:5
+   |
+88 | /     pub fn build_with_scheme(
+89 | |         lexicon: &'a Lexicon,
+90 | |         raw: &str,
+91 | |         config: &Config,
+92 | |         scheme: &SchemeConfig,
+93 | |     ) -> Result<Self, SearchError> {
+   | |__________________________________^
+help: there is an associated function `build_with_scheme` with a similar name
+  --> C:\Users\EDY\.codex\tmp\r20-incremental\crates\cloudleaf-search\src\schemes.rs:88:5
+   |
+88 | /     pub fn build_with_scheme(
+89 | |         lexicon: &'a Lexicon,
+90 | |         raw: &str,
+91 | |         config: &Config,
+92 | |         scheme: &SchemeConfig,
+93 | |     ) -> Result<Self, SearchError> {
+   | |__________________________________^
+
+Some errors have detailed explanations: E0432, E0599.
+For more information about an error, try `rustc --explain E0432`.
+error: could not compile `cloudleaf-search` (test "transition_cache") due to 4 previous errors

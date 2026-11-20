@@ -1,0 +1,487 @@
+diff --git a/.gitattributes b/.gitattributes
+index 8cf5a73..c1b0a08 100644
+--- a/.gitattributes
++++ b/.gitattributes
+@@ -19,3 +19,4 @@ docs/reports/input-round17-evidence/** -text whitespace=-blank-at-eol,-blank-at-
+ docs/reports/input-round18-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,-space-before-tab
+ 
+ docs/reports/input-round19-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,-space-before-tab
++docs/reports/input-round20-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,-space-before-tab
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 75efa1a..f2dad9f 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -53,7 +53,7 @@ jobs:
+         if: runner.os == 'Windows'
+         uses: actions/upload-artifact@v4
+         with:
+-          name: input-round19-windows
++          name: input-round20-windows
+           path: |
+             target/release/cloudleaf-cli.exe
+             target/release/cloudleaf-ime.exe
+@@ -73,6 +73,8 @@ jobs:
+             docs/input-round17-design.md
+             docs/input-round18-design.md
+             docs/input-round19-design.md
++            docs/input-round20-design.md
++            docs/testing/round20-windows-manual-acceptance.md
+           if-no-files-found: error
+       - uses: actions/upload-artifact@v4
+         with:
+diff --git a/adapters/windows/session.rs b/adapters/windows/session.rs
+index ad2b9fa..a8cdd1e 100644
+--- a/adapters/windows/session.rs
++++ b/adapters/windows/session.rs
+@@ -264,6 +264,9 @@ impl Host {
+                 .and_then(|value| value.checked_add(dictionary_bytes))
+                 // 两个引擎的待选来源、明确重试和平台短暂副本，最多64条稳定ID/指纹。
+                 .and_then(|value| value.checked_add(128 * 1024))
++                // 两个引擎各自持有有界音节转移缓存，切换方案时无需扩大总预算。
++                .and_then(|value| value.checked_add(engine.search_cache_capacity_bytes()))
++                .and_then(|value| value.checked_add(projection.search_cache_capacity_bytes()))
+                 .and_then(|value| value.checked_add(frame_bytes.checked_mul(2)?))
+                 .and_then(|value| value.checked_add(diagnostic_bytes.checked_mul(2)?)),
+         )?;
+diff --git a/crates/cloudleaf-input/src/lib.rs b/crates/cloudleaf-input/src/lib.rs
+index 38133f7..cb3db01 100644
+--- a/crates/cloudleaf-input/src/lib.rs
++++ b/crates/cloudleaf-input/src/lib.rs
+@@ -232,6 +232,24 @@ impl InputEngine {
+         Ok(())
+     }
+ 
++    pub fn search_cache_statistics(&self) -> Option<cloudleaf_search::TransitionCacheStatistics> {
++        self.sentence
++            .as_ref()
++            .map(sentence::SentenceBackend::cache_statistics)
++    }
++
++    pub fn search_cache_capacity_bytes(&self) -> usize {
++        self.sentence
++            .as_ref()
++            .map_or(0, |_| cloudleaf_search::TransitionCache::capacity_bytes())
++    }
++
++    pub fn set_search_cache_enabled(&mut self, enabled: bool) {
++        if let Some(backend) = &mut self.sentence {
++            backend.set_cache_enabled(enabled);
++        }
++    }
++
+     pub fn search_capacity_bounds(&self) -> Option<SearchCapacityBounds> {
+         self.sentence
+             .as_ref()
+@@ -773,7 +791,7 @@ impl InputEngine {
+ 
+     fn refresh(&mut self) {
+         self.advance_revision();
+-        self.candidates = if let Some(backend) = &self.sentence {
++        self.candidates = if let Some(backend) = &mut self.sentence {
+             let (candidates, diagnostic) = backend.query(&self.preedit, self.revision);
+             self.search_diagnostic = Some(diagnostic);
+             candidates
+@@ -814,6 +832,9 @@ impl InputEngine {
+     }
+ 
+     fn clear_context(&mut self, state: InputState) {
++        if let Some(backend) = &mut self.sentence {
++            backend.clear_cache();
++        }
+         self.preedit.clear();
+         self.cursor = 0;
+         self.candidates.clear();
+diff --git a/crates/cloudleaf-input/src/sentence.rs b/crates/cloudleaf-input/src/sentence.rs
+index e424032..e2e1bd2 100644
+--- a/crates/cloudleaf-input/src/sentence.rs
++++ b/crates/cloudleaf-input/src/sentence.rs
+@@ -337,6 +337,7 @@ pub(crate) struct SentenceBackend {
+     language: Option<Arc<LanguageSnapshot>>,
+     left_word: Option<String>,
+     scheme: cloudleaf_pinyin::SchemeConfig,
++    transitions: cloudleaf_search::TransitionCache,
+ }
+ 
+ impl SentenceBackend {
+@@ -386,12 +387,15 @@ impl SentenceBackend {
+                 "评分种类、上下文或模型词典绑定无效",
+             ));
+         }
++        let mut transitions = cloudleaf_search::TransitionCache::default();
++        transitions.set_enabled(false);
+         Ok(Self {
+             snapshot,
+             config,
+             language,
+             left_word,
+             scheme: cloudleaf_pinyin::SchemeConfig::default(),
++            transitions,
+         })
+     }
+ 
+@@ -411,6 +415,7 @@ impl SentenceBackend {
+                 "先解除旧模型绑定，不能套用到新词典",
+             ));
+         }
++        self.transitions.clear();
+         self.snapshot = snapshot;
+         Ok(())
+     }
+@@ -423,6 +428,9 @@ impl SentenceBackend {
+     ) -> Result<Self, CoreError> {
+         let mut replacement = Self::configured(self.snapshot.clone(), config, language, left_word)?;
+         replacement.scheme = self.scheme.clone();
++        replacement
++            .transitions
++            .set_enabled(self.transitions.is_enabled());
+         Ok(replacement)
+     }
+ 
+@@ -438,6 +446,9 @@ impl SentenceBackend {
+             self.left_word.clone(),
+         )?;
+         replacement.scheme = self.scheme.clone();
++        replacement
++            .transitions
++            .set_enabled(self.transitions.is_enabled());
+         Ok(replacement)
+     }
+ 
+@@ -449,14 +460,27 @@ impl SentenceBackend {
+         &self.scheme
+     }
+     pub(crate) fn set_scheme(&mut self, scheme: cloudleaf_pinyin::SchemeConfig) {
++        self.transitions.clear();
+         self.scheme = scheme;
+     }
+ 
++    pub(crate) fn clear_cache(&mut self) {
++        self.transitions.clear();
++    }
++
++    pub(crate) fn cache_statistics(&self) -> cloudleaf_search::TransitionCacheStatistics {
++        self.transitions.statistics()
++    }
++
++    pub(crate) fn set_cache_enabled(&mut self, enabled: bool) {
++        self.transitions.set_enabled(enabled);
++    }
++
+     pub(crate) fn capacity_bounds(&self) -> SearchCapacityBounds {
+         self.snapshot.bounds(self.config.output_k)
+     }
+ 
+-    pub(crate) fn query(&self, input: &str, revision: u64) -> (Vec<Candidate>, SearchDiagnostic) {
++    pub(crate) fn query(&mut self, input: &str, revision: u64) -> (Vec<Candidate>, SearchDiagnostic) {
+         let mut diagnostic = SearchDiagnostic {
+             revision,
+             snapshot_version: self.snapshot.version.clone(),
+@@ -475,12 +499,18 @@ impl SentenceBackend {
+             scheme_version: (!self.scheme.is_default()).then(|| self.scheme.version_id()),
+             scheme_statistics: None,
+         };
+-        let graph = match Lattice::build_with_scheme(
+-            &self.snapshot.lexicon,
+-            input,
+-            &self.config,
+-            &self.scheme,
+-        ) {
++        let graph = if self.scheme.is_default() || !self.transitions.is_enabled() {
++            Lattice::build_with_scheme(&self.snapshot.lexicon, input, &self.config, &self.scheme)
++        } else {
++            Lattice::build_with_scheme_cached(
++                &self.snapshot.lexicon,
++                input,
++                &self.config,
++                &self.scheme,
++                &mut self.transitions,
++            )
++        };
++        let graph = match graph {
+             Ok(graph) => graph,
+             Err(error) => {
+                 diagnostic.error = Some(error);
+diff --git a/crates/cloudleaf-search/src/lib.rs b/crates/cloudleaf-search/src/lib.rs
+index d6ff801..532b800 100644
+--- a/crates/cloudleaf-search/src/lib.rs
++++ b/crates/cloudleaf-search/src/lib.rs
+@@ -8,6 +8,7 @@ mod model;
+ mod profiling;
+ mod schemes;
+ mod search;
++mod transition_cache;
+ 
+ pub use cancellation::Cancellation;
+ pub use lattice::{Edge, Lattice, MatchKind};
+@@ -19,6 +20,7 @@ pub use schemes::{EdgeInterpretation, InterpretationCost, SchemeStatistics};
+ pub use search::{
+     Candidate, Features, SearchResult, Statistics, search_graph, search_graph_cancellable,
+ };
++pub use transition_cache::{TransitionCache, TransitionCacheStatistics};
+ 
+ use std::fmt;
+ 
+diff --git a/crates/cloudleaf-search/src/schemes.rs b/crates/cloudleaf-search/src/schemes.rs
+index 229966e..f281873 100644
+--- a/crates/cloudleaf-search/src/schemes.rs
++++ b/crates/cloudleaf-search/src/schemes.rs
+@@ -90,6 +90,26 @@ impl<'a> Lattice<'a> {
+         raw: &str,
+         config: &Config,
+         scheme: &SchemeConfig,
++    ) -> Result<Self, SearchError> {
++        Self::build_with_scheme_controlled(lexicon, raw, config, scheme, None)
++    }
++
++    pub fn build_with_scheme_cached(
++        lexicon: &'a Lexicon,
++        raw: &str,
++        config: &Config,
++        scheme: &SchemeConfig,
++        cache: &mut crate::TransitionCache,
++    ) -> Result<Self, SearchError> {
++        Self::build_with_scheme_controlled(lexicon, raw, config, scheme, Some(cache))
++    }
++
++    fn build_with_scheme_controlled(
++        lexicon: &'a Lexicon,
++        raw: &str,
++        config: &Config,
++        scheme: &SchemeConfig,
++        cache: Option<&mut crate::TransitionCache>,
+     ) -> Result<Self, SearchError> {
+         if scheme.is_default() {
+             return Self::build(lexicon, raw, config);
+@@ -103,7 +123,7 @@ impl<'a> Lattice<'a> {
+         }
+         let hypotheses = interpret(raw, scheme)
+             .map_err(|_| SearchError::new(ErrorKind::InvalidInput, "输入方案配置或按键无效"))?;
+-        Self::from_phonetic(lexicon, raw, config, scheme, hypotheses)
++        Self::from_phonetic_controlled(lexicon, raw, config, scheme, hypotheses, cache)
+     }
+ 
+     pub(crate) fn from_phonetic(
+@@ -112,6 +132,17 @@ impl<'a> Lattice<'a> {
+         config: &Config,
+         scheme: &SchemeConfig,
+         hypotheses: PhoneticHypotheses,
++    ) -> Result<Self, SearchError> {
++        Self::from_phonetic_controlled(lexicon, raw, config, scheme, hypotheses, None)
++    }
++
++    fn from_phonetic_controlled(
++        lexicon: &'a Lexicon,
++        raw: &str,
++        config: &Config,
++        scheme: &SchemeConfig,
++        hypotheses: PhoneticHypotheses,
++        mut cache: Option<&mut crate::TransitionCache>,
+     ) -> Result<Self, SearchError> {
+         if hypotheses.keys.len() > config.max_letters {
+             return Err(SearchError::new(
+@@ -119,6 +150,9 @@ impl<'a> Lattice<'a> {
+                 "归一按键超过搜索预算",
+             ));
+         }
++        if let Some(cache) = cache.as_mut() {
++            cache.bind(lexicon);
++        }
+         let max_edits = scheme.correction.as_ref().map_or(0, |c| c.max_edit_cost);
+         let mut graph = Self {
+             lexicon,
+@@ -180,19 +214,27 @@ impl<'a> Lattice<'a> {
+                     if cost.edits > max_edits {
+                         continue;
+                     }
+-                    let mut node = state.node;
+-                    let mut found = true;
+-                    for key in arc.syllable.bytes() {
+-                        if let Some(&next) = lexicon.trie[node].next.get(&key) {
+-                            node = next;
+-                        } else {
+-                            found = false;
+-                            break;
++                    let node = if let Some(cache) = cache.as_mut() {
++                        let Some(node) = cache.follow(lexicon, state.node, &arc.syllable) else {
++                            continue;
++                        };
++                        node
++                    } else {
++                        let mut node = state.node;
++                        let mut found = true;
++                        for key in arc.syllable.bytes() {
++                            if let Some(&next) = lexicon.trie[node].next.get(&key) {
++                                node = next;
++                            } else {
++                                found = false;
++                                break;
++                            }
+                         }
+-                    }
+-                    if !found {
+-                        continue;
+-                    }
++                        if !found {
++                            continue;
++                        }
++                        node
++                    };
+                     let mut source_arcs = state.arcs.clone();
+                     source_arcs.push(arc_index);
+                     let canonical_len = state.canonical_len + arc.syllable.len();
+diff --git a/crates/cloudleaf-search/src/search.rs b/crates/cloudleaf-search/src/search.rs
+index cbad198..1c173fd 100644
+--- a/crates/cloudleaf-search/src/search.rs
++++ b/crates/cloudleaf-search/src/search.rs
+@@ -769,6 +769,15 @@ impl InterpretedSuffix {
+             edges: path.edges.clone(),
+         }
+     }
++    fn compare_completed(&self, other: &Path) -> Ordering {
++        self.cost
++            .cmp(&other.features.interpretation_cost)
++            .then_with(|| other.features.user_preference_units.cmp(&self.preference))
++            .then_with(|| other.score.cmp(&self.score))
++            .then_with(|| self.ids.cmp(&other.ids))
++            .then_with(|| self.edges.cmp(&other.edges))
++    }
++
+     fn completed(path: &Path, rest: &Self) -> Self {
+         Self {
+             cost: path.features.interpretation_cost.plus(rest.cost),
+@@ -966,6 +975,51 @@ fn interpreted_character_exact<O: Observer>(
+     else {
+         return Vec::new();
+     };
++    let mut complete = Vec::<Path>::new();
++    // 后缀界本身给出有效完整路径；先建立实际TopK门槛，再展开有机会改善它的前缀。
++    for edge_index in &scorer.graph.outgoing[0] {
++        if scorer.cancelled() || !expand_allowed(stats, config) {
++            return Vec::new();
++        }
++        let edge = &scorer.graph.edges[*edge_index];
++        let used = scorer.graph.interpretation_cost(*edge_index).edits;
++        if used > max_edits {
++            continue;
++        }
++        let entry = model.entry(edge.entry);
++        let Some(rest) = suffix[edge.end]
++            .get(&(entry.last, max_edits - used))
++            .and_then(Option::as_ref)
++        else {
++            continue;
++        };
++        if !resident_allowed(stats, labels + complete.len() + 3, config) {
++            return Vec::new();
++        }
++        let Some(mut candidate) = scorer.extend(&Path::default(), *edge_index, None, observer)
++        else {
++            continue;
++        };
++        let bound = InterpretedSuffix::completed(&candidate, rest);
++        if complete.len() == k
++            && bound.compare_completed(complete.last().unwrap()) != Ordering::Less
++        {
++            continue;
++        }
++        // 后缀标签已按剩余编辑数验证，沿该链扩展必然可行。
++        for tail in &rest.edges {
++            if scorer.cancelled() || !expand_allowed(stats, config) {
++                return Vec::new();
++            }
++            candidate = scorer.extend(&candidate, *tail, None, observer).unwrap();
++        }
++        let candidate = scorer.finish(candidate, observer);
++        debug_assert_eq!(bound.compare_completed(&candidate), Ordering::Equal);
++        insert_unique(&mut complete, candidate, k, observer);
++    }
++    if !resident_allowed(stats, labels + complete.len() + 2, config) {
++        return Vec::new();
++    }
+     let mut pending = BinaryHeap::from([InterpretedPending {
+         bound: best.clone(),
+         order: 0,
+@@ -973,7 +1027,6 @@ fn interpreted_character_exact<O: Observer>(
+         path: Path::default(),
+     }]);
+     let mut order = 0;
+-    let mut complete = Vec::<Path>::new();
+     let mut seen =
+         vec![
+             vec![BTreeMap::<String, InterpretedSuffix>::new(); usize::from(max_edits) + 1];
+@@ -991,10 +1044,7 @@ fn interpreted_character_exact<O: Observer>(
+             continue;
+         }
+         if complete.len() == k
+-            && suffix_order(
+-                &current.bound,
+-                &InterpretedSuffix::prefix(complete.last().unwrap()),
+-            ) != Ordering::Less
++            && current.bound.compare_completed(complete.last().unwrap()) != Ordering::Less
+         {
+             break;
+         }
+@@ -1031,8 +1081,7 @@ fn interpreted_character_exact<O: Observer>(
+             };
+             let bound = InterpretedSuffix::completed(&next, rest);
+             if complete.len() == k
+-                && suffix_order(&bound, &InterpretedSuffix::prefix(complete.last().unwrap()))
+-                    != Ordering::Less
++                && bound.compare_completed(complete.last().unwrap()) != Ordering::Less
+             {
+                 continue;
+             }
+diff --git a/crates/cloudleaf-search/tests/incumbent_resources.rs b/crates/cloudleaf-search/tests/incumbent_resources.rs
+index 8557a45..25cc429 100644
+--- a/crates/cloudleaf-search/tests/incumbent_resources.rs
++++ b/crates/cloudleaf-search/tests/incumbent_resources.rs
+@@ -9,21 +9,44 @@ fn actual_complete_suffix_candidates_bound_resident_prefixes_without_losing_sour
+     let mut sequences = Vec::new();
+     for i in 0..24 {
+         let text = char::from_u32(0x4e00 + i).unwrap().to_string();
+-        data.push_str(&format!("n{i:02}\tni\t{text}\t\tunknown\t\tmechanical\tn{i:02}\tMIT\n"));
++        data.push_str(&format!(
++            "n{i:02}\tni\t{text}\t\tunknown\t\tmechanical\tn{i:02}\tMIT\n"
++        ));
+         sequences.push(vec![text.clone(), text.clone(), text]);
+     }
+     let lexicon = Lexicon::from_tsv(&data).unwrap();
+     let sha = "7".repeat(64);
+-    let scheme = SchemeConfig { scheme: PinyinScheme::AbbreviatedPinyin, ..Default::default() };
++    let scheme = SchemeConfig {
++        scheme: PinyinScheme::AbbreviatedPinyin,
++        ..Default::default()
++    };
+     for kind in ["character_bigram", "character_bigram_witten_bell"] {
+-        let metadata = format!("# cloudleaf-language-v1\nlexicon_sha256\t{sha}\nsource_sha256\t{sha}\nsource_id\tcloudleaf:mechanical-incumbent\nlicense_id\tMIT\ntokenization\tunicode-scalar-v1\nusage\tmechanical\nkind\t{kind}\ntraining_split\ttrain\nprevious\tnext\tcount\n");
++        let metadata = format!(
++            "# cloudleaf-language-v1\nlexicon_sha256\t{sha}\nsource_sha256\t{sha}\nsource_id\tcloudleaf:mechanical-incumbent\nlicense_id\tMIT\ntokenization\tunicode-scalar-v1\nusage\tmechanical\nkind\t{kind}\ntraining_split\ttrain\nprevious\tnext\tcount\n"
++        );
+         let model = LanguageModelSnapshot::train(&metadata, &lexicon, &sha, &sequences).unwrap();
+-        let config = Config { ranker: Ranker::CharacterBigram, output_k: 10, max_expansions: 200000, max_resident_paths: 256, ..Default::default() };
++        let config = Config {
++            ranker: Ranker::CharacterBigram,
++            output_k: 10,
++            max_expansions: 200000,
++            max_resident_paths: 256,
++            ..Default::default()
++        };
+         let graph = Lattice::build_with_scheme(&lexicon, "nnn", &config, &scheme).unwrap();
+         let exact = search_graph(&lexicon, &graph, &config, Some(model.model()), None).unwrap();
+         assert!(exact.guaranteed, "{kind}: {:?}", exact.statistics);
+         assert_eq!(exact.candidates.len(), 10);
+-        let reference = search_graph(&lexicon, &graph, &Config { method: Method::Reference, ..config }, Some(model.model()), None).unwrap();
++        let reference = search_graph(
++            &lexicon,
++            &graph,
++            &Config {
++                method: Method::Reference,
++                ..config
++            },
++            Some(model.model()),
++            None,
++        )
++        .unwrap();
+         assert!(reference.guaranteed, "{kind}: {:?}", reference.statistics);
+         assert_eq!(reference.candidates, exact.candidates);
+     }

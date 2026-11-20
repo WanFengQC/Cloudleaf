@@ -1,0 +1,1860 @@
+{
+  "components": {
+    "search": {
+      "prefixes": [
+        "crates/cloudleaf-search",
+        "scripts/evaluate_real_lexicon.py",
+        "scripts/check_search_resources.py",
+        "scripts/search_resource_contract.py"
+      ],
+      "same": [
+        "crates/cloudleaf-search/Cargo.toml",
+        "crates/cloudleaf-search/examples/resource_phase_probe.rs",
+        "crates/cloudleaf-search/examples/resource_probe.rs",
+        "crates/cloudleaf-search/examples/search_probe.rs",
+        "crates/cloudleaf-search/tests/profiling.rs",
+        "crates/cloudleaf-search/tests/resource_contract.rs"
+      ],
+      "different": [
+        "crates/cloudleaf-search/src/lattice.rs",
+        "crates/cloudleaf-search/src/lexicon.rs",
+        "crates/cloudleaf-search/src/lib.rs",
+        "crates/cloudleaf-search/src/model.rs",
+        "crates/cloudleaf-search/src/profiling.rs",
+        "crates/cloudleaf-search/src/search.rs",
+        "crates/cloudleaf-search/tests/search_contract.rs"
+      ],
+      "input_only": [
+        "crates/cloudleaf-search/src/cancellation.rs",
+        "crates/cloudleaf-search/src/character.rs",
+        "crates/cloudleaf-search/src/layer.rs",
+        "crates/cloudleaf-search/src/schemes.rs",
+        "crates/cloudleaf-search/tests/character_model.rs",
+        "crates/cloudleaf-search/tests/deferred_materialization.rs",
+        "crates/cloudleaf-search/tests/interpreted_resources.rs",
+        "crates/cloudleaf-search/tests/language_model.rs",
+        "crates/cloudleaf-search/tests/scheme_contract.rs",
+        "crates/cloudleaf-search/tests/scheme_provenance.rs",
+        "crates/cloudleaf-search/tests/user_layer.rs",
+        "crates/cloudleaf-search/tests/user_preferences.rs"
+      ],
+      "branch_only": [
+        "scripts/check_search_resources.py",
+        "scripts/evaluate_real_lexicon.py",
+        "scripts/search_resource_contract.py"
+      ],
+      "identities": {
+        "crates/cloudleaf-search/Cargo.toml": {
+          "input_sha256": "954555f22ec14156d7422e2d18f2b2b9e99e878b1b422e7d60dcf12868f18c5d",
+          "branch_sha256": "954555f22ec14156d7422e2d18f2b2b9e99e878b1b422e7d60dcf12868f18c5d"
+        },
+        "crates/cloudleaf-search/examples/resource_phase_probe.rs": {
+          "input_sha256": "5318170f7d53a6f30930e2e39c6605776e59f6ff19ce6df7e5a01dceb0c61f8b",
+          "branch_sha256": "5318170f7d53a6f30930e2e39c6605776e59f6ff19ce6df7e5a01dceb0c61f8b"
+        },
+        "crates/cloudleaf-search/examples/resource_probe.rs": {
+          "input_sha256": "8d9cc5a5d3acb08e51e84412f73f68b398dd9171c3b4251cf36167dedd27b1bc",
+          "branch_sha256": "8d9cc5a5d3acb08e51e84412f73f68b398dd9171c3b4251cf36167dedd27b1bc"
+        },
+        "crates/cloudleaf-search/examples/search_probe.rs": {
+          "input_sha256": "5a6f4ddae58cbb253556f3156ce6d6d03d5f9e99823fe40cc0b8258a481a3805",
+          "branch_sha256": "5a6f4ddae58cbb253556f3156ce6d6d03d5f9e99823fe40cc0b8258a481a3805"
+        },
+        "crates/cloudleaf-search/src/lattice.rs": {
+          "input_sha256": "00cf424c66511e25ee9a97325cc97a9dd4393e85e5d47565a509b94de786cab1",
+          "branch_sha256": "cbd25acd123882327675c47ee2af31805280a85d7e96af485d085e3b39138c59"
+        },
+        "crates/cloudleaf-search/src/lexicon.rs": {
+          "input_sha256": "9b5c45b87c0ee693f33d9f9752f5aab7adc0d46d82461060c915ca7c1ab0069a",
+          "branch_sha256": "5fbef67bbed07d6fc70e1ef36e65e84a2fca4ca1ab5526ad41306f1ef0fca24e"
+        },
+        "crates/cloudleaf-search/src/lib.rs": {
+          "input_sha256": "ee70a798e6ec2b4e1fb3f711d8ef54395dfacde2a37a11d13c88af5cb497f4d8",
+          "branch_sha256": "7ea0f44d1b8800cb15fcbe0aed91c33b0e2355486799edbe06cd1cad33e56064"
+        },
+        "crates/cloudleaf-search/src/model.rs": {
+          "input_sha256": "2c9f97eb1159ae097508fdb1475e16799323983a1ab0cf0be28f4c86f5be2db5",
+          "branch_sha256": "9908ac04c78e835c6e3948c12fe86b7e6817b22cfb0def22db4eced785d99190"
+        },
+        "crates/cloudleaf-search/src/profiling.rs": {
+          "input_sha256": "be5678ca231dea1440f60027fb2318344d36824627b69decf99897bd6740d418",
+          "branch_sha256": "af2754a2a2c6d0bdec666601a3289320ed22acd8d87e70fc0c2afb37b3f453eb"
+        },
+        "crates/cloudleaf-search/src/search.rs": {
+          "input_sha256": "a3f719eaf8dfdc2d4709dbe9a85494199bf6cefa5c6740ca6b01a568271840dd",
+          "branch_sha256": "38e9359fbc25dd802eb926264d0bc2f7bdf1434cf893bda094d4603bda0b8279"
+        },
+        "crates/cloudleaf-search/tests/profiling.rs": {
+          "input_sha256": "91f4ae729274167ec3b1a831121fe0d1f4555fad113186bf945573df7ec92cf8",
+          "branch_sha256": "91f4ae729274167ec3b1a831121fe0d1f4555fad113186bf945573df7ec92cf8"
+        },
+        "crates/cloudleaf-search/tests/resource_contract.rs": {
+          "input_sha256": "267e8422ae7c3be70369f1563b106873f51a360e8849d3f77434cff346585220",
+          "branch_sha256": "267e8422ae7c3be70369f1563b106873f51a360e8849d3f77434cff346585220"
+        },
+        "crates/cloudleaf-search/tests/search_contract.rs": {
+          "input_sha256": "532475d00dba559f394f88057ef17b00129408825490981bae0c5bf716be1a60",
+          "branch_sha256": "2ff943c751ca13b8d1bf82c6bf4916d5a1199334437e36229746183c8e46628e"
+        }
+      }
+    },
+    "windows": {
+      "prefixes": [
+        "adapters/windows",
+        "apps/windows-ime",
+        "scripts/check_windows_soak_admission.py",
+        "scripts/stress_windows_faults.py",
+        "scripts/stress_windows_owner.py",
+        "scripts/report_windows_soak.py"
+      ],
+      "same": [
+        "adapters/windows/budget.rs",
+        "adapters/windows/keys.rs",
+        "adapters/windows/lifecycle_review_tests.rs",
+        "adapters/windows/owner_cleanup.rs",
+        "adapters/windows/ownership.rs",
+        "adapters/windows/recovery.rs",
+        "adapters/windows/registration.rs",
+        "adapters/windows/service.rs",
+        "adapters/windows/watchdog.rs",
+        "apps/windows-ime/src/lib.rs",
+        "apps/windows-ime/src/main.rs"
+      ],
+      "different": [
+        "adapters/windows/candidate.rs",
+        "adapters/windows/mod.rs",
+        "adapters/windows/render_tests.rs",
+        "adapters/windows/session.rs",
+        "adapters/windows/session_tests.rs",
+        "apps/windows-ime/Cargo.toml"
+      ],
+      "input_only": [
+        "adapters/windows/input_review.rs",
+        "adapters/windows/isolated_input.rs",
+        "adapters/windows/user_panel.rs",
+        "adapters/windows/user_worker.rs",
+        "adapters/windows/user_worker_tests.rs"
+      ],
+      "branch_only": [
+        "scripts/check_windows_soak_admission.py",
+        "scripts/report_windows_soak.py",
+        "scripts/stress_windows_faults.py",
+        "scripts/stress_windows_owner.py"
+      ],
+      "identities": {
+        "adapters/windows/budget.rs": {
+          "input_sha256": "d2f5f81e1b7800bb83abcf9828582bf1131f1082f03bc09076dab0e3085206e1",
+          "branch_sha256": "d2f5f81e1b7800bb83abcf9828582bf1131f1082f03bc09076dab0e3085206e1"
+        },
+        "adapters/windows/candidate.rs": {
+          "input_sha256": "188d623b024243f0bb907cfaa7ce885e9d555fe9454040dc864d7d86ff411927",
+          "branch_sha256": "0cb0619ea64dbc6a5639f292b50ffecb15ab73e0b8d77255043e70cc0128a11a"
+        },
+        "adapters/windows/keys.rs": {
+          "input_sha256": "30419d42c3dbbfebb19b260c333f9c870b7330cb0f0820614b0298a1a157104a",
+          "branch_sha256": "30419d42c3dbbfebb19b260c333f9c870b7330cb0f0820614b0298a1a157104a"
+        },
+        "adapters/windows/lifecycle_review_tests.rs": {
+          "input_sha256": "d5c5bc933497f01b86828d9e47b0b072e3de6c839348304b359ae18591380ac4",
+          "branch_sha256": "d5c5bc933497f01b86828d9e47b0b072e3de6c839348304b359ae18591380ac4"
+        },
+        "adapters/windows/mod.rs": {
+          "input_sha256": "7686ea34a60435e2c04f142788527872dec359ad522911ca2540ffde4000f2e2",
+          "branch_sha256": "6e30a24fbc822148d0923654a3c2c75ee16ae5f27a8c1a738c5b25bc6a5735db"
+        },
+        "adapters/windows/owner_cleanup.rs": {
+          "input_sha256": "0e5d073ed24b4551005e910778fa24c2d8ebf25f58c11909fab2b6dbd85c48e6",
+          "branch_sha256": "0e5d073ed24b4551005e910778fa24c2d8ebf25f58c11909fab2b6dbd85c48e6"
+        },
+        "adapters/windows/ownership.rs": {
+          "input_sha256": "ca95ee9f13c06b16a6b4507e41cfe8f78336440bdb9ad2b1c4aabb5fb61e5118",
+          "branch_sha256": "ca95ee9f13c06b16a6b4507e41cfe8f78336440bdb9ad2b1c4aabb5fb61e5118"
+        },
+        "adapters/windows/recovery.rs": {
+          "input_sha256": "722c4cfbcf5a606816d1ca732fd5954113791721b8846c9774037b720f6b497d",
+          "branch_sha256": "722c4cfbcf5a606816d1ca732fd5954113791721b8846c9774037b720f6b497d"
+        },
+        "adapters/windows/registration.rs": {
+          "input_sha256": "d94ed8e09b08cd35fe87fe784e428b7fb33775522f478389d223e8645042e166",
+          "branch_sha256": "d94ed8e09b08cd35fe87fe784e428b7fb33775522f478389d223e8645042e166"
+        },
+        "adapters/windows/render_tests.rs": {
+          "input_sha256": "7c3955b22f2dbd829d3ca59c2d2f22cd7a4077c388c91552109063ba9fa978f9",
+          "branch_sha256": "d0b3360bb1f357c28149363683afd50f4b0f8b36c8c873a0ab51b3e8d963e0d2"
+        },
+        "adapters/windows/service.rs": {
+          "input_sha256": "1a04da1834b7824811a49278ea9a34c723afd0329cfa63807de42f00947aa30f",
+          "branch_sha256": "1a04da1834b7824811a49278ea9a34c723afd0329cfa63807de42f00947aa30f"
+        },
+        "adapters/windows/session.rs": {
+          "input_sha256": "12f75d47c62ca3566f08e4c39e58ac062e778308cb38145bad11f8d61745a477",
+          "branch_sha256": "ca265ee3251e6a5394fb9ed612c610420e3c5f3c4a4b39709022f8be7d2f41ec"
+        },
+        "adapters/windows/session_tests.rs": {
+          "input_sha256": "6a72827ff14021da095cb2fef7803824a646de95535deeb424270a39041e367c",
+          "branch_sha256": "5d3a6f5976732aa2b6e291441c5c64dd10b77c3884d1e90b11348de595b7ac7b"
+        },
+        "adapters/windows/watchdog.rs": {
+          "input_sha256": "a2f767e6e15502a727260c58526647eb9a63bff3f41477856426e7bc1d7c7da5",
+          "branch_sha256": "a2f767e6e15502a727260c58526647eb9a63bff3f41477856426e7bc1d7c7da5"
+        },
+        "apps/windows-ime/Cargo.toml": {
+          "input_sha256": "431874ce894b62ad248714ee8d64a78a7962886bb805743f3b4780a8f54d8b9f",
+          "branch_sha256": "cb3ed2a4affd4139d9ef7db7e15b36cbfa124d9a3810483d5e3789bfa3fb7b09"
+        },
+        "apps/windows-ime/src/lib.rs": {
+          "input_sha256": "98bad8bc2866890a642687372481645ff9ebfd7ae315c35f1a6604f3bbb5786a",
+          "branch_sha256": "98bad8bc2866890a642687372481645ff9ebfd7ae315c35f1a6604f3bbb5786a"
+        },
+        "apps/windows-ime/src/main.rs": {
+          "input_sha256": "6a3051fe4a1642eca7f8817df71b5c2a843b88c6134375e4b63449dca3e98151",
+          "branch_sha256": "6a3051fe4a1642eca7f8817df71b5c2a843b88c6134375e4b63449dca3e98151"
+        }
+      }
+    },
+    "data": {
+      "prefixes": [
+        "tools/data_pipeline",
+        "tests",
+        "data/sources",
+        "data/licenses"
+      ],
+      "same": [
+        "data/licenses/CC-BY-SA-4.0.txt",
+        "data/licenses/Unicode-3.0.txt",
+        "data/sources/evidence/cccedict-mirror-7019e1c/upstream-documents.json",
+        "data/sources/locks/cccedict-20260604-mirror7019e1c.json",
+        "data/sources/locks/unihan-17.0.0.json",
+        "data/sources/locks/wiktionary-zh-20261001-prefix8388608.json",
+        "data/sources/source-review.jsonl",
+        "tests/evaluation/README.md",
+        "tests/evaluation/algorithm-v1.tsv",
+        "tests/fixtures/input-v1.tsv",
+        "tests/test_algorithm_evaluation.py",
+        "tests/test_benchmark.py",
+        "tests/test_cedict_source.py",
+        "tests/test_data_pipeline.py",
+        "tests/test_data_recovery.py",
+        "tests/test_word_source.py",
+        "tests/test_workspace_audit.py",
+        "tools/data_pipeline/README.md",
+        "tools/data_pipeline/__init__.py",
+        "tools/data_pipeline/__main__.py",
+        "tools/data_pipeline/cedict_source.py",
+        "tools/data_pipeline/filesystem.py",
+        "tools/data_pipeline/pipeline.py",
+        "tools/data_pipeline/prefix_snapshot.py",
+        "tools/data_pipeline/reading_audit.py",
+        "tools/data_pipeline/recovery.py",
+        "tools/data_pipeline/word_source.py"
+      ],
+      "different": [],
+      "input_only": [
+        "tests/fixtures/input-round14-events.tsv",
+        "tests/search-mechanics-v1/README.md",
+        "tests/search-mechanics-v1/cases.tsv",
+        "tests/search-mechanics-v1/lexicon.tsv",
+        "tests/search-mechanics-v1/train.tsv",
+        "tests/search-resources-v1/README.md",
+        "tests/search-resources-v1/cases.tsv",
+        "tests/test_context_corpus.py",
+        "tests/test_data_license_integrity.py",
+        "tests/test_extract_ngram_signal.py",
+        "tests/test_input_snapshot_dependency_audit.py",
+        "tests/test_input_supplement.py",
+        "tests/test_windows_dependency_audit.py"
+      ],
+      "branch_only": [
+        "tests/test_annotation_workflow.py",
+        "tests/test_corpus_gate.py",
+        "tests/test_isolation_audit.py",
+        "tests/test_linguistic_sidecar.py",
+        "tests/test_ngram_analysis.py",
+        "tests/test_semantic_bundle.py",
+        "tests/test_semantic_bundle_recovery.py",
+        "tests/test_source_assertions.py",
+        "tests/test_source_review.py",
+        "tools/data_pipeline/annotation_workflow.py",
+        "tools/data_pipeline/audit_isolations.py",
+        "tools/data_pipeline/corpus_gate.py",
+        "tools/data_pipeline/linguistic_sidecar.py",
+        "tools/data_pipeline/ngram_analysis.py",
+        "tools/data_pipeline/semantic_bundle.py",
+        "tools/data_pipeline/source_assertions.py",
+        "tools/data_pipeline/source_review.py"
+      ],
+      "identities": {
+        "data/licenses/CC-BY-SA-4.0.txt": {
+          "input_sha256": "28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5",
+          "branch_sha256": "28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5"
+        },
+        "data/licenses/Unicode-3.0.txt": {
+          "input_sha256": "e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96",
+          "branch_sha256": "e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96"
+        },
+        "data/sources/evidence/cccedict-mirror-7019e1c/upstream-documents.json": {
+          "input_sha256": "9572c28d6cac908b2b66567420c893ce5e1b27e95fbee52e605374620e9a9267",
+          "branch_sha256": "9572c28d6cac908b2b66567420c893ce5e1b27e95fbee52e605374620e9a9267"
+        },
+        "data/sources/locks/cccedict-20260604-mirror7019e1c.json": {
+          "input_sha256": "bd48c8ab6843cd610055b6568f1820768fdaa1b7b5659a428ac3021fc4b8bbba",
+          "branch_sha256": "bd48c8ab6843cd610055b6568f1820768fdaa1b7b5659a428ac3021fc4b8bbba"
+        },
+        "data/sources/locks/unihan-17.0.0.json": {
+          "input_sha256": "01af54b80ab34ef3ec4e196560617defaf1b1a8ead436a15752a03fe115e9056",
+          "branch_sha256": "01af54b80ab34ef3ec4e196560617defaf1b1a8ead436a15752a03fe115e9056"
+        },
+        "data/sources/locks/wiktionary-zh-20261001-prefix8388608.json": {
+          "input_sha256": "7d0ee32b4167bb6d45e630bd6d9e3df91bd4b51fe90a2c4d7454462f8b3075e9",
+          "branch_sha256": "7d0ee32b4167bb6d45e630bd6d9e3df91bd4b51fe90a2c4d7454462f8b3075e9"
+        },
+        "data/sources/source-review.jsonl": {
+          "input_sha256": "f141746bad3946a0c21e40b30b97631fa87bae7bcf3da38d3a08b374c205b975",
+          "branch_sha256": "f141746bad3946a0c21e40b30b97631fa87bae7bcf3da38d3a08b374c205b975"
+        },
+        "tests/evaluation/README.md": {
+          "input_sha256": "c458a9164f8e428a90aefe65b093cd7f0f8164787f60d17ef9166cca3bf92f5a",
+          "branch_sha256": "c458a9164f8e428a90aefe65b093cd7f0f8164787f60d17ef9166cca3bf92f5a"
+        },
+        "tests/evaluation/algorithm-v1.tsv": {
+          "input_sha256": "d8bf45fcb578db3c7ed1a2d7cce5c5e98f126de70dcfe3cfe69eb4becc0618fb",
+          "branch_sha256": "d8bf45fcb578db3c7ed1a2d7cce5c5e98f126de70dcfe3cfe69eb4becc0618fb"
+        },
+        "tests/fixtures/input-v1.tsv": {
+          "input_sha256": "5fc0d0baf3e1d9082974d87292fb565a64b0ecca42d573a4dc4e354f8f64d7e0",
+          "branch_sha256": "5fc0d0baf3e1d9082974d87292fb565a64b0ecca42d573a4dc4e354f8f64d7e0"
+        },
+        "tests/test_algorithm_evaluation.py": {
+          "input_sha256": "7eb9b3392b244d8528733e3e3b521e40efbdb6a70ce7d42c4d46128b6fc93601",
+          "branch_sha256": "7eb9b3392b244d8528733e3e3b521e40efbdb6a70ce7d42c4d46128b6fc93601"
+        },
+        "tests/test_benchmark.py": {
+          "input_sha256": "cb3d4c5d8a34c87527977201d8f3b16d947c89e451c3ddca59886dccd41b6828",
+          "branch_sha256": "cb3d4c5d8a34c87527977201d8f3b16d947c89e451c3ddca59886dccd41b6828"
+        },
+        "tests/test_cedict_source.py": {
+          "input_sha256": "f9685bc67fcfa7a4ad1bb5c16eb583585f503e62e72be41249a05c8dc4c877ce",
+          "branch_sha256": "f9685bc67fcfa7a4ad1bb5c16eb583585f503e62e72be41249a05c8dc4c877ce"
+        },
+        "tests/test_data_pipeline.py": {
+          "input_sha256": "90091da12d808c88963b5422bda5371374027c05a2efd71418c9164598051153",
+          "branch_sha256": "90091da12d808c88963b5422bda5371374027c05a2efd71418c9164598051153"
+        },
+        "tests/test_data_recovery.py": {
+          "input_sha256": "a48a02e2d1069d0295fb8e8baece16239f943a4226d4cffe24b070ae11b2d1cf",
+          "branch_sha256": "a48a02e2d1069d0295fb8e8baece16239f943a4226d4cffe24b070ae11b2d1cf"
+        },
+        "tests/test_word_source.py": {
+          "input_sha256": "9aacc162868a842a1e94e769e5a31f670e5d1ac45dec74b2ad9e89d36f868847",
+          "branch_sha256": "9aacc162868a842a1e94e769e5a31f670e5d1ac45dec74b2ad9e89d36f868847"
+        },
+        "tests/test_workspace_audit.py": {
+          "input_sha256": "cb90c2d9422b9481dc4005faa154dfbf8ed218008403a63d339bb00b54a2d949",
+          "branch_sha256": "cb90c2d9422b9481dc4005faa154dfbf8ed218008403a63d339bb00b54a2d949"
+        },
+        "tools/data_pipeline/README.md": {
+          "input_sha256": "1b9fc7185c749fcb8909b786cb97d6456cdc254ece66e832b7abc5c0600c5e21",
+          "branch_sha256": "1b9fc7185c749fcb8909b786cb97d6456cdc254ece66e832b7abc5c0600c5e21"
+        },
+        "tools/data_pipeline/__init__.py": {
+          "input_sha256": "23fe9b9d63d02a01c5401a85ad845defc688fa6db5927dc63d7ae902b4ec83d1",
+          "branch_sha256": "23fe9b9d63d02a01c5401a85ad845defc688fa6db5927dc63d7ae902b4ec83d1"
+        },
+        "tools/data_pipeline/__main__.py": {
+          "input_sha256": "9fe6b7f24253eb62cb7250e40b84d557c6fc3c1b218038238ca07067a64b37e1",
+          "branch_sha256": "9fe6b7f24253eb62cb7250e40b84d557c6fc3c1b218038238ca07067a64b37e1"
+        },
+        "tools/data_pipeline/cedict_source.py": {
+          "input_sha256": "7533498d7aabdea7eb8702d042240e6654d7b40f82fc8db62b892a65956e3c92",
+          "branch_sha256": "7533498d7aabdea7eb8702d042240e6654d7b40f82fc8db62b892a65956e3c92"
+        },
+        "tools/data_pipeline/filesystem.py": {
+          "input_sha256": "3ff2533b1fdbf77fea688b45d5a44f04ba8cc7f9bd064844e823e786db8bad12",
+          "branch_sha256": "3ff2533b1fdbf77fea688b45d5a44f04ba8cc7f9bd064844e823e786db8bad12"
+        },
+        "tools/data_pipeline/pipeline.py": {
+          "input_sha256": "41ce3ce9e92229ff0b1e6f75fb41ca6f959b389bab32042b5763d6cc1d0cfc09",
+          "branch_sha256": "41ce3ce9e92229ff0b1e6f75fb41ca6f959b389bab32042b5763d6cc1d0cfc09"
+        },
+        "tools/data_pipeline/prefix_snapshot.py": {
+          "input_sha256": "0f624cf0a0fa162117b4dcde7dc78e55af632104c8ae541812bc07d4ee3f0778",
+          "branch_sha256": "0f624cf0a0fa162117b4dcde7dc78e55af632104c8ae541812bc07d4ee3f0778"
+        },
+        "tools/data_pipeline/reading_audit.py": {
+          "input_sha256": "e89dba255cf4e8c5afa8c908edc01cf2d3f33d60e1187b67d1a120d382a1ce5d",
+          "branch_sha256": "e89dba255cf4e8c5afa8c908edc01cf2d3f33d60e1187b67d1a120d382a1ce5d"
+        },
+        "tools/data_pipeline/recovery.py": {
+          "input_sha256": "760f106fe5fca0cbd111d366c3f83a3fdf266c9cd84992860baf33b18bffd3b9",
+          "branch_sha256": "760f106fe5fca0cbd111d366c3f83a3fdf266c9cd84992860baf33b18bffd3b9"
+        },
+        "tools/data_pipeline/word_source.py": {
+          "input_sha256": "1d6d785da2b43895128c42b36e5f2997b1db872a466a86a45bab6961451dcd04",
+          "branch_sha256": "1d6d785da2b43895128c42b36e5f2997b1db872a466a86a45bab6961451dcd04"
+        }
+      }
+    },
+    "translation": {
+      "prefixes": [
+        "crates/cloudleaf-translation",
+        "crates/cloudleaf-offline",
+        "apps/cloudleaf-translation-panel",
+        "vendor/offline",
+        "config/offline-models",
+        "scripts/audit_translation_dependencies.py"
+      ],
+      "same": [],
+      "different": [],
+      "input_only": [],
+      "branch_only": [
+        "apps/cloudleaf-translation-panel/Cargo.toml",
+        "apps/cloudleaf-translation-panel/README.md",
+        "apps/cloudleaf-translation-panel/src/controller.rs",
+        "apps/cloudleaf-translation-panel/src/lib.rs",
+        "apps/cloudleaf-translation-panel/src/main.rs",
+        "apps/cloudleaf-translation-panel/src/platform.rs",
+        "apps/cloudleaf-translation-panel/src/settings.rs",
+        "apps/cloudleaf-translation-panel/src/setup.rs",
+        "apps/cloudleaf-translation-panel/src/windows_ui.rs",
+        "apps/cloudleaf-translation-panel/tests/controller.rs",
+        "apps/cloudleaf-translation-panel/tests/offline_settings.rs",
+        "apps/cloudleaf-translation-panel/tests/platform_settings.rs",
+        "config/offline-models/opus-converted-lock.json",
+        "config/offline-models/opus-source-lock.json",
+        "crates/cloudleaf-offline/Cargo.toml",
+        "crates/cloudleaf-offline/README.md",
+        "crates/cloudleaf-offline/examples/inspect_marian_weights.rs",
+        "crates/cloudleaf-offline/examples/offline_lifecycle.rs",
+        "crates/cloudleaf-offline/examples/offline_models.rs",
+        "crates/cloudleaf-offline/examples/offline_translate.rs",
+        "crates/cloudleaf-offline/src/lib.rs",
+        "crates/cloudleaf-offline/src/manager.rs",
+        "crates/cloudleaf-offline/src/marian.rs",
+        "crates/cloudleaf-offline/tests/model_admission.rs",
+        "crates/cloudleaf-translation/Cargo.toml",
+        "crates/cloudleaf-translation/README.md",
+        "crates/cloudleaf-translation/examples/dictionary_lookup.rs",
+        "crates/cloudleaf-translation/src/dictionary.rs",
+        "crates/cloudleaf-translation/src/interaction.rs",
+        "crates/cloudleaf-translation/src/lib.rs",
+        "crates/cloudleaf-translation/src/offline.rs",
+        "crates/cloudleaf-translation/src/online.rs",
+        "crates/cloudleaf-translation/src/provider.rs",
+        "crates/cloudleaf-translation/src/scheduler.rs",
+        "crates/cloudleaf-translation/src/secret.rs",
+        "crates/cloudleaf-translation/src/types.rs",
+        "crates/cloudleaf-translation/tests/dictionary.rs",
+        "crates/cloudleaf-translation/tests/interaction.rs",
+        "crates/cloudleaf-translation/tests/nonblocking_shutdown.rs",
+        "crates/cloudleaf-translation/tests/online.rs",
+        "crates/cloudleaf-translation/tests/tasks.rs",
+        "scripts/audit_translation_dependencies.py",
+        "vendor/offline/candle-core/.cargo_vcs_info.json",
+        "vendor/offline/candle-core/Cargo.lock",
+        "vendor/offline/candle-core/Cargo.toml",
+        "vendor/offline/candle-core/Cargo.toml.orig",
+        "vendor/offline/candle-core/LICENSE",
+        "vendor/offline/candle-core/README.md",
+        "vendor/offline/candle-core/benches/bench_main.rs",
+        "vendor/offline/candle-core/benches/benchmarks/affine.rs",
+        "vendor/offline/candle-core/benches/benchmarks/binary.rs",
+        "vendor/offline/candle-core/benches/benchmarks/broadcast.rs",
+        "vendor/offline/candle-core/benches/benchmarks/conv_transpose2d.rs",
+        "vendor/offline/candle-core/benches/benchmarks/copy.rs",
+        "vendor/offline/candle-core/benches/benchmarks/matmul.rs",
+        "vendor/offline/candle-core/benches/benchmarks/mod.rs",
+        "vendor/offline/candle-core/benches/benchmarks/qmatmul.rs",
+        "vendor/offline/candle-core/benches/benchmarks/random.rs",
+        "vendor/offline/candle-core/benches/benchmarks/reduce.rs",
+        "vendor/offline/candle-core/benches/benchmarks/unary.rs",
+        "vendor/offline/candle-core/benches/benchmarks/where_cond.rs",
+        "vendor/offline/candle-core/examples/basics.rs",
+        "vendor/offline/candle-core/examples/cuda_basics.rs",
+        "vendor/offline/candle-core/examples/cuda_sum_benchmark.rs",
+        "vendor/offline/candle-core/examples/metal_basics.rs",
+        "vendor/offline/candle-core/src/accelerate.rs",
+        "vendor/offline/candle-core/src/backend.rs",
+        "vendor/offline/candle-core/src/backprop.rs",
+        "vendor/offline/candle-core/src/conv.rs",
+        "vendor/offline/candle-core/src/convert.rs",
+        "vendor/offline/candle-core/src/cpu/avx.rs",
+        "vendor/offline/candle-core/src/cpu/erf.rs",
+        "vendor/offline/candle-core/src/cpu/kernels.rs",
+        "vendor/offline/candle-core/src/cpu/mod.rs",
+        "vendor/offline/candle-core/src/cpu/neon.rs",
+        "vendor/offline/candle-core/src/cpu/simd128.rs",
+        "vendor/offline/candle-core/src/cpu_backend/conv2d.rs",
+        "vendor/offline/candle-core/src/cpu_backend/mod.rs",
+        "vendor/offline/candle-core/src/cpu_backend/utils.rs",
+        "vendor/offline/candle-core/src/cuda_backend/cudnn.rs",
+        "vendor/offline/candle-core/src/cuda_backend/device.rs",
+        "vendor/offline/candle-core/src/cuda_backend/error.rs",
+        "vendor/offline/candle-core/src/cuda_backend/mod.rs",
+        "vendor/offline/candle-core/src/cuda_backend/utils.rs",
+        "vendor/offline/candle-core/src/custom_op.rs",
+        "vendor/offline/candle-core/src/device.rs",
+        "vendor/offline/candle-core/src/display.rs",
+        "vendor/offline/candle-core/src/dtype.rs",
+        "vendor/offline/candle-core/src/dummy_cuda_backend.rs",
+        "vendor/offline/candle-core/src/dummy_dtype.rs",
+        "vendor/offline/candle-core/src/dummy_metal_backend.rs",
+        "vendor/offline/candle-core/src/error.rs",
+        "vendor/offline/candle-core/src/indexer.rs",
+        "vendor/offline/candle-core/src/layout.rs",
+        "vendor/offline/candle-core/src/lib.rs",
+        "vendor/offline/candle-core/src/metal_backend/device.rs",
+        "vendor/offline/candle-core/src/metal_backend/mod.rs",
+        "vendor/offline/candle-core/src/mkl.rs",
+        "vendor/offline/candle-core/src/npy.rs",
+        "vendor/offline/candle-core/src/op.rs",
+        "vendor/offline/candle-core/src/pickle.rs",
+        "vendor/offline/candle-core/src/quantized/avx.rs",
+        "vendor/offline/candle-core/src/quantized/cuda.rs",
+        "vendor/offline/candle-core/src/quantized/dummy_cuda.rs",
+        "vendor/offline/candle-core/src/quantized/dummy_metal.rs",
+        "vendor/offline/candle-core/src/quantized/ggml_file.rs",
+        "vendor/offline/candle-core/src/quantized/gguf_file.rs",
+        "vendor/offline/candle-core/src/quantized/imatrix_file.rs",
+        "vendor/offline/candle-core/src/quantized/k_quants.rs",
+        "vendor/offline/candle-core/src/quantized/metal.rs",
+        "vendor/offline/candle-core/src/quantized/mod.rs",
+        "vendor/offline/candle-core/src/quantized/neon.rs",
+        "vendor/offline/candle-core/src/quantized/simd128.rs",
+        "vendor/offline/candle-core/src/quantized/utils.rs",
+        "vendor/offline/candle-core/src/safetensors.rs",
+        "vendor/offline/candle-core/src/scalar.rs",
+        "vendor/offline/candle-core/src/shape.rs",
+        "vendor/offline/candle-core/src/sort.rs",
+        "vendor/offline/candle-core/src/storage.rs",
+        "vendor/offline/candle-core/src/streaming.rs",
+        "vendor/offline/candle-core/src/strided_index.rs",
+        "vendor/offline/candle-core/src/tensor.rs",
+        "vendor/offline/candle-core/src/tensor_cat.rs",
+        "vendor/offline/candle-core/src/test_utils.rs",
+        "vendor/offline/candle-core/src/utils.rs",
+        "vendor/offline/candle-core/src/variable.rs",
+        "vendor/offline/candle-core/tests/bilinear_tests.rs",
+        "vendor/offline/candle-core/tests/conv_tests.rs",
+        "vendor/offline/candle-core/tests/custom_op_tests.rs",
+        "vendor/offline/candle-core/tests/display_tests.rs",
+        "vendor/offline/candle-core/tests/fortran_tensor_3d.pth",
+        "vendor/offline/candle-core/tests/grad_tests.rs",
+        "vendor/offline/candle-core/tests/indexing_tests.rs",
+        "vendor/offline/candle-core/tests/layout_tests.rs",
+        "vendor/offline/candle-core/tests/matmul_tests.rs",
+        "vendor/offline/candle-core/tests/npy.py",
+        "vendor/offline/candle-core/tests/pool_tests.rs",
+        "vendor/offline/candle-core/tests/pth.py",
+        "vendor/offline/candle-core/tests/pth_tests.rs",
+        "vendor/offline/candle-core/tests/quantized_tests.rs",
+        "vendor/offline/candle-core/tests/serialization_tests.rs",
+        "vendor/offline/candle-core/tests/tensor_tests.rs",
+        "vendor/offline/candle-core/tests/test.npy",
+        "vendor/offline/candle-core/tests/test.npz",
+        "vendor/offline/candle-core/tests/test.pt",
+        "vendor/offline/candle-core/tests/test_with_key.pt",
+        "vendor/offline/gemm-c32/.cargo_vcs_info.json",
+        "vendor/offline/gemm-c32/Cargo.lock",
+        "vendor/offline/gemm-c32/Cargo.toml",
+        "vendor/offline/gemm-c32/Cargo.toml.orig",
+        "vendor/offline/gemm-c32/LICENSE",
+        "vendor/offline/gemm-c32/README.md",
+        "vendor/offline/gemm-c32/src/gemm.rs",
+        "vendor/offline/gemm-c32/src/lib.rs",
+        "vendor/offline/gemm-c32/src/microkernel.rs",
+        "vendor/offline/gemm-c64/.cargo_vcs_info.json",
+        "vendor/offline/gemm-c64/Cargo.lock",
+        "vendor/offline/gemm-c64/Cargo.toml",
+        "vendor/offline/gemm-c64/Cargo.toml.orig",
+        "vendor/offline/gemm-c64/LICENSE",
+        "vendor/offline/gemm-c64/README.md",
+        "vendor/offline/gemm-c64/src/gemm.rs",
+        "vendor/offline/gemm-c64/src/lib.rs",
+        "vendor/offline/gemm-c64/src/microkernel.rs",
+        "vendor/offline/gemm-common/.cargo_vcs_info.json",
+        "vendor/offline/gemm-common/Cargo.lock",
+        "vendor/offline/gemm-common/Cargo.toml",
+        "vendor/offline/gemm-common/Cargo.toml.orig",
+        "vendor/offline/gemm-common/LICENSE",
+        "vendor/offline/gemm-common/README.md",
+        "vendor/offline/gemm-common/src/cache.rs",
+        "vendor/offline/gemm-common/src/gemm.rs",
+        "vendor/offline/gemm-common/src/gemv.rs",
+        "vendor/offline/gemm-common/src/gevv.rs",
+        "vendor/offline/gemm-common/src/horizontal_microkernel.rs",
+        "vendor/offline/gemm-common/src/lib.rs",
+        "vendor/offline/gemm-common/src/microkernel.rs",
+        "vendor/offline/gemm-common/src/pack_operands.rs",
+        "vendor/offline/gemm-common/src/simd.rs",
+        "vendor/offline/gemm-f16/.cargo_vcs_info.json",
+        "vendor/offline/gemm-f16/Cargo.lock",
+        "vendor/offline/gemm-f16/Cargo.toml",
+        "vendor/offline/gemm-f16/Cargo.toml.orig",
+        "vendor/offline/gemm-f16/LICENSE",
+        "vendor/offline/gemm-f16/README.md",
+        "vendor/offline/gemm-f16/src/gemm.rs",
+        "vendor/offline/gemm-f16/src/lib.rs",
+        "vendor/offline/gemm-f16/src/microkernel.rs",
+        "vendor/offline/gemm-f32/.cargo_vcs_info.json",
+        "vendor/offline/gemm-f32/Cargo.lock",
+        "vendor/offline/gemm-f32/Cargo.toml",
+        "vendor/offline/gemm-f32/Cargo.toml.orig",
+        "vendor/offline/gemm-f32/LICENSE",
+        "vendor/offline/gemm-f32/README.md",
+        "vendor/offline/gemm-f32/src/gemm.rs",
+        "vendor/offline/gemm-f32/src/lib.rs",
+        "vendor/offline/gemm-f32/src/microkernel.rs",
+        "vendor/offline/gemm-f64/.cargo_vcs_info.json",
+        "vendor/offline/gemm-f64/Cargo.lock",
+        "vendor/offline/gemm-f64/Cargo.toml",
+        "vendor/offline/gemm-f64/Cargo.toml.orig",
+        "vendor/offline/gemm-f64/LICENSE",
+        "vendor/offline/gemm-f64/README.md",
+        "vendor/offline/gemm-f64/src/gemm.rs",
+        "vendor/offline/gemm-f64/src/lib.rs",
+        "vendor/offline/gemm-f64/src/microkernel.rs",
+        "vendor/offline/gemm/.cargo_vcs_info.json",
+        "vendor/offline/gemm/.github/workflows/run-tests.yml",
+        "vendor/offline/gemm/Cargo.lock",
+        "vendor/offline/gemm/Cargo.toml",
+        "vendor/offline/gemm/Cargo.toml.orig",
+        "vendor/offline/gemm/LICENSE",
+        "vendor/offline/gemm/README.md",
+        "vendor/offline/gemm/benches/bench.rs",
+        "vendor/offline/gemm/src/gemm.rs",
+        "vendor/offline/gemm/src/lib.rs",
+        "vendor/offline/pulp/.cargo_vcs_info.json",
+        "vendor/offline/pulp/Cargo.lock",
+        "vendor/offline/pulp/Cargo.toml",
+        "vendor/offline/pulp/Cargo.toml.orig",
+        "vendor/offline/pulp/LICENSE",
+        "vendor/offline/pulp/README.md",
+        "vendor/offline/pulp/benches/bench.rs",
+        "vendor/offline/pulp/build.rs",
+        "vendor/offline/pulp/examples/basic.rs",
+        "vendor/offline/pulp/examples/dot_product.rs",
+        "vendor/offline/pulp/examples/mask_store.rs",
+        "vendor/offline/pulp/src/aarch64.rs",
+        "vendor/offline/pulp/src/core_arch/aarch64/mod.rs",
+        "vendor/offline/pulp/src/core_arch/mod.rs",
+        "vendor/offline/pulp/src/core_arch/raw_cpuid_detect.rs",
+        "vendor/offline/pulp/src/core_arch/wasm/mod.rs",
+        "vendor/offline/pulp/src/core_arch/x86/avx.rs",
+        "vendor/offline/pulp/src/core_arch/x86/avx2.rs",
+        "vendor/offline/pulp/src/core_arch/x86/avx512bw.rs",
+        "vendor/offline/pulp/src/core_arch/x86/avx512cd.rs",
+        "vendor/offline/pulp/src/core_arch/x86/avx512dq.rs",
+        "vendor/offline/pulp/src/core_arch/x86/avx512f.rs",
+        "vendor/offline/pulp/src/core_arch/x86/avx512ifma.rs",
+        "vendor/offline/pulp/src/core_arch/x86/fma.rs",
+        "vendor/offline/pulp/src/core_arch/x86/mod.rs",
+        "vendor/offline/pulp/src/core_arch/x86/sse.rs",
+        "vendor/offline/pulp/src/core_arch/x86/sse2.rs",
+        "vendor/offline/pulp/src/core_arch/x86/sse3.rs",
+        "vendor/offline/pulp/src/core_arch/x86/sse41.rs",
+        "vendor/offline/pulp/src/core_arch/x86/sse42.rs",
+        "vendor/offline/pulp/src/core_arch/x86/ssse3.rs",
+        "vendor/offline/pulp/src/lib.rs",
+        "vendor/offline/pulp/src/wasm.rs",
+        "vendor/offline/pulp/src/x86.rs",
+        "vendor/offline/pulp/src/x86/v1.rs",
+        "vendor/offline/pulp/src/x86/v2.rs",
+        "vendor/offline/pulp/src/x86/v3.rs",
+        "vendor/offline/pulp/src/x86/v4.rs"
+      ],
+      "identities": {}
+    }
+  },
+  "dependencies": {
+    "search": {
+      "input_package_records": 43,
+      "branch_package_records": 7,
+      "added_package_keys": [],
+      "same_key_different_record": {
+        "('cloudleaf-input', '0.1.0', None)": {
+          "input_dependencies": [
+            "cloudleaf-candidate",
+            "cloudleaf-dictionary",
+            "cloudleaf-pinyin",
+            "cloudleaf-search",
+            "cloudleaf-types",
+            "ring"
+          ],
+          "branch_dependencies": [
+            "cloudleaf-candidate",
+            "cloudleaf-dictionary",
+            "cloudleaf-pinyin",
+            "cloudleaf-types"
+          ]
+        },
+        "('cloudleaf-cli', '0.1.0', None)": {
+          "input_dependencies": [
+            "cloudleaf-candidate",
+            "cloudleaf-dictionary",
+            "cloudleaf-input",
+            "cloudleaf-pinyin",
+            "cloudleaf-search",
+            "cloudleaf-types"
+          ],
+          "branch_dependencies": [
+            "cloudleaf-candidate",
+            "cloudleaf-dictionary",
+            "cloudleaf-input",
+            "cloudleaf-pinyin",
+            "cloudleaf-types"
+          ]
+        }
+      },
+      "shared_names_version_sets": {}
+    },
+    "data": {
+      "input_package_records": 43,
+      "branch_package_records": 6,
+      "added_package_keys": [],
+      "same_key_different_record": {
+        "('cloudleaf-input', '0.1.0', None)": {
+          "input_dependencies": [
+            "cloudleaf-candidate",
+            "cloudleaf-dictionary",
+            "cloudleaf-pinyin",
+            "cloudleaf-search",
+            "cloudleaf-types",
+            "ring"
+          ],
+          "branch_dependencies": [
+            "cloudleaf-candidate",
+            "cloudleaf-dictionary",
+            "cloudleaf-pinyin",
+            "cloudleaf-types"
+          ]
+        },
+        "('cloudleaf-cli', '0.1.0', None)": {
+          "input_dependencies": [
+            "cloudleaf-candidate",
+            "cloudleaf-dictionary",
+            "cloudleaf-input",
+            "cloudleaf-pinyin",
+            "cloudleaf-search",
+            "cloudleaf-types"
+          ],
+          "branch_dependencies": [
+            "cloudleaf-candidate",
+            "cloudleaf-dictionary",
+            "cloudleaf-input",
+            "cloudleaf-pinyin",
+            "cloudleaf-types"
+          ]
+        }
+      },
+      "shared_names_version_sets": {}
+    },
+    "windows": {
+      "input_package_records": 43,
+      "branch_package_records": 22,
+      "added_package_keys": [],
+      "same_key_different_record": {
+        "('cloudleaf-cli', '0.1.0', None)": {
+          "input_dependencies": [
+            "cloudleaf-candidate",
+            "cloudleaf-dictionary",
+            "cloudleaf-input",
+            "cloudleaf-pinyin",
+            "cloudleaf-search",
+            "cloudleaf-types"
+          ],
+          "branch_dependencies": [
+            "cloudleaf-candidate",
+            "cloudleaf-dictionary",
+            "cloudleaf-input",
+            "cloudleaf-pinyin",
+            "cloudleaf-types"
+          ]
+        },
+        "('cloudleaf-windows-ime', '0.1.0', None)": {
+          "input_dependencies": [
+            "cloudleaf-dictionary",
+            "cloudleaf-input",
+            "cloudleaf-search",
+            "cloudleaf-types",
+            "cloudleaf-user",
+            "windows",
+            "windows-core"
+          ],
+          "branch_dependencies": [
+            "cloudleaf-dictionary",
+            "cloudleaf-input",
+            "cloudleaf-types",
+            "windows",
+            "windows-core"
+          ]
+        },
+        "('cloudleaf-input', '0.1.0', None)": {
+          "input_dependencies": [
+            "cloudleaf-candidate",
+            "cloudleaf-dictionary",
+            "cloudleaf-pinyin",
+            "cloudleaf-search",
+            "cloudleaf-types",
+            "ring"
+          ],
+          "branch_dependencies": [
+            "cloudleaf-candidate",
+            "cloudleaf-dictionary",
+            "cloudleaf-pinyin",
+            "cloudleaf-types"
+          ]
+        }
+      },
+      "shared_names_version_sets": {}
+    },
+    "translation": {
+      "input_package_records": 43,
+      "branch_package_records": 222,
+      "added_package_keys": [
+        [
+          "aho-corasick",
+          "1.1.5",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "allocator-api2",
+          "0.2.21",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "atomic-waker",
+          "1.1.2",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "autocfg",
+          "1.5.1",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "base64",
+          "0.22.1",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "base64",
+          "0.23.1",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "bit-set",
+          "0.8.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "bit-vec",
+          "0.8.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "bitflags",
+          "2.13.2",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "bumpalo",
+          "3.20.3",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "bytemuck",
+          "1.25.2",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "bytemuck_derive",
+          "1.12.1",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "byteorder",
+          "1.5.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "bytes",
+          "1.12.1",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "candle-core",
+          "0.9.2",
+          null
+        ],
+        [
+          "candle-nn",
+          "0.9.2",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "candle-transformers",
+          "0.9.2",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "cfg_aliases",
+          "0.2.2",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "cloudleaf-offline",
+          "0.1.0",
+          null
+        ],
+        [
+          "cloudleaf-translation",
+          "0.1.0",
+          null
+        ],
+        [
+          "cloudleaf-translation-panel",
+          "0.1.0",
+          null
+        ],
+        [
+          "combine",
+          "4.6.9",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "core-foundation",
+          "0.10.1",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "core-foundation-sys",
+          "0.8.7",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "crc32fast",
+          "1.5.4",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "crossbeam-deque",
+          "0.8.8",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "crossbeam-epoch",
+          "0.9.21",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "crossbeam-utils",
+          "0.8.23",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "crunchy",
+          "0.2.4",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "displaydoc",
+          "0.2.7",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "dyn-stack",
+          "0.13.2",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "dyn-stack-macros",
+          "0.1.3",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "either",
+          "1.19.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "enum-as-inner",
+          "0.6.1",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "equivalent",
+          "1.0.3",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "fancy-regex",
+          "0.17.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "float8",
+          "0.6.1",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "foldhash",
+          "0.2.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "form_urlencoded",
+          "1.2.2",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "futures-channel",
+          "0.3.34",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "futures-core",
+          "0.3.34",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "futures-task",
+          "0.3.34",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "futures-util",
+          "0.3.34",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "gemm",
+          "0.19.0",
+          null
+        ],
+        [
+          "gemm-c32",
+          "0.19.0",
+          null
+        ],
+        [
+          "gemm-c64",
+          "0.19.0",
+          null
+        ],
+        [
+          "gemm-common",
+          "0.19.0",
+          null
+        ],
+        [
+          "gemm-f16",
+          "0.19.0",
+          null
+        ],
+        [
+          "gemm-f32",
+          "0.19.0",
+          null
+        ],
+        [
+          "gemm-f64",
+          "0.19.0",
+          null
+        ],
+        [
+          "getrandom",
+          "0.3.4",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "getrandom",
+          "0.4.3",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "half",
+          "2.7.1",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "hashbrown",
+          "0.16.1",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "hashbrown",
+          "0.17.1",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "heck",
+          "0.5.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "hermit-abi",
+          "0.5.3",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "http",
+          "1.5.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "http-body",
+          "1.1.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "http-body-util",
+          "0.1.5",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "httparse",
+          "1.10.1",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "hyper",
+          "1.12.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "hyper-rustls",
+          "0.27.10",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "hyper-util",
+          "0.1.21",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "icu_collections",
+          "2.4.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "icu_locale_core",
+          "2.4.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "icu_normalizer",
+          "2.4.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "icu_normalizer_data",
+          "2.4.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "icu_properties",
+          "2.4.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "icu_properties_data",
+          "2.4.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "icu_provider",
+          "2.4.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "idna",
+          "1.1.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "idna_adapter",
+          "1.2.2",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "indexmap",
+          "2.14.2",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "ipnet",
+          "2.12.2",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "itoa",
+          "1.0.18",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "jni",
+          "0.22.4",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "jni-macros",
+          "0.22.4",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "jni-sys",
+          "0.4.1",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "jni-sys-macros",
+          "0.4.1",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "js-sys",
+          "0.3.107",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "libm",
+          "0.2.16",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "litemap",
+          "0.8.3",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "log",
+          "0.4.34",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "memchr",
+          "2.8.3",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "memmap2",
+          "0.9.12",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "mio",
+          "1.2.4",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "nix",
+          "0.31.3",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "num-complex",
+          "0.4.6",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "num-traits",
+          "0.2.19",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "num_cpus",
+          "1.17.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "once_cell",
+          "1.21.4",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "openssl-probe",
+          "0.2.2",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "pastey",
+          "0.2.3",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "percent-encoding",
+          "2.3.2",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "pin-project-lite",
+          "0.2.17",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "potential_utf",
+          "0.1.6",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "ppv-lite86",
+          "0.2.21",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "pulp",
+          "0.22.3",
+          null
+        ],
+        [
+          "pulp-wasm-simd-flag",
+          "0.1.1",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "r-efi",
+          "5.3.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "r-efi",
+          "6.0.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "rand",
+          "0.9.5",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "rand_chacha",
+          "0.9.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "rand_core",
+          "0.9.5",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "rand_distr",
+          "0.5.1",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "raw-cpuid",
+          "11.6.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "rayon",
+          "1.11.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "rayon-core",
+          "1.13.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "reborrow",
+          "0.5.5",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "regex-automata",
+          "0.4.18",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "regex-syntax",
+          "0.8.11",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "reqwest",
+          "0.13.3",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "rustc_version",
+          "0.4.1",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "rustls",
+          "0.23.46",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "rustls-native-certs",
+          "0.8.5",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "rustls-pki-types",
+          "1.15.1",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "rustls-platform-verifier",
+          "0.7.1",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "rustls-platform-verifier-android",
+          "0.2.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "rustls-webpki",
+          "0.103.16",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "rustversion",
+          "1.0.23",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "safetensors",
+          "0.7.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "same-file",
+          "1.0.6",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "schannel",
+          "0.1.30",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "security-framework",
+          "3.7.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "security-framework-sys",
+          "2.17.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "semver",
+          "1.0.28",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "sentencepiece-rs",
+          "0.2.2",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "seq-macro",
+          "0.3.6",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "serde",
+          "1.0.228",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "serde_core",
+          "1.0.228",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "serde_derive",
+          "1.0.228",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "serde_json",
+          "1.0.149",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "serde_plain",
+          "1.0.2",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "simd_cesu8",
+          "1.2.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "simdutf8",
+          "0.1.5",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "slab",
+          "0.4.12",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "smallvec",
+          "1.16.4",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "socket2",
+          "0.6.5",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "stable_deref_trait",
+          "1.2.1",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "subtle",
+          "2.6.1",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "syn",
+          "3.0.9",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "sync_wrapper",
+          "1.0.2",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "synstructure",
+          "0.14.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "sysctl",
+          "0.6.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "thiserror",
+          "1.0.69",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "thiserror",
+          "2.0.21",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "thiserror-impl",
+          "1.0.69",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "thiserror-impl",
+          "2.0.21",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "tinystr",
+          "0.8.5",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "tokio",
+          "1.54.1",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "tokio-macros",
+          "2.7.2",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "tokio-rustls",
+          "0.26.6",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "tower",
+          "0.5.3",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "tower-http",
+          "0.6.11",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "tower-layer",
+          "0.3.3",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "tower-service",
+          "0.3.3",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "tracing",
+          "0.1.44",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "tracing-attributes",
+          "0.1.31",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "tracing-core",
+          "0.1.36",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "try-lock",
+          "0.2.5",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "typed-path",
+          "0.13.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "url",
+          "2.5.8",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "utf8_iter",
+          "1.1.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "utf_types",
+          "1.0.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "version_check",
+          "0.9.5",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "walkdir",
+          "2.5.0",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "want",
+          "0.3.2",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "wasip2",
+          "1.0.4+wasi-0.2.12",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "wasm-bindgen",
+          "0.2.130",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "wasm-bindgen-futures",
+          "0.4.80",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "wasm-bindgen-macro",
+          "0.2.130",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "wasm-bindgen-macro-support",
+          "0.2.130",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "wasm-bindgen-shared",
+          "0.2.130",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "web-sys",
+          "0.3.107",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "webpki-root-certs",
+          "1.0.11",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "winapi-util",
+          "0.1.11",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "windows-sys",
+          "0.61.2",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "wit-bindgen",
+          "0.57.1",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "writeable",
+          "0.6.4",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "yoke",
+          "0.8.4",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "yoke-derive",
+          "0.8.4",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "zerocopy",
+          "0.8.63",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "zerocopy-derive",
+          "0.8.63",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "zerofrom",
+          "0.1.8",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "zerofrom-derive",
+          "0.1.8",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "zeroize",
+          "1.8.2",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "zerotrie",
+          "0.2.5",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "zerovec",
+          "0.11.9",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "zerovec-derive",
+          "0.11.7",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "zip",
+          "9.2.1",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ],
+        [
+          "zmij",
+          "1.0.23",
+          "registry+https://github.com/rust-lang/crates.io-index"
+        ]
+      ],
+      "same_key_different_record": {
+        "('ring', '0.17.14', 'registry+https://github.com/rust-lang/crates.io-index')": {
+          "input_dependencies": [
+            "cc",
+            "cfg-if",
+            "getrandom",
+            "libc",
+            "untrusted",
+            "windows-sys"
+          ],
+          "branch_dependencies": [
+            "cc",
+            "cfg-if",
+            "getrandom 0.2.17",
+            "libc",
+            "untrusted",
+            "windows-sys 0.52.0"
+          ]
+        },
+        "('cloudleaf-cli', '0.1.0', None)": {
+          "input_dependencies": [
+            "cloudleaf-candidate",
+            "cloudleaf-dictionary",
+            "cloudleaf-input",
+            "cloudleaf-pinyin",
+            "cloudleaf-search",
+            "cloudleaf-types"
+          ],
+          "branch_dependencies": [
+            "cloudleaf-candidate",
+            "cloudleaf-dictionary",
+            "cloudleaf-input",
+            "cloudleaf-pinyin",
+            "cloudleaf-types"
+          ]
+        },
+        "('cloudleaf-input', '0.1.0', None)": {
+          "input_dependencies": [
+            "cloudleaf-candidate",
+            "cloudleaf-dictionary",
+            "cloudleaf-pinyin",
+            "cloudleaf-search",
+            "cloudleaf-types",
+            "ring"
+          ],
+          "branch_dependencies": [
+            "cloudleaf-candidate",
+            "cloudleaf-dictionary",
+            "cloudleaf-pinyin",
+            "cloudleaf-types"
+          ]
+        }
+      },
+      "shared_names_version_sets": {
+        "syn": {
+          "input": [
+            "2.0.119"
+          ],
+          "branch": [
+            "2.0.119",
+            "3.0.9"
+          ]
+        },
+        "getrandom": {
+          "input": [
+            "0.2.17"
+          ],
+          "branch": [
+            "0.2.17",
+            "0.3.4",
+            "0.4.3"
+          ]
+        },
+        "windows-sys": {
+          "input": [
+            "0.52.0"
+          ],
+          "branch": [
+            "0.52.0",
+            "0.61.2"
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,83 @@
+e0ab78c2786d652a3a19cb544b4dc83996e63264	docs(windows): preserve Round 10 identity admission evidence and blocked gates
+e58d3ae6d8671a5f8f822aa2b0d0d80f37b93596	fix(windows): bind actual long-run authorization to full execution identity
+241d4daea9f3199e8bbdfc1908bc379d89c542c6	test(windows): reject unchanged authorization after execution identity replacement
+f940a6cdb7ed12a99e6c86875a2bee6bf541ddf0	docs(windows): define Round 10 execution identity authorization binding
+1a05633c27c133bc0558b0fb955b0f916edb6b72	docs(windows): preserve Round 9 admission regression and blocked gates
+eb353ae981ea891d4f84888fd7551e95e8998ca4	fix(windows): bind long-run admission to actual environment evidence
+062f6197f5f93808f128d586b5d211ea8a29ad64	test(windows): reject declaration-only long-run approval
+ed02a81b3b41995555933165fc7601647ceb9872	docs(windows): define Round 9 evidence-bound soak admission
+333dc90e0985a13f75629e29599f3df1d7d951ab	docs(windows): preserve failed push CI and CRLF evidence repair
+8d955a58518ef4f52c300fd4461c6fa5e56f2758	fix(windows): resolve verified CRLF checkout bytes in soak reports
+ffe03eefa54b962e13ee8aebcf2e87f7c5f63090	test(windows): reproduce CRLF checkout in soak evidence reporting
+05dd085e691d2f3b6d801185e7cc8083ab7c3a3d	docs(windows): deliver Round 8 external packet and retained trend evidence
+9479138b9b6db62a7ff28986f7fa66602ff15a88	fix(windows): preserve null for unobserved native duration
+16a958b4991a0e051eb0dadea9bd7115d6e23207	test(windows): keep interrupted native duration unobserved
+4b9cd0ef82d2e7d273451b2def3ca8703dca91f3	fix(windows): derive trend duration from the retained raw final event
+b691e017e32c7b9d25ea990db1866f5916b9d25f	test(windows): require raw final duration instead of cached summary
+216fc4b5f745d933420dbe3e48c98e8763159573	feat(windows): add read-only soak trends and external acceptance packet
+7044ce62a3c85cff262f9d1e874fcaa51b71d4d0	docs(windows): define Round 8 external acceptance and trend reporting
+fa4f1fab93394f115d3a987a7f0201b8662c08cf	docs(windows): preserve Round 7 lifecycle and diagnostic evidence
+e50c1d88b34fbf824cd46d1f22c2035700cc75cf	fix(windows): validate raw trace completeness and gate long-run execution
+7914589a03fedad0e50b0ab5598a609d450abfc2	test(windows): reject incomplete diagnostic traces and absent long-run approval
+7083c0fd65092b9ca6162df00c2ad4782a783229	docs(windows): define Round 7 lifecycle and long-run admission
+caefb7f2ac7c8584249c05359fcb174f87640886	docs(windows): preserve Round 6 soak recovery evidence and blocked admission
+271704e2db80f556fec477e4523e71456e42c632	feat(windows): stream durable soak evidence and isolate resumed segments
+f5ff615eeff4eac6f6736459bb6ccd95763f0b95	test(windows): require durable soak profiles and exact process identities
+0f204c181dedbd9620022cb6ee1627c6926ee6fa	docs(windows): specify Round 6 isolation and durable soak evidence
+7f581dfca43515105fca918ffd79e55f315f7729	docs(windows): preserve Round 5 fault isolation evidence and remaining gates
+519ea587fe5a0fe56cb2a5ebc239832a118f692a	test(windows): assert each ownership slot is actually filled
+aaae4d199b3a26019aab8278f180d492e0a3569b	test(windows): keep scope valid while verifying queue capacity
+cc3363cfa5344a0816c4e9358fa98537325c3946	docs(windows): fix capacity test prerequisite independently of scope expiry
+9ba0ea20dbc086370ab47995f15afc7c7de3d93d	test(windows): await observed cleanup failure without relaxing receipts
+32cf37b7482184cfd67a0546b1fe028e3f793908	docs(windows): specify asynchronous cleanup failure observation
+ad45bfe0d7ce0ec1d7b91f366e4e5c402dc4026e	test(windows): measure sustained healthy input with pinned abnormal owners
+6f85efb837c09bab1c00759f65d4cecb9ec88646	docs(windows): pre-register sustained pinned-owner availability profile
+088bf9c5e7811d6b16728a5b377d14a3e91ac59c	fix(windows): globally own monitor workers before apartment failure
+c03e3c6962f592e8d9abbda3ffc4eb8651379613	test(windows): reproduce orphaned monitor exhaustion and retained COM isolation
+263875e72682b3e0592fd5350573dcdca32bf5ab	docs(windows): define v5 fault isolation and globally owned monitor tasks
+573911ae07e0f4bce02f86aad16058e0e4c564e5	docs(windows): preserve fourth-round owner recovery and stress evidence
+5c0ba9d651038eca5b3fcb53dba3f6835cf13a0c	fix(windows): preserve full queue rejection across scope expiry
+b4555cc6f0452abe9b30ed709d5ba5de48e516cc	docs(windows): reject exhausted ownership before stale scope fallback
+78f08be96edcc2d5e03169b75c1850308f293cd6	fix(windows): retain recoverable owner receipts and abnormal exit values
+a8a0753d9b114d0080710aaebd544a64d95d083d	docs(windows): bound extended owner recovery stress profile
+9a3712bae9feaad10852d9595f7c9273c70c28f6	docs(windows): preserve value snapshots before abnormal owner exit
+bf88f6382176afb4966e6719e849a86069ce86af	feat(windows): prove owner exit with a real duplicated thread handle
+9fcdc919c94652c7e0786e87c0ff6f5978302752	docs(windows): fail closed on owner wait access failure
+cc05623468ce24a9207e5e2bab2fc3e24bdc5189	docs(windows): define real owner thread exit proof
+dddb693cc88ae064c29ea142ba754691c227af76	docs(windows): separate owner receipts from apartment objects
+bb6aea1fc2d5a60827dcdfc8053fa5ba25f36788	docs(windows): preserve verbatim diagnostic log whitespace
+1f3d0982694bb0e16184ab5ed86ab9a15a630b04	docs(windows): record recovery pressure faults and remaining STA exit gate
+77cbbd62969629ae2c7f5eb349c3cdacd4fd2d4f	fix(windows): bound recovery ownership and preserve STA resource lifetimes
+603de28ef7e6f4c21cb7de56c95d6ce6cb23889a	docs(windows): size module recovery policy and preserve sync envelopes
+5d1bcc05e9447a6eeaf5a69b91e845dca0f69fe0	docs(windows): cover synchronous recovery ownership and display copies
+24e5e2bb212ff860bd6b446e09de54bdfce3b0ef	refactor(windows): expose read-only reservation charge for admission checks
+f42bfbadfac77a4b79410f41a3ebdf19c88ffba7	feat(windows): reserve shared recovery capacity with atomic rollback
+d3794acc59ad9a795c78fd54e29b79f1472e699d	docs(windows): define shared recovery lifetime and STA cleanup
+707d252c33cd3de36f86ccc51ac8738ea94e56e3	docs(windows): define shared recovery reservations before admission
+276100138b64ec736abec47f4268e3f46d30eed2	docs(windows): preserve evidence checksums across Git text checkout
+9b31ebf7e868e9c4322a58e0cb6a6ea6c0ca7f4c	docs(windows): record async ownership faults and new DLL lifecycle evidence
+ca8e200389c350f55d42bd3250b140c3687e7993	feat(windows): preserve async input ownership and isolate uncertain writes
+b026fd075e341a6cb0834a0f9da5704922265db2	docs(windows): bind recovery batches to their source event epoch
+b3f087e8d53b5e98e2c4dbefa30f28c81331b79d	docs(windows): treat composition deletion as an uncertain write transaction
+449c385bf25afb05248e45ce2d51478e64a9db2f	docs(windows): bound watchdog notification retries and clarify lease owner
+ac6833e63cb5aacffed1344f3fbc9c2a77a9fed5	docs(windows): separate projection identifiers from native acknowledgements
+34856a5730de29069f586de6c0d1772555ba293d	docs(windows): use TSF edit ownership instead of text heuristics
+37a2f4ea26e581b92bd8ffa61a93793de91a9eca	docs(windows): preserve recovery ownership through service shutdown
+33b59de8334019197fd6e7540c47f0dfce13c977	docs(windows): require OS thread termination before releasing watchdog leases
+d70d9eee4a8250370f2117cd86abbd6f23c6234a	docs(windows): define owned async events watchdog and explicit recovery
+07f086b999e9dce09932a865f17b6059bdf77de1	Merge commit '9af9bc1' into codex/cl007-windows
+3579d2c576ed29285041128cd5cc0e0f90016859	docs(windows): qualify actual COM fixture and lifetime evidence
+70cba3c3e1724dfc27486682c58e4fb48a58fba6	docs(windows): record native validation evidence and explicit release blockers
+3a6696eb6efa85297c47c46732f03475c9715e75	fix(windows): seal native callbacks and preserve host text during recovery
+67d9a87beb97294930ae57413a19d84a7dbc8199	docs(windows): specify native repeat and stale candidate outcomes
+fa555fe823445d74e2917c3faeccef53f61c5fad	docs(windows): prevent delayed cleanup from erasing later host edits
+67a3f1e7974d0acd035cc5492afa68bd30946a15	Merge branch 'codex/cl007-009-contracts' into codex/cl007-windows
+07761635859bde7be36c025caa37f627a0af6c92	feat(windows): add isolated native TSF implementation checkpoint
+72051e288aa9b400f231d82b5c0574607928b605	docs(windows): order candidate commits and bound deferred layout work
+32150e7397029d86dd9191f6fb631665272b7959	docs(windows): include adapter source in benchmark provenance
+24ca98e496bc188c89f63bce3f92b78d0e1b29a4	docs(windows): narrow key transaction and unknown recovery semantics
+7c2b2c9fa506f36fe6875c7305dc3ab307bcf352	docs(windows): specify transactional activation and layout recovery
+e0ad1bccc6f0cffdd43e922965fce3c16a0fd935	docs(windows): specify reversible session profile activation
+4ecfe7bd1d6ada5a022a6a71e0df676ea50fc6c4	fix: align readonly prediction when commit identifiers are exhausted
+1baba568f469ae88434d8154274c1978c3827083	feat: add platform v2 operations and exact audit policies
+7ddc016caebac8ad6b320361938e3aa08d317c70	docs(windows): define native TSF implementation and validation boundary

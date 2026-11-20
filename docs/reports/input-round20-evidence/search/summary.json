@@ -1,0 +1,244 @@
+{
+  "scope": "Search-only test processes, whole-process memory samples, no desktop automation or TSF",
+  "implementation": "6be40b75bf2312563c7602f5daac174efb651c20",
+  "totals": {
+    "r19": {
+      "queries": 837,
+      "budget_failures": 6
+    },
+    "r20": {
+      "queries": 837,
+      "budget_failures": 0
+    }
+  },
+  "strict": {
+    "final-diff": {
+      "candidate_comparisons_attempted": 83700,
+      "complete_candidate_comparisons": 83700,
+      "position_unsupported": 16740,
+      "reference_queries": 33480
+    },
+    "final-preference-diff": {
+      "candidate_comparisons_attempted": 104625,
+      "complete_candidate_comparisons": 104625,
+      "position_unsupported": 20925,
+      "reference_queries": 41850
+    }
+  },
+  "complete_pairs": 831,
+  "complete_mismatches": 0,
+  "timing_p95_ns": {
+    "lexical/full/r19": 2339300,
+    "lexical/full/r20": 2668300,
+    "lexical/abbreviated/r19": 41501500,
+    "lexical/abbreviated/r20": 35525300,
+    "lexical/xiaohe/r19": 1283400,
+    "lexical/xiaohe/r20": 1484200,
+    "lexical/fuzzy-nl/r19": 2421000,
+    "lexical/fuzzy-nl/r20": 2303600,
+    "lexical/correction/r19": 3670800,
+    "lexical/correction/r20": 3325100,
+    "addone/full/r19": 1705700,
+    "addone/full/r20": 1503300,
+    "addone/abbreviated/r19": 44949200,
+    "addone/abbreviated/r20": 20446200,
+    "addone/xiaohe/r19": 1609800,
+    "addone/xiaohe/r20": 1305600,
+    "addone/fuzzy-nl/r19": 1826700,
+    "addone/fuzzy-nl/r20": 1118000,
+    "addone/correction/r19": 4106600,
+    "addone/correction/r20": 2813000,
+    "witten/full/r19": 1092700,
+    "witten/full/r20": 1768800,
+    "witten/abbreviated/r19": 54772900,
+    "witten/abbreviated/r20": 25924100,
+    "witten/xiaohe/r19": 1271600,
+    "witten/xiaohe/r20": 1419100,
+    "witten/fuzzy-nl/r19": 1861700,
+    "witten/fuzzy-nl/r20": 1029500,
+    "witten/correction/r19": 5410700,
+    "witten/correction/r20": 2434200
+  },
+  "former_budget_cases": [
+    {
+      "kind": "addone",
+      "scheme": "abbreviated",
+      "iteration": 1,
+      "case": "limit-budget",
+      "r19": {
+        "case": "limit-budget",
+        "raw": "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",
+        "lattice_ns": 5605200,
+        "search_ns": 57350300,
+        "budget": "Some(ResidentPaths)",
+        "candidate_count": 0,
+        "graph_edges": 11407,
+        "beam_pruned": 0,
+        "expansions": 166336,
+        "resident": 50000
+      },
+      "r20": {
+        "case": "limit-budget",
+        "raw": "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",
+        "lattice_ns": 5460200,
+        "search_ns": 23803000,
+        "budget": "None",
+        "candidate_count": 10,
+        "graph_edges": 11407,
+        "beam_pruned": 0,
+        "expansions": 179616,
+        "resident": 4863
+      }
+    },
+    {
+      "kind": "witten",
+      "scheme": "abbreviated",
+      "iteration": 1,
+      "case": "limit-budget",
+      "r19": {
+        "case": "limit-budget",
+        "raw": "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",
+        "lattice_ns": 6659900,
+        "search_ns": 67248800,
+        "budget": "Some(ResidentPaths)",
+        "candidate_count": 0,
+        "graph_edges": 11407,
+        "beam_pruned": 0,
+        "expansions": 166194,
+        "resident": 49999
+      },
+      "r20": {
+        "case": "limit-budget",
+        "raw": "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",
+        "lattice_ns": 4866500,
+        "search_ns": 21057600,
+        "budget": "None",
+        "candidate_count": 10,
+        "graph_edges": 11407,
+        "beam_pruned": 0,
+        "expansions": 192768,
+        "resident": 2913
+      }
+    },
+    {
+      "kind": "addone",
+      "scheme": "abbreviated",
+      "iteration": 2,
+      "case": "limit-budget",
+      "r19": {
+        "case": "limit-budget",
+        "raw": "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",
+        "lattice_ns": 5169800,
+        "search_ns": 58690800,
+        "budget": "Some(ResidentPaths)",
+        "candidate_count": 0,
+        "graph_edges": 11407,
+        "beam_pruned": 0,
+        "expansions": 166336,
+        "resident": 50000
+      },
+      "r20": {
+        "case": "limit-budget",
+        "raw": "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",
+        "lattice_ns": 5711900,
+        "search_ns": 21068200,
+        "budget": "None",
+        "candidate_count": 10,
+        "graph_edges": 11407,
+        "beam_pruned": 0,
+        "expansions": 179616,
+        "resident": 4863
+      }
+    },
+    {
+      "kind": "witten",
+      "scheme": "abbreviated",
+      "iteration": 2,
+      "case": "limit-budget",
+      "r19": {
+        "case": "limit-budget",
+        "raw": "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",
+        "lattice_ns": 5428500,
+        "search_ns": 49344400,
+        "budget": "Some(ResidentPaths)",
+        "candidate_count": 0,
+        "graph_edges": 11407,
+        "beam_pruned": 0,
+        "expansions": 166194,
+        "resident": 49999
+      },
+      "r20": {
+        "case": "limit-budget",
+        "raw": "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",
+        "lattice_ns": 5405000,
+        "search_ns": 23621600,
+        "budget": "None",
+        "candidate_count": 10,
+        "graph_edges": 11407,
+        "beam_pruned": 0,
+        "expansions": 192768,
+        "resident": 2913
+      }
+    },
+    {
+      "kind": "addone",
+      "scheme": "abbreviated",
+      "iteration": 3,
+      "case": "limit-budget",
+      "r19": {
+        "case": "limit-budget",
+        "raw": "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",
+        "lattice_ns": 6049600,
+        "search_ns": 58055800,
+        "budget": "Some(ResidentPaths)",
+        "candidate_count": 0,
+        "graph_edges": 11407,
+        "beam_pruned": 0,
+        "expansions": 166336,
+        "resident": 50000
+      },
+      "r20": {
+        "case": "limit-budget",
+        "raw": "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",
+        "lattice_ns": 5493500,
+        "search_ns": 19779600,
+        "budget": "None",
+        "candidate_count": 10,
+        "graph_edges": 11407,
+        "beam_pruned": 0,
+        "expansions": 179616,
+        "resident": 4863
+      }
+    },
+    {
+      "kind": "witten",
+      "scheme": "abbreviated",
+      "iteration": 3,
+      "case": "limit-budget",
+      "r19": {
+        "case": "limit-budget",
+        "raw": "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",
+        "lattice_ns": 5385300,
+        "search_ns": 65580100,
+        "budget": "Some(ResidentPaths)",
+        "candidate_count": 0,
+        "graph_edges": 11407,
+        "beam_pruned": 0,
+        "expansions": 166194,
+        "resident": 49999
+      },
+      "r20": {
+        "case": "limit-budget",
+        "raw": "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",
+        "lattice_ns": 10709200,
+        "search_ns": 38646300,
+        "budget": "None",
+        "candidate_count": 10,
+        "graph_edges": 11407,
+        "beam_pruned": 0,
+        "expansions": 192768,
+        "resident": 2913
+      }
+    }
+  ]
+}

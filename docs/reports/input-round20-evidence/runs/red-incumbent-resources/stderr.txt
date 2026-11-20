@@ -1,0 +1,8 @@
+   Compiling cloudleaf-search v0.1.0 (C:\Users\EDY\.codex\worktrees\input-round14\Cloudleaf\crates\cloudleaf-search)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.61s
+     Running tests\incumbent_resources.rs (.local\round20-build\debug\deps\incumbent_resources-c6a2124b08a54205.exe)
+
+thread 'actual_complete_suffix_candidates_bound_resident_prefixes_without_losing_sources' panicked at crates\cloudleaf-search\tests\incumbent_resources.rs:24:9:
+character_bigram: Statistics { graph_edges: 72, expansions: 431, resident_high_water: 256, beam_pruned: 0, budget: Some(ResidentPaths) }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: test failed, to rerun pass `-p cloudleaf-search --test incumbent_resources`

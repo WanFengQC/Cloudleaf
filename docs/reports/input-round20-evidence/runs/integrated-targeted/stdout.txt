@@ -1,0 +1,241 @@
+
+running 17 tests
+test tests::activation_is_required_and_idempotent ... ok
+test tests::punctuation_only_failure_remains_recoverable_until_explicit_cancel ... ok
+test tests::failed_commit_preserves_selection_and_complete_failed_request ... ok
+test tests::cursor_edits_and_backspace_operate_before_the_cursor ... ok
+test tests::english_mode_and_idle_system_keys_are_passed_through ... ok
+test tests::navigation_crosses_pages_and_clamps_at_both_ends ... ok
+test tests::punctuation_uses_selected_candidate_and_unknown_unicode_keeps_raw ... ok
+test tests::exhausted_revision_or_commit_ids_are_not_reused ... ok
+test tests::no_dictionary_or_no_match_falls_back_to_exact_raw_input ... ok
+test tests::cancel_focus_loss_deactivation_and_mode_switch_clear_old_context ... ok
+test tests::overlong_input_and_control_character_do_not_mutate_composition ... ok
+test tests::deterministic_mixed_events_preserve_state_invariants ... ok
+test tests::selection_and_page_numbering_are_bounded_to_current_page ... ok
+test tests::stale_confirmation_cannot_clear_new_composition_or_new_request ... ok
+test tests::text_change_resets_highlight_and_page_to_current_candidates ... ok
+test tests::space_and_enter_commit_once_without_extra_text_or_annotation ... ok
+test tests::unavailable_digit_and_zero_preserve_raw_text_and_character ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 1 test
+test fixed_input_corpus_and_candidate_ranking ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+
+running 2 tests
+test user_revision_preference_model_and_resource_changes_cannot_reuse_old_candidates ... ok
+test cache_enabled_and_disabled_preserve_all_frames_paths_features_and_revisions ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+
+running 4 tests
+test no_model_and_wrong_dictionary_or_hash_are_rejected_before_queries ... ok
+test model_switch_invalidates_old_candidates_and_preserves_transaction_guards ... ok
+test explicit_left_context_changes_only_the_finite_bigram_pool ... ok
+test character_model_switch_preserves_raw_revision_and_commit_guards ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 9 tests
+test duplicate_native_callback_does_not_repeat_input_or_commit ... ok
+test native_probe_is_read_only_and_shortcuts_never_become_characters ... ok
+test utf16_offsets_and_submission_text_do_not_include_annotations ... ok
+test queue_bound_preserves_owned_events_and_focus_cancellation_invalidates_frames ... ok
+test unknown_outcome_does_not_become_retryable_failure_or_clear_new_context ... ok
+test delayed_commit_serializes_owned_input_and_resumes_in_original_order ... ok
+test known_failure_retains_full_text_and_requires_explicit_new_request ... ok
+test old_instance_ack_is_rejected_even_when_request_ids_collide ... ok
+test rejected_queue_event_keeps_its_sequence_until_caller_retries ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 4 tests
+test utf16_offsets_reject_split_characters_and_count_surrogate_pairs ... ok
+test configurable_pages_obey_candidate_budget_and_current_page_digits ... ok
+test candidate_selection_requires_current_revision_and_id ... ok
+test readonly_prediction_matches_dispatch_in_all_input_states ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+
+
+running 4 tests
+test utf16_conversion_uses_scalar_boundaries_without_claiming_grapheme_editing ... ok
+test unconfirmed_transaction_never_creates_a_retry_or_reuses_cancelled_identity ... ok
+test candidate_identity_rejections_leave_live_and_failed_contexts_unchanged ... ok
+test prediction_and_dispatch_agree_across_pages_limits_and_commit_states ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.20s
+
+
+running 3 tests
+test unknown_pending_and_not_applied_failed_transactions_cannot_switch_scheme ... ok
+test invalid_scheme_configuration_is_atomic_and_does_not_change_raw ... ok
+test scheme_switch_keeps_original_and_cursor_but_invalidates_revision_and_id ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 4 tests
+test projection_and_executor_keep_same_ids_despite_prior_revision_history ... ok
+test budget_and_unknown_input_keep_complete_original_fallback ... ok
+test revision_snapshot_and_path_ids_reject_stale_candidates ... ok
+test full_sentence_uses_existing_search_and_preserves_unknown_frequency ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 3 tests
+test raw_fallback_and_punctuation_do_not_create_learning_evidence ... ok
+test explicit_retry_keeps_selection_provenance_but_changes_attempt_id ... ok
+test user_snapshot_switch_invalidates_old_candidate_and_pending_evidence_is_exact ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 14 tests
+test search::bucket_regression::same_text_keeps_strict_best_and_equal_first_edges ... ok
+test search::bucket_regression::different_text_equal_order_is_stable_and_truncation_follows_order ... ok
+test model::tests::integer_log_is_monotone_and_exact_at_powers ... ok
+test search::interpretation_regression::exact_interpretation_precedes_better_language_score_without_mixing_units ... ok
+test search::interpretation_regression::duplicate_text_keeps_best_interpretation_before_score_or_entry_id ... ok
+test search::interpretation_regression::cutoff_cannot_discard_an_exact_path_for_an_edited_high_score ... ok
+test search::cancellation_regression::pre_cancelled_graph_and_search_return_cancelled_not_budget ... ok
+test lattice::cancellation_regression::cancelled_empty_or_waiting_graph_is_not_published_after_phase_boundary ... ok
+test lexicon::compact_capacity_tests::loaded_immutable_index_does_not_keep_growth_slack ... ok
+test search::cancellation_regression::cancellation_before_result_publication_returns_no_completed_candidates ... ok
+test character::tests::interpolated_rows_and_unseen_history_normalize_with_fixed_point_rounding ... ok
+test search::cancellation_regression::actual_traversal_cancellation_discards_partial_paths_for_every_method ... ok
+test character::rebound_tests::user_entries_recompile_character_cache_without_rebinding_old_indices ... ok
+test search::cancellation_regression::uncancelled_entry_preserves_results_and_original_budget_semantics ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 8 tests
+test eos_can_reverse_the_more_likely_sentence_prefix ... ok
+test unknown_characters_and_resource_failure_keep_explicit_semantics ... ok
+test precompiled_entry_cache_rejects_a_different_lexicon_instance ... ok
+test character_reader_rejects_word_tokens_scope_and_disconnected_counts ... ok
+test complete_character_score_is_independent_of_dictionary_segmentation ... ok
+test witten_bell_backoff_is_explicit_and_still_segmentation_invariant ... ok
+test lower_prefix_with_a_different_character_history_survives_exact_search ... ok
+test exact_suffix_bounds_keep_top50_within_a_fixed_work_budget ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+running 1 test
+test many_dominated_homophones_keep_reference_top_k_and_best_duplicate_path ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.53s
+
+
+running 1 test
+test actual_complete_suffix_candidates_bound_resident_prefixes_without_losing_sources ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+
+running 1 test
+test interpreted_character_topk_avoids_repeating_every_history_edge_pair ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+running 6 tests
+test training_header_cannot_inject_unobserved_sequences ... ok
+test fixed_model_rejects_wrong_version_scope_counts_and_entry_reference ... ok
+test reader_rejects_balanced_counts_disconnected_from_sentence_boundaries ... ok
+test lexical_is_independent_tiebreak_and_unknown_dictionary_stays_unknown ... ok
+test offline_training_roundtrips_real_bigram_counts_and_boundaries ... ok
+test lexical_multiedge_paths_match_full_reference_and_keep_structure_priority ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 5 tests
+test configuration_and_model_failures_retain_the_actual_attempted_phase ... ok
+test nested_sort_is_observed_even_on_reference_budget_failure_and_beam_pruning ... ok
+test scoring_is_an_explicit_nested_observation_without_changing_complete_results ... ok
+test scoring_calls_distinguish_extension_and_eos_and_all_rankers_keep_results ... ok
+test profiled_query_preserves_all_results_and_incomplete_budgets ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 2 tests
+test graph_truncation_never_claims_complete_and_candidate_limit_is_preserved ... ok
+test completed_partial_reference_paths_cover_the_entire_input ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 2 tests
+test default_full_graph_and_all_candidate_objects_remain_identical ... ok
+test mixed_abbreviations_keep_complete_sentence_paths_and_raw_offsets ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 1 test
+test repeated_entry_correction_has_same_provenance_in_every_complete_search ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 13 tests
+test invalid_limits_and_models_fail_before_search ... ok
+test prefix_cannot_invent_future_syllables_and_oov_never_disappears ... ok
+test explicit_boundaries_and_utf8_spans_cover_every_raw_byte ... ok
+test lattice_is_bound_to_original_lexicon ... ok
+test rejects_malformed_records_without_echoing_them ... ok
+test nullable_frequency_and_legacy_manual_are_preserved ... ok
+test budgets_are_explicit_and_resident_high_water_includes_active_and_clone ... ok
+test position_state_merging_preserves_id_ties_across_duplicate_text_splits ... ok
+test position_states_reject_history_scores_and_bound_extreme_addition ... ok
+test no_inherited_thirty_two_parse_limit ... ok
+test bigram_future_can_defeat_narrow_beam_and_context_is_only_finite_pool ... ok
+test all_reference_paths_match_exact_kbest_with_text_duplicates_and_fixed_seed_inputs ... ok
+test load_limits_are_explicit_and_v2_can_exceed_legacy_entry_limit ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.37s
+
+
+running 2 tests
+test default_full_path_never_allocates_cache ... ok
+test memoized_transitions_preserve_complete_search_and_reset_identity ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 2 tests
+test overlay_preserves_base_indices_and_puts_user_words_inside_the_lattice ... ok
+test foreign_or_conflicting_user_sources_and_unknown_preference_ids_are_rejected ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 2 tests
+test explicit_preferences_change_order_without_rewriting_interpretation_or_frequency ... ok
+test user_words_and_existing_statistics_have_identical_complete_reference_and_exact_results ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

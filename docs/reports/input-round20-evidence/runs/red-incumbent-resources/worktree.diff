@@ -1,0 +1,46 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 75efa1a..f2dad9f 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -53,7 +53,7 @@ jobs:
+         if: runner.os == 'Windows'
+         uses: actions/upload-artifact@v4
+         with:
+-          name: input-round19-windows
++          name: input-round20-windows
+           path: |
+             target/release/cloudleaf-cli.exe
+             target/release/cloudleaf-ime.exe
+@@ -73,6 +73,8 @@ jobs:
+             docs/input-round17-design.md
+             docs/input-round18-design.md
+             docs/input-round19-design.md
++            docs/input-round20-design.md
++            docs/testing/round20-windows-manual-acceptance.md
+           if-no-files-found: error
+       - uses: actions/upload-artifact@v4
+         with:
+diff --git a/docs/input-round20-design.md b/docs/input-round20-design.md
+index fbe7dbd..a582511 100644
+--- a/docs/input-round20-design.md
++++ b/docs/input-round20-design.md
+@@ -43,3 +43,19 @@ Round19在相同837个最终查询、K10、200000展开/50000驻留下仍有6次
+ 文件：search新增transition_cache.rs及测试、lib.rs导出、schemes.rs增带缓存构造入口；input sentence/lib少量接线、clear与只读统计/开关；独立新集成测试和研发benchmark example。search.rs和character.rs由另一子任务独占。
+ 
+ 严格验证缓存ON/OFF：全部Candidate/Features/edge/排序/fallback/预算和SchemeStatistics一致；追加、退格、中间修改、全拼/简拼/小鹤、模糊/纠错、用户词/偏好和模型/资源切换；同node不同词典不得串用。真实固定词典同机配对测量跨键复用、命中与淘汰，保留所有时延、失败、SHA，不声称语言或TSF质量。
++
++## 精确字符搜索具体约定
++
++# R20 字符精确搜索：以真实完整后缀候选建立剪枝门槛
++
++基线4d42363091361552ad525f47e3c6b1d581ae3a4c。仅修改search.rs的interpreted_character_exact；不重写格、评分器、Reference或默认旧字符搜索。
++
++实际固定原件20个简拼输入观测：后缀计算0.4–4.6ms，随后路径枚举约1.5–33ms；n×32在labels2593、seen23743、pending23659、materialized29857、166194 expansions时触发50000驻留。大量完整Path和签名在尚无第K个完成候选门槛时生成。原始profile见profile/*.stderr，测量含临时阶段钟，绝不作为最终生产性能。
++
++已有精确后缀不仅是分数界，还保留实现该界的完整edge链。对每个起点首边，按其末字符/剩余编辑查同一后缀，把首边和后缀通过真实scorer.extend/finish物化为一条合法完整路径。用原insert_unique维持至多K个实际完成候选。这些候选是可实现的第K名门槛，不是取代搜索的预测结果。之后仍运行原A*；只有某前缀的完整最优后缀全序不优于当前真实第K名时才剪。该界已经包含解释成本、用户偏好、模型score、稳定ID及edge来源；不合并不同历史，不删除同正文的更优来源。
++
++首边及每个物化尾边均计expand_allowed、检查cancel，种子当前和新副本计resident_allowed。200000/50000与K10保持原值。若预算中止仍返回明确budget/fallback，不以种子部分结果伪装完成。种子只从已计算有效后缀产生，所以语言模型/编辑可行性不另猜；真实Candidate所有Features由原scorer产生。
++
++回归：24个同拼音汉字、各自重复三次的机械字符训练；输入nnn。原实现在同样256驻留预算不完整，新实现应完整；Reference以同样预算枚举全部24^3路径并比较完整Candidate对象，两种字符模型都验证。保留旧900展开反例、188325组原差分与原837固定查询。实际n×32大词典只能验证正确性界和无budget，不拿不完整穷举作gold。
++
++后续局部优化可在复制Path前比较借用的完整后缀界，避免明显劣于门槛的正文/Features分配；须复用现有评分规则，单独保留红绿和严格差分。没有证据时不引入大缓存或更改resident计费。

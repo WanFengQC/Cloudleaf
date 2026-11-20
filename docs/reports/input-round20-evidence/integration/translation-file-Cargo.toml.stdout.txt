@@ -1,0 +1,51 @@
+[workspace]
+members = [
+    "crates/cloudleaf-types",
+    "crates/cloudleaf-pinyin",
+    "crates/cloudleaf-dictionary",
+    "crates/cloudleaf-candidate",
+    "crates/cloudleaf-input",
+    "crates/cloudleaf-translation",
+    "crates/cloudleaf-offline",
+    "apps/cloudleaf-cli",
+    "apps/cloudleaf-translation-panel",
+]
+resolver = "3"
+exclude = ["vendor/offline/*"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.90.0"
+license = "MIT"
+publish = false
+
+[workspace.dependencies]
+cloudleaf-types = { path = "crates/cloudleaf-types", version = "=0.1.0" }
+cloudleaf-pinyin = { path = "crates/cloudleaf-pinyin", version = "=0.1.0" }
+cloudleaf-dictionary = { path = "crates/cloudleaf-dictionary", version = "=0.1.0" }
+cloudleaf-candidate = { path = "crates/cloudleaf-candidate", version = "=0.1.0" }
+cloudleaf-input = { path = "crates/cloudleaf-input", version = "=0.1.0" }
+cloudleaf-translation = { path = "crates/cloudleaf-translation", version = "=0.1.0" }
+cloudleaf-offline = { path = "crates/cloudleaf-offline", version = "=0.1.0" }
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+all = "warn"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+
+[patch.crates-io]
+candle-core = { path = "vendor/offline/candle-core" }
+gemm = { path = "vendor/offline/gemm" }
+gemm-common = { path = "vendor/offline/gemm-common" }
+gemm-f16 = { path = "vendor/offline/gemm-f16" }
+gemm-f32 = { path = "vendor/offline/gemm-f32" }
+gemm-f64 = { path = "vendor/offline/gemm-f64" }
+gemm-c32 = { path = "vendor/offline/gemm-c32" }
+gemm-c64 = { path = "vendor/offline/gemm-c64" }
+pulp = { path = "vendor/offline/pulp" }
