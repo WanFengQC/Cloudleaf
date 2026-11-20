@@ -91,6 +91,26 @@ impl<'a> Lattice<'a> {
         config: &Config,
         scheme: &SchemeConfig,
     ) -> Result<Self, SearchError> {
+        Self::build_with_scheme_controlled(lexicon, raw, config, scheme, None)
+    }
+
+    pub fn build_with_scheme_cached(
+        lexicon: &'a Lexicon,
+        raw: &str,
+        config: &Config,
+        scheme: &SchemeConfig,
+        cache: &mut crate::TransitionCache,
+    ) -> Result<Self, SearchError> {
+        Self::build_with_scheme_controlled(lexicon, raw, config, scheme, Some(cache))
+    }
+
+    fn build_with_scheme_controlled(
+        lexicon: &'a Lexicon,
+        raw: &str,
+        config: &Config,
+        scheme: &SchemeConfig,
+        cache: Option<&mut crate::TransitionCache>,
+    ) -> Result<Self, SearchError> {
         if scheme.is_default() {
             return Self::build(lexicon, raw, config);
         }
@@ -103,7 +123,7 @@ impl<'a> Lattice<'a> {
         }
         let hypotheses = interpret(raw, scheme)
             .map_err(|_| SearchError::new(ErrorKind::InvalidInput, "输入方案配置或按键无效"))?;
-        Self::from_phonetic(lexicon, raw, config, scheme, hypotheses)
+        Self::from_phonetic_controlled(lexicon, raw, config, scheme, hypotheses, cache)
     }
 
     pub(crate) fn from_phonetic(
@@ -113,11 +133,25 @@ impl<'a> Lattice<'a> {
         scheme: &SchemeConfig,
         hypotheses: PhoneticHypotheses,
     ) -> Result<Self, SearchError> {
+        Self::from_phonetic_controlled(lexicon, raw, config, scheme, hypotheses, None)
+    }
+
+    fn from_phonetic_controlled(
+        lexicon: &'a Lexicon,
+        raw: &str,
+        config: &Config,
+        scheme: &SchemeConfig,
+        hypotheses: PhoneticHypotheses,
+        mut cache: Option<&mut crate::TransitionCache>,
+    ) -> Result<Self, SearchError> {
         if hypotheses.keys.len() > config.max_letters {
             return Err(SearchError::new(
                 ErrorKind::InvalidInput,
                 "归一按键超过搜索预算",
             ));
+        }
+        if let Some(cache) = cache.as_mut() {
+            cache.bind(lexicon);
         }
         let max_edits = scheme.correction.as_ref().map_or(0, |c| c.max_edit_cost);
         let mut graph = Self {
@@ -180,19 +214,27 @@ impl<'a> Lattice<'a> {
                     if cost.edits > max_edits {
                         continue;
                     }
-                    let mut node = state.node;
-                    let mut found = true;
-                    for key in arc.syllable.bytes() {
-                        if let Some(&next) = lexicon.trie[node].next.get(&key) {
-                            node = next;
-                        } else {
-                            found = false;
-                            break;
+                    let node = if let Some(cache) = cache.as_mut() {
+                        let Some(node) = cache.follow(lexicon, state.node, &arc.syllable) else {
+                            continue;
+                        };
+                        node
+                    } else {
+                        let mut node = state.node;
+                        let mut found = true;
+                        for key in arc.syllable.bytes() {
+                            if let Some(&next) = lexicon.trie[node].next.get(&key) {
+                                node = next;
+                            } else {
+                                found = false;
+                                break;
+                            }
                         }
-                    }
-                    if !found {
-                        continue;
-                    }
+                        if !found {
+                            continue;
+                        }
+                        node
+                    };
                     let mut source_arcs = state.arcs.clone();
                     source_arcs.push(arc_index);
                     let canonical_len = state.canonical_len + arc.syllable.len();

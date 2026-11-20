@@ -264,6 +264,9 @@ impl Host {
                 .and_then(|value| value.checked_add(dictionary_bytes))
                 // 两个引擎的待选来源、明确重试和平台短暂副本，最多64条稳定ID/指纹。
                 .and_then(|value| value.checked_add(128 * 1024))
+                // 两个引擎各自持有有界音节转移缓存，切换方案时无需扩大总预算。
+                .and_then(|value| value.checked_add(engine.search_cache_capacity_bytes()))
+                .and_then(|value| value.checked_add(projection.search_cache_capacity_bytes()))
                 .and_then(|value| value.checked_add(frame_bytes.checked_mul(2)?))
                 .and_then(|value| value.checked_add(diagnostic_bytes.checked_mul(2)?)),
         )?;

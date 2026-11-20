@@ -53,7 +53,7 @@ jobs:
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v4
         with:
-          name: input-round19-windows
+          name: input-round20-windows
           path: |
             target/release/cloudleaf-cli.exe
             target/release/cloudleaf-ime.exe
@@ -73,6 +73,8 @@ jobs:
             docs/input-round17-design.md
             docs/input-round18-design.md
             docs/input-round19-design.md
+            docs/input-round20-design.md
+            docs/testing/round20-windows-manual-acceptance.md
           if-no-files-found: error
       - uses: actions/upload-artifact@v4
         with:

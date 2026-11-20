@@ -769,6 +769,15 @@ impl InterpretedSuffix {
             edges: path.edges.clone(),
         }
     }
+    fn compare_completed(&self, other: &Path) -> Ordering {
+        self.cost
+            .cmp(&other.features.interpretation_cost)
+            .then_with(|| other.features.user_preference_units.cmp(&self.preference))
+            .then_with(|| other.score.cmp(&self.score))
+            .then_with(|| self.ids.cmp(&other.ids))
+            .then_with(|| self.edges.cmp(&other.edges))
+    }
+
     fn completed(path: &Path, rest: &Self) -> Self {
         Self {
             cost: path.features.interpretation_cost.plus(rest.cost),
@@ -966,6 +975,51 @@ fn interpreted_character_exact<O: Observer>(
     else {
         return Vec::new();
     };
+    let mut complete = Vec::<Path>::new();
+    // 后缀界本身给出有效完整路径；先建立实际TopK门槛，再展开有机会改善它的前缀。
+    for edge_index in &scorer.graph.outgoing[0] {
+        if scorer.cancelled() || !expand_allowed(stats, config) {
+            return Vec::new();
+        }
+        let edge = &scorer.graph.edges[*edge_index];
+        let used = scorer.graph.interpretation_cost(*edge_index).edits;
+        if used > max_edits {
+            continue;
+        }
+        let entry = model.entry(edge.entry);
+        let Some(rest) = suffix[edge.end]
+            .get(&(entry.last, max_edits - used))
+            .and_then(Option::as_ref)
+        else {
+            continue;
+        };
+        if !resident_allowed(stats, labels + complete.len() + 3, config) {
+            return Vec::new();
+        }
+        let Some(mut candidate) = scorer.extend(&Path::default(), *edge_index, None, observer)
+        else {
+            continue;
+        };
+        let bound = InterpretedSuffix::completed(&candidate, rest);
+        if complete.len() == k
+            && bound.compare_completed(complete.last().unwrap()) != Ordering::Less
+        {
+            continue;
+        }
+        // 后缀标签已按剩余编辑数验证，沿该链扩展必然可行。
+        for tail in &rest.edges {
+            if scorer.cancelled() || !expand_allowed(stats, config) {
+                return Vec::new();
+            }
+            candidate = scorer.extend(&candidate, *tail, None, observer).unwrap();
+        }
+        let candidate = scorer.finish(candidate, observer);
+        debug_assert_eq!(bound.compare_completed(&candidate), Ordering::Equal);
+        insert_unique(&mut complete, candidate, k, observer);
+    }
+    if !resident_allowed(stats, labels + complete.len() + 2, config) {
+        return Vec::new();
+    }
     let mut pending = BinaryHeap::from([InterpretedPending {
         bound: best.clone(),
         order: 0,
@@ -973,7 +1027,6 @@ fn interpreted_character_exact<O: Observer>(
         path: Path::default(),
     }]);
     let mut order = 0;
-    let mut complete = Vec::<Path>::new();
     let mut seen =
         vec![
             vec![BTreeMap::<String, InterpretedSuffix>::new(); usize::from(max_edits) + 1];
@@ -991,10 +1044,7 @@ fn interpreted_character_exact<O: Observer>(
             continue;
         }
         if complete.len() == k
-            && suffix_order(
-                &current.bound,
-                &InterpretedSuffix::prefix(complete.last().unwrap()),
-            ) != Ordering::Less
+            && current.bound.compare_completed(complete.last().unwrap()) != Ordering::Less
         {
             break;
         }
@@ -1031,8 +1081,7 @@ fn interpreted_character_exact<O: Observer>(
             };
             let bound = InterpretedSuffix::completed(&next, rest);
             if complete.len() == k
-                && suffix_order(&bound, &InterpretedSuffix::prefix(complete.last().unwrap()))
-                    != Ordering::Less
+                && bound.compare_completed(complete.last().unwrap()) != Ordering::Less
             {
                 continue;
             }

@@ -8,6 +8,7 @@ mod model;
 mod profiling;
 mod schemes;
 mod search;
+mod transition_cache;
 
 pub use cancellation::Cancellation;
 pub use lattice::{Edge, Lattice, MatchKind};
@@ -19,6 +20,7 @@ pub use schemes::{EdgeInterpretation, InterpretationCost, SchemeStatistics};
 pub use search::{
     Candidate, Features, SearchResult, Statistics, search_graph, search_graph_cancellable,
 };
+pub use transition_cache::{TransitionCache, TransitionCacheStatistics};
 
 use std::fmt;
 

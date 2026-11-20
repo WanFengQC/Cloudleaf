@@ -232,6 +232,24 @@ impl InputEngine {
         Ok(())
     }
 
+    pub fn search_cache_statistics(&self) -> Option<cloudleaf_search::TransitionCacheStatistics> {
+        self.sentence
+            .as_ref()
+            .map(sentence::SentenceBackend::cache_statistics)
+    }
+
+    pub fn search_cache_capacity_bytes(&self) -> usize {
+        self.sentence
+            .as_ref()
+            .map_or(0, |_| cloudleaf_search::TransitionCache::capacity_bytes())
+    }
+
+    pub fn set_search_cache_enabled(&mut self, enabled: bool) {
+        if let Some(backend) = &mut self.sentence {
+            backend.set_cache_enabled(enabled);
+        }
+    }
+
     pub fn search_capacity_bounds(&self) -> Option<SearchCapacityBounds> {
         self.sentence
             .as_ref()
@@ -773,7 +791,7 @@ impl InputEngine {
 
     fn refresh(&mut self) {
         self.advance_revision();
-        self.candidates = if let Some(backend) = &self.sentence {
+        self.candidates = if let Some(backend) = &mut self.sentence {
             let (candidates, diagnostic) = backend.query(&self.preedit, self.revision);
             self.search_diagnostic = Some(diagnostic);
             candidates
@@ -814,6 +832,9 @@ impl InputEngine {
     }
 
     fn clear_context(&mut self, state: InputState) {
+        if let Some(backend) = &mut self.sentence {
+            backend.clear_cache();
+        }
         self.preedit.clear();
         self.cursor = 0;
         self.candidates.clear();

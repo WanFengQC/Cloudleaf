@@ -337,6 +337,7 @@ pub(crate) struct SentenceBackend {
     language: Option<Arc<LanguageSnapshot>>,
     left_word: Option<String>,
     scheme: cloudleaf_pinyin::SchemeConfig,
+    transitions: cloudleaf_search::TransitionCache,
 }
 
 impl SentenceBackend {
@@ -386,12 +387,15 @@ impl SentenceBackend {
                 "评分种类、上下文或模型词典绑定无效",
             ));
         }
+        let mut transitions = cloudleaf_search::TransitionCache::default();
+        transitions.set_enabled(false);
         Ok(Self {
             snapshot,
             config,
             language,
             left_word,
             scheme: cloudleaf_pinyin::SchemeConfig::default(),
+            transitions,
         })
     }
 
@@ -411,6 +415,7 @@ impl SentenceBackend {
                 "先解除旧模型绑定，不能套用到新词典",
             ));
         }
+        self.transitions.clear();
         self.snapshot = snapshot;
         Ok(())
     }
@@ -423,6 +428,9 @@ impl SentenceBackend {
     ) -> Result<Self, CoreError> {
         let mut replacement = Self::configured(self.snapshot.clone(), config, language, left_word)?;
         replacement.scheme = self.scheme.clone();
+        replacement
+            .transitions
+            .set_enabled(self.transitions.is_enabled());
         Ok(replacement)
     }
 
@@ -438,6 +446,9 @@ impl SentenceBackend {
             self.left_word.clone(),
         )?;
         replacement.scheme = self.scheme.clone();
+        replacement
+            .transitions
+            .set_enabled(self.transitions.is_enabled());
         Ok(replacement)
     }
 
@@ -449,14 +460,31 @@ impl SentenceBackend {
         &self.scheme
     }
     pub(crate) fn set_scheme(&mut self, scheme: cloudleaf_pinyin::SchemeConfig) {
+        self.transitions.clear();
         self.scheme = scheme;
+    }
+
+    pub(crate) fn clear_cache(&mut self) {
+        self.transitions.clear();
+    }
+
+    pub(crate) fn cache_statistics(&self) -> cloudleaf_search::TransitionCacheStatistics {
+        self.transitions.statistics()
+    }
+
+    pub(crate) fn set_cache_enabled(&mut self, enabled: bool) {
+        self.transitions.set_enabled(enabled);
     }
 
     pub(crate) fn capacity_bounds(&self) -> SearchCapacityBounds {
         self.snapshot.bounds(self.config.output_k)
     }
 
-    pub(crate) fn query(&self, input: &str, revision: u64) -> (Vec<Candidate>, SearchDiagnostic) {
+    pub(crate) fn query(
+        &mut self,
+        input: &str,
+        revision: u64,
+    ) -> (Vec<Candidate>, SearchDiagnostic) {
         let mut diagnostic = SearchDiagnostic {
             revision,
             snapshot_version: self.snapshot.version.clone(),
@@ -475,12 +503,18 @@ impl SentenceBackend {
             scheme_version: (!self.scheme.is_default()).then(|| self.scheme.version_id()),
             scheme_statistics: None,
         };
-        let graph = match Lattice::build_with_scheme(
-            &self.snapshot.lexicon,
-            input,
-            &self.config,
-            &self.scheme,
-        ) {
+        let graph = if self.scheme.is_default() || !self.transitions.is_enabled() {
+            Lattice::build_with_scheme(&self.snapshot.lexicon, input, &self.config, &self.scheme)
+        } else {
+            Lattice::build_with_scheme_cached(
+                &self.snapshot.lexicon,
+                input,
+                &self.config,
+                &self.scheme,
+                &mut self.transitions,
+            )
+        };
+        let graph = match graph {
             Ok(graph) => graph,
             Err(error) => {
                 diagnostic.error = Some(error);
