@@ -1,0 +1,9 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\scripts\audit_translation_dependencies.py", line 77, in <module>
+    main()
+  File "C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\scripts\audit_translation_dependencies.py", line 72, in main
+    assert not audited.returncode and not rustsec['vulnerabilities']['found'] and not rustsec['warnings'], '实际RustSec未通过，原文已保存'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 实际RustSec未通过，原文已保存

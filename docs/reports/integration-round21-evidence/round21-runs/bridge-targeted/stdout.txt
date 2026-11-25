@@ -1,0 +1,36 @@
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 1 test
+test headless_preserves_normal_commit_and_keeps_text_private_after_a_model_failure ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.68s
+
+
+running 15 tests
+test offline_only_controller_never_calls_network_provider ... ok
+test explicit_cancel_drops_the_running_result_and_preserves_source ... ok
+test saturated_queue_returns_busy_while_the_input_engine_continues ... ok
+test real_candidate_is_translated_then_explicitly_applied_without_learning ... ok
+test not_applied_preserves_translation_and_explicit_retry_gets_new_commit_id ... ok
+test editing_pinyin_during_real_worker_execution_makes_the_result_stale ... ok
+test focus_loss_with_an_outstanding_commit_is_unknown ... ok
+test english_source_survives_until_the_confirmed_chinese_commit_is_applied ... ok
+test focus_loss_rejects_even_a_ready_result ... ok
+test model_replacement_refuses_to_start_another_worker_while_old_work_is_running ... ok
+test unknown_commit_is_quarantined_until_an_explicitly_reconciled_new_session ... ok
+test unavailable_or_corrupt_catalog_does_not_block_normal_chinese_input ... ok
+test model_replacement_waits_for_worker_stop_and_stales_previous_result ... ok
+test user_layer_and_scheme_switches_stale_result_and_reject_old_candidate ... ok
+test timeout_is_reported_as_failure_not_cancellation ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+
