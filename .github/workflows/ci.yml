@@ -41,23 +41,33 @@ jobs:
         run: cargo install cargo-audit --version 0.22.2 --locked
       - name: Exact input snapshot and Windows dependency audit
         run: python scripts/audit_windows_dependencies.py --output .local/input-dependency-audit.json
+      - name: Offline vendor source and license audit
+        run: python scripts/check_offline_vendor.py .
+      - name: Translation dependency license originals and RustSec audit
+        run: python scripts/audit_translation_dependencies.py --output .local/translation-dependency-audit.json
       - name: Evaluation and artifact provenance tests
         run: python -m unittest discover -s tests -p "test_*.py"
       - name: Benchmark smoke
         run: python scripts/benchmark.py --iterations 100 --output .local/m2-performance.json
       - name: Algorithm baseline and ablation
         run: python scripts/evaluate_algorithms.py --output-dir .local/algorithm-v1
-      - name: Build offline research tools
-        run: cargo build -p cloudleaf-input --examples --release --locked --offline
-      - name: Upload Windows experimental input tools
+      - name: Build input and offline model research tools
+        run: cargo build -p cloudleaf-input -p cloudleaf-search -p cloudleaf-offline --examples --release --locked --offline
+      - name: Upload Windows input and translation integration tools
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v4
         with:
-          name: input-round20-windows
+          name: integration-round21-windows
           path: |
             target/release/cloudleaf-cli.exe
             target/release/cloudleaf-ime.exe
             target/release/cloudleaf_windows_ime.dll
+            target/release/cloudleaf-translation-panel.exe
+            target/release/cloudleaf-bridge-headless.exe
+            target/release/examples/inspect_marian_weights.exe
+            target/release/examples/offline_models.exe
+            target/release/examples/offline_translate.exe
+            target/release/examples/offline_lifecycle.exe
             target/release/examples/input_trace.exe
             target/release/examples/train_language.exe
             target/release/examples/coverage_probe.exe
@@ -67,6 +77,12 @@ jobs:
             licenses/windows/
             licenses/input-snapshot/
             licenses/input-context/
+            licenses/translation/
+            apps/cloudleaf-translation-panel/README.md
+            crates/cloudleaf-offline/README.md
+            crates/cloudleaf-bridge/README.md
+            config/offline-models/
+            config/offline-runtime-source-patches.json
             docs/input-round14-design.md
             docs/input-round15-design.md
             docs/input-round16-design.md
@@ -75,6 +91,31 @@ jobs:
             docs/input-round19-design.md
             docs/input-round20-design.md
             docs/testing/round20-windows-manual-acceptance.md
+            docs/integration-round21-design.md
+          if-no-files-found: error
+      - name: Upload Linux headless integration tools
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-round21-linux
+          path: |
+            target/release/cloudleaf-cli
+            target/release/cloudleaf-bridge-headless
+            target/release/examples/input_trace
+            target/release/examples/inspect_marian_weights
+            target/release/examples/offline_models
+            target/release/examples/offline_translate
+            target/release/examples/offline_lifecycle
+            LICENSE
+            THIRD_PARTY_NOTICES.md
+            licenses/input-snapshot/
+            licenses/input-context/
+            licenses/translation/
+            crates/cloudleaf-offline/README.md
+            crates/cloudleaf-bridge/README.md
+            config/offline-models/
+            config/offline-runtime-source-patches.json
+            docs/integration-round21-design.md
           if-no-files-found: error
       - uses: actions/upload-artifact@v4
         with:
@@ -83,3 +124,4 @@ jobs:
             .local/m2-performance.json
             .local/algorithm-v1/
             .local/input-dependency-audit.json
+            .local/translation-dependency-audit.json

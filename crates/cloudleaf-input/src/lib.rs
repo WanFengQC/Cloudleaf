@@ -21,6 +21,8 @@ use std::sync::Arc;
 pub const DEFAULT_PAGE_SIZE: usize = 5;
 /// 单次生成的候选总数上限。
 pub const MAX_CANDIDATES: usize = 50;
+/// 显式确认的整段译文，与拼音预编辑分别限制大小。
+pub const MAX_TRANSLATION_COMMIT_BYTES: usize = 16 * 1024;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct InputConfig {
@@ -329,6 +331,11 @@ impl InputEngine {
         Ok(())
     }
 
+    /// 读取当前输入上下文身份，无需复制候选帧。
+    pub fn revision(&self) -> u64 {
+        self.revision
+    }
+
     /// 返回独立的显示快照；候选索引指向完整候选数组。
     pub fn frame(&self) -> InputFrame {
         InputFrame {
@@ -453,6 +460,39 @@ impl InputEngine {
             .position(|c| c.id == candidate.id)
             .unwrap();
         self.begin_candidate_commit(index)
+    }
+
+    /// 显式确认当前译文。调用者须先核对翻译任务及会话拥有者。
+    ///
+    /// 这条提交复用宿主回执，但不会产生学习所需的候选选中凭据。
+    pub fn confirm_translation(&mut self, revision: u64, text: &str) -> EventResult {
+        let error = if self.pending_commit.is_some() {
+            Some(ErrorCode::CommitPending)
+        } else if self.failed_commit.is_some() {
+            Some(ErrorCode::CommitFailed)
+        } else if self.state == InputState::Inactive || self.revision >= u64::MAX - 1 {
+            Some(ErrorCode::InvalidInput)
+        } else if revision != self.revision {
+            Some(ErrorCode::StaleCandidate)
+        } else if text.len() > MAX_TRANSLATION_COMMIT_BYTES {
+            Some(ErrorCode::InputTooLong)
+        } else if text.trim().is_empty()
+            || text
+                .chars()
+                .any(|ch| ch.is_control() && !matches!(ch, '\t' | '\n' | '\r'))
+        {
+            Some(ErrorCode::InvalidInput)
+        } else {
+            None
+        };
+        if let Some(code) = error {
+            return self.result(
+                false,
+                None,
+                Some(CoreError::new(code, "译文不属于当前可提交帧或超出文本边界")),
+            );
+        }
+        self.begin_commit(text.to_owned())
     }
 
     /// 处理一个事件，不执行文件读写、网络访问或系统文本提交。

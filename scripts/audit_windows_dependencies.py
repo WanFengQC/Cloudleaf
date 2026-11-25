@@ -89,11 +89,12 @@ def run() -> None:
         raise ValueError("审计工具版本不符：必须固定0.22.2")
     # 许可证门禁与精确依赖政策同时执行，不能用一份自填清单代替实际metadata。
     from check_workspace import check_packages, load_policy
+    from dependency_scope import INPUT_ROOTS, select_workspace_closure
     metadata = json.loads(subprocess.check_output(
         ["cargo", "metadata", "--locked", "--offline", "--format-version", "1"], cwd=ROOT, encoding="utf-8"))
     check_packages(metadata, load_policy(ROOT), "1.90.0")
     lock_hash = sha256(ROOT / "Cargo.lock")
-    licenses = verify_licenses(ROOT, metadata)
+    licenses = verify_licenses(ROOT, select_workspace_closure(metadata, INPUT_ROOTS))
     command = [binary, "audit", "--file", str(ROOT / "Cargo.lock"), "--db", str(args.db), "--json", "-D", "warnings"]
     audited = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, encoding="utf-8", check=False)
     report = json.loads(audited.stdout)

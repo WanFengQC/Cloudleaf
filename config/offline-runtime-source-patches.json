@@ -1,0 +1,1286 @@
+[
+  {
+    "name": "gemm",
+    "version": "0.19.0",
+    "url": "https://crates.io/api/v1/crates/gemm/0.19.0/download",
+    "crate_sha256": "aa0673db364b12263d103b68337a68fbecc541d6f6b61ba72fe438654709eacb",
+    "crate_bytes": 20203,
+    "repository": "https://github.com/sarah-ek/gemm/",
+    "license": "MIT",
+    "vcs": {
+      "git": {
+        "sha1": "86102c5b712737978371ac9ef7a11982f686d7bc"
+      },
+      "path_in_vcs": "gemm"
+    },
+    "files": [
+      {
+        "path": ".cargo_vcs_info.json",
+        "bytes": 98,
+        "upstream_sha256": "63ca2bea537d3937ee226e4fa3f8a86c8b08dc49a47fe9b8f22fa4fc5a9ebd7b"
+      },
+      {
+        "path": ".github/workflows/run-tests.yml",
+        "bytes": 1095,
+        "upstream_sha256": "8d3e6c640ed02359cf973a57defccb8dc1e90f2b5551067989cac2260d634168"
+      },
+      {
+        "path": "Cargo.lock",
+        "bytes": 48521,
+        "upstream_sha256": "36b2826a6ed1caafefe2b281fed43314c874b0949b6db106c593aa01ce762877"
+      },
+      {
+        "path": "Cargo.toml",
+        "bytes": 3226,
+        "upstream_sha256": "2ba5a0a79689c5f4d642004b6e59324cdcfc165f7c8bcd7f8c1118d431b7e575"
+      },
+      {
+        "path": "Cargo.toml.orig",
+        "bytes": 2330,
+        "upstream_sha256": "2728f3518149b58b56fc222ae86be35eb8e32cd0eff28072e18beefc1dc1082a"
+      },
+      {
+        "path": "LICENSE",
+        "bytes": 1062,
+        "upstream_sha256": "d64f878c89bd5f1e5ada7e4aad57690b122727cf5229b7b87ea1980c188da1d9"
+      },
+      {
+        "path": "README.md",
+        "bytes": 63,
+        "upstream_sha256": "b5a52644a73efd55e3c035edb28ba24df96e45ddd1373afee844ec95f93700a6"
+      },
+      {
+        "path": "benches/bench.rs",
+        "bytes": 3792,
+        "upstream_sha256": "43d11b8c389559c06aa4ca1ace2236626fdaccbe85c63a7b2631fb6265790087"
+      },
+      {
+        "path": "src/gemm.rs",
+        "bytes": 8899,
+        "upstream_sha256": "a3120623c900819a121ead0aab446e5b6e5bbeb8bcbf99a698195acf04271cfd"
+      },
+      {
+        "path": "src/lib.rs",
+        "bytes": 25364,
+        "upstream_sha256": "835d20dac0445af3eb75fcbf69bd6b25d47601a4e461490da6885989894866d8"
+      }
+    ],
+    "patched_cargo_sha256": "2cef484e934ca2831616b68fa674e9256cc8d9a5ac0c0c5624ed56751b4b3037",
+    "modified_files": [
+      {
+        "path": "Cargo.toml",
+        "sha256": "2cef484e934ca2831616b68fa674e9256cc8d9a5ac0c0c5624ed56751b4b3037"
+      }
+    ]
+  },
+  {
+    "name": "gemm-common",
+    "version": "0.19.0",
+    "url": "https://crates.io/api/v1/crates/gemm-common/0.19.0/download",
+    "crate_sha256": "88027625910cc9b1085aaaa1c4bc46bb3a36aad323452b33c25b5e4e7c8e2a3e",
+    "crate_bytes": 31225,
+    "repository": "https://github.com/sarah-ek/gemm/",
+    "license": "MIT",
+    "vcs": {
+      "git": {
+        "sha1": "86102c5b712737978371ac9ef7a11982f686d7bc"
+      },
+      "path_in_vcs": "gemm-common"
+    },
+    "files": [
+      {
+        "path": ".cargo_vcs_info.json",
+        "bytes": 105,
+        "upstream_sha256": "961542f8694f9122c9f5fd909e8fa7466c79fb6790318a8b3faf7d0251c0dc0a"
+      },
+      {
+        "path": "Cargo.lock",
+        "bytes": 10199,
+        "upstream_sha256": "bc6d2bc15c71129f39f7d38e35c75e9c099fb05958b1a088d73661f1256201e5"
+      },
+      {
+        "path": "Cargo.toml",
+        "bytes": 2075,
+        "upstream_sha256": "6fc1ea0cdfe6fee9ea0a51e9a06cac0b6aa7c9b628e0b2d6a9f03cde7a5d6ef9"
+      },
+      {
+        "path": "Cargo.toml.orig",
+        "bytes": 1204,
+        "upstream_sha256": "98557bff23aec697851f68b0e3777d487ec71b1f8205dc09f8e5a28b7c82771d"
+      },
+      {
+        "path": "LICENSE",
+        "bytes": 1062,
+        "upstream_sha256": "d64f878c89bd5f1e5ada7e4aad57690b122727cf5229b7b87ea1980c188da1d9"
+      },
+      {
+        "path": "README.md",
+        "bytes": 63,
+        "upstream_sha256": "b5a52644a73efd55e3c035edb28ba24df96e45ddd1373afee844ec95f93700a6"
+      },
+      {
+        "path": "src/cache.rs",
+        "bytes": 24217,
+        "upstream_sha256": "dcb68251336e74146f919f8b8362b6638451f06904d22f5e521c901657347d78"
+      },
+      {
+        "path": "src/gemm.rs",
+        "bytes": 38548,
+        "upstream_sha256": "31095a58ca9404e13416b98305f27febe7bc8a8e092195f99a164b966387fc7c"
+      },
+      {
+        "path": "src/gemv.rs",
+        "bytes": 19623,
+        "upstream_sha256": "1c3cec7d4b273f6b3ea84e5b9c09ff455552a2576d16175a5f47448da76e7fd1"
+      },
+      {
+        "path": "src/gevv.rs",
+        "bytes": 7046,
+        "upstream_sha256": "756b82b7cacda66a6e65b287377ed5799fd334fbbae4dc4575caeb7d44b10870"
+      },
+      {
+        "path": "src/horizontal_microkernel.rs",
+        "bytes": 9573,
+        "upstream_sha256": "e58c22659ddad00b4dc7d74df18de7292a3103da9204dfd89d28cebf929b4dc0"
+      },
+      {
+        "path": "src/lib.rs",
+        "bytes": 2064,
+        "upstream_sha256": "4b0fb651df7cc62070f2dcf6dbba96f570c293826fcf5f1aa96a011ca1f98143"
+      },
+      {
+        "path": "src/microkernel.rs",
+        "bytes": 79122,
+        "upstream_sha256": "738a833e019a77d563c946b5883d688593974da255e43ac3ea59dafe016020d5"
+      },
+      {
+        "path": "src/pack_operands.rs",
+        "bytes": 15251,
+        "upstream_sha256": "7c42b9ba308e1cf1e6665e8e3e07608d675fd56b786bdca54ea55126e8c24fa9"
+      },
+      {
+        "path": "src/simd.rs",
+        "bytes": 62203,
+        "upstream_sha256": "5f068586c035edd817239b8f8334f01b744529f705ced474ff0633967695e3ff"
+      }
+    ],
+    "patched_cargo_sha256": "de9191f5026dbbd946cf0eaba91ce2c9b07de7a0961d76572a8d15611dea38f3",
+    "modified_files": [
+      {
+        "path": "Cargo.toml",
+        "sha256": "de9191f5026dbbd946cf0eaba91ce2c9b07de7a0961d76572a8d15611dea38f3"
+      }
+    ]
+  },
+  {
+    "name": "gemm-f16",
+    "version": "0.19.0",
+    "url": "https://crates.io/api/v1/crates/gemm-f16/0.19.0/download",
+    "crate_sha256": "e3df7a55202e6cd6739d82ae3399c8e0c7e1402859b30e4cb780e61525d9486e",
+    "crate_bytes": 11181,
+    "repository": "https://github.com/sarah-ek/gemm/",
+    "license": "MIT",
+    "vcs": {
+      "git": {
+        "sha1": "86102c5b712737978371ac9ef7a11982f686d7bc"
+      },
+      "path_in_vcs": "gemm-f16"
+    },
+    "files": [
+      {
+        "path": ".cargo_vcs_info.json",
+        "bytes": 102,
+        "upstream_sha256": "ba21fed0a94f8f941d7c97c5eaf34d7eee223b34ca3df9817433bf8bbc4c59b7"
+      },
+      {
+        "path": "Cargo.lock",
+        "bytes": 10853,
+        "upstream_sha256": "a539c9fc6baf13a1434c56b138c4eed8d210d34b018fdd6058e6f04cb8cb32ba"
+      },
+      {
+        "path": "Cargo.toml",
+        "bytes": 1976,
+        "upstream_sha256": "830ea1c94bb277b10d9dc527fbbe482454132fdd7690c0a3aa9cad608ed44070"
+      },
+      {
+        "path": "Cargo.toml.orig",
+        "bytes": 1174,
+        "upstream_sha256": "6491cf38c6e99e5ece64e3333d327aefa41e2b3c9858f9fb6082bde7836a7e7f"
+      },
+      {
+        "path": "LICENSE",
+        "bytes": 1062,
+        "upstream_sha256": "d64f878c89bd5f1e5ada7e4aad57690b122727cf5229b7b87ea1980c188da1d9"
+      },
+      {
+        "path": "README.md",
+        "bytes": 63,
+        "upstream_sha256": "b5a52644a73efd55e3c035edb28ba24df96e45ddd1373afee844ec95f93700a6"
+      },
+      {
+        "path": "src/gemm.rs",
+        "bytes": 36150,
+        "upstream_sha256": "3427060694bba4a6755d4dfebe21e84aa390845d94433205f9bcc1c57d0e162a"
+      },
+      {
+        "path": "src/lib.rs",
+        "bytes": 163,
+        "upstream_sha256": "db4591771a6960993918aa4c95109ff98284bdeb642067552e79b4895009edd5"
+      },
+      {
+        "path": "src/microkernel.rs",
+        "bytes": 3887,
+        "upstream_sha256": "49c7feaf4c2fb0c8f186226d51d97699feaabb587ed910959f96d62eea4f674a"
+      }
+    ],
+    "patched_cargo_sha256": "eb5ccdb51d10979eeaab71dee36da86036db2fd1a52d0f516ab4384d621e94a4",
+    "modified_files": [
+      {
+        "path": "Cargo.toml",
+        "sha256": "eb5ccdb51d10979eeaab71dee36da86036db2fd1a52d0f516ab4384d621e94a4"
+      }
+    ]
+  },
+  {
+    "name": "gemm-f32",
+    "version": "0.19.0",
+    "url": "https://crates.io/api/v1/crates/gemm-f32/0.19.0/download",
+    "crate_sha256": "02e0b8c9da1fbec6e3e3ab2ce6bc259ef18eb5f6f0d3e4edf54b75f9fd41a81c",
+    "crate_bytes": 7017,
+    "repository": "https://github.com/sarah-ek/gemm/",
+    "license": "MIT",
+    "vcs": {
+      "git": {
+        "sha1": "86102c5b712737978371ac9ef7a11982f686d7bc"
+      },
+      "path_in_vcs": "gemm-f32"
+    },
+    "files": [
+      {
+        "path": ".cargo_vcs_info.json",
+        "bytes": 102,
+        "upstream_sha256": "20c47048eb6f14c34fd80e4439b34c6d3a95ebce7bab470721f5cba4597969ea"
+      },
+      {
+        "path": "Cargo.lock",
+        "bytes": 9253,
+        "upstream_sha256": "b103a8056a2f2f660fa708fde2755c744eefbfa9998dcb08b2b8513c70689208"
+      },
+      {
+        "path": "Cargo.toml",
+        "bytes": 1597,
+        "upstream_sha256": "f129710c76a5fb3e13fbfd7d66e4b45787bf876bfe04e0f91989783a8d81024d"
+      },
+      {
+        "path": "Cargo.toml.orig",
+        "bytes": 872,
+        "upstream_sha256": "c0693ad5bc8ae50ab5a6d0e33afbcbe8c9755bc787fd09913a74dd44dad62d53"
+      },
+      {
+        "path": "LICENSE",
+        "bytes": 1062,
+        "upstream_sha256": "d64f878c89bd5f1e5ada7e4aad57690b122727cf5229b7b87ea1980c188da1d9"
+      },
+      {
+        "path": "README.md",
+        "bytes": 63,
+        "upstream_sha256": "b5a52644a73efd55e3c035edb28ba24df96e45ddd1373afee844ec95f93700a6"
+      },
+      {
+        "path": "src/gemm.rs",
+        "bytes": 70,
+        "upstream_sha256": "41e76a0e48b44d79f08396c1d550790c789c8f9c60b8615a2a6508b305d8170b"
+      },
+      {
+        "path": "src/lib.rs",
+        "bytes": 119,
+        "upstream_sha256": "ace0212c67545a0c7e5239f59fcb95a805bbbc99ba235a3411ef693cb60533e7"
+      },
+      {
+        "path": "src/microkernel.rs",
+        "bytes": 17624,
+        "upstream_sha256": "b3f34ea60509bcded880b95c7e3334944d456c0710c25ffe08bb22bc1c85afe1"
+      }
+    ],
+    "patched_cargo_sha256": "42aa7e377405b178685c48162d4f109dacd89303200212b72a5cd7129610d1af",
+    "modified_files": [
+      {
+        "path": "Cargo.toml",
+        "sha256": "42aa7e377405b178685c48162d4f109dacd89303200212b72a5cd7129610d1af"
+      }
+    ]
+  },
+  {
+    "name": "gemm-f64",
+    "version": "0.19.0",
+    "url": "https://crates.io/api/v1/crates/gemm-f64/0.19.0/download",
+    "crate_sha256": "056131e8f2a521bfab322f804ccd652520c79700d81209e9d9275bbdecaadc6a",
+    "crate_bytes": 6896,
+    "repository": "https://github.com/sarah-ek/gemm/",
+    "license": "MIT",
+    "vcs": {
+      "git": {
+        "sha1": "86102c5b712737978371ac9ef7a11982f686d7bc"
+      },
+      "path_in_vcs": "gemm-f64"
+    },
+    "files": [
+      {
+        "path": ".cargo_vcs_info.json",
+        "bytes": 102,
+        "upstream_sha256": "ac4a25425cdef8da1e1145e791a9030db4df8739fa725bfdb0fcc6b12cdbaf49"
+      },
+      {
+        "path": "Cargo.lock",
+        "bytes": 9253,
+        "upstream_sha256": "992a7b77196c24ae6c5b3740d6f5ea3ff82f18b006fdae6aa533ea08f1f3707b"
+      },
+      {
+        "path": "Cargo.toml",
+        "bytes": 1597,
+        "upstream_sha256": "52e691a7ef64b74e418d800515f1a6412e7642fabb86e748edb754e9d1f79137"
+      },
+      {
+        "path": "Cargo.toml.orig",
+        "bytes": 872,
+        "upstream_sha256": "b5457fa166e4014c958fe4a33efe79c3d48e044bc2ddc24ade510dbe1e71adfd"
+      },
+      {
+        "path": "LICENSE",
+        "bytes": 1062,
+        "upstream_sha256": "d64f878c89bd5f1e5ada7e4aad57690b122727cf5229b7b87ea1980c188da1d9"
+      },
+      {
+        "path": "README.md",
+        "bytes": 63,
+        "upstream_sha256": "b5a52644a73efd55e3c035edb28ba24df96e45ddd1373afee844ec95f93700a6"
+      },
+      {
+        "path": "src/gemm.rs",
+        "bytes": 70,
+        "upstream_sha256": "322155f21a479925b0cac860381b6900f45a6cb313da87bb41ddf4929c406927"
+      },
+      {
+        "path": "src/lib.rs",
+        "bytes": 119,
+        "upstream_sha256": "ace0212c67545a0c7e5239f59fcb95a805bbbc99ba235a3411ef693cb60533e7"
+      },
+      {
+        "path": "src/microkernel.rs",
+        "bytes": 16102,
+        "upstream_sha256": "073657303dd9eb22bdcca3cf3314b335a59b76c574f458f649b7d7fbe3895d6c"
+      }
+    ],
+    "patched_cargo_sha256": "505e788131696fbabf4c5db290db94c66ca1ca43e743d7df169caab7d6a8ef16",
+    "modified_files": [
+      {
+        "path": "Cargo.toml",
+        "sha256": "505e788131696fbabf4c5db290db94c66ca1ca43e743d7df169caab7d6a8ef16"
+      }
+    ]
+  },
+  {
+    "name": "gemm-c32",
+    "version": "0.19.0",
+    "url": "https://crates.io/api/v1/crates/gemm-c32/0.19.0/download",
+    "crate_sha256": "086936dbdcb99e37aad81d320f98f670e53c1e55a98bee70573e83f95beb128c",
+    "crate_bytes": 7461,
+    "repository": "https://github.com/sarah-ek/gemm/",
+    "license": "MIT",
+    "vcs": {
+      "git": {
+        "sha1": "86102c5b712737978371ac9ef7a11982f686d7bc"
+      },
+      "path_in_vcs": "gemm-c32"
+    },
+    "files": [
+      {
+        "path": ".cargo_vcs_info.json",
+        "bytes": 102,
+        "upstream_sha256": "eaeac83a3f3862da6c5dc49518d5f43f01df4859fd6f9df73148ddc297389f04"
+      },
+      {
+        "path": "Cargo.lock",
+        "bytes": 9253,
+        "upstream_sha256": "23a8fabd897a10e3cc7af0ac00a0932683d785349b188b2d1b8c00d55108b29f"
+      },
+      {
+        "path": "Cargo.toml",
+        "bytes": 1597,
+        "upstream_sha256": "8d9c16435c39fa41725d1585f25920a7e27496815e28c83054b95e0c09ec6633"
+      },
+      {
+        "path": "Cargo.toml.orig",
+        "bytes": 872,
+        "upstream_sha256": "507b9b627f56d0aeb69746759d4980052660fe2f61340b9a8c6561ec619ef4ef"
+      },
+      {
+        "path": "LICENSE",
+        "bytes": 1062,
+        "upstream_sha256": "d64f878c89bd5f1e5ada7e4aad57690b122727cf5229b7b87ea1980c188da1d9"
+      },
+      {
+        "path": "README.md",
+        "bytes": 63,
+        "upstream_sha256": "b5a52644a73efd55e3c035edb28ba24df96e45ddd1373afee844ec95f93700a6"
+      },
+      {
+        "path": "src/gemm.rs",
+        "bytes": 142,
+        "upstream_sha256": "943af3ead1c597967f6ac38d6af912e902e24deab254955c1b9caf2998381239"
+      },
+      {
+        "path": "src/lib.rs",
+        "bytes": 115,
+        "upstream_sha256": "1910f591c625cd0a14b801198084827bd1d9927d153a2904ed8513e821f87557"
+      },
+      {
+        "path": "src/microkernel.rs",
+        "bytes": 22697,
+        "upstream_sha256": "d4c844d120a7a60524b4f62d8072e18937adf045ec659dfab6429399bfd24ae7"
+      }
+    ],
+    "patched_cargo_sha256": "0ea9c536731563ee4af242393a23604f402e4fcc7d84844104ec8ac4ffe624ed",
+    "modified_files": [
+      {
+        "path": "Cargo.toml",
+        "sha256": "0ea9c536731563ee4af242393a23604f402e4fcc7d84844104ec8ac4ffe624ed"
+      }
+    ]
+  },
+  {
+    "name": "gemm-c64",
+    "version": "0.19.0",
+    "url": "https://crates.io/api/v1/crates/gemm-c64/0.19.0/download",
+    "crate_sha256": "20c8aeeeec425959bda4d9827664029ba1501a90a0d1e6228e48bef741db3a3f",
+    "crate_bytes": 7358,
+    "repository": "https://github.com/sarah-ek/gemm/",
+    "license": "MIT",
+    "vcs": {
+      "git": {
+        "sha1": "86102c5b712737978371ac9ef7a11982f686d7bc"
+      },
+      "path_in_vcs": "gemm-c64"
+    },
+    "files": [
+      {
+        "path": ".cargo_vcs_info.json",
+        "bytes": 102,
+        "upstream_sha256": "319c8bac10bfe4fbce32e22e09c15b61b795925201cf5d4947f3a5a403ab445a"
+      },
+      {
+        "path": "Cargo.lock",
+        "bytes": 9253,
+        "upstream_sha256": "1d66e37a90a5978040989ac0993ab8fa599ad634742dd01f721f326cda3c8660"
+      },
+      {
+        "path": "Cargo.toml",
+        "bytes": 1597,
+        "upstream_sha256": "1cd8ec459588c657b61223696e04d3af603d85737609679e723f30b974f70e3a"
+      },
+      {
+        "path": "Cargo.toml.orig",
+        "bytes": 872,
+        "upstream_sha256": "2ab1015e0846ac10c28e21692f179360af93bca7717e954fd85c0bd397ec6bee"
+      },
+      {
+        "path": "LICENSE",
+        "bytes": 1062,
+        "upstream_sha256": "d64f878c89bd5f1e5ada7e4aad57690b122727cf5229b7b87ea1980c188da1d9"
+      },
+      {
+        "path": "README.md",
+        "bytes": 63,
+        "upstream_sha256": "b5a52644a73efd55e3c035edb28ba24df96e45ddd1373afee844ec95f93700a6"
+      },
+      {
+        "path": "src/gemm.rs",
+        "bytes": 142,
+        "upstream_sha256": "6ec6e0a700096d415183b6f68b5f2f1bf4992a0be2fa1b38911ba925afad1b5d"
+      },
+      {
+        "path": "src/lib.rs",
+        "bytes": 115,
+        "upstream_sha256": "1910f591c625cd0a14b801198084827bd1d9927d153a2904ed8513e821f87557"
+      },
+      {
+        "path": "src/microkernel.rs",
+        "bytes": 21540,
+        "upstream_sha256": "2ee0f17475cf39ae39f769ab14668bcc985585efd5553bb70fe6f427479b04d1"
+      }
+    ],
+    "patched_cargo_sha256": "dc32dfdedb10a7cdf86133862d3ac6f8ddc5ed43f025537fad482e59c4463eea",
+    "modified_files": [
+      {
+        "path": "Cargo.toml",
+        "sha256": "dc32dfdedb10a7cdf86133862d3ac6f8ddc5ed43f025537fad482e59c4463eea"
+      }
+    ]
+  },
+  {
+    "name": "pulp",
+    "version": "0.22.3",
+    "url": "https://crates.io/api/v1/crates/pulp/0.22.3/download",
+    "crate_sha256": "046aa45b989642ec2e4717c8e72d677b13edd831a4d3b6cf37d9a3e54912496a",
+    "crate_bytes": 147931,
+    "repository": "https://github.com/sarah-quinones/pulp/",
+    "license": "MIT",
+    "vcs": {
+      "git": {
+        "sha1": "5eb07fd7b68edf0a5e19f71737d315f72a510295"
+      },
+      "path_in_vcs": "pulp"
+    },
+    "files": [
+      {
+        "path": ".cargo_vcs_info.json",
+        "bytes": 98,
+        "upstream_sha256": "4b6715e3609e046e93b850d4b966ebf2323cf412c61aab80f4abcf3821e0673e"
+      },
+      {
+        "path": "Cargo.lock",
+        "bytes": 27596,
+        "upstream_sha256": "206f30df4bfa5c8179594104251da0fa49ee486f26ba1437eaac32e0ae46162a"
+      },
+      {
+        "path": "Cargo.toml",
+        "bytes": 2660,
+        "upstream_sha256": "b9d9fe17a5a2188b06a704d5810b4b68b82474816d238f2442501495abb1e4df"
+      },
+      {
+        "path": "Cargo.toml.orig",
+        "bytes": 1712,
+        "upstream_sha256": "ce69fb268eb9f8c44e8b53b865afb0ac3b06e293943d5e3776252babb6813d3b"
+      },
+      {
+        "path": "LICENSE",
+        "bytes": 1062,
+        "upstream_sha256": "d64f878c89bd5f1e5ada7e4aad57690b122727cf5229b7b87ea1980c188da1d9"
+      },
+      {
+        "path": "README.md",
+        "bytes": 2695,
+        "upstream_sha256": "f70e0976c7bedfe32d4dbe014483768b16184f87bb65d9068a56e9e90c0f8eee"
+      },
+      {
+        "path": "benches/bench.rs",
+        "bytes": 30096,
+        "upstream_sha256": "85b6eac3e54b9685309722914d03f60f786c6dd54a597229648d984e341ae149"
+      },
+      {
+        "path": "build.rs",
+        "bytes": 6533,
+        "upstream_sha256": "ba006df9f748fd817b68f9ff9b174ece596cf9fa3e4f1a008dbcb762bd7f00b8"
+      },
+      {
+        "path": "examples/basic.rs",
+        "bytes": 4663,
+        "upstream_sha256": "45544c69c19b676c0880c4b547f2b77a84cb4a79f91785daae20be376df8f2d1"
+      },
+      {
+        "path": "examples/dot_product.rs",
+        "bytes": 15372,
+        "upstream_sha256": "b3a2df57485b08f2c4d65713ef0adf1a68d0a47380df77655f9d707147775dd3"
+      },
+      {
+        "path": "examples/mask_store.rs",
+        "bytes": 1754,
+        "upstream_sha256": "1988565732110f7da7dff4ba4c25d2be2bd76bfe3923b52cc28a3a2a2a660d8a"
+      },
+      {
+        "path": "src/aarch64.rs",
+        "bytes": 96917,
+        "upstream_sha256": "428f60728d89512826a40714a4d63bf299d848430e5e1579a49d69f0fb505f29"
+      },
+      {
+        "path": "src/core_arch/aarch64/mod.rs",
+        "bytes": 233600,
+        "upstream_sha256": "eaa8b736b87143d10eb6a0ec4d5a73387984a8798068d246baf9a9cfb6243485"
+      },
+      {
+        "path": "src/core_arch/mod.rs",
+        "bytes": 16950,
+        "upstream_sha256": "3664c6d261efd42c515a8c70d8286b71307a1eaa536415e7ca0c66d0e6afc91c"
+      },
+      {
+        "path": "src/core_arch/raw_cpuid_detect.rs",
+        "bytes": 5825,
+        "upstream_sha256": "1d8aabc5368af72e95b596645dd5ecd93942bf7f2137feebe1d816bcd6c8e55d"
+      },
+      {
+        "path": "src/core_arch/wasm/mod.rs",
+        "bytes": 16549,
+        "upstream_sha256": "2fde55c5bad48c4d1de442979111fe922266d466549c475faf972dc3c16f9df8"
+      },
+      {
+        "path": "src/core_arch/x86/avx.rs",
+        "bytes": 11969,
+        "upstream_sha256": "c4064dce8fe8223260b3e632590b799fb4171d3082ca9d85633c451298664f95"
+      },
+      {
+        "path": "src/core_arch/x86/avx2.rs",
+        "bytes": 13992,
+        "upstream_sha256": "84132eb67177e13b10e5e9c4e05e8c5dfeb71e5b456075bd6aa521129d4a8365"
+      },
+      {
+        "path": "src/core_arch/x86/avx512bw.rs",
+        "bytes": 59035,
+        "upstream_sha256": "39ad033b24fe8b708fde55018c2af1ed47563abeebbaecc9e9b0b49db4b941d8"
+      },
+      {
+        "path": "src/core_arch/x86/avx512cd.rs",
+        "bytes": 2740,
+        "upstream_sha256": "37d64c1fa4f3b0590541180a033356311f613ed6bbbc4625e60b7b7e84c07428"
+      },
+      {
+        "path": "src/core_arch/x86/avx512dq.rs",
+        "bytes": 31086,
+        "upstream_sha256": "0191b16a88f5a2d45b635f0499a75cc879d567a6f95d3b347c326263d1890ca4"
+      },
+      {
+        "path": "src/core_arch/x86/avx512f.rs",
+        "bytes": 211635,
+        "upstream_sha256": "4cc3201efa2c91953fddbffb3a5c6e1e79a40a711b65a1109bb23a0fa96cba6c"
+      },
+      {
+        "path": "src/core_arch/x86/avx512ifma.rs",
+        "bytes": 497,
+        "upstream_sha256": "4f8059d158ada0c80eb8d1edece8ca889ec01f3546ec6bed8a058d49d68446b1"
+      },
+      {
+        "path": "src/core_arch/x86/fma.rs",
+        "bytes": 2166,
+        "upstream_sha256": "e7289cda84b853a1622db8862568797d87c32761ae4c910321dc2a2573b4aacd"
+      },
+      {
+        "path": "src/core_arch/x86/mod.rs",
+        "bytes": 7612,
+        "upstream_sha256": "c87d309fe15468b1a9a97c49555efbbc81ee96095463330820c5590c9787fc73"
+      },
+      {
+        "path": "src/core_arch/x86/sse.rs",
+        "bytes": 4851,
+        "upstream_sha256": "3e8d89b4f50d075f19b1446674ce3b9383f0f5730b37ab0f11526b3af20482b1"
+      },
+      {
+        "path": "src/core_arch/x86/sse2.rs",
+        "bytes": 11858,
+        "upstream_sha256": "13ec47ee9d27dfe841f3b876ff7dcabae94b29661758b651dc8e3b9d9995cda3"
+      },
+      {
+        "path": "src/core_arch/x86/sse3.rs",
+        "bytes": 617,
+        "upstream_sha256": "b9cf7acb36d78617f16127990c054ae4c647cf6eaa979f26a5b73573b687b342"
+      },
+      {
+        "path": "src/core_arch/x86/sse41.rs",
+        "bytes": 3321,
+        "upstream_sha256": "ade8d7cba77da9168f406fe24d838342acac17cca3c0abf6ca36270401a1e623"
+      },
+      {
+        "path": "src/core_arch/x86/sse42.rs",
+        "bytes": 1311,
+        "upstream_sha256": "8e75ba0d1c340430f866dac9b688f6025490941fc26bf26acebf002d172951b7"
+      },
+      {
+        "path": "src/core_arch/x86/ssse3.rs",
+        "bytes": 930,
+        "upstream_sha256": "af70519f36e2b52f9514f6ab1e63a609dc59ac0c7f1f17c4d114c90f1bb05a56"
+      },
+      {
+        "path": "src/lib.rs",
+        "bytes": 127800,
+        "upstream_sha256": "847f58ab06d89dc93684116b67c19c1f486acab56726ef5a3566bae01bfb0145"
+      },
+      {
+        "path": "src/wasm.rs",
+        "bytes": 58834,
+        "upstream_sha256": "f14ce5eca5147bd03d62626e71fa078d447b8bb612d9f202793b3954f64eca4e"
+      },
+      {
+        "path": "src/x86/v1.rs",
+        "bytes": 31849,
+        "upstream_sha256": "d6c74c4b71d0a2620e27de68acb1d8ee17f3389fbaa7367801e1e8f7cac33735"
+      },
+      {
+        "path": "src/x86/v2.rs",
+        "bytes": 36277,
+        "upstream_sha256": "e37d3ac380f9e64e215570eb6627d9475cb435f126d0d10c43e81603bfb70e90"
+      },
+      {
+        "path": "src/x86/v3.rs",
+        "bytes": 149607,
+        "upstream_sha256": "64f1cedb8c7dbb97c0a908740728c5c95cf170ffa37bbb3d0d43f68eb8a74c18"
+      },
+      {
+        "path": "src/x86/v4.rs",
+        "bytes": 138493,
+        "upstream_sha256": "327416276779c58c991373ada9de91c2827e956935e0c827232f544d5b269e75"
+      },
+      {
+        "path": "src/x86.rs",
+        "bytes": 32772,
+        "upstream_sha256": "f9bdd072b58ce413100ab7647fc29efbfd4eb216f929a4d793b090a36224e5bf"
+      }
+    ],
+    "patched_cargo_sha256": "512194888ae5a826589b8101bba29c4a432a418ade32e6d9acd3c0962dda4c98",
+    "modified_files": [
+      {
+        "path": "Cargo.toml",
+        "sha256": "512194888ae5a826589b8101bba29c4a432a418ade32e6d9acd3c0962dda4c98"
+      }
+    ]
+  },
+  {
+    "name": "candle-core",
+    "version": "0.9.2",
+    "url": "https://crates.io/api/v1/crates/candle-core/0.9.2/download",
+    "crate_sha256": "c15b675b80d994b2eadb20a4bbe434eabeb454eac3ee5e2b4cf6f147ee9be091",
+    "crate_bytes": 266516,
+    "repository": "https://github.com/huggingface/candle",
+    "license": "MIT OR Apache-2.0",
+    "vcs": {
+      "git": {
+        "sha1": "3b39794c14b1de8ba4c2d10d49354d557a415547"
+      },
+      "path_in_vcs": "candle-core"
+    },
+    "files": [
+      {
+        "path": ".cargo_vcs_info.json",
+        "bytes": 105,
+        "upstream_sha256": "ce75dc3d9c0f8a13daf4d5e1946719a7ec4c450108c5fd6cce025b9e34f383aa"
+      },
+      {
+        "path": "Cargo.lock",
+        "bytes": 76553,
+        "upstream_sha256": "e681c9febf53d509f0169297ac5c956a16d89d3a94c766f5f3fc5c49da3a41d4"
+      },
+      {
+        "path": "Cargo.toml",
+        "bytes": 4571,
+        "upstream_sha256": "fbb9960d0496ea8cb11aead7548a70af655af410d5e3f7f094882dd11738f4f9"
+      },
+      {
+        "path": "Cargo.toml.orig",
+        "bytes": 1954,
+        "upstream_sha256": "b7d9510ca0933845e9f1acad1b5504aff030e34a6877cf8900bf6bd70ee0484d"
+      },
+      {
+        "path": "LICENSE",
+        "bytes": 11357,
+        "upstream_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+      },
+      {
+        "path": "README.md",
+        "bytes": 42,
+        "upstream_sha256": "9b00007b1d568125e67d6f2ff5c40acd8227dec4c62681cbc87775768a125200"
+      },
+      {
+        "path": "benches/bench_main.rs",
+        "bytes": 447,
+        "upstream_sha256": "0228bb14b13ee0cd2d7e907d8e66017fa291d81d39316c183f4bf5aed0657518"
+      },
+      {
+        "path": "benches/benchmarks/affine.rs",
+        "bytes": 1465,
+        "upstream_sha256": "260d6aeb9faf50808ac278dd93664dd24769bcd5c53333490d742cdff298844c"
+      },
+      {
+        "path": "benches/benchmarks/binary.rs",
+        "bytes": 1647,
+        "upstream_sha256": "86335f2ca24005c215d590797cfde35c6a3bba21978b0cf184ac906c6f255e40"
+      },
+      {
+        "path": "benches/benchmarks/broadcast.rs",
+        "bytes": 1575,
+        "upstream_sha256": "9da8fde24dcbed559dfd44e7ec6607762ed2a7f80857a057f619838a4c723618"
+      },
+      {
+        "path": "benches/benchmarks/conv_transpose2d.rs",
+        "bytes": 1783,
+        "upstream_sha256": "f57723066b6fc173d2957181e2e54a06505213303f82577b10d482983048981a"
+      },
+      {
+        "path": "benches/benchmarks/copy.rs",
+        "bytes": 1415,
+        "upstream_sha256": "406c04fa73a664a785dd7d9c6a4ad4d09b4c0c0b52072b8e429566485fd61938"
+      },
+      {
+        "path": "benches/benchmarks/matmul.rs",
+        "bytes": 2447,
+        "upstream_sha256": "8ceb3d0e312a82770f85414459009d0385043eb1fa384f8dd34476b84cf42bbb"
+      },
+      {
+        "path": "benches/benchmarks/mod.rs",
+        "bytes": 2232,
+        "upstream_sha256": "28ed8ad6b0e938364c62d64456dd98bd84faca4b038b7f3661ebe013555833ac"
+      },
+      {
+        "path": "benches/benchmarks/qmatmul.rs",
+        "bytes": 2105,
+        "upstream_sha256": "cd71f24bc0dbdd716f36fec4658a444cde64fdeacca1cdf63bbf1501ede12e40"
+      },
+      {
+        "path": "benches/benchmarks/random.rs",
+        "bytes": 1852,
+        "upstream_sha256": "0f68d50a3da9f1096ab00c6a1141b58454b335604d6c2ff3d39af830a47b9138"
+      },
+      {
+        "path": "benches/benchmarks/reduce.rs",
+        "bytes": 4355,
+        "upstream_sha256": "8a0ce9e9f10ca9d210db3c424325dd082ccc08fd288080f0b579ab1c7faa8fc6"
+      },
+      {
+        "path": "benches/benchmarks/unary.rs",
+        "bytes": 2740,
+        "upstream_sha256": "40153b0fe906af2235e0a356719a208d82b5910853df93957f8e18bcb61bcef1"
+      },
+      {
+        "path": "benches/benchmarks/where_cond.rs",
+        "bytes": 2026,
+        "upstream_sha256": "41be1e61510cfdfbdc74cbb523ec8756fad12eb53a3b6add8f032999e98370aa"
+      },
+      {
+        "path": "examples/basics.rs",
+        "bytes": 569,
+        "upstream_sha256": "6c85b5c338290f8d2eeeb548209fc4f4d4052fa4bfd2ea07846731cd9c36d88d"
+      },
+      {
+        "path": "examples/cuda_basics.rs",
+        "bytes": 769,
+        "upstream_sha256": "ec4aa80f89acf913ca74828fdf19ceb24808406794e98caa3f524dd23ce66cd4"
+      },
+      {
+        "path": "examples/cuda_sum_benchmark.rs",
+        "bytes": 1692,
+        "upstream_sha256": "f53810234d3b90cbef0cc23c7ac1ad8141a9a93d1e86f7c358f5d32fcc5c76cc"
+      },
+      {
+        "path": "examples/metal_basics.rs",
+        "bytes": 898,
+        "upstream_sha256": "4f2cb274449cf1b6326b1ed2211f1076d55e621fcc81cdd501eca72e7203351e"
+      },
+      {
+        "path": "src/accelerate.rs",
+        "bytes": 12889,
+        "upstream_sha256": "9be99929bb6553d9baf6b6a5a56fa66bfdbee122f76c4792a00e09ac8a0d638a"
+      },
+      {
+        "path": "src/backend.rs",
+        "bytes": 5124,
+        "upstream_sha256": "822a96a62ef7d300141b7d439807482bd40bded3f592e9e72c1e108f43ff63cc"
+      },
+      {
+        "path": "src/backprop.rs",
+        "bytes": 39302,
+        "upstream_sha256": "4f370f420aaea68bf23976f807c9a47a97c36d46f17f18ef82132d43a9847a52"
+      },
+      {
+        "path": "src/conv.rs",
+        "bytes": 11619,
+        "upstream_sha256": "31b8870d37dad9d2962985657121e85bc350830555d20054700921ea689a0d9f"
+      },
+      {
+        "path": "src/convert.rs",
+        "bytes": 4765,
+        "upstream_sha256": "664562f7fc98008b1cbf4815aacf79311141a40d9a003f86ecdb8cebcf6abbae"
+      },
+      {
+        "path": "src/cpu/avx.rs",
+        "bytes": 6121,
+        "upstream_sha256": "d06f480b9ec3553568c0ef4b32e30d9f0dc7371f6db94473b42724f2b2519d45"
+      },
+      {
+        "path": "src/cpu/erf.rs",
+        "bytes": 9756,
+        "upstream_sha256": "e9d7e063b6e1b3af2b785b4b26ea038e512608a380edbb0d65d0253f0f70dbdc"
+      },
+      {
+        "path": "src/cpu/kernels.rs",
+        "bytes": 5713,
+        "upstream_sha256": "ad187fd28c7b491ae982e5e9c714331b89c91056c370f6a7417cc79dfda7aab1"
+      },
+      {
+        "path": "src/cpu/mod.rs",
+        "bytes": 7001,
+        "upstream_sha256": "667e12b8807e5b73cb3b84f4078029e1060fc2b4147122584c24dc0c083c3738"
+      },
+      {
+        "path": "src/cpu/neon.rs",
+        "bytes": 1688,
+        "upstream_sha256": "c180dffb8a342c2f026d8fdcc235c7d9e8f0aac8a5f6f03de4c2f4de8dda609c"
+      },
+      {
+        "path": "src/cpu/simd128.rs",
+        "bytes": 1541,
+        "upstream_sha256": "8ed8cff924086325c4d4af5a12746a7ce4a5a05f18cdeaa28bc0ff9c64060906"
+      },
+      {
+        "path": "src/cpu_backend/conv2d.rs",
+        "bytes": 17253,
+        "upstream_sha256": "367f0c7e9380215879e6c95cffabbd9df76206d96716f8c8ccfdded2ac646bf1"
+      },
+      {
+        "path": "src/cpu_backend/mod.rs",
+        "bytes": 129149,
+        "upstream_sha256": "93512c3d7c4ea7b1a0b74300eea658f0afb7d51850cec928a995ebeeacde66b5"
+      },
+      {
+        "path": "src/cpu_backend/utils.rs",
+        "bytes": 16969,
+        "upstream_sha256": "85b05a7f3d6934a115f72f1caf977d7bbdd680715939fb3bdfbbf24af5ac15b1"
+      },
+      {
+        "path": "src/cuda_backend/cudnn.rs",
+        "bytes": 8121,
+        "upstream_sha256": "3e3237559a6148567a369effe6e9616bbc12a6b67c13c09b2d52e6f6382f04b8"
+      },
+      {
+        "path": "src/cuda_backend/device.rs",
+        "bytes": 23961,
+        "upstream_sha256": "40f4bb9512f9001a983802129b6cfee16381a24b7876f13ba02cd49b6dfe1925"
+      },
+      {
+        "path": "src/cuda_backend/error.rs",
+        "bytes": 1682,
+        "upstream_sha256": "b60bce29f50ce640fb1932009bd447f0ff7fc0e293900befb05a9d8df0e43413"
+      },
+      {
+        "path": "src/cuda_backend/mod.rs",
+        "bytes": 102490,
+        "upstream_sha256": "bc2bd5fe3702bfccb49d64af07dc4197013d6617c720643cd2a14b718f4134e2"
+      },
+      {
+        "path": "src/cuda_backend/utils.rs",
+        "bytes": 7449,
+        "upstream_sha256": "24ceb7c9e50389a911e9aaf4d4f01e92ca3f2a06743adfa72981ba870a0574d9"
+      },
+      {
+        "path": "src/custom_op.rs",
+        "bytes": 16561,
+        "upstream_sha256": "c0a4953dad882f3a392070fa6bbabeaa582d2576d50bf349e12a97d680161ff1"
+      },
+      {
+        "path": "src/device.rs",
+        "bytes": 15213,
+        "upstream_sha256": "0929b7e72e83dea86a40f43f55a61eb2ca0dcb2d1c3c2d6e698bd18cf801754b"
+      },
+      {
+        "path": "src/display.rs",
+        "bytes": 17747,
+        "upstream_sha256": "17d38758a849310137f69069a0806224b9fdb682c0b44196b6d5885327515211"
+      },
+      {
+        "path": "src/dtype.rs",
+        "bytes": 8170,
+        "upstream_sha256": "7aa09f4fb008d8ad5c2bbc83cfcd4bbcaab8f5e351d5f4ba6b93e7a1f1f2fe76"
+      },
+      {
+        "path": "src/dummy_cuda_backend.rs",
+        "bytes": 8475,
+        "upstream_sha256": "842836efb0c1ca8097d1a5c11140207f185b7f877603e98091afdf7d494fee47"
+      },
+      {
+        "path": "src/dummy_dtype.rs",
+        "bytes": 8036,
+        "upstream_sha256": "50bcae6eeba464291a8d85020e967056b42cc7199658999de7159d0c4e8190e0"
+      },
+      {
+        "path": "src/dummy_metal_backend.rs",
+        "bytes": 7147,
+        "upstream_sha256": "e59c40e1aea0210adac21316af7b7e9b838d8357da9492045f530a139d35acd7"
+      },
+      {
+        "path": "src/error.rs",
+        "bytes": 10898,
+        "upstream_sha256": "e6605678f4093e0867e73a5579aa8d046d13d65bd609d5851edf42d44051927d"
+      },
+      {
+        "path": "src/indexer.rs",
+        "bytes": 7912,
+        "upstream_sha256": "2df921d3e8284540a34c197b692b384ed5d6a25047d3685535f01c227718a3e0"
+      },
+      {
+        "path": "src/layout.rs",
+        "bytes": 8632,
+        "upstream_sha256": "1bf7fca1aa8759cfe4663a63ed9cce5dcc7ae8da84fc5a2e043697a279980db7"
+      },
+      {
+        "path": "src/lib.rs",
+        "bytes": 5216,
+        "upstream_sha256": "a7d035c1a1153b3acdee0c9378f5d2fbd14eb2e16e9e3f2fb27db687030640ab"
+      },
+      {
+        "path": "src/metal_backend/device.rs",
+        "bytes": 10385,
+        "upstream_sha256": "3ca33c5b6eec88fa8893f14726bd60ed259c60f42b7646464b375f8c9ff2434f"
+      },
+      {
+        "path": "src/metal_backend/mod.rs",
+        "bytes": 84528,
+        "upstream_sha256": "16bc99ee096c581eaa83ce6cf9d007674d4eb6bb5b6e30560ccb62a3daac07a1"
+      },
+      {
+        "path": "src/mkl.rs",
+        "bytes": 11567,
+        "upstream_sha256": "c80564bd6139736e0e28336ba3130f386da963d62238eb45f2f1a15c506c2254"
+      },
+      {
+        "path": "src/npy.rs",
+        "bytes": 18226,
+        "upstream_sha256": "e53194fd98b92c5c2bc4948cc39bcd59e63b3b477d550c2a8e4bc9c66db67bca"
+      },
+      {
+        "path": "src/op.rs",
+        "bytes": 27977,
+        "upstream_sha256": "8787d8e941217e500b7f653aa4252c41a0e15459c31f7373d0dc896fce4c4521"
+      },
+      {
+        "path": "src/pickle.rs",
+        "bytes": 27360,
+        "upstream_sha256": "7fcb931fb616c35c7817e5461cc6173d7c6635339223c360a6c22fb077c07d63"
+      },
+      {
+        "path": "src/quantized/avx.rs",
+        "bytes": 28323,
+        "upstream_sha256": "69cb5408571eb64812cb6386f0e24a7ff39fdc16482d44ee9f31fb40e536665c"
+      },
+      {
+        "path": "src/quantized/cuda.rs",
+        "bytes": 36078,
+        "upstream_sha256": "a085e61faf3d383fe332775673d691b585cabcb12701351a75839d9ebb8196c5"
+      },
+      {
+        "path": "src/quantized/dummy_cuda.rs",
+        "bytes": 2374,
+        "upstream_sha256": "534ff012566fea238b247715c278352fa1860202ea9c8db32636469769f6dd97"
+      },
+      {
+        "path": "src/quantized/dummy_metal.rs",
+        "bytes": 2161,
+        "upstream_sha256": "a9c727095f509046d1a50d131eee1529f9aa97ab306ceb1a44a1e827ea10109d"
+      },
+      {
+        "path": "src/quantized/ggml_file.rs",
+        "bytes": 9229,
+        "upstream_sha256": "dfc48f822e4393bc836efcf782f4a6bb36168ac9d641324a054f13ee862aadac"
+      },
+      {
+        "path": "src/quantized/gguf_file.rs",
+        "bytes": 18416,
+        "upstream_sha256": "a263c9076e3e233457cc3d7780e3240c6448c7b5b8c517e480353691be5ff186"
+      },
+      {
+        "path": "src/quantized/imatrix_file.rs",
+        "bytes": 2580,
+        "upstream_sha256": "4ad710e64a0c9d3e5c2be1f6ca0a760035babb66c5fb91774acd1d7a30288d66"
+      },
+      {
+        "path": "src/quantized/k_quants.rs",
+        "bytes": 87195,
+        "upstream_sha256": "736a4b74c26c8c3be2917ec4c4ca88cf87e892c6b3278f5a466726bdf84f21b1"
+      },
+      {
+        "path": "src/quantized/metal.rs",
+        "bytes": 14774,
+        "upstream_sha256": "cacf5336009a8f83e13fa32a3f1c5e28ab5a5d52fc91d9ec4ddc265a1bcc7eb4"
+      },
+      {
+        "path": "src/quantized/mod.rs",
+        "bytes": 32329,
+        "upstream_sha256": "82fe93c2b9c0625c9b7147a60e977acaff841a7e4e139f631e6c06fc5eb0e8a0"
+      },
+      {
+        "path": "src/quantized/neon.rs",
+        "bytes": 22872,
+        "upstream_sha256": "2a46cd5cf8f296c3673f61380bac49fd98232472ae5db60dc7babc788fdd0be7"
+      },
+      {
+        "path": "src/quantized/simd128.rs",
+        "bytes": 17120,
+        "upstream_sha256": "5c8000c6dea9803de8befde33b15970c1b1dcbf83b914c6261a3e9c2b658c1da"
+      },
+      {
+        "path": "src/quantized/utils.rs",
+        "bytes": 16370,
+        "upstream_sha256": "33a4ff45fafb4baecbd6b95f68fd373d447283be19e38e63f1f4da3434f3a47b"
+      },
+      {
+        "path": "src/safetensors.rs",
+        "bytes": 25322,
+        "upstream_sha256": "1259250e0899d842d34e0a2495c414fb63efdee0d78e74092a47648c5380bfb3"
+      },
+      {
+        "path": "src/scalar.rs",
+        "bytes": 3356,
+        "upstream_sha256": "d98ca484e6fd0580f2b8bb2c3c43283671496042aa9d58115829052532d6200c"
+      },
+      {
+        "path": "src/shape.rs",
+        "bytes": 19165,
+        "upstream_sha256": "0fb3b21b63f348efcc18222cecbc3b5ea510d14c50f728c9471a30e24901ba74"
+      },
+      {
+        "path": "src/sort.rs",
+        "bytes": 11046,
+        "upstream_sha256": "4c1263ab7b6f80a1acd05813a4afd4ef2aa98d44378458829dfc403bccfdbb92"
+      },
+      {
+        "path": "src/storage.rs",
+        "bytes": 29392,
+        "upstream_sha256": "6241271357ee152f0244e47053f40de811832fca89e8aece6420bbc1b5c485c4"
+      },
+      {
+        "path": "src/streaming.rs",
+        "bytes": 6138,
+        "upstream_sha256": "abd0de65d894b617e6e3fb0c0787f220582bcb1f8eb9341c33bb74aaa23bf165"
+      },
+      {
+        "path": "src/strided_index.rs",
+        "bytes": 2453,
+        "upstream_sha256": "b4884a6ad8d6fcb043b69b47b8203a035f40616057677802df32c4ee3799445b"
+      },
+      {
+        "path": "src/tensor.rs",
+        "bytes": 116067,
+        "upstream_sha256": "25b95a8deecffa87d55325d9ae258b9552778a7eb24a653b7c1438340aa21487"
+      },
+      {
+        "path": "src/tensor_cat.rs",
+        "bytes": 11055,
+        "upstream_sha256": "8c97ffbac8ca2fef78d5d1440e05df7915e6b1c2ae34ef891a36e6a6e989f497"
+      },
+      {
+        "path": "src/test_utils.rs",
+        "bytes": 2113,
+        "upstream_sha256": "b3eec41e2864344b9e0a0eec4f0be70f8273617b99684d41315809530327debb"
+      },
+      {
+        "path": "src/utils.rs",
+        "bytes": 888,
+        "upstream_sha256": "bdfc884fb12a14eb2b5a0dfafebd7951596ac9361f97c1cd93c4284507eec9e6"
+      },
+      {
+        "path": "src/variable.rs",
+        "bytes": 4731,
+        "upstream_sha256": "b9b10b5d2d4a81d1ab920f9337e556a634bae7e484a0b04ea855f9a903fc87ec"
+      },
+      {
+        "path": "tests/bilinear_tests.rs",
+        "bytes": 17560,
+        "upstream_sha256": "6844aa75cbe436d753391e3839619adca77a1f83d6ae78957261181fabbefe9a"
+      },
+      {
+        "path": "tests/conv_tests.rs",
+        "bytes": 36233,
+        "upstream_sha256": "f303e81c201c3b450d95b3b437d128ee4cea4344c3aa31f3d2f09b81d3e9ad8d"
+      },
+      {
+        "path": "tests/custom_op_tests.rs",
+        "bytes": 5395,
+        "upstream_sha256": "fa13ae08edf71d1c15a0a7509652367ee53a5960b722d7ee503494455fa4173d"
+      },
+      {
+        "path": "tests/display_tests.rs",
+        "bytes": 2794,
+        "upstream_sha256": "cf59d2ee9954a639db5c43ade847d4629503b706282419fae8c6481790c41e9b"
+      },
+      {
+        "path": "tests/fortran_tensor_3d.pth",
+        "bytes": 1486,
+        "upstream_sha256": "f5178bcd53eb6cb54c9a5e825492c717bf4e7bbadb9f0f3833b6c5c6764f7a38"
+      },
+      {
+        "path": "tests/grad_tests.rs",
+        "bytes": 17898,
+        "upstream_sha256": "f7fc99b411d75c914532236ee1d5ba9f783dc6a4165d40e9145d4110fe7a21c8"
+      },
+      {
+        "path": "tests/indexing_tests.rs",
+        "bytes": 3728,
+        "upstream_sha256": "3d9e855b36a3e0b8683777b3d13c6d34859773f47e5ff309d612cbfcafdd6be4"
+      },
+      {
+        "path": "tests/layout_tests.rs",
+        "bytes": 5185,
+        "upstream_sha256": "25e6347e2c647838331254ad21d437f6ab59bc26dd98110c696d365f05daa18e"
+      },
+      {
+        "path": "tests/matmul_tests.rs",
+        "bytes": 5382,
+        "upstream_sha256": "7499f96b1d2343ab919076f57f6907f85391af5c2e55d057673fb24ea59a061e"
+      },
+      {
+        "path": "tests/npy.py",
+        "bytes": 193,
+        "upstream_sha256": "e2547b01e13fc3807991286645dba5eea7c5b3d76e821be2cfa7822be7a2f818"
+      },
+      {
+        "path": "tests/pool_tests.rs",
+        "bytes": 3639,
+        "upstream_sha256": "b574c67ce8486578d55b3f27070f83bf1c1137173b9d3762d5cd2e7d25c9f8b3"
+      },
+      {
+        "path": "tests/pth.py",
+        "bytes": 1432,
+        "upstream_sha256": "7ef7b4686691b33173f376f22daa121e92c91bec172994afe3deebd53e77f0b7"
+      },
+      {
+        "path": "tests/pth_tests.rs",
+        "bytes": 919,
+        "upstream_sha256": "32440ce8dcb64ddf469e7cf122f4d19aa0ae484650c20d127d147fb99052fa35"
+      },
+      {
+        "path": "tests/quantized_tests.rs",
+        "bytes": 49755,
+        "upstream_sha256": "908ffb8070f75f123edcf7a19586e9c6172bd749b670a1fb53f3bfd523bceb34"
+      },
+      {
+        "path": "tests/serialization_tests.rs",
+        "bytes": 1905,
+        "upstream_sha256": "98db2da64586ec61234767421a792e712f2c072fe2382b1ff589c771b03b7d57"
+      },
+      {
+        "path": "tests/tensor_tests.rs",
+        "bytes": 66041,
+        "upstream_sha256": "8ce0f9b1406a9c30a1d2600dc88887875fec89b3c87e4eea21c971535b4bc261"
+      },
+      {
+        "path": "tests/test.npy",
+        "bytes": 208,
+        "upstream_sha256": "f314ddddf18999d4890f4fec8bb6539fc62b6f41861fa85e1c04c98a03097dda"
+      },
+      {
+        "path": "tests/test.npz",
+        "bytes": 668,
+        "upstream_sha256": "999497e0c309302915e4db2b16118ce097c68aac66c08058fac8db3d58c7809a"
+      },
+      {
+        "path": "tests/test.pt",
+        "bytes": 1165,
+        "upstream_sha256": "2bc164fa96f78ef8fcb8eab5fdae9b991efe946b9b63071fdf1769dba5d3fe25"
+      },
+      {
+        "path": "tests/test_with_key.pt",
+        "bytes": 1338,
+        "upstream_sha256": "2775d95f17d2630e2534e3ae09462624955031407a67f0f3b52115c49601b747"
+      }
+    ],
+    "patched_cargo_sha256": "cd6a7ad739f50345f0316b4c511cefd8b4fb202692b63adfffcd947905dbe6e5",
+    "modified_files": [
+      {
+        "path": "Cargo.toml",
+        "sha256": "cd6a7ad739f50345f0316b4c511cefd8b4fb202692b63adfffcd947905dbe6e5"
+      },
+      {
+        "path": "src/npy.rs",
+        "sha256": "8fff158559dc1fcd37903e70aa9b4694e9cf0de784e81354ce1e1c5a6c6d80cb"
+      },
+      {
+        "path": "src/pickle.rs",
+        "sha256": "017be74bd919390bfde629846fd89067fa0f76abf602775e02f129d10ae072cf"
+      }
+    ]
+  }
+]

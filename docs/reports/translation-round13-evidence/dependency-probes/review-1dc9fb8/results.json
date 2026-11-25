@@ -1,0 +1,101 @@
+{
+  "head": "1dc9fb80157afa2bfbb643ff598cffe60815dcd8",
+  "at_utc": "2026-11-02T08:41:56.198264+00:00",
+  "commands": [
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "scripts/check_workspace.py"
+      ],
+      "returncode": 0,
+      "seconds": 5.104311999981292,
+      "stdout": {
+        "file": "1-stdout.txt",
+        "bytes": 261,
+        "sha256": "82e69cb4a7917e79e4a2fc8ea51bf0107274a91a7af0610aff2ea4d1fd7410b7"
+      },
+      "stderr": {
+        "file": "1-stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_offline_vendor.py",
+        "-v"
+      ],
+      "returncode": 0,
+      "seconds": 8.075965400028508,
+      "stdout": {
+        "file": "2-stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "file": "2-stderr.txt",
+        "bytes": 546,
+        "sha256": "367c12c70c436befdd34a22071cbd59d1754b474f5f23355ef948d028ac70663"
+      }
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_translation_dependencies.py",
+        "-v"
+      ],
+      "returncode": 0,
+      "seconds": 4.09473120002076,
+      "stdout": {
+        "file": "3-stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "file": "3-stderr.txt",
+        "bytes": 693,
+        "sha256": "2ee095faed39f2a279e6c10d328345c4c75aa91d684e54df8087cd5b433578d4"
+      }
+    },
+    {
+      "command": [
+        "C:\\Users\\EDY\\.cargo\\bin\\cargo.exe",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "returncode": 0,
+      "seconds": 6.2364659999730065,
+      "stdout": {
+        "file": "4-stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "file": "4-stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "source_files": {
+    "scripts/check_workspace.py": "e91f333235a868f054d911510e8d60e2e8f8b9ddcd3a9b231bdf968a3d77193d",
+    "scripts/check_offline_vendor.py": "5fe58ee7048169dd9a350ed8d21fa2b7b2976f909ab73ee01f4443a3b936ccb8",
+    "scripts/audit_translation_dependencies.py": "749fac5cd898c6d9896f2d91098a740f89a66d879cdd9e5c6b36d8f20e5cd655",
+    "config/offline-runtime-source-patches.json": "bde52ab6cc3a79191be83490ea9ac92363050ecb37aaadad37552a0c0d3796ec",
+    ".gitattributes": "a2786284141d519098bb5f9a393c935e9a4f94894ba9777d77e34f5cb6e766d2"
+  }
+}

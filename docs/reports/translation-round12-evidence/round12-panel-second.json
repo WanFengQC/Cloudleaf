@@ -1,0 +1,22 @@
+{
+  "files": [
+    {
+      "path": ".local/round12-panel-second/result.json",
+      "bytes": 212,
+      "sha256": "4142d12314fcccdfa4bef8d59ad969fd53ab7de59520b0bb7708750dab5c9a2e",
+      "utf8": "{\r\n  \"command\": [\r\n    \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.exe\",\r\n    \"test\",\r\n    \"-p\",\r\n    \"cloudleaf-translation-panel\",\r\n    \"--all-targets\",\r\n    \"--locked\",\r\n    \"--offline\"\r\n  ],\r\n  \"returncode\": 101\r\n}\r\n"
+    },
+    {
+      "path": ".local/round12-panel-second/stderr.txt",
+      "bytes": 1817,
+      "sha256": "2eedc1089c7964addf330151af9b250f3b81592d2270dbae68509416263d5eab",
+      "utf8": "   Compiling windows-sys v0.61.2\n   Compiling socket2 v0.6.5\n   Compiling mio v1.2.4\n   Compiling rustls-platform-verifier v0.7.1\n   Compiling tokio v1.54.1\n   Compiling hyper v1.12.0\n   Compiling tower v0.5.3\n   Compiling tokio-rustls v0.26.6\n   Compiling tower-http v0.6.11\n   Compiling hyper-util v0.1.21\n   Compiling hyper-rustls v0.27.10\n   Compiling reqwest v0.13.3\n   Compiling cloudleaf-translation v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\crates\\cloudleaf-translation)\n   Compiling cloudleaf-translation-panel v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\apps\\cloudleaf-translation-panel)\nerror: `match` arm body without braces\n  --> apps\\cloudleaf-translation-panel\\tests\\controller.rs:76:114\n   |\n76 |         }));},Err(e)if e.kind()==std::io::ErrorKind::WouldBlock=>thread::sleep(Duration::from_millis(2)),Err(_)=>break;}}\n   |                                                                                                                --^^^^^ this statement is not surrounded by a body\n   |                                                                                                                |\n   |                                                                                                                while parsing the `match` arm starting here\n   |\nhelp: replace `;` with `,` to end a `match` arm expression\n   |\n76 -         }));},Err(e)if e.kind()==std::io::ErrorKind::WouldBlock=>thread::sleep(Duration::from_millis(2)),Err(_)=>break;}}\n76 +         }));},Err(e)if e.kind()==std::io::ErrorKind::WouldBlock=>thread::sleep(Duration::from_millis(2)),Err(_)=>break,}}\n   |\n\nerror: could not compile `cloudleaf-translation-panel` (test \"controller\") due to 1 previous error\nwarning: build failed, waiting for other jobs to finish...\n"
+    },
+    {
+      "path": ".local/round12-panel-second/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    }
+  ]
+}

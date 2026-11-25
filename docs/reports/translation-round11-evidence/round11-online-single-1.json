@@ -1,0 +1,22 @@
+{
+  "files": [
+    {
+      "path": ".local/round11-online-single-1/result.json",
+      "bytes": 793,
+      "sha256": "0e5a688c9a2f6a85138cf751790b3299987be8db7c4fb4102956f6181f70a3a2",
+      "utf8": "{\n  \"command\": [\n    \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.EXE\",\n    \"test\",\n    \"-p\",\n    \"cloudleaf-translation\",\n    \"--test\",\n    \"online\",\n    \"--locked\",\n    \"--offline\",\n    \"secrets_configuration_and_results_are_redacted_and_store_is_session_only\",\n    \"--\",\n    \"--exact\",\n    \"--nocapture\"\n  ],\n  \"returncode\": 101,\n  \"runner_sha256\": \"9d839998b7963e0eaa1083f87ec6e499da47c5f0e0e53b9dc176bcf3e8ac48cc\",\n  \"source_sha256\": {\n    \"crates/cloudleaf-translation/src/online.rs\": \"1362a3cc52216930f1656267307979c0527eadd4be15d608d49575d4968991d3\",\n    \"crates/cloudleaf-translation/src/secret.rs\": \"5fcb61fd6f57c8c9605debc3598644deb9e42101eac1e293adc0e91665cbfa35\",\n    \"crates/cloudleaf-translation/tests/online.rs\": \"d69e57fab5d1fd77819c80a31c780a80e47ed3104a1d7896c3802ea2a251fd9d\"\n  }\n}\n"
+    },
+    {
+      "path": ".local/round11-online-single-1/stderr.txt",
+      "bytes": 1001,
+      "sha256": "a8a010613f02d521b386ce74d06fcb63bbc078879aa2e7b1efcd027a2122ef79",
+      "utf8": "warning: unused `Result` that must be used\n   --> crates\\cloudleaf-translation\\tests\\online.rs:317:5\n    |\n317 |     service.shutdown();\n    |     ^^^^^^^^^^^^^^^^^^\n    |\n    = note: this `Result` may be an `Err` variant, which should be handled\n    = note: `#[warn(unused_must_use)]` on by default\nhelp: use `let _ = ...` to ignore the resulting value\n    |\n317 |     let _ = service.shutdown();\n    |     +++++++\n\nwarning: `cloudleaf-translation` (test \"online\") generated 1 warning\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.28s\n     Running tests\\online.rs (target\\debug\\deps\\online-7980f2c255331009.exe)\n\nthread 'secrets_configuration_and_results_are_redacted_and_store_is_session_only' panicked at crates\\cloudleaf-translation\\tests\\online.rs:574:55:\ncalled `Result::unwrap()` on an `Err` value: NetworkUnavailable\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\nerror: test failed, to rerun pass `-p cloudleaf-translation --test online`\n"
+    },
+    {
+      "path": ".local/round11-online-single-1/stdout.txt",
+      "bytes": 304,
+      "sha256": "1026ac707d21bff3ea02d41399f26c7d117e45853cedfbed6385e5b67ffc1e1c",
+      "utf8": "\nrunning 1 test\ntest secrets_configuration_and_results_are_redacted_and_store_is_session_only ... FAILED\n\nfailures:\n\nfailures:\n    secrets_configuration_and_results_are_redacted_and_store_is_session_only\n\ntest result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 9 filtered out; finished in 0.01s\n\n"
+    }
+  ]
+}

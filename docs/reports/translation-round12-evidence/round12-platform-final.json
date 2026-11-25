@@ -1,0 +1,58 @@
+{
+  "files": [
+    {
+      "path": ".local/round12-platform-final/1-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round12-platform-final/1-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round12-platform-final/2-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round12-platform-final/2-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round12-platform-final/3-stderr.txt",
+      "bytes": 1845,
+      "sha256": "9b908e6e7f96d88df265c393c6323a8a9fd72719df00b8b90e36b4fe09fd7360",
+      "utf8": "    Checking windows-sys v0.61.2\n    Checking mio v1.2.4\n    Checking socket2 v0.6.5\n    Checking rustls-platform-verifier v0.7.1\n    Checking tokio v1.54.1\n    Checking hyper v1.12.0\n    Checking tokio-rustls v0.26.6\n    Checking tower v0.5.3\n    Checking tower-http v0.6.11\n    Checking hyper-util v0.1.21\n    Checking hyper-rustls v0.27.10\n    Checking reqwest v0.13.3\n    Checking cloudleaf-translation v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\crates\\cloudleaf-translation)\n    Checking cloudleaf-translation-panel v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\apps\\cloudleaf-translation-panel)\nerror: this `if` statement can be collapsed\n   --> apps\\cloudleaf-translation-panel\\src\\settings.rs:186:9\n    |\n186 | /         if let Ok(bytes) = read_file(&self.directory.join(\"settings.json.bak\")) {\n187 | |             if let Ok((settings, migrated)) = parse(&bytes) {\n188 | |                 return Ok(prepare_loaded(\n189 | |                     settings,\n...   |\n194 | |         }\n    | |_________^\n    |\n    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#collapsible_if\n    = note: `-D clippy::collapsible-if` implied by `-D warnings`\n    = help: to override `-D warnings` add `#[allow(clippy::collapsible_if)]`\nhelp: collapse nested if block\n    |\n186 ~         if let Ok(bytes) = read_file(&self.directory.join(\"settings.json.bak\"))\n187 ~             && let Ok((settings, migrated)) = parse(&bytes) {\n188 |                 return Ok(prepare_loaded(\n...\n192 |                 ));\n193 ~             }\n    |\n\nerror: could not compile `cloudleaf-translation-panel` (lib) due to 1 previous error\nwarning: build failed, waiting for other jobs to finish...\nerror: could not compile `cloudleaf-translation-panel` (lib test) due to 1 previous error\n"
+    },
+    {
+      "path": ".local/round12-platform-final/3-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round12-platform-final/4-stderr.txt",
+      "bytes": 315,
+      "sha256": "427facec793fffd963f39d4972eb38bd8af74f48999fdcab458868e720b9ac26",
+      "utf8": "   Compiling cloudleaf-translation-panel v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\apps\\cloudleaf-translation-panel)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.19s\n     Running tests\\platform_settings.rs (target\\debug\\deps\\platform_settings-108bf1155dc5dacb.exe)\n"
+    },
+    {
+      "path": ".local/round12-platform-final/4-stdout.txt",
+      "bytes": 900,
+      "sha256": "2b0b027bfc74052abb02fe4fa8422c6f420cf50c299dbe69d3967d51f0e87773",
+      "utf8": "\nrunning 10 tests\ntest clipboard_encoding_is_unicode_crlf_and_nul_terminated ... ok\ntest defaults_and_strict_settings_validation_never_enable_network ... ok\ntest reference_is_endpoint_bound_and_settings_debug_excludes_content ... ok\ntest credential_namespaces_are_application_owned_and_debug_redacted ... ok\ntest isolated_real_windows_credential_roundtrip_update_delete_and_limit ... ok\ntest corruption_recovery_preserves_original_and_does_not_overwrite_valid_backup ... ok\ntest busy_clipboard_is_reported_without_reading_or_replacing_existing_content ... ok\ntest saved_settings_reload_offline_and_valid_previous_version_is_retained ... ok\ntest corrupt_real_credential_is_rejected_and_isolated_fixture_is_removed ... ok\ntest migration_unknown_fields_size_and_interrupted_temporary_files_are_safe ... ok\n\ntest result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s\n\n"
+    },
+    {
+      "path": ".local/round12-platform-final/result.json",
+      "bytes": 918,
+      "sha256": "18dcb0ebaf5aa2f852531d58ae3f003e9a4fd02d27698bae199dbdf58577c32a",
+      "utf8": "[\r\n  {\r\n    \"command\": [\r\n      \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.exe\",\r\n      \"fmt\",\r\n      \"-p\",\r\n      \"cloudleaf-translation-panel\"\r\n    ],\r\n    \"returncode\": 0\r\n  },\r\n  {\r\n    \"command\": [\r\n      \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.exe\",\r\n      \"fmt\",\r\n      \"-p\",\r\n      \"cloudleaf-translation-panel\",\r\n      \"--\",\r\n      \"--check\"\r\n    ],\r\n    \"returncode\": 0\r\n  },\r\n  {\r\n    \"command\": [\r\n      \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.exe\",\r\n      \"clippy\",\r\n      \"-p\",\r\n      \"cloudleaf-translation-panel\",\r\n      \"--all-targets\",\r\n      \"--locked\",\r\n      \"--offline\",\r\n      \"--\",\r\n      \"-D\",\r\n      \"warnings\"\r\n    ],\r\n    \"returncode\": 101\r\n  },\r\n  {\r\n    \"command\": [\r\n      \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.exe\",\r\n      \"test\",\r\n      \"-p\",\r\n      \"cloudleaf-translation-panel\",\r\n      \"--test\",\r\n      \"platform_settings\",\r\n      \"--locked\",\r\n      \"--offline\"\r\n    ],\r\n    \"returncode\": 0\r\n  }\r\n]\r\n"
+    }
+  ]
+}

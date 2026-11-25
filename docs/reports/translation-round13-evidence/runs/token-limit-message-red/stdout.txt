@@ -1,0 +1,18 @@
+
+running 1 test
+test controller::message_tests::input_limit_message_covers_provider_tokens_and_bytes ... FAILED
+
+failures:
+
+---- controller::message_tests::input_limit_message_covers_provider_tokens_and_bytes stdout ----
+
+thread 'controller::message_tests::input_limit_message_covers_provider_tokens_and_bytes' panicked at apps\cloudleaf-translation-panel\src\controller.rs:517:9:
+assertion failed: message.contains("token")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    controller::message_tests::input_limit_message_covers_provider_tokens_and_bytes
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+

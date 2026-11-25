@@ -1,0 +1,23 @@
+[package]
+name = "cloudleaf-bridge"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+description = "云笺输入与离线翻译事务桥接"
+
+[dependencies]
+cloudleaf-input.workspace = true
+cloudleaf-types.workspace = true
+cloudleaf-translation.workspace = true
+cloudleaf-offline.workspace = true
+cloudleaf-search.workspace = true
+serde_json = "=1.0.149"
+
+[[bin]]
+name = "cloudleaf-bridge-headless"
+path = "src/main.rs"
+
+[lints]
+workspace = true

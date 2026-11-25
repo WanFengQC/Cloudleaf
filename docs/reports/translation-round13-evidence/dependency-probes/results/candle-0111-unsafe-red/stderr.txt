@@ -1,0 +1,11 @@
+    Checking candle-core v0.11.1
+error[E0133]: call to unsafe function `__cpuid_count` is unsafe and requires unsafe function or block
+   --> C:\Users\EDY\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\candle-core-0.11.1\src\quantized\repack_x86.rs:589:24
+    |
+589 |             let info = core::arch::x86_64::__cpuid_count(7, 0);
+    |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+
+For more information about this error, try `rustc --explain E0133`.
+error: could not compile `candle-core` (lib) due to 1 previous error

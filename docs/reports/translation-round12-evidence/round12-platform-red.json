@@ -1,0 +1,22 @@
+{
+  "files": [
+    {
+      "path": ".local/round12-platform-red/result.json",
+      "bytes": 450,
+      "sha256": "248a39d956779aeefac596debb077f2b3985cde1e044118b576ba28016eab0ed",
+      "utf8": "{\r\n  \"command\": [\r\n    \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.exe\",\r\n    \"test\",\r\n    \"-p\",\r\n    \"cloudleaf-translation-panel\",\r\n    \"--test\",\r\n    \"platform_settings\",\r\n    \"--locked\",\r\n    \"--offline\"\r\n  ],\r\n  \"returncode\": 101,\r\n  \"head_plus_new_tests\": \"2c05aca75ab2c9ff9440256799fa34ef5fa37a57\",\r\n  \"scope\": \"New APIs absent; not an existing product defect\",\r\n  \"test_sha256\": \"e377b0746133792ebbecdcd597ff986ffbe97ab12e8bd32d40802ec8b83a9078\"\r\n}\r\n"
+    },
+    {
+      "path": ".local/round12-platform-red/stderr.txt",
+      "bytes": 2658,
+      "sha256": "49b7891c7e7f22578f64a929ce7048d72a74f097e7ff2e2a23367c19cf706fef",
+      "utf8": "   Compiling windows-sys v0.61.2\n   Compiling mio v1.2.4\n   Compiling socket2 v0.6.5\n   Compiling rustls-platform-verifier v0.7.1\n   Compiling tokio v1.54.1\n   Compiling hyper v1.12.0\n   Compiling tokio-rustls v0.26.6\n   Compiling tower v0.5.3\n   Compiling tower-http v0.6.11\n   Compiling hyper-util v0.1.21\n   Compiling hyper-rustls v0.27.10\n   Compiling reqwest v0.13.3\n   Compiling cloudleaf-translation v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\crates\\cloudleaf-translation)\n   Compiling cloudleaf-translation-panel v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\apps\\cloudleaf-translation-panel)\nerror[E0432]: unresolved imports `cloudleaf_translation_panel::platform::PlatformError`, `cloudleaf_translation_panel::platform::WindowsCredentialStore`, `cloudleaf_translation_panel::platform::unicode_clipboard_text`\n --> apps\\cloudleaf-translation-panel\\tests\\platform_settings.rs:2:45\n  |\n2 | use cloudleaf_translation_panel::platform::{PlatformError, WindowsCredentialStore, unicode_clipboard_text};\n  |                                             ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^ no `unicode_clipboard_text` in `platform`\n  |                                             |              |\n  |                                             |              no `WindowsCredentialStore` in `platform`\n  |                                             no `PlatformError` in `platform`\n\nerror[E0432]: unresolved imports `cloudleaf_translation_panel::settings::DirectionChoice`, `cloudleaf_translation_panel::settings::ProviderChoice`, `cloudleaf_translation_panel::settings::Settings`, `cloudleaf_translation_panel::settings::SettingsRepository`\n --> apps\\cloudleaf-translation-panel\\tests\\platform_settings.rs:3:45\n  |\n3 | use cloudleaf_translation_panel::settings::{DirectionChoice, ProviderChoice, Settings, SettingsRepository};\n  |                                             ^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^  ^^^^^^^^  ^^^^^^^^^^^^^^^^^^ no `SettingsRepository` in `settings`\n  |                                             |                |               |\n  |                                             |                |               no `Settings` in `settings`\n  |                                             |                no `ProviderChoice` in `settings`\n  |                                             no `DirectionChoice` in `settings`\n\nFor more information about this error, try `rustc --explain E0432`.\nerror: could not compile `cloudleaf-translation-panel` (test \"platform_settings\") due to 2 previous errors\nwarning: build failed, waiting for other jobs to finish...\n"
+    },
+    {
+      "path": ".local/round12-platform-red/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    }
+  ]
+}

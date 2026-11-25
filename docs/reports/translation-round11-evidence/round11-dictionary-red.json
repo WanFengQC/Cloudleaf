@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "path": ".local/round11-dictionary-red/01-stderr.txt",
+      "bytes": 620,
+      "sha256": "f02734451234540dcfb7bfd2e1201885836300eae6929708878acac8b9953fb1",
+      "utf8": "   Compiling cloudleaf-translation v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\crates\\cloudleaf-translation)\nerror[E0432]: unresolved import `cloudleaf_translation::dictionary_review_binding`\n --> crates\\cloudleaf-translation\\tests\\dictionary.rs:1:29\n  |\n1 | use cloudleaf_translation::{dictionary_review_binding, TranslationError};\n  |                             ^^^^^^^^^^^^^^^^^^^^^^^^^ no `dictionary_review_binding` in the root\n\nFor more information about this error, try `rustc --explain E0432`.\nerror: could not compile `cloudleaf-translation` (test \"dictionary\") due to 1 previous error\n"
+    },
+    {
+      "path": ".local/round11-dictionary-red/01-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round11-dictionary-red/02-stderr.txt",
+      "bytes": 1514,
+      "sha256": "6fa47689091ed6d319bc68f34bc625ce6fe450d2c96c9c0b8207babef02cf55d",
+      "utf8": "test_translation_dictionary_export (unittest.loader._FailedTest.test_translation_dictionary_export) ... ERROR\r\n\r\n======================================================================\r\nERROR: test_translation_dictionary_export (unittest.loader._FailedTest.test_translation_dictionary_export)\r\n----------------------------------------------------------------------\r\nImportError: Failed to import test module: test_translation_dictionary_export\r\nTraceback (most recent call last):\r\n  File \"C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\unittest\\loader.py\", line 396, in _find_test_path\r\n    module = self._get_module_from_name(name)\r\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\unittest\\loader.py\", line 339, in _get_module_from_name\r\n    __import__(name)\r\n  File \"C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\tests\\test_translation_dictionary_export.py\", line 9, in <module>\r\n    SPEC.loader.exec_module(MODULE)\r\n  File \"<frozen importlib._bootstrap_external>\", line 995, in exec_module\r\n  File \"<frozen importlib._bootstrap_external>\", line 1132, in get_code\r\n  File \"<frozen importlib._bootstrap_external>\", line 1190, in get_data\r\nFileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\Users\\\\EDY\\\\.codex\\\\worktrees\\\\translation-round11\\\\Cloudleaf\\\\scripts\\\\export_translation_dictionary.py'\r\n\r\n\r\n----------------------------------------------------------------------\r\nRan 1 test in 0.000s\r\n\r\nFAILED (errors=1)\r\n"
+    },
+    {
+      "path": ".local/round11-dictionary-red/02-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round11-dictionary-red/result.json",
+      "bytes": 1554,
+      "sha256": "260564b0e9ee0f32f0844bf7349f1c22b2299e98f17461184af821aad1ed87c9",
+      "utf8": "{\r\n  \"head\": \"020f15a1281643997cacaa6d52be9b1e4d650299\",\r\n  \"checks\": [\r\n    {\r\n      \"command\": [\r\n        \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.EXE\",\r\n        \"test\",\r\n        \"-p\",\r\n        \"cloudleaf-translation\",\r\n        \"--test\",\r\n        \"dictionary\",\r\n        \"--locked\",\r\n        \"--offline\"\r\n      ],\r\n      \"returncode\": 101,\r\n      \"seconds\": 0.6151135000109207,\r\n      \"stdout\": {\r\n        \"file\": \"01-stdout.txt\",\r\n        \"bytes\": 0,\r\n        \"sha256\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\"\r\n      },\r\n      \"stderr\": {\r\n        \"file\": \"01-stderr.txt\",\r\n        \"bytes\": 620,\r\n        \"sha256\": \"f02734451234540dcfb7bfd2e1201885836300eae6929708878acac8b9953fb1\"\r\n      }\r\n    },\r\n    {\r\n      \"command\": [\r\n        \"C:\\\\Users\\\\EDY\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe\",\r\n        \"-X\",\r\n        \"utf8\",\r\n        \"-m\",\r\n        \"unittest\",\r\n        \"discover\",\r\n        \"-s\",\r\n        \"tests\",\r\n        \"-p\",\r\n        \"test_translation_dictionary_export.py\",\r\n        \"-v\"\r\n      ],\r\n      \"returncode\": 1,\r\n      \"seconds\": 0.19040140000288375,\r\n      \"stdout\": {\r\n        \"file\": \"02-stdout.txt\",\r\n        \"bytes\": 0,\r\n        \"sha256\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\"\r\n      },\r\n      \"stderr\": {\r\n        \"file\": \"02-stderr.txt\",\r\n        \"bytes\": 1514,\r\n        \"sha256\": \"6fa47689091ed6d319bc68f34bc625ce6fe450d2c96c9c0b8207babef02cf55d\"\r\n      }\r\n    }\r\n  ],\r\n  \"runner_sha256\": \"18ec0179b8c7b2d3c13395835ca0993c83d9633f95b0e908f65d7254ac7dde83\"\r\n}\r\n"
+    }
+  ]
+}

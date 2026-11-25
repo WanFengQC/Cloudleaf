@@ -1,0 +1,46 @@
+{
+  "files": [
+    {
+      "path": ".local/round11-online-targeted-2/command-01-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round11-online-targeted-2/command-01-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round11-online-targeted-2/command-02-stderr.txt",
+      "bytes": 283,
+      "sha256": "9330a54c2c7ab0dbde1efae1c44b2c99fdccfc0a7ca7b7c9558c395e0e345110",
+      "utf8": "   Compiling cloudleaf-translation v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\crates\\cloudleaf-translation)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.05s\n     Running tests\\online.rs (target\\debug\\deps\\online-7980f2c255331009.exe)\n"
+    },
+    {
+      "path": ".local/round11-online-targeted-2/command-02-stdout.txt",
+      "bytes": 892,
+      "sha256": "0c6fbbbfd6d08b4a02b63c9791518c172b333bcf4783e28a962dc6b79cccedeb",
+      "utf8": "\nrunning 10 tests\ntest input_and_wire_body_limits_reject_before_network ... ok\ntest configuration_is_explicit_and_stale_consent_does_not_follow_an_endpoint_or_model_change ... ok\ntest disabled_no_consent_missing_secret_and_offline_mode_make_zero_connections ... ok\ntest secrets_configuration_and_results_are_redacted_and_store_is_session_only ... ok\ntest response_caps_cover_both_content_length_and_chunked_transfer ... ok\ntest explicit_user_endpoint_handles_both_directions_auto_and_unicode ... ok\ntest redirect_is_not_followed_and_disconnect_is_classified ... ok\ntest status_errors_have_no_response_body_and_do_not_automatically_retry ... ok\ntest invalid_truncated_refused_and_tool_responses_never_become_translation ... ok\ntest timeout_and_cancellation_cover_headers_and_response_body ... ok\n\ntest result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s\n\n"
+    },
+    {
+      "path": ".local/round11-online-targeted-2/command-03-stderr.txt",
+      "bytes": 521,
+      "sha256": "ab92de8b91cccba8e902b128f13316b612c6c5fc46cf5e2d794f41917f1dfcc1",
+      "utf8": "    Checking tokio v1.54.1\n    Checking rustls v0.23.46\n    Checking rustls-platform-verifier v0.7.1\n    Checking hyper v1.12.0\n    Checking tokio-rustls v0.26.6\n    Checking tower v0.5.3\n    Checking tower-http v0.6.11\n    Checking hyper-util v0.1.21\n    Checking hyper-rustls v0.27.10\n    Checking reqwest v0.13.3\n    Checking cloudleaf-translation v0.1.0 (C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\crates\\cloudleaf-translation)\n    Finished `dev` profile [unoptimized + debuginfo] target(s) in 7.71s\n"
+    },
+    {
+      "path": ".local/round11-online-targeted-2/command-03-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    {
+      "path": ".local/round11-online-targeted-2/result.json",
+      "bytes": 2648,
+      "sha256": "d490ce47721677046a1e5a260b8354b7eb180af8a77fa616128d6951ce64776e",
+      "utf8": "{\n  \"head\": \"020f15a1281643997cacaa6d52be9b1e4d650299\",\n  \"started_at_utc\": \"2026-10-30T09:27:02.752608+00:00\",\n  \"commands\": [\n    {\n      \"command\": [\n        \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.EXE\",\n        \"fmt\",\n        \"-p\",\n        \"cloudleaf-translation\"\n      ],\n      \"returncode\": 0,\n      \"seconds\": 0.4201364000036847,\n      \"stdout\": {\n        \"file\": \"command-01-stdout.txt\",\n        \"bytes\": 0,\n        \"sha256\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\"\n      },\n      \"stderr\": {\n        \"file\": \"command-01-stderr.txt\",\n        \"bytes\": 0,\n        \"sha256\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\"\n      }\n    },\n    {\n      \"command\": [\n        \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.EXE\",\n        \"test\",\n        \"-p\",\n        \"cloudleaf-translation\",\n        \"--test\",\n        \"online\",\n        \"--locked\",\n        \"--offline\"\n      ],\n      \"returncode\": 0,\n      \"seconds\": 2.7533236000017496,\n      \"stdout\": {\n        \"file\": \"command-02-stdout.txt\",\n        \"bytes\": 892,\n        \"sha256\": \"0c6fbbbfd6d08b4a02b63c9791518c172b333bcf4783e28a962dc6b79cccedeb\"\n      },\n      \"stderr\": {\n        \"file\": \"command-02-stderr.txt\",\n        \"bytes\": 283,\n        \"sha256\": \"9330a54c2c7ab0dbde1efae1c44b2c99fdccfc0a7ca7b7c9558c395e0e345110\"\n      }\n    },\n    {\n      \"command\": [\n        \"C:\\\\Users\\\\EDY\\\\.cargo\\\\bin\\\\cargo.EXE\",\n        \"clippy\",\n        \"-p\",\n        \"cloudleaf-translation\",\n        \"--all-targets\",\n        \"--locked\",\n        \"--offline\",\n        \"--\",\n        \"-D\",\n        \"warnings\"\n      ],\n      \"returncode\": 0,\n      \"seconds\": 8.096613200003048,\n      \"stdout\": {\n        \"file\": \"command-03-stdout.txt\",\n        \"bytes\": 0,\n        \"sha256\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\"\n      },\n      \"stderr\": {\n        \"file\": \"command-03-stderr.txt\",\n        \"bytes\": 521,\n        \"sha256\": \"ab92de8b91cccba8e902b128f13316b612c6c5fc46cf5e2d794f41917f1dfcc1\"\n      }\n    }\n  ],\n  \"runner_sha256\": \"5a012a2483cb911f054f30465269127d6a956b6f12154c8702d7c5c770634e9c\",\n  \"source_sha256\": {\n    \"crates/cloudleaf-translation/src/online.rs\": \"1362a3cc52216930f1656267307979c0527eadd4be15d608d49575d4968991d3\",\n    \"crates/cloudleaf-translation/src/secret.rs\": \"5fcb61fd6f57c8c9605debc3598644deb9e42101eac1e293adc0e91665cbfa35\",\n    \"crates/cloudleaf-translation/tests/online.rs\": \"1fb8c0a0d0840fc145c91a2494a73429d0c10ef65667ce67185c58990538e26e\"\n  },\n  \"initial_old_dependency_check\": \"First cargo check succeeded on prior RustSec-rejected dependency versions; tool transcript only, not original byte capture; not acceptance\"\n}\n"
+    }
+  ]
+}

@@ -2,9 +2,9 @@
 
 云笺的目标是算法完善、功能完整、响应流畅、翻译可靠、可长期维护的正式跨平台输入法。当前已有可独立测试的 M1/M2 Rust 原型；完整产品按 [v2 路线图](docs/roadmap.md)推进 Windows、核心算法和正式数据三个方向，再集成双语翻译与多平台。
 
-当前边界：TSF、原生候选窗口、生产词库、整句候选/语言模型、纠错/学习和翻译尚未实现。64条手写词典及 CLI 演示不代表最终产品能力。最终50项可追踪能力见[产品范围](docs/product-scope.md)，近期CL-001..006状态见[执行记录](docs/cl001-cl006-progress.md)。
+Round 21 隔离工作区把输入核心、独立[翻译服务](crates/cloudleaf-translation/README.md)、[真实 Marian 离线推理](crates/cloudleaf-offline/README.md)与[Windows 翻译面板](apps/cloudleaf-translation-panel/README.md)纳入同一 workspace。headless 桥接通过现有候选身份和提交事务工作，见[桥接设计](docs/integration-round21-design.md)。正式语言质量与原 Windows 系统验收仍有独立门禁。最终50项能力见[产品范围](docs/product-scope.md)。
 
-上段保留main历史基线。当前`codex/input-round14`为独立中文输入集成试验：复用CL-008搜索、CL-009固定已审词条和CL-007真实COM/候选窗口；默认构造仍为原型整词路径，试验须显式启用。已有代码不等于真实TSF应用或正式语言质量验收，main和原五PR不合并。
+输入保留 `codex/input-round14` 的 CL-008 搜索、CL-009 固定词条和 CL-007 COM/候选窗口实现。默认构造沿用原型整词路径，下面示例显式使用固定词典。真实 Windows 应用操作及 TSF 验收的进度与 headless 结果分开记录。
 
 ```text
 python scripts/verify_input_lexicon.py --release FIXED_RELEASE --output NEW_RECEIPT.json
@@ -41,6 +41,10 @@ cargo clippy --workspace --all-targets --locked --offline -- -D warnings
 cargo test --workspace --all-targets --locked --offline
 cargo test --workspace --doc --locked --offline
 python scripts/check_workspace.py
+cargo install cargo-audit --version 0.22.2 --locked
+python scripts/audit_windows_dependencies.py --output .local/input-dependency-audit.json
+python scripts/check_offline_vendor.py .
+python scripts/audit_translation_dependencies.py --output .local/translation-dependency-audit.json
 ```
 
 工具链首次安装需要下载。M1/M2核心没有外部 Rust 库依赖；后续平台分支通过精确审计政策登记依赖，首次locked fetch后离线构建和测试，核心输入始终离线运行。CI 对 Windows/Linux 执行同一套检查并上传报告；M1/M2检查点 `26b5e45` 已在两个平台真实通过，见[基线与CI记录](docs/reports/cl001-cl002-baseline.md)。原型本地数据见[历史验收报告](docs/reports/m1-m2-validation.md)。
@@ -82,6 +86,10 @@ python scripts/evaluate_algorithms.py --output-dir .local/algorithm-v1
 | `cloudleaf-candidate` | 确定性排序、去重与有界候选生成 |
 | `cloudleaf-input` | 输入状态、光标、选择、模式和生命周期 |
 | `cloudleaf-cli` | 测试宿主与独立基准入口 |
+| `cloudleaf-translation` | 独立后台翻译、词典检索、用户自定义 API 和确认状态机 |
+| `cloudleaf-offline` | [固定本地 Marian 模型](crates/cloudleaf-offline/README.md)的 CPU 整句推理、校验及导入管理 |
+| `cloudleaf-translation-panel` | [独立 Windows 面板](apps/cloudleaf-translation-panel/README.md)、设置、系统凭据和显式剪贴板复制 |
+| `cloudleaf-bridge` | 输入候选、翻译任务与宿主提交事务的无窗口桥接 |
 
 产品核心不直接写日志，不保存完整输入历史。候选注释不进入提交文本；提交失败保留请求，显式重试需要新 ID；宿主先确认提交，再派发下一事件。日志及错误规范详见[设计约定](docs/m1-m2-design.md)。
 

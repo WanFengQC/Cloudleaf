@@ -7,10 +7,15 @@ members = [
     "crates/cloudleaf-input",
     "crates/cloudleaf-search",
     "crates/cloudleaf-user",
+    "crates/cloudleaf-translation",
+    "crates/cloudleaf-offline",
+    "crates/cloudleaf-bridge",
     "apps/cloudleaf-cli",
     "apps/windows-ime",
+    "apps/cloudleaf-translation-panel",
 ]
 resolver = "3"
+exclude = ["vendor/offline/*"]
 
 [workspace.package]
 version = "0.1.0"
@@ -27,6 +32,9 @@ cloudleaf-candidate = { path = "crates/cloudleaf-candidate", version = "=0.1.0" 
 cloudleaf-input = { path = "crates/cloudleaf-input", version = "=0.1.0" }
 cloudleaf-search = { path = "crates/cloudleaf-search", version = "=0.1.0" }
 cloudleaf-user = { path = "crates/cloudleaf-user", version = "=0.1.0" }
+cloudleaf-translation = { path = "crates/cloudleaf-translation", version = "=0.1.0" }
+cloudleaf-offline = { path = "crates/cloudleaf-offline", version = "=0.1.0" }
+cloudleaf-bridge = { path = "crates/cloudleaf-bridge", version = "=0.1.0" }
 
 [workspace.lints.rust]
 unsafe_code = "forbid"
@@ -37,3 +45,14 @@ all = "warn"
 [profile.release]
 lto = "thin"
 codegen-units = 1
+
+[patch.crates-io]
+candle-core = { path = "vendor/offline/candle-core" }
+gemm = { path = "vendor/offline/gemm" }
+gemm-common = { path = "vendor/offline/gemm-common" }
+gemm-f16 = { path = "vendor/offline/gemm-f16" }
+gemm-f32 = { path = "vendor/offline/gemm-f32" }
+gemm-f64 = { path = "vendor/offline/gemm-f64" }
+gemm-c32 = { path = "vendor/offline/gemm-c32" }
+gemm-c64 = { path = "vendor/offline/gemm-c64" }
+pulp = { path = "vendor/offline/pulp" }

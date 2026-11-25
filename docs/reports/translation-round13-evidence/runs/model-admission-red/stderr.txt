@@ -1,0 +1,118 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+   Compiling stable_deref_trait v1.2.1
+   Compiling reborrow v0.5.5
+   Compiling libm v0.2.16
+   Compiling getrandom v0.3.4
+   Compiling crossbeam-utils v0.8.23
+   Compiling either v1.19.0
+   Compiling bytemuck v1.25.2
+   Compiling zerocopy v0.8.63
+   Compiling windows-sys v0.61.2
+   Compiling zerofrom v0.1.8
+   Compiling raw-cpuid v11.6.0
+   Compiling bitflags v1.3.2
+   Compiling rand_core v0.9.5
+   Compiling tracing v0.1.44
+   Compiling yoke v0.8.4
+   Compiling dyn-stack v0.13.2
+   Compiling raw-cpuid v10.7.0
+   Compiling dyn-stack v0.10.0
+   Compiling serde v1.0.228
+   Compiling crossbeam-epoch v0.9.21
+   Compiling zerovec v0.11.9
+   Compiling zerotrie v0.2.5
+   Compiling thiserror v1.0.69
+   Compiling hashbrown v0.17.1
+   Compiling equivalent v1.0.3
+   Compiling crossbeam-deque v0.8.8
+   Compiling safetensors v0.4.5
+   Compiling yoke v0.7.5
+   Compiling crc32fast v1.5.4
+   Compiling memmap2 v0.9.12
+   Compiling rayon-core v1.13.0
+   Compiling tinystr v0.8.5
+   Compiling potential_utf v0.1.6
+   Compiling indexmap v2.14.2
+   Compiling libloading v0.8.9
+   Compiling num_cpus v1.17.0
+   Compiling icu_locale_core v2.4.0
+   Compiling num-traits v0.2.19
+   Compiling icu_collections v2.4.0
+   Compiling rayon v1.11.0
+   Compiling num-complex v0.4.6
+   Compiling num-integer v0.1.47
+   Compiling zip v1.3.1
+   Compiling aho-corasick v1.1.5
+   Compiling pulp v0.21.5
+   Compiling pulp v0.18.22
+   Compiling num-bigint v0.4.8
+   Compiling num-iter v0.1.46
+   Compiling icu_provider v2.4.0
+   Compiling byteorder v1.5.0
+   Compiling icu_properties v2.4.0
+   Compiling icu_normalizer v2.4.0
+   Compiling regex-syntax v0.8.11
+   Compiling num-rational v0.4.2
+   Compiling bit-vec v0.6.3
+   Compiling num v0.4.3
+   Compiling bit-set v0.5.3
+   Compiling serde_plain v1.0.2
+   Compiling mio v1.2.4
+   Compiling socket2 v0.6.5
+   Compiling rustls-platform-verifier v0.7.1
+   Compiling idna_adapter v1.2.2
+   Compiling sentencepiece-rs v0.2.2
+   Compiling tokio v1.54.1
+   Compiling idna v1.1.0
+   Compiling ppv-lite86 v0.2.21
+   Compiling url v2.5.8
+   Compiling rand_chacha v0.9.0
+   Compiling regex-automata v0.4.18
+   Compiling rand v0.9.5
+   Compiling rand_distr v0.5.1
+   Compiling half v2.7.1
+   Compiling gemm-common v0.18.2
+   Compiling gemm-common v0.17.1
+   Compiling gemm-f32 v0.18.2
+   Compiling gemm-c32 v0.18.2
+   Compiling gemm-c64 v0.18.2
+   Compiling gemm-f64 v0.18.2
+   Compiling gemm-f32 v0.17.1
+   Compiling gemm-c32 v0.17.1
+   Compiling gemm-c64 v0.17.1
+   Compiling gemm-f64 v0.17.1
+   Compiling fancy-regex v0.13.0
+   Compiling gemm-f16 v0.18.2
+   Compiling gemm-f16 v0.17.1
+   Compiling hyper v1.12.0
+   Compiling hyper-util v0.1.21
+   Compiling gemm v0.17.1
+   Compiling tower v0.5.3
+   Compiling tokio-rustls v0.26.6
+   Compiling gemm v0.18.2
+   Compiling hyper-rustls v0.27.10
+   Compiling ug v0.4.0
+   Compiling tower-http v0.6.11
+   Compiling reqwest v0.13.3
+   Compiling candle-core v0.9.1
+   Compiling cloudleaf-translation v0.1.0 (C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-translation)
+   Compiling candle-nn v0.9.1
+   Compiling candle-transformers v0.9.1
+   Compiling cloudleaf-offline v0.1.0 (C:\Users\EDY\.codex\worktrees\translation-round11\Cloudleaf\crates\cloudleaf-offline)
+error[E0432]: unresolved imports `cloudleaf_offline::MarianProvider`, `cloudleaf_offline::ModelState`, `cloudleaf_offline::import_catalog`, `cloudleaf_offline::inspect_catalog`, `cloudleaf_offline::sha256_file`, `cloudleaf_offline::uninstall_catalog`
+ --> crates\cloudleaf-offline\tests\model_admission.rs:1:25
+  |
+1 | use cloudleaf_offline::{MarianProvider, ModelState, import_catalog, inspect_catalog, sha256_file, uninstall_catalog};
+  |                         ^^^^^^^^^^^^^^  ^^^^^^^^^^  ^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^  ^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^ no `uninstall_catalog` in the root
+  |                         |               |           |               |                |
+  |                         |               |           |               |                no `sha256_file` in the root
+  |                         |               |           |               no `inspect_catalog` in the root
+  |                         |               |           no `import_catalog` in the root
+  |                         |               no `ModelState` in the root
+  |                         no `MarianProvider` in the root
+
+For more information about this error, try `rustc --explain E0432`.
+error: could not compile `cloudleaf-offline` (test "model_admission") due to 1 previous error
