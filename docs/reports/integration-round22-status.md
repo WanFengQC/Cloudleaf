@@ -21,7 +21,9 @@
 
 搜索 837 对完整结果全等，预算失败 0/837，188,325 次机械参考完整候选比较无差异。跨键缓存默认关闭。合成用户词库写入、重新获取写锁及原有学习测试继续通过。
 
-本轮保留 IPC 解析拒绝未知字段、重复回收误报、Escape 后重试状态滞留及术语日期边界的首次失败证据。完整首轮查到 Windows 隐藏焦点夹具错误解读 SetFocus 返回的旧句柄，以及许可诊断措辞兼容问题。夹具现在直接断言目标焦点，原有行为断言保留，许可范围保持严格。[SetFocus 契约](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setfocus)依赖锁仅新增本地包与已在锁内的轻量序列化边。输入侧 Cargo 闭包验证未引入模型加载、Candle、Tokio 或联网后端。
+本轮保留 IPC 解析拒绝未知字段、重复回收误报、Escape 后重试状态滞留及术语日期边界的首次失败证据。完整首轮查到 Windows 隐藏焦点夹具错误解读 SetFocus 返回的旧句柄，以及许可诊断措辞兼容问题。夹具现在直接断言目标焦点，原有行为断言保留，许可范围保持严格。[SetFocus 契约](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setfocus)
+
+依赖锁仅新增本地包与已在锁内的轻量序列化边。输入侧 Cargo 闭包验证未引入模型加载、Candle、Tokio 或联网后端。
 
 ## 交付与后续门禁
 

@@ -25,7 +25,7 @@
 
 ## 可重放研发结果
 
-保持 Round 21 `dev-zh-03` 的真实原始输出。原文为「2026年11月2日，Cloudleaf 发布了第13轮研发计划，预算为123.45元。」模型输出如下。
+沿用 Round 21 `dev-zh-03` 样本，Round 22 最终双进程实验在 3 次方向切换后生成相同的原始输出。原文为「2026年11月2日，Cloudleaf 发布了第13轮研发计划，预算为123.45元。」模型输出如下。
 
 > On 2 November 2026, Claudelaf released the 13th round of R & D with a budget of $123.45.
 
