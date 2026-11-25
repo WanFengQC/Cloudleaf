@@ -1,0 +1,25 @@
+   Compiling cloudleaf-translation-integrity v0.1.0 (C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\crates\cloudleaf-translation-integrity)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 7.20s
+     Running unittests src\lib.rs (.local\round22-integrity-final\target\debug\deps\cloudleaf_translation_integrity-5afe2c712f5ad7fc.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\integrity.rs (.local\round22-integrity-final\target\debug\deps\integrity-7b9475a31bd158e3.exe)
+
+running 11 tests
+test recurring_terms_require_one_target_occurrence_each ... ok
+test provider_reported_truncation_needs_acknowledgement ... ok
+test glossary_cannot_override_a_conflicting_numeric_fact ... ok
+test distinguishes_equivalent_billing_currency_and_ambiguous_symbols ... ok
+test invalid_glossary_and_overlapping_case_rules_are_rejected_without_echoing_terms ... ok
+test round21_raw_model_output_exposes_currency_and_term_loss ... ok
+test term_direction_longest_match_case_boundary_and_disabled_entries ... ok
+test groups_numbers_and_normalizes_unicode_decimal_without_floating_point ... ok
+test local_calendar_equivalences_and_invalid_dates ... ok
+test clock_and_units_do_not_perform_conversions ... ok
+test numeric_counts_and_unexpected_output_are_preserved ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+

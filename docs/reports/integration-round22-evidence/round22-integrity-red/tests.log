@@ -1,0 +1,37 @@
+
+running 10 tests
+test invalid_glossary_and_overlapping_case_rules_are_rejected_without_echoing_terms ... ok
+test provider_reported_truncation_needs_acknowledgement ... ok
+test groups_numbers_and_normalizes_unicode_decimal_without_floating_point ... ok
+test numeric_counts_and_unexpected_output_are_preserved ... ok
+test distinguishes_equivalent_billing_currency_and_ambiguous_symbols ... ok
+test term_direction_longest_match_case_boundary_and_disabled_entries ... ok
+test local_calendar_equivalences_and_invalid_dates ... FAILED
+test clock_and_units_do_not_perform_conversions ... ok
+test recurring_terms_require_one_target_occurrence_each ... ok
+test round21_raw_model_output_exposes_currency_and_term_loss ... FAILED
+
+failures:
+
+---- local_calendar_equivalences_and_invalid_dates stdout ----
+
+thread 'local_calendar_equivalences_and_invalid_dates' panicked at crates/cloudleaf-translation-integrity/tests/integrity.rs:63:9:
+assertion `left == right` failed: １１／１２／２０２６ / November 12, 2026
+  left: [(Number, Unverifiable), (Number, Missing), (Date, Unverifiable)]
+ right: [(Date, Ambiguous)]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- round21_raw_model_output_exposes_currency_and_term_loss stdout ----
+
+thread 'round21_raw_model_output_exposes_currency_and_term_loss' panicked at crates/cloudleaf-translation-integrity/tests/integrity.rs:27:5:
+assertion `left == right` failed
+  left: [(Date, EquivalentRepresentation), (Term, Missing), (Number, Missing), (Money, Changed)]
+ right: [(Date, EquivalentRepresentation), (Term, Missing), (Number, ExactPreserved), (Money, Changed)]
+
+
+failures:
+    local_calendar_equivalences_and_invalid_dates
+    round21_raw_model_output_exposes_currency_and_term_loss
+
+test result: FAILED. 8 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

@@ -1,0 +1,139 @@
+error: extern location for cloudleaf_translation_ipc does not exist: C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\.local\target\release\libcloudleaf_translation_ipc.rlib
+ --> C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\tools\performance\round22-worker-probe.rs:4:5
+  |
+4 | use cloudleaf_translation_ipc::{
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0308]: mismatched types
+   --> C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\tools\performance\round22-worker-probe.rs:270:9
+    |
+268 |       let mut engine = InputEngine::with_language(
+    |                        -------------------------- arguments to this function are incorrect
+269 |           lexicon,
+270 | /         Config {
+271 | |             method: Method::PositionDag,
+272 | |             ranker: Ranker::Lexical,
+273 | |             output_k: 10,
+...   |
+278 | |             ..Default::default()
+279 | |         },
+    | |_________^ expected `cloudleaf_search::Config`, found `Config`
+    |
+note: two different versions of crate `cloudleaf_search` are being used; two types coming from two different versions of the same crate are different types even if they look the same
+   --> C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\crates\cloudleaf-search\src\lib.rs:103:1
+    |
+103 | pub struct Config {
+    | ^^^^^^^^^^^^^^^^^
+    | |
+    | this is the expected type `cloudleaf_search::Config`
+    | this is the found type `Config`
+    |
+   ::: C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\tools\performance\round22-worker-probe.rs:2:5
+    |
+  2 | use cloudleaf_input::{InputConfig, InputEngine, LanguageSnapshot, SearchSnapshot};
+    |     --------------- one version of crate `cloudleaf_search` used here, as a dependency of crate `cloudleaf_input`
+  3 | use cloudleaf_search::{Config, Method, Ranker};
+    |     ---------------- one version of crate `cloudleaf_search` used here, as a direct dependency of the current crate
+    = help: you can use `cargo tree` to explore your dependency tree
+note: associated function defined here
+   --> C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\crates\cloudleaf-input\src\lib.rs:209:12
+    |
+209 |     pub fn with_language(
+    |            ^^^^^^^^^^^^^
+
+error[E0308]: mismatched types
+   --> C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\tools\performance\round22-worker-probe.rs:284:19
+    |
+284 |     engine.handle(InputEvent::Activate);
+    |            ------ ^^^^^^^^^^^^^^^^^^^^ expected `cloudleaf_types::InputEvent`, found `InputEvent`
+    |            |
+    |            arguments to this method are incorrect
+    |
+note: two different versions of crate `cloudleaf_types` are being used; two types coming from two different versions of the same crate are different types even if they look the same
+   --> C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\crates\cloudleaf-types\src\lib.rs:113:1
+    |
+113 | pub enum InputEvent {
+    | ^^^^^^^^^^^^^^^^^^^
+    | |
+    | this is the expected type `cloudleaf_types::InputEvent`
+    | this is the found type `InputEvent`
+    |
+   ::: C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\tools\performance\round22-worker-probe.rs:2:5
+    |
+  2 | use cloudleaf_input::{InputConfig, InputEngine, LanguageSnapshot, SearchSnapshot};
+    |     --------------- one version of crate `cloudleaf_types` used here, as a dependency of crate `cloudleaf_pinyin`
+...
+  9 | use cloudleaf_types::{InputEvent, Key};
+    |     --------------- one version of crate `cloudleaf_types` used here, as a direct dependency of the current crate
+    = help: you can use `cargo tree` to explore your dependency tree
+note: method defined here
+   --> C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\crates\cloudleaf-input\src\lib.rs:570:12
+    |
+570 |     pub fn handle(&mut self, event: InputEvent) -> EventResult {
+    |            ^^^^^^
+
+error[E0308]: mismatched types
+   --> C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\tools\performance\round22-worker-probe.rs:396:36
+    |
+396 |         let result = engine.handle(event);
+    |                             ------ ^^^^^ expected `cloudleaf_types::InputEvent`, found `InputEvent`
+    |                             |
+    |                             arguments to this method are incorrect
+    |
+note: two different versions of crate `cloudleaf_types` are being used; two types coming from two different versions of the same crate are different types even if they look the same
+   --> C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\crates\cloudleaf-types\src\lib.rs:113:1
+    |
+113 | pub enum InputEvent {
+    | ^^^^^^^^^^^^^^^^^^^
+    | |
+    | this is the expected type `cloudleaf_types::InputEvent`
+    | this is the found type `InputEvent`
+    |
+   ::: C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\tools\performance\round22-worker-probe.rs:2:5
+    |
+  2 | use cloudleaf_input::{InputConfig, InputEngine, LanguageSnapshot, SearchSnapshot};
+    |     --------------- one version of crate `cloudleaf_types` used here, as a dependency of crate `cloudleaf_pinyin`
+...
+  9 | use cloudleaf_types::{InputEvent, Key};
+    |     --------------- one version of crate `cloudleaf_types` used here, as a direct dependency of the current crate
+    = help: you can use `cargo tree` to explore your dependency tree
+note: method defined here
+   --> C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\crates\cloudleaf-input\src\lib.rs:570:12
+    |
+570 |     pub fn handle(&mut self, event: InputEvent) -> EventResult {
+    |            ^^^^^^
+
+error[E0308]: mismatched types
+   --> C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\tools\performance\round22-worker-probe.rs:402:27
+    |
+402 |             engine.handle(InputEvent::CommitSucceeded { id: commit.id });
+    |                    ------ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `cloudleaf_types::InputEvent`, found `InputEvent`
+    |                    |
+    |                    arguments to this method are incorrect
+    |
+note: two different versions of crate `cloudleaf_types` are being used; two types coming from two different versions of the same crate are different types even if they look the same
+   --> C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\crates\cloudleaf-types\src\lib.rs:113:1
+    |
+113 | pub enum InputEvent {
+    | ^^^^^^^^^^^^^^^^^^^
+    | |
+    | this is the expected type `cloudleaf_types::InputEvent`
+    | this is the found type `InputEvent`
+    |
+   ::: C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\tools\performance\round22-worker-probe.rs:2:5
+    |
+  2 | use cloudleaf_input::{InputConfig, InputEngine, LanguageSnapshot, SearchSnapshot};
+    |     --------------- one version of crate `cloudleaf_types` used here, as a dependency of crate `cloudleaf_pinyin`
+...
+  9 | use cloudleaf_types::{InputEvent, Key};
+    |     --------------- one version of crate `cloudleaf_types` used here, as a direct dependency of the current crate
+    = help: you can use `cargo tree` to explore your dependency tree
+note: method defined here
+   --> C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\crates\cloudleaf-input\src\lib.rs:570:12
+    |
+570 |     pub fn handle(&mut self, event: InputEvent) -> EventResult {
+    |            ^^^^^^
+
+error: aborting due to 5 previous errors
+
+For more information about this error, try `rustc --explain E0308`.

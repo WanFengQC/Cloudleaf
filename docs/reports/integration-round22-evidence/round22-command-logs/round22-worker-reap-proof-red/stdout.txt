@@ -1,0 +1,18 @@
+
+running 1 test
+test client::tests::shutdown_cannot_later_claim_success_after_reap_was_not_proven ... FAILED
+
+failures:
+
+---- client::tests::shutdown_cannot_later_claim_success_after_reap_was_not_proven stdout ----
+
+thread 'client::tests::shutdown_cannot_later_claim_success_after_reap_was_not_proven' panicked at crates\cloudleaf-translation-ipc\src\client.rs:711:9:
+assertion failed: !client.wait_for_shutdown(Duration::ZERO)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    client::tests::shutdown_cannot_later_claim_success_after_reap_was_not_proven
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.01s
+

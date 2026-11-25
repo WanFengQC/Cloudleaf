@@ -1,0 +1,58 @@
+{
+  "command": [
+    "rustc",
+    "--edition=2024",
+    "-O",
+    "-C",
+    "lto=thin",
+    "-C",
+    "codegen-units=1",
+    "-L",
+    "dependency=C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\target\\release\\deps",
+    "-L",
+    "native=C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\target\\release\\build\\ring-5633eb04d934896c\\out",
+    "-L",
+    "native=C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\target\\release\\build\\ring-80460108abefd523\\out",
+    "--extern",
+    "cloudleaf_input=C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\target\\release\\libcloudleaf_input.rlib",
+    "--extern",
+    "cloudleaf_search=C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\target\\release\\libcloudleaf_search.rlib",
+    "--extern",
+    "cloudleaf_types=C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\target\\release\\libcloudleaf_types.rlib",
+    "--extern",
+    "cloudleaf_user=C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\target\\release\\libcloudleaf_user.rlib",
+    "--extern",
+    "cloudleaf_translation_ipc=C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\target\\release\\libcloudleaf_translation_ipc.rlib",
+    "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\tools\\performance\\round22-worker-probe.rs",
+    "-o",
+    "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\target\\release\\round22-worker-probe.exe"
+  ],
+  "returncode": 0,
+  "libraries": [
+    {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\target\\release\\libcloudleaf_input.rlib",
+      "bytes": 611730,
+      "sha256": "0a548b18c84217de256341160d682a041b20e1442574435294faddaf25baf451"
+    },
+    {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\target\\release\\libcloudleaf_search.rlib",
+      "bytes": 3229146,
+      "sha256": "3884f0f2c133a923cb2d5704f755efcd747bab4898032ce3b22e46b9bd1fc5c5"
+    },
+    {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\target\\release\\libcloudleaf_types.rlib",
+      "bytes": 100664,
+      "sha256": "44cd15da501f6b74a8ffe47a76c74d63454b36d8afb49ed63883d7048ac1f698"
+    },
+    {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\target\\release\\libcloudleaf_user.rlib",
+      "bytes": 944040,
+      "sha256": "f9f0d8df10c4e9c7ca4269997c0a91298837bd275ecfb79a9e8fc2de79f08f4f"
+    },
+    {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\target\\release\\libcloudleaf_translation_ipc.rlib",
+      "bytes": 2639646,
+      "sha256": "51acf96af2a5f49631bc06befdedd9950566e29ed1ffd4261a87d186ef2dd98c"
+    }
+  ]
+}

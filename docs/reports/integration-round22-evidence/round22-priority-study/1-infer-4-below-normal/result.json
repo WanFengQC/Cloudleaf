@@ -1,0 +1,975 @@
+{
+  "command": [
+    "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\target\\release\\round22-worker-probe.exe",
+    "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+    "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+    "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+    "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5",
+    "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-managed-models\\catalog-f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f\\catalog.json",
+    "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+    "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\tests\\fixtures\\input-round14-events.tsv",
+    "C:\\Users\\EDY\\AppData\\Local\\Temp\\cloudleaf-r22-synthetic-2yg60jjr\\store",
+    "infer",
+    "4"
+  ],
+  "returncode": 0,
+  "seconds": 3.344000000040978,
+  "host_pid": 42356,
+  "worker_pids": [
+    45896
+  ],
+  "samples": [
+    {
+      "unix_ns": 1795621111684940500,
+      "host": {
+        "pid": 42356,
+        "rss": 2785280,
+        "peak_rss": 2785280,
+        "private": 487424,
+        "threads": 1,
+        "process_cpu_ns": 15625000,
+        "read_bytes": 1003520
+      },
+      "workers": []
+    },
+    {
+      "unix_ns": 1795621111751494900,
+      "host": {
+        "pid": 42356,
+        "rss": 34041856,
+        "peak_rss": 34041856,
+        "private": 30535680,
+        "threads": 4,
+        "process_cpu_ns": 78125000,
+        "read_bytes": 24605693
+      },
+      "workers": []
+    },
+    {
+      "unix_ns": 1795621111817897100,
+      "host": {
+        "pid": 42356,
+        "rss": 54542336,
+        "peak_rss": 60133376,
+        "private": 58662912,
+        "threads": 4,
+        "process_cpu_ns": 140625000,
+        "read_bytes": 24605693
+      },
+      "workers": []
+    },
+    {
+      "unix_ns": 1795621111887306100,
+      "host": {
+        "pid": 42356,
+        "rss": 76165120,
+        "peak_rss": 76165120,
+        "private": 74055680,
+        "threads": 4,
+        "process_cpu_ns": 218750000,
+        "read_bytes": 24605693
+      },
+      "workers": []
+    },
+    {
+      "unix_ns": 1795621111954827000,
+      "host": {
+        "pid": 42356,
+        "rss": 96845824,
+        "peak_rss": 96845824,
+        "private": 104202240,
+        "threads": 4,
+        "process_cpu_ns": 281250000,
+        "read_bytes": 24605693
+      },
+      "workers": []
+    },
+    {
+      "unix_ns": 1795621112021673600,
+      "host": {
+        "pid": 42356,
+        "rss": 117362688,
+        "peak_rss": 117362688,
+        "private": 118882304,
+        "threads": 4,
+        "process_cpu_ns": 328125000,
+        "read_bytes": 24605693
+      },
+      "workers": []
+    },
+    {
+      "unix_ns": 1795621112091875900,
+      "host": {
+        "pid": 42356,
+        "rss": 152342528,
+        "peak_rss": 156741632,
+        "private": 161628160,
+        "threads": 4,
+        "process_cpu_ns": 406250000,
+        "read_bytes": 24605693
+      },
+      "workers": []
+    },
+    {
+      "unix_ns": 1795621112159817600,
+      "host": {
+        "pid": 42356,
+        "rss": 178941952,
+        "peak_rss": 194617344,
+        "private": 198746112,
+        "threads": 4,
+        "process_cpu_ns": 468750000,
+        "read_bytes": 24605693
+      },
+      "workers": []
+    },
+    {
+      "unix_ns": 1795621112231739700,
+      "host": {
+        "pid": 42356,
+        "rss": 168927232,
+        "peak_rss": 194617344,
+        "private": 171597824,
+        "threads": 4,
+        "process_cpu_ns": 546875000,
+        "read_bytes": 27640511
+      },
+      "workers": []
+    },
+    {
+      "unix_ns": 1795621112299551300,
+      "host": {
+        "pid": 42356,
+        "rss": 167882752,
+        "peak_rss": 194617344,
+        "private": 167948288,
+        "threads": 5,
+        "process_cpu_ns": 609375000,
+        "read_bytes": 30951454
+      },
+      "workers": []
+    },
+    {
+      "unix_ns": 1795621112366354300,
+      "host": {
+        "pid": 42356,
+        "rss": 168009728,
+        "peak_rss": 194617344,
+        "private": 167948288,
+        "threads": 7,
+        "process_cpu_ns": 609375000,
+        "read_bytes": 30952069
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 5083136,
+          "peak_rss": 5083136,
+          "private": 905216,
+          "threads": 6,
+          "process_cpu_ns": 46875000,
+          "read_bytes": 29057629
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621112433030600,
+      "host": {
+        "pid": 42356,
+        "rss": 168009728,
+        "peak_rss": 194617344,
+        "private": 167948288,
+        "threads": 7,
+        "process_cpu_ns": 625000000,
+        "read_bytes": 30952069
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 5083136,
+          "peak_rss": 5083136,
+          "private": 905216,
+          "threads": 6,
+          "process_cpu_ns": 109375000,
+          "read_bytes": 89285213
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621112500078300,
+      "host": {
+        "pid": 42356,
+        "rss": 168009728,
+        "peak_rss": 194617344,
+        "private": 167948288,
+        "threads": 7,
+        "process_cpu_ns": 625000000,
+        "read_bytes": 30952069
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 5083136,
+          "peak_rss": 5083136,
+          "private": 905216,
+          "threads": 6,
+          "process_cpu_ns": 187500000,
+          "read_bytes": 150168157
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621112566621800,
+      "host": {
+        "pid": 42356,
+        "rss": 168009728,
+        "peak_rss": 194617344,
+        "private": 167948288,
+        "threads": 7,
+        "process_cpu_ns": 625000000,
+        "read_bytes": 30952069
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 5083136,
+          "peak_rss": 5083136,
+          "private": 905216,
+          "threads": 6,
+          "process_cpu_ns": 250000000,
+          "read_bytes": 208953949
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621112632627600,
+      "host": {
+        "pid": 42356,
+        "rss": 168009728,
+        "peak_rss": 194617344,
+        "private": 167948288,
+        "threads": 7,
+        "process_cpu_ns": 625000000,
+        "read_bytes": 30952069
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 5083136,
+          "peak_rss": 5083136,
+          "private": 905216,
+          "threads": 6,
+          "process_cpu_ns": 312500000,
+          "read_bytes": 269443677
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621112700570000,
+      "host": {
+        "pid": 42356,
+        "rss": 168009728,
+        "peak_rss": 194617344,
+        "private": 167948288,
+        "threads": 7,
+        "process_cpu_ns": 625000000,
+        "read_bytes": 30952267
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 9396224,
+          "peak_rss": 9396224,
+          "private": 5300224,
+          "threads": 10,
+          "process_cpu_ns": 390625000,
+          "read_bytes": 317942812
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621112767523100,
+      "host": {
+        "pid": 42356,
+        "rss": 168009728,
+        "peak_rss": 194617344,
+        "private": 167948288,
+        "threads": 7,
+        "process_cpu_ns": 625000000,
+        "read_bytes": 30952267
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 34988032,
+          "peak_rss": 34988032,
+          "private": 33185792,
+          "threads": 10,
+          "process_cpu_ns": 453125000,
+          "read_bytes": 319553847
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621112839125300,
+      "host": {
+        "pid": 42356,
+        "rss": 168009728,
+        "peak_rss": 194617344,
+        "private": 167948288,
+        "threads": 7,
+        "process_cpu_ns": 625000000,
+        "read_bytes": 30952267
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 348192768,
+          "peak_rss": 348192768,
+          "private": 345669632,
+          "threads": 10,
+          "process_cpu_ns": 531250000,
+          "read_bytes": 319553847
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621112912470100,
+      "host": {
+        "pid": 42356,
+        "rss": 168009728,
+        "peak_rss": 194617344,
+        "private": 167948288,
+        "threads": 7,
+        "process_cpu_ns": 625000000,
+        "read_bytes": 30952267
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 348192768,
+          "peak_rss": 348192768,
+          "private": 345669632,
+          "threads": 10,
+          "process_cpu_ns": 593750000,
+          "read_bytes": 319553847
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621112982727100,
+      "host": {
+        "pid": 42356,
+        "rss": 168009728,
+        "peak_rss": 194617344,
+        "private": 167948288,
+        "threads": 7,
+        "process_cpu_ns": 625000000,
+        "read_bytes": 30952267
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 543518720,
+          "peak_rss": 543518720,
+          "private": 542633984,
+          "threads": 10,
+          "process_cpu_ns": 671875000,
+          "read_bytes": 631616283
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621113055473900,
+      "host": {
+        "pid": 42356,
+        "rss": 168087552,
+        "peak_rss": 194617344,
+        "private": 167948288,
+        "threads": 7,
+        "process_cpu_ns": 640625000,
+        "read_bytes": 30952467
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 348364800,
+          "peak_rss": 660381696,
+          "private": 345939968,
+          "threads": 10,
+          "process_cpu_ns": 734375000,
+          "read_bytes": 631616283
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621113128943100,
+      "host": {
+        "pid": 42356,
+        "rss": 168091648,
+        "peak_rss": 194617344,
+        "private": 167952384,
+        "threads": 7,
+        "process_cpu_ns": 718750000,
+        "read_bytes": 30952467
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 353030144,
+          "peak_rss": 660381696,
+          "private": 350515200,
+          "threads": 10,
+          "process_cpu_ns": 828125000,
+          "read_bytes": 631616283
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621113202828900,
+      "host": {
+        "pid": 42356,
+        "rss": 168091648,
+        "peak_rss": 194617344,
+        "private": 167952384,
+        "threads": 7,
+        "process_cpu_ns": 796875000,
+        "read_bytes": 30952467
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 353259520,
+          "peak_rss": 660381696,
+          "private": 350543872,
+          "threads": 10,
+          "process_cpu_ns": 906250000,
+          "read_bytes": 631616283
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621113277918900,
+      "host": {
+        "pid": 42356,
+        "rss": 168095744,
+        "peak_rss": 194617344,
+        "private": 167952384,
+        "threads": 7,
+        "process_cpu_ns": 875000000,
+        "read_bytes": 30952467
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 353591296,
+          "peak_rss": 660381696,
+          "private": 351555584,
+          "threads": 10,
+          "process_cpu_ns": 1031250000,
+          "read_bytes": 631616283
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621113357089200,
+      "host": {
+        "pid": 42356,
+        "rss": 168095744,
+        "peak_rss": 194617344,
+        "private": 167952384,
+        "threads": 7,
+        "process_cpu_ns": 953125000,
+        "read_bytes": 30952467
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 353726464,
+          "peak_rss": 660381696,
+          "private": 351555584,
+          "threads": 10,
+          "process_cpu_ns": 1109375000,
+          "read_bytes": 631616283
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621113433906800,
+      "host": {
+        "pid": 42356,
+        "rss": 168136704,
+        "peak_rss": 194617344,
+        "private": 167952384,
+        "threads": 7,
+        "process_cpu_ns": 1031250000,
+        "read_bytes": 30952467
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 353726464,
+          "peak_rss": 660381696,
+          "private": 351555584,
+          "threads": 10,
+          "process_cpu_ns": 1234375000,
+          "read_bytes": 631616283
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621113504338800,
+      "host": {
+        "pid": 42356,
+        "rss": 168132608,
+        "peak_rss": 194617344,
+        "private": 167952384,
+        "threads": 7,
+        "process_cpu_ns": 1078125000,
+        "read_bytes": 30952467
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 353726464,
+          "peak_rss": 660381696,
+          "private": 351555584,
+          "threads": 10,
+          "process_cpu_ns": 1343750000,
+          "read_bytes": 631616283
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621113577848600,
+      "host": {
+        "pid": 42356,
+        "rss": 168132608,
+        "peak_rss": 194617344,
+        "private": 167952384,
+        "threads": 7,
+        "process_cpu_ns": 1078125000,
+        "read_bytes": 30952467
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 353734656,
+          "peak_rss": 660381696,
+          "private": 351555584,
+          "threads": 10,
+          "process_cpu_ns": 1421875000,
+          "read_bytes": 631616283
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621113652057200,
+      "host": {
+        "pid": 42356,
+        "rss": 168132608,
+        "peak_rss": 194617344,
+        "private": 167952384,
+        "threads": 7,
+        "process_cpu_ns": 1078125000,
+        "read_bytes": 30952467
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 353734656,
+          "peak_rss": 660381696,
+          "private": 351555584,
+          "threads": 10,
+          "process_cpu_ns": 1578125000,
+          "read_bytes": 631616283
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621113728245300,
+      "host": {
+        "pid": 42356,
+        "rss": 168132608,
+        "peak_rss": 194617344,
+        "private": 167952384,
+        "threads": 7,
+        "process_cpu_ns": 1078125000,
+        "read_bytes": 30952467
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 353837056,
+          "peak_rss": 660381696,
+          "private": 351555584,
+          "threads": 10,
+          "process_cpu_ns": 1640625000,
+          "read_bytes": 631616283
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621113803407100,
+      "host": {
+        "pid": 42356,
+        "rss": 168132608,
+        "peak_rss": 194617344,
+        "private": 167952384,
+        "threads": 7,
+        "process_cpu_ns": 1078125000,
+        "read_bytes": 30952467
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 354013184,
+          "peak_rss": 660381696,
+          "private": 351555584,
+          "threads": 10,
+          "process_cpu_ns": 1796875000,
+          "read_bytes": 631616283
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621113877093800,
+      "host": {
+        "pid": 42356,
+        "rss": 168132608,
+        "peak_rss": 194617344,
+        "private": 167952384,
+        "threads": 7,
+        "process_cpu_ns": 1078125000,
+        "read_bytes": 30952467
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 354013184,
+          "peak_rss": 660381696,
+          "private": 351555584,
+          "threads": 10,
+          "process_cpu_ns": 1875000000,
+          "read_bytes": 631616283
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621113952023600,
+      "host": {
+        "pid": 42356,
+        "rss": 168132608,
+        "peak_rss": 194617344,
+        "private": 167952384,
+        "threads": 7,
+        "process_cpu_ns": 1078125000,
+        "read_bytes": 30952467
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 354156544,
+          "peak_rss": 660381696,
+          "private": 351555584,
+          "threads": 10,
+          "process_cpu_ns": 1937500000,
+          "read_bytes": 631616283
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621114026785900,
+      "host": {
+        "pid": 42356,
+        "rss": 168132608,
+        "peak_rss": 194617344,
+        "private": 167952384,
+        "threads": 7,
+        "process_cpu_ns": 1078125000,
+        "read_bytes": 30952467
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 354164736,
+          "peak_rss": 660381696,
+          "private": 351555584,
+          "threads": 10,
+          "process_cpu_ns": 2015625000,
+          "read_bytes": 631616283
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621114102777200,
+      "host": {
+        "pid": 42356,
+        "rss": 168132608,
+        "peak_rss": 194617344,
+        "private": 167952384,
+        "threads": 7,
+        "process_cpu_ns": 1078125000,
+        "read_bytes": 30952467
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 354344960,
+          "peak_rss": 660381696,
+          "private": 351555584,
+          "threads": 10,
+          "process_cpu_ns": 2125000000,
+          "read_bytes": 631616283
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621114178855400,
+      "host": {
+        "pid": 42356,
+        "rss": 168132608,
+        "peak_rss": 194617344,
+        "private": 167952384,
+        "threads": 7,
+        "process_cpu_ns": 1078125000,
+        "read_bytes": 30952467
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 354619392,
+          "peak_rss": 660381696,
+          "private": 351735808,
+          "threads": 10,
+          "process_cpu_ns": 2203125000,
+          "read_bytes": 631616283
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621114258985700,
+      "host": {
+        "pid": 42356,
+        "rss": 168132608,
+        "peak_rss": 194617344,
+        "private": 167952384,
+        "threads": 7,
+        "process_cpu_ns": 1078125000,
+        "read_bytes": 30952467
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 354656256,
+          "peak_rss": 660381696,
+          "private": 351735808,
+          "threads": 10,
+          "process_cpu_ns": 2281250000,
+          "read_bytes": 631616283
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621114337713500,
+      "host": {
+        "pid": 42356,
+        "rss": 168132608,
+        "peak_rss": 194617344,
+        "private": 167952384,
+        "threads": 7,
+        "process_cpu_ns": 1093750000,
+        "read_bytes": 30952467
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 355086336,
+          "peak_rss": 660381696,
+          "private": 352178176,
+          "threads": 10,
+          "process_cpu_ns": 2453125000,
+          "read_bytes": 631616283
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621114413343400,
+      "host": {
+        "pid": 42356,
+        "rss": 168132608,
+        "peak_rss": 194617344,
+        "private": 167952384,
+        "threads": 7,
+        "process_cpu_ns": 1093750000,
+        "read_bytes": 30952467
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 355115008,
+          "peak_rss": 660381696,
+          "private": 352178176,
+          "threads": 10,
+          "process_cpu_ns": 2531250000,
+          "read_bytes": 631616283
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621114488142800,
+      "host": {
+        "pid": 42356,
+        "rss": 168132608,
+        "peak_rss": 194617344,
+        "private": 167952384,
+        "threads": 7,
+        "process_cpu_ns": 1093750000,
+        "read_bytes": 30952467
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 355119104,
+          "peak_rss": 660381696,
+          "private": 352178176,
+          "threads": 10,
+          "process_cpu_ns": 2609375000,
+          "read_bytes": 631616283
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621114563001800,
+      "host": {
+        "pid": 42356,
+        "rss": 168132608,
+        "peak_rss": 194617344,
+        "private": 167952384,
+        "threads": 7,
+        "process_cpu_ns": 1093750000,
+        "read_bytes": 30952467
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 355209216,
+          "peak_rss": 660381696,
+          "private": 352358400,
+          "threads": 10,
+          "process_cpu_ns": 2687500000,
+          "read_bytes": 631616283
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621114636873800,
+      "host": {
+        "pid": 42356,
+        "rss": 168132608,
+        "peak_rss": 194617344,
+        "private": 167952384,
+        "threads": 7,
+        "process_cpu_ns": 1093750000,
+        "read_bytes": 30952467
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 355209216,
+          "peak_rss": 660381696,
+          "private": 352358400,
+          "threads": 10,
+          "process_cpu_ns": 2812500000,
+          "read_bytes": 631616283
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621114714496700,
+      "host": {
+        "pid": 42356,
+        "rss": 168132608,
+        "peak_rss": 194617344,
+        "private": 167952384,
+        "threads": 7,
+        "process_cpu_ns": 1093750000,
+        "read_bytes": 30952467
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 355459072,
+          "peak_rss": 660381696,
+          "private": 352538624,
+          "threads": 10,
+          "process_cpu_ns": 2953125000,
+          "read_bytes": 631616283
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621114791808300,
+      "host": {
+        "pid": 42356,
+        "rss": 168185856,
+        "peak_rss": 194617344,
+        "private": 167952384,
+        "threads": 7,
+        "process_cpu_ns": 1093750000,
+        "read_bytes": 30953725
+      },
+      "workers": [
+        {
+          "pid": 45896,
+          "rss": 350224384,
+          "peak_rss": 660381696,
+          "private": 347316224,
+          "threads": 10,
+          "process_cpu_ns": 3031250000,
+          "read_bytes": 631616283
+        }
+      ]
+    },
+    {
+      "unix_ns": 1795621114867906000,
+      "host": {
+        "pid": 42356,
+        "rss": 158633984,
+        "peak_rss": 194617344,
+        "private": 160251904,
+        "threads": 4,
+        "process_cpu_ns": 1093750000,
+        "read_bytes": 30953725
+      },
+      "workers": []
+    },
+    {
+      "unix_ns": 1795621114938421000,
+      "host": {
+        "pid": 42356,
+        "rss": 32768,
+        "peak_rss": 194617344,
+        "private": 77824,
+        "threads": 1,
+        "process_cpu_ns": 1171875000,
+        "read_bytes": 30953725
+      },
+      "workers": []
+    }
+  ],
+  "priority": "below-normal",
+  "verified_priority_classes": {
+    "45896": 16384
+  },
+  "stdout": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\round22-priority-study\\1-infer-4-below-normal\\stdout.txt",
+    "bytes": 351020,
+    "sha256": "9c791d1374156f86957361f0cd0d99659744c792959772120707d856782438f8"
+  },
+  "stderr": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\round22-priority-study\\1-infer-4-below-normal\\stderr.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

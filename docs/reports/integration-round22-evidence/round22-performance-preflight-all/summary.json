@@ -1,0 +1,466 @@
+{
+  "head": "4959f35bcee6a3f48fac8f3e8539cc994f6322f1",
+  "tracked_dirty": true,
+  "utc": "2026-11-25T15:31:34.223968+00:00",
+  "environment": {
+    "os": "Windows-11-10.0.26300-SP0",
+    "cpu": "Intel64 Family 6 Model 167 Stepping 1, GenuineIntel"
+  },
+  "identities": {
+    "runtime": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+      "bytes": 23602173,
+      "sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+    },
+    "language": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+      "bytes": 3034818,
+      "sha256": "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5"
+    },
+    "catalog": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-managed-models\\catalog-f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f\\catalog.json",
+      "bytes": 326,
+      "sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f"
+    },
+    "events": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\tests\\fixtures\\input-round14-events.tsv",
+      "bytes": 863,
+      "sha256": "e087cc965bd2f6c889a84f3db89b3829ccfda452f436d7b3cf562bbb965602ad"
+    },
+    "tool": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\tools\\performance\\round22_worker_replay.py",
+      "bytes": 14900,
+      "sha256": "d931e25cfae3abac266cfcff06f0247df8e1c24600c3afc2c9422572f108568a"
+    },
+    "probe": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\tools\\performance\\round22-worker-probe.rs",
+      "bytes": 15529,
+      "sha256": "a99721c1b87e9831fb29295ea5110a1221ab891ff921904e5763055de0d530d4"
+    },
+    "worker": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\target\\release\\cloudleaf-translation-worker.exe",
+      "bytes": 3310080,
+      "sha256": "871f45ef3de24561d3325ffc5a18f12138a2676dbea0a65b5efc23e43b90da56"
+    },
+    "executable": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\target\\release\\round22-worker-probe.exe",
+      "bytes": 1534464,
+      "sha256": "d8b2cf97cdaa429155a9f73cc7dae896d86b984d406f32865ef5c6f34dd10bf9"
+    }
+  },
+  "runs": [
+    {
+      "case": "1-ready-2",
+      "tag": "ready-2",
+      "semantics_equal": true,
+      "samples": {
+        "all": 171,
+        "inference": 0,
+        "loading": 0,
+        "inference_and_store": 0
+      },
+      "metrics": {},
+      "codec_ns": {
+        "n": 200,
+        "p50": 4200,
+        "p95": 6500,
+        "p99": 14500,
+        "max": 24700
+      },
+      "cancel_ns": [],
+      "stop_ns": [
+        40899300
+      ],
+      "received_stage_utc_ns": [],
+      "resources": {
+        "host_samples": 31,
+        "worker_samples": 9,
+        "host": {
+          "rss": 189108224,
+          "peak_rss": 196460544,
+          "private": 188174336,
+          "threads": 7,
+          "process_cpu_ns": 1593750000,
+          "read_bytes": 30951688
+        },
+        "worker": {
+          "rss": 5169152,
+          "peak_rss": 5742592,
+          "private": 823296,
+          "threads": 5,
+          "process_cpu_ns": 0,
+          "read_bytes": 1003761
+        },
+        "paired_max_rss": 174292992
+      }
+    },
+    {
+      "case": "1-loading-2",
+      "tag": "loading-2",
+      "semantics_equal": true,
+      "samples": {
+        "all": 171,
+        "inference": 69,
+        "loading": 101,
+        "inference_and_store": 0
+      },
+      "metrics": {
+        "main": {
+          "compute_threads": 2,
+          "resident_models": 1,
+          "verification_ns": 574568100,
+          "load_ns": 673862600,
+          "inference_ns": 2759166300,
+          "encoder_ns": 91071000,
+          "decoder_ns": 2629120200,
+          "generated_steps": 69,
+          "queue_wait_ns": 62900,
+          "infer_start": 1795620699899953500,
+          "infer_end": 1795620702660042400,
+          "load_start": 1795620699226088600,
+          "load_end": 1795620699899951200,
+          "host_request_to_result_ns": 4061022400,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw": "\"我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 并保存原始输入, 直到用户确认。 我开发一种中国输入方法, 并且想要保存原始输入, 直到用户确认它。\""
+        }
+      },
+      "codec_ns": {
+        "n": 0
+      },
+      "cancel_ns": [],
+      "stop_ns": [
+        123221800
+      ],
+      "received_stage_utc_ns": [
+        [
+          "Verifying",
+          "1795620698652631700"
+        ],
+        [
+          "Loading",
+          "1795620699243958800"
+        ]
+      ],
+      "resources": {
+        "host_samples": 65,
+        "worker_samples": 47,
+        "host": {
+          "rss": 184856576,
+          "peak_rss": 194650112,
+          "private": 196968448,
+          "threads": 6,
+          "process_cpu_ns": 1859375000,
+          "read_bytes": 30953724
+        },
+        "worker": {
+          "rss": 648957952,
+          "peak_rss": 659771392,
+          "private": 647192576,
+          "threads": 8,
+          "process_cpu_ns": 4125000000,
+          "read_bytes": 631616361
+        },
+        "paired_max_rss": 816943104
+      }
+    },
+    {
+      "case": "1-infer-2",
+      "tag": "infer-2",
+      "semantics_equal": true,
+      "samples": {
+        "all": 171,
+        "inference": 171,
+        "loading": 0,
+        "inference_and_store": 0
+      },
+      "metrics": {
+        "main": {
+          "compute_threads": 2,
+          "resident_models": 1,
+          "verification_ns": 435387000,
+          "load_ns": 453357700,
+          "inference_ns": 2562485600,
+          "encoder_ns": 78372300,
+          "decoder_ns": 2444893500,
+          "generated_steps": 69,
+          "queue_wait_ns": 50500,
+          "infer_start": 1795620704927087400,
+          "infer_end": 1795620707490630900,
+          "load_start": 1795620704473726400,
+          "load_end": 1795620704927084100,
+          "host_request_to_result_ns": 3471158200,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw": "\"我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 并保存原始输入, 直到用户确认。 我开发一种中国输入方法, 并且想要保存原始输入, 直到用户确认它。\""
+        }
+      },
+      "codec_ns": {
+        "n": 0
+      },
+      "cancel_ns": [],
+      "stop_ns": [
+        82838700
+      ],
+      "received_stage_utc_ns": [
+        [
+          "Verifying",
+          "1795620704038843300"
+        ],
+        [
+          "Loading",
+          "1795620704484762100"
+        ],
+        [
+          "Inferring",
+          "1795620704927994400"
+        ]
+      ],
+      "resources": {
+        "host_samples": 59,
+        "worker_samples": 44,
+        "host": {
+          "rss": 187432960,
+          "peak_rss": 194506752,
+          "private": 200916992,
+          "threads": 7,
+          "process_cpu_ns": 1812500000,
+          "read_bytes": 30953724
+        },
+        "worker": {
+          "rss": 470441984,
+          "peak_rss": 660164608,
+          "private": 478810112,
+          "threads": 8,
+          "process_cpu_ns": 3843750000,
+          "read_bytes": 631616361
+        },
+        "paired_max_rss": 638275584
+      }
+    }
+  ],
+  "errors": [],
+  "event_timing_ns": {
+    "ready-2": {
+      "all": {
+        "wall": {
+          "n": 171,
+          "p50": 1949400,
+          "p95": 13885900,
+          "p99": 23819900,
+          "max": 24068700
+        },
+        "cpu": {
+          "n": 171,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 31250000
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 171,
+          "p50": 745600,
+          "p95": 10187100,
+          "p99": 14317400,
+          "max": 15799500
+        },
+        "observed_core_changes": 66
+      },
+      "inference": {
+        "wall": {
+          "n": 0
+        },
+        "cpu": {
+          "n": 0
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 0
+        },
+        "observed_core_changes": 0
+      },
+      "loading": {
+        "wall": {
+          "n": 0
+        },
+        "cpu": {
+          "n": 0
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 0
+        },
+        "observed_core_changes": 0
+      },
+      "inference_and_store": {
+        "wall": {
+          "n": 0
+        },
+        "cpu": {
+          "n": 0
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 0
+        },
+        "observed_core_changes": 0
+      }
+    },
+    "loading-2": {
+      "all": {
+        "wall": {
+          "n": 171,
+          "p50": 2526000,
+          "p95": 19554900,
+          "p99": 25543300,
+          "max": 34170400
+        },
+        "cpu": {
+          "n": 171,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 31250000,
+          "max": 31250000
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 171,
+          "p50": 896700,
+          "p95": 10857300,
+          "p99": 20348200,
+          "max": 21160000
+        },
+        "observed_core_changes": 80
+      },
+      "inference": {
+        "wall": {
+          "n": 69,
+          "p50": 1068400,
+          "p95": 14364900,
+          "p99": 19675300,
+          "max": 19675300
+        },
+        "cpu": {
+          "n": 69,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 31250000,
+          "max": 31250000
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 69,
+          "p50": 516900,
+          "p95": 7867800,
+          "p99": 14364900,
+          "max": 14364900
+        },
+        "observed_core_changes": 20
+      },
+      "loading": {
+        "wall": {
+          "n": 101,
+          "p50": 3947100,
+          "p95": 21160000,
+          "p99": 25543300,
+          "max": 34170400
+        },
+        "cpu": {
+          "n": 101,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 31250000,
+          "max": 31250000
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 101,
+          "p50": 1474200,
+          "p95": 14543200,
+          "p99": 20348200,
+          "max": 21160000
+        },
+        "observed_core_changes": 59
+      },
+      "inference_and_store": {
+        "wall": {
+          "n": 0
+        },
+        "cpu": {
+          "n": 0
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 0
+        },
+        "observed_core_changes": 0
+      }
+    },
+    "infer-2": {
+      "all": {
+        "wall": {
+          "n": 171,
+          "p50": 2066500,
+          "p95": 18349800,
+          "p99": 28730200,
+          "max": 29715200
+        },
+        "cpu": {
+          "n": 171,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 31250000,
+          "max": 31250000
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 171,
+          "p50": 783900,
+          "p95": 8339200,
+          "p99": 12911600,
+          "max": 13409800
+        },
+        "observed_core_changes": 60
+      },
+      "inference": {
+        "wall": {
+          "n": 171,
+          "p50": 2066500,
+          "p95": 18349800,
+          "p99": 28730200,
+          "max": 29715200
+        },
+        "cpu": {
+          "n": 171,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 31250000,
+          "max": 31250000
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 171,
+          "p50": 783900,
+          "p95": 8339200,
+          "p99": 12911600,
+          "max": 13409800
+        },
+        "observed_core_changes": 60
+      },
+      "loading": {
+        "wall": {
+          "n": 0
+        },
+        "cpu": {
+          "n": 0
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 0
+        },
+        "observed_core_changes": 0
+      },
+      "inference_and_store": {
+        "wall": {
+          "n": 0
+        },
+        "cpu": {
+          "n": 0
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 0
+        },
+        "observed_core_changes": 0
+      }
+    }
+  },
+  "finished_utc": "2026-11-25T15:31:47.730612+00:00"
+}

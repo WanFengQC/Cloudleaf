@@ -1,0 +1,22 @@
+   Compiling cloudleaf-windows-ime v0.1.0 (C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\apps\windows-ime)
+    Finished `test` profile [unoptimized] target(s) in 7.35s
+     Running unittests src\lib.rs (.local\target\debug\deps\cloudleaf_windows_ime-ba43cec61e826af8.exe)
+
+running 1 test
+test native::session::isolated_input::translation::tests::round22_escape_retires_known_failed_preview_after_dual_core_clear ... FAILED
+
+failures:
+
+---- native::session::isolated_input::translation::tests::round22_escape_retires_known_failed_preview_after_dual_core_clear stdout ----
+
+thread 'native::session::isolated_input::translation::tests::round22_escape_retires_known_failed_preview_after_dual_core_clear' panicked at apps\windows-ime\src\..\..\..\adapters\windows\isolated_translation.rs:784:87:
+called `Result::unwrap()` on an `Err` value: Error { code: HRESULT(0x80004005), message: "当前译文已不是失败提交" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    native::session::isolated_input::translation::tests::round22_escape_retires_known_failed_preview_after_dual_core_clear
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 129 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `-p cloudleaf-windows-ime --lib`

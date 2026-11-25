@@ -1,0 +1,933 @@
+{
+  "started_utc": "2026-11-25T15:21:21.598793+00:00",
+  "baseline": "714f8c9439148b23d2ce34dc3a4e672d59598c1d",
+  "head": "4959f35bcee6a3f48fac8f3e8539cc994f6322f1",
+  "machine": "Windows-11-10.0.26300-SP0",
+  "runtime": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+    "bytes": 23602173,
+    "sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+  },
+  "models": {
+    "lexical": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+      "bytes": 3034818,
+      "sha256": "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5"
+    },
+    "addone": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character.tsv",
+      "bytes": 1459894,
+      "sha256": "5f28834165fcf83b22458e701b3608b403cb9bf7a9be8ba3c686fd158c53d6b9"
+    },
+    "witten": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round16-language\\character-witten.tsv",
+      "bytes": 1459906,
+      "sha256": "516d78a23786470c5ba7c1c7ee45e82c80eaaccd7eb1e3b541faf55d8f93b44b"
+    }
+  },
+  "fixtures": {
+    "full": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\docs\\reports\\input-round18-evidence\\performance\\full-cases.tsv",
+      "bytes": 351,
+      "sha256": "141327bc03e270974aa86c676e1db1414379bd66a3716366e718a4f218f05f0b"
+    },
+    "abbreviated": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\docs\\reports\\input-round18-evidence\\performance\\abbreviated-cases.tsv",
+      "bytes": 351,
+      "sha256": "141327bc03e270974aa86c676e1db1414379bd66a3716366e718a4f218f05f0b"
+    },
+    "xiaohe": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\docs\\reports\\input-round18-evidence\\performance\\xiaohe-cases.tsv",
+      "bytes": 204,
+      "sha256": "9d18a8c5d7231bbd37f407498d23dd714f5771a903debb156fe37b92305f46b7"
+    },
+    "fuzzy-nl": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\docs\\reports\\input-round18-evidence\\performance\\fuzzy-nl-cases.tsv",
+      "bytes": 351,
+      "sha256": "141327bc03e270974aa86c676e1db1414379bd66a3716366e718a4f218f05f0b"
+    },
+    "correction": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\docs\\reports\\input-round18-evidence\\performance\\correction-cases.tsv",
+      "bytes": 351,
+      "sha256": "141327bc03e270974aa86c676e1db1414379bd66a3716366e718a4f218f05f0b"
+    }
+  },
+  "mechanical_fixture": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\docs\\reports\\input-round20-evidence\\search\\mechanical-lexicon.tsv",
+    "bytes": 2061,
+    "sha256": "8fafc9fc19ef779b810304ff056e566cb6b46247c22da6e9412a06f76a45bf45"
+  },
+  "binaries": {
+    "r20": {
+      "path": "C:\\Users\\EDY\\.codex\\tmp\\r20-search\\final-search.exe",
+      "bytes": 656896,
+      "sha256": "b6b8b35c6f431b4b925dc8bb5ce3b289f6a05dbfac549e5de3dfef1f43d4685a"
+    },
+    "r21": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\round22-search-fixed\\source\\target\\release\\r19-search-probe.exe",
+      "bytes": 656896,
+      "sha256": "febf96ac91981b54bb130a6067e0b1e7e3ee14f039b221b98b69feb10d6c9c67"
+    }
+  },
+  "tool": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\r21_search_replay.py",
+    "bytes": 8107,
+    "sha256": "4f7c2782121523ee552c627ce4088f072f033782b7fb1ef4db771c552b68c4a7"
+  },
+  "common": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\r21_evidence_common.py",
+    "bytes": 6160,
+    "sha256": "646d1bd3049fa1cb3be548ff7a90a065c3af2f520e8a3921d324506e6266a1e3"
+  },
+  "compiled_sources": {
+    "crates/cloudleaf-search/Cargo.toml": "954555f22ec14156d7422e2d18f2b2b9e99e878b1b422e7d60dcf12868f18c5d",
+    "crates/cloudleaf-search/src/cancellation.rs": "697cae05d2707142db2c1eb4dccb8cd6d67a64e80e7b801b05a88f63cc929318",
+    "crates/cloudleaf-search/src/character.rs": "502bf49303e19d6e4da04cb2c7e2d1ede2fbfe9a253502c3ca86a2211a4bf0e7",
+    "crates/cloudleaf-search/src/lattice.rs": "00cf424c66511e25ee9a97325cc97a9dd4393e85e5d47565a509b94de786cab1",
+    "crates/cloudleaf-search/src/layer.rs": "efdbad4ff3e827bada757f49703a8da07bd81bddf5701d123ce44423df8cf457",
+    "crates/cloudleaf-search/src/lexicon.rs": "9b5c45b87c0ee693f33d9f9752f5aab7adc0d46d82461060c915ca7c1ab0069a",
+    "crates/cloudleaf-search/src/lib.rs": "4fd377c9c7d03052b141545da5094669860347fe716e245977e3dc6cead7391c",
+    "crates/cloudleaf-search/src/model.rs": "2c9f97eb1159ae097508fdb1475e16799323983a1ab0cf0be28f4c86f5be2db5",
+    "crates/cloudleaf-search/src/profiling.rs": "be5678ca231dea1440f60027fb2318344d36824627b69decf99897bd6740d418",
+    "crates/cloudleaf-search/src/schemes.rs": "dc1d2782a8e3514d92cbdc33a1b77ac74526a867c48607ba50857552b2bf22ed",
+    "crates/cloudleaf-search/src/search.rs": "e484838f6b96c3f730809cd26e6087e0524838eec0c770972c89c77773f18802",
+    "crates/cloudleaf-search/src/transition_cache.rs": "ff014cbbaacee0166dddd3313a554ce728b2559e7462a9e570ea41fe66fd5c4d",
+    "crates/cloudleaf-pinyin/Cargo.toml": "af59f5f7cff7aaf8d46caa5aeae3ad72992be88fe98790b97272cce5b3342ebe",
+    "crates/cloudleaf-pinyin/src/lib.rs": "80d9cc2588a15be0cc5db841347eb5c375ca3102fe9e18d32b2e02123ba7816d",
+    "crates/cloudleaf-pinyin/src/scheme.rs": "a342ab38b913058feda6fba99e6e581200b7dd18f9edc889253c31a36234bd94",
+    "crates/cloudleaf-pinyin/src/xiaohe.rs": "57e85751c43594df2e95843f0463949ff34c42d4950668451c22aec649c7c983",
+    "crates/cloudleaf-types/Cargo.toml": "4b06476760f44517921f0e7d5cb36cbac90b63b9e9be73e1e976815173453b19",
+    "crates/cloudleaf-types/src/lib.rs": "5a8faabed0690566ba7c4aa422876c4f8c2b65d7609ca65c68f35fca2dd05754"
+  },
+  "probe_source": {
+    "probe/Cargo.toml": "ef1b1e24091040e188a814ffa646b122e39f3a843e52370f9b13082859750cce",
+    "probe/src/main.rs": "f2b18a79737716213a8ce88ca4fe14bea5fc46b128d2e65647f53ce9c8072d97",
+    "probe/src/bin/diff.rs": "f4fe691aad097dcfe13276c7b1029b315bc046710b2db29a873a406fd5432eed",
+    "probe/src/bin/preference_diff.rs": "1899cd78a21ca3963673e9a5b912fceddcc80085276897bef6d671c2d3163d6f",
+    "probe/src/bin/resource.rs": "4a39cfafb7137b33fd94194b9cafbadd4d5a489908cd3b407bf01528be7ffcc2"
+  },
+  "probe_lock": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\round22-search-fixed\\source\\Cargo.lock",
+    "bytes": 470,
+    "sha256": "0a30c30c886ae6f1598280562ac0b75560761df8461750a2a60321dedef82f2d"
+  },
+  "limits": {
+    "top_k": 10,
+    "expansions": 200000,
+    "resident_paths": 50000
+  },
+  "scope": "same source-bound search-only probes; isolated from TSF, HWND and actual input host",
+  "comparison": "full SearchResult debug representation including provenance, scores, output order, fallback, completeness, and budget diagnostics; excludes two timing columns only",
+  "formal_language_metrics": {
+    "top1": null,
+    "top5": null,
+    "mrr": null
+  },
+  "strict": {
+    "diff": {
+      "totals": {
+        "candidate_comparisons_attempted": 83700,
+        "complete_candidate_comparisons": 83700,
+        "position_unsupported": 16740,
+        "reference_queries": 33480
+      },
+      "binary": {
+        "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\round22-search-fixed\\source\\target\\release\\diff.exe",
+        "bytes": 708096,
+        "sha256": "32820d69fd69db2d36ecf9cf1a209a1225b899722894d9d1de04420535aa67e4"
+      },
+      "returncode": 0,
+      "stdout": {
+        "original": {
+          "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\round22-search-fixed\\strict-diff\\stdout.txt",
+          "bytes": 159306098,
+          "sha256": "8db226882e6cf1e5b6bbbe03e4270dc5078e3bb63a8224d8c24ed3159a38792a"
+        },
+        "gzip": {
+          "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\round22-search-fixed\\strict-diff\\stdout.txt.gz",
+          "bytes": 3267596,
+          "sha256": "5c1056045ffaf72663d2a91b5c4bce84a71f85f4b3540585b8447a2f8d8f32bb"
+        }
+      }
+    },
+    "preference_diff": {
+      "totals": {
+        "candidate_comparisons_attempted": 104625,
+        "complete_candidate_comparisons": 104625,
+        "position_unsupported": 20925,
+        "reference_queries": 41850
+      },
+      "binary": {
+        "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\round22-search-fixed\\source\\target\\release\\preference_diff.exe",
+        "bytes": 753152,
+        "sha256": "206298c981a6b09e94385222c56bedd6b6ed11e2d54db2062a13dba713f5f16e"
+      },
+      "returncode": 0,
+      "stdout": {
+        "original": {
+          "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\round22-search-fixed\\strict-preference_diff\\stdout.txt",
+          "bytes": 180109439,
+          "sha256": "7ecf466dddc13c6ae52160098b7fe5ea9d17c958983642464f3489c564b8a9af"
+        },
+        "gzip": {
+          "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\round22-search-fixed\\strict-preference_diff\\stdout.txt.gz",
+          "bytes": 3679972,
+          "sha256": "a1bebc335fa1788ee72d9d6477a325a37ac2067ec86ca6ac399265cc7b477ef7"
+        }
+      }
+    }
+  },
+  "finished_utc": "2026-11-25T15:23:14.474457+00:00",
+  "queries_per_version": 837,
+  "exact_full_results_equal": 837,
+  "budget_failures": {
+    "r20": 0,
+    "r21": 0
+  },
+  "timing_ns": {
+    "lexical/full/r20": {
+      "lattice": {
+        "n": 60,
+        "p50": 15500,
+        "p95": 38000,
+        "p99": 102300,
+        "max": 102300
+      },
+      "search": {
+        "n": 60,
+        "p50": 12800,
+        "p95": 1625400,
+        "p99": 2188300,
+        "max": 2188300
+      },
+      "total": {
+        "n": 60,
+        "p50": 26700,
+        "p95": 1652400,
+        "p99": 2216000,
+        "max": 2216000
+      },
+      "budget_failures": 0
+    },
+    "lexical/full/r21": {
+      "lattice": {
+        "n": 60,
+        "p50": 11000,
+        "p95": 35300,
+        "p99": 62400,
+        "max": 62400
+      },
+      "search": {
+        "n": 60,
+        "p50": 12300,
+        "p95": 1539800,
+        "p99": 2822500,
+        "max": 2822500
+      },
+      "total": {
+        "n": 60,
+        "p50": 26100,
+        "p95": 1589000,
+        "p99": 2884900,
+        "max": 2884900
+      },
+      "budget_failures": 0
+    },
+    "lexical/abbreviated/r20": {
+      "lattice": {
+        "n": 60,
+        "p50": 1403600,
+        "p95": 5501800,
+        "p99": 8936900,
+        "max": 8936900
+      },
+      "search": {
+        "n": 60,
+        "p50": 5211400,
+        "p95": 24714800,
+        "p99": 30744800,
+        "max": 30744800
+      },
+      "total": {
+        "n": 60,
+        "p50": 7182200,
+        "p95": 29038800,
+        "p99": 37883300,
+        "max": 37883300
+      },
+      "budget_failures": 0
+    },
+    "lexical/abbreviated/r21": {
+      "lattice": {
+        "n": 60,
+        "p50": 1764600,
+        "p95": 5696100,
+        "p99": 10323900,
+        "max": 10323900
+      },
+      "search": {
+        "n": 60,
+        "p50": 6518900,
+        "p95": 26344900,
+        "p99": 31905200,
+        "max": 31905200
+      },
+      "total": {
+        "n": 60,
+        "p50": 8214000,
+        "p95": 31231600,
+        "p99": 42229100,
+        "max": 42229100
+      },
+      "budget_failures": 0
+    },
+    "lexical/xiaohe/r20": {
+      "lattice": {
+        "n": 39,
+        "p50": 273400,
+        "p95": 483700,
+        "p99": 712200,
+        "max": 712200
+      },
+      "search": {
+        "n": 39,
+        "p50": 63400,
+        "p95": 408500,
+        "p99": 629800,
+        "max": 629800
+      },
+      "total": {
+        "n": 39,
+        "p50": 350600,
+        "p95": 826100,
+        "p99": 917500,
+        "max": 917500
+      },
+      "budget_failures": 0
+    },
+    "lexical/xiaohe/r21": {
+      "lattice": {
+        "n": 39,
+        "p50": 276800,
+        "p95": 724500,
+        "p99": 1033100,
+        "max": 1033100
+      },
+      "search": {
+        "n": 39,
+        "p50": 112800,
+        "p95": 426000,
+        "p99": 470700,
+        "max": 470700
+      },
+      "total": {
+        "n": 39,
+        "p50": 348700,
+        "p95": 995700,
+        "p99": 1503800,
+        "max": 1503800
+      },
+      "budget_failures": 0
+    },
+    "lexical/fuzzy-nl/r20": {
+      "lattice": {
+        "n": 60,
+        "p50": 279200,
+        "p95": 608500,
+        "p99": 787200,
+        "max": 787200
+      },
+      "search": {
+        "n": 60,
+        "p50": 27800,
+        "p95": 1791200,
+        "p99": 3230500,
+        "max": 3230500
+      },
+      "total": {
+        "n": 60,
+        "p50": 455000,
+        "p95": 2084500,
+        "p99": 3553100,
+        "max": 3553100
+      },
+      "budget_failures": 0
+    },
+    "lexical/fuzzy-nl/r21": {
+      "lattice": {
+        "n": 60,
+        "p50": 261700,
+        "p95": 534300,
+        "p99": 749600,
+        "max": 749600
+      },
+      "search": {
+        "n": 60,
+        "p50": 16200,
+        "p95": 1880600,
+        "p99": 2342900,
+        "max": 2342900
+      },
+      "total": {
+        "n": 60,
+        "p50": 399500,
+        "p95": 2271800,
+        "p99": 2796000,
+        "max": 2796000
+      },
+      "budget_failures": 0
+    },
+    "lexical/correction/r20": {
+      "lattice": {
+        "n": 60,
+        "p50": 420600,
+        "p95": 811300,
+        "p99": 1096700,
+        "max": 1096700
+      },
+      "search": {
+        "n": 60,
+        "p50": 1337500,
+        "p95": 3269700,
+        "p99": 4637200,
+        "max": 4637200
+      },
+      "total": {
+        "n": 60,
+        "p50": 1687900,
+        "p95": 4323600,
+        "p99": 5581800,
+        "max": 5581800
+      },
+      "budget_failures": 0
+    },
+    "lexical/correction/r21": {
+      "lattice": {
+        "n": 60,
+        "p50": 327100,
+        "p95": 868200,
+        "p99": 1537000,
+        "max": 1537000
+      },
+      "search": {
+        "n": 60,
+        "p50": 1095300,
+        "p95": 3557200,
+        "p99": 6136300,
+        "max": 6136300
+      },
+      "total": {
+        "n": 60,
+        "p50": 1403700,
+        "p95": 4445100,
+        "p99": 6838200,
+        "max": 6838200
+      },
+      "budget_failures": 0
+    },
+    "addone/full/r20": {
+      "lattice": {
+        "n": 60,
+        "p50": 16000,
+        "p95": 63400,
+        "p99": 78800,
+        "max": 78800
+      },
+      "search": {
+        "n": 60,
+        "p50": 110500,
+        "p95": 1360800,
+        "p99": 2922000,
+        "max": 2922000
+      },
+      "total": {
+        "n": 60,
+        "p50": 123400,
+        "p95": 1380400,
+        "p99": 3000800,
+        "max": 3000800
+      },
+      "budget_failures": 0
+    },
+    "addone/full/r21": {
+      "lattice": {
+        "n": 60,
+        "p50": 16100,
+        "p95": 55300,
+        "p99": 64200,
+        "max": 64200
+      },
+      "search": {
+        "n": 60,
+        "p50": 114100,
+        "p95": 1430800,
+        "p99": 2362800,
+        "max": 2362800
+      },
+      "total": {
+        "n": 60,
+        "p50": 142800,
+        "p95": 1460900,
+        "p99": 2388800,
+        "max": 2388800
+      },
+      "budget_failures": 0
+    },
+    "addone/abbreviated/r20": {
+      "lattice": {
+        "n": 60,
+        "p50": 1524200,
+        "p95": 5034800,
+        "p99": 6036100,
+        "max": 6036100
+      },
+      "search": {
+        "n": 60,
+        "p50": 4456900,
+        "p95": 18633200,
+        "p99": 22771800,
+        "max": 22771800
+      },
+      "total": {
+        "n": 60,
+        "p50": 6022100,
+        "p95": 23668000,
+        "p99": 27931700,
+        "max": 27931700
+      },
+      "budget_failures": 0
+    },
+    "addone/abbreviated/r21": {
+      "lattice": {
+        "n": 60,
+        "p50": 1764100,
+        "p95": 4993900,
+        "p99": 6102300,
+        "max": 6102300
+      },
+      "search": {
+        "n": 60,
+        "p50": 3983100,
+        "p95": 15926400,
+        "p99": 21872500,
+        "max": 21872500
+      },
+      "total": {
+        "n": 60,
+        "p50": 5959500,
+        "p95": 19785700,
+        "p99": 27916000,
+        "max": 27916000
+      },
+      "budget_failures": 0
+    },
+    "addone/xiaohe/r20": {
+      "lattice": {
+        "n": 39,
+        "p50": 324800,
+        "p95": 760500,
+        "p99": 779200,
+        "max": 779200
+      },
+      "search": {
+        "n": 39,
+        "p50": 282700,
+        "p95": 1023900,
+        "p99": 1635300,
+        "max": 1635300
+      },
+      "total": {
+        "n": 39,
+        "p50": 662900,
+        "p95": 1803100,
+        "p99": 2247700,
+        "max": 2247700
+      },
+      "budget_failures": 0
+    },
+    "addone/xiaohe/r21": {
+      "lattice": {
+        "n": 39,
+        "p50": 298900,
+        "p95": 747000,
+        "p99": 1743000,
+        "max": 1743000
+      },
+      "search": {
+        "n": 39,
+        "p50": 262000,
+        "p95": 1065700,
+        "p99": 1461800,
+        "max": 1461800
+      },
+      "total": {
+        "n": 39,
+        "p50": 532000,
+        "p95": 1904700,
+        "p99": 2808700,
+        "max": 2808700
+      },
+      "budget_failures": 0
+    },
+    "addone/fuzzy-nl/r20": {
+      "lattice": {
+        "n": 60,
+        "p50": 261100,
+        "p95": 583300,
+        "p99": 754800,
+        "max": 754800
+      },
+      "search": {
+        "n": 60,
+        "p50": 250500,
+        "p95": 908500,
+        "p99": 989300,
+        "max": 989300
+      },
+      "total": {
+        "n": 60,
+        "p50": 507000,
+        "p95": 1283800,
+        "p99": 1527800,
+        "max": 1527800
+      },
+      "budget_failures": 0
+    },
+    "addone/fuzzy-nl/r21": {
+      "lattice": {
+        "n": 60,
+        "p50": 236200,
+        "p95": 492800,
+        "p99": 729000,
+        "max": 729000
+      },
+      "search": {
+        "n": 60,
+        "p50": 208400,
+        "p95": 805900,
+        "p99": 975500,
+        "max": 975500
+      },
+      "total": {
+        "n": 60,
+        "p50": 501200,
+        "p95": 1324700,
+        "p99": 1468300,
+        "max": 1468300
+      },
+      "budget_failures": 0
+    },
+    "addone/correction/r20": {
+      "lattice": {
+        "n": 60,
+        "p50": 400700,
+        "p95": 941000,
+        "p99": 1843000,
+        "max": 1843000
+      },
+      "search": {
+        "n": 60,
+        "p50": 907300,
+        "p95": 2624100,
+        "p99": 6268300,
+        "max": 6268300
+      },
+      "total": {
+        "n": 60,
+        "p50": 1245100,
+        "p95": 3418400,
+        "p99": 7061700,
+        "max": 7061700
+      },
+      "budget_failures": 0
+    },
+    "addone/correction/r21": {
+      "lattice": {
+        "n": 60,
+        "p50": 333400,
+        "p95": 781900,
+        "p99": 1163600,
+        "max": 1163600
+      },
+      "search": {
+        "n": 60,
+        "p50": 712200,
+        "p95": 2363200,
+        "p99": 3246800,
+        "max": 3246800
+      },
+      "total": {
+        "n": 60,
+        "p50": 1088500,
+        "p95": 2730400,
+        "p99": 4410400,
+        "max": 4410400
+      },
+      "budget_failures": 0
+    },
+    "witten/full/r20": {
+      "lattice": {
+        "n": 60,
+        "p50": 18000,
+        "p95": 48900,
+        "p99": 202500,
+        "max": 202500
+      },
+      "search": {
+        "n": 60,
+        "p50": 140600,
+        "p95": 1229600,
+        "p99": 1830700,
+        "max": 1830700
+      },
+      "total": {
+        "n": 60,
+        "p50": 174000,
+        "p95": 1246800,
+        "p99": 1855500,
+        "max": 1855500
+      },
+      "budget_failures": 0
+    },
+    "witten/full/r21": {
+      "lattice": {
+        "n": 60,
+        "p50": 19300,
+        "p95": 57100,
+        "p99": 68700,
+        "max": 68700
+      },
+      "search": {
+        "n": 60,
+        "p50": 122800,
+        "p95": 1364300,
+        "p99": 1633700,
+        "max": 1633700
+      },
+      "total": {
+        "n": 60,
+        "p50": 152100,
+        "p95": 1413200,
+        "p99": 1656400,
+        "max": 1656400
+      },
+      "budget_failures": 0
+    },
+    "witten/abbreviated/r20": {
+      "lattice": {
+        "n": 60,
+        "p50": 1715500,
+        "p95": 6735000,
+        "p99": 9648400,
+        "max": 9648400
+      },
+      "search": {
+        "n": 60,
+        "p50": 4424300,
+        "p95": 17378400,
+        "p99": 28140000,
+        "max": 28140000
+      },
+      "total": {
+        "n": 60,
+        "p50": 6601000,
+        "p95": 24448000,
+        "p99": 34435900,
+        "max": 34435900
+      },
+      "budget_failures": 0
+    },
+    "witten/abbreviated/r21": {
+      "lattice": {
+        "n": 60,
+        "p50": 1584100,
+        "p95": 5471200,
+        "p99": 7002300,
+        "max": 7002300
+      },
+      "search": {
+        "n": 60,
+        "p50": 5107900,
+        "p95": 17132200,
+        "p99": 25660600,
+        "max": 25660600
+      },
+      "total": {
+        "n": 60,
+        "p50": 7760400,
+        "p95": 22706200,
+        "p99": 31864900,
+        "max": 31864900
+      },
+      "budget_failures": 0
+    },
+    "witten/xiaohe/r20": {
+      "lattice": {
+        "n": 39,
+        "p50": 303000,
+        "p95": 623000,
+        "p99": 658900,
+        "max": 658900
+      },
+      "search": {
+        "n": 39,
+        "p50": 255300,
+        "p95": 798100,
+        "p99": 823200,
+        "max": 823200
+      },
+      "total": {
+        "n": 39,
+        "p50": 540500,
+        "p95": 1405100,
+        "p99": 1457000,
+        "max": 1457000
+      },
+      "budget_failures": 0
+    },
+    "witten/xiaohe/r21": {
+      "lattice": {
+        "n": 39,
+        "p50": 281900,
+        "p95": 487800,
+        "p99": 742400,
+        "max": 742400
+      },
+      "search": {
+        "n": 39,
+        "p50": 240900,
+        "p95": 619400,
+        "p99": 744800,
+        "max": 744800
+      },
+      "total": {
+        "n": 39,
+        "p50": 527100,
+        "p95": 1044700,
+        "p99": 1487200,
+        "max": 1487200
+      },
+      "budget_failures": 0
+    },
+    "witten/fuzzy-nl/r20": {
+      "lattice": {
+        "n": 60,
+        "p50": 284700,
+        "p95": 555600,
+        "p99": 972200,
+        "max": 972200
+      },
+      "search": {
+        "n": 60,
+        "p50": 229500,
+        "p95": 710000,
+        "p99": 895400,
+        "max": 895400
+      },
+      "total": {
+        "n": 60,
+        "p50": 555000,
+        "p95": 1110300,
+        "p99": 1788000,
+        "max": 1788000
+      },
+      "budget_failures": 0
+    },
+    "witten/fuzzy-nl/r21": {
+      "lattice": {
+        "n": 60,
+        "p50": 253200,
+        "p95": 521100,
+        "p99": 690200,
+        "max": 690200
+      },
+      "search": {
+        "n": 60,
+        "p50": 232400,
+        "p95": 656100,
+        "p99": 824000,
+        "max": 824000
+      },
+      "total": {
+        "n": 60,
+        "p50": 508700,
+        "p95": 1009100,
+        "p99": 1514200,
+        "max": 1514200
+      },
+      "budget_failures": 0
+    },
+    "witten/correction/r20": {
+      "lattice": {
+        "n": 60,
+        "p50": 292700,
+        "p95": 652400,
+        "p99": 1123400,
+        "max": 1123400
+      },
+      "search": {
+        "n": 60,
+        "p50": 664700,
+        "p95": 3723500,
+        "p99": 5314800,
+        "max": 5314800
+      },
+      "total": {
+        "n": 60,
+        "p50": 983100,
+        "p95": 4324500,
+        "p99": 5989600,
+        "max": 5989600
+      },
+      "budget_failures": 0
+    },
+    "witten/correction/r21": {
+      "lattice": {
+        "n": 60,
+        "p50": 321100,
+        "p95": 673600,
+        "p99": 1169800,
+        "max": 1169800
+      },
+      "search": {
+        "n": 60,
+        "p50": 715200,
+        "p95": 2352200,
+        "p99": 7337800,
+        "max": 7337800
+      },
+      "total": {
+        "n": 60,
+        "p50": 1067500,
+        "p95": 2980200,
+        "p99": 7924700,
+        "max": 7924700
+      },
+      "budget_failures": 0
+    }
+  },
+  "whole_process_memory": {
+    "r20": {
+      "samples": 850,
+      "peak_working": 221716480,
+      "observed_private": 223170560
+    },
+    "r21": {
+      "samples": 858,
+      "peak_working": 221376512,
+      "observed_private": 222998528
+    }
+  },
+  "pairs": {
+    "original": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\round22-search-fixed\\pairs.json",
+      "bytes": 6748366,
+      "sha256": "f8198ab0b6bbfad421848e7f9befd9a90a6537c7c10f4214246c2ba6bc64b77c"
+    },
+    "gzip": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\round22-search-fixed\\pairs.json.gz",
+      "bytes": 328428,
+      "sha256": "9a3f8a07916fcc647db1d3bd04e50e9103aaf7f01761da569d7b397548bf4ff9"
+    }
+  }
+}

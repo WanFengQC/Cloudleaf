@@ -1,0 +1,28 @@
+    Blocking waiting for file lock on build directory
+   Compiling cloudleaf-translation-ipc v0.1.0 (C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\crates\cloudleaf-translation-ipc)
+   Compiling cloudleaf-windows-ime v0.1.0 (C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\apps\windows-ime)
+warning: value assigned to `focus` is never read
+   --> apps\windows-ime\src\..\..\..\adapters\windows\isolated_input.rs:623:17
+    |
+623 |         let mut focus = None;
+    |                 ^^^^^
+    |
+    = help: maybe it is overwritten before being read?
+    = note: `#[warn(unused_assignments)]` on by default
+
+warning: `cloudleaf-windows-ime` (lib test) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 48.39s
+     Running unittests src\lib.rs (.local\target\debug\deps\cloudleaf_windows_ime-2c80e93d8dc910a3.exe)
+
+running 8 tests
+test native::session::isolated_input::translation::tests::round22_command_mapping_requires_matching_origin_and_notification ... ok
+test native::session::isolated_input::tests::round22_discard_known_failed_translation_preserves_exact_composition ... ok
+test native::session::isolated_input::translation::tests::round22_argument_parser_retains_input_model_and_rejects_stray_config ... ok
+test native::session::isolated_input::tests::round22_dual_translation_preflight_rejects_projection_without_touching_actual ... ok
+test native::session::isolated_input::translation::tests::round22_risk_ack_is_bound_to_request_task_and_exact_result_version ... ok
+test native::session::isolated_input::tests::round22_unknown_translation_preserves_english_and_never_replays ... ok
+test native::session::isolated_input::tests::round22_translation_retry_has_new_ids_and_preserves_no_learning ... ok
+test native::session::isolated_input::translation::tests::round22_edit_and_focus_invalidate_owned_translation_without_touching_input ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 121 filtered out; finished in 0.01s
+

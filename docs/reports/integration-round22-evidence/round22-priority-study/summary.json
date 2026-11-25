@@ -1,0 +1,1815 @@
+{
+  "head": "4959f35bcee6a3f48fac8f3e8539cc994f6322f1",
+  "tracked_dirty": true,
+  "utc": "2026-11-25T15:38:10.920571+00:00",
+  "environment": {
+    "os": "Windows-11-10.0.26300-SP0",
+    "cpu": "Intel64 Family 6 Model 167 Stepping 1, GenuineIntel"
+  },
+  "identities": {
+    "runtime": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+      "bytes": 23602173,
+      "sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+    },
+    "language": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+      "bytes": 3034818,
+      "sha256": "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5"
+    },
+    "catalog": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-managed-models\\catalog-f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f\\catalog.json",
+      "bytes": 326,
+      "sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f"
+    },
+    "events": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\tests\\fixtures\\input-round14-events.tsv",
+      "bytes": 863,
+      "sha256": "e087cc965bd2f6c889a84f3db89b3829ccfda452f436d7b3cf562bbb965602ad"
+    },
+    "tool": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\tools\\performance\\round22_worker_replay.py",
+      "bytes": 16638,
+      "sha256": "afbb4f96e2167c762b76c9c30448e391d7e38f7483512e155bac9df5d55f7091"
+    },
+    "probe": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\tools\\performance\\round22-worker-probe.rs",
+      "bytes": 15529,
+      "sha256": "a99721c1b87e9831fb29295ea5110a1221ab891ff921904e5763055de0d530d4"
+    },
+    "worker": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\target\\release\\cloudleaf-translation-worker.exe",
+      "bytes": 3310080,
+      "sha256": "3cd8af3e492c6bd424813e5f67d76f8b1581e0e0ccf60653602c656e79a6bff2"
+    },
+    "executable": {
+      "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\target\\release\\round22-worker-probe.exe",
+      "bytes": 1534464,
+      "sha256": "63574dd9658f970a2e1bc7b15ab93d59369ef9d5a16549414e284aec0c5f6c26"
+    }
+  },
+  "runs": [
+    {
+      "case": "1-infer-1-normal",
+      "tag": "infer-1-normal",
+      "semantics_equal": true,
+      "samples": {
+        "all": 171,
+        "inference": 171,
+        "loading": 0,
+        "inference_and_store": 0
+      },
+      "metrics": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 361095000,
+          "load_ns": 384531600,
+          "inference_ns": 2095077800,
+          "encoder_ns": 70252200,
+          "decoder_ns": 1996950400,
+          "generated_steps": 69,
+          "queue_wait_ns": 155200,
+          "infer_start": 1795621092680024200,
+          "infer_end": 1795621094775820900,
+          "load_start": 1795621092295487600,
+          "load_end": 1795621092680019200,
+          "host_request_to_result_ns": 2858706800,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw": "\"我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 并保存原始输入, 直到用户确认。 我开发一种中国输入方法, 并且想要保存原始输入, 直到用户确认它。\""
+        }
+      },
+      "codec_ns": {
+        "n": 0
+      },
+      "cancel_ns": [],
+      "stop_ns": [
+        59003500
+      ],
+      "received_stage_utc_ns": [
+        [
+          "Verifying",
+          "1795621091935018400"
+        ],
+        [
+          "Loading",
+          "1795621092302971900"
+        ],
+        [
+          "Inferring",
+          "1795621092688987000"
+        ]
+      ],
+      "resources": {
+        "host_samples": 52,
+        "worker_samples": 40,
+        "host": {
+          "rss": 185241600,
+          "peak_rss": 194531328,
+          "private": 185712640,
+          "threads": 7,
+          "process_cpu_ns": 1140625000,
+          "read_bytes": 30953725
+        },
+        "worker": {
+          "rss": 523522048,
+          "peak_rss": 660054016,
+          "private": 521781248,
+          "threads": 7,
+          "process_cpu_ns": 2828125000,
+          "read_bytes": 631616361
+        },
+        "paired_max_rss": 691347456
+      }
+    },
+    {
+      "case": "1-infer-1-below-normal",
+      "tag": "infer-1-below-normal",
+      "semantics_equal": true,
+      "samples": {
+        "all": 171,
+        "inference": 171,
+        "loading": 0,
+        "inference_and_store": 0
+      },
+      "metrics": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 376136000,
+          "load_ns": 416765900,
+          "inference_ns": 2382058700,
+          "encoder_ns": 89967500,
+          "decoder_ns": 2266996800,
+          "generated_steps": 69,
+          "queue_wait_ns": 58300,
+          "infer_start": 1795621096496067800,
+          "infer_end": 1795621098878898400,
+          "load_start": 1795621096079297500,
+          "load_end": 1795621096496063400,
+          "host_request_to_result_ns": 3196352500,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw": "\"我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 并保存原始输入, 直到用户确认。 我开发一种中国输入方法, 并且想要保存原始输入, 直到用户确认它。\""
+        }
+      },
+      "codec_ns": {
+        "n": 0
+      },
+      "cancel_ns": [],
+      "stop_ns": [
+        59816800
+      ],
+      "received_stage_utc_ns": [
+        [
+          "Verifying",
+          "1795621095703879600"
+        ],
+        [
+          "Loading",
+          "1795621096087829300"
+        ],
+        [
+          "Inferring",
+          "1795621096501674000"
+        ]
+      ],
+      "resources": {
+        "host_samples": 56,
+        "worker_samples": 43,
+        "host": {
+          "rss": 184913920,
+          "peak_rss": 194519040,
+          "private": 185405440,
+          "threads": 7,
+          "process_cpu_ns": 1343750000,
+          "read_bytes": 30953724
+        },
+        "worker": {
+          "rss": 643813376,
+          "peak_rss": 660639744,
+          "private": 641331200,
+          "threads": 7,
+          "process_cpu_ns": 2953125000,
+          "read_bytes": 631616361
+        },
+        "paired_max_rss": 811634688
+      }
+    },
+    {
+      "case": "1-infer-2-normal",
+      "tag": "infer-2-normal",
+      "semantics_equal": true,
+      "samples": {
+        "all": 171,
+        "inference": 171,
+        "loading": 0,
+        "inference_and_store": 0
+      },
+      "metrics": {
+        "main": {
+          "compute_threads": 2,
+          "resident_models": 1,
+          "verification_ns": 378614600,
+          "load_ns": 534410800,
+          "inference_ns": 3043870900,
+          "encoder_ns": 80692000,
+          "decoder_ns": 2913400300,
+          "generated_steps": 69,
+          "queue_wait_ns": 60900,
+          "infer_start": 1795621100765609800,
+          "infer_end": 1795621103810173000,
+          "load_start": 1795621100231195800,
+          "load_end": 1795621100765606600,
+          "host_request_to_result_ns": 3971792000,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw": "\"我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 并保存原始输入, 直到用户确认。 我开发一种中国输入方法, 并且想要保存原始输入, 直到用户确认它。\""
+        }
+      },
+      "codec_ns": {
+        "n": 0
+      },
+      "cancel_ns": [],
+      "stop_ns": [
+        83141100
+      ],
+      "received_stage_utc_ns": [
+        [
+          "Verifying",
+          "1795621099852737000"
+        ],
+        [
+          "Loading",
+          "1795621100236098100"
+        ],
+        [
+          "Inferring",
+          "1795621100775616400"
+        ]
+      ],
+      "resources": {
+        "host_samples": 60,
+        "worker_samples": 47,
+        "host": {
+          "rss": 183717888,
+          "peak_rss": 194498560,
+          "private": 184147968,
+          "threads": 7,
+          "process_cpu_ns": 1734375000,
+          "read_bytes": 30953724
+        },
+        "worker": {
+          "rss": 655319040,
+          "peak_rss": 660115456,
+          "private": 653516800,
+          "threads": 8,
+          "process_cpu_ns": 3843750000,
+          "read_bytes": 631616361
+        },
+        "paired_max_rss": 823140352
+      }
+    },
+    {
+      "case": "1-infer-2-below-normal",
+      "tag": "infer-2-below-normal",
+      "semantics_equal": true,
+      "samples": {
+        "all": 171,
+        "inference": 171,
+        "loading": 0,
+        "inference_and_store": 0
+      },
+      "metrics": {
+        "main": {
+          "compute_threads": 2,
+          "resident_models": 1,
+          "verification_ns": 452340800,
+          "load_ns": 393098200,
+          "inference_ns": 2152328800,
+          "encoder_ns": 57740400,
+          "decoder_ns": 2067719700,
+          "generated_steps": 69,
+          "queue_wait_ns": 48500,
+          "infer_start": 1795621105837264300,
+          "infer_end": 1795621107990057200,
+          "load_start": 1795621105444159500,
+          "load_end": 1795621105837257700,
+          "host_request_to_result_ns": 3022438100,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw": "\"我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 并保存原始输入, 直到用户确认。 我开发一种中国输入方法, 并且想要保存原始输入, 直到用户确认它。\""
+        }
+      },
+      "codec_ns": {
+        "n": 0
+      },
+      "cancel_ns": [],
+      "stop_ns": [
+        71172600
+      ],
+      "received_stage_utc_ns": [
+        [
+          "Verifying",
+          "1795621104992771700"
+        ],
+        [
+          "Loading",
+          "1795621105450480400"
+        ],
+        [
+          "Inferring",
+          "1795621105849301200"
+        ]
+      ],
+      "resources": {
+        "host_samples": 54,
+        "worker_samples": 41,
+        "host": {
+          "rss": 182284288,
+          "peak_rss": 194670592,
+          "private": 201125888,
+          "threads": 7,
+          "process_cpu_ns": 1437500000,
+          "read_bytes": 30953724
+        },
+        "worker": {
+          "rss": 628215808,
+          "peak_rss": 660119552,
+          "private": 626114560,
+          "threads": 8,
+          "process_cpu_ns": 3234375000,
+          "read_bytes": 631616361
+        },
+        "paired_max_rss": 796090368
+      }
+    },
+    {
+      "case": "1-infer-4-normal",
+      "tag": "infer-4-normal",
+      "semantics_equal": true,
+      "samples": {
+        "all": 171,
+        "inference": 171,
+        "loading": 0,
+        "inference_and_store": 0
+      },
+      "metrics": {
+        "main": {
+          "compute_threads": 4,
+          "resident_models": 1,
+          "verification_ns": 350326100,
+          "load_ns": 364675900,
+          "inference_ns": 1806229800,
+          "encoder_ns": 45564200,
+          "decoder_ns": 1729861800,
+          "generated_steps": 69,
+          "queue_wait_ns": 40700,
+          "infer_start": 1795621109625709700,
+          "infer_end": 1795621111432957500,
+          "load_start": 1795621109261028500,
+          "load_end": 1795621109625704400,
+          "host_request_to_result_ns": 2529247800,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw": "\"我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 并保存原始输入, 直到用户确认。 我开发一种中国输入方法, 并且想要保存原始输入, 直到用户确认它。\""
+        }
+      },
+      "codec_ns": {
+        "n": 0
+      },
+      "cancel_ns": [],
+      "stop_ns": [
+        59324100
+      ],
+      "received_stage_utc_ns": [
+        [
+          "Verifying",
+          "1795621108911447300"
+        ],
+        [
+          "Loading",
+          "1795621109265226900"
+        ],
+        [
+          "Inferring",
+          "1795621109632129800"
+        ]
+      ],
+      "resources": {
+        "host_samples": 47,
+        "worker_samples": 34,
+        "host": {
+          "rss": 185311232,
+          "peak_rss": 194580480,
+          "private": 185782272,
+          "threads": 7,
+          "process_cpu_ns": 1250000000,
+          "read_bytes": 30953725
+        },
+        "worker": {
+          "rss": 648134656,
+          "peak_rss": 659898368,
+          "private": 646496256,
+          "threads": 10,
+          "process_cpu_ns": 3171875000,
+          "read_bytes": 631616283
+        },
+        "paired_max_rss": 815951872
+      }
+    },
+    {
+      "case": "1-infer-4-below-normal",
+      "tag": "infer-4-below-normal",
+      "semantics_equal": true,
+      "samples": {
+        "all": 171,
+        "inference": 171,
+        "loading": 0,
+        "inference_and_store": 0
+      },
+      "metrics": {
+        "main": {
+          "compute_threads": 4,
+          "resident_models": 1,
+          "verification_ns": 349740200,
+          "load_ns": 346069400,
+          "inference_ns": 1746815200,
+          "encoder_ns": 43873300,
+          "decoder_ns": 1677437100,
+          "generated_steps": 69,
+          "queue_wait_ns": 45600,
+          "infer_start": 1795621113031877600,
+          "infer_end": 1795621114779434500,
+          "load_start": 1795621112685805700,
+          "load_end": 1795621113031875100,
+          "host_request_to_result_ns": 2459452900,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw": "\"我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 并保存原始输入, 直到用户确认。 我开发一种中国输入方法, 并且想要保存原始输入, 直到用户确认它。\""
+        }
+      },
+      "codec_ns": {
+        "n": 0
+      },
+      "cancel_ns": [],
+      "stop_ns": [
+        60249600
+      ],
+      "received_stage_utc_ns": [
+        [
+          "Verifying",
+          "1795621112336795100"
+        ],
+        [
+          "Loading",
+          "1795621112689758800"
+        ],
+        [
+          "Inferring",
+          "1795621113041525800"
+        ]
+      ],
+      "resources": {
+        "host_samples": 46,
+        "worker_samples": 34,
+        "host": {
+          "rss": 178941952,
+          "peak_rss": 194617344,
+          "private": 198746112,
+          "threads": 7,
+          "process_cpu_ns": 1171875000,
+          "read_bytes": 30953725
+        },
+        "worker": {
+          "rss": 543518720,
+          "peak_rss": 660381696,
+          "private": 542633984,
+          "threads": 10,
+          "process_cpu_ns": 3031250000,
+          "read_bytes": 631616283
+        },
+        "paired_max_rss": 711528448
+      }
+    },
+    {
+      "case": "2-infer-4-below-normal",
+      "tag": "infer-4-below-normal",
+      "semantics_equal": true,
+      "samples": {
+        "all": 171,
+        "inference": 171,
+        "loading": 0,
+        "inference_and_store": 0
+      },
+      "metrics": {
+        "main": {
+          "compute_threads": 4,
+          "resident_models": 1,
+          "verification_ns": 357069700,
+          "load_ns": 341492700,
+          "inference_ns": 1993365000,
+          "encoder_ns": 48270100,
+          "decoder_ns": 1913682200,
+          "generated_steps": 69,
+          "queue_wait_ns": 30100,
+          "infer_start": 1795621116427707700,
+          "infer_end": 1795621118421803500,
+          "load_start": 1795621116086211900,
+          "load_end": 1795621116427704600,
+          "host_request_to_result_ns": 2709219100,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw": "\"我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 并保存原始输入, 直到用户确认。 我开发一种中国输入方法, 并且想要保存原始输入, 直到用户确认它。\""
+        }
+      },
+      "codec_ns": {
+        "n": 0
+      },
+      "cancel_ns": [],
+      "stop_ns": [
+        71115300
+      ],
+      "received_stage_utc_ns": [
+        [
+          "Verifying",
+          "1795621115729992200"
+        ],
+        [
+          "Loading",
+          "1795621116098053300"
+        ],
+        [
+          "Inferring",
+          "1795621116435845300"
+        ]
+      ],
+      "resources": {
+        "host_samples": 49,
+        "worker_samples": 36,
+        "host": {
+          "rss": 185106432,
+          "peak_rss": 194703360,
+          "private": 185589760,
+          "threads": 7,
+          "process_cpu_ns": 1343750000,
+          "read_bytes": 30953725
+        },
+        "worker": {
+          "rss": 502767616,
+          "peak_rss": 660398080,
+          "private": 658227200,
+          "threads": 10,
+          "process_cpu_ns": 3406250000,
+          "read_bytes": 631616283
+        },
+        "paired_max_rss": 670650368
+      }
+    },
+    {
+      "case": "2-infer-4-normal",
+      "tag": "infer-4-normal",
+      "semantics_equal": true,
+      "samples": {
+        "all": 171,
+        "inference": 171,
+        "loading": 0,
+        "inference_and_store": 0
+      },
+      "metrics": {
+        "main": {
+          "compute_threads": 4,
+          "resident_models": 1,
+          "verification_ns": 360676900,
+          "load_ns": 350759700,
+          "inference_ns": 1755791100,
+          "encoder_ns": 46499400,
+          "decoder_ns": 1680762600,
+          "generated_steps": 69,
+          "queue_wait_ns": 70900,
+          "infer_start": 1795621120080538600,
+          "infer_end": 1795621121836766900,
+          "load_start": 1795621119729775600,
+          "load_end": 1795621120080535300,
+          "host_request_to_result_ns": 2495578500,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw": "\"我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 并保存原始输入, 直到用户确认。 我开发一种中国输入方法, 并且想要保存原始输入, 直到用户确认它。\""
+        }
+      },
+      "codec_ns": {
+        "n": 0
+      },
+      "cancel_ns": [],
+      "stop_ns": [
+        60706300
+      ],
+      "received_stage_utc_ns": [
+        [
+          "Verifying",
+          "1795621119384764000"
+        ],
+        [
+          "Loading",
+          "1795621119735235800"
+        ],
+        [
+          "Inferring",
+          "1795621120089680800"
+        ]
+      ],
+      "resources": {
+        "host_samples": 46,
+        "worker_samples": 34,
+        "host": {
+          "rss": 187346944,
+          "peak_rss": 194887680,
+          "private": 188055552,
+          "threads": 7,
+          "process_cpu_ns": 1250000000,
+          "read_bytes": 30953725
+        },
+        "worker": {
+          "rss": 647323648,
+          "peak_rss": 660418560,
+          "private": 645578752,
+          "threads": 10,
+          "process_cpu_ns": 3218750000,
+          "read_bytes": 631616361
+        },
+        "paired_max_rss": 814768128
+      }
+    },
+    {
+      "case": "2-infer-2-below-normal",
+      "tag": "infer-2-below-normal",
+      "semantics_equal": true,
+      "samples": {
+        "all": 171,
+        "inference": 171,
+        "loading": 0,
+        "inference_and_store": 0
+      },
+      "metrics": {
+        "main": {
+          "compute_threads": 2,
+          "resident_models": 1,
+          "verification_ns": 367222700,
+          "load_ns": 350175400,
+          "inference_ns": 1948592000,
+          "encoder_ns": 53665700,
+          "decoder_ns": 1861173800,
+          "generated_steps": 69,
+          "queue_wait_ns": 44300,
+          "infer_start": 1795621123456775700,
+          "infer_end": 1795621125405932000,
+          "load_start": 1795621123106597500,
+          "load_end": 1795621123456772900,
+          "host_request_to_result_ns": 2697169600,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw": "\"我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 并保存原始输入, 直到用户确认。 我开发一种中国输入方法, 并且想要保存原始输入, 直到用户确认它。\""
+        }
+      },
+      "codec_ns": {
+        "n": 0
+      },
+      "cancel_ns": [],
+      "stop_ns": [
+        70770400
+      ],
+      "received_stage_utc_ns": [
+        [
+          "Verifying",
+          "1795621122740192400"
+        ],
+        [
+          "Loading",
+          "1795621123109172800"
+        ],
+        [
+          "Inferring",
+          "1795621123462643900"
+        ]
+      ],
+      "resources": {
+        "host_samples": 49,
+        "worker_samples": 37,
+        "host": {
+          "rss": 180219904,
+          "peak_rss": 194502656,
+          "private": 199626752,
+          "threads": 7,
+          "process_cpu_ns": 1218750000,
+          "read_bytes": 30953724
+        },
+        "worker": {
+          "rss": 581976064,
+          "peak_rss": 660115456,
+          "private": 657723392,
+          "threads": 8,
+          "process_cpu_ns": 3046875000,
+          "read_bytes": 631616283
+        },
+        "paired_max_rss": 749793280
+      }
+    },
+    {
+      "case": "2-infer-2-normal",
+      "tag": "infer-2-normal",
+      "semantics_equal": true,
+      "samples": {
+        "all": 171,
+        "inference": 171,
+        "loading": 0,
+        "inference_and_store": 0
+      },
+      "metrics": {
+        "main": {
+          "compute_threads": 2,
+          "resident_models": 1,
+          "verification_ns": 364481200,
+          "load_ns": 348088000,
+          "inference_ns": 1905557300,
+          "encoder_ns": 53595800,
+          "decoder_ns": 1829254800,
+          "generated_steps": 69,
+          "queue_wait_ns": 41500,
+          "infer_start": 1795621127071125300,
+          "infer_end": 1795621128977325700,
+          "load_start": 1795621126723033600,
+          "load_end": 1795621127071121600,
+          "host_request_to_result_ns": 2644750300,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw": "\"我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 并保存原始输入, 直到用户确认。 我开发一种中国输入方法, 并且想要保存原始输入, 直到用户确认它。\""
+        }
+      },
+      "codec_ns": {
+        "n": 0
+      },
+      "cancel_ns": [],
+      "stop_ns": [
+        63676800
+      ],
+      "received_stage_utc_ns": [
+        [
+          "Verifying",
+          "1795621126359345000"
+        ],
+        [
+          "Loading",
+          "1795621126726228100"
+        ],
+        [
+          "Inferring",
+          "1795621127078831600"
+        ]
+      ],
+      "resources": {
+        "host_samples": 49,
+        "worker_samples": 36,
+        "host": {
+          "rss": 193019904,
+          "peak_rss": 194514944,
+          "private": 215367680,
+          "threads": 7,
+          "process_cpu_ns": 1250000000,
+          "read_bytes": 30953724
+        },
+        "worker": {
+          "rss": 630112256,
+          "peak_rss": 660115456,
+          "private": 628240384,
+          "threads": 8,
+          "process_cpu_ns": 3046875000,
+          "read_bytes": 631616283
+        },
+        "paired_max_rss": 797933568
+      }
+    },
+    {
+      "case": "2-infer-1-below-normal",
+      "tag": "infer-1-below-normal",
+      "semantics_equal": true,
+      "samples": {
+        "all": 171,
+        "inference": 171,
+        "loading": 0,
+        "inference_and_store": 0
+      },
+      "metrics": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 366976500,
+          "load_ns": 401311700,
+          "inference_ns": 2181816400,
+          "encoder_ns": 78408800,
+          "decoder_ns": 2076531600,
+          "generated_steps": 69,
+          "queue_wait_ns": 45200,
+          "infer_start": 1795621130705094900,
+          "infer_end": 1795621132887360700,
+          "load_start": 1795621130303777200,
+          "load_end": 1795621130705088900,
+          "host_request_to_result_ns": 2972216400,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw": "\"我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 并保存原始输入, 直到用户确认。 我开发一种中国输入方法, 并且想要保存原始输入, 直到用户确认它。\""
+        }
+      },
+      "codec_ns": {
+        "n": 0
+      },
+      "cancel_ns": [],
+      "stop_ns": [
+        75917500
+      ],
+      "received_stage_utc_ns": [
+        [
+          "Verifying",
+          "1795621129937570500"
+        ],
+        [
+          "Loading",
+          "1795621130305302000"
+        ],
+        [
+          "Inferring",
+          "1795621130719889000"
+        ]
+      ],
+      "resources": {
+        "host_samples": 53,
+        "worker_samples": 41,
+        "host": {
+          "rss": 187424768,
+          "peak_rss": 194514944,
+          "private": 215363584,
+          "threads": 7,
+          "process_cpu_ns": 1187500000,
+          "read_bytes": 30953724
+        },
+        "worker": {
+          "rss": 534917120,
+          "peak_rss": 660156416,
+          "private": 532348928,
+          "threads": 7,
+          "process_cpu_ns": 2843750000,
+          "read_bytes": 631616361
+        },
+        "paired_max_rss": 702742528
+      }
+    },
+    {
+      "case": "2-infer-1-normal",
+      "tag": "infer-1-normal",
+      "semantics_equal": true,
+      "samples": {
+        "all": 171,
+        "inference": 171,
+        "loading": 0,
+        "inference_and_store": 0
+      },
+      "metrics": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 360274600,
+          "load_ns": 348650200,
+          "inference_ns": 1891634500,
+          "encoder_ns": 76353000,
+          "decoder_ns": 1792340700,
+          "generated_steps": 69,
+          "queue_wait_ns": 46100,
+          "infer_start": 1795621134506857100,
+          "infer_end": 1795621136399240500,
+          "load_start": 1795621134158202400,
+          "load_end": 1795621134506852600,
+          "host_request_to_result_ns": 2618481300,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw": "\"我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 并保存原始输入, 直到用户确认。 我开发一种中国输入方法, 并且想要保存原始输入, 直到用户确认它。\""
+        }
+      },
+      "codec_ns": {
+        "n": 0
+      },
+      "cancel_ns": [],
+      "stop_ns": [
+        58929000
+      ],
+      "received_stage_utc_ns": [
+        [
+          "Verifying",
+          "1795621133798700600"
+        ],
+        [
+          "Loading",
+          "1795621134165595400"
+        ],
+        [
+          "Inferring",
+          "1795621134514227500"
+        ]
+      ],
+      "resources": {
+        "host_samples": 49,
+        "worker_samples": 38,
+        "host": {
+          "rss": 187424768,
+          "peak_rss": 194555904,
+          "private": 188145664,
+          "threads": 7,
+          "process_cpu_ns": 1093750000,
+          "read_bytes": 30953724
+        },
+        "worker": {
+          "rss": 408485888,
+          "peak_rss": 660058112,
+          "private": 657649664,
+          "threads": 7,
+          "process_cpu_ns": 2609375000,
+          "read_bytes": 631616361
+        },
+        "paired_max_rss": 576311296
+      }
+    },
+    {
+      "case": "3-infer-1-normal",
+      "tag": "infer-1-normal",
+      "semantics_equal": true,
+      "samples": {
+        "all": 171,
+        "inference": 171,
+        "loading": 0,
+        "inference_and_store": 0
+      },
+      "metrics": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 334220100,
+          "load_ns": 324900600,
+          "inference_ns": 1939493400,
+          "encoder_ns": 66524000,
+          "decoder_ns": 1850487500,
+          "generated_steps": 69,
+          "queue_wait_ns": 90200,
+          "infer_start": 1795621137871072300,
+          "infer_end": 1795621139811241400,
+          "load_start": 1795621137546167400,
+          "load_end": 1795621137871068000,
+          "host_request_to_result_ns": 2615325700,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw": "\"我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 并保存原始输入, 直到用户确认。 我开发一种中国输入方法, 并且想要保存原始输入, 直到用户确认它。\""
+        }
+      },
+      "codec_ns": {
+        "n": 0
+      },
+      "cancel_ns": [],
+      "stop_ns": [
+        61970800
+      ],
+      "received_stage_utc_ns": [
+        [
+          "Verifying",
+          "1795621137212686600"
+        ],
+        [
+          "Loading",
+          "1795621137548322200"
+        ],
+        [
+          "Inferring",
+          "1795621137872888500"
+        ]
+      ],
+      "resources": {
+        "host_samples": 49,
+        "worker_samples": 37,
+        "host": {
+          "rss": 184905728,
+          "peak_rss": 194715648,
+          "private": 185376768,
+          "threads": 7,
+          "process_cpu_ns": 1062500000,
+          "read_bytes": 30953724
+        },
+        "worker": {
+          "rss": 483471360,
+          "peak_rss": 660140032,
+          "private": 480751616,
+          "threads": 7,
+          "process_cpu_ns": 2656250000,
+          "read_bytes": 631616361
+        },
+        "paired_max_rss": 651350016
+      }
+    },
+    {
+      "case": "3-infer-1-below-normal",
+      "tag": "infer-1-below-normal",
+      "semantics_equal": true,
+      "samples": {
+        "all": 171,
+        "inference": 171,
+        "loading": 0,
+        "inference_and_store": 0
+      },
+      "metrics": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 333937000,
+          "load_ns": 308300900,
+          "inference_ns": 1974838800,
+          "encoder_ns": 110039500,
+          "decoder_ns": 1844232700,
+          "generated_steps": 69,
+          "queue_wait_ns": 45400,
+          "infer_start": 1795621141370652100,
+          "infer_end": 1795621143346048000,
+          "load_start": 1795621141062346300,
+          "load_end": 1795621141370647200,
+          "host_request_to_result_ns": 2643584200,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw": "\"我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 并保存原始输入, 直到用户确认。 我开发一种中国输入方法, 并且想要保存原始输入, 直到用户确认它。\""
+        }
+      },
+      "codec_ns": {
+        "n": 0
+      },
+      "cancel_ns": [],
+      "stop_ns": [
+        65787500
+      ],
+      "received_stage_utc_ns": [
+        [
+          "Verifying",
+          "1795621140729109600"
+        ],
+        [
+          "Loading",
+          "1795621141066522000"
+        ],
+        [
+          "Inferring",
+          "1795621141372302800"
+        ]
+      ],
+      "resources": {
+        "host_samples": 49,
+        "worker_samples": 38,
+        "host": {
+          "rss": 177328128,
+          "peak_rss": 194564096,
+          "private": 197660672,
+          "threads": 7,
+          "process_cpu_ns": 1046875000,
+          "read_bytes": 30953725
+        },
+        "worker": {
+          "rss": 637198336,
+          "peak_rss": 660115456,
+          "private": 657661952,
+          "threads": 7,
+          "process_cpu_ns": 2531250000,
+          "read_bytes": 631616361
+        },
+        "paired_max_rss": 805019648
+      }
+    },
+    {
+      "case": "3-infer-2-normal",
+      "tag": "infer-2-normal",
+      "semantics_equal": true,
+      "samples": {
+        "all": 171,
+        "inference": 171,
+        "loading": 0,
+        "inference_and_store": 0
+      },
+      "metrics": {
+        "main": {
+          "compute_threads": 2,
+          "resident_models": 1,
+          "verification_ns": 341621000,
+          "load_ns": 336493500,
+          "inference_ns": 1667929600,
+          "encoder_ns": 47089300,
+          "decoder_ns": 1600878600,
+          "generated_steps": 69,
+          "queue_wait_ns": 91600,
+          "infer_start": 1795621144875846000,
+          "infer_end": 1795621146544670200,
+          "load_start": 1795621144539346900,
+          "load_end": 1795621144875840400,
+          "host_request_to_result_ns": 2372513900,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw": "\"我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 并保存原始输入, 直到用户确认。 我开发一种中国输入方法, 并且想要保存原始输入, 直到用户确认它。\""
+        }
+      },
+      "codec_ns": {
+        "n": 0
+      },
+      "cancel_ns": [],
+      "stop_ns": [
+        65141800
+      ],
+      "received_stage_utc_ns": [
+        [
+          "Verifying",
+          "1795621144198593300"
+        ],
+        [
+          "Loading",
+          "1795621144549306200"
+        ],
+        [
+          "Inferring",
+          "1795621144884779000"
+        ]
+      ],
+      "resources": {
+        "host_samples": 45,
+        "worker_samples": 34,
+        "host": {
+          "rss": 183259136,
+          "peak_rss": 194707456,
+          "private": 201826304,
+          "threads": 7,
+          "process_cpu_ns": 1171875000,
+          "read_bytes": 30953724
+        },
+        "worker": {
+          "rss": 588509184,
+          "peak_rss": 659636224,
+          "private": 589725696,
+          "threads": 8,
+          "process_cpu_ns": 2703125000,
+          "read_bytes": 631616361
+        },
+        "paired_max_rss": 756379648
+      }
+    },
+    {
+      "case": "3-infer-2-below-normal",
+      "tag": "infer-2-below-normal",
+      "semantics_equal": true,
+      "samples": {
+        "all": 171,
+        "inference": 171,
+        "loading": 0,
+        "inference_and_store": 0
+      },
+      "metrics": {
+        "main": {
+          "compute_threads": 2,
+          "resident_models": 1,
+          "verification_ns": 345771900,
+          "load_ns": 337408300,
+          "inference_ns": 1707962800,
+          "encoder_ns": 45897600,
+          "decoder_ns": 1644163200,
+          "generated_steps": 69,
+          "queue_wait_ns": 38600,
+          "infer_start": 1795621148049301600,
+          "infer_end": 1795621149758458000,
+          "load_start": 1795621147711890500,
+          "load_end": 1795621148049298800,
+          "host_request_to_result_ns": 2405867400,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw": "\"我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 并保存原始输入, 直到用户确认。 我开发一种中国输入方法, 并且想要保存原始输入, 直到用户确认它。\""
+        }
+      },
+      "codec_ns": {
+        "n": 0
+      },
+      "cancel_ns": [],
+      "stop_ns": [
+        60167800
+      ],
+      "received_stage_utc_ns": [
+        [
+          "Verifying",
+          "1795621147366845000"
+        ],
+        [
+          "Loading",
+          "1795621147717755100"
+        ],
+        [
+          "Inferring",
+          "1795621148055606800"
+        ]
+      ],
+      "resources": {
+        "host_samples": 46,
+        "worker_samples": 34,
+        "host": {
+          "rss": 181526528,
+          "peak_rss": 194736128,
+          "private": 200560640,
+          "threads": 7,
+          "process_cpu_ns": 1015625000,
+          "read_bytes": 30953724
+        },
+        "worker": {
+          "rss": 641081344,
+          "peak_rss": 660643840,
+          "private": 658227200,
+          "threads": 8,
+          "process_cpu_ns": 2500000000,
+          "read_bytes": 631616283
+        },
+        "paired_max_rss": 808964096
+      }
+    },
+    {
+      "case": "3-infer-4-normal",
+      "tag": "infer-4-normal",
+      "semantics_equal": true,
+      "samples": {
+        "all": 171,
+        "inference": 171,
+        "loading": 0,
+        "inference_and_store": 0
+      },
+      "metrics": {
+        "main": {
+          "compute_threads": 4,
+          "resident_models": 1,
+          "verification_ns": 333437300,
+          "load_ns": 366190700,
+          "inference_ns": 1750128400,
+          "encoder_ns": 50528600,
+          "decoder_ns": 1665199700,
+          "generated_steps": 69,
+          "queue_wait_ns": 45600,
+          "infer_start": 1795621151344382500,
+          "infer_end": 1795621153095393600,
+          "load_start": 1795621150978190200,
+          "load_end": 1795621151344380900,
+          "host_request_to_result_ns": 2464587900,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw": "\"我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 并保存原始输入, 直到用户确认。 我开发一种中国输入方法, 并且想要保存原始输入, 直到用户确认它。\""
+        }
+      },
+      "codec_ns": {
+        "n": 0
+      },
+      "cancel_ns": [],
+      "stop_ns": [
+        65145300
+      ],
+      "received_stage_utc_ns": [
+        [
+          "Verifying",
+          "1795621150645526300"
+        ],
+        [
+          "Loading",
+          "1795621150982501100"
+        ],
+        [
+          "Inferring",
+          "1795621151350450000"
+        ]
+      ],
+      "resources": {
+        "host_samples": 45,
+        "worker_samples": 34,
+        "host": {
+          "rss": 180506624,
+          "peak_rss": 194498560,
+          "private": 199983104,
+          "threads": 7,
+          "process_cpu_ns": 1171875000,
+          "read_bytes": 30953725
+        },
+        "worker": {
+          "rss": 653783040,
+          "peak_rss": 659898368,
+          "private": 658587648,
+          "threads": 10,
+          "process_cpu_ns": 3156250000,
+          "read_bytes": 631616361
+        },
+        "paired_max_rss": 821608448
+      }
+    },
+    {
+      "case": "3-infer-4-below-normal",
+      "tag": "infer-4-below-normal",
+      "semantics_equal": true,
+      "samples": {
+        "all": 171,
+        "inference": 171,
+        "loading": 0,
+        "inference_and_store": 0
+      },
+      "metrics": {
+        "main": {
+          "compute_threads": 4,
+          "resident_models": 1,
+          "verification_ns": 329478500,
+          "load_ns": 360638200,
+          "inference_ns": 1809155600,
+          "encoder_ns": 46252100,
+          "decoder_ns": 1729898700,
+          "generated_steps": 69,
+          "queue_wait_ns": 57900,
+          "infer_start": 1795621154686900700,
+          "infer_end": 1795621156497470600,
+          "load_start": 1795621154326260800,
+          "load_end": 1795621154686899000,
+          "host_request_to_result_ns": 2525003400,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw": "\"我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 并保存原始输入, 直到用户确认。 我开发一种中国输入方法, 并且想要保存原始输入, 直到用户确认它。\""
+        }
+      },
+      "codec_ns": {
+        "n": 0
+      },
+      "cancel_ns": [],
+      "stop_ns": [
+        65052100
+      ],
+      "received_stage_utc_ns": [
+        [
+          "Verifying",
+          "1795621153997561900"
+        ],
+        [
+          "Loading",
+          "1795621154334509900"
+        ],
+        [
+          "Inferring",
+          "1795621154702883600"
+        ]
+      ],
+      "resources": {
+        "host_samples": 47,
+        "worker_samples": 34,
+        "host": {
+          "rss": 185323520,
+          "peak_rss": 194502656,
+          "private": 185810944,
+          "threads": 7,
+          "process_cpu_ns": 1250000000,
+          "read_bytes": 30953725
+        },
+        "worker": {
+          "rss": 647241728,
+          "peak_rss": 659857408,
+          "private": 645402624,
+          "threads": 10,
+          "process_cpu_ns": 2937500000,
+          "read_bytes": 631616283
+        },
+        "paired_max_rss": 815071232
+      }
+    }
+  ],
+  "errors": [],
+  "event_timing_ns": {
+    "infer-1-normal": {
+      "all": {
+        "wall": {
+          "n": 513,
+          "p50": 1161900,
+          "p95": 7867300,
+          "p99": 12819000,
+          "max": 23825400
+        },
+        "cpu": {
+          "n": 513,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 15625000
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 513,
+          "p50": 671000,
+          "p95": 6039100,
+          "p99": 8609300,
+          "max": 12642500
+        },
+        "observed_core_changes": 125
+      },
+      "inference": {
+        "wall": {
+          "n": 513,
+          "p50": 1161900,
+          "p95": 7867300,
+          "p99": 12819000,
+          "max": 23825400
+        },
+        "cpu": {
+          "n": 513,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 15625000
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 513,
+          "p50": 671000,
+          "p95": 6039100,
+          "p99": 8609300,
+          "max": 12642500
+        },
+        "observed_core_changes": 125
+      },
+      "loading": {
+        "wall": {
+          "n": 0
+        },
+        "cpu": {
+          "n": 0
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 0
+        },
+        "observed_core_changes": 0
+      },
+      "inference_and_store": {
+        "wall": {
+          "n": 0
+        },
+        "cpu": {
+          "n": 0
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 0
+        },
+        "observed_core_changes": 0
+      }
+    },
+    "infer-1-below-normal": {
+      "all": {
+        "wall": {
+          "n": 513,
+          "p50": 1271800,
+          "p95": 10053900,
+          "p99": 17580200,
+          "max": 33042300
+        },
+        "cpu": {
+          "n": 513,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 31250000
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 513,
+          "p50": 629700,
+          "p95": 6099400,
+          "p99": 11829600,
+          "max": 33042300
+        },
+        "observed_core_changes": 142
+      },
+      "inference": {
+        "wall": {
+          "n": 513,
+          "p50": 1271800,
+          "p95": 10053900,
+          "p99": 17580200,
+          "max": 33042300
+        },
+        "cpu": {
+          "n": 513,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 31250000
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 513,
+          "p50": 629700,
+          "p95": 6099400,
+          "p99": 11829600,
+          "max": 33042300
+        },
+        "observed_core_changes": 142
+      },
+      "loading": {
+        "wall": {
+          "n": 0
+        },
+        "cpu": {
+          "n": 0
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 0
+        },
+        "observed_core_changes": 0
+      },
+      "inference_and_store": {
+        "wall": {
+          "n": 0
+        },
+        "cpu": {
+          "n": 0
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 0
+        },
+        "observed_core_changes": 0
+      }
+    },
+    "infer-2-normal": {
+      "all": {
+        "wall": {
+          "n": 513,
+          "p50": 1548300,
+          "p95": 15687300,
+          "p99": 23586200,
+          "max": 34408200
+        },
+        "cpu": {
+          "n": 513,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 31250000
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 513,
+          "p50": 720900,
+          "p95": 7660800,
+          "p99": 18213300,
+          "max": 23799100
+        },
+        "observed_core_changes": 171
+      },
+      "inference": {
+        "wall": {
+          "n": 513,
+          "p50": 1548300,
+          "p95": 15687300,
+          "p99": 23586200,
+          "max": 34408200
+        },
+        "cpu": {
+          "n": 513,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 31250000
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 513,
+          "p50": 720900,
+          "p95": 7660800,
+          "p99": 18213300,
+          "max": 23799100
+        },
+        "observed_core_changes": 171
+      },
+      "loading": {
+        "wall": {
+          "n": 0
+        },
+        "cpu": {
+          "n": 0
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 0
+        },
+        "observed_core_changes": 0
+      },
+      "inference_and_store": {
+        "wall": {
+          "n": 0
+        },
+        "cpu": {
+          "n": 0
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 0
+        },
+        "observed_core_changes": 0
+      }
+    },
+    "infer-2-below-normal": {
+      "all": {
+        "wall": {
+          "n": 513,
+          "p50": 1317900,
+          "p95": 8984000,
+          "p99": 17562000,
+          "max": 22494800
+        },
+        "cpu": {
+          "n": 513,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 31250000
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 513,
+          "p50": 734700,
+          "p95": 5957800,
+          "p99": 7997100,
+          "max": 15662300
+        },
+        "observed_core_changes": 145
+      },
+      "inference": {
+        "wall": {
+          "n": 513,
+          "p50": 1317900,
+          "p95": 8984000,
+          "p99": 17562000,
+          "max": 22494800
+        },
+        "cpu": {
+          "n": 513,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 31250000
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 513,
+          "p50": 734700,
+          "p95": 5957800,
+          "p99": 7997100,
+          "max": 15662300
+        },
+        "observed_core_changes": 145
+      },
+      "loading": {
+        "wall": {
+          "n": 0
+        },
+        "cpu": {
+          "n": 0
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 0
+        },
+        "observed_core_changes": 0
+      },
+      "inference_and_store": {
+        "wall": {
+          "n": 0
+        },
+        "cpu": {
+          "n": 0
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 0
+        },
+        "observed_core_changes": 0
+      }
+    },
+    "infer-4-normal": {
+      "all": {
+        "wall": {
+          "n": 513,
+          "p50": 1548700,
+          "p95": 11713100,
+          "p99": 17643400,
+          "max": 25643100
+        },
+        "cpu": {
+          "n": 513,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 31250000
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 513,
+          "p50": 765800,
+          "p95": 7202200,
+          "p99": 12125700,
+          "max": 17643400
+        },
+        "observed_core_changes": 192
+      },
+      "inference": {
+        "wall": {
+          "n": 513,
+          "p50": 1548700,
+          "p95": 11713100,
+          "p99": 17643400,
+          "max": 25643100
+        },
+        "cpu": {
+          "n": 513,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 31250000
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 513,
+          "p50": 765800,
+          "p95": 7202200,
+          "p99": 12125700,
+          "max": 17643400
+        },
+        "observed_core_changes": 192
+      },
+      "loading": {
+        "wall": {
+          "n": 0
+        },
+        "cpu": {
+          "n": 0
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 0
+        },
+        "observed_core_changes": 0
+      },
+      "inference_and_store": {
+        "wall": {
+          "n": 0
+        },
+        "cpu": {
+          "n": 0
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 0
+        },
+        "observed_core_changes": 0
+      }
+    },
+    "infer-4-below-normal": {
+      "all": {
+        "wall": {
+          "n": 513,
+          "p50": 1484700,
+          "p95": 11103100,
+          "p99": 17325200,
+          "max": 23540700
+        },
+        "cpu": {
+          "n": 513,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 31250000
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 513,
+          "p50": 743500,
+          "p95": 6901100,
+          "p99": 10274200,
+          "max": 16352900
+        },
+        "observed_core_changes": 153
+      },
+      "inference": {
+        "wall": {
+          "n": 513,
+          "p50": 1484700,
+          "p95": 11103100,
+          "p99": 17325200,
+          "max": 23540700
+        },
+        "cpu": {
+          "n": 513,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 31250000
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 513,
+          "p50": 743500,
+          "p95": 6901100,
+          "p99": 10274200,
+          "max": 16352900
+        },
+        "observed_core_changes": 153
+      },
+      "loading": {
+        "wall": {
+          "n": 0
+        },
+        "cpu": {
+          "n": 0
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 0
+        },
+        "observed_core_changes": 0
+      },
+      "inference_and_store": {
+        "wall": {
+          "n": 0
+        },
+        "cpu": {
+          "n": 0
+        },
+        "wall_minus_accounted_cpu": {
+          "n": 0
+        },
+        "observed_core_changes": 0
+      }
+    }
+  },
+  "finished_utc": "2026-11-25T15:39:16.715037+00:00"
+}
