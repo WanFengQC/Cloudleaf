@@ -10,6 +10,9 @@ members = [
     "crates/cloudleaf-translation",
     "crates/cloudleaf-offline",
     "crates/cloudleaf-bridge",
+    "crates/cloudleaf-translation-ipc",
+    "crates/cloudleaf-translation-integrity",
+    "apps/cloudleaf-translation-worker",
     "apps/cloudleaf-cli",
     "apps/windows-ime",
     "apps/cloudleaf-translation-panel",
@@ -35,6 +38,8 @@ cloudleaf-user = { path = "crates/cloudleaf-user", version = "=0.1.0" }
 cloudleaf-translation = { path = "crates/cloudleaf-translation", version = "=0.1.0" }
 cloudleaf-offline = { path = "crates/cloudleaf-offline", version = "=0.1.0" }
 cloudleaf-bridge = { path = "crates/cloudleaf-bridge", version = "=0.1.0" }
+cloudleaf-translation-ipc = { path = "crates/cloudleaf-translation-ipc", version = "=0.1.0" }
+cloudleaf-translation-integrity = { path = "crates/cloudleaf-translation-integrity", version = "=0.1.0" }
 
 [workspace.lints.rust]
 unsafe_code = "forbid"

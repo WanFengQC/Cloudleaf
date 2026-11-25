@@ -1,4 +1,4 @@
-use cloudleaf_translation::TranslationError;
+use cloudleaf_translation::{TranslationCancellation, TranslationError};
 use ring::digest::{Context, SHA256};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
@@ -225,6 +225,23 @@ struct ManagedMarker {
 }
 
 pub(crate) fn verify_catalog(path: &Path) -> Result<VerifiedCatalog, TranslationError> {
+    verify_catalog_inner(path, None)
+}
+
+pub(crate) fn verify_catalog_direction(
+    path: &Path,
+    direction: &str,
+    expected_sha256: &str,
+    cancellation: &TranslationCancellation,
+) -> Result<VerifiedCatalog, TranslationError> {
+    verify_catalog_inner(path, Some((direction, expected_sha256, cancellation)))
+}
+
+fn verify_catalog_inner(
+    path: &Path,
+    selection: Option<(&str, &str, &TranslationCancellation)>,
+) -> Result<VerifiedCatalog, TranslationError> {
+    let cancellation = selection.map(|(_, _, cancellation)| cancellation);
     let path = path
         .canonicalize()
         .map_err(|_| TranslationError::ModelNotFound)?;
@@ -232,6 +249,10 @@ pub(crate) fn verify_catalog(path: &Path) -> Result<VerifiedCatalog, Translation
         .parent()
         .ok_or(TranslationError::InvalidConfig)?
         .to_owned();
+    let sha256 = sha256_file_inner(&path, cancellation)?;
+    if selection.is_some_and(|(_, expected, _)| sha256 != expected) {
+        return Err(TranslationError::ModelLoadFailed);
+    }
     let catalog: ModelCatalog = read_json(&path, 65536)?;
     if catalog.schema != 1 || catalog.models.is_empty() || catalog.models.len() > 2 {
         return Err(TranslationError::InvalidConfig);
@@ -249,6 +270,9 @@ pub(crate) fn verify_catalog(path: &Path) -> Result<VerifiedCatalog, Translation
         if !ids.insert(manifest.model_id.clone()) {
             return Err(TranslationError::InvalidConfig);
         }
+        if selection.is_some_and(|(direction, _, _)| manifest.direction != direction) {
+            continue;
+        }
         let model_root = manifest_path
             .parent()
             .ok_or(TranslationError::InvalidConfig)?
@@ -259,7 +283,7 @@ pub(crate) fn verify_catalog(path: &Path) -> Result<VerifiedCatalog, Translation
                 .map_err(|_| TranslationError::ModelNotFound)?
                 .len()
                 != file.bytes
-                || sha256_file(&file_path)? != file.sha256
+                || sha256_file_inner(&file_path, cancellation)? != file.sha256
             {
                 return Err(TranslationError::ModelLoadFailed);
             }
@@ -270,8 +294,11 @@ pub(crate) fn verify_catalog(path: &Path) -> Result<VerifiedCatalog, Translation
             manifest_relative: relative,
         });
     }
+    if models.is_empty() {
+        return Err(TranslationError::UnsupportedLanguagePair);
+    }
     Ok(VerifiedCatalog {
-        sha256: sha256_file(&path)?,
+        sha256,
         path,
         root,
         models,
@@ -395,10 +422,20 @@ pub(crate) fn read_json<T: serde::de::DeserializeOwned>(
 }
 
 pub fn sha256_file(path: &Path) -> Result<String, TranslationError> {
+    sha256_file_inner(path, None)
+}
+
+fn sha256_file_inner(
+    path: &Path,
+    cancellation: Option<&TranslationCancellation>,
+) -> Result<String, TranslationError> {
     let mut file = File::open(path).map_err(|_| TranslationError::ModelNotFound)?;
     let mut context = Context::new(&SHA256);
     let mut buffer = [0u8; 65536];
     loop {
+        if let Some(cancellation) = cancellation {
+            cancellation.check()?;
+        }
         let count = file
             .read(&mut buffer)
             .map_err(|_| TranslationError::ModelLoadFailed)?;

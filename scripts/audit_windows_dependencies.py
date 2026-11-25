@@ -18,15 +18,24 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def verify_licenses(root: Path, metadata: dict) -> list[dict]:
+def verify_licenses(root: Path, metadata: dict, ipc: dict | None = None) -> list[dict]:
     members = set(metadata["workspace_members"])
     packages = [package for package in metadata["packages"] if package["id"] not in members]
     manifest = json.loads((root / "licenses/windows/manifest.json").read_text(encoding="utf-8"))
     snapshot_manifest = root / "licenses/input-snapshot/manifest.json"
     if snapshot_manifest.is_file():
         manifest += json.loads(snapshot_manifest.read_text(encoding="utf-8"))
+    legacy = {(row["package"], row["version"]) for row in manifest}
     expected_packages = {(package["name"], package["version"]) for package in packages}
-    assert {(row["package"], row["version"]) for row in manifest} == expected_packages, "许可清单包集合与实际依赖不符"
+    assert legacy <= expected_packages, "输入原有许可清单包必须保留"
+    protocol = [p for p in packages if (p["name"], p["version"]) not in legacy]
+    if protocol:
+        assert ipc is not None and {p["id"] for p in protocol} <= {p["id"] for p in ipc["packages"]}, "新增输入依赖须由轻量 IPC 许可审计覆盖"
+        from audit_translation_dependencies import verify_licenses as verify_translation_licenses
+        protocol_licenses = verify_translation_licenses(root, {"workspace_members": [], "packages": protocol}, shared_protocol_only=True)
+    else:
+        protocol_licenses = []
+    packages = [p for p in packages if (p["name"], p["version"]) in legacy]
     seen = set()
     result = []
     for package in packages:
@@ -72,7 +81,7 @@ def verify_licenses(root: Path, metadata: dict) -> list[dict]:
         result.append({"name": package["name"], "version": package["version"], "license": package["license"],
                        "source": package["source"], "repository": package.get("repository"),
                        "rust_version": package.get("rust_version"), "files": files})
-    return result
+    return result + protocol_licenses
 
 
 def run() -> None:
@@ -89,12 +98,13 @@ def run() -> None:
         raise ValueError("审计工具版本不符：必须固定0.22.2")
     # 许可证门禁与精确依赖政策同时执行，不能用一份自填清单代替实际metadata。
     from check_workspace import check_packages, load_policy
-    from dependency_scope import INPUT_ROOTS, select_workspace_closure
+    from dependency_scope import validate_input_dependency_boundary
     metadata = json.loads(subprocess.check_output(
         ["cargo", "metadata", "--locked", "--offline", "--format-version", "1"], cwd=ROOT, encoding="utf-8"))
     check_packages(metadata, load_policy(ROOT), "1.90.0")
     lock_hash = sha256(ROOT / "Cargo.lock")
-    licenses = verify_licenses(ROOT, select_workspace_closure(metadata, INPUT_ROOTS))
+    inputs, ipc = validate_input_dependency_boundary(metadata)
+    licenses = verify_licenses(ROOT, inputs, ipc)
     command = [binary, "audit", "--file", str(ROOT / "Cargo.lock"), "--db", str(args.db), "--json", "-D", "warnings"]
     audited = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, encoding="utf-8", check=False)
     report = json.loads(audited.stdout)

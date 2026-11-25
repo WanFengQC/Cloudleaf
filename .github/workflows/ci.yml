@@ -57,13 +57,14 @@ jobs:
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v4
         with:
-          name: integration-round21-windows
+          name: integration-round22-windows
           path: |
             target/release/cloudleaf-cli.exe
             target/release/cloudleaf-ime.exe
             target/release/cloudleaf_windows_ime.dll
             target/release/cloudleaf-translation-panel.exe
             target/release/cloudleaf-bridge-headless.exe
+            target/release/cloudleaf-translation-worker.exe
             target/release/examples/inspect_marian_weights.exe
             target/release/examples/offline_models.exe
             target/release/examples/offline_translate.exe
@@ -92,15 +93,18 @@ jobs:
             docs/input-round20-design.md
             docs/testing/round20-windows-manual-acceptance.md
             docs/integration-round21-design.md
+            docs/integration-round22-design.md
+            docs/testing/round22-native-translation-manual.md
           if-no-files-found: error
       - name: Upload Linux headless integration tools
         if: runner.os == 'Linux'
         uses: actions/upload-artifact@v4
         with:
-          name: integration-round21-linux
+          name: integration-round22-linux
           path: |
             target/release/cloudleaf-cli
             target/release/cloudleaf-bridge-headless
+            target/release/cloudleaf-translation-worker
             target/release/examples/input_trace
             target/release/examples/inspect_marian_weights
             target/release/examples/offline_models
@@ -116,6 +120,7 @@ jobs:
             config/offline-models/
             config/offline-runtime-source-patches.json
             docs/integration-round21-design.md
+            docs/integration-round22-design.md
           if-no-files-found: error
       - uses: actions/upload-artifact@v4
         with:

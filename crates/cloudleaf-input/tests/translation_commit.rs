@@ -89,3 +89,50 @@ fn translation_confirmation_rejects_inactive_stale_and_invalid_text() {
     assert_eq!(request.text, "你好。");
     assert!(engine.pending_selection().is_none());
 }
+
+#[test]
+fn discarded_not_applied_translation_preserves_input_and_cannot_be_replayed() {
+    let mut engine = InputEngine::new(Dictionary::from_tsv(PROTOTYPE_TSV).unwrap());
+    engine.handle(InputEvent::Activate);
+    for key in "nihao".chars() {
+        engine.handle(InputEvent::Key(Key::Char(key)));
+    }
+    let source = engine.frame();
+    assert_eq!(
+        engine.validate_translation(source.revision, "Hello."),
+        Ok(())
+    );
+    assert_eq!(engine.frame(), source);
+
+    let first = engine
+        .confirm_translation(source.revision, "Hello.")
+        .commit
+        .unwrap();
+    assert!(engine.discard_failed_translation(first.id).is_err());
+    engine.handle(InputEvent::CommitFailed { id: first.id });
+    assert_eq!(engine.validate_translation_retry(first.id), Ok(()));
+    let retry = engine.handle(InputEvent::RetryCommit).commit.unwrap();
+    assert_ne!(retry.id, first.id);
+    engine.handle(InputEvent::CommitFailed { id: retry.id });
+    assert!(engine.discard_failed_translation(first.id).is_err());
+    let mut before_discard = engine.frame();
+    engine.discard_failed_translation(retry.id).unwrap();
+    before_discard.revision += 1;
+    assert_eq!(engine.frame(), before_discard);
+    assert!(engine.handle(InputEvent::RetryCommit).commit.is_none());
+    assert!(engine.handle(InputEvent::Key(Key::Char('n'))).handled);
+}
+
+#[test]
+fn unlearned_punctuation_failure_is_not_a_failed_translation() {
+    let mut engine = InputEngine::new(Dictionary::from_tsv(PROTOTYPE_TSV).unwrap());
+    engine.handle(InputEvent::Activate);
+    let ordinary = engine
+        .handle(InputEvent::Key(Key::Char('.')))
+        .commit
+        .unwrap();
+    engine.handle(InputEvent::CommitFailed { id: ordinary.id });
+    assert!(engine.pending_selection().is_none());
+    assert!(engine.discard_failed_translation(ordinary.id).is_err());
+    assert_eq!(engine.failed_commit(), Some(&ordinary));
+}

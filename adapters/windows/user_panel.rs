@@ -59,6 +59,7 @@ pub(super) struct Panel {
     listing: Cell<HWND>,
     status: Cell<HWND>,
     callback: Rc<dyn Fn(Command)>,
+    deactivated: Rc<dyn Fn(HWND)>,
     class: Vec<u16>,
     instance: HINSTANCE,
     lease_pending: Cell<bool>,
@@ -66,7 +67,11 @@ pub(super) struct Panel {
 }
 
 impl Panel {
-    pub(super) fn open(owner: HWND, callback: Rc<dyn Fn(Command)>) -> Result<Rc<Self>> {
+    pub(super) fn open(
+        owner: HWND,
+        callback: Rc<dyn Fn(Command)>,
+        deactivated: Rc<dyn Fn(HWND)>,
+    ) -> Result<Rc<Self>> {
         // 安全：所有控件、消息和Rc均只在创建者的UI线程上使用。
         unsafe {
             let instance = HINSTANCE(GetModuleHandleW(None)?.0);
@@ -95,13 +100,14 @@ impl Panel {
                 listing: Cell::new(HWND::default()),
                 status: Cell::new(HWND::default()),
                 callback,
+                deactivated,
                 class,
                 instance,
                 lease_pending: Cell::new(true),
                 creation_error: RefCell::new(None),
             });
             let lease = Rc::into_raw(panel.clone());
-            // 独立顶层窗口可单独聚焦；生命周期由UserState显式管理，保持正常IME。
+            // 词库窗口是隔离宿主的有主顶层窗口，可单独聚焦，保持正常输入法。
             let created = CreateWindowExW(
                 WINDOW_EX_STYLE::default(),
                 PCWSTR(panel.class.as_ptr()),
@@ -111,7 +117,7 @@ impl Panel {
                 CW_USEDEFAULT,
                 970,
                 830,
-                None,
+                Some(owner),
                 None,
                 Some(instance),
                 Some(lease.cast()),
@@ -134,6 +140,10 @@ impl Panel {
             let _ = SetWindowTextW(self.listing.get(), PCWSTR(wide(listing).as_ptr()));
             let _ = SetWindowTextW(self.status.get(), PCWSTR(wide(status).as_ptr()));
         }
+    }
+
+    pub(super) fn handle(&self) -> HWND {
+        self.window.get()
     }
 
     pub(super) fn show(&self) {
@@ -444,6 +454,10 @@ unsafe extern "system" fn window_proc(
         let result = boundary(|| match message {
             WM_COMMAND if wparam.0 >> 16 == BN_CLICKED as usize && lparam.0 != 0 => {
                 panel.command(wparam.0 & 0xffff)?;
+                Ok(LRESULT(0))
+            }
+            WM_ACTIVATE if wparam.0 & 0xffff == WA_INACTIVE as usize => {
+                (panel.deactivated)(HWND(lparam.0 as *mut _));
                 Ok(LRESULT(0))
             }
             WM_CLOSE => {

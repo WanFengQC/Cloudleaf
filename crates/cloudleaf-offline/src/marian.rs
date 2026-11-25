@@ -1,4 +1,6 @@
-use crate::manager::{ModelState, VerifiedModel, read_json, verify_catalog};
+use crate::manager::{
+    ModelState, VerifiedCatalog, VerifiedModel, read_json, verify_catalog, verify_catalog_direction,
+};
 use candle_core::{DType, Device, Tensor};
 use candle_nn::VarBuilder;
 use candle_transformers::models::marian::{Config, MTModel};
@@ -115,6 +117,9 @@ pub struct InferenceStats {
     pub catalog_sha256: String,
     pub load_ms: u64,
     pub inference_ms: u64,
+    pub inference_ns: u64,
+    pub encoder_ns: u64,
+    pub decoder_ns: u64,
     pub input_tokens: usize,
     pub output_tokens: usize,
     pub generated_steps: usize,
@@ -149,10 +154,43 @@ impl MarianProvider {
 
     pub fn load_with_progress(
         catalog_path: &Path,
+        progress: impl FnMut(ModelState),
+    ) -> Result<Self, TranslationError> {
+        Self::load_verified(COMPUTE_THREADS, || verify_catalog(catalog_path), progress)
+    }
+
+    pub fn load_direction(
+        catalog_path: &Path,
+        expected_sha256: &str,
+        direction: TranslationDirection,
+        compute_threads: usize,
+        cancellation: &TranslationCancellation,
+        progress: impl FnMut(ModelState),
+    ) -> Result<Self, TranslationError> {
+        let direction = match (direction.source, direction.target) {
+            (Language::Chinese, Language::English) => "zh-en",
+            (Language::English, Language::Chinese) => "en-zh",
+            _ => return Err(TranslationError::UnsupportedLanguagePair),
+        };
+        if !matches!(compute_threads, 1 | 2 | 4) {
+            return Err(TranslationError::InvalidConfig);
+        }
+        let provider = Self::load_verified(
+            compute_threads,
+            || verify_catalog_direction(catalog_path, direction, expected_sha256, cancellation),
+            progress,
+        )?;
+        cancellation.check()?;
+        Ok(provider)
+    }
+
+    fn load_verified(
+        compute_threads: usize,
+        verify: impl FnOnce() -> Result<VerifiedCatalog, TranslationError>,
         mut progress: impl FnMut(ModelState),
     ) -> Result<Self, TranslationError> {
         progress(ModelState::Checking);
-        let verified = match verify_catalog(catalog_path) {
+        let verified = match verify() {
             Ok(verified) => verified,
             Err(error) => {
                 progress(match error {
@@ -165,7 +203,7 @@ impl MarianProvider {
         };
         progress(ModelState::Ready);
         let pool = ThreadPoolBuilder::new()
-            .num_threads(COMPUTE_THREADS)
+            .num_threads(compute_threads)
             .thread_name(|index| format!("cloudleaf-tensor-{index}"))
             .build()
             .map_err(|_| {
@@ -323,6 +361,7 @@ fn infer(
         return Err(TranslationError::InputTooLong);
     }
     cancellation.check()?;
+    let encoder_started = Instant::now();
     let input = Tensor::new(encoded.ids.as_slice(), &Device::Cpu)
         .and_then(|tensor| tensor.unsqueeze(0))
         .map_err(|_| TranslationError::InternalError)?;
@@ -331,7 +370,9 @@ fn infer(
         .encoder()
         .forward(&input, 0)
         .map_err(|_| TranslationError::InternalError)?;
+    let encoder_ns = encoder_started.elapsed().as_nanos() as u64;
     cancellation.check()?;
+    let decoder_started = Instant::now();
     let mut previous = model.config.decoder_start_token_id;
     let mut output = Vec::new();
     let mut terminated = false;
@@ -369,6 +410,7 @@ fn infer(
     if !terminated {
         return Err(TranslationError::ResponseTooLarge);
     }
+    let decoder_ns = decoder_started.elapsed().as_nanos() as u64;
     let translated_text = model.tokenizer.decode(&output)?;
     cancellation.check()?;
     if translated_text.trim().is_empty() {
@@ -390,12 +432,15 @@ fn infer(
             catalog_sha256: catalog_sha256.to_owned(),
             load_ms: model.load_ms,
             inference_ms: started.elapsed().as_millis() as u64,
+            inference_ns: started.elapsed().as_nanos() as u64,
+            encoder_ns,
+            decoder_ns,
             input_tokens: encoded.ids.len(),
             output_tokens: output.len(),
             generated_steps: steps,
             output_truncated: false,
             decoding: "greedy-pad-suppressed".to_owned(),
-            compute_threads: COMPUTE_THREADS,
+            compute_threads: rayon::current_num_threads(),
             resident_models,
         },
     ))

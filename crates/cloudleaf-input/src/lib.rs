@@ -56,6 +56,7 @@ pub struct InputEngine {
     next_commit_id: u64,
     pending_commit: Option<CommitRequest>,
     failed_commit: Option<CommitRequest>,
+    translation_commit_id: Option<u64>,
     pending_selection: Option<SelectionEvidence>,
 }
 
@@ -69,6 +70,15 @@ pub struct SelectionEvidence {
     pub model_version: Option<String>,
     pub scheme_version: Option<String>,
     pub entries: Vec<(String, String)>,
+}
+
+/// 翻译来源所依赖的输入资源。会话、epoch 和修订由宿主单独绑定。
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct TranslationSourceIdentity {
+    pub candidate_id: Option<String>,
+    pub lexicon: Option<String>,
+    pub input_model: Option<String>,
+    pub scheme: Option<String>,
 }
 
 impl InputEngine {
@@ -103,6 +113,7 @@ impl InputEngine {
             next_commit_id: 1,
             pending_commit: None,
             failed_commit: None,
+            translation_commit_id: None,
             pending_selection: None,
         })
     }
@@ -136,6 +147,22 @@ impl InputEngine {
         self.sentence
             .as_ref()
             .map(sentence::SentenceBackend::snapshots)
+    }
+
+    pub fn translation_source_identity(
+        &self,
+        candidate_id: Option<String>,
+    ) -> TranslationSourceIdentity {
+        let resources = self.search_resources();
+        TranslationSourceIdentity {
+            candidate_id,
+            lexicon: resources
+                .as_ref()
+                .map(|(snapshot, _)| snapshot.version().to_owned()),
+            input_model: resources
+                .and_then(|(_, model)| model.map(|model| model.version().to_owned())),
+            scheme: self.pinyin_scheme().map(SchemeConfig::version_id),
+        }
     }
 
     pub fn validate_search_resources(
@@ -462,15 +489,16 @@ impl InputEngine {
         self.begin_candidate_commit(index)
     }
 
-    /// 显式确认当前译文。调用者须先核对翻译任务及会话拥有者。
-    ///
-    /// 这条提交复用宿主回执，但不会产生学习所需的候选选中凭据。
-    pub fn confirm_translation(&mut self, revision: u64, text: &str) -> EventResult {
+    /// 实际引擎与投影引擎须在创建提交前各自完成只读预检。
+    pub fn validate_translation(&self, revision: u64, text: &str) -> Result<(), CoreError> {
         let error = if self.pending_commit.is_some() {
             Some(ErrorCode::CommitPending)
         } else if self.failed_commit.is_some() {
             Some(ErrorCode::CommitFailed)
-        } else if self.state == InputState::Inactive || self.revision >= u64::MAX - 1 {
+        } else if self.state == InputState::Inactive
+            || self.revision >= u64::MAX - 1
+            || self.next_commit_id == u64::MAX
+        {
             Some(ErrorCode::InvalidInput)
         } else if revision != self.revision {
             Some(ErrorCode::StaleCandidate)
@@ -485,14 +513,54 @@ impl InputEngine {
         } else {
             None
         };
-        if let Some(code) = error {
-            return self.result(
-                false,
-                None,
-                Some(CoreError::new(code, "译文不属于当前可提交帧或超出文本边界")),
-            );
+        error.map_or(Ok(()), |code| {
+            Err(CoreError::new(code, "译文不属于当前可提交帧或超出文本边界"))
+        })
+    }
+
+    /// 显式确认当前译文。调用者须先核对翻译任务及会话拥有者。
+    ///
+    /// 这条提交复用宿主回执，但不会产生学习所需的候选选中凭据。
+    pub fn confirm_translation(&mut self, revision: u64, text: &str) -> EventResult {
+        if let Err(error) = self.validate_translation(revision, text) {
+            return self.result(false, None, Some(error));
         }
-        self.begin_commit(text.to_owned())
+        let result = self.begin_commit(text.to_owned());
+        self.translation_commit_id = result.commit.as_ref().map(|request| request.id);
+        result
+    }
+
+    pub fn validate_failed_translation(&self, id: u64) -> Result<(), CoreError> {
+        if self.revision == u64::MAX
+            || self.translation_commit_id != Some(id)
+            || self.failed_commit.as_ref().map(|request| request.id) != Some(id)
+        {
+            return Err(CoreError::new(
+                ErrorCode::StaleCommit,
+                "当前没有相符的失败译文提交",
+            ));
+        }
+        Ok(())
+    }
+
+    pub fn validate_translation_retry(&self, id: u64) -> Result<(), CoreError> {
+        self.validate_failed_translation(id)?;
+        if self.revision >= u64::MAX - 1 || self.next_commit_id == u64::MAX {
+            return Err(CoreError::new(
+                ErrorCode::InvalidInput,
+                "提交序号已耗尽，需要新建输入上下文",
+            ));
+        }
+        Ok(())
+    }
+
+    /// 只放弃宿主已明确 NotApplied 的译文，保留原始组合与候选。
+    pub fn discard_failed_translation(&mut self, id: u64) -> Result<(), CoreError> {
+        self.validate_failed_translation(id)?;
+        self.failed_commit = None;
+        self.translation_commit_id = None;
+        self.advance_revision();
+        Ok(())
     }
 
     /// 处理一个事件，不执行文件读写、网络访问或系统文本提交。
@@ -725,6 +793,7 @@ impl InputEngine {
         };
         self.next_commit_id = next_id;
         self.failed_commit = None;
+        self.translation_commit_id = None;
         self.pending_selection = None;
         self.pending_commit = Some(request.clone());
         self.state = InputState::Committing;
@@ -808,9 +877,13 @@ impl InputEngine {
             );
         }
         if let Some(failed) = self.failed_commit.as_ref() {
+            let translation = self.translation_commit_id == Some(failed.id);
             let mut evidence = self.pending_selection.clone();
             let result = self.begin_commit(failed.text.clone());
             if let Some(request) = &result.commit {
+                if translation {
+                    self.translation_commit_id = Some(request.id);
+                }
                 if let Some(value) = &mut evidence {
                     value.commit_id = request.id;
                 }
@@ -883,6 +956,7 @@ impl InputEngine {
         self.page_start = 0;
         self.pending_commit = None;
         self.failed_commit = None;
+        self.translation_commit_id = None;
         self.pending_selection = None;
         self.state = state;
         self.advance_revision();

@@ -14,6 +14,7 @@ sys.path.insert(0, str(ROOT))
 
 from scripts.verify_input_lexicon import verify_source_licenses
 from scripts.check_offline_vendor import reviewed_local_source, verify_offline_vendor
+from scripts.dependency_scope import validate_input_dependency_boundary
 
 REGISTRY = "registry+https://github.com/rust-lang/crates.io-index"
 
@@ -130,6 +131,7 @@ def check() -> None:
         cwd=ROOT, encoding="utf-8",
     ))
     members, external = check_packages(metadata, policy, version)
+    validate_input_dependency_boundary(metadata)
     ci = (ROOT / ".github/workflows/ci.yml").read_text(encoding="utf-8")
     assert f"toolchain install {version}" in ci, "CI 工具链不一致"
 

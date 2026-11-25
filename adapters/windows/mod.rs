@@ -39,16 +39,7 @@ pub fn manage(args: Vec<String>) -> Result<()> {
         .first()
         .is_some_and(|value| value == "--interactive-input-host")
     {
-        return match args.as_slice() {
-            [_, runtime, sha] => session::interactive_input_host(runtime, sha, None),
-            [_, runtime, sha, model, model_sha] => {
-                session::interactive_input_host(runtime, sha, Some((model, model_sha)))
-            }
-            _ => Err(Error::new(
-                E_UNEXPECTED,
-                "用法：--interactive-input-host RUNTIME SHA [MODEL MODEL_SHA]",
-            )),
-        };
+        return session::interactive_input_host(&args[1..]);
     }
     if args
         .first()

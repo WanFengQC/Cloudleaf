@@ -1,5 +1,6 @@
 //! 普通Win32隔离宿主，只写本窗口的文档，不取得任何TSF manager/context。
 use super::*;
+use cloudleaf_translation_ipc::{Direction, MAX_INPUT_BYTES};
 use std::{
     cell::{Cell, RefCell},
     rc::Rc,
@@ -9,6 +10,7 @@ use windows::Win32::{
     Graphics::Gdi::*,
     System::LibraryLoader::GetModuleHandleW,
     UI::{
+        Controls::EM_SETLIMITTEXT,
         Input::{
             Ime::{HIMC, IACE_CHILDREN, ImmAssociateContextEx},
             KeyboardAndMouse::*,
@@ -17,6 +19,9 @@ use windows::Win32::{
     },
 };
 use windows_core::{PCWSTR, w};
+#[path = "isolated_translation.rs"]
+mod translation;
+use translation::{Captured, Controller as TranslationController};
 #[path = "user_panel.rs"]
 mod user_panel;
 #[path = "user_worker.rs"]
@@ -30,6 +35,13 @@ pub(crate) struct Sample {
     pub comparison_ns: u128,
     pub transaction_ns: u128,
     pub frame_ns: u128,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+struct TranslationReceipt {
+    actual: u64,
+    projected: u64,
+    outcome: CommitOutcome,
 }
 
 pub(crate) struct LocalHost {
@@ -111,6 +123,192 @@ impl LocalHost {
         retained.push_str(material);
         Ok(())
     }
+    fn finish_commit(
+        &self,
+        actual: &EventResult,
+        projected: &EventResult,
+        translation_source: Option<&str>,
+        sink: &dyn Fn(&str) -> CommitOutcome,
+    ) -> Result<(
+        TranslationReceipt,
+        Option<cloudleaf_input::SelectionEvidence>,
+    )> {
+        let commit = actual.commit.as_ref().expect("宿主仅在双引擎确认后提交");
+        let projected = projected.commit.as_ref().expect("双引擎提交已比对");
+        let mut receipt = TranslationReceipt {
+            actual: commit.id,
+            projected: projected.id,
+            outcome: CommitOutcome::NotApplied,
+        };
+        let mut document = self.document.borrow().clone();
+        document.push_str(&commit.text);
+        if document.len() <= 16384 {
+            receipt.outcome = sink(&document);
+        }
+        let selection = if receipt.outcome == CommitOutcome::Applied && translation_source.is_none()
+        {
+            self.host.engine.borrow().pending_selection().cloned()
+        } else {
+            None
+        };
+        let applied = receipt.outcome == CommitOutcome::Applied;
+        if receipt.outcome != CommitOutcome::Unknown {
+            if applied {
+                *self.document.borrow_mut() = document;
+            }
+            let ack = |id| {
+                if applied {
+                    InputEvent::CommitSucceeded { id }
+                } else {
+                    InputEvent::CommitFailed { id }
+                }
+            };
+            let actual_ack = self.host.engine.borrow_mut().handle(ack(commit.id));
+            let projected_ack = self.host.projection.borrow_mut().handle(ack(projected.id));
+            if translation_source.is_some()
+                && (!same_semantics(&actual_ack, &projected_ack)
+                    || !actual_ack.handled
+                    || (applied && actual_ack.error.is_some())
+                    || (!applied
+                        && self
+                            .host
+                            .engine
+                            .borrow()
+                            .validate_failed_translation(commit.id)
+                            .is_err()))
+            {
+                receipt.outcome = CommitOutcome::Unknown;
+            }
+        }
+        if receipt.outcome == CommitOutcome::Unknown {
+            self.host.quarantined.set(true);
+            self.host.unknown_text.set(true);
+            if let Some(source) = translation_source {
+                // 翻译控制器还持有有界的原文和译文；恢复栏不足仍须返回 Unknown。
+                let _ = self.retain(&format!(
+                    "拼音：{}；原文：{}；待核对提交：{}",
+                    actual.frame.preedit, source, commit.text
+                ));
+            } else {
+                self.retain(&format!(
+                    "拼音：{}；待核对提交：{}",
+                    actual.frame.preedit, commit.text
+                ))?;
+            }
+        }
+        Ok((receipt, selection))
+    }
+
+    fn translation_commit(
+        &self,
+        capture: &Captured,
+        text: &str,
+        retry: Option<TranslationReceipt>,
+        sink: &dyn Fn(&str) -> CommitOutcome,
+    ) -> Result<TranslationReceipt> {
+        self.host.check()?;
+        if self.host.quarantined.get()
+            || self.host.instance != capture.context.session
+            || self.host.epoch.get() != capture.context.epoch
+        {
+            return Err(Error::new(E_FAIL, "翻译请求不属于当前输入会话"));
+        }
+        let (actual, projected) = {
+            let mut actual = self.host.engine.borrow_mut();
+            let mut projected = self.host.projection.borrow_mut();
+            let frame = actual.frame();
+            let mut projected_frame = projected.frame();
+            let projected_revision = projected_frame.revision;
+            projected_frame.revision = frame.revision;
+            let candidate = &capture.source.candidate_id;
+            if frame != projected_frame
+                || actual.translation_source_identity(candidate.clone()) != capture.source
+                || projected.translation_source_identity(candidate.clone()) != capture.source
+                || candidate.as_ref().is_some_and(|id| {
+                    !frame
+                        .candidates
+                        .iter()
+                        .any(|candidate| candidate.id == *id && candidate.text == capture.original)
+                })
+            {
+                return Err(Error::new(
+                    E_FAIL,
+                    "两个输入引擎的当前原文身份不一致，未写文档",
+                ));
+            }
+            let rejected = |_: cloudleaf_types::CoreError| {
+                Error::new(E_INVALIDARG, "译文不属于当前可提交帧或当前事务不能重试")
+            };
+            if let Some(prior) = retry {
+                if prior.outcome != CommitOutcome::NotApplied
+                    || [&*actual, &*projected].iter().any(|engine| {
+                        engine
+                            .failed_commit()
+                            .is_none_or(|failed| failed.text != text)
+                    })
+                {
+                    return Err(Error::new(E_INVALIDARG, "上一次提交没有可重试的译文"));
+                }
+                actual
+                    .validate_translation_retry(prior.actual)
+                    .map_err(rejected)?;
+                projected
+                    .validate_translation_retry(prior.projected)
+                    .map_err(rejected)?;
+                (
+                    actual.handle(InputEvent::RetryCommit),
+                    projected.handle(InputEvent::RetryCommit),
+                )
+            } else {
+                actual
+                    .validate_translation(capture.context.input_revision, text)
+                    .map_err(rejected)?;
+                projected
+                    .validate_translation(projected_revision, text)
+                    .map_err(rejected)?;
+                (
+                    actual.confirm_translation(capture.context.input_revision, text),
+                    projected.confirm_translation(projected_revision, text),
+                )
+            }
+        };
+        if !same_semantics(&actual, &projected) || actual.commit.is_none() {
+            self.host.quarantined.set(true);
+            return Err(Error::new(E_FAIL, "双引擎翻译提交不同，已隔离且未写文档"));
+        }
+        self.finish_commit(&actual, &projected, Some(&capture.original), sink)
+            .map(|(receipt, _)| receipt)
+    }
+
+    fn discard_translation(&self, previous: TranslationReceipt) -> Result<()> {
+        self.host.check()?;
+        if previous.outcome != CommitOutcome::NotApplied || self.host.quarantined.get() {
+            return Err(Error::new(E_FAIL, "不能取消未知结果，请先核对宿主文档"));
+        }
+        let mut actual = self.host.engine.borrow_mut();
+        let mut projected = self.host.projection.borrow_mut();
+        // Esc 可以先在两套核心都结束已知失败；单侧失效或未确认提交仍须拒绝。
+        if [&*actual, &*projected].into_iter().all(|engine| {
+            engine.failed_commit().is_none()
+                && engine.frame().state != cloudleaf_types::InputState::Committing
+        }) {
+            return Ok(());
+        }
+        let rejected = |_: cloudleaf_types::CoreError| Error::new(E_FAIL, "当前译文已不是失败提交");
+        actual
+            .validate_failed_translation(previous.actual)
+            .map_err(rejected)?;
+        projected
+            .validate_failed_translation(previous.projected)
+            .map_err(rejected)?;
+        actual
+            .discard_failed_translation(previous.actual)
+            .map_err(rejected)?;
+        projected
+            .discard_failed_translation(previous.projected)
+            .map_err(rejected)
+    }
+
     pub fn process(
         &self,
         event: InputEvent,
@@ -162,50 +360,9 @@ impl LocalHost {
         }
         sample.comparison_ns = now.elapsed().as_nanos();
         let now = Instant::now();
-        if let Some(commit) = actual.commit {
-            let mut document = self.document.borrow().clone();
-            document.push_str(&commit.text);
-            let outcome = if document.len() > 16384 {
-                CommitOutcome::NotApplied
-            } else {
-                sink(&document)
-            };
-            match outcome {
-                CommitOutcome::Applied => {
-                    sample.selection = self.host.engine.borrow().pending_selection().cloned();
-                    *self.document.borrow_mut() = document;
-                    self.host
-                        .engine
-                        .borrow_mut()
-                        .handle(InputEvent::CommitSucceeded { id: commit.id });
-                    self.host
-                        .projection
-                        .borrow_mut()
-                        .handle(InputEvent::CommitSucceeded {
-                            id: projected.commit.unwrap().id,
-                        });
-                }
-                CommitOutcome::NotApplied => {
-                    self.host
-                        .engine
-                        .borrow_mut()
-                        .handle(InputEvent::CommitFailed { id: commit.id });
-                    self.host
-                        .projection
-                        .borrow_mut()
-                        .handle(InputEvent::CommitFailed {
-                            id: projected.commit.unwrap().id,
-                        });
-                }
-                CommitOutcome::Unknown => {
-                    self.host.quarantined.set(true);
-                    self.host.unknown_text.set(true);
-                    self.retain(&format!(
-                        "拼音：{}；待核对提交：{}",
-                        actual.frame.preedit, commit.text
-                    ))?;
-                }
-            }
+        if actual.commit.is_some() {
+            let (_, selection) = self.finish_commit(&actual, &projected, None, sink)?;
+            sample.selection = selection;
         } else if !actual.handled {
             let mut document = self.document.borrow().clone();
             let changed = match event {
@@ -241,6 +398,16 @@ impl LocalHost {
     }
 }
 
+#[derive(Default, Clone, Copy)]
+struct TranslationControls {
+    status: HWND,
+    english: HWND,
+    source: HWND,
+    raw_result: HWND,
+    acknowledge: HWND,
+    confirm: HWND,
+}
+
 struct Window {
     local: LocalHost,
     window: Cell<HWND>,
@@ -249,6 +416,9 @@ struct Window {
     fault: Cell<bool>,
     ui: RefCell<Option<CandidateUi>>,
     users: RefCell<Option<UserState>>,
+    dictionary_window: Cell<HWND>,
+    translation: RefCell<TranslationController>,
+    translation_controls: Cell<TranslationControls>,
 }
 struct UserState {
     panel: Rc<user_panel::Panel>,
@@ -276,6 +446,362 @@ fn text(window: HWND) -> String {
     }
 }
 impl Window {
+    fn new(local: LocalHost, translation: TranslationController) -> Self {
+        Self {
+            local,
+            window: Cell::new(HWND::default()),
+            document: Cell::new(HWND::default()),
+            status: Cell::new(HWND::default()),
+            fault: Cell::new(false),
+            ui: RefCell::new(None),
+            users: RefCell::new(None),
+            dictionary_window: Cell::new(HWND::default()),
+            translation: RefCell::new(translation),
+            translation_controls: Cell::default(),
+        }
+    }
+
+    fn create_translation_controls(&self) -> Result<()> {
+        let owner = self.window.get();
+        let style = WS_CHILD | WS_VISIBLE;
+        let readonly =
+            WINDOW_STYLE(ES_READONLY as u32 | ES_MULTILINE as u32 | ES_AUTOVSCROLL as u32);
+        // 安全：所有子控件同属本窗口线程；ID 只用于核对这些子控件的通知。
+        unsafe {
+            let create = |class, caption: &str, styles, x, y, width, height, id: u16| {
+                CreateWindowExW(
+                    WINDOW_EX_STYLE::default(),
+                    class,
+                    PCWSTR(wide(caption).as_ptr()),
+                    styles,
+                    x,
+                    y,
+                    width,
+                    height,
+                    Some(owner),
+                    (id != 0).then_some(HMENU(usize::from(id) as *mut _)),
+                    None,
+                    None,
+                )
+            };
+            let button = |caption, x, y, width, id| {
+                create(
+                    w!("BUTTON"),
+                    caption,
+                    style | WS_TABSTOP,
+                    x,
+                    y,
+                    width,
+                    28,
+                    id,
+                )
+            };
+            let label = |caption, y| create(w!("STATIC"), caption, style, 740, y, 366, 25, 0);
+            button("翻译高亮候选 → 英文", 740, 12, 184, 21)?;
+            button("翻译缓冲区 → 中文", 930, 12, 176, 22)?;
+            let status = create(w!("STATIC"), "", style, 740, 46, 366, 78, 0)?;
+            label("英文缓冲区", 127)?;
+            let english = create(
+                w!("EDIT"),
+                "",
+                style
+                    | WS_TABSTOP
+                    | WS_BORDER
+                    | WS_VSCROLL
+                    | WINDOW_STYLE(
+                        ES_MULTILINE as u32 | ES_AUTOVSCROLL as u32 | ES_WANTRETURN as u32,
+                    ),
+                740,
+                151,
+                366,
+                81,
+                translation::ENGLISH_EDIT,
+            )?;
+            SendMessageW(
+                english,
+                EM_SETLIMITTEXT,
+                Some(WPARAM(MAX_INPUT_BYTES)),
+                None,
+            );
+            button("提交英文原文", 740, 238, 176, 27)?;
+            button("清空英文缓冲区", 930, 238, 176, 28)?;
+            button("返回中文输入", 740, 552, 176, translation::COMMAND_LAST)?;
+            label("本次翻译原文", 272)?;
+            let source = create(
+                w!("EDIT"),
+                "",
+                style | readonly | WS_BORDER | WS_VSCROLL,
+                740,
+                295,
+                366,
+                56,
+                0,
+            )?;
+            label("模型原始译文", 358)?;
+            let raw_result = create(
+                w!("EDIT"),
+                "",
+                style | readonly | WS_BORDER | WS_VSCROLL,
+                740,
+                381,
+                366,
+                98,
+                0,
+            )?;
+            button("取消翻译", 740, 485, 176, 23)?;
+            button("保留原文", 930, 485, 176, 26)?;
+            let acknowledge = button("已核对本次风险", 740, 519, 176, 24)?;
+            let confirm = button("确认译文上屏", 930, 519, 176, 25)?;
+            self.translation_controls.set(TranslationControls {
+                status,
+                english,
+                source,
+                raw_result,
+                acknowledge,
+                confirm,
+            });
+        }
+        self.refresh_translation()
+    }
+
+    fn english(&self) -> String {
+        let control = self.translation_controls.get().english;
+        if control.is_invalid() {
+            String::new()
+        } else {
+            text(control)
+        }
+    }
+
+    fn refresh_translation(&self) -> Result<()> {
+        let controls = self.translation_controls.get();
+        if controls.status.is_invalid() {
+            return Ok(());
+        }
+        let view = self.translation.borrow().view();
+        // 安全：释放控制器借用后才调用可能重新分派窗口通知的 Win32 API。
+        unsafe {
+            for (control, value) in [
+                (controls.status, view.status.as_str()),
+                (controls.source, view.source.as_str()),
+                (controls.raw_result, view.output.as_str()),
+                (
+                    controls.confirm,
+                    if view.retry {
+                        "明确重试提交"
+                    } else {
+                        "确认译文上屏"
+                    },
+                ),
+            ] {
+                SetWindowTextW(control, PCWSTR(wide(value).as_ptr()))?;
+            }
+            let _ = EnableWindow(
+                controls.confirm,
+                view.confirm && !self.local.host.quarantined.get(),
+            );
+            let _ = EnableWindow(
+                controls.acknowledge,
+                view.acknowledge && !self.local.host.quarantined.get(),
+            );
+        }
+        Ok(())
+    }
+
+    fn command_from_own_control(
+        &self,
+        parameters: WPARAM,
+        origin: LPARAM,
+    ) -> Option<translation::Command> {
+        let id = parameters.0 as u16;
+        if !(translation::COMMAND_FIRST..=translation::COMMAND_LAST).contains(&id) || origin.0 == 0
+        {
+            return None;
+        }
+        // 安全：本窗口只接受已经创建且身份相符的按钮或编辑框通知。
+        let own_control = unsafe { GetDlgItem(Some(self.window.get()), i32::from(id)) }
+            .is_ok_and(|control| control == HWND(origin.0 as *mut _));
+        translation::command(parameters.0, own_control)
+    }
+
+    fn handle_translation(self: &Rc<Self>, command: translation::Command) -> Result<()> {
+        use translation::Command::*;
+        let english = self.english();
+        let focus;
+        let result = match command {
+            StartChinese | StartEnglish => {
+                let direction = if command == StartChinese {
+                    Direction::ZhEn
+                } else {
+                    Direction::EnZh
+                };
+                focus = Some(direction);
+                self.translation
+                    .borrow_mut()
+                    .start(&self.local, direction, &english)
+            }
+            Cancel | KeepOriginal => {
+                let reason = if command == Cancel {
+                    "已取消翻译，原文保留"
+                } else {
+                    "已保留原文"
+                };
+                focus = self
+                    .translation
+                    .borrow()
+                    .direction()
+                    .or(Some(Direction::ZhEn));
+                self.translation.borrow_mut().cancel(&self.local, reason)
+            }
+            Acknowledge => {
+                focus = self.translation.borrow().direction();
+                self.translation.borrow_mut().acknowledge();
+                Ok(())
+            }
+            Confirm => {
+                focus = self.translation.borrow().direction();
+                self.apply_translation(&english)
+            }
+            SubmitEnglish => {
+                focus = Some(Direction::EnZh);
+                self.apply_english_original(&english)
+            }
+            ClearEnglish => {
+                focus = Some(Direction::EnZh);
+                self.clear_english()
+            }
+            FocusChinese => {
+                focus = Some(Direction::ZhEn);
+                Ok(())
+            }
+            EnglishChanged => {
+                let revision = self.local.host.engine.borrow().revision();
+                let changed = self.translation.borrow_mut().invalidate_changed(
+                    &self.local,
+                    Some(&english),
+                    revision,
+                )?;
+                if changed {
+                    return self.refresh_translation();
+                }
+                return Ok(());
+            }
+        };
+        if let Err(error) = result {
+            self.translation.borrow_mut().report_error(&error);
+        }
+        if matches!(
+            command,
+            StartChinese | StartEnglish | Cancel | KeepOriginal | ClearEnglish
+        ) {
+            let frame = self.local.host.engine.borrow().frame();
+            self.update(frame)?;
+        }
+        self.refresh_translation()?;
+        if let Some(direction) = focus {
+            let handle = if direction == Direction::ZhEn {
+                self.window.get()
+            } else {
+                self.translation_controls.get().english
+            };
+            // 安全：只恢复本宿主内目标控件的键盘焦点。
+            unsafe {
+                let _ = SetFocus(Some(handle));
+            }
+        }
+        Ok(())
+    }
+
+    fn apply_translation(self: &Rc<Self>, english: &str) -> Result<()> {
+        let confirmation = self.translation.borrow().prepare(&self.local, english)?;
+        let receipt = self.local.translation_commit(
+            &confirmation.capture,
+            &confirmation.text,
+            confirmation.retry,
+            &|document| self.sink(document),
+        )?;
+        self.translation
+            .borrow_mut()
+            .acknowledge_commit(&self.local, &confirmation, receipt);
+        if receipt.outcome == CommitOutcome::Applied
+            && confirmation.capture.direction == Direction::EnZh
+        {
+            self.write_english("")?;
+        }
+        let frame = self.local.host.engine.borrow().frame();
+        self.update(frame)
+    }
+
+    fn apply_english_original(self: &Rc<Self>, english: &str) -> Result<()> {
+        self.translation
+            .borrow_mut()
+            .cancel(&self.local, "放弃翻译，处理英文原文")?;
+        let capture = Captured::new(&self.local, Direction::EnZh, english)?;
+        let receipt = self
+            .local
+            .translation_commit(&capture, english, None, &|document| self.sink(document))?;
+        let message = match receipt.outcome {
+            CommitOutcome::Applied => {
+                self.write_english("")?;
+                "英文原文已提交"
+            }
+            CommitOutcome::NotApplied => {
+                self.local.discard_translation(receipt)?;
+                "英文原文未提交，已保留缓冲区"
+            }
+            CommitOutcome::Unknown => "英文原文提交结果未知。请核对文档后开始新会话。",
+        };
+        self.translation.borrow_mut().set_message(message);
+        let frame = self.local.host.engine.borrow().frame();
+        self.update(frame)
+    }
+
+    fn clear_english(&self) -> Result<()> {
+        if self.local.host.quarantined.get() {
+            return Err(Error::new(E_FAIL, "请先核对未知提交再清空原文"));
+        }
+        if self.translation.borrow().direction() == Some(Direction::EnZh) {
+            self.translation
+                .borrow_mut()
+                .cancel(&self.local, "英文缓冲区已清空")?;
+        }
+        self.write_english("")
+    }
+
+    fn write_english(&self, value: &str) -> Result<()> {
+        // 安全：只操作该进程拥有的英文编辑控件。
+        unsafe {
+            SetWindowTextW(
+                self.translation_controls.get().english,
+                PCWSTR(wide(value).as_ptr()),
+            )
+        }
+    }
+
+    fn poll_translation(&self) -> Result<()> {
+        let english = if self.translation.borrow().direction() == Some(Direction::EnZh) {
+            self.english()
+        } else {
+            String::new()
+        };
+        let changed = self.translation.borrow_mut().poll(&self.local, &english);
+        if changed {
+            self.refresh_translation()?;
+        }
+        Ok(())
+    }
+
+    fn deactivate(self: &Rc<Self>, target: HWND) -> Result<()> {
+        let translation = self.translation.borrow_mut().set_focus(&self.local, false);
+        // 登记的词库面板与本宿主共享原文，但不共享翻译确认权限。
+        let opens_dictionary = target == self.dictionary_window.get() && !target.is_invalid();
+        if !opens_dictionary && !self.local.host.quarantined.get() {
+            self.process(InputEvent::FocusLost, None)?;
+        }
+        translation?;
+        self.refresh_translation()
+    }
+
     fn sink(&self, document: &str) -> CommitOutcome {
         let value = wide(document);
         // 安全：写入本线程独占EDIT；写后按实际UTF-16内容确认，故障注入发生在写后。
@@ -337,8 +863,17 @@ impl Window {
         }
     }
     fn open_users(self: &Rc<Self>) -> Result<()> {
-        if let Some(users) = &*self.users.borrow() {
-            users.panel.show();
+        self.translation
+            .borrow_mut()
+            .cancel(&self.local, "词库面板已打开，旧译文不可提交")?;
+        self.refresh_translation()?;
+        let current = self
+            .users
+            .borrow()
+            .as_ref()
+            .map(|users| users.panel.clone());
+        if let Some(panel) = current {
+            panel.show();
             return Ok(());
         }
         let (base, language) = self
@@ -349,6 +884,7 @@ impl Window {
             .search_resources()
             .ok_or_else(|| Error::new(E_FAIL, "没有可管理的搜索快照"))?;
         let weak = Rc::downgrade(self);
+        let focus_view = weak.clone();
         let path = user_directory()?;
         let panel = user_panel::Panel::open(
             self.window.get(),
@@ -357,7 +893,15 @@ impl Window {
                     view.user_command(command);
                 }
             }),
+            Rc::new(move |target| {
+                if let Some(view) = focus_view.upgrade()
+                    && target != view.window.get()
+                {
+                    let _ = view.deactivate(target);
+                }
+            }),
         )?;
+        self.dictionary_window.set(panel.handle());
         let worker = user_worker::Worker::start(base, language, path);
         *self.users.borrow_mut() = Some(UserState {
             panel,
@@ -374,7 +918,8 @@ impl Window {
                     .as_nanos()
             ),
         });
-        self.users.borrow().as_ref().unwrap().panel.show();
+        let panel = self.users.borrow().as_ref().unwrap().panel.clone();
+        panel.show();
         unsafe {
             SetTimer(Some(self.window.get()), 19, 100, None);
         }
@@ -531,6 +1076,13 @@ impl Window {
     }
 
     fn update(self: &Rc<Self>, frame: InputFrame) -> Result<()> {
+        let translation_changed =
+            self.translation
+                .borrow_mut()
+                .invalidate_changed(&self.local, None, frame.revision)?;
+        if translation_changed {
+            self.refresh_translation()?;
+        }
         let config = self
             .local
             .host
@@ -648,7 +1200,9 @@ unsafe extern "system" fn window_proc(
                         CreateWindowExW(WINDOW_EX_STYLE::default(),w!("BUTTON"),PCWSTR(wide(label).as_ptr()),WS_CHILD|WS_VISIBLE,x,128,width,30,Some(window),Some(HMENU(id as *mut _)),None,None)?;
                     }
                     CreateWindowExW(WINDOW_EX_STYLE::default(),w!("BUTTON"),w!("用户词库 / 本地学习"),WS_CHILD|WS_VISIBLE|WS_TABSTOP,485,164,220,30,Some(window),Some(HMENU(4usize as *mut _)),None,None)?;
-                    view.document.set(CreateWindowExW(WS_EX_CLIENTEDGE,w!("EDIT"),w!(""),WS_CHILD|WS_VISIBLE|WS_VSCROLL|WINDOW_STYLE(ES_READONLY as u32|ES_MULTILINE as u32|ES_AUTOVSCROLL as u32),12,320,720,200,Some(window),None,None,None)?);
+                    view.document.set(CreateWindowExW(WS_EX_CLIENTEDGE,w!("EDIT"),w!(""),WS_CHILD|WS_VISIBLE|WS_VSCROLL|WINDOW_STYLE(ES_READONLY as u32|ES_MULTILINE as u32|ES_AUTOVSCROLL as u32),12,320,710,230,Some(window),None,None,None)?);
+                    view.create_translation_controls()?;
+                    SetTimer(Some(window), 22, 80, None);
                     // 只解绑本窗口及已创建子控件的继承IME；拼音由本隔离核心处理，不改变系统布局。
                     if !ImmAssociateContextEx(window, HIMC::default(), 0).as_bool()
                         || !ImmAssociateContextEx(window, HIMC::default(), IACE_CHILDREN).as_bool() {
@@ -685,7 +1239,10 @@ unsafe extern "system" fn window_proc(
                     view.ui.borrow_mut().take();
                     // 明确新会话接受当前本窗口文档，旧Unknown请求只失效，不重发。
                     *view.local.document.borrow_mut()=text(view.document.get());
-                    view.local.reset()?; let frame=view.local.host.engine.borrow().frame(); view.update(frame)?; let _=SetFocus(Some(window)); Ok(LRESULT(0))
+                    view.local.reset()?;
+                    view.translation.borrow_mut().reset();
+                    view.refresh_translation()?;
+                    let frame=view.local.host.engine.borrow().frame(); view.update(frame)?; let _=SetFocus(Some(window)); Ok(LRESULT(0))
                 }
                 WM_COMMAND if wparam.0&0xffff==3 => {
                     // 系统热键可能拦截F8；按钮仅切换本窗口配置，不改全局快捷键。
@@ -695,11 +1252,32 @@ unsafe extern "system" fn window_proc(
                     let _=SetFocus(Some(window)); Ok(LRESULT(0))
                 }
                 WM_COMMAND if wparam.0&0xffff==4 => {view.open_users()?;Ok(LRESULT(0))}
+                WM_COMMAND => {
+                    if let Some(command) = view.command_from_own_control(wparam, lparam) {
+                        view.handle_translation(command)?;
+                        Ok(LRESULT(0))
+                    } else {
+                        Ok(DefWindowProcW(window,message,wparam,lparam))
+                    }
+                }
                 WM_TIMER if wparam.0==19 => {view.poll_users()?;Ok(LRESULT(0))}
-                // 顶层激活状态覆盖EDIT/按钮持有焦点时的外部切换，子控件间切换不取消组合。
-                WM_ACTIVATE if wparam.0 & 0xffff == WA_INACTIVE as usize => { if !view.local.host.quarantined.get() { view.process(InputEvent::FocusLost,None)?; } Ok(LRESULT(0)) }
-                WM_SETFOCUS => { if !view.local.host.quarantined.get() { view.process(InputEvent::Activate,None)?; } Ok(LRESULT(0)) }
-                WM_CLOSE => { view.ui.borrow_mut().take();if let Some(mut users)=view.users.borrow_mut().take(){users.panel.close();users.worker.shutdown();} DestroyWindow(window)?; Ok(LRESULT(0)) }
+                WM_TIMER if wparam.0==22 => {view.poll_translation()?;Ok(LRESULT(0))}
+                // 内部子控件不改变顶层激活；唯一的跨窗口例外是登记的词库面板。
+                WM_ACTIVATE if wparam.0 & 0xffff == WA_INACTIVE as usize => {
+                    view.deactivate(HWND(lparam.0 as *mut _))?; Ok(LRESULT(0))
+                }
+                WM_ACTIVATE | WM_SETFOCUS => {
+                    view.translation.borrow_mut().set_focus(&view.local, true)?;
+                    if !view.local.host.quarantined.get() { view.process(InputEvent::Activate,None)?; }
+                    Ok(LRESULT(0))
+                }
+                WM_CLOSE => {
+                    view.translation.borrow_mut().close();
+                    view.ui.borrow_mut().take();
+                    let users = view.users.borrow_mut().take();
+                    if let Some(mut users) = users { users.panel.close(); users.worker.shutdown(); }
+                    DestroyWindow(window)?; Ok(LRESULT(0))
+                }
                 WM_DESTROY => { PostQuitMessage(0); Ok(LRESULT(0)) }
                 WM_NCDESTROY => { SetWindowLongPtrW(window,GWLP_USERDATA,0); Ok(DefWindowProcW(window,message,wparam,lparam)) }
                 _ => Ok(DefWindowProcW(window,message,wparam,lparam)),
@@ -708,17 +1286,11 @@ unsafe extern "system" fn window_proc(
     }).unwrap_or(LRESULT(0))
 }
 
-pub(crate) fn run(runtime: &str, runtime_sha: &str, model: Option<(&str, &str)>) -> Result<()> {
-    let (host, _, _) = super::input_review::load_host_k(runtime, runtime_sha, model, 10)?;
-    let view = Rc::new(Window {
-        local: LocalHost::new(host)?,
-        window: Cell::new(HWND::default()),
-        document: Cell::new(HWND::default()),
-        status: Cell::new(HWND::default()),
-        fault: Cell::new(false),
-        ui: RefCell::new(None),
-        users: RefCell::new(None),
-    });
+pub(crate) fn run(args: &[String]) -> Result<()> {
+    let options = translation::LaunchOptions::parse(args)?;
+    let (host, _, _) =
+        super::input_review::load_host_k(options.runtime, options.runtime_sha, options.model, 10)?;
+    let view = Rc::new(Window::new(LocalHost::new(host)?, options.controller()?));
     // 安全：创建、运行和销毁本进程普通Win32窗口；没有任何注册或TSF激活动作。
     unsafe {
         let instance = HINSTANCE(GetModuleHandleW(None)?.0);
@@ -736,12 +1308,12 @@ pub(crate) fn run(runtime: &str, runtime_sha: &str, model: Option<(&str, &str)>)
         let window = CreateWindowExW(
             WINDOW_EX_STYLE::default(),
             class,
-            w!("云笺 · 隔离中文输入宿主（非TSF）"),
+            w!("云笺 · 隔离输入与翻译"),
             WS_OVERLAPPEDWINDOW | WS_VISIBLE,
-            100,
-            100,
-            770,
-            580,
+            CW_USEDEFAULT,
+            CW_USEDEFAULT,
+            1140,
+            628,
             None,
             None,
             Some(instance),
@@ -755,6 +1327,13 @@ pub(crate) fn run(runtime: &str, runtime_sha: &str, model: Option<(&str, &str)>)
         }
         view.ui.borrow_mut().take();
         let _ = UnregisterClassW(class, Some(instance));
+    }
+    view.translation.borrow_mut().close();
+    if !view.translation.borrow_mut().wait() {
+        return Err(Error::new(
+            E_FAIL,
+            "未能在规定时间内核实专用翻译工作进程退出",
+        ));
     }
     Ok(())
 }
@@ -831,6 +1410,126 @@ pub(crate) fn benchmark(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn round22_dual_translation_preflight_rejects_projection_without_touching_actual() {
+        let local = LocalHost::new(Host::new().unwrap()).unwrap();
+        type_text(&local, "nihao");
+        let capture = Captured::new(&local, Direction::ZhEn, "").unwrap();
+        let before = local.host.engine.borrow().frame();
+        assert_eq!(capture.original, "你好");
+        local
+            .host
+            .projection
+            .borrow_mut()
+            .handle(InputEvent::Key(Key::Char('m')));
+        let outcome = local.translation_commit(&capture, "Hello.", None, &|_| {
+            panic!("预检失败不能访问文档")
+        });
+        assert!(outcome.is_err());
+        assert_eq!(local.host.engine.borrow().frame(), before);
+        assert!(!local.host.quarantined.get());
+        assert!(local.document.borrow().is_empty());
+    }
+
+    #[test]
+    fn round22_translation_retry_has_new_ids_and_preserves_no_learning() {
+        let local = LocalHost::new(Host::new().unwrap()).unwrap();
+        type_text(&local, "nihao");
+        let capture = Captured::new(&local, Direction::ZhEn, "").unwrap();
+        let refused = local
+            .translation_commit(&capture, "Hello.", None, &|doc| {
+                assert_eq!(doc, "Hello.");
+                assert!(local.host.engine.borrow().pending_selection().is_none());
+                assert!(local.host.projection.borrow().pending_selection().is_none());
+                CommitOutcome::NotApplied
+            })
+            .unwrap();
+        assert_eq!(refused.outcome, CommitOutcome::NotApplied);
+        assert_eq!(local.host.engine.borrow().frame().preedit, "nihao");
+        assert!(local.document.borrow().is_empty());
+
+        let retry = local
+            .translation_commit(&capture, "Hello.", Some(refused), &|doc| {
+                assert_eq!(doc, "Hello.");
+                assert!(local.host.engine.borrow().pending_selection().is_none());
+                CommitOutcome::Applied
+            })
+            .unwrap();
+        assert_eq!(retry.outcome, CommitOutcome::Applied);
+        assert_ne!(retry.actual, refused.actual);
+        assert_ne!(retry.projected, refused.projected);
+        assert_eq!(&*local.document.borrow(), "Hello.");
+        assert!(local.host.engine.borrow().frame().preedit.is_empty());
+        assert!(
+            local
+                .translation_commit(&capture, "Hello.", Some(refused), &|_| panic!(
+                    "不能重复应用"
+                ))
+                .is_err()
+        );
+    }
+
+    #[test]
+    fn round22_discard_known_failed_translation_preserves_exact_composition() {
+        let local = LocalHost::new(Host::new().unwrap()).unwrap();
+        type_text(&local, "nihao");
+        let mut before = local.host.engine.borrow().frame();
+        let capture = Captured::new(&local, Direction::ZhEn, "").unwrap();
+        let refused = local
+            .translation_commit(&capture, "Hello.", None, &|_| CommitOutcome::NotApplied)
+            .unwrap();
+        local.discard_translation(refused).unwrap();
+        let after = local.host.engine.borrow().frame();
+        before.revision = after.revision;
+        assert_eq!(before, after);
+        assert!(local.host.projection.borrow().failed_commit().is_none());
+        let (_, ordinary) = local
+            .process(InputEvent::Key(Key::Space), None, &|doc| {
+                assert_eq!(doc, "你好");
+                CommitOutcome::Applied
+            })
+            .unwrap();
+        assert_eq!(ordinary.selection, None, "64 条基线后端无真实搜索凭据");
+        assert_eq!(&*local.document.borrow(), "你好");
+    }
+
+    #[test]
+    fn round22_unknown_translation_preserves_english_and_never_replays() {
+        let local = LocalHost::new(Host::new().unwrap()).unwrap();
+        let capture = Captured::new(&local, Direction::EnZh, "Hello.").unwrap();
+        let external_doc = RefCell::new(String::new());
+        let unknown = local
+            .translation_commit(&capture, "你好。", None, &|doc| {
+                external_doc.replace(doc.into());
+                CommitOutcome::Unknown
+            })
+            .unwrap();
+        assert_eq!(unknown.outcome, CommitOutcome::Unknown);
+        assert!(local.host.quarantined.get());
+        assert!(local.retained.borrow().contains("Hello."));
+        assert!(local.retained.borrow().contains("你好。"));
+        assert!(local.discard_translation(unknown).is_err());
+        assert!(
+            local
+                .translation_commit(&capture, "你好。", Some(unknown), &|_| panic!(
+                    "Unknown 不能重放"
+                ))
+                .is_err()
+        );
+        assert_eq!(&*external_doc.borrow(), "你好。");
+        *local.document.borrow_mut() = external_doc.take();
+        local.reset().unwrap();
+        assert!(
+            local
+                .translation_commit(&capture, "你好。", None, &|_| panic!(
+                    "新会话不能应用旧译文"
+                ))
+                .is_err()
+        );
+        assert_eq!(&*local.document.borrow(), "你好。");
+    }
+
     fn type_text(local: &LocalHost, value: &str) {
         for c in value.chars() {
             local
@@ -945,15 +1644,10 @@ mod tests {
     }
     #[test]
     fn child_edit_focus_then_host_deactivation_preserves_raw_and_closes_candidates() {
-        let view = Rc::new(Window {
-            local: LocalHost::new(Host::new().unwrap()).unwrap(),
-            window: Cell::new(HWND::default()),
-            document: Cell::new(HWND::default()),
-            status: Cell::new(HWND::default()),
-            fault: Cell::new(false),
-            ui: RefCell::new(None),
-            users: RefCell::new(None),
-        });
+        let view = Rc::new(Window::new(
+            LocalHost::new(Host::new().unwrap()).unwrap(),
+            TranslationController::new(None, Default::default()),
+        ));
         type_text(&view.local, "nihao");
         let frame = view.local.host.engine.borrow().frame();
         *view.ui.borrow_mut() = Some(
@@ -1015,15 +1709,10 @@ mod tests {
     #[test]
     fn isolated_window_and_child_do_not_inherit_external_ime() {
         use windows::Win32::UI::Input::Ime::{ImmGetContext, ImmReleaseContext};
-        let view = Rc::new(Window {
-            local: LocalHost::new(Host::new().unwrap()).unwrap(),
-            window: Cell::new(HWND::default()),
-            document: Cell::new(HWND::default()),
-            status: Cell::new(HWND::default()),
-            fault: Cell::new(false),
-            ui: RefCell::new(None),
-            users: RefCell::new(None),
-        });
+        let view = Rc::new(Window::new(
+            LocalHost::new(Host::new().unwrap()).unwrap(),
+            TranslationController::new(None, Default::default()),
+        ));
         // 安全：检查本测试隐藏父子窗口的上下文；不切换用户布局或其他窗口的输入法。
         unsafe {
             let instance = HINSTANCE(GetModuleHandleW(None).unwrap().0);

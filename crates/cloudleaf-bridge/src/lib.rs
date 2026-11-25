@@ -2,6 +2,7 @@
 
 mod marian;
 
+pub use cloudleaf_input::TranslationSourceIdentity as SourceIdentity;
 pub use marian::LazyMarian;
 
 use cloudleaf_input::{
@@ -68,14 +69,6 @@ impl From<CoreError> for BridgeError {
     fn from(error: CoreError) -> Self {
         Self::Input(error)
     }
-}
-
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct SourceIdentity {
-    pub candidate_id: Option<String>,
-    pub lexicon: Option<String>,
-    pub input_model: Option<String>,
-    pub scheme: Option<String>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -364,7 +357,7 @@ impl TranslationBridge {
         self.active = Some(Active {
             task,
             context,
-            source: self.source(candidate_id),
+            source: self.engine.translation_source_identity(candidate_id),
             direction,
             original,
             preedit,
@@ -632,22 +625,13 @@ impl TranslationBridge {
         }
     }
 
-    fn source(&self, candidate_id: Option<String>) -> SourceIdentity {
-        let resources = self.engine.search_resources();
-        SourceIdentity {
-            candidate_id,
-            lexicon: resources
-                .as_ref()
-                .map(|(lexicon, _)| lexicon.version().to_owned()),
-            input_model: resources.and_then(|(_, model)| model.map(|m| m.version().to_owned())),
-            scheme: self.engine.pinyin_scheme().map(SchemeConfig::version_id),
-        }
-    }
-
     fn current(&self, active: &Active) -> bool {
         self.focused
             && active.context == self.current_context()
-            && active.source == self.source(active.source.candidate_id.clone())
+            && active.source
+                == self
+                    .engine
+                    .translation_source_identity(active.source.candidate_id.clone())
     }
 
     fn matches_result(&self, active: &Active, result: &TranslationResult) -> bool {

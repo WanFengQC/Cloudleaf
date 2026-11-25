@@ -56,7 +56,7 @@ class TranslationLicenseTests(unittest.TestCase):
         for path in (ROOT/'crates').glob('cloudleaf-*/Cargo.toml'):
             data=tomllib.loads(path.read_text(encoding='utf-8'))
             package = data['package']['name']
-            if package in {'cloudleaf-translation', 'cloudleaf-offline', 'cloudleaf-bridge'}:
+            if package in {'cloudleaf-translation', 'cloudleaf-offline', 'cloudleaf-bridge', 'cloudleaf-translation-ipc'}:
                 continue
             for name,dependency in data.get('dependencies',{}).items():
                 # 沿用输入快照与用户词库对本地身份校验的固定 digest 依赖。
@@ -64,5 +64,5 @@ class TranslationLicenseTests(unittest.TestCase):
                     self.assertEqual(dependency, {'version': '=0.17.14', 'default-features': False})
                     continue
                 self.assertTrue(name.startswith('cloudleaf-'),path)
-                self.assertNotIn(name,{'cloudleaf-translation', 'cloudleaf-offline', 'cloudleaf-bridge'},path)
+                self.assertNotIn(name, {'cloudleaf-translation', 'cloudleaf-offline', 'cloudleaf-bridge', 'cloudleaf-translation-ipc'}, path)
                 self.assertTrue(dependency.get('workspace'),path)

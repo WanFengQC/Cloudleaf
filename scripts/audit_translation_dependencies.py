@@ -15,10 +15,13 @@ ROOT=Path(__file__).resolve().parents[1]
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
-def verify_licenses(root, metadata):
+def verify_licenses(root, metadata, *, shared_protocol_only=False):
     packages=[p for p in metadata['packages'] if p['id'] not in metadata['workspace_members']]
     manifest=json.loads((root/'licenses/translation/manifest.json').read_bytes())
-    assert {(r['package'],r['version']) for r in manifest}=={(p['name'],p['version']) for p in packages}, '许可包集合不符'
+    expected = {(p['name'], p['version']) for p in packages}
+    if shared_protocol_only:
+        manifest = [r for r in manifest if (r['package'], r['version']) in expected]
+    assert {(r['package'], r['version']) for r in manifest} == expected, '许可包集合不符'
     seen=set()
     verified=[]
     for package in packages:
