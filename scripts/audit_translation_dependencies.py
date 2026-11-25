@@ -65,7 +65,11 @@ def main():
     lock_sha=sha(ROOT/'Cargo.lock')
     command=[binary,'audit','--file',str(ROOT/'Cargo.lock'),'--db',str(args.db),'--json','-D','warnings']
     audited=subprocess.run(command,cwd=ROOT,capture_output=True)
-    rustsec=json.loads(audited.stdout)
+    try:
+        rustsec = json.loads(audited.stdout)
+    except json.JSONDecodeError as error:
+        detail = audited.stderr.decode('utf-8', errors='replace').strip()
+        raise ValueError(f"RustSec 未返回有效报告，退出码 {audited.returncode}：{detail}") from error
     assert sha(ROOT/'Cargo.lock')==lock_sha, '审计时锁文件变化'
     result={'at_utc':datetime.now(timezone.utc).isoformat(),'lock_sha256':lock_sha,'audit_command':command,
         'tool_sha256':sha(Path(binary)),'returncode':audited.returncode,'licenses':licenses,'rustsec':rustsec,

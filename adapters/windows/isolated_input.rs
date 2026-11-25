@@ -1679,8 +1679,10 @@ mod tests {
                 Some(Rc::as_ptr(&view).cast()),
             )
             .unwrap();
-            SetFocus(Some(window)).unwrap();
-            SetFocus(Some(view.document.get())).unwrap();
+            // SetFocus 返回上一个焦点 HWND；首次设置时可能为空，核对实际焦点。
+            let _ = SetFocus(Some(window));
+            assert_eq!(GetFocus(), window);
+            let _ = SetFocus(Some(view.document.get()));
             assert_eq!(GetFocus(), view.document.get());
             assert_eq!(view.local.host.engine.borrow().frame().preedit, "nihao");
             SendMessageW(

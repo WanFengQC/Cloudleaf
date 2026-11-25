@@ -27,7 +27,7 @@ def verify_licenses(root: Path, metadata: dict, ipc: dict | None = None) -> list
         manifest += json.loads(snapshot_manifest.read_text(encoding="utf-8"))
     legacy = {(row["package"], row["version"]) for row in manifest}
     expected_packages = {(package["name"], package["version"]) for package in packages}
-    assert legacy <= expected_packages, "输入原有许可清单包必须保留"
+    assert legacy <= expected_packages, "许可清单包集合与实际依赖不符"
     protocol = [p for p in packages if (p["name"], p["version"]) not in legacy]
     if protocol:
         assert ipc is not None and {p["id"] for p in protocol} <= {p["id"] for p in ipc["packages"]}, "新增输入依赖须由轻量 IPC 许可审计覆盖"
@@ -107,7 +107,10 @@ def run() -> None:
     licenses = verify_licenses(ROOT, inputs, ipc)
     command = [binary, "audit", "--file", str(ROOT / "Cargo.lock"), "--db", str(args.db), "--json", "-D", "warnings"]
     audited = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, encoding="utf-8", check=False)
-    report = json.loads(audited.stdout)
+    try:
+        report = json.loads(audited.stdout)
+    except json.JSONDecodeError as error:
+        raise ValueError(f"RustSec 未返回有效报告，退出码 {audited.returncode}：{audited.stderr.strip()}") from error
     database = report.get("database", {})
     assert database.get("last-commit") and database.get("last-updated"), "必须记录成功获取的数据库版本"
     assert sha256(ROOT / "Cargo.lock") == lock_hash, "审计期间锁文件发生变化"
