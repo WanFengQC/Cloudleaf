@@ -1,0 +1,20 @@
+
+running 1 test
+test interpreted_edge_cap_keeps_the_admitted_words_from_the_current_start ... FAILED
+
+failures:
+
+---- interpreted_edge_cap_keeps_the_admitted_words_from_the_current_start stdout ----
+
+thread 'interpreted_edge_cap_keeps_the_admitted_words_from_the_current_start' panicked at crates\cloudleaf-search\tests\resource_contract.rs:89:5:
+assertion `left == right` failed
+  left: 0
+ right: 1
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    interpreted_edge_cap_keeps_the_admitted_words_from_the_current_start
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+

@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\scripts\audit_translation_dependencies.py", line 84, in <module>
+    main()
+  File "C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\scripts\audit_translation_dependencies.py", line 64, in main
+    licenses=verify_licenses(ROOT,select_workspace_closure(metadata,TRANSLATION_ROOTS))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\scripts\audit_translation_dependencies.py", line 24, in verify_licenses
+    assert {(r['package'], r['version']) for r in manifest} == expected, '许可包集合不符'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 许可包集合不符

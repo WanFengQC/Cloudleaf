@@ -17,3 +17,9 @@
 首次专项 Clippy 报告 `collapsible_if`，返回 101。调整设置加载分支后，定向测试和 Clippy 复跑分别保存于 `.local/round21-runs/round27-settings-scope-verified` 和 `.local/round21-runs/round27-settings-clippy-verified`。复跑源码状态由记录的 HEAD `42a96d8fb63d4acdb7db4764db98e80f3ed20e22` 和逐文件 SHA 一起绑定。专项测试 29/29 通过，退出码 0，11.282 秒。测试 stdout SHA-256 为 `3af37b16dda3fdb15842fbd888e669d5943702078868d5f2f946a874f1511233`。严格 Clippy 退出码 0，3.281 秒。Clippy stderr SHA-256 为 `7bd8a7ede3af8b1cef2d6b9621a0a4befcd3b013d43c6e7f9fb795b1e6b9fee6`。复跑新增旧 schema 3 默认线程和正常优先级、实际设置绑定固定 catalog SHA 和显式线程档的断言。
 
 主动保存缺少资源的提供者仍遵循已有行为，应用后一并显示不可用状态与原因。回环测试覆盖授权而不请求外部在线平台。语言资源诊断显示本面板已加载的提供者和模型。基础/补充输入词典的跨进程管理、自动语言方向的离线支持、全局热应用和对活动组合无损重配等待后续交付。Windows 设置界面在本轮构建，真实窗口和可访问性验收继续 `not-run/user-paused`。未做物理断电测试。
+
+最终用户入口的 Release 无窗口重放使用同一 revision 7 偏好。CLI 从固定词典输出真实混排选择，隔离宿主两份引擎均读取每页 3 和开启混排，Bridge 同样确认共享设置加载。若有效保存的方案依赖一个丢失的词典，CLI 给出具体降级原因并保全显式字面文字。六个实际进程调用及二进制 SHA 见 `.local/round27-entry-replays-confirmed/public-safe.json`。首轮诊断脚本误匹配提示文本的失败及再验证均保留。
+
+首次全量 Python 审计发现，宿主配置 crate 若保持在 `crates`，原有输入核心依赖检查会将其文件解析与系统适配误视为核心依赖。已将该库完整移至 `apps/cloudleaf-settings`，保留所有原断言，并明确禁止实时核心 crate 依赖宿主设置库。定向依赖测试 3/3 通过，首次完整失败与定向复跑分别在 `.local/round21-runs/round27-confirm-08`、`.local/round21-runs/round27-input-boundary-green`。
+
+翻译面板复用同一个设置存储后，翻译依赖闭包包含 10 个既有 Windows 组件。工作区策略继续检查精确版本和来源；翻译包审计通过 Windows 原清单逐文件核对该十项，并继续精确核对其余翻译许可合计。两平台发行工件携带可追溯的 Windows 许可原件。首次缺少共享许可登记的失败与修复后检查保留在 `.local/round21-runs/round27-confirm-16` 和 `.local/round21-runs/round27-translation-audit-shared`。

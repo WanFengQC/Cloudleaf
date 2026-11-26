@@ -1,0 +1,4072 @@
+{
+  "binaries": {
+    "baseline": "dc382bb4c376e765e16da6e70d8a15e80150e60c772788fe403e9cb62acb4024",
+    "candidate": "b3ed789ed4fbdc6c0472ff699f4bb3c1a79b57276aedbf7e9b8b4d9abffc19c4"
+  },
+  "pairing_summary_sha256": "4bb5c886cf6ce450565d0cdd2b943ab61df901d198afff117eef694803183f94",
+  "samples_per_event_per_version": 2,
+  "events_by_trace": {
+    "171-full": {},
+    "171-abbreviated": {
+      "73": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 45164100,
+              "allocation_calls": 72634,
+              "allocated_bytes": 7469346,
+              "live_growth_bytes": 3266747
+            },
+            {
+              "elapsed_ns": 27965600,
+              "allocation_calls": 72634,
+              "allocated_bytes": 7469346,
+              "live_growth_bytes": 3266747
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 27965600,
+              "p95": 45164100,
+              "p99": 45164100
+            },
+            "allocation_calls": {
+              "p50": 72634,
+              "p95": 72634,
+              "p99": 72634
+            },
+            "allocated_bytes": {
+              "p50": 7469346,
+              "p95": 7469346,
+              "p99": 7469346
+            },
+            "live_growth_bytes": {
+              "p50": 3266747,
+              "p95": 3266747,
+              "p99": 3266747
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 35920900,
+              "allocation_calls": 42854,
+              "allocated_bytes": 7647690,
+              "live_growth_bytes": 3303730
+            },
+            {
+              "elapsed_ns": 24878700,
+              "allocation_calls": 42854,
+              "allocated_bytes": 7647690,
+              "live_growth_bytes": 3303730
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 24878700,
+              "p95": 35920900,
+              "p99": 35920900
+            },
+            "allocation_calls": {
+              "p50": 42854,
+              "p95": 42854,
+              "p99": 42854
+            },
+            "allocated_bytes": {
+              "p50": 7647690,
+              "p95": 7647690,
+              "p99": 7647690
+            },
+            "live_growth_bytes": {
+              "p50": 3303730,
+              "p95": 3303730,
+              "p99": 3303730
+            }
+          }
+        }
+      },
+      "74": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 48164700,
+              "allocation_calls": 72753,
+              "allocated_bytes": 7504020,
+              "live_growth_bytes": 3269688
+            },
+            {
+              "elapsed_ns": 29870000,
+              "allocation_calls": 72753,
+              "allocated_bytes": 7504020,
+              "live_growth_bytes": 3269688
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 29870000,
+              "p95": 48164700,
+              "p99": 48164700
+            },
+            "allocation_calls": {
+              "p50": 72753,
+              "p95": 72753,
+              "p99": 72753
+            },
+            "allocated_bytes": {
+              "p50": 7504020,
+              "p95": 7504020,
+              "p99": 7504020
+            },
+            "live_growth_bytes": {
+              "p50": 3269688,
+              "p95": 3269688,
+              "p99": 3269688
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 36443600,
+              "allocation_calls": 42942,
+              "allocated_bytes": 7678508,
+              "live_growth_bytes": 3305343
+            },
+            {
+              "elapsed_ns": 31558800,
+              "allocation_calls": 42942,
+              "allocated_bytes": 7678508,
+              "live_growth_bytes": 3305343
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 31558800,
+              "p95": 36443600,
+              "p99": 36443600
+            },
+            "allocation_calls": {
+              "p50": 42942,
+              "p95": 42942,
+              "p99": 42942
+            },
+            "allocated_bytes": {
+              "p50": 7678508,
+              "p95": 7678508,
+              "p99": 7678508
+            },
+            "live_growth_bytes": {
+              "p50": 3305343,
+              "p95": 3305343,
+              "p99": 3305343
+            }
+          }
+        }
+      },
+      "75": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 44060200,
+              "allocation_calls": 71447,
+              "allocated_bytes": 7410801,
+              "live_growth_bytes": 3268726
+            },
+            {
+              "elapsed_ns": 31818800,
+              "allocation_calls": 71447,
+              "allocated_bytes": 7410801,
+              "live_growth_bytes": 3268726
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 31818800,
+              "p95": 44060200,
+              "p99": 44060200
+            },
+            "allocation_calls": {
+              "p50": 71447,
+              "p95": 71447,
+              "p99": 71447
+            },
+            "allocated_bytes": {
+              "p50": 7410801,
+              "p95": 7410801,
+              "p99": 7410801
+            },
+            "live_growth_bytes": {
+              "p50": 3268726,
+              "p95": 3268726,
+              "p99": 3268726
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 9790600,
+              "allocation_calls": 38325,
+              "allocated_bytes": 7236034,
+              "live_growth_bytes": 3304711
+            },
+            {
+              "elapsed_ns": 10220800,
+              "allocation_calls": 38325,
+              "allocated_bytes": 7236034,
+              "live_growth_bytes": 3304711
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 9790600,
+              "p95": 10220800,
+              "p99": 10220800
+            },
+            "allocation_calls": {
+              "p50": 38325,
+              "p95": 38325,
+              "p99": 38325
+            },
+            "allocated_bytes": {
+              "p50": 7236034,
+              "p95": 7236034,
+              "p99": 7236034
+            },
+            "live_growth_bytes": {
+              "p50": 3304711,
+              "p95": 3304711,
+              "p99": 3304711
+            }
+          }
+        }
+      },
+      "76": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 37205700,
+              "allocation_calls": 71437,
+              "allocated_bytes": 7410787,
+              "live_growth_bytes": 3268717
+            },
+            {
+              "elapsed_ns": 33536000,
+              "allocation_calls": 71437,
+              "allocated_bytes": 7410787,
+              "live_growth_bytes": 3268717
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 33536000,
+              "p95": 37205700,
+              "p99": 37205700
+            },
+            "allocation_calls": {
+              "p50": 71437,
+              "p95": 71437,
+              "p99": 71437
+            },
+            "allocated_bytes": {
+              "p50": 7410787,
+              "p95": 7410787,
+              "p99": 7410787
+            },
+            "live_growth_bytes": {
+              "p50": 3268717,
+              "p95": 3268717,
+              "p99": 3268717
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 12784400,
+              "allocation_calls": 38315,
+              "allocated_bytes": 7235996,
+              "live_growth_bytes": 3304702
+            },
+            {
+              "elapsed_ns": 8436000,
+              "allocation_calls": 38315,
+              "allocated_bytes": 7235996,
+              "live_growth_bytes": 3304702
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 8436000,
+              "p95": 12784400,
+              "p99": 12784400
+            },
+            "allocation_calls": {
+              "p50": 38315,
+              "p95": 38315,
+              "p99": 38315
+            },
+            "allocated_bytes": {
+              "p50": 7235996,
+              "p95": 7235996,
+              "p99": 7235996
+            },
+            "live_growth_bytes": {
+              "p50": 3304702,
+              "p95": 3304702,
+              "p99": 3304702
+            }
+          }
+        }
+      },
+      "77": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 32905900,
+              "allocation_calls": 71454,
+              "allocated_bytes": 7411128,
+              "live_growth_bytes": 3268935
+            },
+            {
+              "elapsed_ns": 32133000,
+              "allocation_calls": 71454,
+              "allocated_bytes": 7411128,
+              "live_growth_bytes": 3268935
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 32133000,
+              "p95": 32905900,
+              "p99": 32905900
+            },
+            "allocation_calls": {
+              "p50": 71454,
+              "p95": 71454,
+              "p99": 71454
+            },
+            "allocated_bytes": {
+              "p50": 7411128,
+              "p95": 7411128,
+              "p99": 7411128
+            },
+            "live_growth_bytes": {
+              "p50": 3268935,
+              "p95": 3268935,
+              "p99": 3268935
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 12280200,
+              "allocation_calls": 38332,
+              "allocated_bytes": 7236537,
+              "live_growth_bytes": 3305048
+            },
+            {
+              "elapsed_ns": 10343500,
+              "allocation_calls": 38332,
+              "allocated_bytes": 7236537,
+              "live_growth_bytes": 3305048
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 10343500,
+              "p95": 12280200,
+              "p99": 12280200
+            },
+            "allocation_calls": {
+              "p50": 38332,
+              "p95": 38332,
+              "p99": 38332
+            },
+            "allocated_bytes": {
+              "p50": 7236537,
+              "p95": 7236537,
+              "p99": 7236537
+            },
+            "live_growth_bytes": {
+              "p50": 3305048,
+              "p95": 3305048,
+              "p99": 3305048
+            }
+          }
+        }
+      },
+      "78": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 39513200,
+              "allocation_calls": 71459,
+              "allocated_bytes": 7411176,
+              "live_growth_bytes": 3268988
+            },
+            {
+              "elapsed_ns": 27283800,
+              "allocation_calls": 71459,
+              "allocated_bytes": 7411176,
+              "live_growth_bytes": 3268988
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 27283800,
+              "p95": 39513200,
+              "p99": 39513200
+            },
+            "allocation_calls": {
+              "p50": 71459,
+              "p95": 71459,
+              "p99": 71459
+            },
+            "allocated_bytes": {
+              "p50": 7411176,
+              "p95": 7411176,
+              "p99": 7411176
+            },
+            "live_growth_bytes": {
+              "p50": 3268988,
+              "p95": 3268988,
+              "p99": 3268988
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 11354000,
+              "allocation_calls": 38337,
+              "allocated_bytes": 7236529,
+              "live_growth_bytes": 3305101
+            },
+            {
+              "elapsed_ns": 9100800,
+              "allocation_calls": 38337,
+              "allocated_bytes": 7236529,
+              "live_growth_bytes": 3305101
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 9100800,
+              "p95": 11354000,
+              "p99": 11354000
+            },
+            "allocation_calls": {
+              "p50": 38337,
+              "p95": 38337,
+              "p99": 38337
+            },
+            "allocated_bytes": {
+              "p50": 7236529,
+              "p95": 7236529,
+              "p99": 7236529
+            },
+            "live_growth_bytes": {
+              "p50": 3305101,
+              "p95": 3305101,
+              "p99": 3305101
+            }
+          }
+        }
+      },
+      "79": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 2400,
+              "allocation_calls": 3,
+              "allocated_bytes": 108,
+              "live_growth_bytes": 108
+            },
+            {
+              "elapsed_ns": 2100,
+              "allocation_calls": 3,
+              "allocated_bytes": 108,
+              "live_growth_bytes": 108
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 2100,
+              "p95": 2400,
+              "p99": 2400
+            },
+            "allocation_calls": {
+              "p50": 3,
+              "p95": 3,
+              "p99": 3
+            },
+            "allocated_bytes": {
+              "p50": 108,
+              "p95": 108,
+              "p99": 108
+            },
+            "live_growth_bytes": {
+              "p50": 108,
+              "p95": 108,
+              "p99": 108
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 2100,
+              "allocation_calls": 3,
+              "allocated_bytes": 108,
+              "live_growth_bytes": 108
+            },
+            {
+              "elapsed_ns": 2100,
+              "allocation_calls": 3,
+              "allocated_bytes": 108,
+              "live_growth_bytes": 108
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 2100,
+              "p95": 2100,
+              "p99": 2100
+            },
+            "allocation_calls": {
+              "p50": 3,
+              "p95": 3,
+              "p99": 3
+            },
+            "allocated_bytes": {
+              "p50": 108,
+              "p95": 108,
+              "p99": 108
+            },
+            "live_growth_bytes": {
+              "p50": 108,
+              "p95": 108,
+              "p99": 108
+            }
+          }
+        }
+      }
+    },
+    "243-full": {},
+    "243-abbreviated": {
+      "30": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 22818700,
+              "allocation_calls": 73398,
+              "allocated_bytes": 7377154,
+              "live_growth_bytes": 3215426
+            },
+            {
+              "elapsed_ns": 26190900,
+              "allocation_calls": 73398,
+              "allocated_bytes": 7377154,
+              "live_growth_bytes": 3215426
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 22818700,
+              "p95": 26190900,
+              "p99": 26190900
+            },
+            "allocation_calls": {
+              "p50": 73398,
+              "p95": 73398,
+              "p99": 73398
+            },
+            "allocated_bytes": {
+              "p50": 7377154,
+              "p95": 7377154,
+              "p99": 7377154
+            },
+            "live_growth_bytes": {
+              "p50": 3215426,
+              "p95": 3215426,
+              "p99": 3215426
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 32768700,
+              "allocation_calls": 42340,
+              "allocated_bytes": 7460272,
+              "live_growth_bytes": 3260504
+            },
+            {
+              "elapsed_ns": 21954900,
+              "allocation_calls": 42340,
+              "allocated_bytes": 7460272,
+              "live_growth_bytes": 3260504
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 21954900,
+              "p95": 32768700,
+              "p99": 32768700
+            },
+            "allocation_calls": {
+              "p50": 42340,
+              "p95": 42340,
+              "p99": 42340
+            },
+            "allocated_bytes": {
+              "p50": 7460272,
+              "p95": 7460272,
+              "p99": 7460272
+            },
+            "live_growth_bytes": {
+              "p50": 3260504,
+              "p95": 3260504,
+              "p99": 3260504
+            }
+          }
+        }
+      },
+      "31": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 26106800,
+              "allocation_calls": 73110,
+              "allocated_bytes": 7393721,
+              "live_growth_bytes": 3216771
+            },
+            {
+              "elapsed_ns": 29842500,
+              "allocation_calls": 73110,
+              "allocated_bytes": 7393721,
+              "live_growth_bytes": 3216771
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 26106800,
+              "p95": 29842500,
+              "p99": 29842500
+            },
+            "allocation_calls": {
+              "p50": 73110,
+              "p95": 73110,
+              "p99": 73110
+            },
+            "allocated_bytes": {
+              "p50": 7393721,
+              "p95": 7393721,
+              "p99": 7393721
+            },
+            "live_growth_bytes": {
+              "p50": 3216771,
+              "p95": 3216771,
+              "p99": 3216771
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 37385400,
+              "allocation_calls": 42424,
+              "allocated_bytes": 7478062,
+              "live_growth_bytes": 3261184
+            },
+            {
+              "elapsed_ns": 22616100,
+              "allocation_calls": 42424,
+              "allocated_bytes": 7478062,
+              "live_growth_bytes": 3261184
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 22616100,
+              "p95": 37385400,
+              "p99": 37385400
+            },
+            "allocation_calls": {
+              "p50": 42424,
+              "p95": 42424,
+              "p99": 42424
+            },
+            "allocated_bytes": {
+              "p50": 7478062,
+              "p95": 7478062,
+              "p99": 7478062
+            },
+            "live_growth_bytes": {
+              "p50": 3261184,
+              "p95": 3261184,
+              "p99": 3261184
+            }
+          }
+        }
+      },
+      "32": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 24561400,
+              "allocation_calls": 73176,
+              "allocated_bytes": 7407151,
+              "live_growth_bytes": 3217077
+            },
+            {
+              "elapsed_ns": 31584300,
+              "allocation_calls": 73176,
+              "allocated_bytes": 7407151,
+              "live_growth_bytes": 3217077
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 24561400,
+              "p95": 31584300,
+              "p99": 31584300
+            },
+            "allocation_calls": {
+              "p50": 73176,
+              "p95": 73176,
+              "p99": 73176
+            },
+            "allocated_bytes": {
+              "p50": 7407151,
+              "p95": 7407151,
+              "p99": 7407151
+            },
+            "live_growth_bytes": {
+              "p50": 3217077,
+              "p95": 3217077,
+              "p99": 3217077
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 29597400,
+              "allocation_calls": 42476,
+              "allocated_bytes": 7489252,
+              "live_growth_bytes": 3261490
+            },
+            {
+              "elapsed_ns": 26016200,
+              "allocation_calls": 42476,
+              "allocated_bytes": 7489252,
+              "live_growth_bytes": 3261490
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 26016200,
+              "p95": 29597400,
+              "p99": 29597400
+            },
+            "allocation_calls": {
+              "p50": 42476,
+              "p95": 42476,
+              "p99": 42476
+            },
+            "allocated_bytes": {
+              "p50": 7489252,
+              "p95": 7489252,
+              "p99": 7489252
+            },
+            "live_growth_bytes": {
+              "p50": 3261490,
+              "p95": 3261490,
+              "p99": 3261490
+            }
+          }
+        }
+      },
+      "33": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 24444900,
+              "allocation_calls": 73296,
+              "allocated_bytes": 7509881,
+              "live_growth_bytes": 3253935
+            },
+            {
+              "elapsed_ns": 27698900,
+              "allocation_calls": 73296,
+              "allocated_bytes": 7509881,
+              "live_growth_bytes": 3253935
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 24444900,
+              "p95": 27698900,
+              "p99": 27698900
+            },
+            "allocation_calls": {
+              "p50": 73296,
+              "p95": 73296,
+              "p99": 73296
+            },
+            "allocated_bytes": {
+              "p50": 7509881,
+              "p95": 7509881,
+              "p99": 7509881
+            },
+            "live_growth_bytes": {
+              "p50": 3253935,
+              "p95": 3253935,
+              "p99": 3253935
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 26468300,
+              "allocation_calls": 42562,
+              "allocated_bytes": 7589302,
+              "live_growth_bytes": 3271012
+            },
+            {
+              "elapsed_ns": 21660700,
+              "allocation_calls": 42562,
+              "allocated_bytes": 7589302,
+              "live_growth_bytes": 3271012
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 21660700,
+              "p95": 26468300,
+              "p99": 26468300
+            },
+            "allocation_calls": {
+              "p50": 42562,
+              "p95": 42562,
+              "p99": 42562
+            },
+            "allocated_bytes": {
+              "p50": 7589302,
+              "p95": 7589302,
+              "p99": 7589302
+            },
+            "live_growth_bytes": {
+              "p50": 3271012,
+              "p95": 3271012,
+              "p99": 3271012
+            }
+          }
+        }
+      },
+      "34": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 23656000,
+              "allocation_calls": 72125,
+              "allocated_bytes": 7408587,
+              "live_growth_bytes": 3254715
+            },
+            {
+              "elapsed_ns": 29709000,
+              "allocation_calls": 72125,
+              "allocated_bytes": 7408587,
+              "live_growth_bytes": 3254715
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 23656000,
+              "p95": 29709000,
+              "p99": 29709000
+            },
+            "allocation_calls": {
+              "p50": 72125,
+              "p95": 72125,
+              "p99": 72125
+            },
+            "allocated_bytes": {
+              "p50": 7408587,
+              "p95": 7408587,
+              "p99": 7408587
+            },
+            "live_growth_bytes": {
+              "p50": 3254715,
+              "p95": 3254715,
+              "p99": 3254715
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 9615600,
+              "allocation_calls": 38492,
+              "allocated_bytes": 7164158,
+              "live_growth_bytes": 3272643
+            },
+            {
+              "elapsed_ns": 9863400,
+              "allocation_calls": 38492,
+              "allocated_bytes": 7164158,
+              "live_growth_bytes": 3272643
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 9615600,
+              "p95": 9863400,
+              "p99": 9863400
+            },
+            "allocation_calls": {
+              "p50": 38492,
+              "p95": 38492,
+              "p99": 38492
+            },
+            "allocated_bytes": {
+              "p50": 7164158,
+              "p95": 7164158,
+              "p99": 7164158
+            },
+            "live_growth_bytes": {
+              "p50": 3272643,
+              "p95": 3272643,
+              "p99": 3272643
+            }
+          }
+        }
+      },
+      "35": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 24566000,
+              "allocation_calls": 72094,
+              "allocated_bytes": 7407530,
+              "live_growth_bytes": 3254143
+            },
+            {
+              "elapsed_ns": 37762600,
+              "allocation_calls": 72094,
+              "allocated_bytes": 7407530,
+              "live_growth_bytes": 3254143
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 24566000,
+              "p95": 37762600,
+              "p99": 37762600
+            },
+            "allocation_calls": {
+              "p50": 72094,
+              "p95": 72094,
+              "p99": 72094
+            },
+            "allocated_bytes": {
+              "p50": 7407530,
+              "p95": 7407530,
+              "p99": 7407530
+            },
+            "live_growth_bytes": {
+              "p50": 3254143,
+              "p95": 3254143,
+              "p99": 3254143
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 11119000,
+              "allocation_calls": 38461,
+              "allocated_bytes": 7162053,
+              "live_growth_bytes": 3271559
+            },
+            {
+              "elapsed_ns": 8815900,
+              "allocation_calls": 38461,
+              "allocated_bytes": 7162053,
+              "live_growth_bytes": 3271559
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 8815900,
+              "p95": 11119000,
+              "p99": 11119000
+            },
+            "allocation_calls": {
+              "p50": 38461,
+              "p95": 38461,
+              "p99": 38461
+            },
+            "allocated_bytes": {
+              "p50": 7162053,
+              "p95": 7162053,
+              "p99": 7162053
+            },
+            "live_growth_bytes": {
+              "p50": 3271559,
+              "p95": 3271559,
+              "p99": 3271559
+            }
+          }
+        }
+      },
+      "36": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 23347700,
+              "allocation_calls": 72103,
+              "allocated_bytes": 7407842,
+              "live_growth_bytes": 3254332
+            },
+            {
+              "elapsed_ns": 33124500,
+              "allocation_calls": 72103,
+              "allocated_bytes": 7407842,
+              "live_growth_bytes": 3254332
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 23347700,
+              "p95": 33124500,
+              "p99": 33124500
+            },
+            "allocation_calls": {
+              "p50": 72103,
+              "p95": 72103,
+              "p99": 72103
+            },
+            "allocated_bytes": {
+              "p50": 7407842,
+              "p95": 7407842,
+              "p99": 7407842
+            },
+            "live_growth_bytes": {
+              "p50": 3254332,
+              "p95": 3254332,
+              "p99": 3254332
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 10160500,
+              "allocation_calls": 38470,
+              "allocated_bytes": 7162565,
+              "live_growth_bytes": 3271876
+            },
+            {
+              "elapsed_ns": 7731100,
+              "allocation_calls": 38470,
+              "allocated_bytes": 7162565,
+              "live_growth_bytes": 3271876
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 7731100,
+              "p95": 10160500,
+              "p99": 10160500
+            },
+            "allocation_calls": {
+              "p50": 38470,
+              "p95": 38470,
+              "p99": 38470
+            },
+            "allocated_bytes": {
+              "p50": 7162565,
+              "p95": 7162565,
+              "p99": 7162565
+            },
+            "live_growth_bytes": {
+              "p50": 3271876,
+              "p95": 3271876,
+              "p99": 3271876
+            }
+          }
+        }
+      },
+      "37": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 26403400,
+              "allocation_calls": 72153,
+              "allocated_bytes": 7408932,
+              "live_growth_bytes": 3254979
+            },
+            {
+              "elapsed_ns": 36098500,
+              "allocation_calls": 72153,
+              "allocated_bytes": 7408932,
+              "live_growth_bytes": 3254979
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 26403400,
+              "p95": 36098500,
+              "p99": 36098500
+            },
+            "allocation_calls": {
+              "p50": 72153,
+              "p95": 72153,
+              "p99": 72153
+            },
+            "allocated_bytes": {
+              "p50": 7408932,
+              "p95": 7408932,
+              "p99": 7408932
+            },
+            "live_growth_bytes": {
+              "p50": 3254979,
+              "p95": 3254979,
+              "p99": 3254979
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 10250600,
+              "allocation_calls": 38520,
+              "allocated_bytes": 7164495,
+              "live_growth_bytes": 3272971
+            },
+            {
+              "elapsed_ns": 7984400,
+              "allocation_calls": 38520,
+              "allocated_bytes": 7164495,
+              "live_growth_bytes": 3272971
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 7984400,
+              "p95": 10250600,
+              "p99": 10250600
+            },
+            "allocation_calls": {
+              "p50": 38520,
+              "p95": 38520,
+              "p99": 38520
+            },
+            "allocated_bytes": {
+              "p50": 7164495,
+              "p95": 7164495,
+              "p99": 7164495
+            },
+            "live_growth_bytes": {
+              "p50": 3272971,
+              "p95": 3272971,
+              "p99": 3272971
+            }
+          }
+        }
+      },
+      "38": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 24434800,
+              "allocation_calls": 72207,
+              "allocated_bytes": 7410703,
+              "live_growth_bytes": 3255987
+            },
+            {
+              "elapsed_ns": 35730500,
+              "allocation_calls": 72207,
+              "allocated_bytes": 7410703,
+              "live_growth_bytes": 3255987
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 24434800,
+              "p95": 35730500,
+              "p99": 35730500
+            },
+            "allocation_calls": {
+              "p50": 72207,
+              "p95": 72207,
+              "p99": 72207
+            },
+            "allocated_bytes": {
+              "p50": 7410703,
+              "p95": 7410703,
+              "p99": 7410703
+            },
+            "live_growth_bytes": {
+              "p50": 3255987,
+              "p95": 3255987,
+              "p99": 3255987
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 9659500,
+              "allocation_calls": 38574,
+              "allocated_bytes": 7167746,
+              "live_growth_bytes": 3274747
+            },
+            {
+              "elapsed_ns": 10520700,
+              "allocation_calls": 38574,
+              "allocated_bytes": 7167746,
+              "live_growth_bytes": 3274747
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 9659500,
+              "p95": 10520700,
+              "p99": 10520700
+            },
+            "allocation_calls": {
+              "p50": 38574,
+              "p95": 38574,
+              "p99": 38574
+            },
+            "allocated_bytes": {
+              "p50": 7167746,
+              "p95": 7167746,
+              "p99": 7167746
+            },
+            "live_growth_bytes": {
+              "p50": 3274747,
+              "p95": 3274747,
+              "p99": 3274747
+            }
+          }
+        }
+      },
+      "39": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 30736200,
+              "allocation_calls": 72170,
+              "allocated_bytes": 7409625,
+              "live_growth_bytes": 3255394
+            },
+            {
+              "elapsed_ns": 37076200,
+              "allocation_calls": 72170,
+              "allocated_bytes": 7409625,
+              "live_growth_bytes": 3255394
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 30736200,
+              "p95": 37076200,
+              "p99": 37076200
+            },
+            "allocation_calls": {
+              "p50": 72170,
+              "p95": 72170,
+              "p99": 72170
+            },
+            "allocated_bytes": {
+              "p50": 7409625,
+              "p95": 7409625,
+              "p99": 7409625
+            },
+            "live_growth_bytes": {
+              "p50": 3255394,
+              "p95": 3255394,
+              "p99": 3255394
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 9839000,
+              "allocation_calls": 38537,
+              "allocated_bytes": 7165620,
+              "live_growth_bytes": 3273642
+            },
+            {
+              "elapsed_ns": 8662900,
+              "allocation_calls": 38537,
+              "allocated_bytes": 7165620,
+              "live_growth_bytes": 3273642
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 8662900,
+              "p95": 9839000,
+              "p99": 9839000
+            },
+            "allocation_calls": {
+              "p50": 38537,
+              "p95": 38537,
+              "p99": 38537
+            },
+            "allocated_bytes": {
+              "p50": 7165620,
+              "p95": 7165620,
+              "p99": 7165620
+            },
+            "live_growth_bytes": {
+              "p50": 3273642,
+              "p95": 3273642,
+              "p99": 3273642
+            }
+          }
+        }
+      },
+      "40": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 26544700,
+              "allocation_calls": 72250,
+              "allocated_bytes": 7411987,
+              "live_growth_bytes": 3256737
+            },
+            {
+              "elapsed_ns": 28466300,
+              "allocation_calls": 72250,
+              "allocated_bytes": 7411987,
+              "live_growth_bytes": 3256737
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 26544700,
+              "p95": 28466300,
+              "p99": 28466300
+            },
+            "allocation_calls": {
+              "p50": 72250,
+              "p95": 72250,
+              "p99": 72250
+            },
+            "allocated_bytes": {
+              "p50": 7411987,
+              "p95": 7411987,
+              "p99": 7411987
+            },
+            "live_growth_bytes": {
+              "p50": 3256737,
+              "p95": 3256737,
+              "p99": 3256737
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 12473600,
+              "allocation_calls": 38617,
+              "allocated_bytes": 7169974,
+              "live_growth_bytes": 3276009
+            },
+            {
+              "elapsed_ns": 8069600,
+              "allocation_calls": 38617,
+              "allocated_bytes": 7169974,
+              "live_growth_bytes": 3276009
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 8069600,
+              "p95": 12473600,
+              "p99": 12473600
+            },
+            "allocation_calls": {
+              "p50": 38617,
+              "p95": 38617,
+              "p99": 38617
+            },
+            "allocated_bytes": {
+              "p50": 7169974,
+              "p95": 7169974,
+              "p99": 7169974
+            },
+            "live_growth_bytes": {
+              "p50": 3276009,
+              "p95": 3276009,
+              "p99": 3276009
+            }
+          }
+        }
+      },
+      "41": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 29927400,
+              "allocation_calls": 72296,
+              "allocated_bytes": 7413211,
+              "live_growth_bytes": 3257454
+            },
+            {
+              "elapsed_ns": 27920100,
+              "allocation_calls": 72296,
+              "allocated_bytes": 7413211,
+              "live_growth_bytes": 3257454
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 27920100,
+              "p95": 29927400,
+              "p99": 29927400
+            },
+            "allocation_calls": {
+              "p50": 72296,
+              "p95": 72296,
+              "p99": 72296
+            },
+            "allocated_bytes": {
+              "p50": 7413211,
+              "p95": 7413211,
+              "p99": 7413211
+            },
+            "live_growth_bytes": {
+              "p50": 3257454,
+              "p95": 3257454,
+              "p99": 3257454
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 9441600,
+              "allocation_calls": 38663,
+              "allocated_bytes": 7172166,
+              "live_growth_bytes": 3277238
+            },
+            {
+              "elapsed_ns": 9874100,
+              "allocation_calls": 38663,
+              "allocated_bytes": 7172166,
+              "live_growth_bytes": 3277238
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 9441600,
+              "p95": 9874100,
+              "p99": 9874100
+            },
+            "allocation_calls": {
+              "p50": 38663,
+              "p95": 38663,
+              "p99": 38663
+            },
+            "allocated_bytes": {
+              "p50": 7172166,
+              "p95": 7172166,
+              "p99": 7172166
+            },
+            "live_growth_bytes": {
+              "p50": 3277238,
+              "p95": 3277238,
+              "p99": 3277238
+            }
+          }
+        }
+      },
+      "42": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 28234400,
+              "allocation_calls": 72277,
+              "allocated_bytes": 7411887,
+              "live_growth_bytes": 3256775
+            },
+            {
+              "elapsed_ns": 26116700,
+              "allocation_calls": 72277,
+              "allocated_bytes": 7411887,
+              "live_growth_bytes": 3256775
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 26116700,
+              "p95": 28234400,
+              "p99": 28234400
+            },
+            "allocation_calls": {
+              "p50": 72277,
+              "p95": 72277,
+              "p99": 72277
+            },
+            "allocated_bytes": {
+              "p50": 7411887,
+              "p95": 7411887,
+              "p99": 7411887
+            },
+            "live_growth_bytes": {
+              "p50": 3256775,
+              "p95": 3256775,
+              "p99": 3256775
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 13923000,
+              "allocation_calls": 38644,
+              "allocated_bytes": 7169506,
+              "live_growth_bytes": 3275919
+            },
+            {
+              "elapsed_ns": 8798900,
+              "allocation_calls": 38644,
+              "allocated_bytes": 7169506,
+              "live_growth_bytes": 3275919
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 8798900,
+              "p95": 13923000,
+              "p99": 13923000
+            },
+            "allocation_calls": {
+              "p50": 38644,
+              "p95": 38644,
+              "p99": 38644
+            },
+            "allocated_bytes": {
+              "p50": 7169506,
+              "p95": 7169506,
+              "p99": 7169506
+            },
+            "live_growth_bytes": {
+              "p50": 3275919,
+              "p95": 3275919,
+              "p99": 3275919
+            }
+          }
+        }
+      },
+      "43": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 25652700,
+              "allocation_calls": 72271,
+              "allocated_bytes": 7411844,
+              "live_growth_bytes": 3256769
+            },
+            {
+              "elapsed_ns": 26778400,
+              "allocation_calls": 72271,
+              "allocated_bytes": 7411844,
+              "live_growth_bytes": 3256769
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 25652700,
+              "p95": 26778400,
+              "p99": 26778400
+            },
+            "allocation_calls": {
+              "p50": 72271,
+              "p95": 72271,
+              "p99": 72271
+            },
+            "allocated_bytes": {
+              "p50": 7411844,
+              "p95": 7411844,
+              "p99": 7411844
+            },
+            "live_growth_bytes": {
+              "p50": 3256769,
+              "p95": 3256769,
+              "p99": 3256769
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 11206800,
+              "allocation_calls": 38638,
+              "allocated_bytes": 7169343,
+              "live_growth_bytes": 3275881
+            },
+            {
+              "elapsed_ns": 9699800,
+              "allocation_calls": 38638,
+              "allocated_bytes": 7169343,
+              "live_growth_bytes": 3275881
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 9699800,
+              "p95": 11206800,
+              "p99": 11206800
+            },
+            "allocation_calls": {
+              "p50": 38638,
+              "p95": 38638,
+              "p99": 38638
+            },
+            "allocated_bytes": {
+              "p50": 7169343,
+              "p95": 7169343,
+              "p99": 7169343
+            },
+            "live_growth_bytes": {
+              "p50": 3275881,
+              "p95": 3275881,
+              "p99": 3275881
+            }
+          }
+        }
+      },
+      "44": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 33699100,
+              "allocation_calls": 72350,
+              "allocated_bytes": 7414204,
+              "live_growth_bytes": 3258110
+            },
+            {
+              "elapsed_ns": 32743600,
+              "allocation_calls": 72350,
+              "allocated_bytes": 7414204,
+              "live_growth_bytes": 3258110
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 32743600,
+              "p95": 33699100,
+              "p99": 33699100
+            },
+            "allocation_calls": {
+              "p50": 72350,
+              "p95": 72350,
+              "p99": 72350
+            },
+            "allocated_bytes": {
+              "p50": 7414204,
+              "p95": 7414204,
+              "p99": 7414204
+            },
+            "live_growth_bytes": {
+              "p50": 3258110,
+              "p95": 3258110,
+              "p99": 3258110
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 9743000,
+              "allocation_calls": 38717,
+              "allocated_bytes": 7173695,
+              "live_growth_bytes": 3278246
+            },
+            {
+              "elapsed_ns": 8136000,
+              "allocation_calls": 38717,
+              "allocated_bytes": 7173695,
+              "live_growth_bytes": 3278246
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 8136000,
+              "p95": 9743000,
+              "p99": 9743000
+            },
+            "allocation_calls": {
+              "p50": 38717,
+              "p95": 38717,
+              "p99": 38717
+            },
+            "allocated_bytes": {
+              "p50": 7173695,
+              "p95": 7173695,
+              "p99": 7173695
+            },
+            "live_growth_bytes": {
+              "p50": 3278246,
+              "p95": 3278246,
+              "p99": 3278246
+            }
+          }
+        }
+      },
+      "45": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 31975600,
+              "allocation_calls": 72396,
+              "allocated_bytes": 7415428,
+              "live_growth_bytes": 3258827
+            },
+            {
+              "elapsed_ns": 27198300,
+              "allocation_calls": 72396,
+              "allocated_bytes": 7415428,
+              "live_growth_bytes": 3258827
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 27198300,
+              "p95": 31975600,
+              "p99": 31975600
+            },
+            "allocation_calls": {
+              "p50": 72396,
+              "p95": 72396,
+              "p99": 72396
+            },
+            "allocated_bytes": {
+              "p50": 7415428,
+              "p95": 7415428,
+              "p99": 7415428
+            },
+            "live_growth_bytes": {
+              "p50": 3258827,
+              "p95": 3258827,
+              "p99": 3258827
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 9597300,
+              "allocation_calls": 38763,
+              "allocated_bytes": 7175887,
+              "live_growth_bytes": 3279475
+            },
+            {
+              "elapsed_ns": 9580100,
+              "allocation_calls": 38763,
+              "allocated_bytes": 7175887,
+              "live_growth_bytes": 3279475
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 9580100,
+              "p95": 9597300,
+              "p99": 9597300
+            },
+            "allocation_calls": {
+              "p50": 38763,
+              "p95": 38763,
+              "p99": 38763
+            },
+            "allocated_bytes": {
+              "p50": 7175887,
+              "p95": 7175887,
+              "p99": 7175887
+            },
+            "live_growth_bytes": {
+              "p50": 3279475,
+              "p95": 3279475,
+              "p99": 3279475
+            }
+          }
+        }
+      },
+      "46": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 31214800,
+              "allocation_calls": 72363,
+              "allocated_bytes": 7413879,
+              "live_growth_bytes": 3258019
+            },
+            {
+              "elapsed_ns": 28798600,
+              "allocation_calls": 72363,
+              "allocated_bytes": 7413879,
+              "live_growth_bytes": 3258019
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 28798600,
+              "p95": 31214800,
+              "p99": 31214800
+            },
+            "allocation_calls": {
+              "p50": 72363,
+              "p95": 72363,
+              "p99": 72363
+            },
+            "allocated_bytes": {
+              "p50": 7413879,
+              "p95": 7413879,
+              "p99": 7413879
+            },
+            "live_growth_bytes": {
+              "p50": 3258019,
+              "p95": 3258019,
+              "p99": 3258019
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 10070100,
+              "allocation_calls": 38730,
+              "allocated_bytes": 7172810,
+              "live_growth_bytes": 3277931
+            },
+            {
+              "elapsed_ns": 8864600,
+              "allocation_calls": 38730,
+              "allocated_bytes": 7172810,
+              "live_growth_bytes": 3277931
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 8864600,
+              "p95": 10070100,
+              "p99": 10070100
+            },
+            "allocation_calls": {
+              "p50": 38730,
+              "p95": 38730,
+              "p99": 38730
+            },
+            "allocated_bytes": {
+              "p50": 7172810,
+              "p95": 7172810,
+              "p99": 7172810
+            },
+            "live_growth_bytes": {
+              "p50": 3277931,
+              "p95": 3277931,
+              "p99": 3277931
+            }
+          }
+        }
+      },
+      "47": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 33715400,
+              "allocation_calls": 72413,
+              "allocated_bytes": 7415092,
+              "live_growth_bytes": 3258725
+            },
+            {
+              "elapsed_ns": 30688400,
+              "allocation_calls": 72413,
+              "allocated_bytes": 7415092,
+              "live_growth_bytes": 3258725
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 30688400,
+              "p95": 33715400,
+              "p99": 33715400
+            },
+            "allocation_calls": {
+              "p50": 72413,
+              "p95": 72413,
+              "p99": 72413
+            },
+            "allocated_bytes": {
+              "p50": 7415092,
+              "p95": 7415092,
+              "p99": 7415092
+            },
+            "live_growth_bytes": {
+              "p50": 3258725,
+              "p95": 3258725,
+              "p99": 3258725
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 10135300,
+              "allocation_calls": 38780,
+              "allocated_bytes": 7174991,
+              "live_growth_bytes": 3279149
+            },
+            {
+              "elapsed_ns": 8108200,
+              "allocation_calls": 38780,
+              "allocated_bytes": 7174991,
+              "live_growth_bytes": 3279149
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 8108200,
+              "p95": 10135300,
+              "p99": 10135300
+            },
+            "allocation_calls": {
+              "p50": 38780,
+              "p95": 38780,
+              "p99": 38780
+            },
+            "allocated_bytes": {
+              "p50": 7174991,
+              "p95": 7174991,
+              "p99": 7174991
+            },
+            "live_growth_bytes": {
+              "p50": 3279149,
+              "p95": 3279149,
+              "p99": 3279149
+            }
+          }
+        }
+      },
+      "48": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 35104800,
+              "allocation_calls": 72431,
+              "allocated_bytes": 7415696,
+              "live_growth_bytes": 3259078
+            },
+            {
+              "elapsed_ns": 29869400,
+              "allocation_calls": 72431,
+              "allocated_bytes": 7415696,
+              "live_growth_bytes": 3259078
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 29869400,
+              "p95": 35104800,
+              "p99": 35104800
+            },
+            "allocation_calls": {
+              "p50": 72431,
+              "p95": 72431,
+              "p99": 72431
+            },
+            "allocated_bytes": {
+              "p50": 7415696,
+              "p95": 7415696,
+              "p99": 7415696
+            },
+            "live_growth_bytes": {
+              "p50": 3259078,
+              "p95": 3259078,
+              "p99": 3259078
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 9549500,
+              "allocation_calls": 38798,
+              "allocated_bytes": 7176051,
+              "live_growth_bytes": 3279758
+            },
+            {
+              "elapsed_ns": 10170200,
+              "allocation_calls": 38798,
+              "allocated_bytes": 7176051,
+              "live_growth_bytes": 3279758
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 9549500,
+              "p95": 10170200,
+              "p99": 10170200
+            },
+            "allocation_calls": {
+              "p50": 38798,
+              "p95": 38798,
+              "p99": 38798
+            },
+            "allocated_bytes": {
+              "p50": 7176051,
+              "p95": 7176051,
+              "p99": 7176051
+            },
+            "live_growth_bytes": {
+              "p50": 3279758,
+              "p95": 3279758,
+              "p99": 3279758
+            }
+          }
+        }
+      },
+      "49": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 33747400,
+              "allocation_calls": 72433,
+              "allocated_bytes": 7415733,
+              "live_growth_bytes": 3259120
+            },
+            {
+              "elapsed_ns": 29848400,
+              "allocation_calls": 72433,
+              "allocated_bytes": 7415733,
+              "live_growth_bytes": 3259120
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 29848400,
+              "p95": 33747400,
+              "p99": 33747400
+            },
+            "allocation_calls": {
+              "p50": 72433,
+              "p95": 72433,
+              "p99": 72433
+            },
+            "allocated_bytes": {
+              "p50": 7415733,
+              "p95": 7415733,
+              "p99": 7415733
+            },
+            "live_growth_bytes": {
+              "p50": 3259120,
+              "p95": 3259120,
+              "p99": 3259120
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 9388900,
+              "allocation_calls": 38800,
+              "allocated_bytes": 7176032,
+              "live_growth_bytes": 3279800
+            },
+            {
+              "elapsed_ns": 7612700,
+              "allocation_calls": 38800,
+              "allocated_bytes": 7176032,
+              "live_growth_bytes": 3279800
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 7612700,
+              "p95": 9388900,
+              "p99": 9388900
+            },
+            "allocation_calls": {
+              "p50": 38800,
+              "p95": 38800,
+              "p99": 38800
+            },
+            "allocated_bytes": {
+              "p50": 7176032,
+              "p95": 7176032,
+              "p99": 7176032
+            },
+            "live_growth_bytes": {
+              "p50": 3279800,
+              "p95": 3279800,
+              "p99": 3279800
+            }
+          }
+        }
+      },
+      "50": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 38407100,
+              "allocation_calls": 72438,
+              "allocated_bytes": 7415782,
+              "live_growth_bytes": 3259174
+            },
+            {
+              "elapsed_ns": 32549600,
+              "allocation_calls": 72438,
+              "allocated_bytes": 7415782,
+              "live_growth_bytes": 3259174
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 32549600,
+              "p95": 38407100,
+              "p99": 38407100
+            },
+            "allocation_calls": {
+              "p50": 72438,
+              "p95": 72438,
+              "p99": 72438
+            },
+            "allocated_bytes": {
+              "p50": 7415782,
+              "p95": 7415782,
+              "p99": 7415782
+            },
+            "live_growth_bytes": {
+              "p50": 3259174,
+              "p95": 3259174,
+              "p99": 3259174
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 13876800,
+              "allocation_calls": 38805,
+              "allocated_bytes": 7176025,
+              "live_growth_bytes": 3279854
+            },
+            {
+              "elapsed_ns": 8487800,
+              "allocation_calls": 38805,
+              "allocated_bytes": 7176025,
+              "live_growth_bytes": 3279854
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 8487800,
+              "p95": 13876800,
+              "p99": 13876800
+            },
+            "allocation_calls": {
+              "p50": 38805,
+              "p95": 38805,
+              "p99": 38805
+            },
+            "allocated_bytes": {
+              "p50": 7176025,
+              "p95": 7176025,
+              "p99": 7176025
+            },
+            "live_growth_bytes": {
+              "p50": 3279854,
+              "p95": 3279854,
+              "p99": 3279854
+            }
+          }
+        }
+      },
+      "51": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 31206400,
+              "allocation_calls": 72487,
+              "allocated_bytes": 7416869,
+              "live_growth_bytes": 3259818
+            },
+            {
+              "elapsed_ns": 33569500,
+              "allocation_calls": 72487,
+              "allocated_bytes": 7416869,
+              "live_growth_bytes": 3259818
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 31206400,
+              "p95": 33569500,
+              "p99": 33569500
+            },
+            "allocation_calls": {
+              "p50": 72487,
+              "p95": 72487,
+              "p99": 72487
+            },
+            "allocated_bytes": {
+              "p50": 7416869,
+              "p95": 7416869,
+              "p99": 7416869
+            },
+            "live_growth_bytes": {
+              "p50": 3259818,
+              "p95": 3259818,
+              "p99": 3259818
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 12736500,
+              "allocation_calls": 38854,
+              "allocated_bytes": 7177952,
+              "live_growth_bytes": 3280946
+            },
+            {
+              "elapsed_ns": 10241100,
+              "allocation_calls": 38854,
+              "allocated_bytes": 7177952,
+              "live_growth_bytes": 3280946
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 10241100,
+              "p95": 12736500,
+              "p99": 12736500
+            },
+            "allocation_calls": {
+              "p50": 38854,
+              "p95": 38854,
+              "p99": 38854
+            },
+            "allocated_bytes": {
+              "p50": 7177952,
+              "p95": 7177952,
+              "p99": 7177952
+            },
+            "live_growth_bytes": {
+              "p50": 3280946,
+              "p95": 3280946,
+              "p99": 3280946
+            }
+          }
+        }
+      },
+      "52": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 700,
+              "allocation_calls": 1,
+              "allocated_bytes": 51,
+              "live_growth_bytes": 51
+            },
+            {
+              "elapsed_ns": 600,
+              "allocation_calls": 1,
+              "allocated_bytes": 51,
+              "live_growth_bytes": 51
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 600,
+              "p95": 700,
+              "p99": 700
+            },
+            "allocation_calls": {
+              "p50": 1,
+              "p95": 1,
+              "p99": 1
+            },
+            "allocated_bytes": {
+              "p50": 51,
+              "p95": 51,
+              "p99": 51
+            },
+            "live_growth_bytes": {
+              "p50": 51,
+              "p95": 51,
+              "p99": 51
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 800,
+              "allocation_calls": 1,
+              "allocated_bytes": 51,
+              "live_growth_bytes": 51
+            },
+            {
+              "elapsed_ns": 900,
+              "allocation_calls": 1,
+              "allocated_bytes": 51,
+              "live_growth_bytes": 51
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 800,
+              "p95": 900,
+              "p99": 900
+            },
+            "allocation_calls": {
+              "p50": 1,
+              "p95": 1,
+              "p99": 1
+            },
+            "allocated_bytes": {
+              "p50": 51,
+              "p95": 51,
+              "p99": 51
+            },
+            "live_growth_bytes": {
+              "p50": 51,
+              "p95": 51,
+              "p99": 51
+            }
+          }
+        }
+      },
+      "53": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 100,
+              "allocation_calls": 1,
+              "allocated_bytes": 51,
+              "live_growth_bytes": 51
+            },
+            {
+              "elapsed_ns": 200,
+              "allocation_calls": 1,
+              "allocated_bytes": 51,
+              "live_growth_bytes": 51
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 100,
+              "p95": 200,
+              "p99": 200
+            },
+            "allocation_calls": {
+              "p50": 1,
+              "p95": 1,
+              "p99": 1
+            },
+            "allocated_bytes": {
+              "p50": 51,
+              "p95": 51,
+              "p99": 51
+            },
+            "live_growth_bytes": {
+              "p50": 51,
+              "p95": 51,
+              "p99": 51
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 200,
+              "allocation_calls": 1,
+              "allocated_bytes": 51,
+              "live_growth_bytes": 51
+            },
+            {
+              "elapsed_ns": 100,
+              "allocation_calls": 1,
+              "allocated_bytes": 51,
+              "live_growth_bytes": 51
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 100,
+              "p95": 200,
+              "p99": 200
+            },
+            "allocation_calls": {
+              "p50": 1,
+              "p95": 1,
+              "p99": 1
+            },
+            "allocated_bytes": {
+              "p50": 51,
+              "p95": 51,
+              "p99": 51
+            },
+            "live_growth_bytes": {
+              "p50": 51,
+              "p95": 51,
+              "p99": 51
+            }
+          }
+        }
+      },
+      "54": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 32287200,
+              "allocation_calls": 72476,
+              "allocated_bytes": 7416543,
+              "live_growth_bytes": 3259615
+            },
+            {
+              "elapsed_ns": 30799500,
+              "allocation_calls": 72476,
+              "allocated_bytes": 7416543,
+              "live_growth_bytes": 3259615
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 30799500,
+              "p95": 32287200,
+              "p99": 32287200
+            },
+            "allocation_calls": {
+              "p50": 72476,
+              "p95": 72476,
+              "p99": 72476
+            },
+            "allocated_bytes": {
+              "p50": 7416543,
+              "p95": 7416543,
+              "p99": 7416543
+            },
+            "live_growth_bytes": {
+              "p50": 3259615,
+              "p95": 3259615,
+              "p99": 3259615
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 9861500,
+              "allocation_calls": 38843,
+              "allocated_bytes": 7177426,
+              "live_growth_bytes": 3280615
+            },
+            {
+              "elapsed_ns": 9977400,
+              "allocation_calls": 38843,
+              "allocated_bytes": 7177426,
+              "live_growth_bytes": 3280615
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 9861500,
+              "p95": 9977400,
+              "p99": 9977400
+            },
+            "allocation_calls": {
+              "p50": 38843,
+              "p95": 38843,
+              "p99": 38843
+            },
+            "allocated_bytes": {
+              "p50": 7177426,
+              "p95": 7177426,
+              "p99": 7177426
+            },
+            "live_growth_bytes": {
+              "p50": 3280615,
+              "p95": 3280615,
+              "p99": 3280615
+            }
+          }
+        }
+      },
+      "55": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 28339500,
+              "allocation_calls": 72451,
+              "allocated_bytes": 7415915,
+              "live_growth_bytes": 3259238
+            },
+            {
+              "elapsed_ns": 31731700,
+              "allocation_calls": 72451,
+              "allocated_bytes": 7415915,
+              "live_growth_bytes": 3259238
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 28339500,
+              "p95": 31731700,
+              "p99": 31731700
+            },
+            "allocation_calls": {
+              "p50": 72451,
+              "p95": 72451,
+              "p99": 72451
+            },
+            "allocated_bytes": {
+              "p50": 7415915,
+              "p95": 7415915,
+              "p99": 7415915
+            },
+            "live_growth_bytes": {
+              "p50": 3259238,
+              "p95": 3259238,
+              "p99": 3259238
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 10777300,
+              "allocation_calls": 38818,
+              "allocated_bytes": 7176342,
+              "live_growth_bytes": 3279982
+            },
+            {
+              "elapsed_ns": 9870000,
+              "allocation_calls": 38818,
+              "allocated_bytes": 7176342,
+              "live_growth_bytes": 3279982
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 9870000,
+              "p95": 10777300,
+              "p99": 10777300
+            },
+            "allocation_calls": {
+              "p50": 38818,
+              "p95": 38818,
+              "p99": 38818
+            },
+            "allocated_bytes": {
+              "p50": 7176342,
+              "p95": 7176342,
+              "p99": 7176342
+            },
+            "live_growth_bytes": {
+              "p50": 3279982,
+              "p95": 3279982,
+              "p99": 3279982
+            }
+          }
+        }
+      },
+      "56": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 29211500,
+              "allocation_calls": 72456,
+              "allocated_bytes": 7416092,
+              "live_growth_bytes": 3259356
+            },
+            {
+              "elapsed_ns": 31204900,
+              "allocation_calls": 72456,
+              "allocated_bytes": 7416092,
+              "live_growth_bytes": 3259356
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 29211500,
+              "p95": 31204900,
+              "p99": 31204900
+            },
+            "allocation_calls": {
+              "p50": 72456,
+              "p95": 72456,
+              "p99": 72456
+            },
+            "allocated_bytes": {
+              "p50": 7416092,
+              "p95": 7416092,
+              "p99": 7416092
+            },
+            "live_growth_bytes": {
+              "p50": 3259356,
+              "p95": 3259356,
+              "p99": 3259356
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 10993100,
+              "allocation_calls": 38823,
+              "allocated_bytes": 7176591,
+              "live_growth_bytes": 3280164
+            },
+            {
+              "elapsed_ns": 10447500,
+              "allocation_calls": 38823,
+              "allocated_bytes": 7176591,
+              "live_growth_bytes": 3280164
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 10447500,
+              "p95": 10993100,
+              "p99": 10993100
+            },
+            "allocation_calls": {
+              "p50": 38823,
+              "p95": 38823,
+              "p99": 38823
+            },
+            "allocated_bytes": {
+              "p50": 7176591,
+              "p95": 7176591,
+              "p99": 7176591
+            },
+            "live_growth_bytes": {
+              "p50": 3280164,
+              "p95": 3280164,
+              "p99": 3280164
+            }
+          }
+        }
+      },
+      "57": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 500,
+              "allocation_calls": 1,
+              "allocated_bytes": 50,
+              "live_growth_bytes": 50
+            },
+            {
+              "elapsed_ns": 400,
+              "allocation_calls": 1,
+              "allocated_bytes": 50,
+              "live_growth_bytes": 50
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 400,
+              "p95": 500,
+              "p99": 500
+            },
+            "allocation_calls": {
+              "p50": 1,
+              "p95": 1,
+              "p99": 1
+            },
+            "allocated_bytes": {
+              "p50": 50,
+              "p95": 50,
+              "p99": 50
+            },
+            "live_growth_bytes": {
+              "p50": 50,
+              "p95": 50,
+              "p99": 50
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 800,
+              "allocation_calls": 1,
+              "allocated_bytes": 50,
+              "live_growth_bytes": 50
+            },
+            {
+              "elapsed_ns": 600,
+              "allocation_calls": 1,
+              "allocated_bytes": 50,
+              "live_growth_bytes": 50
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 600,
+              "p95": 800,
+              "p99": 800
+            },
+            "allocation_calls": {
+              "p50": 1,
+              "p95": 1,
+              "p99": 1
+            },
+            "allocated_bytes": {
+              "p50": 50,
+              "p95": 50,
+              "p99": 50
+            },
+            "live_growth_bytes": {
+              "p50": 50,
+              "p95": 50,
+              "p99": 50
+            }
+          }
+        }
+      },
+      "58": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 600,
+              "allocation_calls": 3,
+              "allocated_bytes": 150,
+              "live_growth_bytes": 150
+            },
+            {
+              "elapsed_ns": 500,
+              "allocation_calls": 3,
+              "allocated_bytes": 150,
+              "live_growth_bytes": 150
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 500,
+              "p95": 600,
+              "p99": 600
+            },
+            "allocation_calls": {
+              "p50": 3,
+              "p95": 3,
+              "p99": 3
+            },
+            "allocated_bytes": {
+              "p50": 150,
+              "p95": 150,
+              "p99": 150
+            },
+            "live_growth_bytes": {
+              "p50": 150,
+              "p95": 150,
+              "p99": 150
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 1500,
+              "allocation_calls": 3,
+              "allocated_bytes": 150,
+              "live_growth_bytes": 150
+            },
+            {
+              "elapsed_ns": 600,
+              "allocation_calls": 3,
+              "allocated_bytes": 150,
+              "live_growth_bytes": 150
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 600,
+              "p95": 1500,
+              "p99": 1500
+            },
+            "allocation_calls": {
+              "p50": 3,
+              "p95": 3,
+              "p99": 3
+            },
+            "allocated_bytes": {
+              "p50": 150,
+              "p95": 150,
+              "p99": 150
+            },
+            "live_growth_bytes": {
+              "p50": 150,
+              "p95": 150,
+              "p99": 150
+            }
+          }
+        }
+      },
+      "95": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 33420800,
+              "allocation_calls": 71890,
+              "allocated_bytes": 7449394,
+              "live_growth_bytes": 3226179
+            },
+            {
+              "elapsed_ns": 25878300,
+              "allocation_calls": 71890,
+              "allocated_bytes": 7449394,
+              "live_growth_bytes": 3226179
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 25878300,
+              "p95": 33420800,
+              "p99": 33420800
+            },
+            "allocation_calls": {
+              "p50": 71890,
+              "p95": 71890,
+              "p99": 71890
+            },
+            "allocated_bytes": {
+              "p50": 7449394,
+              "p95": 7449394,
+              "p99": 7449394
+            },
+            "live_growth_bytes": {
+              "p50": 3226179,
+              "p95": 3226179,
+              "p99": 3226179
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 26783600,
+              "allocation_calls": 43786,
+              "allocated_bytes": 7617164,
+              "live_growth_bytes": 3255943
+            },
+            {
+              "elapsed_ns": 30041800,
+              "allocation_calls": 43786,
+              "allocated_bytes": 7617164,
+              "live_growth_bytes": 3255943
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 26783600,
+              "p95": 30041800,
+              "p99": 30041800
+            },
+            "allocation_calls": {
+              "p50": 43786,
+              "p95": 43786,
+              "p99": 43786
+            },
+            "allocated_bytes": {
+              "p50": 7617164,
+              "p95": 7617164,
+              "p99": 7617164
+            },
+            "live_growth_bytes": {
+              "p50": 3255943,
+              "p95": 3255943,
+              "p99": 3255943
+            }
+          }
+        }
+      },
+      "96": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 31570200,
+              "allocation_calls": 72050,
+              "allocated_bytes": 7455579,
+              "live_growth_bytes": 3227002
+            },
+            {
+              "elapsed_ns": 30736800,
+              "allocation_calls": 72050,
+              "allocated_bytes": 7455579,
+              "live_growth_bytes": 3227002
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 30736800,
+              "p95": 31570200,
+              "p99": 31570200
+            },
+            "allocation_calls": {
+              "p50": 72050,
+              "p95": 72050,
+              "p99": 72050
+            },
+            "allocated_bytes": {
+              "p50": 7455579,
+              "p95": 7455579,
+              "p99": 7455579
+            },
+            "live_growth_bytes": {
+              "p50": 3227002,
+              "p95": 3227002,
+              "p99": 3227002
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 37240600,
+              "allocation_calls": 43802,
+              "allocated_bytes": 7625589,
+              "live_growth_bytes": 3255688
+            },
+            {
+              "elapsed_ns": 30839800,
+              "allocation_calls": 43802,
+              "allocated_bytes": 7625589,
+              "live_growth_bytes": 3255688
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 30839800,
+              "p95": 37240600,
+              "p99": 37240600
+            },
+            "allocation_calls": {
+              "p50": 43802,
+              "p95": 43802,
+              "p99": 43802
+            },
+            "allocated_bytes": {
+              "p50": 7625589,
+              "p95": 7625589,
+              "p99": 7625589
+            },
+            "live_growth_bytes": {
+              "p50": 3255688,
+              "p95": 3255688,
+              "p99": 3255688
+            }
+          }
+        }
+      },
+      "97": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 32550100,
+              "allocation_calls": 72056,
+              "allocated_bytes": 7475638,
+              "live_growth_bytes": 3226156
+            },
+            {
+              "elapsed_ns": 29753200,
+              "allocation_calls": 72056,
+              "allocated_bytes": 7475638,
+              "live_growth_bytes": 3226156
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 29753200,
+              "p95": 32550100,
+              "p99": 32550100
+            },
+            "allocation_calls": {
+              "p50": 72056,
+              "p95": 72056,
+              "p99": 72056
+            },
+            "allocated_bytes": {
+              "p50": 7475638,
+              "p95": 7475638,
+              "p99": 7475638
+            },
+            "live_growth_bytes": {
+              "p50": 3226156,
+              "p95": 3226156,
+              "p99": 3226156
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 32695300,
+              "allocation_calls": 43769,
+              "allocated_bytes": 7645812,
+              "live_growth_bytes": 3254922
+            },
+            {
+              "elapsed_ns": 24419400,
+              "allocation_calls": 43769,
+              "allocated_bytes": 7645812,
+              "live_growth_bytes": 3254922
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 24419400,
+              "p95": 32695300,
+              "p99": 32695300
+            },
+            "allocation_calls": {
+              "p50": 43769,
+              "p95": 43769,
+              "p99": 43769
+            },
+            "allocated_bytes": {
+              "p50": 7645812,
+              "p95": 7645812,
+              "p99": 7645812
+            },
+            "live_growth_bytes": {
+              "p50": 3254922,
+              "p95": 3254922,
+              "p99": 3254922
+            }
+          }
+        }
+      },
+      "98": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 35418900,
+              "allocation_calls": 70857,
+              "allocated_bytes": 7367254,
+              "live_growth_bytes": 3226839
+            },
+            {
+              "elapsed_ns": 28627300,
+              "allocation_calls": 70857,
+              "allocated_bytes": 7367254,
+              "live_growth_bytes": 3226839
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 28627300,
+              "p95": 35418900,
+              "p99": 35418900
+            },
+            "allocation_calls": {
+              "p50": 70857,
+              "p95": 70857,
+              "p99": 70857
+            },
+            "allocated_bytes": {
+              "p50": 7367254,
+              "p95": 7367254,
+              "p99": 7367254
+            },
+            "live_growth_bytes": {
+              "p50": 3226839,
+              "p95": 3226839,
+              "p99": 3226839
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 11144200,
+              "allocation_calls": 38143,
+              "allocated_bytes": 7115393,
+              "live_growth_bytes": 3256117
+            },
+            {
+              "elapsed_ns": 7916000,
+              "allocation_calls": 38143,
+              "allocated_bytes": 7115393,
+              "live_growth_bytes": 3256117
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 7916000,
+              "p95": 11144200,
+              "p99": 11144200
+            },
+            "allocation_calls": {
+              "p50": 38143,
+              "p95": 38143,
+              "p99": 38143
+            },
+            "allocated_bytes": {
+              "p50": 7115393,
+              "p95": 7115393,
+              "p99": 7115393
+            },
+            "live_growth_bytes": {
+              "p50": 3256117,
+              "p95": 3256117,
+              "p99": 3256117
+            }
+          }
+        }
+      },
+      "99": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 36390800,
+              "allocation_calls": 70843,
+              "allocated_bytes": 7366803,
+              "live_growth_bytes": 3226617
+            },
+            {
+              "elapsed_ns": 24902000,
+              "allocation_calls": 70843,
+              "allocated_bytes": 7366803,
+              "live_growth_bytes": 3226617
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 24902000,
+              "p95": 36390800,
+              "p99": 36390800
+            },
+            "allocation_calls": {
+              "p50": 70843,
+              "p95": 70843,
+              "p99": 70843
+            },
+            "allocated_bytes": {
+              "p50": 7366803,
+              "p95": 7366803,
+              "p99": 7366803
+            },
+            "live_growth_bytes": {
+              "p50": 3226617,
+              "p95": 3226617,
+              "p99": 3226617
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 9853500,
+              "allocation_calls": 38129,
+              "allocated_bytes": 7114438,
+              "live_growth_bytes": 3255671
+            },
+            {
+              "elapsed_ns": 9210000,
+              "allocation_calls": 38129,
+              "allocated_bytes": 7114438,
+              "live_growth_bytes": 3255671
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 9210000,
+              "p95": 9853500,
+              "p99": 9853500
+            },
+            "allocation_calls": {
+              "p50": 38129,
+              "p95": 38129,
+              "p99": 38129
+            },
+            "allocated_bytes": {
+              "p50": 7114438,
+              "p95": 7114438,
+              "p99": 7114438
+            },
+            "live_growth_bytes": {
+              "p50": 3255671,
+              "p95": 3255671,
+              "p99": 3255671
+            }
+          }
+        }
+      },
+      "100": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 37686000,
+              "allocation_calls": 70894,
+              "allocated_bytes": 7368020,
+              "live_growth_bytes": 3227327
+            },
+            {
+              "elapsed_ns": 27700800,
+              "allocation_calls": 70894,
+              "allocated_bytes": 7368020,
+              "live_growth_bytes": 3227327
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 27700800,
+              "p95": 37686000,
+              "p99": 37686000
+            },
+            "allocation_calls": {
+              "p50": 70894,
+              "p95": 70894,
+              "p99": 70894
+            },
+            "allocated_bytes": {
+              "p50": 7368020,
+              "p95": 7368020,
+              "p99": 7368020
+            },
+            "live_growth_bytes": {
+              "p50": 3227327,
+              "p95": 3227327,
+              "p99": 3227327
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 9056600,
+              "allocation_calls": 38180,
+              "allocated_bytes": 7116623,
+              "live_growth_bytes": 3256893
+            },
+            {
+              "elapsed_ns": 9162500,
+              "allocation_calls": 38180,
+              "allocated_bytes": 7116623,
+              "live_growth_bytes": 3256893
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 9056600,
+              "p95": 9162500,
+              "p99": 9162500
+            },
+            "allocation_calls": {
+              "p50": 38180,
+              "p95": 38180,
+              "p99": 38180
+            },
+            "allocated_bytes": {
+              "p50": 7116623,
+              "p95": 7116623,
+              "p99": 7116623
+            },
+            "live_growth_bytes": {
+              "p50": 3256893,
+              "p95": 3256893,
+              "p99": 3256893
+            }
+          }
+        }
+      },
+      "101": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 45387000,
+              "allocation_calls": 70912,
+              "allocated_bytes": 7368624,
+              "live_growth_bytes": 3227680
+            },
+            {
+              "elapsed_ns": 32228000,
+              "allocation_calls": 70912,
+              "allocated_bytes": 7368624,
+              "live_growth_bytes": 3227680
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 32228000,
+              "p95": 45387000,
+              "p99": 45387000
+            },
+            "allocation_calls": {
+              "p50": 70912,
+              "p95": 70912,
+              "p99": 70912
+            },
+            "allocated_bytes": {
+              "p50": 7368624,
+              "p95": 7368624,
+              "p99": 7368624
+            },
+            "live_growth_bytes": {
+              "p50": 3227680,
+              "p95": 3227680,
+              "p99": 3227680
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 14059100,
+              "allocation_calls": 38198,
+              "allocated_bytes": 7117683,
+              "live_growth_bytes": 3257502
+            },
+            {
+              "elapsed_ns": 11203400,
+              "allocation_calls": 38198,
+              "allocated_bytes": 7117683,
+              "live_growth_bytes": 3257502
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 11203400,
+              "p95": 14059100,
+              "p99": 14059100
+            },
+            "allocation_calls": {
+              "p50": 38198,
+              "p95": 38198,
+              "p99": 38198
+            },
+            "allocated_bytes": {
+              "p50": 7117683,
+              "p95": 7117683,
+              "p99": 7117683
+            },
+            "live_growth_bytes": {
+              "p50": 3257502,
+              "p95": 3257502,
+              "p99": 3257502
+            }
+          }
+        }
+      },
+      "102": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 40052500,
+              "allocation_calls": 70972,
+              "allocated_bytes": 7370413,
+              "live_growth_bytes": 3228706
+            },
+            {
+              "elapsed_ns": 29249600,
+              "allocation_calls": 70972,
+              "allocated_bytes": 7370413,
+              "live_growth_bytes": 3228706
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 29249600,
+              "p95": 40052500,
+              "p99": 40052500
+            },
+            "allocation_calls": {
+              "p50": 70972,
+              "p95": 70972,
+              "p99": 70972
+            },
+            "allocated_bytes": {
+              "p50": 7370413,
+              "p95": 7370413,
+              "p99": 7370413
+            },
+            "live_growth_bytes": {
+              "p50": 3228706,
+              "p95": 3228706,
+              "p99": 3228706
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 10531100,
+              "allocation_calls": 38258,
+              "allocated_bytes": 7120952,
+              "live_growth_bytes": 3259296
+            },
+            {
+              "elapsed_ns": 9801400,
+              "allocation_calls": 38258,
+              "allocated_bytes": 7120952,
+              "live_growth_bytes": 3259296
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 9801400,
+              "p95": 10531100,
+              "p99": 10531100
+            },
+            "allocation_calls": {
+              "p50": 38258,
+              "p95": 38258,
+              "p99": 38258
+            },
+            "allocated_bytes": {
+              "p50": 7120952,
+              "p95": 7120952,
+              "p99": 7120952
+            },
+            "live_growth_bytes": {
+              "p50": 3259296,
+              "p95": 3259296,
+              "p99": 3259296
+            }
+          }
+        }
+      },
+      "103": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 42829900,
+              "allocation_calls": 70939,
+              "allocated_bytes": 7369348,
+              "live_growth_bytes": 3228126
+            },
+            {
+              "elapsed_ns": 26506200,
+              "allocation_calls": 70939,
+              "allocated_bytes": 7369348,
+              "live_growth_bytes": 3228126
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 26506200,
+              "p95": 42829900,
+              "p99": 42829900
+            },
+            "allocation_calls": {
+              "p50": 70939,
+              "p95": 70939,
+              "p99": 70939
+            },
+            "allocated_bytes": {
+              "p50": 7369348,
+              "p95": 7369348,
+              "p99": 7369348
+            },
+            "live_growth_bytes": {
+              "p50": 3228126,
+              "p95": 3228126,
+              "p99": 3228126
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 10755100,
+              "allocation_calls": 38225,
+              "allocated_bytes": 7118839,
+              "live_growth_bytes": 3258204
+            },
+            {
+              "elapsed_ns": 8486400,
+              "allocation_calls": 38225,
+              "allocated_bytes": 7118839,
+              "live_growth_bytes": 3258204
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 8486400,
+              "p95": 10755100,
+              "p99": 10755100
+            },
+            "allocation_calls": {
+              "p50": 38225,
+              "p95": 38225,
+              "p99": 38225
+            },
+            "allocated_bytes": {
+              "p50": 7118839,
+              "p95": 7118839,
+              "p99": 7118839
+            },
+            "live_growth_bytes": {
+              "p50": 3258204,
+              "p95": 3258204,
+              "p99": 3258204
+            }
+          }
+        }
+      },
+      "104": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 37265900,
+              "allocation_calls": 70940,
+              "allocated_bytes": 7369453,
+              "live_growth_bytes": 3228204
+            },
+            {
+              "elapsed_ns": 26539100,
+              "allocation_calls": 70940,
+              "allocated_bytes": 7369453,
+              "live_growth_bytes": 3228204
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 26539100,
+              "p95": 37265900,
+              "p99": 37265900
+            },
+            "allocation_calls": {
+              "p50": 70940,
+              "p95": 70940,
+              "p99": 70940
+            },
+            "allocated_bytes": {
+              "p50": 7369453,
+              "p95": 7369453,
+              "p99": 7369453
+            },
+            "live_growth_bytes": {
+              "p50": 3228204,
+              "p95": 3228204,
+              "p99": 3228204
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 11453400,
+              "allocation_calls": 38226,
+              "allocated_bytes": 7118952,
+              "live_growth_bytes": 3258314
+            },
+            {
+              "elapsed_ns": 10533900,
+              "allocation_calls": 38226,
+              "allocated_bytes": 7118952,
+              "live_growth_bytes": 3258314
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 10533900,
+              "p95": 11453400,
+              "p99": 11453400
+            },
+            "allocation_calls": {
+              "p50": 38226,
+              "p95": 38226,
+              "p99": 38226
+            },
+            "allocated_bytes": {
+              "p50": 7118952,
+              "p95": 7118952,
+              "p99": 7118952
+            },
+            "live_growth_bytes": {
+              "p50": 3258314,
+              "p95": 3258314,
+              "p99": 3258314
+            }
+          }
+        }
+      },
+      "105": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 34464400,
+              "allocation_calls": 70939,
+              "allocated_bytes": 7369348,
+              "live_growth_bytes": 3228126
+            },
+            {
+              "elapsed_ns": 26872400,
+              "allocation_calls": 70939,
+              "allocated_bytes": 7369348,
+              "live_growth_bytes": 3228126
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 26872400,
+              "p95": 34464400,
+              "p99": 34464400
+            },
+            "allocation_calls": {
+              "p50": 70939,
+              "p95": 70939,
+              "p99": 70939
+            },
+            "allocated_bytes": {
+              "p50": 7369348,
+              "p95": 7369348,
+              "p99": 7369348
+            },
+            "live_growth_bytes": {
+              "p50": 3228126,
+              "p95": 3228126,
+              "p99": 3228126
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 11263100,
+              "allocation_calls": 38225,
+              "allocated_bytes": 7118839,
+              "live_growth_bytes": 3258204
+            },
+            {
+              "elapsed_ns": 8742800,
+              "allocation_calls": 38225,
+              "allocated_bytes": 7118839,
+              "live_growth_bytes": 3258204
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 8742800,
+              "p95": 11263100,
+              "p99": 11263100
+            },
+            "allocation_calls": {
+              "p50": 38225,
+              "p95": 38225,
+              "p99": 38225
+            },
+            "allocated_bytes": {
+              "p50": 7118839,
+              "p95": 7118839,
+              "p99": 7118839
+            },
+            "live_growth_bytes": {
+              "p50": 3258204,
+              "p95": 3258204,
+              "p99": 3258204
+            }
+          }
+        }
+      },
+      "106": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 32113400,
+              "allocation_calls": 70972,
+              "allocated_bytes": 7370413,
+              "live_growth_bytes": 3228706
+            },
+            {
+              "elapsed_ns": 33391500,
+              "allocation_calls": 70972,
+              "allocated_bytes": 7370413,
+              "live_growth_bytes": 3228706
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 32113400,
+              "p95": 33391500,
+              "p99": 33391500
+            },
+            "allocation_calls": {
+              "p50": 70972,
+              "p95": 70972,
+              "p99": 70972
+            },
+            "allocated_bytes": {
+              "p50": 7370413,
+              "p95": 7370413,
+              "p99": 7370413
+            },
+            "live_growth_bytes": {
+              "p50": 3228706,
+              "p95": 3228706,
+              "p99": 3228706
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 9743300,
+              "allocation_calls": 38258,
+              "allocated_bytes": 7120952,
+              "live_growth_bytes": 3259296
+            },
+            {
+              "elapsed_ns": 10412800,
+              "allocation_calls": 38258,
+              "allocated_bytes": 7120952,
+              "live_growth_bytes": 3259296
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 9743300,
+              "p95": 10412800,
+              "p99": 10412800
+            },
+            "allocation_calls": {
+              "p50": 38258,
+              "p95": 38258,
+              "p99": 38258
+            },
+            "allocated_bytes": {
+              "p50": 7120952,
+              "p95": 7120952,
+              "p99": 7120952
+            },
+            "live_growth_bytes": {
+              "p50": 3259296,
+              "p95": 3259296,
+              "p99": 3259296
+            }
+          }
+        }
+      },
+      "107": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 23842000,
+              "allocation_calls": 70912,
+              "allocated_bytes": 7368624,
+              "live_growth_bytes": 3227680
+            },
+            {
+              "elapsed_ns": 27078300,
+              "allocation_calls": 70912,
+              "allocated_bytes": 7368624,
+              "live_growth_bytes": 3227680
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 23842000,
+              "p95": 27078300,
+              "p99": 27078300
+            },
+            "allocation_calls": {
+              "p50": 70912,
+              "p95": 70912,
+              "p99": 70912
+            },
+            "allocated_bytes": {
+              "p50": 7368624,
+              "p95": 7368624,
+              "p99": 7368624
+            },
+            "live_growth_bytes": {
+              "p50": 3227680,
+              "p95": 3227680,
+              "p99": 3227680
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 11228200,
+              "allocation_calls": 38198,
+              "allocated_bytes": 7117683,
+              "live_growth_bytes": 3257502
+            },
+            {
+              "elapsed_ns": 10123200,
+              "allocation_calls": 38198,
+              "allocated_bytes": 7117683,
+              "live_growth_bytes": 3257502
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 10123200,
+              "p95": 11228200,
+              "p99": 11228200
+            },
+            "allocation_calls": {
+              "p50": 38198,
+              "p95": 38198,
+              "p99": 38198
+            },
+            "allocated_bytes": {
+              "p50": 7117683,
+              "p95": 7117683,
+              "p99": 7117683
+            },
+            "live_growth_bytes": {
+              "p50": 3257502,
+              "p95": 3257502,
+              "p99": 3257502
+            }
+          }
+        }
+      },
+      "108": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 29555100,
+              "allocation_calls": 70924,
+              "allocated_bytes": 7368695,
+              "live_growth_bytes": 3227756
+            },
+            {
+              "elapsed_ns": 24955900,
+              "allocation_calls": 70924,
+              "allocated_bytes": 7368695,
+              "live_growth_bytes": 3227756
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 24955900,
+              "p95": 29555100,
+              "p99": 29555100
+            },
+            "allocation_calls": {
+              "p50": 70924,
+              "p95": 70924,
+              "p99": 70924
+            },
+            "allocated_bytes": {
+              "p50": 7368695,
+              "p95": 7368695,
+              "p99": 7368695
+            },
+            "live_growth_bytes": {
+              "p50": 3227756,
+              "p95": 3227756,
+              "p99": 3227756
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 9317300,
+              "allocation_calls": 38210,
+              "allocated_bytes": 7117698,
+              "live_growth_bytes": 3257578
+            },
+            {
+              "elapsed_ns": 9009700,
+              "allocation_calls": 38210,
+              "allocated_bytes": 7117698,
+              "live_growth_bytes": 3257578
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 9009700,
+              "p95": 9317300,
+              "p99": 9317300
+            },
+            "allocation_calls": {
+              "p50": 38210,
+              "p95": 38210,
+              "p99": 38210
+            },
+            "allocated_bytes": {
+              "p50": 7117698,
+              "p95": 7117698,
+              "p99": 7117698
+            },
+            "live_growth_bytes": {
+              "p50": 3257578,
+              "p95": 3257578,
+              "p99": 3257578
+            }
+          }
+        }
+      },
+      "109": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 26120800,
+              "allocation_calls": 70910,
+              "allocated_bytes": 7368476,
+              "live_growth_bytes": 3227638
+            },
+            {
+              "elapsed_ns": 26551300,
+              "allocation_calls": 70910,
+              "allocated_bytes": 7368476,
+              "live_growth_bytes": 3227638
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 26120800,
+              "p95": 26551300,
+              "p99": 26551300
+            },
+            "allocation_calls": {
+              "p50": 70910,
+              "p95": 70910,
+              "p99": 70910
+            },
+            "allocated_bytes": {
+              "p50": 7368476,
+              "p95": 7368476,
+              "p99": 7368476
+            },
+            "live_growth_bytes": {
+              "p50": 3227638,
+              "p95": 3227638,
+              "p99": 3227638
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 9131500,
+              "allocation_calls": 38196,
+              "allocated_bytes": 7117199,
+              "live_growth_bytes": 3257332
+            },
+            {
+              "elapsed_ns": 8959500,
+              "allocation_calls": 38196,
+              "allocated_bytes": 7117199,
+              "live_growth_bytes": 3257332
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 8959500,
+              "p95": 9131500,
+              "p99": 9131500
+            },
+            "allocation_calls": {
+              "p50": 38196,
+              "p95": 38196,
+              "p99": 38196
+            },
+            "allocated_bytes": {
+              "p50": 7117199,
+              "p95": 7117199,
+              "p99": 7117199
+            },
+            "live_growth_bytes": {
+              "p50": 3257332,
+              "p95": 3257332,
+              "p99": 3257332
+            }
+          }
+        }
+      },
+      "110": {
+        "baseline": {
+          "samples": [
+            {
+              "elapsed_ns": 3700,
+              "allocation_calls": 3,
+              "allocated_bytes": 135,
+              "live_growth_bytes": 135
+            },
+            {
+              "elapsed_ns": 1400,
+              "allocation_calls": 3,
+              "allocated_bytes": 135,
+              "live_growth_bytes": 135
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 1400,
+              "p95": 3700,
+              "p99": 3700
+            },
+            "allocation_calls": {
+              "p50": 3,
+              "p95": 3,
+              "p99": 3
+            },
+            "allocated_bytes": {
+              "p50": 135,
+              "p95": 135,
+              "p99": 135
+            },
+            "live_growth_bytes": {
+              "p50": 135,
+              "p95": 135,
+              "p99": 135
+            }
+          }
+        },
+        "candidate": {
+          "samples": [
+            {
+              "elapsed_ns": 1000,
+              "allocation_calls": 3,
+              "allocated_bytes": 135,
+              "live_growth_bytes": 135
+            },
+            {
+              "elapsed_ns": 900,
+              "allocation_calls": 3,
+              "allocated_bytes": 135,
+              "live_growth_bytes": 135
+            }
+          ],
+          "quantiles": {
+            "elapsed_ns": {
+              "p50": 900,
+              "p95": 1000,
+              "p99": 1000
+            },
+            "allocation_calls": {
+              "p50": 3,
+              "p95": 3,
+              "p99": 3
+            },
+            "allocated_bytes": {
+              "p50": 135,
+              "p95": 135,
+              "p99": 135
+            },
+            "live_growth_bytes": {
+              "p50": 135,
+              "p95": 135,
+              "p99": 135
+            }
+          }
+        }
+      }
+    }
+  }
+}

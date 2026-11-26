@@ -1,0 +1,2990 @@
+{
+  "round26_baseline": "a6e48cbe28d48a010629a65537cfb6743522356a",
+  "build_head": "f3c7c9872de6906915af7eed3a9b67854d3f6e49",
+  "input_sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+  "lexical_sha256": "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5",
+  "exec_sha256": {
+    "baseline": "dc382bb4c376e765e16da6e70d8a15e80150e60c772788fe403e9cb62acb4024",
+    "candidate": "b3ed789ed4fbdc6c0472ff699f4bb3c1a79b57276aedbf7e9b8b4d9abffc19c4"
+  },
+  "graph_exec_sha256": "4a694ae7b2ebf585c6ce5edea5c331d4caa11c1f70632ff9c8409daabdba6de9",
+  "pairs": {
+    "171-full": {
+      "metrics": {
+        "baseline": {
+          "elapsed_ns": {
+            "n": 342,
+            "p50": 456900,
+            "p95": 1931600,
+            "p99": 2747000,
+            "max": 3101100
+          },
+          "allocation_calls": {
+            "n": 342,
+            "p50": 799,
+            "p95": 2086,
+            "p99": 2268,
+            "max": 2273
+          },
+          "allocated_bytes": {
+            "n": 342,
+            "p50": 156130,
+            "p95": 409683,
+            "p99": 594357,
+            "max": 631107
+          },
+          "live_absolute_peak": {
+            "n": 342,
+            "p50": 146279353,
+            "p95": 146371221,
+            "p99": 146477112,
+            "max": 146480183
+          },
+          "edges": {
+            "n": 342,
+            "p50": 721,
+            "p95": 1899,
+            "p99": 2285,
+            "max": 2517
+          },
+          "expansions": {
+            "n": 342,
+            "p50": 3261,
+            "p95": 13794,
+            "p99": 17664,
+            "max": 22614
+          },
+          "resident": {
+            "n": 342,
+            "p50": 29,
+            "p95": 50,
+            "p99": 51,
+            "max": 60
+          },
+          "live_growth_bytes": {
+            "n": 342,
+            "p50": 70137,
+            "p95": 149240,
+            "p99": 255251,
+            "max": 261266
+          },
+          "graph_cap_reports": 0
+        },
+        "candidate": {
+          "elapsed_ns": {
+            "n": 342,
+            "p50": 511500,
+            "p95": 2228100,
+            "p99": 2931900,
+            "max": 3971700
+          },
+          "allocation_calls": {
+            "n": 342,
+            "p50": 799,
+            "p95": 2086,
+            "p99": 2268,
+            "max": 2273
+          },
+          "allocated_bytes": {
+            "n": 342,
+            "p50": 156130,
+            "p95": 409683,
+            "p99": 594357,
+            "max": 631107
+          },
+          "live_absolute_peak": {
+            "n": 342,
+            "p50": 146279353,
+            "p95": 146371221,
+            "p99": 146477112,
+            "max": 146480183
+          },
+          "edges": {
+            "n": 342,
+            "p50": 721,
+            "p95": 1899,
+            "p99": 2285,
+            "max": 2517
+          },
+          "expansions": {
+            "n": 342,
+            "p50": 3261,
+            "p95": 13794,
+            "p99": 17664,
+            "max": 22614
+          },
+          "resident": {
+            "n": 342,
+            "p50": 29,
+            "p95": 50,
+            "p99": 51,
+            "max": 60
+          },
+          "live_growth_bytes": {
+            "n": 342,
+            "p50": 70137,
+            "p95": 149240,
+            "p99": 255251,
+            "max": 261266
+          },
+          "graph_cap_reports": 0
+        }
+      },
+      "events_per_version": 342,
+      "fixture_sha256": "e087cc965bd2f6c889a84f3db89b3829ccfda452f436d7b3cf562bbb965602ad",
+      "changed_cap_accounting": []
+    },
+    "171-abbreviated": {
+      "metrics": {
+        "baseline": {
+          "elapsed_ns": {
+            "n": 342,
+            "p50": 5461600,
+            "p95": 37205700,
+            "p99": 45245300,
+            "max": 54898800
+          },
+          "allocation_calls": {
+            "n": 342,
+            "p50": 12773,
+            "p95": 66959,
+            "p99": 72753,
+            "max": 73273
+          },
+          "allocated_bytes": {
+            "n": 342,
+            "p50": 1459171,
+            "p95": 7011997,
+            "p99": 7469346,
+            "max": 7504020
+          },
+          "live_absolute_peak": {
+            "n": 342,
+            "p50": 146886399,
+            "p95": 149316907,
+            "p99": 149501895,
+            "max": 149502856
+          },
+          "edges": {
+            "n": 342,
+            "p50": 2937,
+            "p95": 14965,
+            "p99": 15197,
+            "max": 15968
+          },
+          "expansions": {
+            "n": 342,
+            "p50": 12692,
+            "p95": 145627,
+            "p99": 147947,
+            "max": 155657
+          },
+          "resident": {
+            "n": 342,
+            "p50": 41,
+            "p95": 72,
+            "p99": 81,
+            "max": 81
+          },
+          "live_growth_bytes": {
+            "n": 342,
+            "p50": 670746,
+            "p95": 3086503,
+            "p99": 3268988,
+            "max": 3269688
+          },
+          "graph_cap_reports": 14
+        },
+        "candidate": {
+          "elapsed_ns": {
+            "n": 342,
+            "p50": 4713200,
+            "p95": 27732600,
+            "p99": 35156500,
+            "max": 40396700
+          },
+          "allocation_calls": {
+            "n": 342,
+            "p50": 7800,
+            "p95": 38315,
+            "p99": 42854,
+            "max": 42942
+          },
+          "allocated_bytes": {
+            "n": 342,
+            "p50": 1473006,
+            "p95": 7040245,
+            "p99": 7647690,
+            "max": 7678508
+          },
+          "live_absolute_peak": {
+            "n": 342,
+            "p50": 146884698,
+            "p95": 149314939,
+            "p99": 149538002,
+            "max": 149538515
+          },
+          "edges": {
+            "n": 342,
+            "p50": 2937,
+            "p95": 14965,
+            "p99": 16384,
+            "max": 16384
+          },
+          "expansions": {
+            "n": 342,
+            "p50": 11662,
+            "p95": 128778,
+            "p99": 159817,
+            "max": 159817
+          },
+          "resident": {
+            "n": 342,
+            "p50": 41,
+            "p95": 72,
+            "p99": 81,
+            "max": 81
+          },
+          "live_growth_bytes": {
+            "n": 342,
+            "p50": 669045,
+            "p95": 3084535,
+            "p99": 3305101,
+            "max": 3305343
+          },
+          "graph_cap_reports": 14
+        }
+      },
+      "events_per_version": 342,
+      "fixture_sha256": "e087cc965bd2f6c889a84f3db89b3829ccfda452f436d7b3cf562bbb965602ad",
+      "changed_cap_accounting": [
+        {
+          "case": "target",
+          "event": 73,
+          "old": [
+            "15177",
+            "147747",
+            "71",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "159817",
+            "71",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "target",
+          "event": 74,
+          "old": [
+            "15197",
+            "147947",
+            "71",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "159817",
+            "71",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "target",
+          "event": 75,
+          "old": [
+            "15183",
+            "147807",
+            "71",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "target",
+          "event": 76,
+          "old": [
+            "15183",
+            "147807",
+            "71",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "target",
+          "event": 77,
+          "old": [
+            "15183",
+            "147807",
+            "71",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "target",
+          "event": 78,
+          "old": [
+            "15183",
+            "147807",
+            "71",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "target-select",
+          "event": 79,
+          "old": [
+            "15183",
+            "147807",
+            "71",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        }
+      ]
+    },
+    "243-full": {
+      "metrics": {
+        "baseline": {
+          "elapsed_ns": {
+            "n": 486,
+            "p50": 1163200,
+            "p95": 3722700,
+            "p99": 5709000,
+            "max": 8069200
+          },
+          "allocation_calls": {
+            "n": 486,
+            "p50": 1265,
+            "p95": 3320,
+            "p99": 3477,
+            "max": 3633
+          },
+          "allocated_bytes": {
+            "n": 486,
+            "p50": 280076,
+            "p95": 737376,
+            "p99": 768510,
+            "max": 775548
+          },
+          "live_absolute_peak": {
+            "n": 486,
+            "p50": 146338118,
+            "p95": 146494860,
+            "p99": 146505379,
+            "max": 146507223
+          },
+          "edges": {
+            "n": 486,
+            "p50": 1219,
+            "p95": 2711,
+            "p99": 3295,
+            "max": 3613
+          },
+          "expansions": {
+            "n": 486,
+            "p50": 8365,
+            "p95": 18904,
+            "p99": 27450,
+            "max": 27474
+          },
+          "resident": {
+            "n": 486,
+            "p50": 41,
+            "p95": 57,
+            "p99": 59,
+            "max": 59
+          },
+          "live_growth_bytes": {
+            "n": 486,
+            "p50": 129290,
+            "p95": 264621,
+            "p99": 279057,
+            "max": 279883
+          },
+          "graph_cap_reports": 0
+        },
+        "candidate": {
+          "elapsed_ns": {
+            "n": 486,
+            "p50": 1408000,
+            "p95": 3815000,
+            "p99": 4973800,
+            "max": 5945000
+          },
+          "allocation_calls": {
+            "n": 486,
+            "p50": 1265,
+            "p95": 3320,
+            "p99": 3477,
+            "max": 3633
+          },
+          "allocated_bytes": {
+            "n": 486,
+            "p50": 280076,
+            "p95": 737376,
+            "p99": 768510,
+            "max": 775548
+          },
+          "live_absolute_peak": {
+            "n": 486,
+            "p50": 146338118,
+            "p95": 146494860,
+            "p99": 146505379,
+            "max": 146507223
+          },
+          "edges": {
+            "n": 486,
+            "p50": 1219,
+            "p95": 2711,
+            "p99": 3295,
+            "max": 3613
+          },
+          "expansions": {
+            "n": 486,
+            "p50": 8365,
+            "p95": 18904,
+            "p99": 27450,
+            "max": 27474
+          },
+          "resident": {
+            "n": 486,
+            "p50": 41,
+            "p95": 57,
+            "p99": 59,
+            "max": 59
+          },
+          "live_growth_bytes": {
+            "n": 486,
+            "p50": 129290,
+            "p95": 264621,
+            "p99": 279057,
+            "max": 279883
+          },
+          "graph_cap_reports": 0
+        }
+      },
+      "events_per_version": 486,
+      "fixture_sha256": "75cf96003a6ff1918c53864e706a199d6743d29317323dbef1abf74a892aa36f",
+      "changed_cap_accounting": []
+    },
+    "243-abbreviated": {
+      "metrics": {
+        "baseline": {
+          "elapsed_ns": {
+            "n": 486,
+            "p50": 11973300,
+            "p95": 33420800,
+            "p99": 40052500,
+            "max": 45387000
+          },
+          "allocation_calls": {
+            "n": 486,
+            "p50": 27996,
+            "p95": 72431,
+            "p99": 73296,
+            "max": 73966
+          },
+          "allocated_bytes": {
+            "n": 486,
+            "p50": 3132616,
+            "p95": 7415428,
+            "p99": 7475638,
+            "max": 7509881
+          },
+          "live_absolute_peak": {
+            "n": 486,
+            "p50": 147625339,
+            "p95": 149458984,
+            "p99": 149481851,
+            "max": 149485996
+          },
+          "edges": {
+            "n": 486,
+            "p50": 7412,
+            "p95": 15933,
+            "p99": 15962,
+            "max": 16173
+          },
+          "expansions": {
+            "n": 486,
+            "p50": 62966,
+            "p95": 151221,
+            "p99": 151511,
+            "max": 157788
+          },
+          "resident": {
+            "n": 486,
+            "p50": 62,
+            "p95": 82,
+            "p99": 91,
+            "max": 91
+          },
+          "live_growth_bytes": {
+            "n": 486,
+            "p50": 1408337,
+            "p95": 3256775,
+            "p99": 3259356,
+            "max": 3259818
+          },
+          "graph_cap_reports": 90
+        },
+        "candidate": {
+          "elapsed_ns": {
+            "n": 486,
+            "p50": 9047100,
+            "p95": 28671900,
+            "p99": 40934700,
+            "max": 51036800
+          },
+          "allocation_calls": {
+            "n": 486,
+            "p50": 17065,
+            "p95": 40978,
+            "p99": 43769,
+            "max": 43802
+          },
+          "allocated_bytes": {
+            "n": 486,
+            "p50": 3144011,
+            "p95": 7197584,
+            "p99": 7617164,
+            "max": 7645812
+          },
+          "live_absolute_peak": {
+            "n": 486,
+            "p50": 147623371,
+            "p95": 149480003,
+            "p99": 149492717,
+            "max": 149503924
+          },
+          "edges": {
+            "n": 486,
+            "p50": 7412,
+            "p95": 16384,
+            "p99": 16384,
+            "max": 16384
+          },
+          "expansions": {
+            "n": 486,
+            "p50": 28086,
+            "p95": 149058,
+            "p99": 159898,
+            "max": 159898
+          },
+          "resident": {
+            "n": 486,
+            "p50": 52,
+            "p95": 82,
+            "p99": 91,
+            "max": 91
+          },
+          "live_growth_bytes": {
+            "n": 486,
+            "p50": 1406369,
+            "p95": 3276009,
+            "p99": 3280164,
+            "max": 3280946
+          },
+          "graph_cap_reports": 90
+        }
+      },
+      "events_per_version": 486,
+      "fixture_sha256": "75cf96003a6ff1918c53864e706a199d6743d29317323dbef1abf74a892aa36f",
+      "changed_cap_accounting": [
+        {
+          "case": "long-1",
+          "event": 30,
+          "old": [
+            "15927",
+            "151161",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "155731",
+            "81",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-1",
+          "event": 31,
+          "old": [
+            "15934",
+            "151231",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "155731",
+            "81",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-1",
+          "event": 32,
+          "old": [
+            "15934",
+            "151231",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "155731",
+            "81",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-1",
+          "event": 33,
+          "old": [
+            "15934",
+            "151231",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "155731",
+            "81",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-1",
+          "event": 34,
+          "old": [
+            "15933",
+            "151221",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-1",
+          "event": 35,
+          "old": [
+            "15933",
+            "151221",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-1",
+          "event": 36,
+          "old": [
+            "15933",
+            "151221",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-1",
+          "event": 37,
+          "old": [
+            "15933",
+            "151221",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-1",
+          "event": 38,
+          "old": [
+            "15933",
+            "151221",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-1",
+          "event": 39,
+          "old": [
+            "15933",
+            "151221",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-1",
+          "event": 40,
+          "old": [
+            "15933",
+            "151221",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-1",
+          "event": 41,
+          "old": [
+            "15933",
+            "151221",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-1",
+          "event": 42,
+          "old": [
+            "15933",
+            "151221",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-1",
+          "event": 43,
+          "old": [
+            "15933",
+            "151221",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-1",
+          "event": 44,
+          "old": [
+            "15933",
+            "151221",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-1",
+          "event": 45,
+          "old": [
+            "15933",
+            "151221",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-1",
+          "event": 46,
+          "old": [
+            "15933",
+            "151221",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-1",
+          "event": 47,
+          "old": [
+            "15933",
+            "151221",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-1",
+          "event": 48,
+          "old": [
+            "15933",
+            "151221",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-1",
+          "event": 49,
+          "old": [
+            "15933",
+            "151221",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-1",
+          "event": 50,
+          "old": [
+            "15933",
+            "151221",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-1",
+          "event": 51,
+          "old": [
+            "15933",
+            "151221",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-1",
+          "event": 52,
+          "old": [
+            "15933",
+            "151221",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-1",
+          "event": 53,
+          "old": [
+            "15933",
+            "151221",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-1",
+          "event": 54,
+          "old": [
+            "15933",
+            "151221",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-1",
+          "event": 55,
+          "old": [
+            "15933",
+            "151221",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-1",
+          "event": 56,
+          "old": [
+            "15933",
+            "151221",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-1",
+          "event": 57,
+          "old": [
+            "15933",
+            "151221",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-1",
+          "event": 58,
+          "old": [
+            "15933",
+            "151221",
+            "81",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-2",
+          "event": 95,
+          "old": [
+            "15333",
+            "149388",
+            "67",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "159898",
+            "67",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-2",
+          "event": 96,
+          "old": [
+            "15330",
+            "149358",
+            "67",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "159898",
+            "67",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-2",
+          "event": 97,
+          "old": [
+            "15322",
+            "149278",
+            "67",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "159898",
+            "67",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-2",
+          "event": 98,
+          "old": [
+            "15322",
+            "149278",
+            "67",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-2",
+          "event": 99,
+          "old": [
+            "15322",
+            "149278",
+            "67",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-2",
+          "event": 100,
+          "old": [
+            "15322",
+            "149278",
+            "67",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-2",
+          "event": 101,
+          "old": [
+            "15322",
+            "149278",
+            "67",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-2",
+          "event": 102,
+          "old": [
+            "15322",
+            "149278",
+            "67",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-2",
+          "event": 103,
+          "old": [
+            "15322",
+            "149278",
+            "67",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-2",
+          "event": 104,
+          "old": [
+            "15322",
+            "149278",
+            "67",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-2",
+          "event": 105,
+          "old": [
+            "15322",
+            "149278",
+            "67",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-2",
+          "event": 106,
+          "old": [
+            "15322",
+            "149278",
+            "67",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-2",
+          "event": 107,
+          "old": [
+            "15322",
+            "149278",
+            "67",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-2",
+          "event": 108,
+          "old": [
+            "15322",
+            "149278",
+            "67",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-2",
+          "event": 109,
+          "old": [
+            "15322",
+            "149278",
+            "67",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        },
+        {
+          "case": "long-2",
+          "event": 110,
+          "old": [
+            "15322",
+            "149278",
+            "67",
+            "Some(GraphEdges)"
+          ],
+          "new": [
+            "16384",
+            "0",
+            "0",
+            "Some(GraphEdges)"
+          ]
+        }
+      ]
+    }
+  },
+  "cap": {
+    "171": {
+      "events": 171,
+      "actual_truncations": 7,
+      "duplicate_edge_sources": 373,
+      "boundary_filtered": 3843,
+      "early_stops": 5,
+      "diagnostic_wider_top_changes": 7,
+      "diagnostic_wider_search_budgets": {
+        "None": 7
+      },
+      "labeled_events": 2,
+      "events_diagnostics": [
+        {
+          "kind": "CAP",
+          "case": "target",
+          "index": "73",
+          "revision": "77",
+          "raw_length": "31",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15177",
+          "buffered_before_cap": "1207",
+          "dictionary_rows": "17307",
+          "duplicate_edges": "373",
+          "boundary_rejected": "549",
+          "viable_edges": "13391",
+          "expansions": "159817",
+          "resident": "71",
+          "wider_edges": "17541",
+          "wider_viable_edges": "15571",
+          "candidate_size": "10",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "false",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "target",
+          "index": "74",
+          "revision": "78",
+          "raw_length": "32",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15197",
+          "buffered_before_cap": "1187",
+          "dictionary_rows": "16934",
+          "duplicate_edges": "0",
+          "boundary_rejected": "549",
+          "viable_edges": "12616",
+          "expansions": "159817",
+          "resident": "71",
+          "wider_edges": "18225",
+          "wider_viable_edges": "14682",
+          "candidate_size": "10",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "false",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "target",
+          "index": "75",
+          "revision": "79",
+          "raw_length": "33",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15183",
+          "buffered_before_cap": "1201",
+          "dictionary_rows": "16934",
+          "duplicate_edges": "0",
+          "boundary_rejected": "549",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "17941",
+          "wider_viable_edges": "14398",
+          "candidate_size": "0",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "false",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "target",
+          "index": "76",
+          "revision": "80",
+          "raw_length": "34",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15183",
+          "buffered_before_cap": "1201",
+          "dictionary_rows": "16934",
+          "duplicate_edges": "0",
+          "boundary_rejected": "549",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "18021",
+          "wider_viable_edges": "14261",
+          "candidate_size": "0",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "false",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "target",
+          "index": "77",
+          "revision": "81",
+          "raw_length": "35",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15183",
+          "buffered_before_cap": "1201",
+          "dictionary_rows": "16934",
+          "duplicate_edges": "0",
+          "boundary_rejected": "549",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "18376",
+          "wider_viable_edges": "14616",
+          "candidate_size": "0",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "false",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "target",
+          "index": "78",
+          "revision": "82",
+          "raw_length": "36",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15183",
+          "buffered_before_cap": "1201",
+          "dictionary_rows": "16934",
+          "duplicate_edges": "0",
+          "boundary_rejected": "549",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "18643",
+          "wider_viable_edges": "14883",
+          "candidate_size": "0",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "false",
+          "target": "Some(false)",
+          "wider_target": "Some(true)",
+          "target_rank": "Some(None)",
+          "wider_target_rank": "Some(Some(0))",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "target-select",
+          "index": "79",
+          "revision": "83",
+          "raw_length": "36",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15183",
+          "buffered_before_cap": "1201",
+          "dictionary_rows": "16934",
+          "duplicate_edges": "0",
+          "boundary_rejected": "549",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "18643",
+          "wider_viable_edges": "14883",
+          "candidate_size": "0",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "false",
+          "target": "Some(false)",
+          "wider_target": "Some(true)",
+          "target_rank": "Some(None)",
+          "wider_target_rank": "Some(Some(0))",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        }
+      ]
+    },
+    "243": {
+      "events": 243,
+      "actual_truncations": 45,
+      "duplicate_edge_sources": 436,
+      "boundary_filtered": 35451,
+      "early_stops": 38,
+      "diagnostic_wider_top_changes": 22,
+      "diagnostic_wider_search_budgets": {
+        "None": 26,
+        "Some(Expansions)": 19
+      },
+      "labeled_events": 0,
+      "events_diagnostics": [
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "30",
+          "revision": "32",
+          "raw_length": "30",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15927",
+          "buffered_before_cap": "457",
+          "dictionary_rows": "17516",
+          "duplicate_edges": "436",
+          "boundary_rejected": "695",
+          "viable_edges": "7681",
+          "expansions": "155731",
+          "resident": "81",
+          "wider_edges": "16783",
+          "wider_viable_edges": "8080",
+          "candidate_size": "10",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "true",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "31",
+          "revision": "33",
+          "raw_length": "31",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15934",
+          "buffered_before_cap": "450",
+          "dictionary_rows": "17078",
+          "duplicate_edges": "0",
+          "boundary_rejected": "693",
+          "viable_edges": "7186",
+          "expansions": "155731",
+          "resident": "81",
+          "wider_edges": "17422",
+          "wider_viable_edges": "7852",
+          "candidate_size": "10",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "false",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "32",
+          "revision": "34",
+          "raw_length": "32",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15934",
+          "buffered_before_cap": "450",
+          "dictionary_rows": "17084",
+          "duplicate_edges": "0",
+          "boundary_rejected": "699",
+          "viable_edges": "7183",
+          "expansions": "155731",
+          "resident": "81",
+          "wider_edges": "17360",
+          "wider_viable_edges": "7790",
+          "candidate_size": "10",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "true",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "33",
+          "revision": "35",
+          "raw_length": "33",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15934",
+          "buffered_before_cap": "450",
+          "dictionary_rows": "17088",
+          "duplicate_edges": "0",
+          "boundary_rejected": "703",
+          "viable_edges": "7181",
+          "expansions": "155731",
+          "resident": "81",
+          "wider_edges": "17685",
+          "wider_viable_edges": "8115",
+          "candidate_size": "10",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "false",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "34",
+          "revision": "36",
+          "raw_length": "34",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15933",
+          "buffered_before_cap": "451",
+          "dictionary_rows": "17085",
+          "duplicate_edges": "0",
+          "boundary_rejected": "700",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "18685",
+          "wider_viable_edges": "9115",
+          "candidate_size": "0",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "false",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "35",
+          "revision": "37",
+          "raw_length": "35",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15933",
+          "buffered_before_cap": "451",
+          "dictionary_rows": "17085",
+          "duplicate_edges": "0",
+          "boundary_rejected": "700",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "18844",
+          "wider_viable_edges": "8215",
+          "candidate_size": "0",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "false",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "36",
+          "revision": "38",
+          "raw_length": "36",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15933",
+          "buffered_before_cap": "451",
+          "dictionary_rows": "17085",
+          "duplicate_edges": "0",
+          "boundary_rejected": "700",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "18892",
+          "wider_viable_edges": "8263",
+          "candidate_size": "0",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "false",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "37",
+          "revision": "39",
+          "raw_length": "37",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15933",
+          "buffered_before_cap": "451",
+          "dictionary_rows": "17085",
+          "duplicate_edges": "0",
+          "boundary_rejected": "700",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "19266",
+          "wider_viable_edges": "8637",
+          "candidate_size": "0",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "false",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "38",
+          "revision": "40",
+          "raw_length": "38",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15933",
+          "buffered_before_cap": "451",
+          "dictionary_rows": "17085",
+          "duplicate_edges": "0",
+          "boundary_rejected": "700",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "20499",
+          "wider_viable_edges": "9870",
+          "candidate_size": "0",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "false",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "39",
+          "revision": "41",
+          "raw_length": "39",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15933",
+          "buffered_before_cap": "451",
+          "dictionary_rows": "17085",
+          "duplicate_edges": "0",
+          "boundary_rejected": "700",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "20595",
+          "wider_viable_edges": "8726",
+          "candidate_size": "0",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "false",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "40",
+          "revision": "42",
+          "raw_length": "40",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15933",
+          "buffered_before_cap": "451",
+          "dictionary_rows": "17085",
+          "duplicate_edges": "0",
+          "boundary_rejected": "700",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "21720",
+          "wider_viable_edges": "9851",
+          "candidate_size": "0",
+          "wider_candidate_size": "0",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "true",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "Some(Expansions)"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "41",
+          "revision": "43",
+          "raw_length": "41",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15933",
+          "buffered_before_cap": "451",
+          "dictionary_rows": "17085",
+          "duplicate_edges": "0",
+          "boundary_rejected": "700",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "23386",
+          "wider_viable_edges": "11517",
+          "candidate_size": "0",
+          "wider_candidate_size": "0",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "true",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "Some(Expansions)"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "42",
+          "revision": "44",
+          "raw_length": "42",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15933",
+          "buffered_before_cap": "451",
+          "dictionary_rows": "17085",
+          "duplicate_edges": "0",
+          "boundary_rejected": "700",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "23918",
+          "wider_viable_edges": "12049",
+          "candidate_size": "0",
+          "wider_candidate_size": "0",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "true",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "Some(Expansions)"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "43",
+          "revision": "45",
+          "raw_length": "43",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15933",
+          "buffered_before_cap": "451",
+          "dictionary_rows": "17085",
+          "duplicate_edges": "0",
+          "boundary_rejected": "700",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "23797",
+          "wider_viable_edges": "11928",
+          "candidate_size": "0",
+          "wider_candidate_size": "0",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "true",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "Some(Expansions)"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "44",
+          "revision": "46",
+          "raw_length": "44",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15933",
+          "buffered_before_cap": "451",
+          "dictionary_rows": "17085",
+          "duplicate_edges": "0",
+          "boundary_rejected": "700",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "24929",
+          "wider_viable_edges": "13060",
+          "candidate_size": "0",
+          "wider_candidate_size": "0",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "true",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "Some(Expansions)"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "45",
+          "revision": "47",
+          "raw_length": "45",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15933",
+          "buffered_before_cap": "451",
+          "dictionary_rows": "17085",
+          "duplicate_edges": "0",
+          "boundary_rejected": "700",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "26598",
+          "wider_viable_edges": "14729",
+          "candidate_size": "0",
+          "wider_candidate_size": "0",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "true",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "Some(Expansions)"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "46",
+          "revision": "48",
+          "raw_length": "46",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15933",
+          "buffered_before_cap": "451",
+          "dictionary_rows": "17085",
+          "duplicate_edges": "0",
+          "boundary_rejected": "700",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "26810",
+          "wider_viable_edges": "14941",
+          "candidate_size": "0",
+          "wider_candidate_size": "0",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "true",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "Some(Expansions)"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "47",
+          "revision": "49",
+          "raw_length": "47",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15933",
+          "buffered_before_cap": "451",
+          "dictionary_rows": "17085",
+          "duplicate_edges": "0",
+          "boundary_rejected": "700",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "27030",
+          "wider_viable_edges": "15161",
+          "candidate_size": "0",
+          "wider_candidate_size": "0",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "true",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "Some(Expansions)"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "48",
+          "revision": "50",
+          "raw_length": "48",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15933",
+          "buffered_before_cap": "451",
+          "dictionary_rows": "17085",
+          "duplicate_edges": "0",
+          "boundary_rejected": "700",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "27668",
+          "wider_viable_edges": "15799",
+          "candidate_size": "0",
+          "wider_candidate_size": "0",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "true",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "Some(Expansions)"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "49",
+          "revision": "51",
+          "raw_length": "49",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15933",
+          "buffered_before_cap": "451",
+          "dictionary_rows": "17085",
+          "duplicate_edges": "0",
+          "boundary_rejected": "700",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "28177",
+          "wider_viable_edges": "16308",
+          "candidate_size": "0",
+          "wider_candidate_size": "0",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "true",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "Some(Expansions)"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "50",
+          "revision": "52",
+          "raw_length": "50",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15933",
+          "buffered_before_cap": "451",
+          "dictionary_rows": "17085",
+          "duplicate_edges": "0",
+          "boundary_rejected": "700",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "28532",
+          "wider_viable_edges": "16663",
+          "candidate_size": "0",
+          "wider_candidate_size": "0",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "true",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "Some(Expansions)"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "51",
+          "revision": "53",
+          "raw_length": "51",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15933",
+          "buffered_before_cap": "451",
+          "dictionary_rows": "17085",
+          "duplicate_edges": "0",
+          "boundary_rejected": "700",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "28703",
+          "wider_viable_edges": "16834",
+          "candidate_size": "0",
+          "wider_candidate_size": "0",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "true",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "Some(Expansions)"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "52",
+          "revision": "54",
+          "raw_length": "51",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15933",
+          "buffered_before_cap": "451",
+          "dictionary_rows": "17085",
+          "duplicate_edges": "0",
+          "boundary_rejected": "700",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "28703",
+          "wider_viable_edges": "16834",
+          "candidate_size": "0",
+          "wider_candidate_size": "0",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "true",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "Some(Expansions)"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "53",
+          "revision": "55",
+          "raw_length": "51",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15933",
+          "buffered_before_cap": "451",
+          "dictionary_rows": "17085",
+          "duplicate_edges": "0",
+          "boundary_rejected": "700",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "28703",
+          "wider_viable_edges": "16834",
+          "candidate_size": "0",
+          "wider_candidate_size": "0",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "true",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "Some(Expansions)"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "54",
+          "revision": "56",
+          "raw_length": "50",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15933",
+          "buffered_before_cap": "451",
+          "dictionary_rows": "17085",
+          "duplicate_edges": "0",
+          "boundary_rejected": "700",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "28230",
+          "wider_viable_edges": "16361",
+          "candidate_size": "0",
+          "wider_candidate_size": "0",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "true",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "Some(Expansions)"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "55",
+          "revision": "57",
+          "raw_length": "49",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15933",
+          "buffered_before_cap": "451",
+          "dictionary_rows": "17085",
+          "duplicate_edges": "0",
+          "boundary_rejected": "700",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "27408",
+          "wider_viable_edges": "15539",
+          "candidate_size": "0",
+          "wider_candidate_size": "0",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "true",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "Some(Expansions)"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "56",
+          "revision": "58",
+          "raw_length": "50",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15933",
+          "buffered_before_cap": "451",
+          "dictionary_rows": "17085",
+          "duplicate_edges": "0",
+          "boundary_rejected": "700",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "27565",
+          "wider_viable_edges": "15696",
+          "candidate_size": "0",
+          "wider_candidate_size": "0",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "true",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "Some(Expansions)"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "57",
+          "revision": "59",
+          "raw_length": "50",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15933",
+          "buffered_before_cap": "451",
+          "dictionary_rows": "17085",
+          "duplicate_edges": "0",
+          "boundary_rejected": "700",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "27565",
+          "wider_viable_edges": "15696",
+          "candidate_size": "0",
+          "wider_candidate_size": "0",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "true",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "Some(Expansions)"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-1",
+          "index": "58",
+          "revision": "60",
+          "raw_length": "50",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15933",
+          "buffered_before_cap": "451",
+          "dictionary_rows": "17085",
+          "duplicate_edges": "0",
+          "boundary_rejected": "700",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "27565",
+          "wider_viable_edges": "15696",
+          "candidate_size": "0",
+          "wider_candidate_size": "0",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(29)",
+          "same_top": "true",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "Some(Expansions)"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-2",
+          "index": "95",
+          "revision": "98",
+          "raw_length": "37",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15333",
+          "buffered_before_cap": "1051",
+          "dictionary_rows": "17301",
+          "duplicate_edges": "0",
+          "boundary_rejected": "916",
+          "viable_edges": "11090",
+          "expansions": "159898",
+          "resident": "67",
+          "wider_edges": "16821",
+          "wider_viable_edges": "11527",
+          "candidate_size": "10",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(35)",
+          "same_top": "true",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-2",
+          "index": "96",
+          "revision": "99",
+          "raw_length": "38",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15330",
+          "buffered_before_cap": "1054",
+          "dictionary_rows": "17344",
+          "duplicate_edges": "0",
+          "boundary_rejected": "959",
+          "viable_edges": "10909",
+          "expansions": "159898",
+          "resident": "67",
+          "wider_edges": "16756",
+          "wider_viable_edges": "11462",
+          "candidate_size": "10",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(35)",
+          "same_top": "false",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-2",
+          "index": "97",
+          "revision": "100",
+          "raw_length": "39",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15322",
+          "buffered_before_cap": "1062",
+          "dictionary_rows": "17334",
+          "duplicate_edges": "0",
+          "boundary_rejected": "949",
+          "viable_edges": "9851",
+          "expansions": "159898",
+          "resident": "67",
+          "wider_edges": "16668",
+          "wider_viable_edges": "11374",
+          "candidate_size": "10",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(35)",
+          "same_top": "true",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-2",
+          "index": "98",
+          "revision": "101",
+          "raw_length": "40",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15322",
+          "buffered_before_cap": "1062",
+          "dictionary_rows": "17334",
+          "duplicate_edges": "0",
+          "boundary_rejected": "949",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "17274",
+          "wider_viable_edges": "11980",
+          "candidate_size": "0",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(35)",
+          "same_top": "false",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-2",
+          "index": "99",
+          "revision": "102",
+          "raw_length": "41",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15322",
+          "buffered_before_cap": "1062",
+          "dictionary_rows": "17334",
+          "duplicate_edges": "0",
+          "boundary_rejected": "949",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "17378",
+          "wider_viable_edges": "12084",
+          "candidate_size": "0",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(35)",
+          "same_top": "false",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-2",
+          "index": "100",
+          "revision": "103",
+          "raw_length": "42",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15322",
+          "buffered_before_cap": "1062",
+          "dictionary_rows": "17334",
+          "duplicate_edges": "0",
+          "boundary_rejected": "949",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "17655",
+          "wider_viable_edges": "12361",
+          "candidate_size": "0",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(35)",
+          "same_top": "false",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-2",
+          "index": "101",
+          "revision": "104",
+          "raw_length": "43",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15322",
+          "buffered_before_cap": "1062",
+          "dictionary_rows": "17334",
+          "duplicate_edges": "0",
+          "boundary_rejected": "949",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "18293",
+          "wider_viable_edges": "12999",
+          "candidate_size": "0",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(35)",
+          "same_top": "false",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-2",
+          "index": "102",
+          "revision": "105",
+          "raw_length": "44",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15322",
+          "buffered_before_cap": "1062",
+          "dictionary_rows": "17334",
+          "duplicate_edges": "0",
+          "boundary_rejected": "949",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "19701",
+          "wider_viable_edges": "14407",
+          "candidate_size": "0",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(35)",
+          "same_top": "false",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-2",
+          "index": "103",
+          "revision": "106",
+          "raw_length": "45",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15322",
+          "buffered_before_cap": "1062",
+          "dictionary_rows": "17334",
+          "duplicate_edges": "0",
+          "boundary_rejected": "949",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "19811",
+          "wider_viable_edges": "13109",
+          "candidate_size": "0",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(35)",
+          "same_top": "false",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-2",
+          "index": "104",
+          "revision": "107",
+          "raw_length": "46",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15322",
+          "buffered_before_cap": "1062",
+          "dictionary_rows": "17334",
+          "duplicate_edges": "0",
+          "boundary_rejected": "949",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "19791",
+          "wider_viable_edges": "13089",
+          "candidate_size": "0",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(35)",
+          "same_top": "false",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-2",
+          "index": "105",
+          "revision": "108",
+          "raw_length": "45",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15322",
+          "buffered_before_cap": "1062",
+          "dictionary_rows": "17334",
+          "duplicate_edges": "0",
+          "boundary_rejected": "949",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "19811",
+          "wider_viable_edges": "13109",
+          "candidate_size": "0",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(35)",
+          "same_top": "false",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-2",
+          "index": "106",
+          "revision": "109",
+          "raw_length": "44",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15322",
+          "buffered_before_cap": "1062",
+          "dictionary_rows": "17334",
+          "duplicate_edges": "0",
+          "boundary_rejected": "949",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "19701",
+          "wider_viable_edges": "14407",
+          "candidate_size": "0",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(35)",
+          "same_top": "false",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-2",
+          "index": "107",
+          "revision": "110",
+          "raw_length": "43",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15322",
+          "buffered_before_cap": "1062",
+          "dictionary_rows": "17334",
+          "duplicate_edges": "0",
+          "boundary_rejected": "949",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "18293",
+          "wider_viable_edges": "12999",
+          "candidate_size": "0",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(35)",
+          "same_top": "false",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-2",
+          "index": "108",
+          "revision": "111",
+          "raw_length": "44",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15322",
+          "buffered_before_cap": "1062",
+          "dictionary_rows": "17334",
+          "duplicate_edges": "0",
+          "boundary_rejected": "949",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "18552",
+          "wider_viable_edges": "13258",
+          "candidate_size": "0",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(35)",
+          "same_top": "false",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-2",
+          "index": "109",
+          "revision": "112",
+          "raw_length": "45",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15322",
+          "buffered_before_cap": "1062",
+          "dictionary_rows": "17334",
+          "duplicate_edges": "0",
+          "boundary_rejected": "949",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "18560",
+          "wider_viable_edges": "13007",
+          "candidate_size": "0",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(35)",
+          "same_top": "false",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        },
+        {
+          "kind": "CAP",
+          "case": "long-2",
+          "index": "110",
+          "revision": "113",
+          "raw_length": "45",
+          "graph_edges": "16384",
+          "limit": "16384",
+          "published_before_cap": "15322",
+          "buffered_before_cap": "1062",
+          "dictionary_rows": "17334",
+          "duplicate_edges": "0",
+          "boundary_rejected": "949",
+          "viable_edges": "0",
+          "expansions": "0",
+          "resident": "0",
+          "wider_edges": "18560",
+          "wider_viable_edges": "13007",
+          "candidate_size": "0",
+          "wider_candidate_size": "10",
+          "improved_representative": "0",
+          "first_rejected_start": "Some(35)",
+          "same_top": "false",
+          "target": "None",
+          "wider_target": "None",
+          "target_rank": "None",
+          "wider_target_rank": "None",
+          "search_budget": "Some(GraphEdges)",
+          "wider_graph_budget": "None",
+          "wider_search_budget": "None"
+        }
+      ]
+    }
+  }
+}

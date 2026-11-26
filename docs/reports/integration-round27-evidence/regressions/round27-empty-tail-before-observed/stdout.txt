@@ -1,0 +1,20 @@
+
+running 1 test
+test interpreted_truncated_graph_without_terminal_edges_cannot_require_path_expansion ... FAILED
+
+failures:
+
+---- interpreted_truncated_graph_without_terminal_edges_cannot_require_path_expansion stdout ----
+
+thread 'interpreted_truncated_graph_without_terminal_edges_cannot_require_path_expansion' panicked at crates/cloudleaf-search/tests/resource_contract.rs:118:9:
+assertion `left == right` failed
+  left: 1
+ right: 0
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    interpreted_truncated_graph_without_terminal_edges_cannot_require_path_expansion
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.00s
+

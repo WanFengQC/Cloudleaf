@@ -1,0 +1,33 @@
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\.local\r27_release_archived.py", line 65, in <module>
+    old = release_stage.install(target, packages[0])
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\tools\release_stage.py", line 134, in install
+    return publish(release, store, verifier=verify, transition=transition)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\tools\data_pipeline\pipeline.py", line 664, in activate
+    verify(target)
+  File "C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\tools\release_stage.py", line 78, in verify
+    raise ValueError("发行清单、文件身份或范围不匹配")
+ValueError: 发行清单、文件身份或范围不匹配
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\.local\r27_release_archived.py", line 21, in <module>
+    with tempfile.TemporaryDirectory(prefix="cloudleaf-round27-packages-") as sandbox:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EDY\AppData\Local\Programs\Python\Python312\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\EDY\AppData\Local\Programs\Python\Python312\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\EDY\AppData\Local\Programs\Python\Python312\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\EDY\AppData\Local\Programs\Python\Python312\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EDY\AppData\Local\Programs\Python\Python312\Lib\shutil.py", line 629, in _rmtree_unsafe
+    onexc(os.rmdir, fullname, err)
+  File "C:\Users\EDY\AppData\Local\Programs\Python\Python312\Lib\shutil.py", line 627, in _rmtree_unsafe
+    os.rmdir(fullname)
+OSError: [WinError 145] 目录不是空的。: 'C:\\Users\\EDY\\AppData\\Local\\Temp\\cloudleaf-round27-packages-2js98op6\\installation-root\\packages\\releases\\793031eadb2b52400187acd72be1bc08455409662c0333f393ae81554ba37522\\licenses\\input-snapshot\\wasi-0.11.1+wasi-snapshot-preview1'

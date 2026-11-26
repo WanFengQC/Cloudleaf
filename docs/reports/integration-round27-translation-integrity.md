@@ -15,3 +15,7 @@ Round 26 固定模型在一个独立问候的英文原文后增译邀请进入�
 ## 释义交互
 
 Bridge 提供显式 `--semantic-index INDEX SHA` 和独立的 `define` 事件。在同一输入修订内返回中文词头或英文原始释义反查。返回包含词条/义项身份、来源断言、原始释义与有数据时的 POS，标记 ResearchOnly。检索结果单独返回且下一个事件清除，过期修订拒绝，默认输出仅保留计数与资源身份。查询不生成上屏、学习或翻译 Worker 请求。真正的长释义 Windows 窗口交互和正式词性数据仍待交付。
+
+Windows Release Bridge 以同一已核验模型实际重放增译反例，原译文逐字保持。Round 26 对该项没有复核提示；本轮提示 `疑似新增指令 / 无法确认`。同一次实际进程回放保留取消、过期、强制退出后的显式新代、Unknown 和工作进程回收断言。受测源码为 `9be36f2080e3702709d4724361953e068f9123b2`。原件和安全摘要位于 `.local/round27-bridge-actual`。
+
+独立释义使用已核验索引 SHA-256 `24ce0bd4a7169893a4ed82bc9a58d68a64c12915752afe637ceb9b0f7b1ef987`，Release 回放确认缺模型时仍能查询，默认不返回释义正文，显式查询包含来源断言，不创建 Worker、学习或提交。新事件和旧修订均不能显示该结果。安全摘要位于 `.local/round27-entry-replays-confirmed/public-safe.json`。
