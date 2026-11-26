@@ -64,5 +64,6 @@ class TranslationLicenseTests(unittest.TestCase):
                     self.assertEqual(dependency, {'version': '=0.17.14', 'default-features': False})
                     continue
                 self.assertTrue(name.startswith('cloudleaf-'),path)
-                self.assertNotIn(name, {'cloudleaf-translation', 'cloudleaf-offline', 'cloudleaf-bridge', 'cloudleaf-translation-ipc'}, path)
+                self.assertNotIn(name, {'cloudleaf-translation', 'cloudleaf-offline', 'cloudleaf-bridge',
+                                        'cloudleaf-translation-ipc', 'cloudleaf-settings'}, path)
                 self.assertTrue(dependency.get('workspace'),path)
