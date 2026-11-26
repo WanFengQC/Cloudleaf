@@ -2,6 +2,8 @@
 
 mod glossary;
 mod literals;
+mod spoken_numbers;
+mod structure;
 mod tokens;
 
 pub use glossary::{
@@ -27,6 +29,13 @@ pub enum FindingKind {
     Version,
     ModelCode,
     NegationMarker,
+    ClauseCoverage,
+    ConditionalMarker,
+    ConditionSubject,
+    TemporalMarker,
+    CommandAction,
+    SwitchSetting,
+    QuantityBinding,
     Truncated,
 }
 
@@ -45,6 +54,13 @@ impl FindingKind {
             Self::Version => "版本号",
             Self::ModelCode => "型号",
             Self::NegationMarker => "命令式否定提示",
+            Self::ClauseCoverage => "句段覆盖待核对",
+            Self::ConditionalMarker => "条件分支待核对",
+            Self::ConditionSubject => "条件对象待核对",
+            Self::TemporalMarker => "先后条件待核对",
+            Self::CommandAction => "命令动作待核对",
+            Self::SwitchSetting => "开关设定变化",
+            Self::QuantityBinding => "标签数量对应",
             Self::Truncated => "模型输出",
         }
     }
@@ -131,6 +147,12 @@ pub fn check_translation(
         raw_translation,
         direction,
     ));
+    structure::append_findings(
+        &mut findings,
+        (source, &source_tokens),
+        (raw_translation, &output_tokens),
+        direction,
+    );
     findings.sort_by_key(|finding| {
         finding
             .source

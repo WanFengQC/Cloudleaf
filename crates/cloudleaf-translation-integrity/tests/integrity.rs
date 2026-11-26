@@ -351,28 +351,37 @@ fn literal_boundaries_preserve_distinct_time_and_ignore_email_usernames() {
 #[test]
 fn negation_marker_mismatch_requests_review_without_claiming_scope() {
     let pairs = [
-        ("请勿断开电源。", "Disconnect the power.", true),
-        ("确认。禁止打开盖子。", "Confirmed. Open the lid.", true),
+        ("请勿断开电源。", "Disconnect the power.", true, false),
+        (
+            "确认。禁止打开盖子。",
+            "Confirmed. Open the lid.",
+            true,
+            false,
+        ),
         (
             "请不要断开电源。",
             "Please don't disconnect the power.",
             false,
+            false,
         ),
-        ("请勿断开电源。", "Do not reconnect the power.", false),
-        ("无需准备。", "Not everyone is arriving early.", false),
-        ("开启。", "Do nothing.", false),
+        ("请勿断开电源。", "Do not reconnect the power.", false, true),
+        (
+            "无需准备。",
+            "Not everyone is arriving early.",
+            false,
+            false,
+        ),
+        ("开启。", "Do nothing.", false, false),
     ];
-    for (source, output, warn) in pairs {
+    for (source, output, marker, action) in pairs {
         let report = compare(source, output, &Glossary::default());
-        assert_eq!(
-            report.requires_acknowledgement(),
-            warn,
-            "{source} / {output}"
-        );
-        if warn {
-            assert_eq!(report.findings[0].kind, NegationMarker);
-            assert_eq!(report.findings[0].status, Unverifiable);
-        }
+        let expected: Vec<_> = [(NegationMarker, marker), (CommandAction, action)]
+            .into_iter()
+            .filter(|(_, expected)| *expected)
+            .map(|(kind, _)| (kind, Unverifiable))
+            .collect();
+        assert_eq!(statuses(&report), expected, "{source} / {output}");
+        assert_eq!(report.requires_acknowledgement(), marker || action);
     }
 
     let report = compare(
@@ -380,7 +389,13 @@ fn negation_marker_mismatch_requests_review_without_claiming_scope() {
         "Do not open the lid.",
         &Glossary::default(),
     );
-    assert_eq!(statuses(&report), [(NegationMarker, Unverifiable)]);
-    assert_eq!(report.findings[0].source, None);
-    assert_eq!(report.findings[0].output, None);
+    assert_eq!(
+        statuses(&report),
+        [
+            (ClauseCoverage, Unverifiable),
+            (NegationMarker, Unverifiable)
+        ]
+    );
+    assert_eq!(report.findings[1].source, None);
+    assert_eq!(report.findings[1].output, None);
 }

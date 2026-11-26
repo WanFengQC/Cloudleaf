@@ -1,0 +1,43 @@
+mode	id	direction	topic	source	intentional_output
+real	r25z01	zh-en	business-followup	请在下周一之前确认收货地址。确认后，我们再寄送备件。	-
+real	r25z02	zh-en	daily-chat	我可能晚十分钟。你先帮我们留两个座位，我到了以后给你发消息。	-
+real	r25z03	zh-en	switch-instruction	请将 sync-mode 设为关闭。检查完日志以后，可以重新连接网线。	-
+real	r25z04	zh-en	group-quantity	甲组有6个可用名额。乙组有九个。如果乙组有人退出，就给甲组增加两个名额。	-
+real	r25z05	zh-en	schedule	改到2026年12月9日下午4点35分。请在下午6点前完成清点。	-
+real	r25z06	zh-en	parallel-measures	丙袋装有七公斤货物，丁袋装有9公斤零件。不要混装。	-
+real	r25z07	zh-en	currency-condition	订金为218.50元。若周五没有收到回执，就退还USD 18。	-
+real	r25z08	zh-en	document-and-action	请勿断开网线。先上传 budget-draft.xlsx，备份确认后再重启设备。	-
+real	r25z09	zh-en	conditional-subject	如果 A 箱比 B 箱轻，就先取 A 箱，否则先取 B 箱。两箱都要贴同样的标签。	-
+real	r25z10	zh-en	multi-paragraph	早上先检查附件，确认订单号码。我们在2026年12月14日之前回复。如果仓库需要追加库存，就在下午3点给客服打电话。	-
+real	r25e01	en-zh	business-followup	Please confirm receipt of the signed invoice. Once you have it, send a copy to the finance team.	-
+real	r25e02	en-zh	daily-chat	We found a table near the window. Text me when you arrive, and I'll meet you at the entrance.	-
+real	r25e03	en-zh	switch-instruction	Please set demo-mode to off. After the restart, reconnect the cable and check whether the red light stays on.	-
+real	r25e04	en-zh	named-quantity	Give Ada 12 green clips and give Joel 7 yellow clips. Keep nine pieces for tomorrow.	-
+real	r25e05	en-zh	schedule	The new pickup date is January 19, 2027, at 7.05 a.m. The office closes at 5 p.m.	-
+real	r25e06	en-zh	parallel-measures	Bag D holds 9 kg of parts and bag C holds seven kg of paper. Do not mix the two bags.	-
+real	r25e07	en-zh	currency-condition	If the dates fall outside the trial period, return CNY 240. Otherwise, charge USD 12.50.	-
+real	r25e08	en-zh	document-and-action	Do not reconnect the power cord. Export audit-log.csv before closing the window.	-
+real	r25e09	en-zh	conditional-subject	If box B is heavier than box A, load box B first. Otherwise, leave box A on the bottom shelf.	-
+real	r25e10	en-zh	multi-paragraph	Open the shipping report and compare the order dates. If the warehouse needs more stock, call support before 4:15 p.m. Keep the original report.	-
+control	r25x01	zh-en	error_missing_sentence	先核对地址。完成后把箱子交给快递员。	Check the address first.
+control	r25x02	en-zh	error_temporal_clause	We'll save a seat and call you when we arrive.	我们会预留座位。
+control	r25x03	zh-en	error_conditional_subject	如果 A 箱比 B 箱轻，就先取 A 箱，否则先取 B 箱。	If a box is lighter, take that box first.
+control	r25x04	en-zh	error_conditional_branch	If the coolant is warm, lower the speed. Otherwise, leave it alone.	冷却液温热的时候就降速。保持不动。
+control	r25x05	zh-en	error_negated_action	请勿重新连接水泵。	Do not disconnect the pump.
+control	r25x06	en-zh	error_switch_value	Please set worker2 to off.	请将 worker2 设为开启。
+control	r25x07	zh-en	error_quantity_binding	丙袋装有七公斤货物，丁袋装有9公斤零件。	Bag D holds 7 kg of parts and bag C holds nine kg of goods.
+control	r25x08	en-zh	error_quantity_binding_reverse	Batch A carries 4 kg of paper and batch B carries 7 kg of glass.	甲批装有7公斤纸，乙批装有4公斤玻璃。
+control	r25x09	zh-en	error_written_count	共有十二件货物。	There are eleven items.
+control	r25x10	en-zh	error_local_clock	The call starts at 4.35 p.m.	电话在下午4点15分开始。
+control	r25x11	en-zh	error_unaligned_person	Give Ana red cloth and Emil white cloth.	把红布交给埃米尔，白布交给安娜。
+control	r25x12	zh-en	error_implicit_scope	只有李可以开门。	Anyone except Li can open the door.
+control	r25m01	zh-en	match_written_number	发货清单上有二十五个备用名额。	The shipping list includes twenty-five spare slots.
+control	r25m02	en-zh	match_written_unit	Keep two kg of coffee for Monday.	保留两公斤咖啡，周一用。
+control	r25m03	zh-en	match_local_clock	记录的时间为下午3点20分，结束在下午5点。	The recorded time was 3.20 p.m., ending at 5 pm.
+control	r25m04	zh-en	match_reordered_binding	丙袋装有七公斤货物，丁袋装有9公斤零件。	Bag D holds 9 kg of parts and bag C holds seven kg of goods.
+control	r25m05	en-zh	match_confirmed_switch	Please set worker2 to off.	请将 worker2 设为关闭。
+control	r25m06	en-zh	match_merged_sentence	Check the cable. Then press the button.	先检查线缆，再按按钮。
+control	r25m07	zh-en	match_url_and_period	请在3:20 p.m.查看https://example.test/report.pdf。	Check https://example.test/report.pdf at 15:20.
+control	r25m08	zh-en	match_condition_order	如果 A 箱比 B 箱轻，就先取 A 箱，否则先取 B 箱。	If box A is lighter than box B, pick up box A first, otherwise take box B.
+control	r25m09	zh-en	match_unsupported_speech	零件已收到，随便挑一种摆法。	The parts have arrived, pick any arrangement.
+control	r25m10	en-zh	match_large_spoken_unsupported	The shipment contains one hundred and five kg of stone.	这一批共一百零五公斤石料。

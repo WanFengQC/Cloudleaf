@@ -124,7 +124,7 @@ pub(crate) fn tokenize(text: &str, protected: &[Range<usize>]) -> Vec<Token> {
             && let Some((len, value)) = crate::literals::technical(remaining, previous)
                 .or_else(|| calendar(remaining))
                 .or_else(|| clock(remaining))
-                .or_else(|| numeric(remaining))
+                .or_else(|| numeric(remaining, &text[..cursor], previous))
         {
             let end = cursor + len;
             // 数字可以是型号的一部分。货币、日期等独立事实仍需要检查。
@@ -290,6 +290,19 @@ fn clock(text: &str) -> Option<(usize, Value)> {
             remaining = &second_text[second_len..];
         }
         (remaining, minute)
+    } else if half.is_none()
+        && let Some(rest) = after_hour.strip_prefix('.')
+    {
+        let (minute_len, minute) = integer(rest, 2, 2)?;
+        let suffix = rest[minute_len..].trim_start();
+        let (width, value) = meridiem(suffix)?;
+        half = Some(value);
+        (&suffix[width..], minute)
+    } else if half.is_none()
+        && let Some((width, value)) = meridiem(after_hour.trim_start())
+    {
+        half = Some(value);
+        (&after_hour.trim_start()[width..], 0)
     } else {
         let marker = after_hour.chars().next()?;
         if !matches!(marker, '点' | '时') {
@@ -315,13 +328,9 @@ fn clock(text: &str) -> Option<(usize, Value)> {
 
     let suffix = remaining.trim_start();
     if half.is_none()
-        && let Some((used, spelling)) = match_alias(suffix, &["a.m.", "p.m.", "am", "pm"], false)
+        && let Some((used, value)) = meridiem(suffix)
     {
-        half = Some(if spelling.starts_with('a') {
-            Meridiem::Am
-        } else {
-            Meridiem::Pm
-        });
+        half = Some(value);
         remaining = &suffix[used..];
     }
     let valid_hour = if let Some(half) = half {
@@ -354,14 +363,31 @@ fn clock(text: &str) -> Option<(usize, Value)> {
     Some((text.len() - remaining.len(), value))
 }
 
-fn numeric(text: &str) -> Option<(usize, Value)> {
+fn meridiem(text: &str) -> Option<(usize, Meridiem)> {
+    let (used, spelling) = match_alias(text, &["a.m.", "p.m.", "am", "pm"], false)?;
+    if text[used..].starts_with(ascii_identifier) {
+        return None;
+    }
+    Some((
+        used,
+        if spelling.starts_with('a') {
+            Meridiem::Am
+        } else {
+            Meridiem::Pm
+        },
+    ))
+}
+
+fn numeric(text: &str, prefix: &str, previous: Option<char>) -> Option<(usize, Value)> {
+    let allow_spoken = previous
+        .is_none_or(|character| character != '-' && !crate::spoken_numbers::continues(character));
     if let Some((body, close)) = text
         .strip_prefix('(')
         .map(|body| (body, ')'))
         .or_else(|| text.strip_prefix('（').map(|body| (body, '）')))
     {
         let value_text = body.trim_start();
-        let (used, value) = amount_or_number(value_text)?;
+        let (used, value) = amount_or_number(value_text, Some(""))?;
         let rest = value_text[used..].trim_start();
         if value.kind() == FindingKind::Money && rest.starts_with(close) {
             // 没有会计上下文时，括号可能代表负数，也可能只是附注。
@@ -372,10 +398,10 @@ fn numeric(text: &str) -> Option<(usize, Value)> {
         }
         return None;
     }
-    amount_or_number(text)
+    amount_or_number(text, allow_spoken.then_some(prefix))
 }
 
-fn amount_or_number(text: &str) -> Option<(usize, Value)> {
+fn amount_or_number(text: &str, spoken_prefix: Option<&str>) -> Option<(usize, Value)> {
     if let Some(rest) = text.strip_prefix("百分之") {
         let number = rest.trim_start();
         let (len, value) = decimal(number, None)?;
@@ -402,7 +428,27 @@ fn amount_or_number(text: &str) -> Option<(usize, Value)> {
     } else {
         text
     };
-    let (used, value) = decimal(number_text, prefix.and_then(|(_, sign)| sign))?;
+    let (used, value) = decimal(number_text, prefix.and_then(|(_, sign)| sign)).or_else(|| {
+        let (used, value) = crate::spoken_numbers::cardinal(number_text)?;
+        if crate::spoken_numbers::follows_scale(spoken_prefix?) {
+            return None;
+        }
+        let tail = &number_text[used..];
+        // 零可为词素，一可为泛指标记。两者只在单位或币种明确时比较。
+        if prefix.is_none()
+            && (value <= 1 || !crate::spoken_numbers::explicit_count(tail))
+            && unit(tail.trim_start()).is_none()
+            && symbol(tail.trim_start()).is_none()
+        {
+            return None;
+        }
+        let value = if prefix.is_some_and(|(_, sign)| sign == Some(true)) && value != 0 {
+            format!("-{value}")
+        } else {
+            value.to_string()
+        };
+        Some((used, Some(value)))
+    })?;
     let number_len = text.len() - number_text.len() + used;
     let suffix = text[number_len..].trim_start();
     let suffix_prefix = text.len() - suffix.len();
