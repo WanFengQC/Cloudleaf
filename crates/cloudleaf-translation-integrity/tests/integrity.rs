@@ -332,18 +332,8 @@ fn technical_literals_are_compared_as_whole_occurrences() {
                 Some("https://example.com/x?id=204"),
                 Some("https://example.com/x?id=205")
             ),
-            (
-                Version,
-                ExactPreserved,
-                Some("v2.0.1"),
-                Some("v2.0.1")
-            ),
-            (
-                ModelCode,
-                ExactPreserved,
-                Some("AX-204"),
-                Some("AX-204")
-            ),
+            (Version, ExactPreserved, Some("v2.0.1"), Some("v2.0.1")),
+            (ModelCode, ExactPreserved, Some("AX-204"), Some("AX-204")),
             (ModelCode, Missing, Some("AX-204"), None),
         ]
     );
