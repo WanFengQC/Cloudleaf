@@ -12,6 +12,11 @@ from build_word_context import (
 )
 
 FREEZE_SALT = "cloudleaf-round23-tatoeba-frozen-validation-v1:"
+NEXT_FREEZE_SALT = "cloudleaf-round24-tatoeba-frozen-validation-v2:"
+PREVIOUS_TASKS = {
+    "bytes": 23481,
+    "sha256": "b1c9bb7d080783e31a784fb649d780b967cbce022d34925dc12a88bda51582fe",
+}
 CASE_COUNT = 40
 MIN_CHAR, MAX_CHAR = 6, 24
 MAX_KEYS = 64
@@ -21,17 +26,31 @@ def jsonl(raw):
     return [json.loads(line) for line in raw.decode("utf-8").splitlines()]
 
 
-def select(rows, historical):
-    used_ids = {row["source_sentence_id"] for row in historical}
+def select(rows, historical, previous=None, external=None):
+    used_ids = {str(row["source_sentence_id"]) for row in historical}
     used_texts = {row["desired_text_sha256"] for row in historical}
     used_families = {row["family"] for row in rows if row["sentence_id"] in used_ids}
-    candidates = sorted(rows, key=lambda row: sha((FREEZE_SALT + row["family"] + ":"
+    salt = FREEZE_SALT
+    if previous is not None:
+        salt = NEXT_FREEZE_SALT
+        used_ids.update(row["source_id"] for row in previous)
+        used_texts.update(row["source_text_sha256"] for row in previous)
+        used_families.update(row["component_family"] for row in previous)
+        protected = overlap_index([(f"historic-{index}", row["desired_text"])
+                                   for index, row in enumerate(historical)]
+                                  + [(row["case"], row["source_text"]) for row in previous])
+    candidates = sorted(rows, key=lambda row: sha((salt + row["family"] + ":"
                          + row["sha256"]).encode("utf-8")))
     families, texts, selected = set(), set(), []
     for row in candidates:
         if (row["family"] in used_families or row["sha256"] in used_texts
                 or row["family"] in families or row["sha256"] in texts
                 or not MIN_CHAR <= len(row["text"]) <= MAX_CHAR):
+            continue
+        if previous is not None and (row["sentence_id"] in used_ids
+                                     or leaks(row["text"], protected)
+                                     or leaks(row["text"], external)
+                                     or next(matching_sources(row["text"], selected), None) is not None):
             continue
         families.add(row["family"])
         texts.add(row["sha256"])
@@ -73,7 +92,7 @@ def matching_sources(text, selected):
             if leaks(text, overlap_index([(row["sha256"], row["text"])])))
 
 
-def freeze(corpus_dir, lexicon, output):
+def freeze(corpus_dir, lexicon, output, prior_freeze=None):
     policy = json.loads(POLICY.read_bytes())
     source = policy["sources"]["tatoeba-cmn-r16"]
     old = source["used_dev_tasks"]
@@ -82,10 +101,10 @@ def freeze(corpus_dir, lexicon, output):
         raise ValueError("历史开发分母变更")
     raw = read_locked(corpus_dir / "dev-fragments.jsonl", source["dev_fragments"])
     candidates = jsonl(raw)
-    selected = select(candidates, historical)
-
     external = policy["sources"]["wikinews-zh-r17"]["development_tasks"]
     external_index = protected_development(jsonl(gzip.decompress(read_locked(ROOT / external["path"], external))))
+    previous = None if prior_freeze is None else jsonl(read_locked(prior_freeze, PREVIOUS_TASKS))
+    selected = select(candidates, historical, previous, external_index)
     train = read_locked(corpus_dir / "train-fragments.jsonl", source["train_fragments"])
     nontrain = set(read_locked(corpus_dir / "nontrain-fulltext-sha256.txt", source["nontrain_hashes"])
                    .decode("ascii").splitlines())
@@ -107,11 +126,12 @@ def freeze(corpus_dir, lexicon, output):
         raise ValueError("词典未绑定固定研究身份")
     lookup, widths = pronunciations(runtime)
     tasks = []
+    prefix = "r23frozen" if previous is None else "r24frozen"
     for i, row in enumerate(selected, 1):
         pinyin = None if row["sha256"] in near else reading(row["text"], lookup, widths)
         status = ("blocked_near_training" if row["sha256"] in near else
                   "unmappable" if pinyin is None else "over_length" if len(pinyin) > MAX_KEYS else "ready")
-        tasks.append({"case": f"r23frozen{i:03}", "source_text": row["text"],
+        tasks.append({"case": f"{prefix}{i:03}", "source_text": row["text"],
                       "source_text_sha256": row["sha256"], "source_id": row["sentence_id"],
                       "component_family": row["family"], "source_family": source["source_family"],
                       "source_revision": source["revision"],
@@ -150,6 +170,15 @@ def freeze(corpus_dir, lexicon, output):
         "over_length": sum(row["mapping_status"] == "over_length" for row in tasks),
         "snapshot_restriction": "Same global Tatoeba source family as training, only component-disjoint internal validation. Historical Round16 component rule applies. No formal heldout read.",
     }
+    if previous is not None:
+        receipt.update({
+            "schema": "cloudleaf-round24-frozen-research-v2",
+            "selection": "v2 fixed SHA ordering before pinyin; previous and selected components, IDs, exact and near texts excluded",
+            "previous_round23_tasks": {"rows": len(previous), "sha256": PREVIOUS_TASKS["sha256"]},
+            "previous_development_near_overlap": 0,
+            "within_sample_near_overlap": 0,
+            "external_development_tasks_sha256": external["sha256"],
+        })
     output.mkdir(parents=True, exist_ok=False)
     (output / "tasks.jsonl").write_text(encoded, encoding="utf-8", newline="\n")
     (output / "ready-targets.tsv").write_text(targets, encoding="utf-8", newline="\n")
@@ -163,9 +192,11 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--corpus-dir", type=Path, required=True)
     parser.add_argument("--lexicon", type=Path, required=True)
+    parser.add_argument("--prior-freeze", type=Path,
+                        help="固定 Round 23 任务文件；提供时生成家族及近重复隔离的 Round 24 开发验证")
     parser.add_argument("--output-dir", type=Path, required=True)
     args = parser.parse_args()
-    print(json.dumps(freeze(args.corpus_dir, args.lexicon, args.output_dir), ensure_ascii=False))
+    print(json.dumps(freeze(args.corpus_dir, args.lexicon, args.output_dir, args.prior_freeze), ensure_ascii=False))
 
 
 if __name__ == "__main__":

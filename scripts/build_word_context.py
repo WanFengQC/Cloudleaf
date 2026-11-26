@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter
+from functools import partial
 import gzip
 import hashlib
 import json
@@ -177,14 +178,74 @@ def segment(text, vocabulary, word_widths):
         yield word
 
 
-def train(records, entries):
+def log2_fixed(value):
+    # 与 Rust 模型统一 1024 单位，避免浮点舍入跨过分词平局。
+    exponent = value.bit_length() - 1
+    normalized = (value << 32) >> exponent
+    fraction = 0
+    for bit in range(9, -1, -1):
+        normalized = (normalized * normalized) >> 32
+        if normalized >= 1 << 33:
+            normalized >>= 1
+            fraction |= 1 << bit
+    return exponent * 1024 + fraction
+
+
+def observe_surfaces(records, vocabulary):
+    widths = sorted({len(word) for word in vocabulary})
+    observed = Counter()
+    for row in records:
+        text = row["text"]
+        for start in range(len(text)):
+            for width in widths:
+                if start + width > len(text):
+                    break
+                word = text[start:start + width]
+                if word in vocabulary:
+                    observed[word] += 1
+    return observed
+
+
+def probable_costs(observed):
+    total = log2_fixed(sum(observed.values()) + len(observed) + 1)
+    return {word: total - log2_fixed(count + 1) for word, count in observed.items()} | {UNKNOWN: total}
+
+
+def segment_probable(text, vocabulary, word_widths, costs):
+    best = [(0, 0, 0)] * (len(text) + 1)
+    choices = [(UNKNOWN, 0)] * len(text)
+    for start in range(len(text) - 1, -1, -1):
+        unknown, cost, tokens = best[start + 1]
+        preferred = ((unknown + 1, cost + costs[UNKNOWN], tokens + 1, -1), UNKNOWN, start + 1)
+        for width in word_widths:
+            end = start + width
+            if end > len(text):
+                continue
+            word = text[start:end]
+            if word in vocabulary:
+                unknown, cost, tokens = best[end]
+                option = ((unknown, cost + costs[word], tokens + 1, -width), word, end)
+                if option < preferred:
+                    preferred = option
+        scores, word, end = preferred
+        best[start] = scores[:3]
+        choices[start] = word, end
+
+    start = 0
+    while start < len(text):
+        word, start = choices[start]
+        yield word
+
+
+def train(records, entries, costs=None, allow_compaction=False):
     vocab = set(entries)
     widths = sorted({len(word) for word in vocab}, reverse=True)
+    split = segment if costs is None else partial(segment_probable, costs=costs)
     unigrams = Counter()
     bigrams = Counter()
     training = Counter()
     for row in records:
-        words = list(segment(row["text"], vocab, widths))
+        words = list(split(row["text"], vocab, widths))
         training["segments"] += 1
         training["scalars"] += len(row["text"])
         training["tokens"] += len(words)
@@ -197,9 +258,57 @@ def train(records, entries):
         bigrams.update(zip(sequence, sequence[1:]))
     training["unknown_tokens"] = unigrams[UNKNOWN]
     training["bigrams_observed"] = sum(bigrams.values())
-    if len(unigrams) + len(bigrams) > MAX_RECORDS or training["bigrams_observed"] > MAX_EDGES:
+    if ((not allow_compaction and len(unigrams) + len(bigrams) > MAX_RECORDS)
+            or training["bigrams_observed"] > MAX_EDGES):
         raise ValueError("词元或转移资源超出上限，禁止静默截断")
     return unigrams, bigrams, training
+
+
+def compact_counts(unigrams, bigrams, max_rows=MAX_RECORDS):
+    tokens, pairs = unigrams, bigrams
+    threshold = 0
+    rare = set()
+    limits = sorted({total for word, total in unigrams.items() if word not in (BOS, EOS, UNKNOWN)})
+    for limit in limits:
+        if len(tokens) + len(pairs) <= max_rows:
+            break
+        threshold = limit
+        rare = {word for word, total in unigrams.items()
+                if word not in (BOS, EOS, UNKNOWN) and total <= threshold}
+        tokens, pairs = Counter(), Counter()
+        for word, count in unigrams.items():
+            tokens[UNKNOWN if word in rare else word] += count
+        for (previous, following), count in bigrams.items():
+            key = (UNKNOWN if previous in rare else previous, UNKNOWN if following in rare else following)
+            pairs[key] += count
+    if len(tokens) + len(pairs) > max_rows:
+        raise ValueError("保留边界及未知词后，统计仍超出模型行数上限")
+    affected = [(pair, count) for pair, count in bigrams.items() if rare.intersection(pair)]
+    return tokens, pairs, {
+        "rare_count_threshold_inclusive": threshold,
+        "remapped_types": len(rare),
+        "remapped_token_occurrences": sum(unigrams[word] for word in rare),
+        "pair_rows_with_remapped_endpoint": len(affected),
+        "prior_contexts_with_remapped_pair": len({pair[0] for pair, _ in affected}),
+        "pair_occurrences_reassigned": sum(count for _, count in affected),
+        "total_pair_occurrences": sum(bigrams.values()),
+        "coalesced_pair_rows": len(bigrams) - len(pairs),
+        "discarded_pair_occurrences": 0,
+        "unigram_exact_surface_tokens_retained": sum(count for word, count in tokens.items()
+                                                     if word not in (BOS, EOS, UNKNOWN)),
+        "raw_rows": len(unigrams) + len(bigrams),
+        "model_rows": len(tokens) + len(pairs),
+    }
+
+
+def count_inventory(counts):
+    inventory = {label: {"rows": 0, "occurrences": 0}
+                 for label in ("one", "two_to_four", "five_plus")}
+    for count in counts.values():
+        label = "one" if count == 1 else "two_to_four" if count < 5 else "five_plus"
+        inventory[label]["rows"] += 1
+        inventory[label]["occurrences"] += count
+    return inventory
 
 
 def encode(lexicon_sha, corpus_sha, unigrams, bigrams):
@@ -230,7 +339,8 @@ def corpus_receipt(lock, corpus_dir, source_dir, excluded_file):
     return train_raw, excludes, extra
 
 
-def build(lexicon, corpus_dir, source_dir, output, excluded_file=None, segmentation_lexicon=None):
+def build(lexicon, corpus_dir, source_dir, output, excluded_file=None, segmentation_lexicon=None,
+          strategy="minimum-tokens", compact=False):
     policy_raw = POLICY.read_bytes()
     policy = json.loads(policy_raw)
     locks = policy["sources"]
@@ -265,10 +375,40 @@ def build(lexicon, corpus_dir, source_dir, output, excluded_file=None, segmentat
     records, stats = load_train(train_raw, excludes, external)
     if stats["source_fragments"] != source["frozen_train_fragments"]:
         raise ValueError("冻结训练总分母变更")
-    unigrams, bigrams, observed = train(records, training_entries)
+    surface_observations = observe_surfaces(records, training_entries) if strategy == "surface-viterbi" else None
+    costs = probable_costs(surface_observations) if surface_observations is not None else None
+    allow_compaction = compact or costs is not None
+    unigrams, bigrams, observed = train(records, training_entries, costs, allow_compaction)
     # 绑定依序实际参与统计的原文 SHA，源锁与去重/隔离规则另写入回执。
     corpus_sha = sha("".join(row["sha256"] + "\n" for row in records).encode("ascii"))
-    data = encode(lexicon_sha, corpus_sha, unigrams, bigrams)
+    model_unigrams, model_bigrams = unigrams, bigrams
+    alternative = None
+    raw_data = None
+    if allow_compaction:
+        model_unigrams, model_bigrams, compaction = compact_counts(unigrams, bigrams)
+        raw_data = gzip.compress(json.dumps({
+            "corpus_sha256": corpus_sha,
+            "lexicon_sha256": lexicon_sha,
+            "observed_surface_matches": None if surface_observations is None else sorted(surface_observations.items()),
+            "conditioned_token_observations": sorted(unigrams.items()),
+            "conditioned_pair_observations": sorted([*pair, count] for pair, count in bigrams.items()),
+        }, ensure_ascii=False, separators=(",", ":")).encode("utf-8"), mtime=0)
+        alternative = {
+            "strategy": strategy,
+            "observed_surface_types": None if surface_observations is None else len(surface_observations),
+            "observed_count": None if surface_observations is None else sum(surface_observations.values()),
+            "estimated_count": None,
+            "uncovered_scalar_count": unigrams[UNKNOWN],
+            "model_unknown_token_count": model_unigrams[UNKNOWN],
+            "model_observed_lexicon_surface_types": sum(word in entries for word in model_unigrams),
+            "model_covered_lexicon_entries": sum(entries[word] for word in model_unigrams if word in entries),
+            "raw_word_count_distribution": count_inventory(unigrams),
+            "raw_pair_count_distribution": count_inventory(bigrams),
+            "model_pair_count_distribution": count_inventory(model_bigrams),
+            "compaction": compaction,
+            "raw_observations": {"file": "raw-counts.json.gz", "bytes": len(raw_data), "sha256": sha(raw_data)},
+        }
+    data = encode(lexicon_sha, corpus_sha, model_unigrams, model_bigrams)
     count_rows = sum(entries[word] for word in unigrams if word in entries)
     runtime_count = sum(flags.values())
     trace = {
@@ -317,8 +457,18 @@ def build(lexicon, corpus_dir, source_dir, output, excluded_file=None, segmentat
         "model": {"file": "word-context.tsv", "bytes": len(data), "sha256": sha(data)},
         "formal_frequency": {"token_frequency": None, "document_frequency": None, "zipf": None},
     }
+    if alternative is not None:
+        trace["strategy"] = alternative
+    if costs is not None:
+        trace["rules"]["tokenization"] = (
+            "minimum unknown scalars then summed Q10 negative log2 smoothed overlapping surface probabilities, "
+            "then fewest words and longest left first")
+        trace["rules"]["unit"] = (
+            "real overlapping surface matches for segmentation prior; counts conditioned on chosen hard segmentation")
     output.mkdir(parents=True, exist_ok=False)
     (output / "word-context.tsv").write_bytes(data)
+    if raw_data is not None:
+        (output / "raw-counts.json.gz").write_bytes(raw_data)
     (output / "receipt.json").write_text(json.dumps(trace, indent=2, ensure_ascii=False) + "\n",
                                          encoding="utf-8", newline="\n")
     return trace
@@ -332,10 +482,13 @@ def main():
     parser.add_argument("--exclude-sha256", type=Path)
     parser.add_argument("--segmentation-lexicon", type=Path,
                         help="追加型研究词典沿用固定基线词表，不增加新词计数")
+    parser.add_argument("--strategy", choices=("minimum-tokens", "surface-viterbi"), default="minimum-tokens")
+    parser.add_argument("--compact-counts", action="store_true", help="研究模式下将低频词面映至未知词，保留原始计数")
     parser.add_argument("--output-dir", type=Path, required=True)
     args = parser.parse_args()
     print(json.dumps(build(args.lexicon, args.corpus_dir, args.source_dir, args.output_dir,
-                           args.exclude_sha256, args.segmentation_lexicon), ensure_ascii=False))
+                           args.exclude_sha256, args.segmentation_lexicon, args.strategy, args.compact_counts),
+                     ensure_ascii=False))
 
 
 if __name__ == "__main__":
