@@ -84,7 +84,7 @@ fn chinese(text: &str) -> Option<u8> {
             .chars()
             .position(|current| current == ch)
             .map(|index| index as u8)
-            .or_else(|| match ch {
+            .or(match ch {
                 '〇' => Some(0),
                 '两' | '兩' => Some(2),
                 _ => None,
