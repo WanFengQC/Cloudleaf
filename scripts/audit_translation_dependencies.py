@@ -11,9 +11,27 @@ from check_workspace import check_packages, load_policy, repository_file
 from dependency_scope import TRANSLATION_ROOTS, select_workspace_closure
 
 ROOT=Path(__file__).resolve().parents[1]
+SETTINGS_WINDOWS_PACKAGES = {
+    'windows', 'windows-collections', 'windows-core', 'windows-future',
+    'windows-implement', 'windows-interface', 'windows-numerics',
+    'windows-result', 'windows-strings', 'windows-threading',
+}
 
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def verify_release_licenses(root, metadata):
+    closure = select_workspace_closure(metadata, TRANSLATION_ROOTS)
+    packages = closure['packages']
+    shared = [package for package in packages if package['name'] in SETTINGS_WINDOWS_PACKAGES]
+    translation = dict(closure, packages=[package for package in packages if package['name'] not in SETTINGS_WINDOWS_PACKAGES])
+    licenses = verify_licenses(root, translation)
+    if shared:
+        # 面板复用宿主设置的原子存储。共同依赖须逐字核对现有 Windows 许可原件。
+        from audit_windows_dependencies import verify_licenses as verify_windows_licenses
+        licenses += verify_windows_licenses(root, {'packages': shared, 'workspace_members': []}, shared_only=True)
+    return licenses
 
 def verify_licenses(root, metadata, *, shared_protocol_only=False):
     packages=[p for p in metadata['packages'] if p['id'] not in metadata['workspace_members']]
@@ -61,7 +79,7 @@ def main():
     assert subprocess.check_output([binary,'--version'],encoding='utf-8').strip()=='cargo-audit 0.22.2', '审计工具版本不符'
     metadata=json.loads(subprocess.check_output(['cargo','metadata','--locked','--offline','--format-version','1'],cwd=ROOT))
     check_packages(metadata,load_policy(ROOT),'1.90.0')
-    licenses=verify_licenses(ROOT,select_workspace_closure(metadata,TRANSLATION_ROOTS))
+    licenses=verify_release_licenses(ROOT,metadata)
     lock_sha=sha(ROOT/'Cargo.lock')
     command=[binary,'audit','--file',str(ROOT/'Cargo.lock'),'--db',str(args.db),'--json','-D','warnings']
     audited=subprocess.run(command,cwd=ROOT,capture_output=True)

@@ -18,16 +18,20 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def verify_licenses(root: Path, metadata: dict, ipc: dict | None = None) -> list[dict]:
+def verify_licenses(root: Path, metadata: dict, ipc: dict | None = None, *, shared_only: bool = False) -> list[dict]:
     members = set(metadata["workspace_members"])
     packages = [package for package in metadata["packages"] if package["id"] not in members]
     manifest = json.loads((root / "licenses/windows/manifest.json").read_text(encoding="utf-8"))
     snapshot_manifest = root / "licenses/input-snapshot/manifest.json"
     if snapshot_manifest.is_file():
         manifest += json.loads(snapshot_manifest.read_text(encoding="utf-8"))
-    legacy = {(row["package"], row["version"]) for row in manifest}
     expected_packages = {(package["name"], package["version"]) for package in packages}
+    if shared_only:
+        manifest = [row for row in manifest if (row["package"], row["version"]) in expected_packages]
+    legacy = {(row["package"], row["version"]) for row in manifest}
     assert legacy <= expected_packages, "许可清单包集合与实际依赖不符"
+    if shared_only:
+        assert legacy == expected_packages, "共享 Windows 许可原件缺失"
     protocol = [p for p in packages if (p["name"], p["version"]) not in legacy]
     if protocol:
         assert ipc is not None and {p["id"] for p in protocol} <= {p["id"] for p in ipc["packages"]}, "新增输入依赖须由轻量 IPC 许可审计覆盖"
