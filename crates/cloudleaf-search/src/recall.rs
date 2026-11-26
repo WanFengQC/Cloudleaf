@@ -388,6 +388,7 @@ fn context(
             ranker: Ranker::CharacterBigram,
             model: Some(character),
             cancellation: Some(cancellation),
+            lexical_cache: None,
         },
         words,
     };

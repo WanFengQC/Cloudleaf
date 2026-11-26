@@ -3,6 +3,7 @@ use crate::{
     BigramModel, Budget, Cancellation, Config, ErrorKind, InterpretationCost, Lattice, Lexicon,
     MatchKind, Method, Ranker, SearchError,
 };
+use std::cell::Cell;
 use std::cmp::Ordering;
 use std::collections::{BTreeMap, BinaryHeap};
 use std::rc::Rc;
@@ -99,11 +100,27 @@ struct Scorer<'a> {
     ranker: Ranker,
     model: Option<&'a BigramModel>,
     cancellation: Option<&'a Cancellation>,
+    lexical_cache: Option<Vec<Cell<i32>>>,
 }
 
 impl Scorer<'_> {
     fn cancelled(&self) -> bool {
         self.cancellation.is_some_and(Cancellation::is_cancelled)
+    }
+
+    fn lexical_units(&self, edge: usize, id: &str) -> Option<i64> {
+        let model = self.model?;
+        let Some(cache) = &self.lexical_cache else {
+            return model.lexical_units(id);
+        };
+        let cell = &cache[edge];
+        let mut units = cell.get();
+        if units == i32::MIN {
+            // 单条词汇分至多 40 个二进制数量级，负值仅表示缺少观测。
+            units = model.lexical_units(id).map_or(-1, |value| value as i32);
+            cell.set(units);
+        }
+        (units >= 0).then_some(i64::from(units))
     }
 
     fn extend<O: Observer>(
@@ -151,7 +168,7 @@ impl Scorer<'_> {
             features.missing_frequencies += 1;
         }
         if self.ranker == Ranker::Lexical {
-            if let Some(units) = self.model.and_then(|model| model.lexical_units(&entry.id)) {
+            if let Some(units) = self.lexical_units(edge_index, &entry.id) {
                 features.lexical_units += units;
                 features.lexical_observed += 1;
             } else {
@@ -1369,6 +1386,9 @@ pub(crate) fn search_controlled_observed<O: Observer>(
         ranker: config.ranker,
         model,
         cancellation,
+        // 词汇分只依赖该边词条；每次查询清空，不跨版本、修订或输入方案复用。
+        lexical_cache: (config.ranker == Ranker::Lexical && config.method == Method::PositionDag)
+            .then(|| vec![Cell::new(i32::MIN); graph.edges.len()]),
     };
     let stamp = observer.start(Phase::Traversal);
     let mut paths = if graph.letters.is_empty() || graph.waiting {
@@ -1721,6 +1741,7 @@ mod interpretation_regression {
             ranker: Ranker::Structural,
             model: None,
             cancellation: None,
+            lexical_cache: None,
         };
         let worst = path(
             "乙",
