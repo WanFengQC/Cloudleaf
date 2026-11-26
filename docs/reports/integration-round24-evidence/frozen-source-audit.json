@@ -1,0 +1,30 @@
+{
+  "schema": "cloudleaf-round24-frozen-research-v2",
+  "source_family": "tatoeba-community",
+  "usage": "engineering_only",
+  "formal_gold": false,
+  "frozen_slots": 40,
+  "component_families": 40,
+  "excluded_previous_source_rows": 32,
+  "selection": "v2 fixed SHA ordering before pinyin; previous and selected components, IDs, exact and near texts excluded",
+  "training_component_overlaps": 0,
+  "training_exact_text_overlaps": 0,
+  "blocked_near_training": 0,
+  "near_duplicate_rule": "canonical equality or 3-scalar shingle Jaccard >= 4/5 on lengths >= 8; no replacement",
+  "source_fragment_sha256": "9d923410be62e417791425c0636aab817855633668a868271d305d208b53a0c0",
+  "runtime_sha256": "c9ab8b56b9d960091a1c39c37b7c1df7882ff50de2a64767174af8f4244c219f",
+  "tasks_sha256": "58fd5878e01ab851972039d35fd59b5f1a87cf60b469fed332810b64a60cd614",
+  "ready_targets_sha256": "63f1b1b3a17af36cfe2ee046a27644acfa9407ecfa99e58540ddb8747b82ce30",
+  "rank_replay_cases_sha256": "b81911d618c013682dab44ee8ea87daa0a01270bee6ff6353f567c24cab63603",
+  "ready": 40,
+  "unmappable": 0,
+  "over_length": 0,
+  "snapshot_restriction": "Same global Tatoeba source family as training, only component-disjoint internal validation. Historical Round16 component rule applies. No formal heldout read.",
+  "previous_round23_tasks": {
+    "rows": 40,
+    "sha256": "b1c9bb7d080783e31a784fb649d780b967cbce022d34925dc12a88bda51582fe"
+  },
+  "previous_development_near_overlap": 0,
+  "within_sample_near_overlap": 0,
+  "external_development_tasks_sha256": "dd3cae229d7353702883952d2c6840418e3bef73be4c0f44e033b813329cec4e"
+}

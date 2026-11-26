@@ -1,6 +1,6 @@
 # Cloudleaf 产品能力追踪
 
-Round 23 保留原始 50 项要求和验收定义。下列状态记录现有可证据边界，真实桌面为 `not-run/user-paused`。原始需求与交付条件见[产品范围](../product-scope.md)。
+Round 24 复核原始 50 项要求和验收定义。真实桌面为 `not-run/user-paused`。原始需求与交付条件见[产品范围](../product-scope.md)，本轮配对证据见[交付状态](integration-round24-status.md)。
 
 | 原需求 | 当前状态 | 证据与缺口 |
 | --- | --- | --- |
@@ -16,8 +16,8 @@ Round 23 保留原始 50 项要求和验收定义。下列状态记录现有可�
 | REQ-PY-05 | automated-verified | 简拼及混合解释可重放，正式质量未取得 |
 | REQ-PY-06 | automated-verified | 小鹤双拼配置、输入轨迹与关闭语义已测 |
 | REQ-CA-01 | automated-verified | 可追溯词条格、来源和多条合法路径 |
-| REQ-CA-02 | research-only | 已运行整句完整路径与重排，长句质量有大量池召回缺失 |
-| REQ-CA-03 | research-only | 词语、字符与混合评分真实对照，默认未切换 |
+| REQ-CA-02 | research-only | 逐例区分词典缺口、池截断和预算耗尽，两种新增召回保留损失证据 |
+| REQ-CA-03 | research-only | 两种真实分词统计与词级累计评分已配对验证，默认排序沿用 |
 | REQ-CA-04 | automated-verified | 候选去重、预算诊断和修订过滤 |
 | REQ-CA-05 | research-only | 跨键缓存有等价验证，默认关闭 |
 | REQ-CA-06 | research-only | 释义查询独立于候选提交，迟到失效已无窗口验证 |
@@ -30,10 +30,10 @@ Round 23 保留原始 50 项要求和验收定义。下列状态记录现有可�
 | REQ-DI-04 | research-only | 真实语义索引与双向查询可用，正式词性和显式义项关系缺交付 |
 | REQ-DI-05 | automated-verified | 缺损资源拒绝且保持基础输入，原子替换对旧状态有回归 |
 | REQ-TR-01 | research-only | 词语/短语释义查询和候选身份可用，原生长释义交互仍缺 |
-| REQ-TR-02 | research-only | 固定模型双向实测，货币专名与关系误译存在 |
+| REQ-TR-02 | research-only | 固定模型双向实测，已扩大字面保护探针，复杂关系与译文自然度仍待审核 |
 | REQ-TR-03 | manual-not-run | 原生面板及隔离宿主确认代码保留，真实交互继续暂停 |
 | REQ-TR-04 | automated-verified | 任务身份、超时、取消与独立 worker 生命周期回归 |
-| REQ-TR-05 | blocked | 本地研究权重可用，独立模型质量和分发许可未获批 |
+| REQ-TR-05 | blocked | 已核对替代权重及部署方案，新增权重授权、实测和独立分发审批待交付 |
 | REQ-TR-06 | implemented | 独立面板支持用户自定义在线 API 与本地协议回归 |
 | REQ-TR-07 | automated-verified | 显式授权、凭据隔离和禁默认联网，独立人工安全验证未执行 |
 | REQ-WIN-01 | blocked | 已有原生 TSF 代码，隔离环境和注册批准缺失 |

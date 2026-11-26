@@ -38,7 +38,7 @@
 | z04 | 最后“无论是否延期都发邮件”遗漏，影响最大的项目表述也变得不清。 | 无 |
 | z05 | 人民币订金写成 `$150.25`，美元邮费也只保留通用 `$`，支付时态变化。 | 金额变化与歧义 |
 | z06 | 重量与长度保留。“标签不要贴反”变成含义不明的 `cannot be counter-labelled`。 | 无 |
-| z07 | 时间走样迹象来自时间格式对照，`3.20 p.m.` 与 `5 p.m.` 语义仍可理解。 | 时间无法配对，数字无法确认 |
+| z07 | `3.20 p.m.` 与 `5 p.m.` 保留原时间，这两种格式超出检查器的识别范围。 | 时间无法配对，数字无法确认 |
 | z08 | 六、三、五均以英文数词出现，义项基本保留。 | 数字未找到 |
 | z09 | 两个否定均有译文。“关闭设备”翻为 `close the device`。 | 无 |
 | z10 | 保留双重否定，“没时间”缩为 `just not today`。 | 无 |
@@ -69,4 +69,4 @@
 
 规则限定于 HTTP(S) ASCII 网址的有限语法、15 种文件后缀、`v数字.数字.数字` 和带连字符的 ASCII 型号形状。日期、数字、币种和单位沿用已有比较。识别出的技术串按精确字面和出现次数比较。URL 取明示字符并剥离句尾标点，复杂转义、含歧义末尾标点、中文路径和全 Unicode 文件名仍需人工审读。否定标记计数不同只产生 `Unverifiable`，不推断句子对应、否定范围、对象关系或数字角色。原始译文不改写，用户确认仍须绑定当前任务结果及源身份。
 
-回放用 `cargo +1.90.0 build --release --locked --offline -p cloudleaf-translation-ipc -p cloudleaf-translation-integrity` 和 Rust 1.90 `--edition 2024 -C lto=thin -C opt-level=3` 编译既有探针，再以 `--detailed` 运行。三个新增边界回归先在旧实现失败，然后与 11 个既有测试一同通过。初次独立链接缺少 thin-LTO，以及误用 Round 23 较早 worker 哈希导致的输入预检失败均留存。首次失败日志、再运行命令、逐例原始输出来到 `.local/round24-translation/{red,detailed,verified,baseline,paired}`，合并的逐例 SHA 与指标见 `.local/round24-translation/summary.json`。正式模型选型结论见[模型选型](integration-round24-model-selection.md)。
+回放用 `cargo +1.90.0 build --release --locked --offline -p cloudleaf-translation-ipc -p cloudleaf-translation-integrity` 和 Rust 1.90 `--edition 2024 -C lto=thin -C opt-level=3` 编译既有探针，再以 `--detailed` 运行。明细 TSV 对原始输出中的反斜线、换行、回车和制表符使用可还原转义。三个新增边界回归先在旧实现失败，随后与 11 个既有测试一同通过。初次独立链接缺少 thin-LTO，以及误用 Round 23 较早 worker 哈希导致的输入预检失败均留存。失败日志、再运行命令和逐例原始输出见 `.local/round24-translation/{red,detailed,verified,baseline,paired}`。合并的逐例 SHA 和指标见 `.local/round24-translation/summary.json`，定向格式、测试和 Clippy 结果见 `.local/round24-translation/final-verified-checks/run.json`。[模型选型](integration-round24-model-selection.md)

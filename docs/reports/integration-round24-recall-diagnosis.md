@@ -24,4 +24,3 @@ python tools/performance/round24_recall_diagnosis.py --binary .local/target/rele
 ```
 
 运行参数绑定基础和补充词典、词模型、Witten–Bell 模型及 Round 23 原始任务哈希。命令、返回码、二进制及两套逐例原始输出的哈希保存于各自的 `command.json`。不含正文、拼音或候选串的逐例诊断见 `.local/round24-recall-diagnosis/diagnosis.json`，原始内容保存在同一 Git 外目录。原始基线为 `ff09385ebcca323b5f68051ee9bb56c0070696de`。诊断是独立示例，目标正文仅在离线覆盖与诊断步骤读取。
-

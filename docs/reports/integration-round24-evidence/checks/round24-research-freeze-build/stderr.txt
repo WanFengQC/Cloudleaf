@@ -1,0 +1,66 @@
+   Compiling cloudleaf-search v0.1.0 (C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\crates\cloudleaf-search)
+   Compiling cloudleaf-input v0.1.0 (C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\crates\cloudleaf-input)
+error: implementation of an `unsafe` trait
+  --> crates\cloudleaf-input\examples\research_rank.rs:36:1
+   |
+36 | / unsafe impl GlobalAlloc for MeasuredAllocator {
+37 | |     unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
+38 | |         let result = unsafe { System.alloc(layout) };
+39 | |         if !result.is_null() {
+...  |
+56 | | }
+   | |_^
+   |
+   = note: requested on the command line with `-F unsafe-code`
+
+error: implementation of an `unsafe` method
+  --> crates\cloudleaf-input\examples\research_rank.rs:37:5
+   |
+37 | /     unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
+38 | |         let result = unsafe { System.alloc(layout) };
+39 | |         if !result.is_null() {
+40 | |             allocated(layout.size());
+41 | |         }
+42 | |         result
+43 | |     }
+   | |_____^
+
+error: usage of an `unsafe` block
+  --> crates\cloudleaf-input\examples\research_rank.rs:38:22
+   |
+38 |         let result = unsafe { System.alloc(layout) };
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: implementation of an `unsafe` method
+  --> crates\cloudleaf-input\examples\research_rank.rs:45:5
+   |
+45 | /     unsafe fn realloc(&self, ptr: *mut u8, layout: Layout, size: usize) -> *mut u8 {
+46 | |         let result = unsafe { System.realloc(ptr, layout, size) };
+47 | |         if !result.is_null() {
+48 | |             allocated(size);
+49 | |         }
+50 | |         result
+51 | |     }
+   | |_____^
+
+error: usage of an `unsafe` block
+  --> crates\cloudleaf-input\examples\research_rank.rs:46:22
+   |
+46 |         let result = unsafe { System.realloc(ptr, layout, size) };
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: implementation of an `unsafe` method
+  --> crates\cloudleaf-input\examples\research_rank.rs:53:5
+   |
+53 | /     unsafe fn dealloc(&self, ptr: *mut u8, layout: Layout) {
+54 | |         unsafe { System.dealloc(ptr, layout) };
+55 | |     }
+   | |_____^
+
+error: usage of an `unsafe` block
+  --> crates\cloudleaf-input\examples\research_rank.rs:54:9
+   |
+54 |         unsafe { System.dealloc(ptr, layout) };
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: could not compile `cloudleaf-input` (example "research_rank") due to 7 previous errors

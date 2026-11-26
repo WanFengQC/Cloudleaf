@@ -1,0 +1,17 @@
+   Compiling cloudleaf-search v0.1.0 (C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\crates\cloudleaf-search)
+warning: unused import: `Observer`
+ --> crates\cloudleaf-search\src\recall.rs:2:11
+  |
+2 |     Noop, Observer, Path, Scorer, compare, expand_allowed, resident_allowed,
+  |           ^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: `cloudleaf-search` (lib) generated 1 warning (run `cargo fix --lib -p cloudleaf-search` to apply 1 suggestion)
+    Finished `test` profile [unoptimized] target(s) in 6.80s
+     Running tests\recall.rs (.local\target\debug\deps\recall-db0f9b43efbfdd0c.exe)
+
+thread 'full_paths_match_reference_and_choose_the_higher_scoring_segmentation' panicked at crates\cloudleaf-search\tests\recall.rs:78:5:
+assertion failed: compared > 100
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: test failed, to rerun pass `-p cloudleaf-search --test recall`

@@ -1,0 +1,608 @@
+{
+  "word": {
+    "bytes": 2619128,
+    "sha256": "f8062a4a8e456135840b9df51857c84e3ea3f16f59ced4f9dc85a5bd19fade3a"
+  },
+  "worker": {
+    "bytes": 3310080,
+    "sha256": "6c52a4842612b77f53a9efa9e0504b55134c508fdf8a8e7eee041fec92d8cefc"
+  },
+  "tool": {
+    "bytes": 4112,
+    "sha256": "c572a5814ab02ea4ad965a9811fde77a22a8839aa6ef74e077c7174216673e2b"
+  },
+  "probe": {
+    "bytes": 1596928,
+    "sha256": "eb95aa0e969d7632a0b0c20b78424fa3e0bcbc73d98626166f6484fd8492b6cc"
+  },
+  "runtime": {
+    "bytes": 23602173,
+    "sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+  },
+  "lexical": {
+    "bytes": 3034818,
+    "sha256": "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5"
+  },
+  "catalog": {
+    "bytes": 326,
+    "sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f"
+  },
+  "events": {
+    "bytes": 863,
+    "sha256": "e087cc965bd2f6c889a84f3db89b3829ccfda452f436d7b3cf562bbb965602ad"
+  },
+  "runs": [
+    {
+      "case": "1-lexical-idle",
+      "io_resources": {
+        "host_samples": 18,
+        "worker_samples": 0,
+        "host": {
+          "rss": 183783424,
+          "peak_rss": 194666496,
+          "private": 184209408,
+          "threads": 4,
+          "process_cpu_ns": 1171875000,
+          "read_bytes": 27655836
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "input_model": [
+        [
+          "lexical",
+          "7593979",
+          "789700"
+        ]
+      ],
+      "worker_metrics": {},
+      "overlap_or_idle": 171
+    },
+    {
+      "case": "1-word-idle",
+      "io_resources": {
+        "host_samples": 21,
+        "worker_samples": 0,
+        "host": {
+          "rss": 185839616,
+          "peak_rss": 194674688,
+          "private": 199311360,
+          "threads": 4,
+          "process_cpu_ns": 1328125000,
+          "read_bytes": 30260502
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "input_model": [
+        [
+          "word",
+          "8445359",
+          "293802200"
+        ]
+      ],
+      "worker_metrics": {},
+      "overlap_or_idle": 171
+    },
+    {
+      "case": "1-lexical-infer",
+      "io_resources": {
+        "host_samples": 60,
+        "worker_samples": 44,
+        "host": {
+          "rss": 187469824,
+          "peak_rss": 194568192,
+          "private": 188186624,
+          "threads": 7,
+          "process_cpu_ns": 1343750000,
+          "read_bytes": 30953724
+        },
+        "worker": {
+          "rss": 658026496,
+          "peak_rss": 660135936,
+          "private": 657694720,
+          "threads": 7,
+          "process_cpu_ns": 2968750000,
+          "read_bytes": 631704924
+        },
+        "paired_max_rss": 825851904
+      },
+      "input_model": [
+        [
+          "lexical",
+          "7593979",
+          "580600"
+        ]
+      ],
+      "worker_metrics": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 455380500,
+          "load_ns": 450667500,
+          "inference_ns": 2335993200,
+          "encoder_ns": 82290700,
+          "decoder_ns": 2227099900,
+          "generated_steps": 69,
+          "queue_wait_ns": 51300,
+          "infer_start": 1795677765406861300,
+          "infer_end": 1795677767743523700,
+          "load_start": 1795677764956189800,
+          "load_end": 1795677765406857300,
+          "host_request_to_result_ns": 3255487700,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw": "\"我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 并保存原始输入, 直到用户确认。 我开发一种中国输入方法, 并且想要保存原始输入, 直到用户确认它。\""
+        }
+      },
+      "overlap_or_idle": 171
+    },
+    {
+      "case": "1-word-infer",
+      "io_resources": {
+        "host_samples": 66,
+        "worker_samples": 49,
+        "host": {
+          "rss": 179937280,
+          "peak_rss": 194654208,
+          "private": 199393280,
+          "threads": 7,
+          "process_cpu_ns": 1265625000,
+          "read_bytes": 33587662
+        },
+        "worker": {
+          "rss": 564858880,
+          "peak_rss": 660103168,
+          "private": 657661952,
+          "threads": 6,
+          "process_cpu_ns": 3562500000,
+          "read_bytes": 631704962
+        },
+        "paired_max_rss": 739192832
+      },
+      "input_model": [
+        [
+          "word",
+          "8445359",
+          "209508900"
+        ]
+      ],
+      "worker_metrics": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 418070300,
+          "load_ns": 498630300,
+          "inference_ns": 3193783800,
+          "encoder_ns": 118696800,
+          "decoder_ns": 3051913700,
+          "generated_steps": 69,
+          "queue_wait_ns": 35900,
+          "infer_start": 1795677769906924600,
+          "infer_end": 1795677773101863600,
+          "load_start": 1795677769408289200,
+          "load_end": 1795677769906919500,
+          "host_request_to_result_ns": 4124755000,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw": "\"我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 并保存原始输入, 直到用户确认。 我开发一种中国输入方法, 并且想要保存原始输入, 直到用户确认它。\""
+        }
+      },
+      "overlap_or_idle": 171
+    },
+    {
+      "case": "2-word-infer",
+      "io_resources": {
+        "host_samples": 65,
+        "worker_samples": 47,
+        "host": {
+          "rss": 187396096,
+          "peak_rss": 194699264,
+          "private": 201764864,
+          "threads": 7,
+          "process_cpu_ns": 1390625000,
+          "read_bytes": 33572852
+        },
+        "worker": {
+          "rss": 570126336,
+          "peak_rss": 660115456,
+          "private": 657666048,
+          "threads": 7,
+          "process_cpu_ns": 3453125000,
+          "read_bytes": 631616361
+        },
+        "paired_max_rss": 744411136
+      },
+      "input_model": [
+        [
+          "word",
+          "8445359",
+          "249190400"
+        ]
+      ],
+      "worker_metrics": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 399058600,
+          "load_ns": 500936300,
+          "inference_ns": 2881242800,
+          "encoder_ns": 95959500,
+          "decoder_ns": 2751922800,
+          "generated_steps": 69,
+          "queue_wait_ns": 46000,
+          "infer_start": 1795677775512009500,
+          "infer_end": 1795677778393966500,
+          "load_start": 1795677775011070000,
+          "load_end": 1795677775512006300,
+          "host_request_to_result_ns": 3800665000,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw": "\"我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 并保存原始输入, 直到用户确认。 我开发一种中国输入方法, 并且想要保存原始输入, 直到用户确认它。\""
+        }
+      },
+      "overlap_or_idle": 171
+    },
+    {
+      "case": "2-lexical-infer",
+      "io_resources": {
+        "host_samples": 59,
+        "worker_samples": 45,
+        "host": {
+          "rss": 187514880,
+          "peak_rss": 194674688,
+          "private": 201400320,
+          "threads": 7,
+          "process_cpu_ns": 1468750000,
+          "read_bytes": 30968533
+        },
+        "worker": {
+          "rss": 515125248,
+          "peak_rss": 660131840,
+          "private": 513409024,
+          "threads": 7,
+          "process_cpu_ns": 3171875000,
+          "read_bytes": 631704962
+        },
+        "paired_max_rss": 682999808
+      },
+      "input_model": [
+        [
+          "lexical",
+          "7593979",
+          "550500"
+        ]
+      ],
+      "worker_metrics": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 492892200,
+          "load_ns": 547756600,
+          "inference_ns": 2403336800,
+          "encoder_ns": 94051000,
+          "decoder_ns": 2275490500,
+          "generated_steps": 69,
+          "queue_wait_ns": 46600,
+          "infer_start": 1795677780693923900,
+          "infer_end": 1795677783098216300,
+          "load_start": 1795677780146159800,
+          "load_end": 1795677780693916400,
+          "host_request_to_result_ns": 3459368900,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw": "\"我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 并保存原始输入, 直到用户确认。 我开发一种中国输入方法, 并且想要保存原始输入, 直到用户确认它。\""
+        }
+      },
+      "overlap_or_idle": 171
+    },
+    {
+      "case": "2-word-idle",
+      "io_resources": {
+        "host_samples": 17,
+        "worker_samples": 0,
+        "host": {
+          "rss": 192720896,
+          "peak_rss": 194555904,
+          "private": 215404544,
+          "threads": 4,
+          "process_cpu_ns": 1062500000,
+          "read_bytes": 30260502
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "input_model": [
+        [
+          "word",
+          "8445359",
+          "192438700"
+        ]
+      ],
+      "worker_metrics": {},
+      "overlap_or_idle": 171
+    },
+    {
+      "case": "2-lexical-idle",
+      "io_resources": {
+        "host_samples": 16,
+        "worker_samples": 0,
+        "host": {
+          "rss": 179068928,
+          "peak_rss": 194609152,
+          "private": 198815744,
+          "threads": 4,
+          "process_cpu_ns": 1046875000,
+          "read_bytes": 27641374
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "input_model": [
+        [
+          "lexical",
+          "7593979",
+          "559500"
+        ]
+      ],
+      "worker_metrics": {},
+      "overlap_or_idle": 171
+    },
+    {
+      "case": "3-lexical-idle",
+      "io_resources": {
+        "host_samples": 17,
+        "worker_samples": 0,
+        "host": {
+          "rss": 185049088,
+          "peak_rss": 194605056,
+          "private": 185511936,
+          "threads": 4,
+          "process_cpu_ns": 1015625000,
+          "read_bytes": 27641374
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "input_model": [
+        [
+          "lexical",
+          "7593979",
+          "463000"
+        ]
+      ],
+      "worker_metrics": {},
+      "overlap_or_idle": 171
+    },
+    {
+      "case": "3-word-idle",
+      "io_resources": {
+        "host_samples": 16,
+        "worker_samples": 0,
+        "host": {
+          "rss": 183775232,
+          "peak_rss": 194658304,
+          "private": 184221696,
+          "threads": 4,
+          "process_cpu_ns": 1015625000,
+          "read_bytes": 30260502
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "input_model": [
+        [
+          "word",
+          "8445359",
+          "170467100"
+        ]
+      ],
+      "worker_metrics": {},
+      "overlap_or_idle": 171
+    },
+    {
+      "case": "3-lexical-infer",
+      "io_resources": {
+        "host_samples": 59,
+        "worker_samples": 45,
+        "host": {
+          "rss": 185016320,
+          "peak_rss": 194596864,
+          "private": 185462784,
+          "threads": 7,
+          "process_cpu_ns": 1578125000,
+          "read_bytes": 30953725
+        },
+        "worker": {
+          "rss": 492847104,
+          "peak_rss": 660094976,
+          "private": 657682432,
+          "threads": 7,
+          "process_cpu_ns": 3187500000,
+          "read_bytes": 631616361
+        },
+        "paired_max_rss": 660684800
+      },
+      "input_model": [
+        [
+          "lexical",
+          "7593979",
+          "825300"
+        ]
+      ],
+      "worker_metrics": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 467633000,
+          "load_ns": 470257200,
+          "inference_ns": 2611389800,
+          "encoder_ns": 120701400,
+          "decoder_ns": 2447326500,
+          "generated_steps": 69,
+          "queue_wait_ns": 56600,
+          "infer_start": 1795677789950115000,
+          "infer_end": 1795677792562348900,
+          "load_start": 1795677789479855000,
+          "load_end": 1795677789950112200,
+          "host_request_to_result_ns": 3582567500,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw": "\"我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 并保存原始输入, 直到用户确认。 我开发一种中国输入方法, 并且想要保存原始输入, 直到用户确认它。\""
+        }
+      },
+      "overlap_or_idle": 171
+    },
+    {
+      "case": "3-word-infer",
+      "io_resources": {
+        "host_samples": 59,
+        "worker_samples": 42,
+        "host": {
+          "rss": 187400192,
+          "peak_rss": 194646016,
+          "private": 199315456,
+          "threads": 7,
+          "process_cpu_ns": 1296875000,
+          "read_bytes": 33572852
+        },
+        "worker": {
+          "rss": 499408896,
+          "peak_rss": 660135936,
+          "private": 500805632,
+          "threads": 7,
+          "process_cpu_ns": 2953125000,
+          "read_bytes": 631616283
+        },
+        "paired_max_rss": 673697792
+      },
+      "input_model": [
+        [
+          "word",
+          "8445359",
+          "223727700"
+        ]
+      ],
+      "worker_metrics": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 434408000,
+          "load_ns": 438835000,
+          "inference_ns": 2320305200,
+          "encoder_ns": 81172300,
+          "decoder_ns": 2208157600,
+          "generated_steps": 69,
+          "queue_wait_ns": 39300,
+          "infer_start": 1795677794803249200,
+          "infer_end": 1795677797124276600,
+          "load_start": 1795677794364410300,
+          "load_end": 1795677794803245300,
+          "host_request_to_result_ns": 3223084500,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw": "\"我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 我想保存原始输入, 直到用户确认。 我正在开发一种中国输入方法, 并保存原始输入, 直到用户确认。 我开发一种中国输入方法, 并且想要保存原始输入, 直到用户确认它。\""
+        }
+      },
+      "overlap_or_idle": 171
+    }
+  ],
+  "errors": [],
+  "wall_ns": {
+    "lexical/idle": {
+      "n": 513,
+      "p50": 1025600,
+      "p95": 6770400,
+      "p99": 9982300,
+      "max": 14389800
+    },
+    "word/idle": {
+      "n": 513,
+      "p50": 432600,
+      "p95": 2535400,
+      "p99": 4265700,
+      "max": 4884000
+    },
+    "lexical/infer": {
+      "n": 513,
+      "p50": 1645000,
+      "p95": 16495600,
+      "p99": 22633100,
+      "max": 45675100
+    },
+    "word/infer": {
+      "n": 513,
+      "p50": 769700,
+      "p95": 4355400,
+      "p99": 8082400,
+      "max": 13719200
+    }
+  },
+  "thread_cycles": {
+    "lexical/idle": {
+      "n": 513,
+      "p50": 2530829,
+      "p95": 15830899,
+      "p99": 21964347,
+      "max": 32547226
+    },
+    "word/idle": {
+      "n": 513,
+      "p50": 1066090,
+      "p95": 5490893,
+      "p99": 7748006,
+      "max": 10345967
+    },
+    "lexical/infer": {
+      "n": 513,
+      "p50": 3896035,
+      "p95": 34650896,
+      "p99": 49480498,
+      "max": 85485978
+    },
+    "word/infer": {
+      "n": 513,
+      "p50": 1682207,
+      "p95": 8251892,
+      "p99": 11342851,
+      "max": 14371086
+    }
+  },
+  "semantics_stable_within_each_ranker": true
+}
