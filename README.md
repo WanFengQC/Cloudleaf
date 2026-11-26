@@ -56,10 +56,13 @@ cargo run --locked --offline -p cloudleaf-cli -- --query nihao
 cargo run --locked --offline -p cloudleaf-cli -- --replay "nihao <Space> zhongguo <Enter>"
 cargo run --locked --offline -p cloudleaf-cli -- --replay "ni <PageDown> 2"
 cargo run --locked --offline -p cloudleaf-cli -- --replay "nihao <Left> <Backspace> <Esc>"
+cargo run --locked --offline -p cloudleaf-cli -- --replay "nihao <Space> YuN <Raw:@example.org>"
 cargo run --locked --offline -p cloudleaf-cli -- --help
 ```
 
 前两个提交示例分别产生“你好”和“中国”；翻页数字示例提交“倪”。无参数进入逐行事件模式，`:quit` 退出。测试宿主在终端显示候选和提交，并立即模拟成功确认；实际 Windows 文本提交尚未实现。英文或未消费按键会显示“交回系统”，命令行自身不会模拟编辑器。
+
+`<Raw>` 显式提交当前原始组合。`<Raw:后缀>` 直接追加字面内容，例如把 `YuN` 提交为 `YuN@example.org`。提交保留原大小写，经正常确认，并跳过候选学习。回放标记中的后缀不能包含空格。
 
 使用 `--dictionary <路径>` 加载版本化 UTF-8 TSV；文件缺失或损坏会明确提示，并使用空词典继续演示原文回退。原型词典仅 **64 条手写数据**，未命中时保留原始拼音；不拼接独立词条生成整句。最多 64 个 ASCII 输入字符，支持 `v` 表示 ü、`'` 显式分段、末音节前缀、光标编辑、每页 5 个候选、最多 50 个候选。完整规则见[实现约定](docs/m1-m2-design.md)及[数据格式](data/README.md)。
 

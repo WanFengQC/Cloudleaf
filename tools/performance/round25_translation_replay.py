@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import math
 import os
 import platform
 import re
@@ -248,6 +249,15 @@ def counts(pairs):
     new_total = sum(record["new_review"] for record in pairs)
     return {"n": len(pairs), "previous_review": old_total, "new_review": new_total}
 
+def timing(rows):
+    durations = sorted(row["metrics"]["inference_ns"] for row in rows)
+    summary = {f"p{p}_ns": durations[math.ceil(len(rows) * p / 100) - 1] for p in (50, 95, 99, 100)}
+    summary["cold_load_ns"] = [row["metrics"]["load_ns"] for row in rows if row["metrics"]["load_ns"]]
+    summary["steps"] = sum(row["metrics"]["steps"] for row in rows)
+    summary["steps_per_second"] = summary["steps"] * 1e9 / sum(durations)
+    summary["truncated"] = sum(row["metrics"]["truncated"] for row in rows)
+    return summary
+
 
 def summarize(out):
     run_index = read(out / "run-index.json")
@@ -276,6 +286,8 @@ def summarize(out):
         directions = Counter(item["direction"] for item in real)
         history[number] = {
             "actual": counts(real), "raw_equal": len(real), "directions": directions,
+            "timing": {direction: timing([row for row in real if row["direction"] == direction])
+                       for direction in directions},
             "controls": counts([item for item in results if item["mode"] == "control"]),
             "failures": failures, "baseline_output_sha256": digest(source),
             "current_output_sha256": digest(out / f"r{number}-stdout.txt"),

@@ -27,6 +27,7 @@ def main():
         folder.mkdir()
         selected = [row for row in resource['cases'][version]
                     if row['pools']['character']['budget'] == 'Some(ResidentPaths)'
+                    and row['input_origin'] == 'historical'
                     and row['pools']['character']['target_rank'] is None]
         cases = {case['case']: case for case in selected}
         total['historical_cases'] += len(cases)

@@ -4,7 +4,7 @@ use cloudleaf_input::TranslationSourceIdentity;
 use cloudleaf_translation_integrity::{self as integrity, Glossary, IntegrityReport};
 use cloudleaf_translation_ipc::{
     Direction, MAX_INPUT_BYTES, ProgressStage, RequestKey, ResourceThreads, SourceIdentity,
-    WorkerClient, WorkerConfig, WorkerEvent, WorkerState,
+    WorkerClient, WorkerConfig, WorkerEvent, WorkerScheduling, WorkerState,
 };
 use std::{path::PathBuf, time::Duration};
 use windows::Win32::Foundation::{E_FAIL, E_INVALIDARG};
@@ -57,12 +57,17 @@ pub(super) struct LaunchOptions<'a> {
     glossary: Option<PathBuf>,
 }
 
+enum LaunchThreads {
+    Auto,
+    Fixed(ResourceThreads),
+}
+
 impl<'a> LaunchOptions<'a> {
     pub fn parse(args: &'a [String]) -> Result<Self> {
         let usage = || {
             Error::new(
                 E_INVALIDARG,
-                "用法：--interactive-input-host RUNTIME SHA [MODEL MODEL_SHA] [--translation-catalog CATALOG SHA] [--translation-threads 1|2|4] [--translation-glossary TSV]",
+                "用法：--interactive-input-host RUNTIME SHA [MODEL MODEL_SHA] [--translation-catalog CATALOG SHA] [--translation-threads auto|1|2|4] [--translation-scheduling normal|below-normal] [--translation-glossary TSV]",
             )
         };
         let [runtime, runtime_sha, options @ ..] = args else {
@@ -82,6 +87,7 @@ impl<'a> LaunchOptions<'a> {
         }
         let mut catalog = None;
         let mut threads = None;
+        let mut scheduling = None;
         let mut glossary = None;
         while !remaining.is_empty() {
             match remaining {
@@ -94,8 +100,22 @@ impl<'a> LaunchOptions<'a> {
                 [flag, value, rest @ ..]
                     if flag == "--translation-threads" && threads.is_none() =>
                 {
-                    let value = value.parse::<usize>().map_err(|_| usage())?;
-                    threads = Some(ResourceThreads::try_from(value).map_err(|_| usage())?);
+                    threads = Some(if value == "auto" {
+                        LaunchThreads::Auto
+                    } else {
+                        let value = value.parse::<usize>().map_err(|_| usage())?;
+                        LaunchThreads::Fixed(ResourceThreads::try_from(value).map_err(|_| usage())?)
+                    });
+                    remaining = rest;
+                }
+                [flag, value, rest @ ..]
+                    if flag == "--translation-scheduling" && scheduling.is_none() =>
+                {
+                    scheduling = Some(match value.as_str() {
+                        "normal" => WorkerScheduling::Normal,
+                        "below-normal" => WorkerScheduling::BelowNormal,
+                        _ => return Err(usage()),
+                    });
                     remaining = rest;
                 }
                 [flag, path, rest @ ..]
@@ -107,15 +127,19 @@ impl<'a> LaunchOptions<'a> {
                 _ => return Err(usage()),
             }
         }
+        if catalog.is_none() && (threads.is_some() || scheduling.is_some()) {
+            return Err(usage());
+        }
         let worker = catalog
             .map(|(path, hash)| {
-                WorkerConfig::sibling(path, hash, threads.unwrap_or(ResourceThreads::One))
+                let config = match threads.unwrap_or(LaunchThreads::Fixed(ResourceThreads::One)) {
+                    LaunchThreads::Auto => WorkerConfig::sibling_auto(path, hash),
+                    LaunchThreads::Fixed(count) => WorkerConfig::sibling(path, hash, count),
+                }?;
+                config.with_scheduling(scheduling.unwrap_or_default())
             })
             .transpose()
             .map_err(|error| Error::new(E_INVALIDARG, format!("离线配置无效：{error}")))?;
-        if threads.is_some() && worker.is_none() {
-            return Err(usage());
-        }
         Ok(Self {
             runtime,
             runtime_sha,
@@ -718,6 +742,45 @@ mod tests {
         assert_eq!(options.glossary, Some(PathBuf::from("glossary")));
         let stray = ["runtime", "sha", "--translation-threads", "4"].map(|value| value.to_owned());
         assert!(LaunchOptions::parse(&stray).is_err());
+    }
+
+    #[test]
+    fn round25_argument_parser_offers_optional_worker_resource_control() {
+        let catalog = "a".repeat(64);
+        let configured = [
+            "runtime",
+            "sha",
+            "--translation-catalog",
+            "catalog",
+            &catalog,
+            "--translation-threads",
+            "auto",
+            "--translation-scheduling",
+            "below-normal",
+        ]
+        .map(str::to_owned);
+        let worker = LaunchOptions::parse(&configured).unwrap().worker.unwrap();
+        let available = std::thread::available_parallelism().map_or(1, usize::from);
+        assert_eq!(
+            worker.compute_threads(),
+            ResourceThreads::for_available_parallelism(available)
+        );
+        let mut invalid = configured.clone();
+        invalid[8] = "high".to_owned();
+        assert!(LaunchOptions::parse(&invalid).is_err());
+        let stray = ["runtime", "sha", "--translation-scheduling", "normal"].map(str::to_owned);
+        assert!(LaunchOptions::parse(&stray).is_err());
+        let mut explicit = configured;
+        explicit[6] = "4".to_owned();
+        explicit[8] = "normal".to_owned();
+        assert_eq!(
+            LaunchOptions::parse(&explicit)
+                .unwrap()
+                .worker
+                .unwrap()
+                .compute_threads(),
+            ResourceThreads::Four
+        );
     }
 
     #[test]
