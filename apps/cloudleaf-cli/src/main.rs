@@ -191,9 +191,13 @@ fn run() -> Result<(), String> {
     if let Some(loaded) = settings {
         let scheme = loaded.settings.scheme_config();
         if scheme != cloudleaf_input::SchemeConfig::default() {
-            engine
-                .reconfigure_scheme(scheme)
-                .map_err(|error| error.to_string())?;
+            if engine.pinyin_scheme().is_some() {
+                engine
+                    .reconfigure_scheme(scheme)
+                    .map_err(|error| error.to_string())?;
+            } else {
+                eprintln!("当前无可用整句词典，保留基础输入；保存的输入方案尚未应用。");
+            }
         }
         engine
             .reconfigure_mixed_input(loaded.settings.mixed_input)
