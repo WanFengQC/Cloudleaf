@@ -1,0 +1,368 @@
+[
+  {
+    "label": "round26-confirm-01",
+    "head": "600ff017a32b8ecf970e4478abf266dedb29e8f2",
+    "at_utc": "2026-11-26T10:06:43.417889+00:00",
+    "seconds": 0.17199999990407377,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "command": [
+      "git.EXE",
+      "diff",
+      "--check"
+    ]
+  },
+  {
+    "label": "round26-confirm-02",
+    "head": "600ff017a32b8ecf970e4478abf266dedb29e8f2",
+    "at_utc": "2026-11-26T10:06:45.597235+00:00",
+    "seconds": 1.3599999999860302,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "command": [
+      "cargo.EXE",
+      "fmt",
+      "--all",
+      "--check"
+    ]
+  },
+  {
+    "label": "round26-confirm-03",
+    "head": "600ff017a32b8ecf970e4478abf266dedb29e8f2",
+    "at_utc": "2026-11-26T10:06:54.145002+00:00",
+    "seconds": 7.844000000040978,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "bytes": 181,
+      "sha256": "171b6d9966c68410a0188693ff7b7c48c25de58217112d2f4031490c24c42295"
+    },
+    "command": [
+      "cargo.EXE",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--locked",
+      "--offline",
+      "--",
+      "-D",
+      "warnings"
+    ]
+  },
+  {
+    "label": "round26-confirm-04",
+    "head": "600ff017a32b8ecf970e4478abf266dedb29e8f2",
+    "at_utc": "2026-11-26T10:07:37.385934+00:00",
+    "seconds": 42.39099999994505,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 48892,
+      "sha256": "d31a108fe2e0937b8ad9dc02aa2a3da3f79e370be06e35b7e722589508155059"
+    },
+    "stderr": {
+      "bytes": 8995,
+      "sha256": "607dc230211fc734ef159c24a22e5ca7ba4830437c1a9fe7da525469eab72931"
+    },
+    "command": [
+      "cargo.EXE",
+      "test",
+      "--workspace",
+      "--all-targets",
+      "--locked",
+      "--offline"
+    ]
+  },
+  {
+    "label": "round26-confirm-05",
+    "head": "600ff017a32b8ecf970e4478abf266dedb29e8f2",
+    "at_utc": "2026-11-26T10:07:42.271448+00:00",
+    "seconds": 4.125,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 1582,
+      "sha256": "260676f5060a542e4e8a97512ca112fef34d3d46724608472af21237e93b9281"
+    },
+    "stderr": {
+      "bytes": 530,
+      "sha256": "cb1ae3fa06ceec0566e75f83cb357246bfd99d370d6e1313ac66e4ac66ed6394"
+    },
+    "command": [
+      "cargo.EXE",
+      "test",
+      "--workspace",
+      "--doc",
+      "--locked",
+      "--offline"
+    ]
+  },
+  {
+    "label": "round26-confirm-06",
+    "head": "600ff017a32b8ecf970e4478abf266dedb29e8f2",
+    "at_utc": "2026-11-26T10:08:27.660927+00:00",
+    "seconds": 44.65599999995902,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "bytes": 444,
+      "sha256": "98f0e5075a989908bfe5dd3f32ed938244c0dbee6e83a66c77d810f353cec791"
+    },
+    "command": [
+      "cargo.EXE",
+      "build",
+      "--workspace",
+      "--release",
+      "--locked",
+      "--offline"
+    ]
+  },
+  {
+    "label": "round26-confirm-07",
+    "head": "600ff017a32b8ecf970e4478abf266dedb29e8f2",
+    "at_utc": "2026-11-26T10:08:29.982382+00:00",
+    "seconds": 1.3900000000139698,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 647,
+      "sha256": "baaa5235b8890bde59628fc68adf189f810f7f2ddafcf9cbf49461302ada28cc"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "command": [
+      "python.EXE",
+      "scripts/check_workspace.py"
+    ]
+  },
+  {
+    "label": "round26-confirm-08",
+    "head": "600ff017a32b8ecf970e4478abf266dedb29e8f2",
+    "at_utc": "2026-11-26T10:09:38.720453+00:00",
+    "seconds": 67.84399999992456,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 44,
+      "sha256": "48be988b8690832fbca5f54416fb88c67689df1d115b004b069ab54531c44f66"
+    },
+    "stderr": {
+      "bytes": 35666,
+      "sha256": "d6dd6e73f7de119c0e49467277ae2a12bed51375d0d8e1c5d14dab31aa55a324"
+    },
+    "command": [
+      "python.EXE",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_*.py",
+      "-v"
+    ]
+  },
+  {
+    "label": "round26-confirm-09",
+    "head": "600ff017a32b8ecf970e4478abf266dedb29e8f2",
+    "at_utc": "2026-11-26T10:09:48.900027+00:00",
+    "seconds": 9.375,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 266,
+      "sha256": "c4c3b4f9956257adf8f4d444b5b1739a4cd79111c3b8181abafe3cc64b3f58bb"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "command": [
+      "python.EXE",
+      "scripts/audit_windows_dependencies.py",
+      "--audit-binary",
+      "<local-pinned-cargo-audit>",
+      "--output",
+      ".local/round26-confirm-windows-audit.json"
+    ]
+  },
+  {
+    "label": "round26-confirm-10",
+    "head": "600ff017a32b8ecf970e4478abf266dedb29e8f2",
+    "at_utc": "2026-11-26T10:09:58.128629+00:00",
+    "seconds": 8.328000000095926,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 1368,
+      "sha256": "1aea156e4f7adf179ae912a84012578e8aaa50ef629006e72ba12dad141144fb"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "command": [
+      "python.EXE",
+      "scripts/benchmark.py",
+      "--iterations",
+      "100",
+      "--output",
+      ".local/round26-confirm-input-performance.json"
+    ]
+  },
+  {
+    "label": "round26-confirm-11",
+    "head": "600ff017a32b8ecf970e4478abf266dedb29e8f2",
+    "at_utc": "2026-11-26T10:10:03.596400+00:00",
+    "seconds": 4.640999999945052,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 2668,
+      "sha256": "4311f7e9449cceaeeecbc0eb974506442fad35f9ed84bee023ccc74f13ef2f1f"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "command": [
+      "python.EXE",
+      "scripts/evaluate_algorithms.py",
+      "--output-dir",
+      ".local/round26-confirm-algorithm-v1"
+    ]
+  },
+  {
+    "label": "round26-confirm-12",
+    "head": "600ff017a32b8ecf970e4478abf266dedb29e8f2",
+    "at_utc": "2026-11-26T10:10:04.706061+00:00",
+    "seconds": 0.3440000000409782,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "bytes": 62,
+      "sha256": "c663462ee6e8bd687c13f4f43386d516f3f0bb8fc1cb3522d98b83bf3664d8fd"
+    },
+    "command": [
+      "cargo.EXE",
+      "build",
+      "-p",
+      "cloudleaf-input",
+      "--examples",
+      "--release",
+      "--locked",
+      "--offline"
+    ]
+  },
+  {
+    "label": "round26-confirm-13",
+    "head": "600ff017a32b8ecf970e4478abf266dedb29e8f2",
+    "at_utc": "2026-11-26T10:10:05.740441+00:00",
+    "seconds": 0.2970000000204891,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "bytes": 62,
+      "sha256": "b65d97c967cb13bb2fd061b2f5b86011ef366acea387375a92a9808f93395384"
+    },
+    "command": [
+      "cargo.EXE",
+      "build",
+      "-p",
+      "cloudleaf-search",
+      "--examples",
+      "--release",
+      "--locked",
+      "--offline"
+    ]
+  },
+  {
+    "label": "round26-confirm-14",
+    "head": "600ff017a32b8ecf970e4478abf266dedb29e8f2",
+    "at_utc": "2026-11-26T10:10:07.089572+00:00",
+    "seconds": 0.640999999945052,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "bytes": 62,
+      "sha256": "dd5cbfd46cbc7d90e44f766619e1dd80f5375b42ec46bf848bf1736968f1969b"
+    },
+    "command": [
+      "cargo.EXE",
+      "build",
+      "-p",
+      "cloudleaf-offline",
+      "--examples",
+      "--release",
+      "--locked",
+      "--offline"
+    ]
+  },
+  {
+    "label": "round26-confirm-15",
+    "head": "600ff017a32b8ecf970e4478abf266dedb29e8f2",
+    "at_utc": "2026-11-26T10:10:08.249108+00:00",
+    "seconds": 0.40600000007543713,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 125,
+      "sha256": "c9a19367fb58e46223ff8062e331b5c5e6518e019df9f558750b24602eb5bda5"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "command": [
+      "python.EXE",
+      "scripts/check_offline_vendor.py",
+      "."
+    ]
+  },
+  {
+    "label": "round26-confirm-16",
+    "head": "600ff017a32b8ecf970e4478abf266dedb29e8f2",
+    "at_utc": "2026-11-26T10:10:15.276317+00:00",
+    "seconds": 6.25,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 262,
+      "sha256": "588618c202f907368734a90add4d1c278db926cfbf31850defb1c14b3c452601"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "command": [
+      "python.EXE",
+      "scripts/audit_translation_dependencies.py",
+      "--audit-binary",
+      "<local-pinned-cargo-audit>",
+      "--output",
+      ".local/round26-confirm-translation-audit.json"
+    ]
+  }
+]

@@ -1,0 +1,537 @@
+{
+  "head": "52c99b3f1901cc81da1a1fc0348c57445d0cfecc",
+  "binaries": {
+    "baseline": {
+      "bytes": 928768,
+      "sha256": "e635667b5876ca7a4532df0dc477dab10d2a07b980ebae8c654959b1a593192c"
+    },
+    "current": {
+      "bytes": 932352,
+      "sha256": "04c6cade45f6f07b8f7ed563889a627ce0b939917196c9b2c4914f13d16d99c5"
+    }
+  },
+  "tool": {
+    "bytes": 4662,
+    "sha256": "5b9003b6e3e3d481abca86c9979c296905462b9a5b1d3628cf45c7c42aa1d061"
+  },
+  "runtime": {
+    "bytes": 23602173,
+    "sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+  },
+  "lexical": {
+    "bytes": 3034818,
+    "sha256": "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5"
+  },
+  "cases": {
+    "full": {
+      "input": {
+        "bytes": 716,
+        "sha256": "75cf96003a6ff1918c53864e706a199d6743d29317323dbef1abf74a892aa36f"
+      },
+      "all_outputs": 203,
+      "data": {
+        "baseline": {
+          "normal_ns": {
+            "n": 406,
+            "p50": 2031900,
+            "p95": 5844700,
+            "p99": 7767400,
+            "max": 8450000
+          },
+          "phases_ns": {
+            "bucket_sort_dedup": {
+              "n": 406,
+              "p50": 35500,
+              "p95": 128600,
+              "p99": 150900,
+              "max": 164900
+            },
+            "final_sort_dedup": {
+              "n": 406,
+              "p50": 1900,
+              "p95": 5200,
+              "p99": 17200,
+              "max": 22700
+            },
+            "lattice": {
+              "n": 406,
+              "p50": 34800,
+              "p95": 98700,
+              "p99": 146900,
+              "max": 261000
+            },
+            "materialize": {
+              "n": 406,
+              "p50": 4800,
+              "p95": 14700,
+              "p99": 24300,
+              "max": 294400
+            },
+            "normalize": {
+              "n": 406,
+              "p50": 1500,
+              "p95": 4700,
+              "p99": 12700,
+              "max": 19700
+            },
+            "query_total": {
+              "n": 406,
+              "p50": 2312800,
+              "p95": 6832600,
+              "p99": 8701000,
+              "max": 10251800
+            },
+            "scoring": {
+              "n": 406,
+              "p50": 1822600,
+              "p95": 5625500,
+              "p99": 7278400,
+              "max": 8684100
+            },
+            "search_validate": {
+              "n": 406,
+              "p50": 100,
+              "p95": 300,
+              "p99": 600,
+              "max": 900
+            },
+            "traversal": {
+              "n": 406,
+              "p50": 2256800,
+              "p95": 6727800,
+              "p99": 8580200,
+              "max": 10151400
+            }
+          },
+          "mismatches": [],
+          "runs": [
+            {
+              "started_utc": "2026-11-26T09:06:09.323059+00:00",
+              "seconds": 2.019289000018034,
+              "head": "52c99b3f1901cc81da1a1fc0348c57445d0cfecc",
+              "harness_timeout": false,
+              "pid": 36836,
+              "returncode": 0,
+              "expected_returncode": 0,
+              "stdout": {
+                "bytes": 1458253,
+                "sha256": "c03bb301dac437d9e841a83d4a924fcb9fa76b307054864a9785e531b5794ca3"
+              },
+              "stderr": {
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              "memory": [],
+              "tool": {
+                "bytes": 6160,
+                "sha256": "646d1bd3049fa1cb3be548ff7a90a065c3af2f520e8a3921d324506e6266a1e3"
+              },
+              "input_sha256": "cd5e45c52a6524d4d3b9c7d64c6bc0d069c7d35a11ce6038bbf5c342e6b95f27"
+            },
+            {
+              "started_utc": "2026-11-26T09:06:15.655153+00:00",
+              "seconds": 1.8793285000137985,
+              "head": "52c99b3f1901cc81da1a1fc0348c57445d0cfecc",
+              "harness_timeout": false,
+              "pid": 44416,
+              "returncode": 0,
+              "expected_returncode": 0,
+              "stdout": {
+                "bytes": 1458220,
+                "sha256": "3b611dfe200ae290101478e200ccdc13ef4952f96792824201fc65004ee90a00"
+              },
+              "stderr": {
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              "memory": [],
+              "tool": {
+                "bytes": 6160,
+                "sha256": "646d1bd3049fa1cb3be548ff7a90a065c3af2f520e8a3921d324506e6266a1e3"
+              },
+              "input_sha256": "cd5e45c52a6524d4d3b9c7d64c6bc0d069c7d35a11ce6038bbf5c342e6b95f27"
+            }
+          ]
+        },
+        "current": {
+          "normal_ns": {
+            "n": 406,
+            "p50": 2312000,
+            "p95": 6668400,
+            "p99": 9807300,
+            "max": 17799000
+          },
+          "phases_ns": {
+            "bucket_sort_dedup": {
+              "n": 406,
+              "p50": 42200,
+              "p95": 145000,
+              "p99": 222000,
+              "max": 441000
+            },
+            "final_sort_dedup": {
+              "n": 406,
+              "p50": 2500,
+              "p95": 7000,
+              "p99": 11700,
+              "max": 34400
+            },
+            "lattice": {
+              "n": 406,
+              "p50": 46000,
+              "p95": 112800,
+              "p99": 161400,
+              "max": 299000
+            },
+            "materialize": {
+              "n": 406,
+              "p50": 6100,
+              "p95": 17900,
+              "p99": 34900,
+              "max": 75000
+            },
+            "normalize": {
+              "n": 406,
+              "p50": 2200,
+              "p95": 5300,
+              "p99": 11900,
+              "max": 18900
+            },
+            "query_total": {
+              "n": 406,
+              "p50": 2646500,
+              "p95": 8353100,
+              "p99": 12579900,
+              "max": 20346300
+            },
+            "scoring": {
+              "n": 406,
+              "p50": 2126000,
+              "p95": 6989600,
+              "p99": 11303300,
+              "max": 17141500
+            },
+            "search_validate": {
+              "n": 406,
+              "p50": 100,
+              "p95": 400,
+              "p99": 700,
+              "max": 12500
+            },
+            "traversal": {
+              "n": 406,
+              "p50": 2583900,
+              "p95": 8288200,
+              "p99": 12432700,
+              "max": 20222100
+            }
+          },
+          "mismatches": [],
+          "runs": [
+            {
+              "started_utc": "2026-11-26T09:06:11.430834+00:00",
+              "seconds": 2.1462530000135303,
+              "head": "52c99b3f1901cc81da1a1fc0348c57445d0cfecc",
+              "harness_timeout": false,
+              "pid": 21876,
+              "returncode": 0,
+              "expected_returncode": 0,
+              "stdout": {
+                "bytes": 1458414,
+                "sha256": "37246c665d50b3565344bc34d5d3b897966f4fe2eae8615d3b6c8003c43fa6c8"
+              },
+              "stderr": {
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              "memory": [],
+              "tool": {
+                "bytes": 6160,
+                "sha256": "646d1bd3049fa1cb3be548ff7a90a065c3af2f520e8a3921d324506e6266a1e3"
+              },
+              "input_sha256": "cd5e45c52a6524d4d3b9c7d64c6bc0d069c7d35a11ce6038bbf5c342e6b95f27"
+            },
+            {
+              "started_utc": "2026-11-26T09:06:13.679403+00:00",
+              "seconds": 1.8878689000266604,
+              "head": "52c99b3f1901cc81da1a1fc0348c57445d0cfecc",
+              "harness_timeout": false,
+              "pid": 40644,
+              "returncode": 0,
+              "expected_returncode": 0,
+              "stdout": {
+                "bytes": 1458291,
+                "sha256": "618fbc78d31b1eb29e9d14cc09c56699b1a30a20f473853cb8fb54f52fe588d8"
+              },
+              "stderr": {
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              "memory": [],
+              "tool": {
+                "bytes": 6160,
+                "sha256": "646d1bd3049fa1cb3be548ff7a90a065c3af2f520e8a3921d324506e6266a1e3"
+              },
+              "input_sha256": "cd5e45c52a6524d4d3b9c7d64c6bc0d069c7d35a11ce6038bbf5c342e6b95f27"
+            }
+          ]
+        }
+      }
+    },
+    "abbreviated": {
+      "input": {
+        "bytes": 351,
+        "sha256": "141327bc03e270974aa86c676e1db1414379bd66a3716366e718a4f218f05f0b"
+      },
+      "all_outputs": 140,
+      "data": {
+        "baseline": {
+          "normal_ns": {
+            "n": 280,
+            "p50": 5975400,
+            "p95": 27227200,
+            "p99": 34648200,
+            "max": 35747300
+          },
+          "phases_ns": {
+            "bucket_sort_dedup": {
+              "n": 280,
+              "p50": 38500,
+              "p95": 158700,
+              "p99": 206600,
+              "max": 217200
+            },
+            "final_sort_dedup": {
+              "n": 280,
+              "p50": 2300,
+              "p95": 5000,
+              "p99": 17400,
+              "max": 19200
+            },
+            "materialize": {
+              "n": 280,
+              "p50": 4900,
+              "p95": 13200,
+              "p99": 23900,
+              "max": 27300
+            },
+            "query_total": {
+              "n": 280,
+              "p50": 6847800,
+              "p95": 30388900,
+              "p99": 38906500,
+              "max": 39590600
+            },
+            "scheme_interpret": {
+              "n": 280,
+              "p50": 41500,
+              "p95": 188600,
+              "p99": 253500,
+              "max": 356700
+            },
+            "scheme_intersection": {
+              "n": 280,
+              "p50": 1426400,
+              "p95": 4828400,
+              "p99": 6615700,
+              "max": 6852500
+            },
+            "scoring": {
+              "n": 280,
+              "p50": 4761000,
+              "p95": 21433900,
+              "p99": 27460100,
+              "max": 27923700
+            },
+            "search_validate": {
+              "n": 280,
+              "p50": 200,
+              "p95": 500,
+              "p99": 900,
+              "max": 1400
+            },
+            "traversal": {
+              "n": 280,
+              "p50": 5398200,
+              "p95": 25237400,
+              "p99": 32971800,
+              "max": 33469800
+            }
+          },
+          "mismatches": [],
+          "runs": [
+            {
+              "started_utc": "2026-11-26T09:06:17.624039+00:00",
+              "seconds": 3.6180049999966286,
+              "head": "52c99b3f1901cc81da1a1fc0348c57445d0cfecc",
+              "harness_timeout": false,
+              "pid": 41828,
+              "returncode": 0,
+              "expected_returncode": 0,
+              "stdout": {
+                "bytes": 964227,
+                "sha256": "716c02d8fae873ef57abe45ed764ff78936a05d3959364639dc13c383db164d1"
+              },
+              "stderr": {
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              "memory": [],
+              "tool": {
+                "bytes": 6160,
+                "sha256": "646d1bd3049fa1cb3be548ff7a90a065c3af2f520e8a3921d324506e6266a1e3"
+              },
+              "input_sha256": "01a9bb648426bf1bc854930675e64f07e6675085b09bb584acc6c5444b8758ac"
+            },
+            {
+              "started_utc": "2026-11-26T09:06:28.759698+00:00",
+              "seconds": 3.4168854999588802,
+              "head": "52c99b3f1901cc81da1a1fc0348c57445d0cfecc",
+              "harness_timeout": false,
+              "pid": 42516,
+              "returncode": 0,
+              "expected_returncode": 0,
+              "stdout": {
+                "bytes": 964176,
+                "sha256": "f3edf8ee3bec713be6f78a37ec91511eb28f97530f272a258024010db354190c"
+              },
+              "stderr": {
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              "memory": [],
+              "tool": {
+                "bytes": 6160,
+                "sha256": "646d1bd3049fa1cb3be548ff7a90a065c3af2f520e8a3921d324506e6266a1e3"
+              },
+              "input_sha256": "01a9bb648426bf1bc854930675e64f07e6675085b09bb584acc6c5444b8758ac"
+            }
+          ]
+        },
+        "current": {
+          "normal_ns": {
+            "n": 280,
+            "p50": 6421800,
+            "p95": 26613400,
+            "p99": 30338700,
+            "max": 31502400
+          },
+          "phases_ns": {
+            "bucket_sort_dedup": {
+              "n": 280,
+              "p50": 37800,
+              "p95": 171200,
+              "p99": 225700,
+              "max": 275800
+            },
+            "final_sort_dedup": {
+              "n": 280,
+              "p50": 2300,
+              "p95": 6100,
+              "p99": 19100,
+              "max": 24700
+            },
+            "materialize": {
+              "n": 280,
+              "p50": 5100,
+              "p95": 15400,
+              "p99": 22900,
+              "max": 31600
+            },
+            "query_total": {
+              "n": 280,
+              "p50": 7256900,
+              "p95": 32107300,
+              "p99": 36689700,
+              "max": 38565000
+            },
+            "scheme_interpret": {
+              "n": 280,
+              "p50": 42300,
+              "p95": 170700,
+              "p99": 229800,
+              "max": 310400
+            },
+            "scheme_intersection": {
+              "n": 280,
+              "p50": 1609000,
+              "p95": 5389100,
+              "p99": 6457300,
+              "max": 8263000
+            },
+            "scoring": {
+              "n": 280,
+              "p50": 4875200,
+              "p95": 22170200,
+              "p99": 26111100,
+              "max": 33350000
+            },
+            "search_validate": {
+              "n": 280,
+              "p50": 200,
+              "p95": 700,
+              "p99": 1300,
+              "max": 1700
+            },
+            "traversal": {
+              "n": 280,
+              "p50": 5758500,
+              "p95": 26352200,
+              "p99": 30619900,
+              "max": 35717000
+            }
+          },
+          "mismatches": [],
+          "runs": [
+            {
+              "started_utc": "2026-11-26T09:06:21.330821+00:00",
+              "seconds": 3.6190886999829672,
+              "head": "52c99b3f1901cc81da1a1fc0348c57445d0cfecc",
+              "harness_timeout": false,
+              "pid": 33152,
+              "returncode": 0,
+              "expected_returncode": 0,
+              "stdout": {
+                "bytes": 964236,
+                "sha256": "eff82679c3bbf18d66037e79f8936bac9d60361547e04b08ed3c1e6867f4c2a6"
+              },
+              "stderr": {
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              "memory": [],
+              "tool": {
+                "bytes": 6160,
+                "sha256": "646d1bd3049fa1cb3be548ff7a90a065c3af2f520e8a3921d324506e6266a1e3"
+              },
+              "input_sha256": "01a9bb648426bf1bc854930675e64f07e6675085b09bb584acc6c5444b8758ac"
+            },
+            {
+              "started_utc": "2026-11-26T09:06:25.051828+00:00",
+              "seconds": 3.619765200011898,
+              "head": "52c99b3f1901cc81da1a1fc0348c57445d0cfecc",
+              "harness_timeout": false,
+              "pid": 46656,
+              "returncode": 0,
+              "expected_returncode": 0,
+              "stdout": {
+                "bytes": 964171,
+                "sha256": "c0bfc3f58344e19e7a691696665a9375d5c210b8a5e6802a9b1a786d81a76380"
+              },
+              "stderr": {
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              "memory": [],
+              "tool": {
+                "bytes": 6160,
+                "sha256": "646d1bd3049fa1cb3be548ff7a90a065c3af2f520e8a3921d324506e6266a1e3"
+              },
+              "input_sha256": "01a9bb648426bf1bc854930675e64f07e6675085b09bb584acc6c5444b8758ac"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

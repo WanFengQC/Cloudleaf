@@ -14,3 +14,9 @@
 阶段设计提交为 `abab11f` 和 `816bada`。搜索实现为 `52c99b3`、`c929e61`，共享 Worker 源码及入口回归起始提交为 `5669b26`，调度矩阵工具为 `c765e63`，实际证据核验修正为 `bb58b28`。实现源码、检查和原始研究临时目录分别绑定身份。主分支和旧 Draft 逐项通过远程核对后生成 Git 外回执。
 
 [50 项产品需求与验收](cloudleaf-product-readiness.md)。CL-010 保持关闭。
+
+## 本地回归与定版
+
+源码在 `600ff017a32b8ecf970e4478abf266dedb29e8f2` 上完成第二次完整回归。16 条命令均返回 0，Rust 443 通过、4 个条件用例按默认配置忽略，Python 202 通过。Rust 文档测试、release、工作区、Windows 依赖、翻译依赖、许可、vendor、RustSec 与资源检查均成功。首轮并发下的既有 watchdog 测试失败仍保留，独立复测和第二次工作区全量测试均通过。另运行固定模型 Release IPC ignored 测试与隔离宿主真实模型 ignored 测试，两项各 1 通过。原始退出码、数据、工具和二进制 SHA 见[证据索引](integration-round26-evidence/index.json)。私有研发逐字原件保留在索引指定本地目录。
+
+最终证据提交只增加记录。其自身的 push Run、四份工件及归档 SHA、文件 CRC 和许可内容逐项绑定于 Git 外 `.local/round26-delivery-receipt.json`。仓库内没有打包模型权重。

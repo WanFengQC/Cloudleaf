@@ -1,0 +1,26 @@
+    Blocking waiting for file lock on build directory
+   Compiling windows-strings v0.5.1
+   Compiling syn v2.0.119
+   Compiling windows-result v0.4.1
+   Compiling windows-threading v0.2.1
+   Compiling cloudleaf-user v0.1.0 (C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\crates\cloudleaf-user)
+   Compiling windows-implement v0.60.2
+   Compiling windows-interface v0.59.3
+   Compiling serde_derive v1.0.228
+   Compiling windows-core v0.62.2
+   Compiling windows-numerics v0.3.1
+   Compiling windows-collections v0.3.2
+   Compiling windows-future v0.3.2
+   Compiling windows v0.62.2
+   Compiling serde v1.0.228
+   Compiling cloudleaf-translation-ipc v0.1.0 (C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\crates\cloudleaf-translation-ipc)
+   Compiling cloudleaf-windows-ime v0.1.0 (C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\apps\windows-ime)
+    Finished `release` profile [optimized] target(s) in 8m 20s
+     Running unittests src\lib.rs (.local\target\release\deps\cloudleaf_windows_ime-68bb232cef89fc78.exe)
+
+thread 'native::session::isolated_input::translation::tests::round26_isolated_host_uses_real_worker_in_both_directions' panicked at apps\windows-ime\src\..\..\..\adapters\windows\isolated_translation.rs:754:25:
+assertion `left == right` failed
+  left: 54
+ right: 64
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: test failed, to rerun pass `-p cloudleaf-windows-ime --lib`

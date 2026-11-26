@@ -1,0 +1,6064 @@
+{
+  "head": "bb58b28b59a36f7167f750f8516a559cade8ef4a",
+  "baseline_head": "d56ce7167b10d7ee96ff341bb27573cdfcc7a8bc",
+  "started_utc": "2026-11-26T10:03:31.405797+00:00",
+  "environment": "Windows-11-10.0.26300-SP0",
+  "processor": "Intel64 Family 6 Model 167 Stepping 1, GenuineIntel",
+  "topology": {
+    "status": "configured",
+    "allowed": 4095,
+    "cores": [
+      {
+        "mask": 3,
+        "efficiency": 0,
+        "smt": 2
+      },
+      {
+        "mask": 12,
+        "efficiency": 0,
+        "smt": 2
+      },
+      {
+        "mask": 48,
+        "efficiency": 0,
+        "smt": 2
+      },
+      {
+        "mask": 192,
+        "efficiency": 0,
+        "smt": 2
+      },
+      {
+        "mask": 768,
+        "efficiency": 0,
+        "smt": 2
+      },
+      {
+        "mask": 3072,
+        "efficiency": 0,
+        "smt": 2
+      }
+    ],
+    "input_mask": 3,
+    "worker_mask": 60
+  },
+  "resources": {
+    "runtime": {
+      "bytes": 23602173,
+      "sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+    },
+    "lexical": {
+      "bytes": 3034818,
+      "sha256": "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5"
+    },
+    "catalog": {
+      "bytes": 326,
+      "sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f"
+    },
+    "word": {
+      "bytes": 2619128,
+      "sha256": "f8062a4a8e456135840b9df51857c84e3ea3f16f59ced4f9dc85a5bd19fade3a"
+    },
+    "models": {
+      "catalog": {
+        "bytes": 326,
+        "sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f"
+      },
+      "models": [
+        {
+          "model_id": "opus-mt-en-zh",
+          "direction": "en-zh",
+          "license_id": "CC-BY-4.0",
+          "license_status": "research_only",
+          "revision": "408d9bc410a388e1d9aef112a2daba955b945255",
+          "manifest": {
+            "bytes": 1617,
+            "sha256": "800a9d1ceae9370e87fafad7aa93429bb4701c2d92107a1a36a28aab18b74ddb"
+          },
+          "resources": {
+            "weights": {
+              "bytes": 312062436,
+              "sha256": "e5f4423b70cb0f5a40d38d1a2733a77cec2aa23cc0bae647985fe17f8f5fe616"
+            },
+            "config": {
+              "bytes": 1403,
+              "sha256": "bcae8ed74fed77fb51c58462b62397fee6b1a1a34aece79183a0dd02ad329e71"
+            },
+            "source_tokenizer": {
+              "bytes": 806435,
+              "sha256": "5775ddc9e3ff2fae91554da56468ad35ff56edaba870fea74447bc7234bfdaa8"
+            },
+            "target_tokenizer": {
+              "bytes": 804600,
+              "sha256": "81dc94efa84e4025ef38d25d5d07429fe41e3eb29d44003f1db6fe98487b0052"
+            },
+            "vocabulary": {
+              "bytes": 1617791,
+              "sha256": "f1832ca38f7aa158b9a944ff583e4901e6b37d9d4ad9241f03838e636e9cfb03"
+            },
+            "license": {
+              "bytes": 18657,
+              "sha256": "9ba9550ad48438d0836ddab3da480b3b69ffa0aac7b7878b5a0039e7ab429411"
+            },
+            "notice": {
+              "bytes": 841,
+              "sha256": "bbefab3f24af6005d260d93fd0758b97ea7c6e50a467b0bc308c5dd08af53b97"
+            }
+          }
+        },
+        {
+          "model_id": "opus-mt-zh-en",
+          "direction": "zh-en",
+          "license_id": "CC-BY-4.0",
+          "license_status": "research_only",
+          "revision": "cf109095479db38d6df799875e34039d4938aaa6",
+          "manifest": {
+            "bytes": 1617,
+            "sha256": "6701aa87d2961dbe26a3a232e0353c2fef3c3109ca99119de4d9b1ff241d02b9"
+          },
+          "resources": {
+            "weights": {
+              "bytes": 312062436,
+              "sha256": "a7c75c919608ea1af3bb6d4aca052af43f35e6967a4f133a865bfe2bde13f21e"
+            },
+            "config": {
+              "bytes": 1394,
+              "sha256": "d84104da12fa90da59acf5f0ed30428e43cc92574ad4b9dfa88f29eeeb2b0eb0"
+            },
+            "source_tokenizer": {
+              "bytes": 804677,
+              "sha256": "e27a3a1b539f4959ec72ea60e453f49156289f95d4e6000b29332efc45616203"
+            },
+            "target_tokenizer": {
+              "bytes": 806530,
+              "sha256": "6a881f4717cd7265f53fea54fd3dc689c767c05338fac7a4590f3088cb2d7855"
+            },
+            "vocabulary": {
+              "bytes": 1617902,
+              "sha256": "c0f79ee4c413ccb24cd808a0c727eec85b2130f23c82802cc1caeb07b5f0d458"
+            },
+            "license": {
+              "bytes": 18657,
+              "sha256": "9ba9550ad48438d0836ddab3da480b3b69ffa0aac7b7878b5a0039e7ab429411"
+            },
+            "notice": {
+              "bytes": 841,
+              "sha256": "0bcbe0ee326de8ad259e7a604094623312afb701d8b398f9d5c4f952047d39f7"
+            }
+          }
+        }
+      ],
+      "lock_sources": {
+        "opus-source-lock.json": {
+          "bytes": 5076,
+          "sha256": "9ab6484f731aa30b5edb9c846548a6db85843354bc2e6e4ccfbbbcdc3ab9ad2f"
+        },
+        "opus-converted-lock.json": {
+          "bytes": 1275,
+          "sha256": "17e02ac3cb1a8f55bc39eb408d97e499762e3b1b38922398bd1bbdfa1353852f"
+        }
+      }
+    },
+    "traces": {
+      "171": {
+        "bytes": 863,
+        "sha256": "e087cc965bd2f6c889a84f3db89b3829ccfda452f436d7b3cf562bbb965602ad"
+      },
+      "243": {
+        "bytes": 716,
+        "sha256": "75cf96003a6ff1918c53864e706a199d6743d29317323dbef1abf74a892aa36f"
+      }
+    }
+  },
+  "runner": {
+    "bytes": 16913,
+    "sha256": "ee69f658bf0a3ee5ed36de531cebb0ac76b3ac7f1b1dea8991043f90a838b883"
+  },
+  "executables": {
+    "round25": {
+      "probe": {
+        "bytes": 1596416,
+        "sha256": "e6eafafe110c2426d63d5e4c2aa8a3807566ae3854b92282f05152070facd50a"
+      },
+      "worker": {
+        "bytes": 3311616,
+        "sha256": "593a5e2d6ac79fbd011c8caf801faf8318bfd53d1a92392ee9a3fe1c7b450ae5"
+      },
+      "exact_release": true,
+      "exact_probe_build": {
+        "bytes": 3140,
+        "sha256": "9c9f4f47d519dfdd4eea2066c76c1083500ac3216712f8b31c04e6f8553f88ae"
+      },
+      "archived_probe_head": "6a5a565ee175ad7248104d9a92a15e54176b48df",
+      "probe_source_sha256": "7729245e6c0637747db6a9bd4b316cd3f0f5222e64c9c722a8db4db16c43fa21",
+      "archived_build": {
+        "bytes": 2914,
+        "sha256": "787ecc08e0ce88a067f662aaf47813c6fd3147a74d50c168c9d3fce5f9837707"
+      },
+      "ci_contents": {
+        "bytes": 212756,
+        "sha256": "a632ae927f3c7ed9a21b29b5ea253d98ed947652362b503c9ce5d7b175e12feb"
+      }
+    },
+    "round26": {
+      "probe": {
+        "bytes": 1601024,
+        "sha256": "1d88c4831323f59470defdbfc032eb9c52059fc07b877a861f6105b6c2dea7f3"
+      },
+      "worker": {
+        "bytes": 3315200,
+        "sha256": "01f38242f402d1d34e9fa68c73e010c5e837b0dcf1b45932769060bf1e764840"
+      },
+      "build_head": "c765e634342b19f40fbde2ac4e2043187373a9ef",
+      "build_receipt": {
+        "bytes": 52493,
+        "sha256": "237d5d20db667274083a63ce7e862f3f13425d43b0d15210e0e38310dbc9bd0b"
+      },
+      "probe_source_sha256": "7729245e6c0637747db6a9bd4b316cd3f0f5222e64c9c722a8db4db16c43fa21",
+      "local_build": {
+        "bytes": 2912,
+        "sha256": "fdb8215146f718906d13e9460b22678fb6eac948b005e53a92582be3e504ace6"
+      }
+    }
+  },
+  "runs": [
+    {
+      "label": "171-1-lexical-idle-normal-round25",
+      "repetition": 1,
+      "version": "round25",
+      "trajectory": "171",
+      "mode": "lexical",
+      "stage": "idle",
+      "policy": "normal",
+      "events": 171,
+      "candidate_sha256": "48381606e9408133e020271fb9e08ede4c1645bf62e2876f49f148d28164192f",
+      "infer_window_events": 0,
+      "load_window_events": 0,
+      "models": {},
+      "resources": {
+        "host_samples": 15,
+        "worker_samples": 0,
+        "host": {
+          "rss": 184582144,
+          "peak_rss": 195166208,
+          "private": 201465856,
+          "threads": 4,
+          "process_cpu_ns": 921875000,
+          "read_bytes": 27641374
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "system_cpu_fraction": 0.3455555555555555,
+      "cancel_ns": [],
+      "ready_ns": null,
+      "shutdown_ns": [],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [],
+      "observed_policy": {
+        "input": {
+          "pid": 48884,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 6787,
+        "sha256": "21a4591020bbead3e9543a1cb5eedfd07182a221f902efeaaf54ba433c877aa9"
+      }
+    },
+    {
+      "label": "171-1-lexical-idle-normal-round26",
+      "repetition": 1,
+      "version": "round26",
+      "trajectory": "171",
+      "mode": "lexical",
+      "stage": "idle",
+      "policy": "normal",
+      "events": 171,
+      "candidate_sha256": "48381606e9408133e020271fb9e08ede4c1645bf62e2876f49f148d28164192f",
+      "infer_window_events": 0,
+      "load_window_events": 0,
+      "models": {},
+      "resources": {
+        "host_samples": 14,
+        "worker_samples": 0,
+        "host": {
+          "rss": 186765312,
+          "peak_rss": 196177920,
+          "private": 185524224,
+          "threads": 4,
+          "process_cpu_ns": 796875000,
+          "read_bytes": 27641374
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "system_cpu_fraction": 0.5462962962962963,
+      "cancel_ns": [],
+      "ready_ns": null,
+      "shutdown_ns": [],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [],
+      "observed_policy": {
+        "input": {
+          "pid": 45488,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 6456,
+        "sha256": "40de9752e44fe594598a4085e8430b6b46d45dace80f0a41e24e55b24d1342ba"
+      }
+    },
+    {
+      "label": "171-1-lexical-infer-normal-round25",
+      "repetition": 1,
+      "version": "round25",
+      "trajectory": "171",
+      "mode": "lexical",
+      "stage": "infer",
+      "policy": "normal",
+      "events": 171,
+      "candidate_sha256": "48381606e9408133e020271fb9e08ede4c1645bf62e2876f49f148d28164192f",
+      "infer_window_events": 171,
+      "load_window_events": 0,
+      "models": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 339365600,
+          "load_ns": 375338000,
+          "inference_ns": 2228601000,
+          "encoder_ns": 74308300,
+          "decoder_ns": 2131236500,
+          "generated_steps": 69,
+          "queue_wait_ns": 82100,
+          "infer_start": 1795687415455780400,
+          "infer_end": 1795687417685156500,
+          "load_start": 1795687415080440900,
+          "load_end": 1795687415455778900,
+          "host_request_to_result_ns": 2962137500,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw_sha256": "2973c72a1a76a9f01fe5366308d79bbae78f56d746a68cbc88f167d106026725"
+        }
+      },
+      "resources": {
+        "host_samples": 30,
+        "worker_samples": 16,
+        "host": {
+          "rss": 186843136,
+          "peak_rss": 194760704,
+          "private": 187469824,
+          "threads": 7,
+          "process_cpu_ns": 1250000000,
+          "read_bytes": 30955260
+        },
+        "worker": {
+          "rss": 487120896,
+          "peak_rss": 661135360,
+          "private": 658264064,
+          "threads": 7,
+          "process_cpu_ns": 2843750000,
+          "read_bytes": 631616283
+        },
+        "paired_max_rss": 655245312
+      },
+      "system_cpu_fraction": 0.4598997493734336,
+      "cancel_ns": [],
+      "ready_ns": 217745400,
+      "shutdown_ns": [
+        60363400
+      ],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [
+        [
+          "Verifying",
+          "1795687414741838500"
+        ],
+        [
+          "Loading",
+          "1795687415093136200"
+        ],
+        [
+          "Inferring",
+          "1795687415460012800"
+        ]
+      ],
+      "observed_policy": {
+        "worker": {
+          "pid": 5592,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        },
+        "input": {
+          "pid": 46616,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 30473,
+        "sha256": "f1f40ce3796932279dbc597f3060a7a8c274bd19d0ead72ae001b7757a4965ae"
+      }
+    },
+    {
+      "label": "171-1-lexical-infer-normal-round26",
+      "repetition": 1,
+      "version": "round26",
+      "trajectory": "171",
+      "mode": "lexical",
+      "stage": "infer",
+      "policy": "normal",
+      "events": 171,
+      "candidate_sha256": "48381606e9408133e020271fb9e08ede4c1645bf62e2876f49f148d28164192f",
+      "infer_window_events": 171,
+      "load_window_events": 0,
+      "models": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 359963400,
+          "load_ns": 371111500,
+          "inference_ns": 1969642600,
+          "encoder_ns": 94342600,
+          "decoder_ns": 1842157000,
+          "generated_steps": 69,
+          "queue_wait_ns": 65200,
+          "infer_start": 1795687419673228100,
+          "infer_end": 1795687421643440000,
+          "load_start": 1795687419302105300,
+          "load_end": 1795687419673216800,
+          "host_request_to_result_ns": 2722346900,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw_sha256": "2973c72a1a76a9f01fe5366308d79bbae78f56d746a68cbc88f167d106026725"
+        }
+      },
+      "resources": {
+        "host_samples": 29,
+        "worker_samples": 15,
+        "host": {
+          "rss": 185503744,
+          "peak_rss": 194723840,
+          "private": 185978880,
+          "threads": 7,
+          "process_cpu_ns": 875000000,
+          "read_bytes": 30958844
+        },
+        "worker": {
+          "rss": 354521088,
+          "peak_rss": 660537344,
+          "private": 351039488,
+          "threads": 7,
+          "process_cpu_ns": 2625000000,
+          "read_bytes": 631616283
+        },
+        "paired_max_rss": 522952704
+      },
+      "system_cpu_fraction": 0.43393094289508627,
+      "cancel_ns": [],
+      "ready_ns": 217502300,
+      "shutdown_ns": [
+        64624300
+      ],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [
+        [
+          "Verifying",
+          "1795687418942840800"
+        ],
+        [
+          "Loading",
+          "1795687419309326700"
+        ],
+        [
+          "Inferring",
+          "1795687419680210800"
+        ]
+      ],
+      "observed_policy": {
+        "worker": {
+          "pid": 50980,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        },
+        "input": {
+          "pid": 14412,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 29712,
+        "sha256": "ee2baa86580bbab0212e1cc536b3d4fa2f061e733139572902081d2cfc326021"
+      }
+    },
+    {
+      "label": "171-1-word-idle-normal-round25",
+      "repetition": 1,
+      "version": "round25",
+      "trajectory": "171",
+      "mode": "word",
+      "stage": "idle",
+      "policy": "normal",
+      "events": 171,
+      "candidate_sha256": "074b89d815c6d50affb5712a4a213bcf837d82abb71189da799bf53010fba1a0",
+      "infer_window_events": 0,
+      "load_window_events": 0,
+      "models": {},
+      "resources": {
+        "host_samples": 14,
+        "worker_samples": 0,
+        "host": {
+          "rss": 183836672,
+          "peak_rss": 194719744,
+          "private": 184254464,
+          "threads": 4,
+          "process_cpu_ns": 828125000,
+          "read_bytes": 30260502
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "system_cpu_fraction": 0.2568306010928961,
+      "cancel_ns": [],
+      "ready_ns": null,
+      "shutdown_ns": [],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [],
+      "observed_policy": {
+        "input": {
+          "pid": 31140,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 6658,
+        "sha256": "f8d353d681d1c1cf79bf56fd40e4db2e6a8485a73d9206aeb89326a6da0382ca"
+      }
+    },
+    {
+      "label": "171-1-word-idle-normal-round26",
+      "repetition": 1,
+      "version": "round26",
+      "trajectory": "171",
+      "mode": "word",
+      "stage": "idle",
+      "policy": "normal",
+      "events": 171,
+      "candidate_sha256": "074b89d815c6d50affb5712a4a213bcf837d82abb71189da799bf53010fba1a0",
+      "infer_window_events": 0,
+      "load_window_events": 0,
+      "models": {},
+      "resources": {
+        "host_samples": 14,
+        "worker_samples": 0,
+        "host": {
+          "rss": 184389632,
+          "peak_rss": 194535424,
+          "private": 184762368,
+          "threads": 4,
+          "process_cpu_ns": 796875000,
+          "read_bytes": 30260502
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "system_cpu_fraction": 0.282258064516129,
+      "cancel_ns": [],
+      "ready_ns": null,
+      "shutdown_ns": [],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [],
+      "observed_policy": {
+        "input": {
+          "pid": 47904,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 6654,
+        "sha256": "25f74e778aedb3a54cf9ead5b32c49b76fbc423b16fe6afec422a4c35244dbff"
+      }
+    },
+    {
+      "label": "171-1-word-infer-normal-round25",
+      "repetition": 1,
+      "version": "round25",
+      "trajectory": "171",
+      "mode": "word",
+      "stage": "infer",
+      "policy": "normal",
+      "events": 171,
+      "candidate_sha256": "074b89d815c6d50affb5712a4a213bcf837d82abb71189da799bf53010fba1a0",
+      "infer_window_events": 171,
+      "load_window_events": 0,
+      "models": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 325010100,
+          "load_ns": 322906700,
+          "inference_ns": 1835103000,
+          "encoder_ns": 73617400,
+          "decoder_ns": 1738949900,
+          "generated_steps": 69,
+          "queue_wait_ns": 66100,
+          "infer_start": 1795687425393495500,
+          "infer_end": 1795687427229220600,
+          "load_start": 1795687425070585700,
+          "load_end": 1795687425393492400,
+          "host_request_to_result_ns": 2496159500,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw_sha256": "2973c72a1a76a9f01fe5366308d79bbae78f56d746a68cbc88f167d106026725"
+        }
+      },
+      "resources": {
+        "host_samples": 27,
+        "worker_samples": 15,
+        "host": {
+          "rss": 183488512,
+          "peak_rss": 194748416,
+          "private": 201875456,
+          "threads": 7,
+          "process_cpu_ns": 937500000,
+          "read_bytes": 33573130
+        },
+        "worker": {
+          "rss": 354127872,
+          "peak_rss": 660307968,
+          "private": 350928896,
+          "threads": 7,
+          "process_cpu_ns": 2453125000,
+          "read_bytes": 631616283
+        },
+        "paired_max_rss": 528433152
+      },
+      "system_cpu_fraction": 0.320254110612855,
+      "cancel_ns": [],
+      "ready_ns": 54395500,
+      "shutdown_ns": [
+        60261800
+      ],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [
+        [
+          "Verifying",
+          "1795687424746311600"
+        ],
+        [
+          "Loading",
+          "1795687425081648300"
+        ],
+        [
+          "Inferring",
+          "1795687425405994900"
+        ]
+      ],
+      "observed_policy": {
+        "worker": {
+          "pid": 22128,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        },
+        "input": {
+          "pid": 10780,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 28584,
+        "sha256": "487d898faf814bb0924610ec8d5c5ce85195aad9dbca3ca6468a9562cb8197fa"
+      }
+    },
+    {
+      "label": "171-1-word-infer-normal-round26",
+      "repetition": 1,
+      "version": "round26",
+      "trajectory": "171",
+      "mode": "word",
+      "stage": "infer",
+      "policy": "normal",
+      "events": 171,
+      "candidate_sha256": "074b89d815c6d50affb5712a4a213bcf837d82abb71189da799bf53010fba1a0",
+      "infer_window_events": 171,
+      "load_window_events": 0,
+      "models": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 357175000,
+          "load_ns": 354206500,
+          "inference_ns": 2188614900,
+          "encoder_ns": 76073300,
+          "decoder_ns": 2086224400,
+          "generated_steps": 69,
+          "queue_wait_ns": 89400,
+          "infer_start": 1795687429018868800,
+          "infer_end": 1795687431208198000,
+          "load_start": 1795687428664659600,
+          "load_end": 1795687429018866100,
+          "host_request_to_result_ns": 2916221100,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw_sha256": "2973c72a1a76a9f01fe5366308d79bbae78f56d746a68cbc88f167d106026725"
+        }
+      },
+      "resources": {
+        "host_samples": 29,
+        "worker_samples": 16,
+        "host": {
+          "rss": 185384960,
+          "peak_rss": 194527232,
+          "private": 185839616,
+          "threads": 7,
+          "process_cpu_ns": 1000000000,
+          "read_bytes": 33577972
+        },
+        "worker": {
+          "rss": 353988608,
+          "peak_rss": 660361216,
+          "private": 350748672,
+          "threads": 7,
+          "process_cpu_ns": 2781250000,
+          "read_bytes": 631616361
+        },
+        "paired_max_rss": 528355328
+      },
+      "system_cpu_fraction": 0.4816484224082421,
+      "cancel_ns": [],
+      "ready_ns": 56925400,
+      "shutdown_ns": [
+        71949500
+      ],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [
+        [
+          "Verifying",
+          "1795687428322308200"
+        ],
+        [
+          "Loading",
+          "1795687428674076400"
+        ],
+        [
+          "Inferring",
+          "1795687429026944000"
+        ]
+      ],
+      "observed_policy": {
+        "worker": {
+          "pid": 48516,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        },
+        "input": {
+          "pid": 46824,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 30347,
+        "sha256": "0047dd738260d2c3baa7a1d4b32d7e8dd0450e18132aa15c3a98a05cae0f87d6"
+      }
+    },
+    {
+      "label": "243-1-lexical-idle-normal-round25",
+      "repetition": 1,
+      "version": "round25",
+      "trajectory": "243",
+      "mode": "lexical",
+      "stage": "idle",
+      "policy": "normal",
+      "events": 243,
+      "candidate_sha256": "15024b913a787f9f7a3fe29028c3179c1c20b677fed9d7997722e492ff3adcb5",
+      "infer_window_events": 0,
+      "load_window_events": 0,
+      "models": {},
+      "resources": {
+        "host_samples": 22,
+        "worker_samples": 0,
+        "host": {
+          "rss": 187453440,
+          "peak_rss": 194781184,
+          "private": 199413760,
+          "threads": 4,
+          "process_cpu_ns": 1328125000,
+          "read_bytes": 27641227
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "system_cpu_fraction": 0.38212765957446804,
+      "cancel_ns": [],
+      "ready_ns": null,
+      "shutdown_ns": [],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [],
+      "observed_policy": {
+        "input": {
+          "pid": 5664,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 9021,
+        "sha256": "c6ffc147d50e6f565f28f6a40d0fea599068e13453f071dab75ef9bdba83d062"
+      }
+    },
+    {
+      "label": "243-1-lexical-idle-normal-round26",
+      "repetition": 1,
+      "version": "round26",
+      "trajectory": "243",
+      "mode": "lexical",
+      "stage": "idle",
+      "policy": "normal",
+      "events": 243,
+      "candidate_sha256": "15024b913a787f9f7a3fe29028c3179c1c20b677fed9d7997722e492ff3adcb5",
+      "infer_window_events": 0,
+      "load_window_events": 0,
+      "models": {},
+      "resources": {
+        "host_samples": 15,
+        "worker_samples": 0,
+        "host": {
+          "rss": 187547648,
+          "peak_rss": 194736128,
+          "private": 188239872,
+          "threads": 4,
+          "process_cpu_ns": 890625000,
+          "read_bytes": 27641227
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "system_cpu_fraction": 0.3619402985074627,
+      "cancel_ns": [],
+      "ready_ns": null,
+      "shutdown_ns": [],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [],
+      "observed_policy": {
+        "input": {
+          "pid": 41440,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 6779,
+        "sha256": "a85059ab3cf67bd0d04629957ed9926dc9d1e48122fc24d8af3b439186dbc6b8"
+      }
+    },
+    {
+      "label": "243-1-lexical-infer-normal-round25",
+      "repetition": 1,
+      "version": "round25",
+      "trajectory": "243",
+      "mode": "lexical",
+      "stage": "infer",
+      "policy": "normal",
+      "events": 243,
+      "candidate_sha256": "15024b913a787f9f7a3fe29028c3179c1c20b677fed9d7997722e492ff3adcb5",
+      "infer_window_events": 243,
+      "load_window_events": 0,
+      "models": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 336577100,
+          "load_ns": 358584800,
+          "inference_ns": 1970131600,
+          "encoder_ns": 71283500,
+          "decoder_ns": 1873848800,
+          "generated_steps": 69,
+          "queue_wait_ns": 58300,
+          "infer_start": 1795687435555332100,
+          "infer_end": 1795687437526058300,
+          "load_start": 1795687435196744200,
+          "load_end": 1795687435555329000,
+          "host_request_to_result_ns": 2674001600,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw_sha256": "2973c72a1a76a9f01fe5366308d79bbae78f56d746a68cbc88f167d106026725"
+        }
+      },
+      "resources": {
+        "host_samples": 27,
+        "worker_samples": 15,
+        "host": {
+          "rss": 185856000,
+          "peak_rss": 194748416,
+          "private": 186368000,
+          "threads": 7,
+          "process_cpu_ns": 1671875000,
+          "read_bytes": 30955113
+        },
+        "worker": {
+          "rss": 354201600,
+          "peak_rss": 660094976,
+          "private": 351010816,
+          "threads": 7,
+          "process_cpu_ns": 2515625000,
+          "read_bytes": 631616283
+        },
+        "paired_max_rss": 522133504
+      },
+      "system_cpu_fraction": 0.4243697478991597,
+      "cancel_ns": [],
+      "ready_ns": 60599300,
+      "shutdown_ns": [
+        58769100
+      ],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [
+        [
+          "Verifying",
+          "1795687434860919700"
+        ],
+        [
+          "Loading",
+          "1795687435198640300"
+        ],
+        [
+          "Inferring",
+          "1795687435565642300"
+        ]
+      ],
+      "observed_policy": {
+        "worker": {
+          "pid": 32892,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        },
+        "input": {
+          "pid": 33680,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 29106,
+        "sha256": "4a12a65daef87fed45bcccdb131dc288be70e13f22d6ab956eda8c3fe7c6edbe"
+      }
+    },
+    {
+      "label": "243-1-lexical-infer-normal-round26",
+      "repetition": 1,
+      "version": "round26",
+      "trajectory": "243",
+      "mode": "lexical",
+      "stage": "infer",
+      "policy": "normal",
+      "events": 243,
+      "candidate_sha256": "15024b913a787f9f7a3fe29028c3179c1c20b677fed9d7997722e492ff3adcb5",
+      "infer_window_events": 243,
+      "load_window_events": 0,
+      "models": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 347442900,
+          "load_ns": 386039500,
+          "inference_ns": 2703599000,
+          "encoder_ns": 99434500,
+          "decoder_ns": 2551304700,
+          "generated_steps": 69,
+          "queue_wait_ns": 81400,
+          "infer_start": 1795687439249532800,
+          "infer_end": 1795687441953885500,
+          "load_start": 1795687438863489500,
+          "load_end": 1795687439249529000,
+          "host_request_to_result_ns": 3449664300,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw_sha256": "2973c72a1a76a9f01fe5366308d79bbae78f56d746a68cbc88f167d106026725"
+        }
+      },
+      "resources": {
+        "host_samples": 27,
+        "worker_samples": 16,
+        "host": {
+          "rss": 182693888,
+          "peak_rss": 194703360,
+          "private": 201437184,
+          "threads": 7,
+          "process_cpu_ns": 1265625000,
+          "read_bytes": 30958697
+        },
+        "worker": {
+          "rss": 354148352,
+          "peak_rss": 660103168,
+          "private": 350957568,
+          "threads": 7,
+          "process_cpu_ns": 3125000000,
+          "read_bytes": 631616283
+        },
+        "paired_max_rss": 522289152
+      },
+      "system_cpu_fraction": 0.6231257208765859,
+      "cancel_ns": [],
+      "ready_ns": 53553700,
+      "shutdown_ns": [
+        126306000
+      ],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [
+        [
+          "Verifying",
+          "1795687438516906300"
+        ],
+        [
+          "Loading",
+          "1795687438870167800"
+        ],
+        [
+          "Inferring",
+          "1795687439251078500"
+        ]
+      ],
+      "observed_policy": {
+        "worker": {
+          "pid": 15652,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        },
+        "input": {
+          "pid": 44692,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 30341,
+        "sha256": "1d6cf31806bf0bf6f733e516d4b57d88d590e0068740528890586f74bddf4998"
+      }
+    },
+    {
+      "label": "243-1-word-idle-normal-round25",
+      "repetition": 1,
+      "version": "round25",
+      "trajectory": "243",
+      "mode": "word",
+      "stage": "idle",
+      "policy": "normal",
+      "events": 243,
+      "candidate_sha256": "4c563a75f6d026d2aa6aef28614e6032e3d36b7788af3da65356227de604c0c2",
+      "infer_window_events": 0,
+      "load_window_events": 0,
+      "models": {},
+      "resources": {
+        "host_samples": 18,
+        "worker_samples": 0,
+        "host": {
+          "rss": 183783424,
+          "peak_rss": 194723840,
+          "private": 184184832,
+          "threads": 4,
+          "process_cpu_ns": 1062500000,
+          "read_bytes": 30260355
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "system_cpu_fraction": 0.27243589743589747,
+      "cancel_ns": [],
+      "ready_ns": null,
+      "shutdown_ns": [],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [],
+      "observed_policy": {
+        "input": {
+          "pid": 38080,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 7956,
+        "sha256": "7a431419a13ebd94a269e2c595c438ca74b35ff2e5dd80662d3d8cfe8a862249"
+      }
+    },
+    {
+      "label": "243-1-word-idle-normal-round26",
+      "repetition": 1,
+      "version": "round26",
+      "trajectory": "243",
+      "mode": "word",
+      "stage": "idle",
+      "policy": "normal",
+      "events": 243,
+      "candidate_sha256": "4c563a75f6d026d2aa6aef28614e6032e3d36b7788af3da65356227de604c0c2",
+      "infer_window_events": 0,
+      "load_window_events": 0,
+      "models": {},
+      "resources": {
+        "host_samples": 18,
+        "worker_samples": 0,
+        "host": {
+          "rss": 187461632,
+          "peak_rss": 194592768,
+          "private": 197201920,
+          "threads": 4,
+          "process_cpu_ns": 1062500000,
+          "read_bytes": 30260355
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "system_cpu_fraction": 0.2742616033755274,
+      "cancel_ns": [],
+      "ready_ns": null,
+      "shutdown_ns": [],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [],
+      "observed_policy": {
+        "input": {
+          "pid": 46488,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 7937,
+        "sha256": "f403d2af77d902e87f728139cb9747630513a9475c467d9f3876be85ccb6f473"
+      }
+    },
+    {
+      "label": "243-1-word-infer-normal-round25",
+      "repetition": 1,
+      "version": "round25",
+      "trajectory": "243",
+      "mode": "word",
+      "stage": "infer",
+      "policy": "normal",
+      "events": 243,
+      "candidate_sha256": "4c563a75f6d026d2aa6aef28614e6032e3d36b7788af3da65356227de604c0c2",
+      "infer_window_events": 243,
+      "load_window_events": 0,
+      "models": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 327092400,
+          "load_ns": 334371700,
+          "inference_ns": 2078292900,
+          "encoder_ns": 61449100,
+          "decoder_ns": 1989098800,
+          "generated_steps": 69,
+          "queue_wait_ns": 72600,
+          "infer_start": 1795687446326037500,
+          "infer_end": 1795687448405118000,
+          "load_start": 1795687445991661800,
+          "load_end": 1795687446326033500,
+          "host_request_to_result_ns": 2750633900,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw_sha256": "2973c72a1a76a9f01fe5366308d79bbae78f56d746a68cbc88f167d106026725"
+        }
+      },
+      "resources": {
+        "host_samples": 28,
+        "worker_samples": 16,
+        "host": {
+          "rss": 183300096,
+          "peak_rss": 194543616,
+          "private": 201715712,
+          "threads": 7,
+          "process_cpu_ns": 1093750000,
+          "read_bytes": 33574241
+        },
+        "worker": {
+          "rss": 354017280,
+          "peak_rss": 660357120,
+          "private": 350748672,
+          "threads": 7,
+          "process_cpu_ns": 2796875000,
+          "read_bytes": 631616361
+        },
+        "paired_max_rss": 528347136
+      },
+      "system_cpu_fraction": 0.4034013605442177,
+      "cancel_ns": [],
+      "ready_ns": 51834600,
+      "shutdown_ns": [
+        59916700
+      ],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [
+        [
+          "Verifying",
+          "1795687445665222200"
+        ],
+        [
+          "Loading",
+          "1795687446003411200"
+        ],
+        [
+          "Inferring",
+          "1795687446330258300"
+        ]
+      ],
+      "observed_policy": {
+        "worker": {
+          "pid": 34188,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        },
+        "input": {
+          "pid": 36328,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 30152,
+        "sha256": "a6fa8ed09155b6286a5f14d24bbc04e90b11ef71bba18ee387f31a27a2f674e9"
+      }
+    },
+    {
+      "label": "243-1-word-infer-normal-round26",
+      "repetition": 1,
+      "version": "round26",
+      "trajectory": "243",
+      "mode": "word",
+      "stage": "infer",
+      "policy": "normal",
+      "events": 243,
+      "candidate_sha256": "4c563a75f6d026d2aa6aef28614e6032e3d36b7788af3da65356227de604c0c2",
+      "infer_window_events": 243,
+      "load_window_events": 0,
+      "models": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 355453000,
+          "load_ns": 399043700,
+          "inference_ns": 2039531000,
+          "encoder_ns": 67121300,
+          "decoder_ns": 1933229100,
+          "generated_steps": 69,
+          "queue_wait_ns": 174000,
+          "infer_start": 1795687450271596700,
+          "infer_end": 1795687452311810200,
+          "load_start": 1795687449872546700,
+          "load_end": 1795687450271590400,
+          "host_request_to_result_ns": 2799371500,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw_sha256": "2973c72a1a76a9f01fe5366308d79bbae78f56d746a68cbc88f167d106026725"
+        }
+      },
+      "resources": {
+        "host_samples": 28,
+        "worker_samples": 15,
+        "host": {
+          "rss": 180834304,
+          "peak_rss": 194588672,
+          "private": 200003584,
+          "threads": 7,
+          "process_cpu_ns": 1187500000,
+          "read_bytes": 33577826
+        },
+        "worker": {
+          "rss": 377004032,
+          "peak_rss": 660107264,
+          "private": 657641472,
+          "threads": 7,
+          "process_cpu_ns": 2687500000,
+          "read_bytes": 631616283
+        },
+        "paired_max_rss": 551284736
+      },
+      "system_cpu_fraction": 0.4359229747675962,
+      "cancel_ns": [],
+      "ready_ns": 53052100,
+      "shutdown_ns": [
+        65441300
+      ],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [
+        [
+          "Verifying",
+          "1795687449518181300"
+        ],
+        [
+          "Loading",
+          "1795687449885556100"
+        ],
+        [
+          "Inferring",
+          "1795687450282624200"
+        ]
+      ],
+      "observed_policy": {
+        "worker": {
+          "pid": 1744,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        },
+        "input": {
+          "pid": 38520,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 29605,
+        "sha256": "18d5cf45a4f8f8f0d260bbcfc87b4c02517ed0f0fbfd948937bdc38ed34526cd"
+      }
+    },
+    {
+      "label": "243-2-word-infer-normal-round26",
+      "repetition": 2,
+      "version": "round26",
+      "trajectory": "243",
+      "mode": "word",
+      "stage": "infer",
+      "policy": "normal",
+      "events": 243,
+      "candidate_sha256": "4c563a75f6d026d2aa6aef28614e6032e3d36b7788af3da65356227de604c0c2",
+      "infer_window_events": 243,
+      "load_window_events": 0,
+      "models": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 450470800,
+          "load_ns": 463135400,
+          "inference_ns": 2551303300,
+          "encoder_ns": 100871600,
+          "decoder_ns": 2405437700,
+          "generated_steps": 69,
+          "queue_wait_ns": 64700,
+          "infer_start": 1795687454546517100,
+          "infer_end": 1795687457098456700,
+          "load_start": 1795687454083379600,
+          "load_end": 1795687454546515000,
+          "host_request_to_result_ns": 3486187200,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw_sha256": "2973c72a1a76a9f01fe5366308d79bbae78f56d746a68cbc88f167d106026725"
+        }
+      },
+      "resources": {
+        "host_samples": 31,
+        "worker_samples": 16,
+        "host": {
+          "rss": 183697408,
+          "peak_rss": 194576384,
+          "private": 184102912,
+          "threads": 7,
+          "process_cpu_ns": 1484375000,
+          "read_bytes": 33577826
+        },
+        "worker": {
+          "rss": 657563648,
+          "peak_rss": 660119552,
+          "private": 657645568,
+          "threads": 7,
+          "process_cpu_ns": 3281250000,
+          "read_bytes": 631616283
+        },
+        "paired_max_rss": 831610880
+      },
+      "system_cpu_fraction": 0.6483279395900755,
+      "cancel_ns": [],
+      "ready_ns": 62944400,
+      "shutdown_ns": [
+        55151100
+      ],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [
+        [
+          "Verifying",
+          "1795687453633628000"
+        ],
+        [
+          "Loading",
+          "1795687454092847000"
+        ],
+        [
+          "Inferring",
+          "1795687454553479200"
+        ]
+      ],
+      "observed_policy": {
+        "worker": {
+          "pid": 16676,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        },
+        "input": {
+          "pid": 49844,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 31126,
+        "sha256": "e2d74801b157451522a9301ee2af51241e1552a21b5b5241b3a6df824071a0e0"
+      }
+    },
+    {
+      "label": "243-2-word-infer-normal-round25",
+      "repetition": 2,
+      "version": "round25",
+      "trajectory": "243",
+      "mode": "word",
+      "stage": "infer",
+      "policy": "normal",
+      "events": 243,
+      "candidate_sha256": "4c563a75f6d026d2aa6aef28614e6032e3d36b7788af3da65356227de604c0c2",
+      "infer_window_events": 243,
+      "load_window_events": 0,
+      "models": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 355450500,
+          "load_ns": 373569600,
+          "inference_ns": 2313577800,
+          "encoder_ns": 81503900,
+          "decoder_ns": 2191068300,
+          "generated_steps": 69,
+          "queue_wait_ns": 49600,
+          "infer_start": 1795687459123479800,
+          "infer_end": 1795687461437944400,
+          "load_start": 1795687458749906500,
+          "load_end": 1795687459123476100,
+          "host_request_to_result_ns": 3063051500,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw_sha256": "2973c72a1a76a9f01fe5366308d79bbae78f56d746a68cbc88f167d106026725"
+        }
+      },
+      "resources": {
+        "host_samples": 29,
+        "worker_samples": 15,
+        "host": {
+          "rss": 187490304,
+          "peak_rss": 194719744,
+          "private": 198475776,
+          "threads": 7,
+          "process_cpu_ns": 1359375000,
+          "read_bytes": 33574241
+        },
+        "worker": {
+          "rss": 354009088,
+          "peak_rss": 660361216,
+          "private": 350765056,
+          "threads": 7,
+          "process_cpu_ns": 2812500000,
+          "read_bytes": 631616283
+        },
+        "paired_max_rss": 528359424
+      },
+      "system_cpu_fraction": 0.5699939135727328,
+      "cancel_ns": [],
+      "ready_ns": 59934700,
+      "shutdown_ns": [
+        69576200
+      ],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [
+        [
+          "Verifying",
+          "1795687458395233600"
+        ],
+        [
+          "Loading",
+          "1795687458761042200"
+        ],
+        [
+          "Inferring",
+          "1795687459129578900"
+        ]
+      ],
+      "observed_policy": {
+        "worker": {
+          "pid": 12452,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        },
+        "input": {
+          "pid": 19816,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 29841,
+        "sha256": "b60d895407d9cb040349b82fb6bec677bdf98044f24bb318e3712ff3e59ad4b5"
+      }
+    },
+    {
+      "label": "243-2-word-idle-normal-round26",
+      "repetition": 2,
+      "version": "round26",
+      "trajectory": "243",
+      "mode": "word",
+      "stage": "idle",
+      "policy": "normal",
+      "events": 243,
+      "candidate_sha256": "4c563a75f6d026d2aa6aef28614e6032e3d36b7788af3da65356227de604c0c2",
+      "infer_window_events": 0,
+      "load_window_events": 0,
+      "models": {},
+      "resources": {
+        "host_samples": 19,
+        "worker_samples": 0,
+        "host": {
+          "rss": 185876480,
+          "peak_rss": 194674688,
+          "private": 186376192,
+          "threads": 4,
+          "process_cpu_ns": 1156250000,
+          "read_bytes": 30260355
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "system_cpu_fraction": 0.5140449438202247,
+      "cancel_ns": [],
+      "ready_ns": null,
+      "shutdown_ns": [],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [],
+      "observed_policy": {
+        "input": {
+          "pid": 45644,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 8269,
+        "sha256": "e56737df85bee963bfeea9df25db1bef5eccf7f287e8d3c0dad64489c41986ca"
+      }
+    },
+    {
+      "label": "243-2-word-idle-normal-round25",
+      "repetition": 2,
+      "version": "round25",
+      "trajectory": "243",
+      "mode": "word",
+      "stage": "idle",
+      "policy": "normal",
+      "events": 243,
+      "candidate_sha256": "4c563a75f6d026d2aa6aef28614e6032e3d36b7788af3da65356227de604c0c2",
+      "infer_window_events": 0,
+      "load_window_events": 0,
+      "models": {},
+      "resources": {
+        "host_samples": 18,
+        "worker_samples": 0,
+        "host": {
+          "rss": 187179008,
+          "peak_rss": 194682880,
+          "private": 187830272,
+          "threads": 4,
+          "process_cpu_ns": 1031250000,
+          "read_bytes": 30260355
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "system_cpu_fraction": 0.48958333333333337,
+      "cancel_ns": [],
+      "ready_ns": null,
+      "shutdown_ns": [],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [],
+      "observed_policy": {
+        "input": {
+          "pid": 29408,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 7956,
+        "sha256": "e2230337f78b9731c53e5f4d25ecef08d384256ac9e88b30b889ae56381700a3"
+      }
+    },
+    {
+      "label": "243-2-lexical-infer-normal-round26",
+      "repetition": 2,
+      "version": "round26",
+      "trajectory": "243",
+      "mode": "lexical",
+      "stage": "infer",
+      "policy": "normal",
+      "events": 243,
+      "candidate_sha256": "15024b913a787f9f7a3fe29028c3179c1c20b677fed9d7997722e492ff3adcb5",
+      "infer_window_events": 243,
+      "load_window_events": 0,
+      "models": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 416471100,
+          "load_ns": 440395300,
+          "inference_ns": 2044615300,
+          "encoder_ns": 86283700,
+          "decoder_ns": 1930230200,
+          "generated_steps": 69,
+          "queue_wait_ns": 89700,
+          "infer_start": 1795687466175390300,
+          "infer_end": 1795687468220602900,
+          "load_start": 1795687465734991900,
+          "load_end": 1795687466175387200,
+          "host_request_to_result_ns": 2923897600,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw_sha256": "2973c72a1a76a9f01fe5366308d79bbae78f56d746a68cbc88f167d106026725"
+        }
+      },
+      "resources": {
+        "host_samples": 28,
+        "worker_samples": 16,
+        "host": {
+          "rss": 187551744,
+          "peak_rss": 194777088,
+          "private": 201445376,
+          "threads": 7,
+          "process_cpu_ns": 1062500000,
+          "read_bytes": 30958697
+        },
+        "worker": {
+          "rss": 566116352,
+          "peak_rss": 660119552,
+          "private": 563941376,
+          "threads": 7,
+          "process_cpu_ns": 2781250000,
+          "read_bytes": 631616361
+        },
+        "paired_max_rss": 734167040
+      },
+      "system_cpu_fraction": 0.5467557251908397,
+      "cancel_ns": [],
+      "ready_ns": 67688900,
+      "shutdown_ns": [
+        87049100
+      ],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [
+        [
+          "Verifying",
+          "1795687465334625200"
+        ],
+        [
+          "Loading",
+          "1795687465748941700"
+        ],
+        [
+          "Inferring",
+          "1795687466178341800"
+        ]
+      ],
+      "observed_policy": {
+        "worker": {
+          "pid": 24640,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        },
+        "input": {
+          "pid": 50896,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 29961,
+        "sha256": "e1f0da53981d88e4c4308e03d45782a90ee083d736a7f27ff5f0b3c0a5ad4006"
+      }
+    },
+    {
+      "label": "243-2-lexical-infer-normal-round25",
+      "repetition": 2,
+      "version": "round25",
+      "trajectory": "243",
+      "mode": "lexical",
+      "stage": "infer",
+      "policy": "normal",
+      "events": 243,
+      "candidate_sha256": "15024b913a787f9f7a3fe29028c3179c1c20b677fed9d7997722e492ff3adcb5",
+      "infer_window_events": 243,
+      "load_window_events": 0,
+      "models": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 358416400,
+          "load_ns": 412086500,
+          "inference_ns": 2812684400,
+          "encoder_ns": 90199500,
+          "decoder_ns": 2675521000,
+          "generated_steps": 69,
+          "queue_wait_ns": 57100,
+          "infer_start": 1795687470213676200,
+          "infer_end": 1795687473027320700,
+          "load_start": 1795687469801582700,
+          "load_end": 1795687470213669200,
+          "host_request_to_result_ns": 3603066300,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw_sha256": "2973c72a1a76a9f01fe5366308d79bbae78f56d746a68cbc88f167d106026725"
+        }
+      },
+      "resources": {
+        "host_samples": 29,
+        "worker_samples": 16,
+        "host": {
+          "rss": 184918016,
+          "peak_rss": 194797568,
+          "private": 185327616,
+          "threads": 7,
+          "process_cpu_ns": 2593750000,
+          "read_bytes": 30955113
+        },
+        "worker": {
+          "rss": 423178240,
+          "peak_rss": 660320256,
+          "private": 658067456,
+          "threads": 7,
+          "process_cpu_ns": 3281250000,
+          "read_bytes": 631616283
+        },
+        "paired_max_rss": 591011840
+      },
+      "system_cpu_fraction": 0.7087378640776699,
+      "cancel_ns": [],
+      "ready_ns": 55047600,
+      "shutdown_ns": [
+        58888600
+      ],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [
+        [
+          "Verifying",
+          "1795687469443857100"
+        ],
+        [
+          "Loading",
+          "1795687469809833600"
+        ],
+        [
+          "Inferring",
+          "1795687470221856700"
+        ]
+      ],
+      "observed_policy": {
+        "worker": {
+          "pid": 25056,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        },
+        "input": {
+          "pid": 51196,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 30252,
+        "sha256": "dcccba1bb1ca5f80e78511441336a616825258c820b9eb3930853a22915051bc"
+      }
+    },
+    {
+      "label": "243-2-lexical-idle-normal-round26",
+      "repetition": 2,
+      "version": "round26",
+      "trajectory": "243",
+      "mode": "lexical",
+      "stage": "idle",
+      "policy": "normal",
+      "events": 243,
+      "candidate_sha256": "15024b913a787f9f7a3fe29028c3179c1c20b677fed9d7997722e492ff3adcb5",
+      "infer_window_events": 0,
+      "load_window_events": 0,
+      "models": {},
+      "resources": {
+        "host_samples": 15,
+        "worker_samples": 0,
+        "host": {
+          "rss": 183861248,
+          "peak_rss": 194777088,
+          "private": 184254464,
+          "threads": 4,
+          "process_cpu_ns": 906250000,
+          "read_bytes": 27656449
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "system_cpu_fraction": 0.5978260869565217,
+      "cancel_ns": [],
+      "ready_ns": null,
+      "shutdown_ns": [],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [],
+      "observed_policy": {
+        "input": {
+          "pid": 14932,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 6778,
+        "sha256": "ef85f28936ff62b6b95f145e4743b986ab0aba1cb1d72ead137d22ddb9e15d47"
+      }
+    },
+    {
+      "label": "243-2-lexical-idle-normal-round25",
+      "repetition": 2,
+      "version": "round25",
+      "trajectory": "243",
+      "mode": "lexical",
+      "stage": "idle",
+      "policy": "normal",
+      "events": 243,
+      "candidate_sha256": "15024b913a787f9f7a3fe29028c3179c1c20b677fed9d7997722e492ff3adcb5",
+      "infer_window_events": 0,
+      "load_window_events": 0,
+      "models": {},
+      "resources": {
+        "host_samples": 23,
+        "worker_samples": 0,
+        "host": {
+          "rss": 187514880,
+          "peak_rss": 194789376,
+          "private": 188211200,
+          "threads": 4,
+          "process_cpu_ns": 1328125000,
+          "read_bytes": 27656436
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "system_cpu_fraction": 0.3988533988533989,
+      "cancel_ns": [],
+      "ready_ns": null,
+      "shutdown_ns": [],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [],
+      "observed_policy": {
+        "input": {
+          "pid": 38960,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 9376,
+        "sha256": "9af6d74162670d28a4e582cb9f0037f57b2425ed24425d683b30b642bcbacd5b"
+      }
+    },
+    {
+      "label": "171-2-word-infer-normal-round26",
+      "repetition": 2,
+      "version": "round26",
+      "trajectory": "171",
+      "mode": "word",
+      "stage": "infer",
+      "policy": "normal",
+      "events": 171,
+      "candidate_sha256": "074b89d815c6d50affb5712a4a213bcf837d82abb71189da799bf53010fba1a0",
+      "infer_window_events": 171,
+      "load_window_events": 0,
+      "models": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 334857200,
+          "load_ns": 363292200,
+          "inference_ns": 2432075000,
+          "encoder_ns": 74497000,
+          "decoder_ns": 2326529100,
+          "generated_steps": 69,
+          "queue_wait_ns": 46000,
+          "infer_start": 1795687477865883500,
+          "infer_end": 1795687480298806900,
+          "load_start": 1795687477502585000,
+          "load_end": 1795687477865877200,
+          "host_request_to_result_ns": 3157380000,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw_sha256": "2973c72a1a76a9f01fe5366308d79bbae78f56d746a68cbc88f167d106026725"
+        }
+      },
+      "resources": {
+        "host_samples": 31,
+        "worker_samples": 16,
+        "host": {
+          "rss": 182128640,
+          "peak_rss": 194547712,
+          "private": 200933376,
+          "threads": 7,
+          "process_cpu_ns": 1125000000,
+          "read_bytes": 33577972
+        },
+        "worker": {
+          "rss": 353955840,
+          "peak_rss": 660103168,
+          "private": 350687232,
+          "threads": 7,
+          "process_cpu_ns": 3046875000,
+          "read_bytes": 631662524
+        },
+        "paired_max_rss": 528326656
+      },
+      "system_cpu_fraction": 0.6032815704658658,
+      "cancel_ns": [],
+      "ready_ns": 79884200,
+      "shutdown_ns": [
+        82100100
+      ],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [
+        [
+          "Verifying",
+          "1795687477168348300"
+        ],
+        [
+          "Loading",
+          "1795687477503978900"
+        ],
+        [
+          "Inferring",
+          "1795687477872886100"
+        ]
+      ],
+      "observed_policy": {
+        "worker": {
+          "pid": 20024,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        },
+        "input": {
+          "pid": 47552,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 31133,
+        "sha256": "a21893df349a74420f4f520338056e8aca816880bf67dec0bf57db6de4a1b3d3"
+      }
+    },
+    {
+      "label": "171-2-word-infer-normal-round25",
+      "repetition": 2,
+      "version": "round25",
+      "trajectory": "171",
+      "mode": "word",
+      "stage": "infer",
+      "policy": "normal",
+      "events": 171,
+      "candidate_sha256": "074b89d815c6d50affb5712a4a213bcf837d82abb71189da799bf53010fba1a0",
+      "infer_window_events": 171,
+      "load_window_events": 0,
+      "models": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 401327600,
+          "load_ns": 504502900,
+          "inference_ns": 2483549800,
+          "encoder_ns": 100179900,
+          "decoder_ns": 2346811200,
+          "generated_steps": 69,
+          "queue_wait_ns": 42800,
+          "infer_start": 1795687482298791200,
+          "infer_end": 1795687484782842600,
+          "load_start": 1795687481794284900,
+          "load_end": 1795687482298787800,
+          "host_request_to_result_ns": 3402164500,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw_sha256": "2973c72a1a76a9f01fe5366308d79bbae78f56d746a68cbc88f167d106026725"
+        }
+      },
+      "resources": {
+        "host_samples": 28,
+        "worker_samples": 16,
+        "host": {
+          "rss": 183848960,
+          "peak_rss": 194723840,
+          "private": 184246272,
+          "threads": 7,
+          "process_cpu_ns": 1031250000,
+          "read_bytes": 33589598
+        },
+        "worker": {
+          "rss": 574676992,
+          "peak_rss": 660635648,
+          "private": 658194432,
+          "threads": 7,
+          "process_cpu_ns": 3234375000,
+          "read_bytes": 631662514
+        },
+        "paired_max_rss": 748883968
+      },
+      "system_cpu_fraction": 0.6591173054587689,
+      "cancel_ns": [],
+      "ready_ns": 66941100,
+      "shutdown_ns": [
+        81521200
+      ],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [
+        [
+          "Verifying",
+          "1795687481393763500"
+        ],
+        [
+          "Loading",
+          "1795687481806537100"
+        ],
+        [
+          "Inferring",
+          "1795687482312120000"
+        ]
+      ],
+      "observed_policy": {
+        "worker": {
+          "pid": 44804,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        },
+        "input": {
+          "pid": 39944,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 30158,
+        "sha256": "0025ca09b1a5bb8af1760c0d0737400b5c006c94b411d6719678388bd6eda949"
+      }
+    },
+    {
+      "label": "171-2-word-idle-normal-round26",
+      "repetition": 2,
+      "version": "round26",
+      "trajectory": "171",
+      "mode": "word",
+      "stage": "idle",
+      "policy": "normal",
+      "events": 171,
+      "candidate_sha256": "074b89d815c6d50affb5712a4a213bcf837d82abb71189da799bf53010fba1a0",
+      "infer_window_events": 0,
+      "load_window_events": 0,
+      "models": {},
+      "resources": {
+        "host_samples": 16,
+        "worker_samples": 0,
+        "host": {
+          "rss": 180719616,
+          "peak_rss": 194543616,
+          "private": 199921664,
+          "threads": 4,
+          "process_cpu_ns": 937500000,
+          "read_bytes": 30275724
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "system_cpu_fraction": 0.4508670520231214,
+      "cancel_ns": [],
+      "ready_ns": null,
+      "shutdown_ns": [],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [],
+      "observed_policy": {
+        "input": {
+          "pid": 32892,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 7290,
+        "sha256": "ffce74c1eef130a1c83c1308b951e80abbf927e13bc9e7eafadc7369f4af42ea"
+      }
+    },
+    {
+      "label": "171-2-word-idle-normal-round25",
+      "repetition": 2,
+      "version": "round25",
+      "trajectory": "171",
+      "mode": "word",
+      "stage": "idle",
+      "policy": "normal",
+      "events": 171,
+      "candidate_sha256": "074b89d815c6d50affb5712a4a213bcf837d82abb71189da799bf53010fba1a0",
+      "infer_window_events": 0,
+      "load_window_events": 0,
+      "models": {},
+      "resources": {
+        "host_samples": 16,
+        "worker_samples": 0,
+        "host": {
+          "rss": 187039744,
+          "peak_rss": 194760704,
+          "private": 187699200,
+          "threads": 4,
+          "process_cpu_ns": 968750000,
+          "read_bytes": 30260502
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "system_cpu_fraction": 0.44495412844036697,
+      "cancel_ns": [],
+      "ready_ns": null,
+      "shutdown_ns": [],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [],
+      "observed_policy": {
+        "input": {
+          "pid": 37932,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 7305,
+        "sha256": "e7fa37e0b905263b5ae9a243ed704e16ff81469318c3d5d75902c23f8d4f0d61"
+      }
+    },
+    {
+      "label": "171-2-lexical-infer-normal-round26",
+      "repetition": 2,
+      "version": "round26",
+      "trajectory": "171",
+      "mode": "lexical",
+      "stage": "infer",
+      "policy": "normal",
+      "events": 171,
+      "candidate_sha256": "48381606e9408133e020271fb9e08ede4c1645bf62e2876f49f148d28164192f",
+      "infer_window_events": 171,
+      "load_window_events": 0,
+      "models": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 556761200,
+          "load_ns": 630826400,
+          "inference_ns": 2128310400,
+          "encoder_ns": 91260200,
+          "decoder_ns": 2009389400,
+          "generated_steps": 69,
+          "queue_wait_ns": 136100,
+          "infer_start": 1795687489452297800,
+          "infer_end": 1795687491581349200,
+          "load_start": 1795687488821468200,
+          "load_end": 1795687489452294600,
+          "host_request_to_result_ns": 3347316100,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw_sha256": "2973c72a1a76a9f01fe5366308d79bbae78f56d746a68cbc88f167d106026725"
+        }
+      },
+      "resources": {
+        "host_samples": 28,
+        "worker_samples": 16,
+        "host": {
+          "rss": 187551744,
+          "peak_rss": 194744320,
+          "private": 201854976,
+          "threads": 7,
+          "process_cpu_ns": 953125000,
+          "read_bytes": 30958845
+        },
+        "worker": {
+          "rss": 514891776,
+          "peak_rss": 659705856,
+          "private": 513323008,
+          "threads": 7,
+          "process_cpu_ns": 3000000000,
+          "read_bytes": 631662715
+        },
+        "paired_max_rss": 682942464
+      },
+      "system_cpu_fraction": 0.627906976744186,
+      "cancel_ns": [],
+      "ready_ns": 81687700,
+      "shutdown_ns": [
+        75583600
+      ],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [
+        [
+          "Verifying",
+          "1795687488281400100"
+        ],
+        [
+          "Loading",
+          "1795687488831585100"
+        ],
+        [
+          "Inferring",
+          "1795687489460855900"
+        ]
+      ],
+      "observed_policy": {
+        "worker": {
+          "pid": 44828,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        },
+        "input": {
+          "pid": 36292,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 29823,
+        "sha256": "59b0ad387052aab3a0fb34cb07835a1bd28c59964d98b1fc5b0f2aa6edd639f6"
+      }
+    },
+    {
+      "label": "171-2-lexical-infer-normal-round25",
+      "repetition": 2,
+      "version": "round25",
+      "trajectory": "171",
+      "mode": "lexical",
+      "stage": "infer",
+      "policy": "normal",
+      "events": 171,
+      "candidate_sha256": "48381606e9408133e020271fb9e08ede4c1645bf62e2876f49f148d28164192f",
+      "infer_window_events": 171,
+      "load_window_events": 0,
+      "models": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 337805700,
+          "load_ns": 356204700,
+          "inference_ns": 2551685300,
+          "encoder_ns": 75108600,
+          "decoder_ns": 2432192000,
+          "generated_steps": 69,
+          "queue_wait_ns": 52900,
+          "infer_start": 1795687493228558500,
+          "infer_end": 1795687495780614200,
+          "load_start": 1795687492872350300,
+          "load_end": 1795687493228555000,
+          "host_request_to_result_ns": 3266351800,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw_sha256": "2973c72a1a76a9f01fe5366308d79bbae78f56d746a68cbc88f167d106026725"
+        }
+      },
+      "resources": {
+        "host_samples": 26,
+        "worker_samples": 16,
+        "host": {
+          "rss": 181555200,
+          "peak_rss": 194719744,
+          "private": 200556544,
+          "threads": 7,
+          "process_cpu_ns": 1234375000,
+          "read_bytes": 30955260
+        },
+        "worker": {
+          "rss": 354070528,
+          "peak_rss": 660156416,
+          "private": 350773248,
+          "threads": 7,
+          "process_cpu_ns": 3093750000,
+          "read_bytes": 631616361
+        },
+        "paired_max_rss": 521990144
+      },
+      "system_cpu_fraction": 0.5905145691258524,
+      "cancel_ns": [],
+      "ready_ns": 51614200,
+      "shutdown_ns": [
+        75524700
+      ],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [
+        [
+          "Verifying",
+          "1795687492535292100"
+        ],
+        [
+          "Loading",
+          "1795687492887360300"
+        ],
+        [
+          "Inferring",
+          "1795687493238200000"
+        ]
+      ],
+      "observed_policy": {
+        "worker": {
+          "pid": 29784,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        },
+        "input": {
+          "pid": 8468,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 29147,
+        "sha256": "eeb2b77b45c7a78b9be2e120168d8169e5cc712a6de13f5017cac13f636b4497"
+      }
+    },
+    {
+      "label": "171-2-lexical-idle-normal-round26",
+      "repetition": 2,
+      "version": "round26",
+      "trajectory": "171",
+      "mode": "lexical",
+      "stage": "idle",
+      "policy": "normal",
+      "events": 171,
+      "candidate_sha256": "48381606e9408133e020271fb9e08ede4c1645bf62e2876f49f148d28164192f",
+      "infer_window_events": 0,
+      "load_window_events": 0,
+      "models": {},
+      "resources": {
+        "host_samples": 14,
+        "worker_samples": 0,
+        "host": {
+          "rss": 182341632,
+          "peak_rss": 194760704,
+          "private": 201097216,
+          "threads": 4,
+          "process_cpu_ns": 828125000,
+          "read_bytes": 27641374
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "system_cpu_fraction": 0.5234375,
+      "cancel_ns": [],
+      "ready_ns": null,
+      "shutdown_ns": [],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [],
+      "observed_policy": {
+        "input": {
+          "pid": 12372,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 6451,
+        "sha256": "db2fa180f379e2a4b92fee60d5392e581a5c07e2113e5c76f31f7d4618e980c9"
+      }
+    },
+    {
+      "label": "171-2-lexical-idle-normal-round25",
+      "repetition": 2,
+      "version": "round25",
+      "trajectory": "171",
+      "mode": "lexical",
+      "stage": "idle",
+      "policy": "normal",
+      "events": 171,
+      "candidate_sha256": "48381606e9408133e020271fb9e08ede4c1645bf62e2876f49f148d28164192f",
+      "infer_window_events": 0,
+      "load_window_events": 0,
+      "models": {},
+      "resources": {
+        "host_samples": 15,
+        "worker_samples": 0,
+        "host": {
+          "rss": 183828480,
+          "peak_rss": 194785280,
+          "private": 184221696,
+          "threads": 4,
+          "process_cpu_ns": 921875000,
+          "read_bytes": 27641374
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "system_cpu_fraction": 0.34863523573200994,
+      "cancel_ns": [],
+      "ready_ns": null,
+      "shutdown_ns": [],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [],
+      "observed_policy": {
+        "input": {
+          "pid": 8420,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 6759,
+        "sha256": "75444bbc433190d08991941e5fa4da81ab6eb522501c68ba959d1f3d964b2cf4"
+      }
+    },
+    {
+      "label": "171-3-lexical-idle-normal-round25",
+      "repetition": 3,
+      "version": "round25",
+      "trajectory": "171",
+      "mode": "lexical",
+      "stage": "idle",
+      "policy": "normal",
+      "events": 171,
+      "candidate_sha256": "48381606e9408133e020271fb9e08ede4c1645bf62e2876f49f148d28164192f",
+      "infer_window_events": 0,
+      "load_window_events": 0,
+      "models": {},
+      "resources": {
+        "host_samples": 17,
+        "worker_samples": 0,
+        "host": {
+          "rss": 184455168,
+          "peak_rss": 194793472,
+          "private": 184832000,
+          "threads": 4,
+          "process_cpu_ns": 1000000000,
+          "read_bytes": 27641374
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "system_cpu_fraction": 0.5064102564102564,
+      "cancel_ns": [],
+      "ready_ns": null,
+      "shutdown_ns": [],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [],
+      "observed_policy": {
+        "input": {
+          "pid": 26488,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 7430,
+        "sha256": "a21d200f7b30f10b16a3f404b9cb4f178fb028ec614321fb21d765c2e2a43959"
+      }
+    },
+    {
+      "label": "171-3-lexical-idle-normal-round26",
+      "repetition": 3,
+      "version": "round26",
+      "trajectory": "171",
+      "mode": "lexical",
+      "stage": "idle",
+      "policy": "normal",
+      "events": 171,
+      "candidate_sha256": "48381606e9408133e020271fb9e08ede4c1645bf62e2876f49f148d28164192f",
+      "infer_window_events": 0,
+      "load_window_events": 0,
+      "models": {},
+      "resources": {
+        "host_samples": 14,
+        "worker_samples": 0,
+        "host": {
+          "rss": 187555840,
+          "peak_rss": 194703360,
+          "private": 199737344,
+          "threads": 4,
+          "process_cpu_ns": 781250000,
+          "read_bytes": 27641374
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "system_cpu_fraction": 0.44050632911392407,
+      "cancel_ns": [],
+      "ready_ns": null,
+      "shutdown_ns": [],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [],
+      "observed_policy": {
+        "input": {
+          "pid": 33100,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 6440,
+        "sha256": "d555b66bec69332bbdd1d11c5062d80052213880916f78b0f23b77968e3bc4fd"
+      }
+    },
+    {
+      "label": "171-3-lexical-infer-normal-round25",
+      "repetition": 3,
+      "version": "round25",
+      "trajectory": "171",
+      "mode": "lexical",
+      "stage": "infer",
+      "policy": "normal",
+      "events": 171,
+      "candidate_sha256": "48381606e9408133e020271fb9e08ede4c1645bf62e2876f49f148d28164192f",
+      "infer_window_events": 171,
+      "load_window_events": 0,
+      "models": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 331097700,
+          "load_ns": 347045400,
+          "inference_ns": 2364007400,
+          "encoder_ns": 67154400,
+          "decoder_ns": 2274174300,
+          "generated_steps": 69,
+          "queue_wait_ns": 43000,
+          "infer_start": 1795687501790157400,
+          "infer_end": 1795687504154622200,
+          "load_start": 1795687501443107400,
+          "load_end": 1795687501790152800,
+          "host_request_to_result_ns": 3064641500,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw_sha256": "2973c72a1a76a9f01fe5366308d79bbae78f56d746a68cbc88f167d106026725"
+        }
+      },
+      "resources": {
+        "host_samples": 26,
+        "worker_samples": 16,
+        "host": {
+          "rss": 183828480,
+          "peak_rss": 194777088,
+          "private": 184225792,
+          "threads": 7,
+          "process_cpu_ns": 1218750000,
+          "read_bytes": 30955260
+        },
+        "worker": {
+          "rss": 353972224,
+          "peak_rss": 660324352,
+          "private": 350744576,
+          "threads": 7,
+          "process_cpu_ns": 2953125000,
+          "read_bytes": 631616361
+        },
+        "paired_max_rss": 521900032
+      },
+      "system_cpu_fraction": 0.5235294117647059,
+      "cancel_ns": [],
+      "ready_ns": 55837400,
+      "shutdown_ns": [
+        70923400
+      ],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [
+        [
+          "Verifying",
+          "1795687501112732500"
+        ],
+        [
+          "Loading",
+          "1795687501450664300"
+        ],
+        [
+          "Inferring",
+          "1795687501804266200"
+        ]
+      ],
+      "observed_policy": {
+        "worker": {
+          "pid": 38352,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        },
+        "input": {
+          "pid": 44468,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 29293,
+        "sha256": "da578b8d2c123f41483090f5ebae300eb291656a0355e78d228ec179bb495605"
+      }
+    },
+    {
+      "label": "171-3-lexical-infer-normal-round26",
+      "repetition": 3,
+      "version": "round26",
+      "trajectory": "171",
+      "mode": "lexical",
+      "stage": "infer",
+      "policy": "normal",
+      "events": 171,
+      "candidate_sha256": "48381606e9408133e020271fb9e08ede4c1645bf62e2876f49f148d28164192f",
+      "infer_window_events": 171,
+      "load_window_events": 0,
+      "models": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 335130400,
+          "load_ns": 325815500,
+          "inference_ns": 1978156500,
+          "encoder_ns": 76662300,
+          "decoder_ns": 1874825900,
+          "generated_steps": 69,
+          "queue_wait_ns": 79400,
+          "infer_start": 1795687505854076800,
+          "infer_end": 1795687507832893800,
+          "load_start": 1795687505528258900,
+          "load_end": 1795687505854074400,
+          "host_request_to_result_ns": 2651797400,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw_sha256": "2973c72a1a76a9f01fe5366308d79bbae78f56d746a68cbc88f167d106026725"
+        }
+      },
+      "resources": {
+        "host_samples": 27,
+        "worker_samples": 15,
+        "host": {
+          "rss": 187375616,
+          "peak_rss": 194736128,
+          "private": 188055552,
+          "threads": 7,
+          "process_cpu_ns": 796875000,
+          "read_bytes": 30958844
+        },
+        "worker": {
+          "rss": 354484224,
+          "peak_rss": 660029440,
+          "private": 351289344,
+          "threads": 7,
+          "process_cpu_ns": 2562500000,
+          "read_bytes": 631616283
+        },
+        "paired_max_rss": 522625024
+      },
+      "system_cpu_fraction": 0.4313997915943035,
+      "cancel_ns": [],
+      "ready_ns": 54488300,
+      "shutdown_ns": [
+        70751400
+      ],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [
+        [
+          "Verifying",
+          "1795687505194109200"
+        ],
+        [
+          "Loading",
+          "1795687505530797100"
+        ],
+        [
+          "Inferring",
+          "1795687505869245400"
+        ]
+      ],
+      "observed_policy": {
+        "worker": {
+          "pid": 30640,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        },
+        "input": {
+          "pid": 48024,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 29050,
+        "sha256": "f8bb77214dcd582e87ca18c439b73be35c53e4903ff04f73a8925ef23d8332e8"
+      }
+    },
+    {
+      "label": "171-3-word-idle-normal-round25",
+      "repetition": 3,
+      "version": "round25",
+      "trajectory": "171",
+      "mode": "word",
+      "stage": "idle",
+      "policy": "normal",
+      "events": 171,
+      "candidate_sha256": "074b89d815c6d50affb5712a4a213bcf837d82abb71189da799bf53010fba1a0",
+      "infer_window_events": 0,
+      "load_window_events": 0,
+      "models": {},
+      "resources": {
+        "host_samples": 16,
+        "worker_samples": 0,
+        "host": {
+          "rss": 186195968,
+          "peak_rss": 194744320,
+          "private": 186761216,
+          "threads": 4,
+          "process_cpu_ns": 1000000000,
+          "read_bytes": 30260502
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "system_cpu_fraction": 0.4317129629629629,
+      "cancel_ns": [],
+      "ready_ns": null,
+      "shutdown_ns": [],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [],
+      "observed_policy": {
+        "input": {
+          "pid": 45392,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 7308,
+        "sha256": "6e313664fb30e72662e5e19095d95e2245e1797b32514209c537225bb765f091"
+      }
+    },
+    {
+      "label": "171-3-word-idle-normal-round26",
+      "repetition": 3,
+      "version": "round26",
+      "trajectory": "171",
+      "mode": "word",
+      "stage": "idle",
+      "policy": "normal",
+      "events": 171,
+      "candidate_sha256": "074b89d815c6d50affb5712a4a213bcf837d82abb71189da799bf53010fba1a0",
+      "infer_window_events": 0,
+      "load_window_events": 0,
+      "models": {},
+      "resources": {
+        "host_samples": 16,
+        "worker_samples": 0,
+        "host": {
+          "rss": 187461632,
+          "peak_rss": 194564096,
+          "private": 188145664,
+          "threads": 4,
+          "process_cpu_ns": 937500000,
+          "read_bytes": 30260502
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "system_cpu_fraction": 0.39084507042253525,
+      "cancel_ns": [],
+      "ready_ns": null,
+      "shutdown_ns": [],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [],
+      "observed_policy": {
+        "input": {
+          "pid": 26812,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 7300,
+        "sha256": "182cd6907f5bf5238209b6224f794c12b26750154120f46a4e72c3504f0e54f7"
+      }
+    },
+    {
+      "label": "171-3-word-infer-normal-round25",
+      "repetition": 3,
+      "version": "round25",
+      "trajectory": "171",
+      "mode": "word",
+      "stage": "infer",
+      "policy": "normal",
+      "events": 171,
+      "candidate_sha256": "074b89d815c6d50affb5712a4a213bcf837d82abb71189da799bf53010fba1a0",
+      "infer_window_events": 171,
+      "load_window_events": 0,
+      "models": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 363669900,
+          "load_ns": 424683100,
+          "inference_ns": 2186840200,
+          "encoder_ns": 63972900,
+          "decoder_ns": 2100438400,
+          "generated_steps": 69,
+          "queue_wait_ns": 77800,
+          "infer_start": 1795687512184410600,
+          "infer_end": 1795687514371791600,
+          "load_start": 1795687511759720500,
+          "load_end": 1795687512184403600,
+          "host_request_to_result_ns": 3006557100,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw_sha256": "2973c72a1a76a9f01fe5366308d79bbae78f56d746a68cbc88f167d106026725"
+        }
+      },
+      "resources": {
+        "host_samples": 29,
+        "worker_samples": 16,
+        "host": {
+          "rss": 183775232,
+          "peak_rss": 194732032,
+          "private": 184176640,
+          "threads": 7,
+          "process_cpu_ns": 984375000,
+          "read_bytes": 33574388
+        },
+        "worker": {
+          "rss": 613711872,
+          "peak_rss": 660058112,
+          "private": 611291136,
+          "threads": 7,
+          "process_cpu_ns": 2906250000,
+          "read_bytes": 631616361
+        },
+        "paired_max_rss": 787918848
+      },
+      "system_cpu_fraction": 0.490360696517413,
+      "cancel_ns": [],
+      "ready_ns": 69897500,
+      "shutdown_ns": [
+        81838800
+      ],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [
+        [
+          "Verifying",
+          "1795687511396538600"
+        ],
+        [
+          "Loading",
+          "1795687511759909600"
+        ],
+        [
+          "Inferring",
+          "1795687512190978200"
+        ]
+      ],
+      "observed_policy": {
+        "worker": {
+          "pid": 21944,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        },
+        "input": {
+          "pid": 7416,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 30355,
+        "sha256": "4d639470c26574da2bc5c02d9d3493da6b5f9d889f17f244d06673e648c18892"
+      }
+    },
+    {
+      "label": "171-3-word-infer-normal-round26",
+      "repetition": 3,
+      "version": "round26",
+      "trajectory": "171",
+      "mode": "word",
+      "stage": "infer",
+      "policy": "normal",
+      "events": 171,
+      "candidate_sha256": "074b89d815c6d50affb5712a4a213bcf837d82abb71189da799bf53010fba1a0",
+      "infer_window_events": 171,
+      "load_window_events": 0,
+      "models": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 326759100,
+          "load_ns": 363105100,
+          "inference_ns": 1978630800,
+          "encoder_ns": 66595000,
+          "decoder_ns": 1886025200,
+          "generated_steps": 69,
+          "queue_wait_ns": 50600,
+          "infer_start": 1795687516249246800,
+          "infer_end": 1795687518228499600,
+          "load_start": 1795687515886139700,
+          "load_end": 1795687516249244800,
+          "host_request_to_result_ns": 2687622900,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw_sha256": "2973c72a1a76a9f01fe5366308d79bbae78f56d746a68cbc88f167d106026725"
+        }
+      },
+      "resources": {
+        "host_samples": 29,
+        "worker_samples": 15,
+        "host": {
+          "rss": 187449344,
+          "peak_rss": 194568192,
+          "private": 188137472,
+          "threads": 7,
+          "process_cpu_ns": 1093750000,
+          "read_bytes": 33577972
+        },
+        "worker": {
+          "rss": 354160640,
+          "peak_rss": 660115456,
+          "private": 350941184,
+          "threads": 7,
+          "process_cpu_ns": 2578125000,
+          "read_bytes": 631616283
+        },
+        "paired_max_rss": 528474112
+      },
+      "system_cpu_fraction": 0.4106666666666666,
+      "cancel_ns": [],
+      "ready_ns": 53819800,
+      "shutdown_ns": [
+        59530000
+      ],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [
+        [
+          "Verifying",
+          "1795687515559914800"
+        ],
+        [
+          "Loading",
+          "1795687515897762000"
+        ],
+        [
+          "Inferring",
+          "1795687516250860400"
+        ]
+      ],
+      "observed_policy": {
+        "worker": {
+          "pid": 35240,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        },
+        "input": {
+          "pid": 31572,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 29889,
+        "sha256": "5bbd11576b5b7bbff673b595a05cdd0c1921eacefcaa6379b4be38cf484459b6"
+      }
+    },
+    {
+      "label": "243-3-lexical-idle-normal-round25",
+      "repetition": 3,
+      "version": "round25",
+      "trajectory": "243",
+      "mode": "lexical",
+      "stage": "idle",
+      "policy": "normal",
+      "events": 243,
+      "candidate_sha256": "15024b913a787f9f7a3fe29028c3179c1c20b677fed9d7997722e492ff3adcb5",
+      "infer_window_events": 0,
+      "load_window_events": 0,
+      "models": {},
+      "resources": {
+        "host_samples": 21,
+        "worker_samples": 0,
+        "host": {
+          "rss": 187453440,
+          "peak_rss": 194752512,
+          "private": 199770112,
+          "threads": 4,
+          "process_cpu_ns": 1250000000,
+          "read_bytes": 27641227
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "system_cpu_fraction": 0.3174887892376682,
+      "cancel_ns": [],
+      "ready_ns": null,
+      "shutdown_ns": [],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [],
+      "observed_policy": {
+        "input": {
+          "pid": 45488,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 8719,
+        "sha256": "a74f1cd547200745aff1ae128633cbc9b59e5263ebd330c280813735f2122e8e"
+      }
+    },
+    {
+      "label": "243-3-lexical-idle-normal-round26",
+      "repetition": 3,
+      "version": "round26",
+      "trajectory": "243",
+      "mode": "lexical",
+      "stage": "idle",
+      "policy": "normal",
+      "events": 243,
+      "candidate_sha256": "15024b913a787f9f7a3fe29028c3179c1c20b677fed9d7997722e492ff3adcb5",
+      "infer_window_events": 0,
+      "load_window_events": 0,
+      "models": {},
+      "resources": {
+        "host_samples": 14,
+        "worker_samples": 0,
+        "host": {
+          "rss": 180379648,
+          "peak_rss": 194740224,
+          "private": 199737344,
+          "threads": 4,
+          "process_cpu_ns": 843750000,
+          "read_bytes": 27641227
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "system_cpu_fraction": 0.2857142857142857,
+      "cancel_ns": [],
+      "ready_ns": null,
+      "shutdown_ns": [],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [],
+      "observed_policy": {
+        "input": {
+          "pid": 49952,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 6443,
+        "sha256": "c8a6da39a5b50f971f6d064bcec0b94d03a895b55c3b802e092ef19199b22080"
+      }
+    },
+    {
+      "label": "243-3-lexical-infer-normal-round25",
+      "repetition": 3,
+      "version": "round25",
+      "trajectory": "243",
+      "mode": "lexical",
+      "stage": "infer",
+      "policy": "normal",
+      "events": 243,
+      "candidate_sha256": "15024b913a787f9f7a3fe29028c3179c1c20b677fed9d7997722e492ff3adcb5",
+      "infer_window_events": 243,
+      "load_window_events": 0,
+      "models": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 346544200,
+          "load_ns": 378052000,
+          "inference_ns": 2260135500,
+          "encoder_ns": 78680200,
+          "decoder_ns": 2140867300,
+          "generated_steps": 69,
+          "queue_wait_ns": 63100,
+          "infer_start": 1795687522463692900,
+          "infer_end": 1795687524724364600,
+          "load_start": 1795687522085635800,
+          "load_end": 1795687522463687800,
+          "host_request_to_result_ns": 3007835700,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw_sha256": "2973c72a1a76a9f01fe5366308d79bbae78f56d746a68cbc88f167d106026725"
+        }
+      },
+      "resources": {
+        "host_samples": 27,
+        "worker_samples": 16,
+        "host": {
+          "rss": 178196480,
+          "peak_rss": 194797568,
+          "private": 198197248,
+          "threads": 7,
+          "process_cpu_ns": 1859375000,
+          "read_bytes": 30955113
+        },
+        "worker": {
+          "rss": 353886208,
+          "peak_rss": 660369408,
+          "private": 350724096,
+          "threads": 7,
+          "process_cpu_ns": 2812500000,
+          "read_bytes": 631616283
+        },
+        "paired_max_rss": 521814016
+      },
+      "system_cpu_fraction": 0.4708171206225681,
+      "cancel_ns": [],
+      "ready_ns": 49936300,
+      "shutdown_ns": [
+        59860800
+      ],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [
+        [
+          "Verifying",
+          "1795687521739827500"
+        ],
+        [
+          "Loading",
+          "1795687522091504100"
+        ],
+        [
+          "Inferring",
+          "1795687522474129000"
+        ]
+      ],
+      "observed_policy": {
+        "worker": {
+          "pid": 35832,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        },
+        "input": {
+          "pid": 6408,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 30111,
+        "sha256": "da48688ed9e648d4f5479792abf910ea5575376d9319511c3d8131ba36011ae3"
+      }
+    },
+    {
+      "label": "243-3-lexical-infer-normal-round26",
+      "repetition": 3,
+      "version": "round26",
+      "trajectory": "243",
+      "mode": "lexical",
+      "stage": "infer",
+      "policy": "normal",
+      "events": 243,
+      "candidate_sha256": "15024b913a787f9f7a3fe29028c3179c1c20b677fed9d7997722e492ff3adcb5",
+      "infer_window_events": 243,
+      "load_window_events": 0,
+      "models": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 332435700,
+          "load_ns": 321936100,
+          "inference_ns": 2029212800,
+          "encoder_ns": 66249800,
+          "decoder_ns": 1942671400,
+          "generated_steps": 69,
+          "queue_wait_ns": 52200,
+          "infer_start": 1795687526534561600,
+          "infer_end": 1795687528564427100,
+          "load_start": 1795687526212616200,
+          "load_end": 1795687526534552300,
+          "host_request_to_result_ns": 2700919900,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw_sha256": "2973c72a1a76a9f01fe5366308d79bbae78f56d746a68cbc88f167d106026725"
+        }
+      },
+      "resources": {
+        "host_samples": 27,
+        "worker_samples": 15,
+        "host": {
+          "rss": 187559936,
+          "peak_rss": 194478080,
+          "private": 215371776,
+          "threads": 6,
+          "process_cpu_ns": 1046875000,
+          "read_bytes": 30958697
+        },
+        "worker": {
+          "rss": 354217984,
+          "peak_rss": 660049920,
+          "private": 351043584,
+          "threads": 7,
+          "process_cpu_ns": 2578125000,
+          "read_bytes": 631616283
+        },
+        "paired_max_rss": 522231808
+      },
+      "system_cpu_fraction": 0.46224489795918366,
+      "cancel_ns": [],
+      "ready_ns": 54534000,
+      "shutdown_ns": [
+        60055100
+      ],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [
+        [
+          "Verifying",
+          "1795687525880594800"
+        ],
+        [
+          "Loading",
+          "1795687526217741600"
+        ],
+        [
+          "Inferring",
+          "1795687526541069600"
+        ]
+      ],
+      "observed_policy": {
+        "worker": {
+          "pid": 10164,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        },
+        "input": {
+          "pid": 15536,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 28391,
+        "sha256": "8f655abf22358b3478eaad7081a2ddda41be9c98f823167c57d1eca97300ea9e"
+      }
+    },
+    {
+      "label": "243-3-word-idle-normal-round25",
+      "repetition": 3,
+      "version": "round25",
+      "trajectory": "243",
+      "mode": "word",
+      "stage": "idle",
+      "policy": "normal",
+      "events": 243,
+      "candidate_sha256": "4c563a75f6d026d2aa6aef28614e6032e3d36b7788af3da65356227de604c0c2",
+      "infer_window_events": 0,
+      "load_window_events": 0,
+      "models": {},
+      "resources": {
+        "host_samples": 17,
+        "worker_samples": 0,
+        "host": {
+          "rss": 182091776,
+          "peak_rss": 194711552,
+          "private": 201003008,
+          "threads": 4,
+          "process_cpu_ns": 1062500000,
+          "read_bytes": 30260355
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "system_cpu_fraction": 0.319078947368421,
+      "cancel_ns": [],
+      "ready_ns": null,
+      "shutdown_ns": [],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [],
+      "observed_policy": {
+        "input": {
+          "pid": 1672,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 7607,
+        "sha256": "3ff1608292b6e12d741eb1f7fd4e4d2696f779d83dbb10f89ac7678f8075d499"
+      }
+    },
+    {
+      "label": "243-3-word-idle-normal-round26",
+      "repetition": 3,
+      "version": "round26",
+      "trajectory": "243",
+      "mode": "word",
+      "stage": "idle",
+      "policy": "normal",
+      "events": 243,
+      "candidate_sha256": "4c563a75f6d026d2aa6aef28614e6032e3d36b7788af3da65356227de604c0c2",
+      "infer_window_events": 0,
+      "load_window_events": 0,
+      "models": {},
+      "resources": {
+        "host_samples": 18,
+        "worker_samples": 0,
+        "host": {
+          "rss": 187326464,
+          "peak_rss": 194564096,
+          "private": 187998208,
+          "threads": 4,
+          "process_cpu_ns": 1093750000,
+          "read_bytes": 30260355
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "system_cpu_fraction": 0.4026104417670683,
+      "cancel_ns": [],
+      "ready_ns": null,
+      "shutdown_ns": [],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [],
+      "observed_policy": {
+        "input": {
+          "pid": 23060,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 7950,
+        "sha256": "77a717b3a3019f20f588d081b4f1417d8874f16383bc8d404dd03f876504845d"
+      }
+    },
+    {
+      "label": "243-3-word-infer-normal-round25",
+      "repetition": 3,
+      "version": "round25",
+      "trajectory": "243",
+      "mode": "word",
+      "stage": "infer",
+      "policy": "normal",
+      "events": 243,
+      "candidate_sha256": "4c563a75f6d026d2aa6aef28614e6032e3d36b7788af3da65356227de604c0c2",
+      "infer_window_events": 243,
+      "load_window_events": 0,
+      "models": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 344166500,
+          "load_ns": 332421400,
+          "inference_ns": 2326366800,
+          "encoder_ns": 62817800,
+          "decoder_ns": 2242250700,
+          "generated_steps": 69,
+          "queue_wait_ns": 49600,
+          "infer_start": 1795687533006660900,
+          "infer_end": 1795687535333576800,
+          "load_start": 1795687532674237500,
+          "load_end": 1795687533006658900,
+          "host_request_to_result_ns": 3010241700,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw_sha256": "2973c72a1a76a9f01fe5366308d79bbae78f56d746a68cbc88f167d106026725"
+        }
+      },
+      "resources": {
+        "host_samples": 29,
+        "worker_samples": 16,
+        "host": {
+          "rss": 185716736,
+          "peak_rss": 194564096,
+          "private": 186245120,
+          "threads": 7,
+          "process_cpu_ns": 1218750000,
+          "read_bytes": 33574241
+        },
+        "worker": {
+          "rss": 353951744,
+          "peak_rss": 660090880,
+          "private": 350748672,
+          "threads": 7,
+          "process_cpu_ns": 2890625000,
+          "read_bytes": 631616361
+        },
+        "paired_max_rss": 528277504
+      },
+      "system_cpu_fraction": 0.5025062656641603,
+      "cancel_ns": [],
+      "ready_ns": 58197200,
+      "shutdown_ns": [
+        60236800
+      ],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [
+        [
+          "Verifying",
+          "1795687532330752900"
+        ],
+        [
+          "Loading",
+          "1795687532682582000"
+        ],
+        [
+          "Inferring",
+          "1795687533020055400"
+        ]
+      ],
+      "observed_policy": {
+        "worker": {
+          "pid": 32328,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        },
+        "input": {
+          "pid": 41664,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 30478,
+        "sha256": "4b43ab8650a119f22bbc99c81c2b799ec853e5ac93a169df52399ff2dfd5eada"
+      }
+    },
+    {
+      "label": "243-3-word-infer-normal-round26",
+      "repetition": 3,
+      "version": "round26",
+      "trajectory": "243",
+      "mode": "word",
+      "stage": "infer",
+      "policy": "normal",
+      "events": 243,
+      "candidate_sha256": "4c563a75f6d026d2aa6aef28614e6032e3d36b7788af3da65356227de604c0c2",
+      "infer_window_events": 243,
+      "load_window_events": 0,
+      "models": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 333954900,
+          "load_ns": 328472800,
+          "inference_ns": 2395614200,
+          "encoder_ns": 70128800,
+          "decoder_ns": 2302738400,
+          "generated_steps": 69,
+          "queue_wait_ns": 70300,
+          "infer_start": 1795687537070293900,
+          "infer_end": 1795687539466283500,
+          "load_start": 1795687536741819400,
+          "load_end": 1795687537070292200,
+          "host_request_to_result_ns": 3073150800,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+          "raw_sha256": "2973c72a1a76a9f01fe5366308d79bbae78f56d746a68cbc88f167d106026725"
+        }
+      },
+      "resources": {
+        "host_samples": 28,
+        "worker_samples": 16,
+        "host": {
+          "rss": 184918016,
+          "peak_rss": 194600960,
+          "private": 185323520,
+          "threads": 7,
+          "process_cpu_ns": 1125000000,
+          "read_bytes": 33577825
+        },
+        "worker": {
+          "rss": 353935360,
+          "peak_rss": 660082688,
+          "private": 350679040,
+          "threads": 7,
+          "process_cpu_ns": 2921875000,
+          "read_bytes": 631616361
+        },
+        "paired_max_rss": 528277504
+      },
+      "system_cpu_fraction": 0.4962121212121212,
+      "cancel_ns": [],
+      "ready_ns": 50747000,
+      "shutdown_ns": [
+        66253100
+      ],
+      "codec_ns": {
+        "n": 0
+      },
+      "stages": [
+        [
+          "Verifying",
+          "1795687536408380300"
+        ],
+        [
+          "Loading",
+          "1795687536746708200"
+        ],
+        [
+          "Inferring",
+          "1795687537086258900"
+        ]
+      ],
+      "observed_policy": {
+        "worker": {
+          "pid": 44804,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        },
+        "input": {
+          "pid": 16832,
+          "before": 4095,
+          "observed_policy": 4095,
+          "priority": 32
+        }
+      },
+      "actual_compute": 1,
+      "record": {
+        "bytes": 30166,
+        "sha256": "a1da82fdc434ebeec732f0113e901508361ed3b3f05c9120b6575e3a9e44f35c"
+      }
+    }
+  ],
+  "errors": [],
+  "not_measured": [
+    "ETW",
+    "scheduler ready-time",
+    "LLC and DRAM",
+    "allocator contention"
+  ],
+  "stated_quiet": true,
+  "aggregate": {
+    "round25/171/lexical/idle/normal": {
+      "all": {
+        "wall_ns": {
+          "n": 513,
+          "p50": 912400,
+          "p95": 6125800,
+          "p99": 8904900,
+          "max": 14190000
+        },
+        "cpu_ns": {
+          "n": 513,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 15625000
+        },
+        "cycles": {
+          "n": 513,
+          "p50": 2319579,
+          "p95": 14575077,
+          "p99": 20759588,
+          "max": 36438334
+        },
+        "observed_migrations": 94,
+        "store_overlap": 0
+      },
+      "inference": {
+        "wall_ns": {
+          "n": 0
+        },
+        "cpu_ns": {
+          "n": 0
+        },
+        "cycles": {
+          "n": 0
+        },
+        "observed_migrations": 0,
+        "store_overlap": 0
+      },
+      "loading": {
+        "wall_ns": {
+          "n": 0
+        },
+        "cpu_ns": {
+          "n": 0
+        },
+        "cycles": {
+          "n": 0
+        },
+        "observed_migrations": 0,
+        "store_overlap": 0
+      },
+      "cancellation_ns": {
+        "n": 0
+      },
+      "handshake_ns": {
+        "n": 0
+      },
+      "system_cpu_fraction": {
+        "n": 3,
+        "p50": 0.34863523573200994,
+        "p95": 0.5064102564102564,
+        "p99": 0.5064102564102564,
+        "max": 0.5064102564102564
+      },
+      "peak_observed_memory": {
+        "host": {
+          "rss": 184582144,
+          "private": 201465856
+        },
+        "worker": {
+          "rss": null,
+          "private": null
+        }
+      }
+    },
+    "round26/171/lexical/idle/normal": {
+      "all": {
+        "wall_ns": {
+          "n": 513,
+          "p50": 451000,
+          "p95": 1753300,
+          "p99": 2468600,
+          "max": 3026700
+        },
+        "cpu_ns": {
+          "n": 513,
+          "p50": 0,
+          "p95": 0,
+          "p99": 15625000,
+          "max": 15625000
+        },
+        "cycles": {
+          "n": 513,
+          "p50": 1162253,
+          "p95": 4340823,
+          "p99": 5910020,
+          "max": 7714050
+        },
+        "observed_migrations": 41,
+        "store_overlap": 0
+      },
+      "inference": {
+        "wall_ns": {
+          "n": 0
+        },
+        "cpu_ns": {
+          "n": 0
+        },
+        "cycles": {
+          "n": 0
+        },
+        "observed_migrations": 0,
+        "store_overlap": 0
+      },
+      "loading": {
+        "wall_ns": {
+          "n": 0
+        },
+        "cpu_ns": {
+          "n": 0
+        },
+        "cycles": {
+          "n": 0
+        },
+        "observed_migrations": 0,
+        "store_overlap": 0
+      },
+      "cancellation_ns": {
+        "n": 0
+      },
+      "handshake_ns": {
+        "n": 0
+      },
+      "system_cpu_fraction": {
+        "n": 3,
+        "p50": 0.5234375,
+        "p95": 0.5462962962962963,
+        "p99": 0.5462962962962963,
+        "max": 0.5462962962962963
+      },
+      "peak_observed_memory": {
+        "host": {
+          "rss": 187555840,
+          "private": 201097216
+        },
+        "worker": {
+          "rss": null,
+          "private": null
+        }
+      }
+    },
+    "round25/171/lexical/infer/normal": {
+      "all": {
+        "wall_ns": {
+          "n": 513,
+          "p50": 1468700,
+          "p95": 12394400,
+          "p99": 23321500,
+          "max": 47487800
+        },
+        "cpu_ns": {
+          "n": 513,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 46875000
+        },
+        "cycles": {
+          "n": 513,
+          "p50": 3676753,
+          "p95": 28484782,
+          "p99": 47269263,
+          "max": 59723568
+        },
+        "observed_migrations": 151,
+        "store_overlap": 0
+      },
+      "inference": {
+        "wall_ns": {
+          "n": 513,
+          "p50": 1468700,
+          "p95": 12394400,
+          "p99": 23321500,
+          "max": 47487800
+        },
+        "cpu_ns": {
+          "n": 513,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 46875000
+        },
+        "cycles": {
+          "n": 513,
+          "p50": 3676753,
+          "p95": 28484782,
+          "p99": 47269263,
+          "max": 59723568
+        },
+        "observed_migrations": 151,
+        "store_overlap": 0
+      },
+      "loading": {
+        "wall_ns": {
+          "n": 0
+        },
+        "cpu_ns": {
+          "n": 0
+        },
+        "cycles": {
+          "n": 0
+        },
+        "observed_migrations": 0,
+        "store_overlap": 0
+      },
+      "cancellation_ns": {
+        "n": 0
+      },
+      "handshake_ns": {
+        "n": 3,
+        "p50": 55837400,
+        "p95": 217745400,
+        "p99": 217745400,
+        "max": 217745400
+      },
+      "system_cpu_fraction": {
+        "n": 3,
+        "p50": 0.5235294117647059,
+        "p95": 0.5905145691258524,
+        "p99": 0.5905145691258524,
+        "max": 0.5905145691258524
+      },
+      "peak_observed_memory": {
+        "host": {
+          "rss": 186843136,
+          "private": 200556544
+        },
+        "worker": {
+          "rss": 487120896,
+          "private": 658264064
+        }
+      },
+      "translation": {
+        "load_ns": {
+          "n": 3,
+          "p50": 356204700,
+          "p95": 375338000,
+          "p99": 375338000,
+          "max": 375338000
+        },
+        "verification_ns": {
+          "n": 3,
+          "p50": 337805700,
+          "p95": 339365600,
+          "p99": 339365600,
+          "max": 339365600
+        },
+        "inference_ns": {
+          "n": 3,
+          "p50": 2364007400,
+          "p95": 2551685300,
+          "p99": 2551685300,
+          "max": 2551685300
+        },
+        "generated_steps": {
+          "n": 3,
+          "p50": 69,
+          "p95": 69,
+          "p99": 69,
+          "max": 69
+        },
+        "host_request_to_result_ns": {
+          "n": 3,
+          "p50": 3064641500,
+          "p95": 3266351800,
+          "p99": 3266351800,
+          "max": 3266351800
+        },
+        "queue_wait_ns": {
+          "n": 3,
+          "p50": 52900,
+          "p95": 82100,
+          "p99": 82100,
+          "max": 82100
+        }
+      },
+      "steps_per_second": 28.974172772320376
+    },
+    "round26/171/lexical/infer/normal": {
+      "all": {
+        "wall_ns": {
+          "n": 513,
+          "p50": 766800,
+          "p95": 3422300,
+          "p99": 5127000,
+          "max": 6383100
+        },
+        "cpu_ns": {
+          "n": 513,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 15625000
+        },
+        "cycles": {
+          "n": 513,
+          "p50": 1932077,
+          "p95": 7158845,
+          "p99": 11212214,
+          "max": 15250290
+        },
+        "observed_migrations": 101,
+        "store_overlap": 0
+      },
+      "inference": {
+        "wall_ns": {
+          "n": 513,
+          "p50": 766800,
+          "p95": 3422300,
+          "p99": 5127000,
+          "max": 6383100
+        },
+        "cpu_ns": {
+          "n": 513,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 15625000
+        },
+        "cycles": {
+          "n": 513,
+          "p50": 1932077,
+          "p95": 7158845,
+          "p99": 11212214,
+          "max": 15250290
+        },
+        "observed_migrations": 101,
+        "store_overlap": 0
+      },
+      "loading": {
+        "wall_ns": {
+          "n": 0
+        },
+        "cpu_ns": {
+          "n": 0
+        },
+        "cycles": {
+          "n": 0
+        },
+        "observed_migrations": 0,
+        "store_overlap": 0
+      },
+      "cancellation_ns": {
+        "n": 0
+      },
+      "handshake_ns": {
+        "n": 3,
+        "p50": 81687700,
+        "p95": 217502300,
+        "p99": 217502300,
+        "max": 217502300
+      },
+      "system_cpu_fraction": {
+        "n": 3,
+        "p50": 0.43393094289508627,
+        "p95": 0.627906976744186,
+        "p99": 0.627906976744186,
+        "max": 0.627906976744186
+      },
+      "peak_observed_memory": {
+        "host": {
+          "rss": 187551744,
+          "private": 201854976
+        },
+        "worker": {
+          "rss": 514891776,
+          "private": 513323008
+        }
+      },
+      "translation": {
+        "load_ns": {
+          "n": 3,
+          "p50": 371111500,
+          "p95": 630826400,
+          "p99": 630826400,
+          "max": 630826400
+        },
+        "verification_ns": {
+          "n": 3,
+          "p50": 359963400,
+          "p95": 556761200,
+          "p99": 556761200,
+          "max": 556761200
+        },
+        "inference_ns": {
+          "n": 3,
+          "p50": 1978156500,
+          "p95": 2128310400,
+          "p99": 2128310400,
+          "max": 2128310400
+        },
+        "generated_steps": {
+          "n": 3,
+          "p50": 69,
+          "p95": 69,
+          "p99": 69,
+          "max": 69
+        },
+        "host_request_to_result_ns": {
+          "n": 3,
+          "p50": 2722346900,
+          "p95": 3347316100,
+          "p99": 3347316100,
+          "max": 3347316100
+        },
+        "queue_wait_ns": {
+          "n": 3,
+          "p50": 79400,
+          "p95": 136100,
+          "p99": 136100,
+          "max": 136100
+        }
+      },
+      "steps_per_second": 34.06785213465952
+    },
+    "round25/171/word/idle/normal": {
+      "all": {
+        "wall_ns": {
+          "n": 513,
+          "p50": 354700,
+          "p95": 1824100,
+          "p99": 2678800,
+          "max": 4387800
+        },
+        "cpu_ns": {
+          "n": 513,
+          "p50": 0,
+          "p95": 0,
+          "p99": 15625000,
+          "max": 15625000
+        },
+        "cycles": {
+          "n": 513,
+          "p50": 917828,
+          "p95": 4587582,
+          "p99": 6648740,
+          "max": 9151834
+        },
+        "observed_migrations": 39,
+        "store_overlap": 0
+      },
+      "inference": {
+        "wall_ns": {
+          "n": 0
+        },
+        "cpu_ns": {
+          "n": 0
+        },
+        "cycles": {
+          "n": 0
+        },
+        "observed_migrations": 0,
+        "store_overlap": 0
+      },
+      "loading": {
+        "wall_ns": {
+          "n": 0
+        },
+        "cpu_ns": {
+          "n": 0
+        },
+        "cycles": {
+          "n": 0
+        },
+        "observed_migrations": 0,
+        "store_overlap": 0
+      },
+      "cancellation_ns": {
+        "n": 0
+      },
+      "handshake_ns": {
+        "n": 0
+      },
+      "system_cpu_fraction": {
+        "n": 3,
+        "p50": 0.4317129629629629,
+        "p95": 0.44495412844036697,
+        "p99": 0.44495412844036697,
+        "max": 0.44495412844036697
+      },
+      "peak_observed_memory": {
+        "host": {
+          "rss": 187039744,
+          "private": 187699200
+        },
+        "worker": {
+          "rss": null,
+          "private": null
+        }
+      }
+    },
+    "round26/171/word/idle/normal": {
+      "all": {
+        "wall_ns": {
+          "n": 513,
+          "p50": 379700,
+          "p95": 1978100,
+          "p99": 3175800,
+          "max": 3799600
+        },
+        "cpu_ns": {
+          "n": 513,
+          "p50": 0,
+          "p95": 0,
+          "p99": 15625000,
+          "max": 15625000
+        },
+        "cycles": {
+          "n": 513,
+          "p50": 965520,
+          "p95": 4943722,
+          "p99": 8145360,
+          "max": 9825495
+        },
+        "observed_migrations": 56,
+        "store_overlap": 0
+      },
+      "inference": {
+        "wall_ns": {
+          "n": 0
+        },
+        "cpu_ns": {
+          "n": 0
+        },
+        "cycles": {
+          "n": 0
+        },
+        "observed_migrations": 0,
+        "store_overlap": 0
+      },
+      "loading": {
+        "wall_ns": {
+          "n": 0
+        },
+        "cpu_ns": {
+          "n": 0
+        },
+        "cycles": {
+          "n": 0
+        },
+        "observed_migrations": 0,
+        "store_overlap": 0
+      },
+      "cancellation_ns": {
+        "n": 0
+      },
+      "handshake_ns": {
+        "n": 0
+      },
+      "system_cpu_fraction": {
+        "n": 3,
+        "p50": 0.39084507042253525,
+        "p95": 0.4508670520231214,
+        "p99": 0.4508670520231214,
+        "max": 0.4508670520231214
+      },
+      "peak_observed_memory": {
+        "host": {
+          "rss": 187461632,
+          "private": 199921664
+        },
+        "worker": {
+          "rss": null,
+          "private": null
+        }
+      }
+    },
+    "round25/171/word/infer/normal": {
+      "all": {
+        "wall_ns": {
+          "n": 513,
+          "p50": 489400,
+          "p95": 2657600,
+          "p99": 3730600,
+          "max": 7524400
+        },
+        "cpu_ns": {
+          "n": 513,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 15625000
+        },
+        "cycles": {
+          "n": 513,
+          "p50": 1214870,
+          "p95": 6396021,
+          "p99": 9551261,
+          "max": 15769206
+        },
+        "observed_migrations": 75,
+        "store_overlap": 0
+      },
+      "inference": {
+        "wall_ns": {
+          "n": 513,
+          "p50": 489400,
+          "p95": 2657600,
+          "p99": 3730600,
+          "max": 7524400
+        },
+        "cpu_ns": {
+          "n": 513,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 15625000
+        },
+        "cycles": {
+          "n": 513,
+          "p50": 1214870,
+          "p95": 6396021,
+          "p99": 9551261,
+          "max": 15769206
+        },
+        "observed_migrations": 75,
+        "store_overlap": 0
+      },
+      "loading": {
+        "wall_ns": {
+          "n": 0
+        },
+        "cpu_ns": {
+          "n": 0
+        },
+        "cycles": {
+          "n": 0
+        },
+        "observed_migrations": 0,
+        "store_overlap": 0
+      },
+      "cancellation_ns": {
+        "n": 0
+      },
+      "handshake_ns": {
+        "n": 3,
+        "p50": 66941100,
+        "p95": 69897500,
+        "p99": 69897500,
+        "max": 69897500
+      },
+      "system_cpu_fraction": {
+        "n": 3,
+        "p50": 0.490360696517413,
+        "p95": 0.6591173054587689,
+        "p99": 0.6591173054587689,
+        "max": 0.6591173054587689
+      },
+      "peak_observed_memory": {
+        "host": {
+          "rss": 183848960,
+          "private": 201875456
+        },
+        "worker": {
+          "rss": 613711872,
+          "private": 658194432
+        }
+      },
+      "translation": {
+        "load_ns": {
+          "n": 3,
+          "p50": 424683100,
+          "p95": 504502900,
+          "p99": 504502900,
+          "max": 504502900
+        },
+        "verification_ns": {
+          "n": 3,
+          "p50": 363669900,
+          "p95": 401327600,
+          "p99": 401327600,
+          "max": 401327600
+        },
+        "inference_ns": {
+          "n": 3,
+          "p50": 2186840200,
+          "p95": 2483549800,
+          "p99": 2483549800,
+          "max": 2483549800
+        },
+        "generated_steps": {
+          "n": 3,
+          "p50": 69,
+          "p95": 69,
+          "p99": 69,
+          "max": 69
+        },
+        "host_request_to_result_ns": {
+          "n": 3,
+          "p50": 3006557100,
+          "p95": 3402164500,
+          "p99": 3402164500,
+          "max": 3402164500
+        },
+        "queue_wait_ns": {
+          "n": 3,
+          "p50": 66100,
+          "p95": 77800,
+          "p99": 77800,
+          "max": 77800
+        }
+      },
+      "steps_per_second": 31.81926412033646
+    },
+    "round26/171/word/infer/normal": {
+      "all": {
+        "wall_ns": {
+          "n": 513,
+          "p50": 532300,
+          "p95": 2458300,
+          "p99": 3416100,
+          "max": 4104000
+        },
+        "cpu_ns": {
+          "n": 513,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 15625000
+        },
+        "cycles": {
+          "n": 513,
+          "p50": 1312848,
+          "p95": 5886951,
+          "p99": 8310212,
+          "max": 10485937
+        },
+        "observed_migrations": 65,
+        "store_overlap": 0
+      },
+      "inference": {
+        "wall_ns": {
+          "n": 513,
+          "p50": 532300,
+          "p95": 2458300,
+          "p99": 3416100,
+          "max": 4104000
+        },
+        "cpu_ns": {
+          "n": 513,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 15625000
+        },
+        "cycles": {
+          "n": 513,
+          "p50": 1312848,
+          "p95": 5886951,
+          "p99": 8310212,
+          "max": 10485937
+        },
+        "observed_migrations": 65,
+        "store_overlap": 0
+      },
+      "loading": {
+        "wall_ns": {
+          "n": 0
+        },
+        "cpu_ns": {
+          "n": 0
+        },
+        "cycles": {
+          "n": 0
+        },
+        "observed_migrations": 0,
+        "store_overlap": 0
+      },
+      "cancellation_ns": {
+        "n": 0
+      },
+      "handshake_ns": {
+        "n": 3,
+        "p50": 56925400,
+        "p95": 79884200,
+        "p99": 79884200,
+        "max": 79884200
+      },
+      "system_cpu_fraction": {
+        "n": 3,
+        "p50": 0.4816484224082421,
+        "p95": 0.6032815704658658,
+        "p99": 0.6032815704658658,
+        "max": 0.6032815704658658
+      },
+      "peak_observed_memory": {
+        "host": {
+          "rss": 187449344,
+          "private": 200933376
+        },
+        "worker": {
+          "rss": 354160640,
+          "private": 350941184
+        }
+      },
+      "translation": {
+        "load_ns": {
+          "n": 3,
+          "p50": 363105100,
+          "p95": 363292200,
+          "p99": 363292200,
+          "max": 363292200
+        },
+        "verification_ns": {
+          "n": 3,
+          "p50": 334857200,
+          "p95": 357175000,
+          "p99": 357175000,
+          "max": 357175000
+        },
+        "inference_ns": {
+          "n": 3,
+          "p50": 2188614900,
+          "p95": 2432075000,
+          "p99": 2432075000,
+          "max": 2432075000
+        },
+        "generated_steps": {
+          "n": 3,
+          "p50": 69,
+          "p95": 69,
+          "p99": 69,
+          "max": 69
+        },
+        "host_request_to_result_ns": {
+          "n": 3,
+          "p50": 2916221100,
+          "p95": 3157380000,
+          "p99": 3157380000,
+          "max": 3157380000
+        },
+        "queue_wait_ns": {
+          "n": 3,
+          "p50": 50600,
+          "p95": 89400,
+          "p99": 89400,
+          "max": 89400
+        }
+      },
+      "steps_per_second": 31.366864774430496
+    },
+    "round25/243/lexical/idle/normal": {
+      "all": {
+        "wall_ns": {
+          "n": 729,
+          "p50": 2206200,
+          "p95": 6864300,
+          "p99": 10021100,
+          "max": 13386800
+        },
+        "cpu_ns": {
+          "n": 729,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 15625000
+        },
+        "cycles": {
+          "n": 729,
+          "p50": 5676738,
+          "p95": 17447011,
+          "p99": 25308287,
+          "max": 33164636
+        },
+        "observed_migrations": 209,
+        "store_overlap": 0
+      },
+      "inference": {
+        "wall_ns": {
+          "n": 0
+        },
+        "cpu_ns": {
+          "n": 0
+        },
+        "cycles": {
+          "n": 0
+        },
+        "observed_migrations": 0,
+        "store_overlap": 0
+      },
+      "loading": {
+        "wall_ns": {
+          "n": 0
+        },
+        "cpu_ns": {
+          "n": 0
+        },
+        "cycles": {
+          "n": 0
+        },
+        "observed_migrations": 0,
+        "store_overlap": 0
+      },
+      "cancellation_ns": {
+        "n": 0
+      },
+      "handshake_ns": {
+        "n": 0
+      },
+      "system_cpu_fraction": {
+        "n": 3,
+        "p50": 0.38212765957446804,
+        "p95": 0.3988533988533989,
+        "p99": 0.3988533988533989,
+        "max": 0.3988533988533989
+      },
+      "peak_observed_memory": {
+        "host": {
+          "rss": 187514880,
+          "private": 199770112
+        },
+        "worker": {
+          "rss": null,
+          "private": null
+        }
+      }
+    },
+    "round26/243/lexical/idle/normal": {
+      "all": {
+        "wall_ns": {
+          "n": 729,
+          "p50": 671700,
+          "p95": 2427300,
+          "p99": 3177200,
+          "max": 3683900
+        },
+        "cpu_ns": {
+          "n": 729,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 15625000
+        },
+        "cycles": {
+          "n": 729,
+          "p50": 1732234,
+          "p95": 5950973,
+          "p99": 7833543,
+          "max": 9503308
+        },
+        "observed_migrations": 85,
+        "store_overlap": 0
+      },
+      "inference": {
+        "wall_ns": {
+          "n": 0
+        },
+        "cpu_ns": {
+          "n": 0
+        },
+        "cycles": {
+          "n": 0
+        },
+        "observed_migrations": 0,
+        "store_overlap": 0
+      },
+      "loading": {
+        "wall_ns": {
+          "n": 0
+        },
+        "cpu_ns": {
+          "n": 0
+        },
+        "cycles": {
+          "n": 0
+        },
+        "observed_migrations": 0,
+        "store_overlap": 0
+      },
+      "cancellation_ns": {
+        "n": 0
+      },
+      "handshake_ns": {
+        "n": 0
+      },
+      "system_cpu_fraction": {
+        "n": 3,
+        "p50": 0.3619402985074627,
+        "p95": 0.5978260869565217,
+        "p99": 0.5978260869565217,
+        "max": 0.5978260869565217
+      },
+      "peak_observed_memory": {
+        "host": {
+          "rss": 187547648,
+          "private": 199737344
+        },
+        "worker": {
+          "rss": null,
+          "private": null
+        }
+      }
+    },
+    "round25/243/lexical/infer/normal": {
+      "all": {
+        "wall_ns": {
+          "n": 729,
+          "p50": 4198000,
+          "p95": 16708400,
+          "p99": 27819200,
+          "max": 35285100
+        },
+        "cpu_ns": {
+          "n": 729,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 31250000,
+          "max": 46875000
+        },
+        "cycles": {
+          "n": 729,
+          "p50": 10199780,
+          "p95": 37186389,
+          "p99": 53520134,
+          "max": 75191591
+        },
+        "observed_migrations": 370,
+        "store_overlap": 0
+      },
+      "inference": {
+        "wall_ns": {
+          "n": 729,
+          "p50": 4198000,
+          "p95": 16708400,
+          "p99": 27819200,
+          "max": 35285100
+        },
+        "cpu_ns": {
+          "n": 729,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 31250000,
+          "max": 46875000
+        },
+        "cycles": {
+          "n": 729,
+          "p50": 10199780,
+          "p95": 37186389,
+          "p99": 53520134,
+          "max": 75191591
+        },
+        "observed_migrations": 370,
+        "store_overlap": 0
+      },
+      "loading": {
+        "wall_ns": {
+          "n": 0
+        },
+        "cpu_ns": {
+          "n": 0
+        },
+        "cycles": {
+          "n": 0
+        },
+        "observed_migrations": 0,
+        "store_overlap": 0
+      },
+      "cancellation_ns": {
+        "n": 0
+      },
+      "handshake_ns": {
+        "n": 3,
+        "p50": 55047600,
+        "p95": 60599300,
+        "p99": 60599300,
+        "max": 60599300
+      },
+      "system_cpu_fraction": {
+        "n": 3,
+        "p50": 0.4708171206225681,
+        "p95": 0.7087378640776699,
+        "p99": 0.7087378640776699,
+        "max": 0.7087378640776699
+      },
+      "peak_observed_memory": {
+        "host": {
+          "rss": 185856000,
+          "private": 198197248
+        },
+        "worker": {
+          "rss": 423178240,
+          "private": 658067456
+        }
+      },
+      "translation": {
+        "load_ns": {
+          "n": 3,
+          "p50": 378052000,
+          "p95": 412086500,
+          "p99": 412086500,
+          "max": 412086500
+        },
+        "verification_ns": {
+          "n": 3,
+          "p50": 346544200,
+          "p95": 358416400,
+          "p99": 358416400,
+          "max": 358416400
+        },
+        "inference_ns": {
+          "n": 3,
+          "p50": 2260135500,
+          "p95": 2812684400,
+          "p99": 2812684400,
+          "max": 2812684400
+        },
+        "generated_steps": {
+          "n": 3,
+          "p50": 69,
+          "p95": 69,
+          "p99": 69,
+          "max": 69
+        },
+        "host_request_to_result_ns": {
+          "n": 3,
+          "p50": 3007835700,
+          "p95": 3603066300,
+          "p99": 3603066300,
+          "max": 3603066300
+        },
+        "queue_wait_ns": {
+          "n": 3,
+          "p50": 58300,
+          "p95": 63100,
+          "p99": 63100,
+          "max": 63100
+        }
+      },
+      "steps_per_second": 29.391086961198013
+    },
+    "round26/243/lexical/infer/normal": {
+      "all": {
+        "wall_ns": {
+          "n": 729,
+          "p50": 1384600,
+          "p95": 4776700,
+          "p99": 6034100,
+          "max": 8919600
+        },
+        "cpu_ns": {
+          "n": 729,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 15625000
+        },
+        "cycles": {
+          "n": 729,
+          "p50": 3535488,
+          "p95": 10750060,
+          "p99": 13590634,
+          "max": 16874700
+        },
+        "observed_migrations": 193,
+        "store_overlap": 0
+      },
+      "inference": {
+        "wall_ns": {
+          "n": 729,
+          "p50": 1384600,
+          "p95": 4776700,
+          "p99": 6034100,
+          "max": 8919600
+        },
+        "cpu_ns": {
+          "n": 729,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 15625000
+        },
+        "cycles": {
+          "n": 729,
+          "p50": 3535488,
+          "p95": 10750060,
+          "p99": 13590634,
+          "max": 16874700
+        },
+        "observed_migrations": 193,
+        "store_overlap": 0
+      },
+      "loading": {
+        "wall_ns": {
+          "n": 0
+        },
+        "cpu_ns": {
+          "n": 0
+        },
+        "cycles": {
+          "n": 0
+        },
+        "observed_migrations": 0,
+        "store_overlap": 0
+      },
+      "cancellation_ns": {
+        "n": 0
+      },
+      "handshake_ns": {
+        "n": 3,
+        "p50": 54534000,
+        "p95": 67688900,
+        "p99": 67688900,
+        "max": 67688900
+      },
+      "system_cpu_fraction": {
+        "n": 3,
+        "p50": 0.5467557251908397,
+        "p95": 0.6231257208765859,
+        "p99": 0.6231257208765859,
+        "max": 0.6231257208765859
+      },
+      "peak_observed_memory": {
+        "host": {
+          "rss": 187559936,
+          "private": 215371776
+        },
+        "worker": {
+          "rss": 566116352,
+          "private": 563941376
+        }
+      },
+      "translation": {
+        "load_ns": {
+          "n": 3,
+          "p50": 386039500,
+          "p95": 440395300,
+          "p99": 440395300,
+          "max": 440395300
+        },
+        "verification_ns": {
+          "n": 3,
+          "p50": 347442900,
+          "p95": 416471100,
+          "p99": 416471100,
+          "max": 416471100
+        },
+        "inference_ns": {
+          "n": 3,
+          "p50": 2044615300,
+          "p95": 2703599000,
+          "p99": 2703599000,
+          "max": 2703599000
+        },
+        "generated_steps": {
+          "n": 3,
+          "p50": 69,
+          "p95": 69,
+          "p99": 69,
+          "max": 69
+        },
+        "host_request_to_result_ns": {
+          "n": 3,
+          "p50": 2923897600,
+          "p95": 3449664300,
+          "p99": 3449664300,
+          "max": 3449664300
+        },
+        "queue_wait_ns": {
+          "n": 3,
+          "p50": 81400,
+          "p95": 89700,
+          "p99": 89700,
+          "max": 89700
+        }
+      },
+      "steps_per_second": 30.54256385878352
+    },
+    "round25/243/word/idle/normal": {
+      "all": {
+        "wall_ns": {
+          "n": 729,
+          "p50": 820800,
+          "p95": 2788600,
+          "p99": 3739900,
+          "max": 5317100
+        },
+        "cpu_ns": {
+          "n": 729,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 15625000
+        },
+        "cycles": {
+          "n": 729,
+          "p50": 2118700,
+          "p95": 7125926,
+          "p99": 9462874,
+          "max": 13744599
+        },
+        "observed_migrations": 91,
+        "store_overlap": 0
+      },
+      "inference": {
+        "wall_ns": {
+          "n": 0
+        },
+        "cpu_ns": {
+          "n": 0
+        },
+        "cycles": {
+          "n": 0
+        },
+        "observed_migrations": 0,
+        "store_overlap": 0
+      },
+      "loading": {
+        "wall_ns": {
+          "n": 0
+        },
+        "cpu_ns": {
+          "n": 0
+        },
+        "cycles": {
+          "n": 0
+        },
+        "observed_migrations": 0,
+        "store_overlap": 0
+      },
+      "cancellation_ns": {
+        "n": 0
+      },
+      "handshake_ns": {
+        "n": 0
+      },
+      "system_cpu_fraction": {
+        "n": 3,
+        "p50": 0.319078947368421,
+        "p95": 0.48958333333333337,
+        "p99": 0.48958333333333337,
+        "max": 0.48958333333333337
+      },
+      "peak_observed_memory": {
+        "host": {
+          "rss": 187179008,
+          "private": 201003008
+        },
+        "worker": {
+          "rss": null,
+          "private": null
+        }
+      }
+    },
+    "round26/243/word/idle/normal": {
+      "all": {
+        "wall_ns": {
+          "n": 729,
+          "p50": 854500,
+          "p95": 3035600,
+          "p99": 4279400,
+          "max": 5654400
+        },
+        "cpu_ns": {
+          "n": 729,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 15625000
+        },
+        "cycles": {
+          "n": 729,
+          "p50": 2208643,
+          "p95": 7773148,
+          "p99": 9900144,
+          "max": 14585702
+        },
+        "observed_migrations": 85,
+        "store_overlap": 0
+      },
+      "inference": {
+        "wall_ns": {
+          "n": 0
+        },
+        "cpu_ns": {
+          "n": 0
+        },
+        "cycles": {
+          "n": 0
+        },
+        "observed_migrations": 0,
+        "store_overlap": 0
+      },
+      "loading": {
+        "wall_ns": {
+          "n": 0
+        },
+        "cpu_ns": {
+          "n": 0
+        },
+        "cycles": {
+          "n": 0
+        },
+        "observed_migrations": 0,
+        "store_overlap": 0
+      },
+      "cancellation_ns": {
+        "n": 0
+      },
+      "handshake_ns": {
+        "n": 0
+      },
+      "system_cpu_fraction": {
+        "n": 3,
+        "p50": 0.4026104417670683,
+        "p95": 0.5140449438202247,
+        "p99": 0.5140449438202247,
+        "max": 0.5140449438202247
+      },
+      "peak_observed_memory": {
+        "host": {
+          "rss": 187461632,
+          "private": 197201920
+        },
+        "worker": {
+          "rss": null,
+          "private": null
+        }
+      }
+    },
+    "round25/243/word/infer/normal": {
+      "all": {
+        "wall_ns": {
+          "n": 729,
+          "p50": 1320400,
+          "p95": 4346400,
+          "p99": 5934300,
+          "max": 7359800
+        },
+        "cpu_ns": {
+          "n": 729,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 15625000
+        },
+        "cycles": {
+          "n": 729,
+          "p50": 3271622,
+          "p95": 10721289,
+          "p99": 14280367,
+          "max": 18984326
+        },
+        "observed_migrations": 161,
+        "store_overlap": 0
+      },
+      "inference": {
+        "wall_ns": {
+          "n": 729,
+          "p50": 1320400,
+          "p95": 4346400,
+          "p99": 5934300,
+          "max": 7359800
+        },
+        "cpu_ns": {
+          "n": 729,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 15625000
+        },
+        "cycles": {
+          "n": 729,
+          "p50": 3271622,
+          "p95": 10721289,
+          "p99": 14280367,
+          "max": 18984326
+        },
+        "observed_migrations": 161,
+        "store_overlap": 0
+      },
+      "loading": {
+        "wall_ns": {
+          "n": 0
+        },
+        "cpu_ns": {
+          "n": 0
+        },
+        "cycles": {
+          "n": 0
+        },
+        "observed_migrations": 0,
+        "store_overlap": 0
+      },
+      "cancellation_ns": {
+        "n": 0
+      },
+      "handshake_ns": {
+        "n": 3,
+        "p50": 58197200,
+        "p95": 59934700,
+        "p99": 59934700,
+        "max": 59934700
+      },
+      "system_cpu_fraction": {
+        "n": 3,
+        "p50": 0.5025062656641603,
+        "p95": 0.5699939135727328,
+        "p99": 0.5699939135727328,
+        "max": 0.5699939135727328
+      },
+      "peak_observed_memory": {
+        "host": {
+          "rss": 187490304,
+          "private": 201715712
+        },
+        "worker": {
+          "rss": 354017280,
+          "private": 350765056
+        }
+      },
+      "translation": {
+        "load_ns": {
+          "n": 3,
+          "p50": 334371700,
+          "p95": 373569600,
+          "p99": 373569600,
+          "max": 373569600
+        },
+        "verification_ns": {
+          "n": 3,
+          "p50": 344166500,
+          "p95": 355450500,
+          "p99": 355450500,
+          "max": 355450500
+        },
+        "inference_ns": {
+          "n": 3,
+          "p50": 2313577800,
+          "p95": 2326366800,
+          "p99": 2326366800,
+          "max": 2326366800
+        },
+        "generated_steps": {
+          "n": 3,
+          "p50": 69,
+          "p95": 69,
+          "p99": 69,
+          "max": 69
+        },
+        "host_request_to_result_ns": {
+          "n": 3,
+          "p50": 3010241700,
+          "p95": 3063051500,
+          "p99": 3063051500,
+          "max": 3063051500
+        },
+        "queue_wait_ns": {
+          "n": 3,
+          "p50": 49600,
+          "p95": 72600,
+          "p99": 72600,
+          "max": 72600
+        }
+      },
+      "steps_per_second": 30.811652609780467
+    },
+    "round26/243/word/infer/normal": {
+      "all": {
+        "wall_ns": {
+          "n": 729,
+          "p50": 1393000,
+          "p95": 5320500,
+          "p99": 7243200,
+          "max": 8185700
+        },
+        "cpu_ns": {
+          "n": 729,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 15625000
+        },
+        "cycles": {
+          "n": 729,
+          "p50": 3413664,
+          "p95": 12269492,
+          "p99": 16203369,
+          "max": 19188836
+        },
+        "observed_migrations": 191,
+        "store_overlap": 0
+      },
+      "inference": {
+        "wall_ns": {
+          "n": 729,
+          "p50": 1393000,
+          "p95": 5320500,
+          "p99": 7243200,
+          "max": 8185700
+        },
+        "cpu_ns": {
+          "n": 729,
+          "p50": 0,
+          "p95": 15625000,
+          "p99": 15625000,
+          "max": 15625000
+        },
+        "cycles": {
+          "n": 729,
+          "p50": 3413664,
+          "p95": 12269492,
+          "p99": 16203369,
+          "max": 19188836
+        },
+        "observed_migrations": 191,
+        "store_overlap": 0
+      },
+      "loading": {
+        "wall_ns": {
+          "n": 0
+        },
+        "cpu_ns": {
+          "n": 0
+        },
+        "cycles": {
+          "n": 0
+        },
+        "observed_migrations": 0,
+        "store_overlap": 0
+      },
+      "cancellation_ns": {
+        "n": 0
+      },
+      "handshake_ns": {
+        "n": 3,
+        "p50": 53052100,
+        "p95": 62944400,
+        "p99": 62944400,
+        "max": 62944400
+      },
+      "system_cpu_fraction": {
+        "n": 3,
+        "p50": 0.4962121212121212,
+        "p95": 0.6483279395900755,
+        "p99": 0.6483279395900755,
+        "max": 0.6483279395900755
+      },
+      "peak_observed_memory": {
+        "host": {
+          "rss": 184918016,
+          "private": 200003584
+        },
+        "worker": {
+          "rss": 657563648,
+          "private": 657645568
+        }
+      },
+      "translation": {
+        "load_ns": {
+          "n": 3,
+          "p50": 399043700,
+          "p95": 463135400,
+          "p99": 463135400,
+          "max": 463135400
+        },
+        "verification_ns": {
+          "n": 3,
+          "p50": 355453000,
+          "p95": 450470800,
+          "p99": 450470800,
+          "max": 450470800
+        },
+        "inference_ns": {
+          "n": 3,
+          "p50": 2395614200,
+          "p95": 2551303300,
+          "p99": 2551303300,
+          "max": 2551303300
+        },
+        "generated_steps": {
+          "n": 3,
+          "p50": 69,
+          "p95": 69,
+          "p99": 69,
+          "max": 69
+        },
+        "host_request_to_result_ns": {
+          "n": 3,
+          "p50": 3073150800,
+          "p95": 3486187200,
+          "p99": 3486187200,
+          "max": 3486187200
+        },
+        "queue_wait_ns": {
+          "n": 3,
+          "p50": 70300,
+          "p95": 174000,
+          "p99": 174000,
+          "max": 174000
+        }
+      },
+      "steps_per_second": 29.62878778824463
+    }
+  },
+  "finished_utc": "2026-11-26T10:05:39.723493+00:00",
+  "summary_sha256": "8bc17806337b29deb6ac1f91266a4c9471f40e1960a0f33391cd0d0d1b86a1c4",
+  "error_records": [],
+  "host_conditions": {
+    "started_utc": "2026-11-26T10:02:59.673466+00:00",
+    "launcher_sha256": "dd7a4248ef66de821d929fb60285d45d4c4aacc249ae97409828f2ed95aef2dc",
+    "root_head": "c765e634342b19f40fbde2ac4e2043187373a9ef",
+    "sampling_interval_seconds": 1.25,
+    "scope": "仅观察已知编译、链接、译文及阶段重放进程。系统后台负载另在主证据保留。",
+    "watched_process_names": [
+      "cargo.exe",
+      "cloudleaf-bridge-headless.exe",
+      "cloudleaf-translation-worker.exe",
+      "language_audit.exe",
+      "link.exe",
+      "round26-input-probe.exe",
+      "rustc.exe",
+      "worker_replay.exe"
+    ],
+    "observations": [
+      {
+        "utc": "2026-11-26T10:03:07.350006+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:08.687008+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:10.007702+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:11.462093+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:12.912586+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:14.230108+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:15.552360+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:16.858670+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:18.168646+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:19.498346+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:20.839840+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:22.142798+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:23.490366+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:24.871413+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:26.198092+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:27.529523+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:28.999013+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:30.302475+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:31.603418+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:32.998710+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:34.351499+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:35.750959+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:37.104954+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:38.452054+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:39.842520+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:41.163228+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:42.510827+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:43.858276+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:45.235776+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:46.580789+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:47.969673+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:49.340521+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:50.747822+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:52.134017+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:53.487750+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:54.850063+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:56.222241+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:57.546831+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:03:58.918877+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:00.269338+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:01.741653+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:03.075384+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:04.409826+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:05.779374+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:07.120328+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:08.439657+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:09.828495+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:11.161418+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:12.485896+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:13.903227+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:15.397987+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:16.725294+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:18.074740+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:19.556429+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:20.892680+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:22.271835+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:23.615314+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:25.040112+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:26.440538+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:27.765432+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:29.153312+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:30.627743+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:32.197838+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:33.555660+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:34.902548+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:36.260039+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:37.603429+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:38.951844+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:40.282729+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:41.745874+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:43.180936+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:44.564213+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:45.975089+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:47.310765+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:48.811040+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:50.156590+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:51.483336+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:52.846000+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:54.267359+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:55.608985+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:56.968759+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:58.338754+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:04:59.698084+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:01.039696+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:02.494804+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:03.854637+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:05.236460+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:06.565285+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:07.880758+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:09.264025+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:10.606242+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:11.994302+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:13.398258+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:14.779669+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:16.165284+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:17.503638+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:18.844827+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:20.185982+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:21.534816+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:22.961271+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:24.290788+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:25.660946+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:27.113091+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:28.443813+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:29.774012+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:31.114440+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:32.506339+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:33.844781+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:35.192164+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:36.565340+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:38.050027+00:00",
+        "external": []
+      },
+      {
+        "utc": "2026-11-26T10:05:39.398763+00:00",
+        "external": []
+      }
+    ],
+    "stdout_sha256": "16f9474b9b16175a71eefacf97f24ff61486d00994adbd39642cf528ba20992e",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "ended_utc": "2026-11-26T10:05:40.655529+00:00",
+    "returncode": 0,
+    "classification": "编译及其它翻译任务暂停，采样范围内未观察到外部竞争进程"
+  },
+  "host_conditions_sha256": "40e71781b5623c481dec20ee8d09b77f208943494f3018406ac304edd3ba033d"
+}
