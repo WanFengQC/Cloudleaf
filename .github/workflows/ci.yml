@@ -52,12 +52,12 @@ jobs:
       - name: Algorithm baseline and ablation
         run: python scripts/evaluate_algorithms.py --output-dir .local/algorithm-v1
       - name: Build input and offline model research tools
-        run: cargo build -p cloudleaf-input -p cloudleaf-search -p cloudleaf-offline --examples --release --locked --offline
+        run: cargo build -p cloudleaf-input -p cloudleaf-search -p cloudleaf-offline -p cloudleaf-translation --examples --release --locked --offline
       - name: Upload Windows input and translation integration tools
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v4
         with:
-          name: integration-round22-windows
+          name: integration-round23-windows
           path: |
             target/release/cloudleaf-cli.exe
             target/release/cloudleaf-ime.exe
@@ -70,6 +70,8 @@ jobs:
             target/release/examples/offline_translate.exe
             target/release/examples/offline_lifecycle.exe
             target/release/examples/input_trace.exe
+            target/release/examples/research_rank.exe
+            target/release/examples/dictionary_lookup.exe
             target/release/examples/train_language.exe
             target/release/examples/coverage_probe.exe
             target/release/examples/scheme_trace.exe
@@ -94,18 +96,21 @@ jobs:
             docs/testing/round20-windows-manual-acceptance.md
             docs/integration-round21-design.md
             docs/integration-round22-design.md
+            docs/integration-round23-design.md
             docs/testing/round22-native-translation-manual.md
           if-no-files-found: error
       - name: Upload Linux headless integration tools
         if: runner.os == 'Linux'
         uses: actions/upload-artifact@v4
         with:
-          name: integration-round22-linux
+          name: integration-round23-linux
           path: |
             target/release/cloudleaf-cli
             target/release/cloudleaf-bridge-headless
             target/release/cloudleaf-translation-worker
             target/release/examples/input_trace
+            target/release/examples/research_rank
+            target/release/examples/dictionary_lookup
             target/release/examples/inspect_marian_weights
             target/release/examples/offline_models
             target/release/examples/offline_translate
@@ -121,6 +126,7 @@ jobs:
             config/offline-runtime-source-patches.json
             docs/integration-round21-design.md
             docs/integration-round22-design.md
+            docs/integration-round23-design.md
           if-no-files-found: error
       - uses: actions/upload-artifact@v4
         with:

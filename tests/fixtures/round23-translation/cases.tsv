@@ -1,0 +1,30 @@
+mode	id	direction	topic	source	intentional_output
+real	zh01	zh-en	money_brand	Cloudleaf 现在的价格是123.45元。	-
+real	zh02	zh-en	chat	这周末我有空，我们可以找一家安静的咖啡店聊天。	-
+real	zh03	zh-en	business	请在周五之前确认订单，然后把修订后的发票发给采购部门。	-
+real	zh04	zh-en	quantity_relation	甲商品重3公斤，乙商品重5公斤，甲商品比较轻。	-
+real	zh05	zh-en	date_time	会议定在2026年11月25日下午4点。	-
+real	zh06	zh-en	negation	如果还没有收到付款，请不要发货。	-
+real	zh07	zh-en	technical_mixed	请用 USB-C 线连接设备，再把 Cloudleaf 配置保存为 JSON。	-
+real	zh08	zh-en	polysemy	这部手机没电了，我需要借一个充电器。	-
+real	zh09	zh-en	round22_anchor	2026年11月2日，Cloudleaf 发布了第13轮研发计划，预算为123.45元。	-
+real	en01	en-zh	money_brand	The Cloudleaf license costs CNY 123.45 per year.	-
+real	en02	en-zh	chat	Could we meet by the library after lunch? I can bring coffee.	-
+real	en03	en-zh	business_long	Please confirm the revised order with the supplier before noon, and notify the warehouse only after the supplier has replied in writing.	-
+real	en04	en-zh	amount_relationship	Product A costs CNY 15 and product B costs CNY 30. Product A is cheaper.	-
+real	en05	en-zh	time_length	The 3 m cable must arrive before 4:30 p.m. on November 25, 2026.	-
+real	en06	en-zh	negation	If the backup is incomplete, do not delete the original file.	-
+real	en07	en-zh	technical_mixed	Install the USB-C adapter on the Cloudleaf terminal, but do not change the JSON file called settings.json.	-
+real	en08	en-zh	polysemy	Meet me at the river bank. The bank will close at five.	-
+control	ct01	zh-en	swapped_amount	甲商品价格是 CNY 15，乙商品价格是 CNY 30。	Product A costs CNY 30; product B costs CNY 15.
+control	ct02	zh-en	wrong_association	甲商品重 3 kg，乙商品重 5 kg。	Product B weighs 3 kg; product A weighs 5 kg.
+control	ct03	en-zh	lost_negation	Do not send the order until the payment is confirmed.	付款确认前请发送订单。
+control	ct04	zh-en	date_roles	2026年11月25日是出发日，2026年11月27日是回程日。	November 27, 2026 is the departure date and November 25, 2026 is the return date.
+control	ct05	en-zh	quantity_relation	The first package weighs 3 kg and the second weighs 5 kg; the first is lighter.	第一件重 3 kg，第二件重 5 kg；第一件比较重。
+control	ct06	en-zh	term_relation	Cloudleaf reads the JSON; the USB-C adapter does not read it.	USB-C 读取该 JSON；Cloudleaf 不读取它。
+control	ct07	zh-en	equivalent_date_units	2026年11月25日测量为3公斤和 20 厘米。	The measurements on November 25, 2026 were 3 kg and 20 cm.
+control	ct08	zh-en	equivalent_money	报价为123.45元。	The quote is CNY 123.45.
+control	ct09	zh-en	changed_money_brand	Cloudleaf 价格为123.45元。	Claudelaf costs $123.45.
+control	ct10	en-zh	ambiguous_money	The price is $12.	价格为 $12。
+control	ct11	en-zh	ambiguous_date	Use the baseline scheduled for 03/04/2026.	使用定于 03/04/2026 的基线。
+control	ct12	zh-en	measurement_false_alarm_control	甲是三公斤，乙是五公斤。	The respective weights are 3 kg and 5 kg.

@@ -1,6 +1,8 @@
 //! 对固定按键轨迹和独立真实翻译进程采样，不启动桌面或 TSF。
-use cloudleaf_input::{InputConfig, InputEngine, LanguageSnapshot, SearchSnapshot};
-use cloudleaf_search::{Config, Method, Ranker};
+use cloudleaf_input::{
+    InputConfig, InputEngine, LanguageSnapshot, ResearchLanguageSnapshot, SearchSnapshot,
+};
+use cloudleaf_search::{Config, Method, Ranker, ResearchRanker};
 use cloudleaf_translation_ipc::{
     Command, Direction, Envelope, IpcError, ProgressStage, RequestKey, ResourceThreads,
     SourceIdentity, WorkerClient, WorkerConfig, WorkerEvent, WorkerOutput, WorkerState, read_frame,
@@ -42,6 +44,7 @@ unsafe extern "system" {
         user: *mut FileTime,
     ) -> i32;
     fn GetCurrentProcessorNumber() -> u32;
+    fn QueryThreadCycleTime(thread: isize, cycles: *mut u64) -> i32;
 }
 
 fn thread_probe() -> (u64, u32) {
@@ -64,6 +67,12 @@ fn thread_probe() -> (u64, u32) {
             GetCurrentProcessorNumber(),
         )
     }
+}
+
+fn thread_cycles() -> Option<u64> {
+    let mut cycles = 0;
+    // 当前线程伪句柄和有效的 u64 输出地址。保留周期数，不换算时间。
+    unsafe { (QueryThreadCycleTime(GetCurrentThread(), &mut cycles) != 0).then_some(cycles) }
 }
 
 fn unix_ns() -> u64 {
@@ -235,7 +244,12 @@ fn codec() -> Outcome<()> {
 }
 
 fn main() -> Outcome<()> {
-    let args: Vec<_> = std::env::args().skip(1).collect();
+    let mut args: Vec<_> = std::env::args().skip(1).collect();
+    let research = if args.len() == 12 {
+        Some(args.split_off(10))
+    } else {
+        None
+    };
     let [
         runtime,
         runtime_sha,
@@ -265,22 +279,48 @@ fn main() -> Outcome<()> {
     )?);
     let events = trace(&std::fs::read_to_string(events)?);
     assert_eq!(events.len(), 171);
-    let mut engine = InputEngine::with_language(
-        lexicon,
-        Config {
-            method: Method::PositionDag,
-            ranker: Ranker::Lexical,
-            output_k: 10,
-            max_input_bytes: 64,
-            max_letters: 64,
-            max_expansions: 200_000,
-            max_resident_paths: 50_000,
-            ..Default::default()
-        },
-        signal,
-        None,
-        InputConfig::default(),
-    )?;
+    let config = Config {
+        method: Method::PositionDag,
+        ranker: Ranker::Lexical,
+        output_k: 10,
+        max_input_bytes: 64,
+        max_letters: 64,
+        max_expansions: 200_000,
+        max_resident_paths: 50_000,
+        ..Default::default()
+    };
+    let load_start = Instant::now();
+    let mut engine = if let Some(args) = research {
+        let model = Arc::new(ResearchLanguageSnapshot::from_verified_tsv(
+            &std::fs::read_to_string(&args[0])?,
+            &args[1],
+            &lexicon,
+            None,
+            ResearchRanker::Word,
+            50,
+        )?);
+        println!(
+            "INPUT_MODEL\tword\t{}\t{}",
+            model.estimated_bytes(),
+            load_start.elapsed().as_nanos()
+        );
+        InputEngine::with_research_context(
+            lexicon,
+            Config {
+                ranker: Ranker::Structural,
+                ..config
+            },
+            model,
+            InputConfig::default(),
+        )?
+    } else {
+        println!(
+            "INPUT_MODEL\tlexical\t{}\t{}",
+            signal.estimated_bytes(),
+            load_start.elapsed().as_nanos()
+        );
+        InputEngine::with_language(lexicon, config, signal, None, InputConfig::default())?
+    };
     engine.handle(InputEvent::Activate);
 
     let started = Instant::now();
@@ -393,7 +433,9 @@ fn main() -> Outcome<()> {
         let save = saving.load(Ordering::Acquire);
         let t0 = unix_ns();
         let start = Instant::now();
+        let cycle0 = thread_cycles();
         let result = engine.handle(event);
+        let cycle1 = thread_cycles();
         let wall_ns = start.elapsed().as_nanos();
         let t1 = unix_ns();
         let (cpu1, core1) = thread_probe();
@@ -410,6 +452,9 @@ fn main() -> Outcome<()> {
             core0,
             core1,
             store_overlap,
+            cycle0
+                .zip(cycle1)
+                .and_then(|(before, after)| after.checked_sub(before)),
             result,
         ));
         if scenario == "cancel"
@@ -446,9 +491,12 @@ fn main() -> Outcome<()> {
         let mut reopened = Store::open(PathBuf::from(user_path))?;
         assert_eq!(reopened.load()?.generation(), 32);
     }
-    for (i, t0, t1, wall, cpu, core0, core1, store, result) in observations {
+    for (i, t0, t1, wall, cpu, core0, core1, store, cycles, result) in observations {
         println!("KEY\t{i}\t{t0}\t{t1}\t{wall}\t{cpu}\t{core0}\t{core1}\t{store}");
         println!("RESULT\t{i}\t{result:?}");
+        if let Some(cycles) = cycles {
+            println!("CYCLE\t{i}\t{cycles}");
+        }
     }
     if !matches!(scenario.as_str(), "idle" | "after-exit") {
         let stop = Instant::now();

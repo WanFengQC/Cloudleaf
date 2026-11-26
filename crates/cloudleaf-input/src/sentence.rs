@@ -276,6 +276,124 @@ impl LanguageSnapshot {
     }
 }
 
+/// 只由显式研究配置构造，与具体输入及用户扩展快照绑定。
+#[derive(Debug)]
+pub struct ResearchLanguageSnapshot {
+    words: cloudleaf_search::WordContextModel,
+    character: Option<Arc<LanguageSnapshot>>,
+    binding: String,
+    version: String,
+    ranker: cloudleaf_search::ResearchRanker,
+    pool: usize,
+}
+
+impl ResearchLanguageSnapshot {
+    pub fn from_verified_tsv(
+        word_text: &str,
+        word_sha: &str,
+        lexicon: &SearchSnapshot,
+        character: Option<Arc<LanguageSnapshot>>,
+        ranker: cloudleaf_search::ResearchRanker,
+        pool: usize,
+    ) -> Result<Self, CoreError> {
+        use cloudleaf_search::{MAX_RESEARCH_POOL, ResearchRanker, WordContextModel};
+        let invalid = || CoreError::new(ErrorCode::InvalidConfig, "研究资源绑定或候选池无效");
+        if !(1..=MAX_RESEARCH_POOL).contains(&pool)
+            || hex(digest(&SHA256, word_text.as_bytes()).as_ref()) != word_sha
+            || character.as_ref().is_some_and(|model| {
+                model.binding != lexicon.version()
+                    || !model.snapshot.model().has_character_transitions()
+                    || !model
+                        .snapshot
+                        .model()
+                        .is_compatible_lexicon(&lexicon.lexicon)
+            })
+            || (character.is_none()
+                && matches!(ranker, ResearchRanker::Character | ResearchRanker::Mixed))
+        {
+            return Err(invalid());
+        }
+        let base = lexicon.base_version.as_deref().unwrap_or(lexicon.version());
+        let words =
+            WordContextModel::from_tsv(word_text, &lexicon.lexicon, base).map_err(|_| invalid())?;
+        let selected_character = character.as_ref().map_or("", |value| value.version());
+        let fingerprint = format!("{word_sha}:{selected_character}:{ranker:?}:{pool}");
+        Ok(Self {
+            words,
+            character,
+            binding: lexicon.version().to_owned(),
+            version: hex(digest(&SHA256, fingerprint.as_bytes()).as_ref()),
+            ranker,
+            pool,
+        })
+    }
+
+    pub fn version(&self) -> &str {
+        &self.version
+    }
+
+    pub fn estimated_bytes(&self) -> usize {
+        self.words.estimated_bytes()
+            + self
+                .character
+                .as_ref()
+                .map_or(0, |model| model.estimated_bytes())
+            + self.binding.capacity()
+            + self.version.capacity()
+            + std::mem::size_of::<Self>()
+    }
+
+    pub(crate) fn character_for_pool(&self) -> Option<Arc<LanguageSnapshot>> {
+        self.character.clone()
+    }
+
+    fn rerank(
+        &self,
+        lexicon: &Lexicon,
+        graph: &Lattice<'_>,
+        config: &Config,
+    ) -> Result<cloudleaf_search::SearchResult, SearchError> {
+        let pool_config = Config {
+            output_k: self.pool,
+            context_pool: self.pool.max(config.context_pool),
+            ..config.clone()
+        };
+        let pool_character = (config.ranker == Ranker::CharacterBigram)
+            .then(|| self.character.as_ref().map(|model| model.snapshot.model()))
+            .flatten();
+        let mut result = search_graph(lexicon, graph, &pool_config, pool_character, None)?;
+        let order = self.words.rank_pool(
+            graph,
+            &result,
+            self.ranker,
+            self.character.as_ref().map(|model| model.snapshot.model()),
+        )?;
+        let mut candidates: Vec<_> = std::mem::take(&mut result.candidates)
+            .into_iter()
+            .map(Some)
+            .collect();
+        result.candidates = order
+            .into_iter()
+            .take(config.output_k)
+            .map(|score| {
+                let mut candidate = candidates[score.pool_index]
+                    .take()
+                    .expect("研究重排每个候选最多返回一次");
+                candidate.score = score.final_units;
+                candidate.features.lexical_units = score.unigram_units;
+                candidate.features.bigram_units = score.word_units;
+                candidate.features.context_units = score.boundary_units;
+                candidate.features.character_units = score.character_units.unwrap_or(0);
+                candidate.features.lexical_observed = score.observed_words;
+                candidate.features.lexical_missing = score.unknown_words;
+                candidate
+            })
+            .collect();
+        result.finite_pool_only = true;
+        Ok(result)
+    }
+}
+
 /// 字符串有效字节和结构容量上界，不冒充allocator真实峰值或共享Trie字节数。
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct SearchCapacityBounds {
@@ -335,6 +453,7 @@ pub(crate) struct SentenceBackend {
     snapshot: Arc<SearchSnapshot>,
     config: Config,
     language: Option<Arc<LanguageSnapshot>>,
+    research: Option<Arc<ResearchLanguageSnapshot>>,
     left_word: Option<String>,
     scheme: cloudleaf_pinyin::SchemeConfig,
     transitions: cloudleaf_search::TransitionCache,
@@ -393,23 +512,56 @@ impl SentenceBackend {
             snapshot,
             config,
             language,
+            research: None,
             left_word,
             scheme: cloudleaf_pinyin::SchemeConfig::default(),
             transitions,
         })
     }
 
+    pub(crate) fn with_research(
+        mut self,
+        research: Arc<ResearchLanguageSnapshot>,
+    ) -> Result<Self, CoreError> {
+        if research.binding != self.snapshot.version()
+            || !research.words.is_compatible_lexicon(&self.snapshot.lexicon)
+            || research.pool < self.config.output_k
+            || !matches!(
+                self.config.ranker,
+                Ranker::Structural | Ranker::CharacterBigram
+            )
+            || (self.config.ranker == Ranker::CharacterBigram && research.character.is_none())
+            || research.estimated_bytes() > 16 * 1024 * 1024
+        {
+            return Err(CoreError::new(
+                ErrorCode::InvalidConfig,
+                "研究配置、词典或内存预算不符",
+            ));
+        }
+        self.research = Some(research);
+        Ok(self)
+    }
+
+    pub(crate) fn scoring_version(&self) -> Option<&str> {
+        self.research
+            .as_ref()
+            .map(|model| model.version())
+            .or_else(|| self.language.as_ref().map(|model| model.version()))
+    }
+
     pub(crate) fn replace_snapshot(
         &mut self,
         snapshot: Arc<SearchSnapshot>,
     ) -> Result<(), CoreError> {
-        if self.language.as_ref().is_some_and(|value| {
-            value.binding != snapshot.version
-                || !value
-                    .snapshot
-                    .model()
-                    .is_compatible_lexicon(&snapshot.lexicon)
-        }) {
+        if self.research.is_some() && !Arc::ptr_eq(&self.snapshot, &snapshot)
+            || self.language.as_ref().is_some_and(|value| {
+                value.binding != snapshot.version
+                    || !value
+                        .snapshot
+                        .model()
+                        .is_compatible_lexicon(&snapshot.lexicon)
+            })
+        {
             return Err(CoreError::new(
                 ErrorCode::InvalidConfig,
                 "先解除旧模型绑定，不能套用到新词典",
@@ -439,12 +591,21 @@ impl SentenceBackend {
         snapshot: Arc<SearchSnapshot>,
         language: Option<Arc<LanguageSnapshot>>,
     ) -> Result<Self, CoreError> {
+        if self.research.is_some()
+            && (!Arc::ptr_eq(&self.snapshot, &snapshot) || language.is_some())
+        {
+            return Err(CoreError::new(
+                ErrorCode::InvalidConfig,
+                "研究资源更新须重新编译并与新词典一同装载",
+            ));
+        }
         let mut replacement = Self::configured(
             snapshot,
             self.config.clone(),
             language,
             self.left_word.clone(),
         )?;
+        replacement.research = self.research.clone();
         replacement.scheme = self.scheme.clone();
         replacement
             .transitions
@@ -488,7 +649,7 @@ impl SentenceBackend {
         let mut diagnostic = SearchDiagnostic {
             revision,
             snapshot_version: self.snapshot.version.clone(),
-            model_version: self.language.as_ref().map(|value| value.version.clone()),
+            model_version: self.scoring_version().map(str::to_owned),
             context_entry_id: self.left_word.clone(),
             method: self.config.method,
             ranker: self.config.ranker,
@@ -522,13 +683,17 @@ impl SentenceBackend {
             }
         };
         diagnostic.scheme_statistics = graph.scheme_statistics().cloned();
-        let result = match search_graph(
-            &self.snapshot.lexicon,
-            &graph,
-            &self.config,
-            self.language.as_ref().map(|value| value.snapshot.model()),
-            self.left_word.as_deref(),
-        ) {
+        let result = match if let Some(research) = &self.research {
+            research.rerank(&self.snapshot.lexicon, &graph, &self.config)
+        } else {
+            search_graph(
+                &self.snapshot.lexicon,
+                &graph,
+                &self.config,
+                self.language.as_ref().map(|value| value.snapshot.model()),
+                self.left_word.as_deref(),
+            )
+        } {
             Ok(result) => result,
             Err(error) => {
                 diagnostic.error = Some(error);
@@ -544,7 +709,7 @@ impl SentenceBackend {
         for path in result.candidates {
             let id = candidate_id(
                 &self.snapshot.version,
-                self.language.as_ref().map(|value| value.version()),
+                self.scoring_version(),
                 input,
                 &path,
                 &graph,

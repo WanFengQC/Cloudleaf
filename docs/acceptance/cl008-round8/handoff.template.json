@@ -1,0 +1,22 @@
+{
+  "template_status": "pending-not-an-approved-packet",
+  "intended_consumer": "scripts/check_ime_task_handoff.py --handoff",
+  "instructions": [
+    "仅在真实来源、任务、审核和保管材料齐全后，将payload另存为新的私有UTF-8文件。",
+    "metadata、train、dev和context_review均填写实际path/sha256描述；相对路径以新handoff文件目录为准。",
+    "metadata引用C冻结后的packet-metadata.json；不能增加tasks或heldout答案。",
+    "visible_tasks只允许train和dev；heldout明文不交给本工具或开发评估者。",
+    "本模板未签署、不含有效SHA或答案，不能作为已批准的正式交付。"
+  ],
+  "payload": {
+    "schema_version": 1,
+    "experiment": "cloudleaf-ime-task-handoff-v1",
+    "family_index_sha256": null,
+    "metadata": null,
+    "visible_tasks": {
+      "train": null,
+      "dev": null
+    },
+    "context_review": null
+  }
+}

@@ -2,8 +2,8 @@
 
 mod sentence;
 pub use sentence::{
-    EdgeSource, LanguageSnapshot, SearchCapacityBounds, SearchDiagnostic, SearchPath,
-    SearchSnapshot, entry_fingerprint,
+    EdgeSource, LanguageSnapshot, ResearchLanguageSnapshot, SearchCapacityBounds, SearchDiagnostic,
+    SearchPath, SearchSnapshot, entry_fingerprint,
 };
 
 use cloudleaf_dictionary::Dictionary;
@@ -136,6 +136,26 @@ impl InputEngine {
         Ok(engine)
     }
 
+    /// 使用已校验的受限词语重排。
+    pub fn with_research_context(
+        snapshot: Arc<SearchSnapshot>,
+        search_config: cloudleaf_search::Config,
+        research: Arc<ResearchLanguageSnapshot>,
+        config: InputConfig,
+    ) -> Result<Self, CoreError> {
+        let mut engine = if search_config.ranker == cloudleaf_search::Ranker::CharacterBigram {
+            let character = research.character_for_pool().ok_or_else(|| {
+                CoreError::new(ErrorCode::InvalidConfig, "字符召回池缺少字符模型")
+            })?;
+            Self::with_language(snapshot, search_config, character, None, config)?
+        } else {
+            Self::with_search(snapshot, search_config, config)?
+        };
+        let backend = engine.sentence.take().expect("搜索引擎必有后端");
+        engine.sentence = Some(backend.with_research(research)?);
+        Ok(engine)
+    }
+
     pub fn search_diagnostic(&self) -> Option<&SearchDiagnostic> {
         self.search_diagnostic.as_ref()
     }
@@ -159,8 +179,11 @@ impl InputEngine {
             lexicon: resources
                 .as_ref()
                 .map(|(snapshot, _)| snapshot.version().to_owned()),
-            input_model: resources
-                .and_then(|(_, model)| model.map(|model| model.version().to_owned())),
+            input_model: self
+                .sentence
+                .as_ref()
+                .and_then(|backend| backend.scoring_version())
+                .map(str::to_owned),
             scheme: self.pinyin_scheme().map(SchemeConfig::version_id),
         }
     }
@@ -228,6 +251,47 @@ impl InputEngine {
         let mut engine = Self::with_config(Dictionary::empty(), config)?;
         engine.sentence = Some(backend);
         Ok(engine)
+    }
+
+    /// 仅替换已验证的研究资源，所有预检通过后才更新帧和修订。
+    pub fn replace_research_context(
+        &mut self,
+        snapshot: Arc<SearchSnapshot>,
+        search_config: cloudleaf_search::Config,
+        research: Arc<ResearchLanguageSnapshot>,
+    ) -> Result<(), CoreError> {
+        if self.pending_commit.is_some() || self.failed_commit.is_some() {
+            return Err(CoreError::new(
+                ErrorCode::CommitPending,
+                "当前事务未完成，不能更新语言资源",
+            ));
+        }
+        if self.revision == u64::MAX || search_config.output_k > self.config.max_candidates {
+            return Err(CoreError::new(
+                ErrorCode::InvalidConfig,
+                "修订号或候选预算无效",
+            ));
+        }
+        let current = self
+            .sentence
+            .as_ref()
+            .ok_or_else(|| CoreError::new(ErrorCode::InvalidConfig, "非整句后端"))?;
+        let character = if search_config.ranker == cloudleaf_search::Ranker::CharacterBigram {
+            research.character_for_pool()
+        } else {
+            None
+        };
+        let mut replacement =
+            sentence::SentenceBackend::configured(snapshot, search_config, character, None)?
+                .with_research(research)?;
+        replacement.set_scheme(current.scheme().clone());
+        self.sentence = Some(replacement);
+        let inactive = self.state == InputState::Inactive;
+        self.refresh();
+        if inactive {
+            self.state = InputState::Inactive;
+        }
+        Ok(())
     }
 
     pub fn reconfigure_search(

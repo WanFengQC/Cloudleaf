@@ -9,6 +9,7 @@ mod profiling;
 mod schemes;
 mod search;
 mod transition_cache;
+mod word_context;
 
 pub use cancellation::Cancellation;
 pub use lattice::{Edge, Lattice, MatchKind};
@@ -21,6 +22,10 @@ pub use search::{
     Candidate, Features, SearchResult, Statistics, search_graph, search_graph_cancellable,
 };
 pub use transition_cache::{TransitionCache, TransitionCacheStatistics};
+
+pub use word_context::{
+    MAX_RESEARCH_POOL, ResearchRanker, ResearchScore, WordContextModel, expected_reachability,
+};
 
 use std::fmt;
 

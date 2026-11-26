@@ -1,0 +1,17 @@
+{
+  "template_status": "pending-not-an-approved-packet",
+  "intended_consumer": "scripts/check_ime_task_handoff.py context_review",
+  "instructions": [
+    "仅在真实审核完成后，将payload另存为新的私有UTF-8文件；此模板外层不是工具输入。",
+    "all_case_intent_groups仅含所有案例的case_id和不泄漏文本的intent_family_id；不包含heldout正文。",
+    "cases只列train/dev的case_id、task_sha256、intent_family_id、context_kind和confirmed_left_context。",
+    "none要求空左侧上下文；confirmed-left要求真实确认的非空上下文，不能由AI或词典补写。"
+  ],
+  "payload": {
+    "schema_version": 1,
+    "family_index_sha256": null,
+    "review_binding_sha256": null,
+    "all_case_intent_groups": [],
+    "cases": []
+  }
+}
