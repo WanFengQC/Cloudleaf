@@ -1,0 +1,383 @@
+{
+  "baseline": "403ace1c9d95993f6117113f94924b58aee998bb",
+  "implementation": "fb134e0bd073933f6cb80f501118ff2dde8c3d01",
+  "tool": {
+    "bytes": 5403,
+    "sha256": "53b81f68913139726a177ac59e5755640218ac93b0ce081d0fbb4b87091540bb"
+  },
+  "probes": {
+    "old": {
+      "bytes": 817664,
+      "sha256": "c057f3da7e4aedd602c04cedfca77b35b3e70fcec2bcc8162fdc97ec498c18a6"
+    },
+    "new": {
+      "bytes": 813056,
+      "sha256": "1917bc4c335d83c4a5835925035149611a5f286900b0203fc2f1990945a42a19"
+    }
+  },
+  "groups": {
+    "base-ordinary": {
+      "resources": [
+        {
+          "bytes": 23602173,
+          "sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+        },
+        {
+          "bytes": 2619128,
+          "sha256": "f8062a4a8e456135840b9df51857c84e3ea3f16f59ced4f9dc85a5bd19fade3a"
+        },
+        {
+          "bytes": 3034818,
+          "sha256": "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5"
+        },
+        {
+          "bytes": 1459894,
+          "sha256": "5f28834165fcf83b22458e701b3608b403cb9bf7a9be8ba3c686fd158c53d6b9"
+        },
+        {
+          "bytes": 1459906,
+          "sha256": "516d78a23786470c5ba7c1c7ee45e82c80eaaccd7eb1e3b541faf55d8f93b44b"
+        }
+      ],
+      "fixture": {
+        "bytes": 3143,
+        "sha256": "544c5ddb976fb8f1f9cf74bd683a2a5c7f0df61f7496f6103547f7c9d86207ad"
+      },
+      "pair": {
+        "old": {
+          "search_ns": {
+            "n": 80,
+            "p50": 18608200,
+            "p95": 49563300,
+            "p99": 56913800,
+            "max": 56913800
+          },
+          "allocated_bytes": {
+            "n": 80,
+            "p50": 12674310,
+            "p95": 27737167,
+            "p99": 28190222,
+            "max": 28190222
+          },
+          "alloc_calls": {
+            "n": 80,
+            "p50": 70786,
+            "p95": 154969,
+            "p99": 155870,
+            "max": 155870
+          },
+          "peak_paths": 50000,
+          "peak_expansions": 86775,
+          "budget_failures": 6,
+          "resources": {
+            "peak_working_bytes": 215453696,
+            "private_bytes": 219639808,
+            "probe": {
+              "bytes": 817664,
+              "sha256": "c057f3da7e4aedd602c04cedfca77b35b3e70fcec2bcc8162fdc97ec498c18a6"
+            }
+          }
+        },
+        "new": {
+          "search_ns": {
+            "n": 80,
+            "p50": 12331000,
+            "p95": 39409100,
+            "p99": 47469500,
+            "max": 47469500
+          },
+          "allocated_bytes": {
+            "n": 80,
+            "p50": 6243283,
+            "p95": 13663301,
+            "p99": 13948672,
+            "max": 13948672
+          },
+          "alloc_calls": {
+            "n": 80,
+            "p50": 37845,
+            "p95": 81367,
+            "p99": 82213,
+            "max": 82213
+          },
+          "peak_paths": 50000,
+          "peak_expansions": 86775,
+          "budget_failures": 6,
+          "resources": {
+            "peak_working_bytes": 215306240,
+            "private_bytes": 219705344,
+            "probe": {
+              "bytes": 813056,
+              "sha256": "1917bc4c335d83c4a5835925035149611a5f286900b0203fc2f1990945a42a19"
+            }
+          }
+        }
+      },
+      "semantic_differences": [],
+      "raw_runs": {
+        "old": [
+          {
+            "bytes": 6937699,
+            "sha256": "32459dc685a1943a44a19f6d8c06890f6ea9e51d0d88740b12783fbd16d04d92"
+          },
+          {
+            "bytes": 6937702,
+            "sha256": "64eb375ec7d2b19a86a2c2a0ac30cfcac86dad21e5e160dcc30ff4504db9c8b9"
+          }
+        ],
+        "new": [
+          {
+            "bytes": 6937626,
+            "sha256": "3e3ab101f55d3f2f98fc0895d75fb64dea09aa15a4bf03cc798795080caf49ca"
+          },
+          {
+            "bytes": 6937628,
+            "sha256": "dcf9e7f01b5c012841e030cf95a92aad46fe860085cd72e590ca6261a1382d78"
+          }
+        ]
+      }
+    },
+    "supplement-ordinary": {
+      "resources": [
+        {
+          "bytes": 24223777,
+          "sha256": "c9ab8b56b9d960091a1c39c37b7c1df7882ff50de2a64767174af8f4244c219f"
+        },
+        {
+          "bytes": 2791345,
+          "sha256": "b364bb92876ec5b485c89e378e6569d09fce403cf3b0658c67235c971968369f"
+        },
+        {
+          "bytes": 3034818,
+          "sha256": "2b5f24c4f63c5d6aa33b87b08c5bb9afcdfc8b404aafea34b92da68b490aa78b"
+        },
+        {
+          "bytes": 1459894,
+          "sha256": "d062abcf703745ca07c86a4846a9b6ac896d6356e7eef3c99f2532d0ecd730c0"
+        },
+        {
+          "bytes": 1459906,
+          "sha256": "ecdfb593da055e2065440f36be054bef85dea055909acc2862899d971de30189"
+        }
+      ],
+      "fixture": {
+        "bytes": 3143,
+        "sha256": "544c5ddb976fb8f1f9cf74bd683a2a5c7f0df61f7496f6103547f7c9d86207ad"
+      },
+      "pair": {
+        "old": {
+          "search_ns": {
+            "n": 80,
+            "p50": 30808800,
+            "p95": 67076800,
+            "p99": 109061100,
+            "max": 109061100
+          },
+          "allocated_bytes": {
+            "n": 80,
+            "p50": 13126862,
+            "p95": 28204125,
+            "p99": 29518043,
+            "max": 29518043
+          },
+          "alloc_calls": {
+            "n": 80,
+            "p50": 80840,
+            "p95": 154546,
+            "p99": 155037,
+            "max": 155037
+          },
+          "peak_paths": 50000,
+          "peak_expansions": 123272,
+          "budget_failures": 14,
+          "resources": {
+            "peak_working_bytes": 217468928,
+            "private_bytes": 221208576,
+            "probe": {
+              "bytes": 817664,
+              "sha256": "c057f3da7e4aedd602c04cedfca77b35b3e70fcec2bcc8162fdc97ec498c18a6"
+            }
+          }
+        },
+        "new": {
+          "search_ns": {
+            "n": 80,
+            "p50": 16632000,
+            "p95": 35774600,
+            "p99": 40970600,
+            "max": 40970600
+          },
+          "allocated_bytes": {
+            "n": 80,
+            "p50": 6586068,
+            "p95": 13926762,
+            "p99": 14591791,
+            "max": 14591791
+          },
+          "alloc_calls": {
+            "n": 80,
+            "p50": 43267,
+            "p95": 81086,
+            "p99": 82049,
+            "max": 82049
+          },
+          "peak_paths": 50000,
+          "peak_expansions": 123272,
+          "budget_failures": 14,
+          "resources": {
+            "peak_working_bytes": 217870336,
+            "private_bytes": 221204480,
+            "probe": {
+              "bytes": 813056,
+              "sha256": "1917bc4c335d83c4a5835925035149611a5f286900b0203fc2f1990945a42a19"
+            }
+          }
+        }
+      },
+      "semantic_differences": [],
+      "raw_runs": {
+        "old": [
+          {
+            "bytes": 6661573,
+            "sha256": "f817aa9e90f77448970390e1fd631af80c3965758211c01740388c73f9a1feb0"
+          },
+          {
+            "bytes": 6661584,
+            "sha256": "23277d021e1e5218f07e3af068e5d8b4fcd4aeef22d4abcad2cd8d580c3ca009"
+          }
+        ],
+        "new": [
+          {
+            "bytes": 6661501,
+            "sha256": "9d9b233c26292709eb6ca9974a4dfaa6d592a429704851d46f2fa104f941d8d4"
+          },
+          {
+            "bytes": 6661486,
+            "sha256": "09dd7314036b28884dd619cd807326916316c7b93f7eb589fc5a3b80f52a7934"
+          }
+        ]
+      }
+    },
+    "base-interpreted": {
+      "resources": [
+        {
+          "bytes": 23602173,
+          "sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+        },
+        {
+          "bytes": 2619128,
+          "sha256": "f8062a4a8e456135840b9df51857c84e3ea3f16f59ced4f9dc85a5bd19fade3a"
+        },
+        {
+          "bytes": 3034818,
+          "sha256": "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5"
+        },
+        {
+          "bytes": 1459894,
+          "sha256": "5f28834165fcf83b22458e701b3608b403cb9bf7a9be8ba3c686fd158c53d6b9"
+        },
+        {
+          "bytes": 1459906,
+          "sha256": "516d78a23786470c5ba7c1c7ee45e82c80eaaccd7eb1e3b541faf55d8f93b44b"
+        }
+      ],
+      "fixture": {
+        "bytes": 3423,
+        "sha256": "625111eab75d0d85a71b1ee851d7e12701528f6a90859036544e74469246c89a"
+      },
+      "pair": {
+        "old": {
+          "search_ns": {
+            "n": 80,
+            "p50": 38265600,
+            "p95": 77752600,
+            "p99": 141780200,
+            "max": 141780200
+          },
+          "allocated_bytes": {
+            "n": 80,
+            "p50": 19155599,
+            "p95": 35822055,
+            "p99": 49099098,
+            "max": 49099098
+          },
+          "alloc_calls": {
+            "n": 80,
+            "p50": 207099,
+            "p95": 338581,
+            "p99": 362569,
+            "max": 362569
+          },
+          "peak_paths": 50000,
+          "peak_expansions": 200000,
+          "budget_failures": 62,
+          "resources": {
+            "peak_working_bytes": 215060480,
+            "private_bytes": 220659712,
+            "probe": {
+              "bytes": 817664,
+              "sha256": "c057f3da7e4aedd602c04cedfca77b35b3e70fcec2bcc8162fdc97ec498c18a6"
+            }
+          }
+        },
+        "new": {
+          "search_ns": {
+            "n": 80,
+            "p50": 20973600,
+            "p95": 54993900,
+            "p99": 70550400,
+            "max": 70550400
+          },
+          "allocated_bytes": {
+            "n": 80,
+            "p50": 9542228,
+            "p95": 36957796,
+            "p99": 42270554,
+            "max": 42270554
+          },
+          "alloc_calls": {
+            "n": 80,
+            "p50": 56531,
+            "p95": 192071,
+            "p99": 195644,
+            "max": 195644
+          },
+          "peak_paths": 50000,
+          "peak_expansions": 200000,
+          "budget_failures": 62,
+          "resources": {
+            "peak_working_bytes": 215068672,
+            "private_bytes": 219578368,
+            "probe": {
+              "bytes": 813056,
+              "sha256": "1917bc4c335d83c4a5835925035149611a5f286900b0203fc2f1990945a42a19"
+            }
+          }
+        }
+      },
+      "semantic_differences": [],
+      "raw_runs": {
+        "old": [
+          {
+            "bytes": 980526,
+            "sha256": "bcb89ca5e3e5e045e77fa6a25f2acf8dd47ac08367ca104b4251a7e619198ac3"
+          },
+          {
+            "bytes": 980522,
+            "sha256": "4736271b429515c770b95aa670a364fa10cd0c845b5be4a8bdc9554bdc4f8b01"
+          }
+        ],
+        "new": [
+          {
+            "bytes": 980460,
+            "sha256": "5be15498898773a3c02b5eb5a32bf1147e25577e08e3f720e875bc18f0aaa32c"
+          },
+          {
+            "bytes": 980447,
+            "sha256": "271cc4742ae3a30000adceec1ce5fe3e0843cd396ed5ade58cbffac02ea52f3a"
+          }
+        ]
+      }
+    }
+  }
+}

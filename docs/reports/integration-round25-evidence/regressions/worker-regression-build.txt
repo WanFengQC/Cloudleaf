@@ -1,0 +1,21 @@
+error[E0432]: unresolved import `cloudleaf_translation_ipc::WorkerScheduling`
+ --> C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\tools\performance\round22-worker-probe.rs:8:76
+  |
+8 |     SourceIdentity, WorkerClient, WorkerConfig, WorkerEvent, WorkerOutput, WorkerScheduling,
+  |                                                                            ^^^^^^^^^^^^^^^^ no `WorkerScheduling` in the root
+
+error[E0599]: no function or associated item named `sibling_auto` found for struct `WorkerConfig` in the current scope
+   --> C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\tools\performance\round22-worker-probe.rs:343:27
+    |
+343 |             WorkerConfig::sibling_auto(PathBuf::from(catalog), catalog_sha.to_owned())
+    |                           ^^^^^^^^^^^^ function or associated item not found in `WorkerConfig`
+    |
+note: if you're trying to build a new `WorkerConfig`, consider using `WorkerConfig::sibling` which returns `std::result::Result<WorkerConfig, IpcError>`
+   --> C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\crates\cloudleaf-translation-ipc\src\client.rs:31:5
+help: there is an associated function `sibling` with a similar name
+   --> C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\crates\cloudleaf-translation-ipc\src\client.rs:31:5
+
+error: aborting due to 2 previous errors
+
+Some errors have detailed explanations: E0432, E0599.
+For more information about an error, try `rustc --explain E0432`.

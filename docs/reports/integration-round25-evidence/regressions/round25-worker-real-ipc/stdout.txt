@@ -1,0 +1,18 @@
+
+running 1 test
+test real_worker_translates_two_directions_and_reports_one_resident_model ... FAILED
+
+failures:
+
+---- real_worker_translates_two_directions_and_reports_one_resident_model stdout ----
+
+thread 'real_worker_translates_two_directions_and_reports_one_resident_model' panicked at apps\cloudleaf-translation-worker\tests\ipc_process.rs:150:9:
+工作进程事件超时
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    real_worker_translates_two_directions_and_reports_one_resident_model
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 7 filtered out; finished in 29.40s
+

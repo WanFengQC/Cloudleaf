@@ -88,6 +88,7 @@ jobs:
             crates/cloudleaf-bridge/README.md
             config/offline-models/
             config/offline-runtime-source-patches.json
+            data/sources/locks/
             docs/input-round14-design.md
             docs/input-round15-design.md
             docs/input-round16-design.md
@@ -101,6 +102,7 @@ jobs:
             docs/integration-round23-design.md
             docs/integration-round24-design.md
             docs/integration-round25-design.md
+            docs/integration-round25-worker-design.md
             docs/testing/round22-native-translation-manual.md
           if-no-files-found: error
       - name: Upload Linux headless integration tools
@@ -130,11 +132,13 @@ jobs:
             crates/cloudleaf-bridge/README.md
             config/offline-models/
             config/offline-runtime-source-patches.json
+            data/sources/locks/
             docs/integration-round21-design.md
             docs/integration-round22-design.md
             docs/integration-round23-design.md
             docs/integration-round24-design.md
             docs/integration-round25-design.md
+            docs/integration-round25-worker-design.md
           if-no-files-found: error
       - uses: actions/upload-artifact@v4
         with:

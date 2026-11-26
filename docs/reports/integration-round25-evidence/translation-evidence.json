@@ -1,0 +1,3008 @@
+{
+  "head_at_build": "75f13cc2fddf9f1e8d0a4f1f3521685521fba462",
+  "head_at_report": "75f13cc2fddf9f1e8d0a4f1f3521685521fba462",
+  "probe_sha256": "fcd8f9bdc9aa6e6cadc8e7a56d2875339f56bcc674394521d56c919991db42b4",
+  "worker_sha256": "6c52a4842612b77f53a9efa9e0504b55134c508fdf8a8e7eee041fec92d8cefc",
+  "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+  "models": {
+    "en-zh": {
+      "revision": "408d9bc410a388e1d9aef112a2daba955b945255",
+      "manifest_sha256": "800a9d1ceae9370e87fafad7aa93429bb4701c2d92107a1a36a28aab18b74ddb",
+      "files": {
+        "weights": "e5f4423b70cb0f5a40d38d1a2733a77cec2aa23cc0bae647985fe17f8f5fe616",
+        "config": "bcae8ed74fed77fb51c58462b62397fee6b1a1a34aece79183a0dd02ad329e71",
+        "source_tokenizer": "5775ddc9e3ff2fae91554da56468ad35ff56edaba870fea74447bc7234bfdaa8",
+        "target_tokenizer": "81dc94efa84e4025ef38d25d5d07429fe41e3eb29d44003f1db6fe98487b0052",
+        "vocabulary": "f1832ca38f7aa158b9a944ff583e4901e6b37d9d4ad9241f03838e636e9cfb03",
+        "license": "9ba9550ad48438d0836ddab3da480b3b69ffa0aac7b7878b5a0039e7ab429411",
+        "notice": "bbefab3f24af6005d260d93fd0758b97ea7c6e50a467b0bc308c5dd08af53b97"
+      }
+    },
+    "zh-en": {
+      "revision": "cf109095479db38d6df799875e34039d4938aaa6",
+      "manifest_sha256": "6701aa87d2961dbe26a3a232e0353c2fef3c3109ca99119de4d9b1ff241d02b9",
+      "files": {
+        "weights": "a7c75c919608ea1af3bb6d4aca052af43f35e6967a4f133a865bfe2bde13f21e",
+        "config": "d84104da12fa90da59acf5f0ed30428e43cc92574ad4b9dfa88f29eeeb2b0eb0",
+        "source_tokenizer": "e27a3a1b539f4959ec72ea60e453f49156289f95d4e6000b29332efc45616203",
+        "target_tokenizer": "6a881f4717cd7265f53fea54fd3dc689c767c05338fac7a4590f3088cb2d7855",
+        "vocabulary": "c0f79ee4c413ccb24cd808a0c727eec85b2130f23c82802cc1caeb07b5f0d458",
+        "license": "9ba9550ad48438d0836ddab3da480b3b69ffa0aac7b7878b5a0039e7ab429411",
+        "notice": "0bcbe0ee326de8ad259e7a604094623312afb701d8b398f9d5c4f952047d39f7"
+      }
+    }
+  },
+  "history": {
+    "23": {
+      "actual": {
+        "n": 17,
+        "previous_review": 5,
+        "new_review": 9
+      },
+      "raw_equal": 17,
+      "directions": {
+        "zh-en": 9,
+        "en-zh": 8
+      },
+      "timing": {
+        "zh-en": {
+          "p50_ns": 836850700,
+          "p95_ns": 1500241700,
+          "p99_ns": 1500241700,
+          "p100_ns": 1500241700,
+          "cold_load_ns": [
+            694398000
+          ],
+          "steps": 164,
+          "steps_per_second": 20.167325099088277,
+          "truncated": 0
+        },
+        "en-zh": {
+          "p50_ns": 598194600,
+          "p95_ns": 1608363800,
+          "p99_ns": 1608363800,
+          "p100_ns": 1608363800,
+          "cold_load_ns": [
+            733196300
+          ],
+          "steps": 137,
+          "steps_per_second": 23.719390948368773,
+          "truncated": 0
+        }
+      },
+      "controls": {
+        "n": 12,
+        "previous_review": 5,
+        "new_review": 5
+      },
+      "failures": {},
+      "baseline_output_sha256": "e6317dd5ae2e86b129891c85db32bbe0e9b42c55784c2972953d3a236b6ab26d",
+      "current_output_sha256": "223bbadf56f766f65646ff9a847f8a38a5f88028a08ec1b270e481ac2e9461e5"
+    },
+    "24": {
+      "actual": {
+        "n": 26,
+        "previous_review": 9,
+        "new_review": 20
+      },
+      "raw_equal": 26,
+      "directions": {
+        "zh-en": 13,
+        "en-zh": 13
+      },
+      "timing": {
+        "zh-en": {
+          "p50_ns": 1009119100,
+          "p95_ns": 1867484300,
+          "p99_ns": 1867484300,
+          "p100_ns": 1867484300,
+          "cold_load_ns": [
+            546431100
+          ],
+          "steps": 326,
+          "steps_per_second": 23.228641016978976,
+          "truncated": 0
+        },
+        "en-zh": {
+          "p50_ns": 819157800,
+          "p95_ns": 1586357900,
+          "p99_ns": 1586357900,
+          "p100_ns": 1586357900,
+          "cold_load_ns": [
+            605363500
+          ],
+          "steps": 294,
+          "steps_per_second": 26.040113200092097,
+          "truncated": 0
+        }
+      },
+      "controls": {
+        "n": 17,
+        "previous_review": 10,
+        "new_review": 12
+      },
+      "failures": {},
+      "baseline_output_sha256": "a091709021867bcf29ff7e46ec98da057c8a6e4259eba8ab38296a0b911f3930",
+      "current_output_sha256": "0ddb78b219af891426fd343354944e2682fe46780cb4b8eeefcbdd8eab917980"
+    },
+    "25": {
+      "actual": {
+        "n": 20,
+        "previous_review": 11,
+        "new_review": 17
+      },
+      "raw_equal": 20,
+      "directions": {
+        "zh-en": 10,
+        "en-zh": 10
+      },
+      "timing": {
+        "zh-en": {
+          "p50_ns": 1074962200,
+          "p95_ns": 1535206000,
+          "p99_ns": 1535206000,
+          "p100_ns": 1535206000,
+          "cold_load_ns": [
+            776538200
+          ],
+          "steps": 228,
+          "steps_per_second": 21.75284439191493,
+          "truncated": 0
+        },
+        "en-zh": {
+          "p50_ns": 1172007500,
+          "p95_ns": 1656042700,
+          "p99_ns": 1656042700,
+          "p100_ns": 1656042700,
+          "cold_load_ns": [
+            691762700
+          ],
+          "steps": 233,
+          "steps_per_second": 19.523996583887154,
+          "truncated": 0
+        }
+      },
+      "controls": {
+        "n": 22,
+        "previous_review": 3,
+        "new_review": 11
+      },
+      "failures": {},
+      "baseline_output_sha256": "7f172639e858e5668ea331f6895143218c345d66f1cf02f21d325cb33766f716",
+      "current_output_sha256": "d4ef0959e3ff4eb3e30e7cec7b6adb9a3f116666c011adac590673a6be2cb0b4"
+    }
+  },
+  "prespecified_r25_controls": {
+    "error": {
+      "n": 12,
+      "previous_review": 2,
+      "new_review": 10
+    },
+    "match": {
+      "n": 10,
+      "previous_review": 1,
+      "new_review": 1
+    }
+  },
+  "cases": [
+    {
+      "case": "zh01",
+      "round": 23,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "money_brand",
+      "new_findings": [
+        "Term:Missing",
+        "Money:Changed"
+      ],
+      "old_findings": [
+        "Term:Missing",
+        "Money:Changed"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "6b7b1bc4d142e816bb8bb15f24b9452d87e9bf235398fc5834a7b6235e1593b0",
+      "metrics": {
+        "steps": 13,
+        "truncated": false,
+        "verification_ns": 686445400,
+        "encoder_ns": 34042700,
+        "decoder_ns": 520107400,
+        "queue_wait_ns": 44000,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 556058400,
+        "load_ns": 694398000,
+        "threads": 1
+      }
+    },
+    {
+      "case": "zh02",
+      "round": 23,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "chat",
+      "new_findings": [],
+      "old_findings": [],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "d4663eb67bad6b08a9fea23744aaec32b9bab3cd690402ba524413ca9fce4089",
+      "metrics": {
+        "steps": 17,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 33754900,
+        "decoder_ns": 728906900,
+        "queue_wait_ns": 80800,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 769557800,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "zh03",
+      "round": 23,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "business",
+      "new_findings": [
+        "TemporalMarker:Unverifiable"
+      ],
+      "old_findings": [],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "92a9f274248640047654fea5c87cfc0d44683d9cb92441cc2bb02d5a54354bb4",
+      "metrics": {
+        "steps": 18,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 42586300,
+        "decoder_ns": 693293600,
+        "queue_wait_ns": 34400,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 742174000,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "zh04",
+      "round": 23,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "quantity_relation",
+      "new_findings": [
+        "Unit:EquivalentRepresentation",
+        "Unit:EquivalentRepresentation"
+      ],
+      "old_findings": [
+        "Unit:EquivalentRepresentation",
+        "Unit:EquivalentRepresentation"
+      ],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "28981b2e3394627b8e80a9f259d58c84394e49e1bf635e811fa52c1c57c0a3a7",
+      "metrics": {
+        "steps": 18,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 34156200,
+        "decoder_ns": 843378800,
+        "queue_wait_ns": 34500,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 881447100,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "zh05",
+      "round": 23,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "date_time",
+      "new_findings": [
+        "Date:EquivalentRepresentation",
+        "Time:EquivalentRepresentation"
+      ],
+      "old_findings": [
+        "Date:EquivalentRepresentation",
+        "Time:Missing",
+        "Number:Unverifiable"
+      ],
+      "new_review": false,
+      "old_review": true,
+      "raw_sha256": "e55bc7d261e9531fafdc28b1e5f45e7fd21f0c660c134426e62e6b639b6c54f8",
+      "metrics": {
+        "steps": 17,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 34663800,
+        "decoder_ns": 798558900,
+        "queue_wait_ns": 31800,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 836850700,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "zh06",
+      "round": 23,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "negation",
+      "new_findings": [],
+      "old_findings": [],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "4404303452de0ac7cb5223ea3845f6fa9add446cd31ff6242558b8ada89773c3",
+      "metrics": {
+        "steps": 13,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 30562200,
+        "decoder_ns": 620381200,
+        "queue_wait_ns": 32500,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 655221600,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "zh07",
+      "round": 23,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "technical_mixed",
+      "new_findings": [
+        "Term:ExactPreserved",
+        "Term:ExactPreserved",
+        "Term:ExactPreserved"
+      ],
+      "old_findings": [
+        "Term:ExactPreserved",
+        "Term:ExactPreserved",
+        "Term:ExactPreserved"
+      ],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "4418932a7ca4320df298beed8bf808d7700b81d05196275d04f293d476f2b0de",
+      "metrics": {
+        "steps": 23,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 73648600,
+        "decoder_ns": 1201852600,
+        "queue_wait_ns": 52000,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 1279890300,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "zh08",
+      "round": 23,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "polysemy",
+      "new_findings": [],
+      "old_findings": [],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "d5892b0ef5585282cc7f36407df05156f7be9755f780dc7927debcd8bf96a251",
+      "metrics": {
+        "steps": 17,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 48411200,
+        "decoder_ns": 857962700,
+        "queue_wait_ns": 61900,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 910524300,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "zh09",
+      "round": 23,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "round22_anchor",
+      "new_findings": [
+        "Date:EquivalentRepresentation",
+        "Term:Missing",
+        "Number:EquivalentRepresentation",
+        "Money:Changed"
+      ],
+      "old_findings": [
+        "Date:EquivalentRepresentation",
+        "Term:Missing",
+        "Number:EquivalentRepresentation",
+        "Money:Changed"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "bd7514a0b1c5b79cf6b59aa0ceb76f591c4f9bfc9161ac4f70278b82ea4ffd39",
+      "metrics": {
+        "steps": 28,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 67710600,
+        "decoder_ns": 1427445300,
+        "queue_wait_ns": 49900,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 1500241700,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "en01",
+      "round": 23,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "money_brand",
+      "new_findings": [
+        "Term:Missing",
+        "Money:EquivalentRepresentation"
+      ],
+      "old_findings": [
+        "Term:Missing",
+        "Money:EquivalentRepresentation"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "6df931551f0a522a684e0abf84009d375ee649a4635790ad610a9c891941b5bb",
+      "metrics": {
+        "steps": 12,
+        "truncated": false,
+        "verification_ns": 686734400,
+        "encoder_ns": 31659400,
+        "decoder_ns": 438229900,
+        "queue_wait_ns": 23800,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 476212200,
+        "load_ns": 733196300,
+        "threads": 1
+      }
+    },
+    {
+      "case": "en02",
+      "round": 23,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "chat",
+      "new_findings": [
+        "TemporalMarker:Unverifiable",
+        "ClauseCoverage:Unverifiable"
+      ],
+      "old_findings": [],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "5cdd82aabaa52465379a8e0c8f1bbe1f28188b06961729a8a704028b813b9f1e",
+      "metrics": {
+        "steps": 9,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 35890700,
+        "decoder_ns": 288884500,
+        "queue_wait_ns": 29500,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 333804800,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "en03",
+      "round": 23,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "business_long",
+      "new_findings": [],
+      "old_findings": [],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "4d4c1d23d508cee84ba33a06a9ea714e115c142180281ddbbc985df0655879dd",
+      "metrics": {
+        "steps": 19,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 34719200,
+        "decoder_ns": 651710400,
+        "queue_wait_ns": 30100,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 691618100,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "en04",
+      "round": 23,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "amount_relationship",
+      "new_findings": [
+        "Money:EquivalentRepresentation",
+        "Money:EquivalentRepresentation",
+        "ClauseCoverage:Unverifiable"
+      ],
+      "old_findings": [
+        "Money:EquivalentRepresentation",
+        "Money:EquivalentRepresentation"
+      ],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "997b0e2e83fcf9a0e39a5171da37b406cd1ab5a08b51ed9ff22cfb6e88a9d14d",
+      "metrics": {
+        "steps": 22,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 40658000,
+        "decoder_ns": 720203900,
+        "queue_wait_ns": 33500,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 768284900,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "en05",
+      "round": 23,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "time_length",
+      "new_findings": [
+        "Unit:EquivalentRepresentation",
+        "TemporalMarker:Unverifiable",
+        "Time:EquivalentRepresentation",
+        "Date:EquivalentRepresentation"
+      ],
+      "old_findings": [
+        "Unit:EquivalentRepresentation",
+        "Time:EquivalentRepresentation",
+        "Date:EquivalentRepresentation"
+      ],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "d91f1fde8983c41be696e331a6129d5b6c39903b85bd2325d43ada0a4c7f30f9",
+      "metrics": {
+        "steps": 20,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 33339000,
+        "decoder_ns": 771804100,
+        "queue_wait_ns": 35800,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 816256000,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "en06",
+      "round": 23,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "negation",
+      "new_findings": [],
+      "old_findings": [],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "89ded95f59a9cf171a967f83ad8effbd768474712e539c31b5fbae3d0c85d003",
+      "metrics": {
+        "steps": 12,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 37438500,
+        "decoder_ns": 552612900,
+        "queue_wait_ns": 61100,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 598194600,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "en07",
+      "round": 23,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "technical_mixed",
+      "new_findings": [
+        "Term:Missing",
+        "Term:Missing",
+        "Term:ExactPreserved",
+        "FileName:Missing"
+      ],
+      "old_findings": [
+        "Term:Missing",
+        "Term:Missing",
+        "Term:ExactPreserved",
+        "FileName:Missing"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "4bcb2cf163eb5d1f926c514321fe7640b87900538b5ecf71dfe291c8d28b512b",
+      "metrics": {
+        "steps": 33,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 54112900,
+        "decoder_ns": 1539859000,
+        "queue_wait_ns": 44900,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 1608363800,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "en08",
+      "round": 23,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "polysemy",
+      "new_findings": [
+        "ClauseCoverage:Unverifiable"
+      ],
+      "old_findings": [],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "e7208496ca22c4c8c2c4dd67f0b138023758d20548d18b7c8a64ff3828350198",
+      "metrics": {
+        "steps": 10,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 37736000,
+        "decoder_ns": 438813400,
+        "queue_wait_ns": 32900,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 483130600,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "ct01",
+      "round": 23,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "swapped_amount",
+      "new_findings": [
+        "Money:ExactPreserved",
+        "Money:ExactPreserved"
+      ],
+      "old_findings": [
+        "Money:ExactPreserved",
+        "Money:ExactPreserved"
+      ],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "1400f877d10792bbba30b0fed05fee55ad406b6751a3db766b869f0167ac6ea0",
+      "metrics": null
+    },
+    {
+      "case": "ct02",
+      "round": 23,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "wrong_association",
+      "new_findings": [
+        "Unit:ExactPreserved",
+        "Unit:ExactPreserved"
+      ],
+      "old_findings": [
+        "Unit:ExactPreserved",
+        "Unit:ExactPreserved"
+      ],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "c14db0e85f3bfb314e715a4cbb9ca7c2f71f5fb2e3d40f68ed3dc98b65143d9a",
+      "metrics": null
+    },
+    {
+      "case": "ct03",
+      "round": 23,
+      "mode": "control",
+      "direction": "en-zh",
+      "topic": "lost_negation",
+      "new_findings": [
+        "NegationMarker:Unverifiable",
+        "TemporalMarker:Unverifiable"
+      ],
+      "old_findings": [
+        "NegationMarker:Unverifiable"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "e4cf724f443ef041845c307bfeefdfd2e1e07ecd6d3384f7acc46b194e488ff7",
+      "metrics": null
+    },
+    {
+      "case": "ct04",
+      "round": 23,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "date_roles",
+      "new_findings": [
+        "Date:EquivalentRepresentation",
+        "Date:EquivalentRepresentation"
+      ],
+      "old_findings": [
+        "Date:EquivalentRepresentation",
+        "Date:EquivalentRepresentation"
+      ],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "c48a85afce240311b5b45298dbf95d8b5b04551a55cbf37b0c8a81a0dda6840c",
+      "metrics": null
+    },
+    {
+      "case": "ct05",
+      "round": 23,
+      "mode": "control",
+      "direction": "en-zh",
+      "topic": "quantity_relation",
+      "new_findings": [
+        "Unit:ExactPreserved",
+        "Unit:ExactPreserved",
+        "Number:Unverifiable"
+      ],
+      "old_findings": [
+        "Unit:ExactPreserved",
+        "Unit:ExactPreserved"
+      ],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "c80245fe433ee5697c7caff43364aee5c294608694e48823bf98871ae289cdc3",
+      "metrics": null
+    },
+    {
+      "case": "ct06",
+      "round": 23,
+      "mode": "control",
+      "direction": "en-zh",
+      "topic": "term_relation",
+      "new_findings": [
+        "Term:ExactPreserved",
+        "Term:ExactPreserved",
+        "Term:ExactPreserved"
+      ],
+      "old_findings": [
+        "Term:ExactPreserved",
+        "Term:ExactPreserved",
+        "Term:ExactPreserved"
+      ],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "4769fa851f7f2d0a544cc68a7cd532a4669cac93e27c960d94cda69f8de176e6",
+      "metrics": null
+    },
+    {
+      "case": "ct07",
+      "round": 23,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "equivalent_date_units",
+      "new_findings": [
+        "Date:EquivalentRepresentation",
+        "Unit:EquivalentRepresentation",
+        "Unit:EquivalentRepresentation"
+      ],
+      "old_findings": [
+        "Date:EquivalentRepresentation",
+        "Unit:EquivalentRepresentation",
+        "Unit:EquivalentRepresentation"
+      ],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "863d8a0a3efc52c15e302fb43e4c2e65be72fee24104242467bc90333b6415ef",
+      "metrics": null
+    },
+    {
+      "case": "ct08",
+      "round": 23,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "equivalent_money",
+      "new_findings": [
+        "Money:EquivalentRepresentation"
+      ],
+      "old_findings": [
+        "Money:EquivalentRepresentation"
+      ],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "e65339533f6cfd3643ac72a0ddb3413c67a2f9ed90b8823e64b063ddf9d7964e",
+      "metrics": null
+    },
+    {
+      "case": "ct09",
+      "round": 23,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "changed_money_brand",
+      "new_findings": [
+        "Term:Missing",
+        "Money:Changed"
+      ],
+      "old_findings": [
+        "Term:Missing",
+        "Money:Changed"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "8814e2968e63d819b5d65252d22f7c3becc354d0cecc9b91b4880589689113eb",
+      "metrics": null
+    },
+    {
+      "case": "ct10",
+      "round": 23,
+      "mode": "control",
+      "direction": "en-zh",
+      "topic": "ambiguous_money",
+      "new_findings": [
+        "Money:Ambiguous"
+      ],
+      "old_findings": [
+        "Money:Ambiguous"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "adaf8af334fc5d2f96ff23c42cb4a94e1b1bb613c9d84d0497d2c2c59dd15f8a",
+      "metrics": null
+    },
+    {
+      "case": "ct11",
+      "round": 23,
+      "mode": "control",
+      "direction": "en-zh",
+      "topic": "ambiguous_date",
+      "new_findings": [
+        "Date:Ambiguous"
+      ],
+      "old_findings": [
+        "Date:Ambiguous"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "2352aa17fde291e9796cfd492aaa3d360b6bd76cdb4def28e64ae8acf749b5c2",
+      "metrics": null
+    },
+    {
+      "case": "ct12",
+      "round": 23,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "measurement_false_alarm_control",
+      "new_findings": [
+        "Unit:EquivalentRepresentation",
+        "Unit:EquivalentRepresentation"
+      ],
+      "old_findings": [
+        "Unit:Unverifiable",
+        "Unit:Unverifiable"
+      ],
+      "new_review": false,
+      "old_review": true,
+      "raw_sha256": "8c0353c90bf7e8827cb1e0d1d876f478df982faf4b7083872a94e3a75849047e",
+      "metrics": null
+    },
+    {
+      "case": "z01",
+      "round": 24,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "daily_short",
+      "new_findings": [],
+      "old_findings": [],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "1db6f84534f53e8e4d9c27a7a815589b7ff4ff3c79088c60429c34780f5824f0",
+      "metrics": {
+        "steps": 17,
+        "truncated": false,
+        "verification_ns": 570379400,
+        "encoder_ns": 35275300,
+        "decoder_ns": 491440900,
+        "queue_wait_ns": 41800,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 529546500,
+        "load_ns": 546431100,
+        "threads": 1
+      }
+    },
+    {
+      "case": "z02",
+      "round": 24,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "business_email",
+      "new_findings": [
+        "TemporalMarker:Unverifiable",
+        "ClauseCoverage:Unverifiable"
+      ],
+      "old_findings": [],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "985a9ab6420770142f69435fe5f4922cc08314e1f41735202c0f5a89d24a546f",
+      "metrics": {
+        "steps": 10,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 33302900,
+        "decoder_ns": 405763000,
+        "queue_wait_ns": 32700,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 445693100,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "z03",
+      "round": 24,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "chat",
+      "new_findings": [
+        "TemporalMarker:Unverifiable"
+      ],
+      "old_findings": [],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "075c039f12c80ca2e39de049b1b7fc3dcff8039897e9f605a25c53198cd0d446",
+      "metrics": {
+        "steps": 22,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 40881100,
+        "decoder_ns": 961574800,
+        "queue_wait_ns": 27400,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 1009119100,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "z04",
+      "round": 24,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "long_multisentence",
+      "new_findings": [
+        "Number:Missing",
+        "ClauseCoverage:Unverifiable"
+      ],
+      "old_findings": [],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "1bc4de0010443b3c69c54967cf6a44b9516c83c499435f5ef312f0bfdd362005",
+      "metrics": {
+        "steps": 45,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 52484800,
+        "decoder_ns": 1805443200,
+        "queue_wait_ns": 36300,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 1867484300,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "z05",
+      "round": 24,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "currency",
+      "new_findings": [
+        "Money:Changed",
+        "Money:Ambiguous"
+      ],
+      "old_findings": [
+        "Money:Changed",
+        "Money:Ambiguous"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "c98a73ad1089a1a168b0c0a83647248e03933c181c2d579b72a858477f1ebcea",
+      "metrics": {
+        "steps": 24,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 38017000,
+        "decoder_ns": 902531100,
+        "queue_wait_ns": 144100,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 943651400,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "z06",
+      "round": 24,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "weight_length",
+      "new_findings": [
+        "Unit:EquivalentRepresentation",
+        "Number:Missing",
+        "Unit:EquivalentRepresentation",
+        "Number:Missing"
+      ],
+      "old_findings": [
+        "Unit:EquivalentRepresentation",
+        "Unit:EquivalentRepresentation"
+      ],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "f4ed83571e17b793be1f827724475a5713c4c03262de30ab35e4fb45218f0fd0",
+      "metrics": {
+        "steps": 24,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 30302900,
+        "decoder_ns": 724698600,
+        "queue_wait_ns": 30600,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 757660200,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "z07",
+      "round": 24,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "datetime",
+      "new_findings": [
+        "Date:EquivalentRepresentation",
+        "Time:EquivalentRepresentation",
+        "Time:EquivalentRepresentation",
+        "TemporalMarker:Unverifiable"
+      ],
+      "old_findings": [
+        "Date:EquivalentRepresentation",
+        "Time:Missing",
+        "Time:Missing",
+        "Number:Unverifiable",
+        "Number:Unverifiable"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "1a170e682304996f787285d4b3d34405eb43f5407c83c70af136f11ddbd144e0",
+      "metrics": {
+        "steps": 28,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 32528100,
+        "decoder_ns": 1059853100,
+        "queue_wait_ns": 34300,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 1095051600,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "z08",
+      "round": 24,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "object_relation",
+      "new_findings": [
+        "Number:Missing",
+        "Number:Missing",
+        "Number:Missing"
+      ],
+      "old_findings": [
+        "Number:Missing",
+        "Number:Missing",
+        "Number:Missing"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "0a228665171a0bdfe0e07669dc531b105470b624fe94ab48b029f020b9d4e123",
+      "metrics": {
+        "steps": 27,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 42836600,
+        "decoder_ns": 1175360700,
+        "queue_wait_ns": 45600,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 1221695000,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "z09",
+      "round": 24,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "imperative_negation",
+      "new_findings": [],
+      "old_findings": [],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "0bc7a8fd46cb905bab9e00596942002eef89225b23b10ccaec7fa58bee129e4f",
+      "metrics": {
+        "steps": 21,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 38906300,
+        "decoder_ns": 870464100,
+        "queue_wait_ns": 32800,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 912106600,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "z10",
+      "round": 24,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "double_negation",
+      "new_findings": [],
+      "old_findings": [],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "274ffc07e24c9f304315b3e66e1811e3d8e397a1672421773c9f6fc712f3f6b4",
+      "metrics": {
+        "steps": 13,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 29066200,
+        "decoder_ns": 659584800,
+        "queue_wait_ns": 55700,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 691851200,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "z11",
+      "round": 24,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "conditional_comparison",
+      "new_findings": [
+        "ConditionalMarker:Unverifiable"
+      ],
+      "old_findings": [],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "d018abce10b6c694bd19f29d6dc8341619873ccde68870440321d01530487ab2",
+      "metrics": {
+        "steps": 22,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 48321100,
+        "decoder_ns": 1155569400,
+        "queue_wait_ns": 35900,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 1209632800,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "z12",
+      "round": 24,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "filename_url_version",
+      "new_findings": [
+        "Url:ExactPreserved",
+        "FileName:Changed",
+        "Version:ExactPreserved"
+      ],
+      "old_findings": [
+        "Url:ExactPreserved",
+        "FileName:Changed",
+        "Version:ExactPreserved"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "74ed4487be0c99107bad896a760cefad4ccdd23e3edb439c0f7b16fb08af0a3f",
+      "metrics": {
+        "steps": 38,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 67460200,
+        "decoder_ns": 1697418900,
+        "queue_wait_ns": 53000,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 1774424800,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "z13",
+      "round": 24,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "model_mixed_name",
+      "new_findings": [
+        "ModelCode:ExactPreserved",
+        "Term:ExactPreserved",
+        "Term:Missing"
+      ],
+      "old_findings": [
+        "ModelCode:ExactPreserved",
+        "Term:ExactPreserved",
+        "Term:Missing"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "1fc8918c0b1ac16a2e3353ac547fde6cc63f0a43b86f0bed5600978e92140c72",
+      "metrics": {
+        "steps": 35,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 56938800,
+        "decoder_ns": 1514744600,
+        "queue_wait_ns": 55100,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 1576481700,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "e01",
+      "round": 24,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "daily_short",
+      "new_findings": [],
+      "old_findings": [],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "004430b416a2c0317b32bd607390e1ec96bcf253c22ca3af5a167d24582ae2c2",
+      "metrics": {
+        "steps": 9,
+        "truncated": false,
+        "verification_ns": 527298500,
+        "encoder_ns": 37550300,
+        "decoder_ns": 370404500,
+        "queue_wait_ns": 38000,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 415483700,
+        "load_ns": 605363500,
+        "threads": 1
+      }
+    },
+    {
+      "case": "e02",
+      "round": 24,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "business_email",
+      "new_findings": [
+        "ClauseCoverage:Unverifiable"
+      ],
+      "old_findings": [],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "644ba84614c6109efbbd31df0c980203dc039b9f14f7a78e9233a06a9b69695f",
+      "metrics": {
+        "steps": 21,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 31908600,
+        "decoder_ns": 713238400,
+        "queue_wait_ns": 35600,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 754456200,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "e03",
+      "round": 24,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "chat",
+      "new_findings": [
+        "ClauseCoverage:Unverifiable",
+        "TemporalMarker:Unverifiable"
+      ],
+      "old_findings": [],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "369c3533dfd42b1953c63c23d12d3b326be7b6b40e381320569e05a37b82cf53",
+      "metrics": {
+        "steps": 13,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 35997000,
+        "decoder_ns": 455961100,
+        "queue_wait_ns": 55800,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 498375200,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "e04",
+      "round": 24,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "long_multisentence",
+      "new_findings": [
+        "TemporalMarker:Unverifiable"
+      ],
+      "old_findings": [],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "1283c23cb950ee551031aef1d1ed6e1055c16426de39c3bae4d0bd683aebdbde",
+      "metrics": {
+        "steps": 47,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 55740100,
+        "decoder_ns": 1511050400,
+        "queue_wait_ns": 32500,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 1586357900,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "e05",
+      "round": 24,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "currency",
+      "new_findings": [
+        "Money:EquivalentRepresentation",
+        "Money:EquivalentRepresentation",
+        "ClauseCoverage:Unverifiable"
+      ],
+      "old_findings": [
+        "Money:EquivalentRepresentation",
+        "Money:EquivalentRepresentation"
+      ],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "202079c94049c899bff77053d13709c7e2baf2daa92efd78eafe525426b06c52",
+      "metrics": {
+        "steps": 21,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 49497100,
+        "decoder_ns": 790209600,
+        "queue_wait_ns": 39000,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 852107700,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "e06",
+      "round": 24,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "weight_length",
+      "new_findings": [
+        "Unit:EquivalentRepresentation",
+        "Unit:EquivalentRepresentation"
+      ],
+      "old_findings": [
+        "Unit:EquivalentRepresentation",
+        "Unit:EquivalentRepresentation"
+      ],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "4c5f403dac29909353106cf879e3060745a66587167402ac2833d5d16225323f",
+      "metrics": {
+        "steps": 21,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 38916300,
+        "decoder_ns": 709374800,
+        "queue_wait_ns": 30600,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 754709400,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "e07",
+      "round": 24,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "datetime",
+      "new_findings": [
+        "Date:EquivalentRepresentation",
+        "Time:EquivalentRepresentation",
+        "Date:EquivalentRepresentation",
+        "Time:EquivalentRepresentation"
+      ],
+      "old_findings": [
+        "Date:EquivalentRepresentation",
+        "Time:EquivalentRepresentation",
+        "Date:EquivalentRepresentation",
+        "Time:EquivalentRepresentation"
+      ],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "dd879a4ea0d26689af42283e71db96642123d33235635e7056abc2fb9aca8aa8",
+      "metrics": {
+        "steps": 28,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 62921000,
+        "decoder_ns": 1138673500,
+        "queue_wait_ns": 46800,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 1211325100,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "e08",
+      "round": 24,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "object_relation",
+      "new_findings": [
+        "Number:Missing",
+        "Number:Missing",
+        "ClauseCoverage:Unverifiable",
+        "Number:EquivalentRepresentation"
+      ],
+      "old_findings": [
+        "Number:Missing",
+        "Number:Missing",
+        "Number:Missing"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "efe3b197df3538140078a0d5f753ad8fef2fd5b757ddd2ac8d141358ab1d1d8c",
+      "metrics": {
+        "steps": 19,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 46586800,
+        "decoder_ns": 763657100,
+        "queue_wait_ns": 40500,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 819157800,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "e09",
+      "round": 24,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "imperative_negation",
+      "new_findings": [
+        "TemporalMarker:Unverifiable",
+        "NegationMarker:Unverifiable"
+      ],
+      "old_findings": [
+        "NegationMarker:Unverifiable"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "d11e17be2d180c74f48fa8875b56a9485efb0e84abfc8c54ec0cb95fbf740e0d",
+      "metrics": {
+        "steps": 17,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 39392000,
+        "decoder_ns": 683185200,
+        "queue_wait_ns": 34100,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 730696400,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "e10",
+      "round": 24,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "double_negation",
+      "new_findings": [
+        "ClauseCoverage:Unverifiable"
+      ],
+      "old_findings": [],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "46f67274c9f431c9b4febfa5db08b89c09f48a257d104e26e75e68ce68f7eed3",
+      "metrics": {
+        "steps": 7,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 41258100,
+        "decoder_ns": 265129100,
+        "queue_wait_ns": 39800,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 316025700,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "e11",
+      "round": 24,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "conditional_comparison",
+      "new_findings": [
+        "ConditionSubject:Unverifiable",
+        "ClauseCoverage:Unverifiable"
+      ],
+      "old_findings": [],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "7ff84a361e0e90309b52d462e282c520279c5bcad0765adae6cecabbe3fda203",
+      "metrics": {
+        "steps": 23,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 37903200,
+        "decoder_ns": 900313500,
+        "queue_wait_ns": 115000,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 946824200,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "e12",
+      "round": 24,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "filename_url_version",
+      "new_findings": [
+        "FileName:Changed",
+        "Url:ExactPreserved",
+        "Version:ExactPreserved"
+      ],
+      "old_findings": [
+        "FileName:Changed",
+        "Url:ExactPreserved",
+        "Version:ExactPreserved"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "f602f73f8d7e56073f831d7e03b42ad89f8455a0642dcba6b3444b63dfdaf5e5",
+      "metrics": {
+        "steps": 43,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 58160300,
+        "decoder_ns": 1486710800,
+        "queue_wait_ns": 30900,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 1551636100,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "e13",
+      "round": 24,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "model_mixed_name",
+      "new_findings": [
+        "ModelCode:ExactPreserved",
+        "SwitchSetting:Unverifiable",
+        "Term:Missing",
+        "Term:ExactPreserved"
+      ],
+      "old_findings": [
+        "ModelCode:ExactPreserved",
+        "Term:Missing",
+        "Term:ExactPreserved"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "ef7051c56006cace109189408e651b0f388562140a7be1512e7eac02f6dca42a",
+      "metrics": {
+        "steps": 25,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 41230800,
+        "decoder_ns": 801796600,
+        "queue_wait_ns": 105200,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 853118100,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "c01",
+      "round": 24,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "filename_missing",
+      "new_findings": [
+        "FileName:Missing"
+      ],
+      "old_findings": [
+        "FileName:Missing"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "c27d39700bef6d5fd8fbacce9bbeed13e904946e20fd1edaa0e2e3512178f65e",
+      "metrics": null
+    },
+    {
+      "case": "c02",
+      "round": 24,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "filename_exact",
+      "new_findings": [
+        "FileName:ExactPreserved"
+      ],
+      "old_findings": [
+        "FileName:ExactPreserved"
+      ],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "484327587056835f3c6e929e76dd4851decefa056cfcf3b1d42103aae91e52da",
+      "metrics": null
+    },
+    {
+      "case": "c03",
+      "round": 24,
+      "mode": "control",
+      "direction": "en-zh",
+      "topic": "filename_changed",
+      "new_findings": [
+        "FileName:Changed"
+      ],
+      "old_findings": [
+        "FileName:Changed"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "c6dcb3451429bacd8c9be793b17babbf7047290ab7ae23f8c65de9d7b9a94cee",
+      "metrics": null
+    },
+    {
+      "case": "c04",
+      "round": 24,
+      "mode": "control",
+      "direction": "en-zh",
+      "topic": "url_changed",
+      "new_findings": [
+        "Url:Changed"
+      ],
+      "old_findings": [
+        "Url:Changed"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "249638d469be4df9708296b84434229758f532a69bba902d63de6de1279f1df9",
+      "metrics": null
+    },
+    {
+      "case": "c05",
+      "round": 24,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "url_exact",
+      "new_findings": [
+        "Url:ExactPreserved"
+      ],
+      "old_findings": [
+        "Url:ExactPreserved"
+      ],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "8cbab80482128a96afba572264c2b65ff3722f1dcd9c601d9b2601005ead2eaa",
+      "metrics": null
+    },
+    {
+      "case": "c06",
+      "round": 24,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "version_changed",
+      "new_findings": [
+        "Version:Changed"
+      ],
+      "old_findings": [
+        "Version:Changed"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "680c71d721805651c232a44a72128d319a3c1ec9663d0f874cc42e14145c4fc7",
+      "metrics": null
+    },
+    {
+      "case": "c07",
+      "round": 24,
+      "mode": "control",
+      "direction": "en-zh",
+      "topic": "model_missing",
+      "new_findings": [
+        "ModelCode:Missing"
+      ],
+      "old_findings": [
+        "ModelCode:Missing"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "654a7fd81c0fb2df8efc6bbe3a9cff838b2670c070dd547576a75aeb78aed2de",
+      "metrics": null
+    },
+    {
+      "case": "c08",
+      "round": 24,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "model_repeated",
+      "new_findings": [
+        "ModelCode:ExactPreserved",
+        "ModelCode:Missing"
+      ],
+      "old_findings": [
+        "ModelCode:ExactPreserved",
+        "ModelCode:Missing"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "03109196da3e13d004c33184c62b67276e4618a6e880e25a4122f679c0a90e32",
+      "metrics": null
+    },
+    {
+      "case": "c09",
+      "round": 24,
+      "mode": "control",
+      "direction": "en-zh",
+      "topic": "imperative_negation_dropped",
+      "new_findings": [
+        "NegationMarker:Unverifiable"
+      ],
+      "old_findings": [
+        "NegationMarker:Unverifiable"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "5e6978e7f1bd0bcacfd11a9a514b267966de4499b74376c8cbbd03cb3edc8883",
+      "metrics": null
+    },
+    {
+      "case": "c10",
+      "round": 24,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "imperative_negation_dropped",
+      "new_findings": [
+        "NegationMarker:Unverifiable"
+      ],
+      "old_findings": [
+        "NegationMarker:Unverifiable"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "4014bb6ace3320effe6b4c10ccfc97586c5fe632dc3978c0fdea6ee120639988",
+      "metrics": null
+    },
+    {
+      "case": "c11",
+      "round": 24,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "imperative_negation_presence",
+      "new_findings": [],
+      "old_findings": [],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "f8fc9e6778c57bd101509a8f0a49d28ef260bcdcec129df0eabcc3474231fdea",
+      "metrics": null
+    },
+    {
+      "case": "c12",
+      "round": 24,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "imperative_scope_flip",
+      "new_findings": [
+        "CommandAction:Unverifiable"
+      ],
+      "old_findings": [],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "fed2ae8cdc4108ee9a90a6bf0034c50409e7479e12a3b5a4debac07d47a1a403",
+      "metrics": null
+    },
+    {
+      "case": "c13",
+      "round": 24,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "numeric_relation_flip",
+      "new_findings": [
+        "Unit:EquivalentRepresentation",
+        "QuantityBinding:Changed",
+        "Unit:EquivalentRepresentation",
+        "QuantityBinding:Changed"
+      ],
+      "old_findings": [
+        "Unit:EquivalentRepresentation",
+        "Unit:EquivalentRepresentation"
+      ],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "abdeb21667ec38ee159d009fb0c6b199b2df81f856291d87c7890721a6a90d8c",
+      "metrics": null
+    },
+    {
+      "case": "c14",
+      "round": 24,
+      "mode": "control",
+      "direction": "en-zh",
+      "topic": "ambiguous_domain_email",
+      "new_findings": [],
+      "old_findings": [],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "1c5d440fc9f6b34871c3cf4f052325c162f3d42c86f4d33568dbc4c559e6d6d1",
+      "metrics": null
+    },
+    {
+      "case": "c15",
+      "round": 24,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "mixed_adjacent",
+      "new_findings": [
+        "FileName:ExactPreserved",
+        "Url:ExactPreserved",
+        "Version:ExactPreserved",
+        "ModelCode:ExactPreserved"
+      ],
+      "old_findings": [
+        "FileName:ExactPreserved",
+        "Url:ExactPreserved",
+        "Version:ExactPreserved",
+        "ModelCode:ExactPreserved"
+      ],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "56bef81c96494b36e3c8ed4f2ba80c4792e214e227388c6ac9710e0c7fb2a559",
+      "metrics": null
+    },
+    {
+      "case": "c16",
+      "round": 24,
+      "mode": "control",
+      "direction": "en-zh",
+      "topic": "numeric_outside_url",
+      "new_findings": [
+        "Url:ExactPreserved",
+        "Time:Changed"
+      ],
+      "old_findings": [
+        "Url:ExactPreserved",
+        "Time:Changed"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "5fc0238e17044b970585e0fe8eeaea7eea09197094adfa5caa049649a00cde03",
+      "metrics": null
+    },
+    {
+      "case": "c17",
+      "round": 24,
+      "mode": "control",
+      "direction": "en-zh",
+      "topic": "duplicate_url",
+      "new_findings": [
+        "Url:ExactPreserved",
+        "Url:Missing"
+      ],
+      "old_findings": [
+        "Url:ExactPreserved",
+        "Url:Missing"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "ee1b97f2c3e8de1a4f6e18547d7ad0faf35c8bbdb23d620e5c9f65db68f68e1d",
+      "metrics": null
+    },
+    {
+      "case": "r25z01",
+      "round": 25,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "business-followup",
+      "new_findings": [],
+      "old_findings": [],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "095522fb28ef7558e968b6f48094ac10eafd7a924568a00efbbb02190962991e",
+      "metrics": {
+        "steps": 20,
+        "truncated": false,
+        "verification_ns": 632197200,
+        "encoder_ns": 42533800,
+        "decoder_ns": 933605200,
+        "queue_wait_ns": 48200,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 983212600,
+        "load_ns": 776538200,
+        "threads": 1
+      }
+    },
+    {
+      "case": "r25z02",
+      "round": 25,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "daily-chat",
+      "new_findings": [
+        "Number:Missing"
+      ],
+      "old_findings": [],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "a377a1efd9706edddd6630842cd29c03a3ef5230f4369d8414764aaad230c634",
+      "metrics": {
+        "steps": 26,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 42560700,
+        "decoder_ns": 1186173900,
+        "queue_wait_ns": 47300,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 1233783800,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "r25z03",
+      "round": 25,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "switch-instruction",
+      "new_findings": [
+        "SwitchSetting:Unverifiable"
+      ],
+      "old_findings": [],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "2e1a2f56e97be438a08e4b3194d5bd18c3e3f1086e9569ebde3f8e9da95463c6",
+      "metrics": {
+        "steps": 23,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 45971200,
+        "decoder_ns": 1025303900,
+        "queue_wait_ns": 35300,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 1074962200,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "r25z04",
+      "round": 25,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "group-quantity",
+      "new_findings": [
+        "Number:Missing",
+        "Number:Missing",
+        "Number:Missing"
+      ],
+      "old_findings": [
+        "Number:Missing"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "5a922c78f7cc14cb91fe646c54beb78dfc4ddca4f178ea7a5e77b8d6a61c48fa",
+      "metrics": {
+        "steps": 37,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 45405500,
+        "decoder_ns": 1483088500,
+        "queue_wait_ns": 56300,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 1535206000,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "r25z05",
+      "round": 25,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "schedule",
+      "new_findings": [
+        "Date:Missing",
+        "Time:Missing",
+        "ClauseCoverage:Unverifiable",
+        "Time:EquivalentRepresentation"
+      ],
+      "old_findings": [
+        "Date:Missing",
+        "Time:Missing",
+        "Time:Missing",
+        "Number:Unverifiable"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "e05d7ee7f5a85b7823927225ca29ce27bfe8c9bea16c5321dbcfb5ef431a932e",
+      "metrics": {
+        "steps": 11,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 40796400,
+        "decoder_ns": 443028800,
+        "queue_wait_ns": 31800,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 488922800,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "r25z06",
+      "round": 25,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "parallel-measures",
+      "new_findings": [
+        "Unit:EquivalentRepresentation",
+        "Unit:EquivalentRepresentation",
+        "ClauseCoverage:Unverifiable"
+      ],
+      "old_findings": [
+        "Unit:Missing"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "fbae42bba4e2f61601a4009f14a88617249eed167e99b9454a8b1bcdca6bc45b",
+      "metrics": {
+        "steps": 20,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 41195700,
+        "decoder_ns": 876927200,
+        "queue_wait_ns": 29800,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 921474900,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "r25z07",
+      "round": 25,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "currency-condition",
+      "new_findings": [
+        "Money:Changed",
+        "ClauseCoverage:Unverifiable",
+        "ConditionalMarker:Unverifiable",
+        "Money:Missing"
+      ],
+      "old_findings": [
+        "Money:Changed",
+        "Money:Missing"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "c0bd241fc04f1d64ece9ce420c0b71a152b3c2027e9f05bf44a9ba0474330fb2",
+      "metrics": {
+        "steps": 9,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 49795200,
+        "decoder_ns": 416415500,
+        "queue_wait_ns": 30800,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 470467800,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "r25z08",
+      "round": 25,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "document-and-action",
+      "new_findings": [
+        "FileName:Missing"
+      ],
+      "old_findings": [
+        "FileName:Missing"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "d6f46fdb16946124e7c8b264b00aeed59a67138b8953de864dc54203e83bffb9",
+      "metrics": {
+        "steps": 28,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 55100800,
+        "decoder_ns": 1291531100,
+        "queue_wait_ns": 101400,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 1351878500,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "r25z09",
+      "round": 25,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "conditional-subject",
+      "new_findings": [
+        "ConditionSubject:Unverifiable",
+        "ConditionalMarker:Unverifiable",
+        "Number:Missing"
+      ],
+      "old_findings": [],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "b76f544bcdb0f56ecdd64d95ad5bf314e438b8ae952eb969cab905d113f4481b",
+      "metrics": {
+        "steps": 31,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 47505800,
+        "decoder_ns": 1152581900,
+        "queue_wait_ns": 26900,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 1204135400,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "r25z10",
+      "round": 25,
+      "mode": "real",
+      "direction": "zh-en",
+      "topic": "multi-paragraph",
+      "new_findings": [
+        "Date:EquivalentRepresentation",
+        "TemporalMarker:Unverifiable",
+        "ClauseCoverage:Unverifiable",
+        "ConditionalMarker:Unverifiable",
+        "Time:Missing"
+      ],
+      "old_findings": [
+        "Date:EquivalentRepresentation",
+        "Time:Missing"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "a5bcd6862b28e5ffb16923b0611b909b88ddfb8485747a8d5fec0fe57050a395",
+      "metrics": {
+        "steps": 23,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 73083300,
+        "decoder_ns": 1138442600,
+        "queue_wait_ns": 61300,
+        "provider": "offline-model",
+        "model": "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 1217343900,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "r25e01",
+      "round": 25,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "business-followup",
+      "new_findings": [
+        "ClauseCoverage:Unverifiable",
+        "TemporalMarker:Unverifiable"
+      ],
+      "old_findings": [],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "712a410ea1e3a64c1448032a7f060711900d0a6d96d49b20aee599f52bdc3145",
+      "metrics": {
+        "steps": 18,
+        "truncated": false,
+        "verification_ns": 597932800,
+        "encoder_ns": 53035700,
+        "decoder_ns": 811773700,
+        "queue_wait_ns": 27500,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 878415900,
+        "load_ns": 691762700,
+        "threads": 1
+      }
+    },
+    {
+      "case": "r25e02",
+      "round": 25,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "daily-chat",
+      "new_findings": [
+        "ClauseCoverage:Unverifiable",
+        "TemporalMarker:Unverifiable"
+      ],
+      "old_findings": [],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "7b2f6214e7b9ed8cb57a678ee44662929b301e706c23becbdeda8e632de976ba",
+      "metrics": {
+        "steps": 17,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 48444300,
+        "decoder_ns": 839721500,
+        "queue_wait_ns": 35100,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 895578800,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "r25e03",
+      "round": 25,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "switch-instruction",
+      "new_findings": [
+        "SwitchSetting:Unverifiable",
+        "TemporalMarker:Unverifiable"
+      ],
+      "old_findings": [],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "12b2d571518765408e8a1663b43d6be630e00417a9a1d582b91ab2c64bbd939a",
+      "metrics": {
+        "steps": 24,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 61872000,
+        "decoder_ns": 1162893300,
+        "queue_wait_ns": 38600,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 1238183600,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "r25e04",
+      "round": 25,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "named-quantity",
+      "new_findings": [
+        "Number:ExactPreserved",
+        "Number:ExactPreserved",
+        "ClauseCoverage:Unverifiable",
+        "Number:EquivalentRepresentation"
+      ],
+      "old_findings": [
+        "Number:ExactPreserved",
+        "Number:ExactPreserved",
+        "Number:Unverifiable"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "58b694266b0c24c3e9658a71fe0f8d2c6a8e5930f4995cd9e87b6cdf69230f64",
+      "metrics": {
+        "steps": 24,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 43207600,
+        "decoder_ns": 982220000,
+        "queue_wait_ns": 50100,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 1036120200,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "r25e05",
+      "round": 25,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "schedule",
+      "new_findings": [
+        "Date:EquivalentRepresentation",
+        "Time:EquivalentRepresentation",
+        "Time:EquivalentRepresentation"
+      ],
+      "old_findings": [
+        "Date:EquivalentRepresentation",
+        "Number:Missing",
+        "Number:Missing",
+        "Time:Unverifiable",
+        "Time:Unverifiable"
+      ],
+      "new_review": false,
+      "old_review": true,
+      "raw_sha256": "b4a694448113cba7bdd8a20e5ae6154256637d06ba8c7358181deefcd15b65b7",
+      "metrics": {
+        "steps": 26,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 52596400,
+        "decoder_ns": 1231395400,
+        "queue_wait_ns": 35000,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 1294824900,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "r25e06",
+      "round": 25,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "parallel-measures",
+      "new_findings": [
+        "Unit:EquivalentRepresentation",
+        "Unit:EquivalentRepresentation",
+        "NegationMarker:Unverifiable",
+        "ClauseCoverage:Unverifiable",
+        "Number:Unverifiable"
+      ],
+      "old_findings": [
+        "Unit:EquivalentRepresentation",
+        "NegationMarker:Unverifiable",
+        "Unit:Unverifiable"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "1cea085c7955e1625a211516009f45f0d7c6fb56099403e03f5e54a24feeca64",
+      "metrics": {
+        "steps": 21,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 52317200,
+        "decoder_ns": 1110856100,
+        "queue_wait_ns": 32000,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 1172007500,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "r25e07",
+      "round": 25,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "currency-condition",
+      "new_findings": [
+        "Money:EquivalentRepresentation",
+        "ClauseCoverage:Unverifiable",
+        "Money:EquivalentRepresentation"
+      ],
+      "old_findings": [
+        "Money:EquivalentRepresentation",
+        "Money:EquivalentRepresentation"
+      ],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "e8df02b5dd5c86f256feff3f5ebf0efea7782a4cd5731f384a235fb141c96ade",
+      "metrics": {
+        "steps": 21,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 43465600,
+        "decoder_ns": 978463700,
+        "queue_wait_ns": 45000,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 1028612500,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "r25e08",
+      "round": 25,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "document-and-action",
+      "new_findings": [
+        "NegationMarker:Unverifiable",
+        "FileName:Missing",
+        "TemporalMarker:Unverifiable"
+      ],
+      "old_findings": [
+        "NegationMarker:Unverifiable",
+        "FileName:Missing"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "64ab5dd691581b6540809fcf25e0acc4b201908d5497956ec6e7fedf407529a5",
+      "metrics": {
+        "steps": 24,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 41937800,
+        "decoder_ns": 1162019900,
+        "queue_wait_ns": 28600,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 1211385100,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "r25e09",
+      "round": 25,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "conditional-subject",
+      "new_findings": [],
+      "old_findings": [],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "58951d116976f074670db73bcf92400932978f014c9778334435aadae265ab70",
+      "metrics": {
+        "steps": 26,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 82055400,
+        "decoder_ns": 1425580200,
+        "queue_wait_ns": 130900,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 1522860800,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "r25e10",
+      "round": 25,
+      "mode": "real",
+      "direction": "en-zh",
+      "topic": "multi-paragraph",
+      "new_findings": [
+        "TemporalMarker:Unverifiable",
+        "Time:Missing",
+        "Number:Unverifiable",
+        "Number:Unverifiable"
+      ],
+      "old_findings": [
+        "Time:Missing",
+        "Number:Unverifiable",
+        "Number:Unverifiable"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "995526d0ed527be52058b56d6ab0bcd73850d251e8345e1701d47ea5ed3bfb50",
+      "metrics": {
+        "steps": 32,
+        "truncated": false,
+        "verification_ns": 0,
+        "encoder_ns": 62883600,
+        "decoder_ns": 1573024200,
+        "queue_wait_ns": 28400,
+        "provider": "offline-model",
+        "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+        "catalog_sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f",
+        "inference_ns": 1656042700,
+        "load_ns": 0,
+        "threads": 1
+      }
+    },
+    {
+      "case": "r25x01",
+      "round": 25,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "error_missing_sentence",
+      "new_findings": [
+        "ClauseCoverage:Unverifiable",
+        "TemporalMarker:Unverifiable"
+      ],
+      "old_findings": [],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "8b810d08213191d4a38e1d61ce6b00e7f123c3afc8487572fdf8b14b1e56a601",
+      "metrics": null
+    },
+    {
+      "case": "r25x02",
+      "round": 25,
+      "mode": "control",
+      "direction": "en-zh",
+      "topic": "error_temporal_clause",
+      "new_findings": [
+        "TemporalMarker:Unverifiable"
+      ],
+      "old_findings": [],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "3ca5e2ac99a0cca0a1fce7033b6049cc777002b41b1df414b8a2dde59381258f",
+      "metrics": null
+    },
+    {
+      "case": "r25x03",
+      "round": 25,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "error_conditional_subject",
+      "new_findings": [
+        "ConditionSubject:Unverifiable",
+        "ConditionalMarker:Unverifiable"
+      ],
+      "old_findings": [],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "29b19632b3d21c9051a8aa0edfd2135b68391978f92d841513b02096e2381387",
+      "metrics": null
+    },
+    {
+      "case": "r25x04",
+      "round": 25,
+      "mode": "control",
+      "direction": "en-zh",
+      "topic": "error_conditional_branch",
+      "new_findings": [
+        "ConditionalMarker:Unverifiable"
+      ],
+      "old_findings": [],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "95d3b3130c10436195e2981a4794ca7d0ab097d240f91a3fe9861c7dfb8cb65a",
+      "metrics": null
+    },
+    {
+      "case": "r25x05",
+      "round": 25,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "error_negated_action",
+      "new_findings": [
+        "CommandAction:Unverifiable"
+      ],
+      "old_findings": [],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "0f77df0b70955e3d4afc38317df79fd7ae7a59742c697ece247546c422bfe3a8",
+      "metrics": null
+    },
+    {
+      "case": "r25x06",
+      "round": 25,
+      "mode": "control",
+      "direction": "en-zh",
+      "topic": "error_switch_value",
+      "new_findings": [
+        "SwitchSetting:Changed"
+      ],
+      "old_findings": [],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "63e96633abbea1c60ebf38a6c600a65870b13d30be876981bff081d8c9103bd3",
+      "metrics": null
+    },
+    {
+      "case": "r25x07",
+      "round": 25,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "error_quantity_binding",
+      "new_findings": [
+        "Unit:EquivalentRepresentation",
+        "QuantityBinding:Changed",
+        "Unit:EquivalentRepresentation",
+        "QuantityBinding:Changed"
+      ],
+      "old_findings": [
+        "Unit:Changed"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "2039b74f4f5790bd81af5016d3b3eefa9d92ee0c4cdd6ed077501b3307bbefb3",
+      "metrics": null
+    },
+    {
+      "case": "r25x08",
+      "round": 25,
+      "mode": "control",
+      "direction": "en-zh",
+      "topic": "error_quantity_binding_reverse",
+      "new_findings": [
+        "Unit:EquivalentRepresentation",
+        "QuantityBinding:Changed",
+        "Unit:EquivalentRepresentation",
+        "QuantityBinding:Changed"
+      ],
+      "old_findings": [
+        "Unit:EquivalentRepresentation",
+        "Unit:EquivalentRepresentation"
+      ],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "287649bf54ac81c67515774229ee80b982003d64dce79f63439cebe1672f3e7b",
+      "metrics": null
+    },
+    {
+      "case": "r25x09",
+      "round": 25,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "error_written_count",
+      "new_findings": [
+        "Number:Changed"
+      ],
+      "old_findings": [],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "8839d38915e9dcb38f7d64e97cb6bc0096b6b0f65670f667a161b9f0f21afd1c",
+      "metrics": null
+    },
+    {
+      "case": "r25x10",
+      "round": 25,
+      "mode": "control",
+      "direction": "en-zh",
+      "topic": "error_local_clock",
+      "new_findings": [
+        "Time:Changed"
+      ],
+      "old_findings": [
+        "Number:Missing",
+        "Time:Unverifiable"
+      ],
+      "new_review": true,
+      "old_review": true,
+      "raw_sha256": "373ad7a5b057ca123ac47d0a3a7ea0ead076d2a400b6a13b79ec9b60a34988f1",
+      "metrics": null
+    },
+    {
+      "case": "r25x11",
+      "round": 25,
+      "mode": "control",
+      "direction": "en-zh",
+      "topic": "error_unaligned_person",
+      "new_findings": [],
+      "old_findings": [],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "3d128b8e235d9f1dac00d4f311c99e02baf939ab06b765b9366ba6a24ec83d28",
+      "metrics": null
+    },
+    {
+      "case": "r25x12",
+      "round": 25,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "error_implicit_scope",
+      "new_findings": [],
+      "old_findings": [],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "0b798ce7eb8c56b784b32772b0d8299636602bf84d354bb380460d102fb7a2da",
+      "metrics": null
+    },
+    {
+      "case": "r25m01",
+      "round": 25,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "match_written_number",
+      "new_findings": [
+        "Number:EquivalentRepresentation"
+      ],
+      "old_findings": [],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "ca9a04bb1f40a786b0e476321f8990a83f71eb4f6221b3de8c414ab6803f00ac",
+      "metrics": null
+    },
+    {
+      "case": "r25m02",
+      "round": 25,
+      "mode": "control",
+      "direction": "en-zh",
+      "topic": "match_written_unit",
+      "new_findings": [
+        "Unit:EquivalentRepresentation"
+      ],
+      "old_findings": [],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "c0d2503cdbefcd7ca18668c6a3797ed72d1614057a4f03b23e979d01b07fb195",
+      "metrics": null
+    },
+    {
+      "case": "r25m03",
+      "round": 25,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "match_local_clock",
+      "new_findings": [
+        "Time:EquivalentRepresentation",
+        "Time:EquivalentRepresentation"
+      ],
+      "old_findings": [
+        "Time:Missing",
+        "Time:Missing",
+        "Number:Unverifiable",
+        "Number:Unverifiable"
+      ],
+      "new_review": false,
+      "old_review": true,
+      "raw_sha256": "9dc29c81a1a96eea3d6267090bcd499f4136381715410fe05462a2c4fc0ba5dd",
+      "metrics": null
+    },
+    {
+      "case": "r25m04",
+      "round": 25,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "match_reordered_binding",
+      "new_findings": [
+        "Unit:EquivalentRepresentation",
+        "Unit:EquivalentRepresentation"
+      ],
+      "old_findings": [
+        "Unit:EquivalentRepresentation"
+      ],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "19fc096114e307cde2ad972ccdfdc4089e2b831f917ef512c7545e7a3caf4e32",
+      "metrics": null
+    },
+    {
+      "case": "r25m05",
+      "round": 25,
+      "mode": "control",
+      "direction": "en-zh",
+      "topic": "match_confirmed_switch",
+      "new_findings": [],
+      "old_findings": [],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "1e7662e452791051983d9aff58c46ba1ad82f29282bfb0d5dca0f6b9aca3080e",
+      "metrics": null
+    },
+    {
+      "case": "r25m06",
+      "round": 25,
+      "mode": "control",
+      "direction": "en-zh",
+      "topic": "match_merged_sentence",
+      "new_findings": [
+        "ClauseCoverage:Unverifiable"
+      ],
+      "old_findings": [],
+      "new_review": true,
+      "old_review": false,
+      "raw_sha256": "72bf53a21011b825b1b366909d840034c3002cbe35b2247af164aae5b2eb98a9",
+      "metrics": null
+    },
+    {
+      "case": "r25m07",
+      "round": 25,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "match_url_and_period",
+      "new_findings": [
+        "Time:EquivalentRepresentation",
+        "Url:ExactPreserved"
+      ],
+      "old_findings": [
+        "Time:EquivalentRepresentation",
+        "Url:ExactPreserved"
+      ],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "865fc6620b902d47988eb613ba7b556b3b00c6723e0ca4e4c5fcfe8866029b4a",
+      "metrics": null
+    },
+    {
+      "case": "r25m08",
+      "round": 25,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "match_condition_order",
+      "new_findings": [],
+      "old_findings": [],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "3546525b2fc6bd9caa7f42d8448ae3603e989c78d716b62780fb6fcf4a16d449",
+      "metrics": null
+    },
+    {
+      "case": "r25m09",
+      "round": 25,
+      "mode": "control",
+      "direction": "zh-en",
+      "topic": "match_unsupported_speech",
+      "new_findings": [],
+      "old_findings": [],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "26b323879daee2f3c2daee51fcbda403c73df5e3d7fd2d9134d42038f60f1805",
+      "metrics": null
+    },
+    {
+      "case": "r25m10",
+      "round": 25,
+      "mode": "control",
+      "direction": "en-zh",
+      "topic": "match_large_spoken_unsupported",
+      "new_findings": [],
+      "old_findings": [],
+      "new_review": false,
+      "old_review": false,
+      "raw_sha256": "fb8c030e38d9a0c366bb95281c73880bd78252912b4b2af098ce8f6c17891c28",
+      "metrics": null
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+
+running 6 tests
+test punctuation_inside_literal_does_not_create_a_sentence ... ok
+test condition_and_named_subject_gaps_remain_unverifiable ... FAILED
+test limited_cardinal_and_time_equivalences_preserve_old_boundaries ... FAILED
+test missing_sentence_and_temporal_branch_are_advisory_only ... FAILED
+test command_actions_and_explicit_setting_are_separate_evidence ... FAILED
+test distinct_labels_keep_measurement_bindings_through_reordering ... FAILED
+
+failures:
+
+---- condition_and_named_subject_gaps_remain_unverifiable stdout ----
+
+thread 'condition_and_named_subject_gaps_remain_unverifiable' panicked at crates\cloudleaf-translation-integrity\tests\structure.rs:62:9:
+assertion `left == right` failed: ConditionalMarker
+  left: 0
+ right: 1
+
+---- limited_cardinal_and_time_equivalences_preserve_old_boundaries stdout ----
+
+thread 'limited_cardinal_and_time_equivalences_preserve_old_boundaries' panicked at crates\cloudleaf-translation-integrity\tests\structure.rs:128:9:
+assertion `left == right` failed: 十二件货物 IntegrityReport { glossary_version: 0, findings: [] }
+  left: 0
+ right: 1
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- missing_sentence_and_temporal_branch_are_advisory_only stdout ----
+
+thread 'missing_sentence_and_temporal_branch_are_advisory_only' panicked at crates\cloudleaf-translation-integrity\tests\structure.rs:23:5:
+assertion `left == right` failed
+  left: 0
+ right: 1
+
+---- command_actions_and_explicit_setting_are_separate_evidence stdout ----
+
+thread 'command_actions_and_explicit_setting_are_separate_evidence' panicked at crates\cloudleaf-translation-integrity\tests\structure.rs:94:5:
+assertion `left == right` failed
+  left: 0
+ right: 1
+
+---- distinct_labels_keep_measurement_bindings_through_reordering stdout ----
+
+thread 'distinct_labels_keep_measurement_bindings_through_reordering' panicked at crates\cloudleaf-translation-integrity\tests\structure.rs:78:5:
+assertion `left == right` failed
+  left: 0
+ right: 2
+
+
+failures:
+    command_actions_and_explicit_setting_are_separate_evidence
+    condition_and_named_subject_gaps_remain_unverifiable
+    distinct_labels_keep_measurement_bindings_through_reordering
+    limited_cardinal_and_time_equivalences_preserve_old_boundaries
+    missing_sentence_and_temporal_branch_are_advisory_only
+
+test result: FAILED. 1 passed; 5 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

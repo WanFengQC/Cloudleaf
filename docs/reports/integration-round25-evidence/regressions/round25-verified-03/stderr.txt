@@ -1,0 +1,32 @@
+    Checking cloudleaf-search v0.1.0 (C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\crates\cloudleaf-search)
+    Checking cloudleaf-input v0.1.0 (C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\crates\cloudleaf-input)
+    Checking cloudleaf-offline v0.1.0 (C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\crates\cloudleaf-offline)
+    Checking cloudleaf-translation-ipc v0.1.0 (C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\crates\cloudleaf-translation-ipc)
+    Checking cloudleaf-translation-integrity v0.1.0 (C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\crates\cloudleaf-translation-integrity)
+    Checking cloudleaf-cli v0.1.0 (C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\apps\cloudleaf-cli)
+error: unnecessary closure used to substitute value for `Option::None`
+  --> crates\cloudleaf-translation-integrity\src\spoken_numbers.rs:83:9
+   |
+83 | /         "零一二三四五六七八九"
+84 | |             .chars()
+85 | |             .position(|current| current == ch)
+86 | |             .map(|index| index as u8)
+...  |
+90 | |                 _ => None,
+91 | |             })
+   | |______________^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#unnecessary_lazy_evaluations
+   = note: `-D clippy::unnecessary-lazy-evaluations` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::unnecessary_lazy_evaluations)]`
+help: use `or` instead
+   |
+87 ~             .or(match ch {
+88 ~                 '〇' => Some(0),
+89 ~                 '两' | '兩' => Some(2),
+90 +                 _ => None,
+91 +             })
+   |
+
+error: could not compile `cloudleaf-translation-integrity` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
