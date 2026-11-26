@@ -62,6 +62,15 @@ pub struct ResearchScore {
     pub final_units: i64,
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct SupportedContextScore {
+    pub pool_index: usize,
+    pub character_units: i64,
+    pub transition_gain: i64,
+    pub supporting_transitions: usize,
+    pub bonus_units: i64,
+}
+
 fn invalid() -> SearchError {
     SearchError::new(ErrorKind::InvalidModel, "词语统计格式、词典或计数绑定无效")
 }
@@ -449,6 +458,57 @@ impl WordContextModel {
         Ok(scores)
     }
 
+    /// 在精确字符候选池内，用有直接支持的词对轻微打破字符评分平局。
+    pub fn rank_supported_character_pool(
+        &self,
+        graph: &Lattice<'_>,
+        pool: &SearchResult,
+    ) -> Result<Vec<SupportedContextScore>, SearchError> {
+        self.shape(graph, pool, ResearchRanker::Word, None)?;
+        if pool.candidates.iter().any(|candidate| {
+            candidate.features.character_count == 0
+                || candidate.features.character_units != candidate.score
+        }) {
+            return Err(invalid());
+        }
+
+        let mut scores: Vec<_> = pool
+            .candidates
+            .iter()
+            .enumerate()
+            .map(|(pool_index, path)| {
+                let mut previous = None;
+                let mut transition_gain = 0;
+                let mut supporting_transitions = 0;
+                for &edge in &path.edge_indices {
+                    let next = self.recall_word(graph.edges[edge].entry);
+                    if let Some(last) = previous {
+                        let gain = self.recall_gain(last, next);
+                        transition_gain += gain;
+                        supporting_transitions += usize::from(gain > 0);
+                    }
+                    previous = Some(next);
+                }
+                SupportedContextScore {
+                    pool_index,
+                    character_units: path.score,
+                    transition_gain,
+                    supporting_transitions,
+                    bonus_units: transition_gain / (2 * (path.features.character_count as i64 + 1)),
+                }
+            })
+            .collect();
+        scores.sort_by(|left, right| {
+            preference(pool, left.pool_index, right.pool_index)
+                .then_with(|| {
+                    (right.character_units + right.bonus_units)
+                        .cmp(&(left.character_units + left.bonus_units))
+                })
+                .then_with(|| left.pool_index.cmp(&right.pool_index))
+        });
+        Ok(scores)
+    }
+
     /// 小规模审计按原始计数重算，逐项插入，不读取编译边分值。
     pub fn reference_pool(
         &self,
@@ -525,9 +585,9 @@ fn transition_units(pair_count: u64, prior_count: u64, word_count: u64, total: u
         - log2_fixed((prior_count + PRIOR) * total)
 }
 
-fn compare(pool: &SearchResult, left: &ResearchScore, right: &ResearchScore) -> Ordering {
-    let left_path = &pool.candidates[left.pool_index];
-    let right_path = &pool.candidates[right.pool_index];
+fn preference(pool: &SearchResult, left: usize, right: usize) -> Ordering {
+    let left_path = &pool.candidates[left];
+    let right_path = &pool.candidates[right];
     left_path
         .features
         .interpretation_cost
@@ -538,6 +598,10 @@ fn compare(pool: &SearchResult, left: &ResearchScore, right: &ResearchScore) -> 
                 .user_preference_units
                 .cmp(&left_path.features.user_preference_units)
         })
+}
+
+fn compare(pool: &SearchResult, left: &ResearchScore, right: &ResearchScore) -> Ordering {
+    preference(pool, left.pool_index, right.pool_index)
         .then_with(|| right.final_units.cmp(&left.final_units))
         .then_with(|| left.pool_index.cmp(&right.pool_index))
 }

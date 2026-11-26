@@ -1,6 +1,6 @@
 use cloudleaf_search::{
-    Config, Lattice, Lexicon, Method, Ranker, ResearchRanker, WordContextModel,
-    expected_reachability, search_graph,
+    Config, LanguageModelSnapshot, Lattice, Lexicon, Method, Ranker, ResearchRanker,
+    WordContextModel, expected_reachability, search_graph,
 };
 
 const SHA: &str = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
@@ -133,4 +133,43 @@ fn indexed_and_literal_reference_match_every_bounded_candidate() {
     }
     assert!(compared > 1_000);
     println!("完整候选重排对照数：{compared}");
+}
+
+#[test]
+fn supported_transition_breaks_character_tie_without_a_boundary_bonus() {
+    let lex = lexicon();
+    let model = WordContextModel::from_tsv(&text(), &lex, SHA).unwrap();
+    let sequences: Vec<_> = ["甲", "乙"]
+        .into_iter()
+        .map(|word| vec![word.to_owned(), "丁".to_owned()])
+        .collect();
+    let meta = format!(
+        "# cloudleaf-language-v1\nlexicon_sha256\t{SHA}\nsource_sha256\t{SHA}\nsource_id\tmechanical\nlicense_id\tMIT\ntokenization\tunicode-scalar-v1\nusage\tmechanical\nkind\tcharacter_bigram\ntraining_split\ttrain\nprevious\tnext\tcount\n"
+    );
+    let chars = LanguageModelSnapshot::train(&meta, &lex, SHA, &sequences).unwrap();
+    let config = Config {
+        ranker: Ranker::CharacterBigram,
+        ..Config::default()
+    };
+    let graph = Lattice::build(&lex, "mana", &config).unwrap();
+    let pool = search_graph(&lex, &graph, &config, Some(chars.model()), None).unwrap();
+    assert_eq!(pool.candidates[0].text, "甲丁");
+    assert_eq!(pool.candidates[0].score, pool.candidates[1].score);
+    let ranked = model.rank_supported_character_pool(&graph, &pool).unwrap();
+    assert_eq!(pool.candidates[ranked[0].pool_index].text, "乙丁");
+    assert_eq!(ranked[0].supporting_transitions, 1);
+    assert!(ranked[0].bonus_units > 0);
+    assert_eq!(ranked[1].bonus_units, 0);
+
+    let one = Lattice::build(&lex, "ma", &config).unwrap();
+    let single = search_graph(&lex, &one, &config, Some(chars.model()), None).unwrap();
+    let ranked = model.rank_supported_character_pool(&one, &single).unwrap();
+    assert!(ranked.iter().all(|value| value.bonus_units == 0));
+    assert_eq!(
+        ranked
+            .iter()
+            .map(|value| value.pool_index)
+            .collect::<Vec<_>>(),
+        [0, 1]
+    );
 }

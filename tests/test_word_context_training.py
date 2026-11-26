@@ -9,6 +9,7 @@ import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
 import build_word_context as context
+import audit_round25_language as audit
 import freeze_word_context_validation as freeze
 
 
@@ -119,6 +120,20 @@ class WordContextTrainingTests(unittest.TestCase):
         with patch.object(freeze, "CASE_COUNT", 1):
             picked = freeze.select(others, [], previous, context.overlap_index([]))
         self.assertEqual(picked, [others[-1]])
+
+    def test_soft_count_conserves_each_positive_path_and_unknown_mass(self):
+        words = {"甲", "乙", "甲乙"}
+        unigrams, pairs = Counter(), Counter()
+        missed, choice_points = audit.add_estimates("甲乙丙", words, [1, 2], Counter(),
+                                                    unigrams, pairs)
+        self.assertEqual((missed, choice_points), (1, 1))
+        self.assertEqual(pairs[context.BOS, "甲"], audit.SCALE // 2)
+        self.assertEqual(pairs[context.BOS, "甲乙"], audit.SCALE // 2)
+        self.assertEqual(pairs[context.UNKNOWN, context.EOS], audit.SCALE)
+        audit.validate_estimates(unigrams, pairs, 1, missed)
+        pairs["甲", "乙"] -= 1
+        with self.assertRaisesRegex(ValueError, "守恒"):
+            audit.validate_estimates(unigrams, pairs, 1, missed)
 
 
 if __name__ == "__main__":

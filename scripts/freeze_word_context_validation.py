@@ -13,9 +13,14 @@ from build_word_context import (
 
 FREEZE_SALT = "cloudleaf-round23-tatoeba-frozen-validation-v1:"
 NEXT_FREEZE_SALT = "cloudleaf-round24-tatoeba-frozen-validation-v2:"
+ROUND25_SALT = "cloudleaf-round25-tatoeba-frozen-validation-v3:"
 PREVIOUS_TASKS = {
     "bytes": 23481,
     "sha256": "b1c9bb7d080783e31a784fb649d780b967cbce022d34925dc12a88bda51582fe",
+}
+ROUND24_TASKS = {
+    "bytes": 23733,
+    "sha256": "58fd5878e01ab851972039d35fd59b5f1a87cf60b469fed332810b64a60cd614",
 }
 CASE_COUNT = 40
 MIN_CHAR, MAX_CHAR = 6, 24
@@ -26,13 +31,13 @@ def jsonl(raw):
     return [json.loads(line) for line in raw.decode("utf-8").splitlines()]
 
 
-def select(rows, historical, previous=None, external=None):
+def select(rows, historical, previous=None, external=None, next_salt=NEXT_FREEZE_SALT):
     used_ids = {str(row["source_sentence_id"]) for row in historical}
     used_texts = {row["desired_text_sha256"] for row in historical}
     used_families = {row["family"] for row in rows if row["sentence_id"] in used_ids}
     salt = FREEZE_SALT
     if previous is not None:
-        salt = NEXT_FREEZE_SALT
+        salt = next_salt
         used_ids.update(row["source_id"] for row in previous)
         used_texts.update(row["source_text_sha256"] for row in previous)
         used_families.update(row["component_family"] for row in previous)
@@ -92,7 +97,7 @@ def matching_sources(text, selected):
             if leaks(text, overlap_index([(row["sha256"], row["text"])])))
 
 
-def freeze(corpus_dir, lexicon, output, prior_freeze=None):
+def freeze(corpus_dir, lexicon, output, prior_freeze=None, round24_freeze=None):
     policy = json.loads(POLICY.read_bytes())
     source = policy["sources"]["tatoeba-cmn-r16"]
     old = source["used_dev_tasks"]
@@ -104,7 +109,14 @@ def freeze(corpus_dir, lexicon, output, prior_freeze=None):
     external = policy["sources"]["wikinews-zh-r17"]["development_tasks"]
     external_index = protected_development(jsonl(gzip.decompress(read_locked(ROOT / external["path"], external))))
     previous = None if prior_freeze is None else jsonl(read_locked(prior_freeze, PREVIOUS_TASKS))
-    selected = select(candidates, historical, previous, external_index)
+    next_salt = NEXT_FREEZE_SALT
+    if round24_freeze is not None:
+        if previous is None:
+            raise ValueError("Round 25 冻结需要 Round 23 和 Round 24 两份排除表")
+        round24 = jsonl(read_locked(round24_freeze, ROUND24_TASKS))
+        previous.extend(round24)
+        next_salt = ROUND25_SALT
+    selected = select(candidates, historical, previous, external_index, next_salt)
     train = read_locked(corpus_dir / "train-fragments.jsonl", source["train_fragments"])
     nontrain = set(read_locked(corpus_dir / "nontrain-fulltext-sha256.txt", source["nontrain_hashes"])
                    .decode("ascii").splitlines())
@@ -126,7 +138,9 @@ def freeze(corpus_dir, lexicon, output, prior_freeze=None):
         raise ValueError("词典未绑定固定研究身份")
     lookup, widths = pronunciations(runtime)
     tasks = []
-    prefix = "r23frozen" if previous is None else "r24frozen"
+    prefix = "r25frozen" if round24_freeze is not None else (
+        "r23frozen" if previous is None else "r24frozen"
+    )
     for i, row in enumerate(selected, 1):
         pinyin = None if row["sha256"] in near else reading(row["text"], lookup, widths)
         status = ("blocked_near_training" if row["sha256"] in near else
@@ -174,10 +188,16 @@ def freeze(corpus_dir, lexicon, output, prior_freeze=None):
         receipt.update({
             "schema": "cloudleaf-round24-frozen-research-v2",
             "selection": "v2 fixed SHA ordering before pinyin; previous and selected components, IDs, exact and near texts excluded",
-            "previous_round23_tasks": {"rows": len(previous), "sha256": PREVIOUS_TASKS["sha256"]},
+            "previous_round23_tasks": {"rows": CASE_COUNT, "sha256": PREVIOUS_TASKS["sha256"]},
             "previous_development_near_overlap": 0,
             "within_sample_near_overlap": 0,
             "external_development_tasks_sha256": external["sha256"],
+        })
+    if round24_freeze is not None:
+        receipt.update({
+            "schema": "cloudleaf-round25-frozen-research-v3",
+            "selection": "v3 fixed SHA ordering before pinyin; Round 16/23/24 and Wikinews exclusions",
+            "previous_round24_tasks": {"rows": len(round24), "sha256": ROUND24_TASKS["sha256"]},
         })
     output.mkdir(parents=True, exist_ok=False)
     (output / "tasks.jsonl").write_text(encoded, encoding="utf-8", newline="\n")
@@ -194,9 +214,12 @@ def main():
     parser.add_argument("--lexicon", type=Path, required=True)
     parser.add_argument("--prior-freeze", type=Path,
                         help="固定 Round 23 任务文件；提供时生成家族及近重复隔离的 Round 24 开发验证")
+    parser.add_argument("--round24-freeze", type=Path,
+                        help="同时提供固定 Round 24 任务文件时，冻结 Round 25 新研发样本")
     parser.add_argument("--output-dir", type=Path, required=True)
     args = parser.parse_args()
-    print(json.dumps(freeze(args.corpus_dir, args.lexicon, args.output_dir, args.prior_freeze), ensure_ascii=False))
+    print(json.dumps(freeze(args.corpus_dir, args.lexicon, args.output_dir, args.prior_freeze,
+                            args.round24_freeze), ensure_ascii=False))
 
 
 if __name__ == "__main__":

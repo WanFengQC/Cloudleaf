@@ -25,7 +25,8 @@ pub use search::{
 pub use transition_cache::{TransitionCache, TransitionCacheStatistics};
 
 pub use word_context::{
-    MAX_RESEARCH_POOL, ResearchRanker, ResearchScore, WordContextModel, expected_reachability,
+    MAX_RESEARCH_POOL, ResearchRanker, ResearchScore, SupportedContextScore, WordContextModel,
+    expected_reachability,
 };
 
 use std::fmt;
