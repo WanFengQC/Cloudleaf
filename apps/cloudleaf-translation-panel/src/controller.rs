@@ -1,8 +1,10 @@
 use crate::center::{InputSettingsView, UserAction, UserSettingsView};
+use crate::definitions::{DefinitionDirection, DefinitionRequest, DefinitionTask, DefinitionView};
 use crate::platform::{CredentialStore, PlatformError};
+use crate::resources::{ResourceIdentity, ResourceRequest, ResourceSlot};
 use crate::settings::{DirectionChoice, ProviderChoice, Settings};
 use crate::setup::{Prepared, SetupCommand, SetupEvent, SetupHandle};
-use cloudleaf_settings::InputPreferences;
+use cloudleaf_settings::{InputPreferences, RuntimeSettingsReceipt};
 use cloudleaf_translation::*;
 use cloudleaf_translation_integrity::{self as integrity, Glossary, IntegrityReport};
 use cloudleaf_translation_ipc::IpcError;
@@ -38,6 +40,13 @@ pub struct PanelController {
     pub settings_serial: u64,
     pub input_settings: InputSettingsView,
     pub user_settings: UserSettingsView,
+    pub definitions: DefinitionView,
+    pub runtime_settings: Vec<RuntimeSettingsReceipt>,
+    pub runtime_notice: &'static str,
+    runtime_pending: bool,
+    pub resources: [Option<ResourceIdentity>; 2],
+    pub resource_notice: [&'static str; 2],
+    next_definition: u64,
     context: TranslationContext,
     focused: bool,
     panel: TranslationPanel,
@@ -92,6 +101,13 @@ impl PanelController {
                 ..InputSettingsView::default()
             },
             user_settings: UserSettingsView::default(),
+            definitions: DefinitionView::default(),
+            runtime_settings: Vec::new(),
+            runtime_notice: "",
+            runtime_pending: false,
+            resources: [None, None],
+            resource_notice: [""; 2],
+            next_definition: 1,
             context,
             focused: true,
             panel: TranslationPanel::new(context),
@@ -117,6 +133,56 @@ impl PanelController {
             self.invalidate();
             self.text = text;
         }
+    }
+
+    pub fn clear_definitions(&mut self) {
+        self.definitions = DefinitionView::default();
+    }
+
+    pub fn lookup_definition(
+        &mut self,
+        path: PathBuf,
+        sha256: String,
+        direction: DefinitionDirection,
+    ) -> Result<(), TranslationError> {
+        self.clear_definitions();
+        let text = self.text.trim();
+        if text.is_empty()
+            || text.len() > 4096
+            || text.contains('\0')
+            || !path.is_absolute()
+            || sha256.len() != 64
+            || !sha256.bytes().all(|byte| byte.is_ascii_hexdigit())
+        {
+            return Err(TranslationError::InvalidConfig);
+        }
+        if !self.focused || self.closing.is_some() {
+            return Err(TranslationError::ProviderUnavailable);
+        }
+        let task = DefinitionTask {
+            id: self.next_definition,
+            input_revision: self.context.input_revision,
+        };
+        self.next_definition = self
+            .next_definition
+            .checked_add(1)
+            .ok_or(TranslationError::Busy)?;
+        self.setup
+            .sender
+            .as_ref()
+            .ok_or(TranslationError::ProviderUnavailable)?
+            .try_send(SetupCommand::Define(DefinitionRequest {
+                task,
+                path,
+                sha256: sha256.to_ascii_lowercase(),
+                text: text.to_owned(),
+                direction,
+            }))
+            .map_err(|_| TranslationError::Busy)?;
+        self.definitions.task = Some(task);
+        self.definitions.pending = true;
+        self.definitions.notice = "正在核验索引并查询释义…".into();
+        Ok(())
     }
 
     pub fn set_direction(&mut self, direction: DirectionChoice) {
@@ -189,6 +255,39 @@ impl PanelController {
 
     pub fn reload_input_settings(&mut self) -> Result<(), TranslationError> {
         self.request_input(SetupCommand::ReadInput)
+    }
+
+    pub fn refresh_runtime_settings(&mut self) {
+        if !self.runtime_pending
+            && self.closing.is_none()
+            && self.send(SetupCommand::ReadRuntime).is_ok()
+        {
+            self.runtime_pending = true;
+        }
+    }
+
+    pub fn inspect_resource(&mut self, slot: ResourceSlot, path: PathBuf, sha256: String) {
+        let index = slot.index();
+        if self.closing.is_some() || self.resource_notice[index] == "正在后台核验" {
+            return;
+        }
+        if !path.is_absolute()
+            || sha256.len() != 64
+            || !sha256.bytes().all(|byte| byte.is_ascii_hexdigit())
+        {
+            self.resource_notice[index] = "需要绝对路径和完整 SHA-256";
+            return;
+        }
+        let request = ResourceRequest {
+            slot,
+            path,
+            sha256: sha256.to_ascii_lowercase(),
+        };
+        self.resource_notice[index] = if self.send(SetupCommand::InspectResource(request)).is_ok() {
+            "正在后台核验"
+        } else {
+            "暂时无法开始检查"
+        };
     }
 
     pub fn save_input_settings(
@@ -408,6 +507,49 @@ impl PanelController {
                     self.notice = reason;
                 }
                 Ok(SetupEvent::Input(result, saved)) => self.input_settings.complete(result, saved),
+                Ok(SetupEvent::Runtime(result)) => {
+                    self.runtime_pending = false;
+                    self.runtime_settings.clear();
+                    self.runtime_notice = match result {
+                        Ok(receipts) if receipts.is_empty() => "未收到存活宿主回执",
+                        Ok(receipts) => {
+                            self.runtime_settings = receipts;
+                            ""
+                        }
+                        Err(_) => "无法读取运行时设置回执",
+                    };
+                }
+                Ok(SetupEvent::Resource(slot, result)) => {
+                    let i = slot.index();
+                    self.resource_notice[i] = match result {
+                        Ok(identity) => {
+                            self.resources[i] = Some(identity);
+                            "已核验格式与内容 SHA-256"
+                        }
+                        Err(reason) => reason,
+                    };
+                }
+                Ok(SetupEvent::Defined(task, result)) => {
+                    if self.definitions.task == Some(task)
+                        && task.input_revision == self.context.input_revision
+                        && self.closing.is_none()
+                        && self.focused
+                    {
+                        self.definitions.pending = false;
+                        match result {
+                            Ok(found) => {
+                                self.definitions.notice = if found.total == 0 {
+                                    "没有对应释义"
+                                } else {
+                                    "释义已就绪"
+                                }
+                                .into();
+                                self.definitions.contents = found.text;
+                            }
+                            Err(err) => self.definitions.notice = translation_message(err),
+                        }
+                    }
+                }
                 Ok(SetupEvent::User(result)) => self.user_settings.complete(result),
                 Ok(SetupEvent::Key(outcome)) => match outcome {
                     Ok(notice) => self.notice = notice.into(),
@@ -418,6 +560,10 @@ impl PanelController {
                     if self.closing.is_none() {
                         self.error = Some("设置线程已退出，请重新启动面板".into());
                         self.preparing = false;
+                        if self.definitions.pending {
+                            self.definitions.pending = false;
+                            self.definitions.notice = "释义查询服务不可用".into();
+                        }
                     }
                     break;
                 }
@@ -596,6 +742,7 @@ impl PanelController {
     }
 
     fn invalidate(&mut self) {
+        self.clear_definitions();
         self.cancel_active();
         self.panel.cancel();
         self.context.input_revision += 1;

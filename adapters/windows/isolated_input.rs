@@ -1,6 +1,6 @@
 //! 普通Win32隔离宿主，只写本窗口的文档，不取得任何TSF manager/context。
 use super::*;
-use cloudleaf_settings::InputPreferencesRepository;
+use cloudleaf_settings::{InputPreferencesRepository, LoadedInputPreferences};
 use cloudleaf_translation_ipc::{Direction, MAX_INPUT_BYTES};
 use std::{
     cell::{Cell, RefCell},
@@ -20,6 +20,8 @@ use windows::Win32::{
     },
 };
 use windows_core::{PCWSTR, w};
+#[path = "isolated_settings.rs"]
+mod settings;
 #[path = "isolated_translation.rs"]
 mod translation;
 use translation::{Captured, Controller as TranslationController};
@@ -419,6 +421,7 @@ struct Window {
     users: RefCell<Option<UserState>>,
     dictionary_window: Cell<HWND>,
     translation: RefCell<TranslationController>,
+    settings: RefCell<Option<settings::Runtime>>,
     translation_controls: Cell<TranslationControls>,
 }
 struct UserState {
@@ -458,6 +461,7 @@ impl Window {
             users: RefCell::new(None),
             dictionary_window: Cell::new(HWND::default()),
             translation: RefCell::new(translation),
+            settings: RefCell::new(None),
             translation_controls: Cell::default(),
         }
     }
@@ -1029,7 +1033,25 @@ impl Window {
         let frame = self.local.host.engine.borrow().frame();
         self.update(frame)
     }
+    fn poll_settings(self: &Rc<Self>) -> Result<()> {
+        let frame = self
+            .settings
+            .borrow_mut()
+            .as_mut()
+            .and_then(|settings| settings.tick(&self.local));
+        if let Some(frame) = frame {
+            self.update(frame)?;
+        }
+        Ok(())
+    }
+
     fn settings_key(self: &Rc<Self>, key: u16) -> Result<()> {
+        if self.settings.borrow().is_some() {
+            return Err(Error::new(
+                E_FAIL,
+                "此宿主使用共享输入设置，请在设置中心修改",
+            ));
+        }
         use cloudleaf_input::{
             CorrectionConfig, DoublePinyinLayout, FuzzyDirection, FuzzyPair, FuzzyRule,
             PinyinScheme,
@@ -1195,10 +1217,17 @@ unsafe extern "system" fn window_proc(
             match message {
                 WM_CREATE => {
                     view.window.set(window);
-                    CreateWindowExW(WINDOW_EX_STYLE::default(),w!("STATIC"),w!("F6方案 / F7 n↔l / F8纠错；Space/数字选词，方向键/翻页，Enter确认/原文，Esc取消。"),WS_CHILD|WS_VISIBLE,12,10,720,30,Some(window),None,None,None)?;
+                    let help = if view.settings.borrow().is_some() {
+                        w!("输入设置在设置中心修改；Space/数字选词，方向键/翻页，Enter确认/原文，Esc取消。")
+                    } else {
+                        w!("F6方案 / F7 n↔l / F8纠错；Space/数字选词，方向键/翻页，Enter确认/原文，Esc取消。")
+                    };
+                    CreateWindowExW(WINDOW_EX_STYLE::default(),w!("STATIC"),help,WS_CHILD|WS_VISIBLE,12,10,720,30,Some(window),None,None,None)?;
                     view.status.set(CreateWindowExW(WINDOW_EX_STYLE::default(),w!("STATIC"),w!(""),WS_CHILD|WS_VISIBLE,12,44,720,76,Some(window),None,None,None)?);
                     for (id,label,x,width) in [(1,"下一次提交注入Unknown",12,230),(2,"核对后开始新会话",260,210),(3,"纠错开关",485,200)] {
-                        CreateWindowExW(WINDOW_EX_STYLE::default(),w!("BUTTON"),PCWSTR(wide(label).as_ptr()),WS_CHILD|WS_VISIBLE,x,128,width,30,Some(window),Some(HMENU(id as *mut _)),None,None)?;
+                        if id != 3 || view.settings.borrow().is_none() {
+                            CreateWindowExW(WINDOW_EX_STYLE::default(),w!("BUTTON"),PCWSTR(wide(label).as_ptr()),WS_CHILD|WS_VISIBLE,x,128,width,30,Some(window),Some(HMENU(id as *mut _)),None,None)?;
+                        }
                     }
                     CreateWindowExW(WINDOW_EX_STYLE::default(),w!("BUTTON"),w!("用户词库 / 本地学习"),WS_CHILD|WS_VISIBLE|WS_TABSTOP,485,164,220,30,Some(window),Some(HMENU(4usize as *mut _)),None,None)?;
                     view.document.set(CreateWindowExW(WS_EX_CLIENTEDGE,w!("EDIT"),w!(""),WS_CHILD|WS_VISIBLE|WS_VSCROLL|WINDOW_STYLE(ES_READONLY as u32|ES_MULTILINE as u32|ES_AUTOVSCROLL as u32),12,320,710,230,Some(window),None,None,None)?);
@@ -1262,7 +1291,7 @@ unsafe extern "system" fn window_proc(
                     }
                 }
                 WM_TIMER if wparam.0==19 => {view.poll_users()?;Ok(LRESULT(0))}
-                WM_TIMER if wparam.0==22 => {view.poll_translation()?;Ok(LRESULT(0))}
+                WM_TIMER if wparam.0==22 => {view.poll_settings()?;view.poll_translation()?;Ok(LRESULT(0))}
                 // 内部子控件不改变顶层激活；唯一的跨窗口例外是登记的词库面板。
                 WM_ACTIVATE if wparam.0 & 0xffff == WA_INACTIVE as usize => {
                     view.deactivate(HWND(lparam.0 as *mut _))?; Ok(LRESULT(0))
@@ -1287,7 +1316,9 @@ unsafe extern "system" fn window_proc(
     }).unwrap_or(LRESULT(0))
 }
 
-fn configured_host(options: &translation::LaunchOptions<'_>) -> Result<LocalHost> {
+fn configured_host(
+    options: &translation::LaunchOptions<'_>,
+) -> Result<(LocalHost, Option<LoadedInputPreferences>)> {
     let preferences = options
         .settings_dir
         .clone()
@@ -1295,12 +1326,13 @@ fn configured_host(options: &translation::LaunchOptions<'_>) -> Result<LocalHost
         .transpose()
         .map_err(|error| Error::new(E_INVALIDARG, error.to_string()))?;
     let (host, _, _) = match preferences.as_ref() {
-        Some(loaded) => super::input_review::load_host_config(
+        // 始终为配置协议允许的最大候选帧预留恢复容量，应用后只搜索用户设定的数量。
+        Some(_) => super::input_review::load_host_config(
             options.runtime,
             options.runtime_sha,
             options.model,
-            loaded.settings.max_candidates,
-            loaded.settings.input_config(),
+            cloudleaf_input::MAX_CANDIDATES,
+            cloudleaf_input::InputConfig::default(),
         )?,
         None => super::input_review::load_host_k(
             options.runtime,
@@ -1310,27 +1342,18 @@ fn configured_host(options: &translation::LaunchOptions<'_>) -> Result<LocalHost
         )?,
     };
     let local = LocalHost::new(host)?;
-    if let Some(loaded) = preferences {
-        let config = loaded.settings;
-        local.switch_scheme(config.scheme_config())?;
-        for engine in [&local.host.engine, &local.host.projection] {
-            engine
-                .borrow()
-                .validate_mixed_input(config.mixed_input)
-                .map_err(|_| Error::new(E_FAIL, "当前输入配置不允许启用混排"))?;
-        }
-        for engine in [&local.host.engine, &local.host.projection] {
-            engine
-                .borrow_mut()
-                .reconfigure_mixed_input(config.mixed_input)
-                .map_err(|_| Error::new(E_FAIL, "双引擎混排设置应用失败"))?;
-        }
+    if let Some(loaded) = preferences.as_ref() {
+        let config = &loaded.settings;
+        settings::apply(&local, config)
+            .ok()
+            .flatten()
+            .ok_or_else(|| Error::new(E_FAIL, "双引擎初始输入设置应用失败"))?;
         println!(
             "input_settings={:?} revision={} mixed={}",
             loaded.status, config.revision, config.mixed_input
         );
     }
-    Ok(local)
+    Ok((local, preferences))
 }
 
 pub(crate) fn review_settings(args: &[String]) -> Result<()> {
@@ -1338,7 +1361,7 @@ pub(crate) fn review_settings(args: &[String]) -> Result<()> {
     if options.settings_dir.is_none() {
         return Err(Error::new(E_INVALIDARG, "必须明确指定 --settings-dir"));
     }
-    let local = configured_host(&options)?;
+    let (local, _) = configured_host(&options)?;
     let actual = local.host.engine.borrow();
     let projected = local.host.projection.borrow();
     if actual.frame() != projected.frame()
@@ -1358,10 +1381,16 @@ pub(crate) fn review_settings(args: &[String]) -> Result<()> {
 
 pub(crate) fn run(args: &[String]) -> Result<()> {
     let options = translation::LaunchOptions::parse(args)?;
-    let view = Rc::new(Window::new(
-        configured_host(&options)?,
-        options.controller()?,
-    ));
+    let (local, preferences) = configured_host(&options)?;
+    let runtime_settings = options
+        .settings_dir
+        .clone()
+        .zip(preferences)
+        .map(|(directory, loaded)| settings::Runtime::start(directory, loaded))
+        .transpose()
+        .map_err(|_| Error::new(E_FAIL, "无法启动输入设置通知"))?;
+    let view = Rc::new(Window::new(local, options.controller()?));
+    *view.settings.borrow_mut() = runtime_settings;
     // 安全：创建、运行和销毁本进程普通Win32窗口；没有任何注册或TSF激活动作。
     unsafe {
         let instance = HINSTANCE(GetModuleHandleW(None)?.0);
@@ -2004,6 +2033,180 @@ mod tests {
             .unwrap();
         assert_eq!(local.document.borrow().as_str(), expected);
         assert_eq!(local.host.engine.borrow().frame().preedit, "");
+    }
+
+    #[test]
+    fn hot_settings_preserve_composition_cursor_and_apply_exact_candidate_limits() {
+        use cloudleaf_settings::{InputFuzzyPair, InputPreferences, InputScheme};
+        let local = scheme_local();
+        let previous = local.host.engine.borrow().search_resources().unwrap().0;
+        type_text(&local, "nihao");
+        local
+            .process(InputEvent::Key(Key::Left), None, &|_| {
+                CommitOutcome::Applied
+            })
+            .unwrap();
+        let composing = local.host.engine.borrow().frame();
+        let preferences = InputPreferences {
+            scheme: InputScheme::Abbreviated,
+            fuzzy_pairs: vec![InputFuzzyPair::NL],
+            correction: true,
+            mixed_input: true,
+            page_size: 2,
+            max_candidates: 4,
+            ..InputPreferences::default()
+        };
+        assert!(settings::apply(&local, &preferences).unwrap().is_none());
+        assert_eq!(local.host.engine.borrow().frame(), composing);
+        assert_eq!(local.host.projection.borrow().frame(), composing);
+        local
+            .process(InputEvent::Key(Key::Escape), None, &|_| {
+                CommitOutcome::Applied
+            })
+            .unwrap();
+        let before = local.host.engine.borrow().frame();
+        let captured = Captured::new(&local, Direction::EnZh, "original").unwrap();
+        assert!(captured.current(&local, "original", before.revision));
+        let applied = settings::apply(&local, &preferences).unwrap().unwrap();
+        assert!(!captured.current(&local, "original", before.revision));
+        assert_eq!(applied.page_size, 2);
+        assert_eq!(applied.revision, before.revision + 1);
+        assert_eq!(local.host.projection.borrow().frame(), applied);
+        for engine in [&local.host.engine, &local.host.projection] {
+            let engine = engine.borrow();
+            assert!(engine.mixed_input_enabled());
+            assert_eq!(engine.pinyin_scheme(), Some(&preferences.scheme_config()));
+            assert!(Arc::ptr_eq(
+                &previous,
+                &engine.search_resources().unwrap().0
+            ));
+        }
+
+        type_text(&local, "ni");
+        let first_page = local.host.engine.borrow().frame();
+        assert_eq!(first_page.candidates.len(), 4);
+        assert!(local.document.borrow().is_empty());
+    }
+
+    #[test]
+    fn hot_settings_live_receipt_reports_deferral_application_and_corrupt_file_rollback() {
+        use cloudleaf_settings::{
+            RuntimeSettingsReason, RuntimeSettingsStatus, read_runtime_receipts,
+        };
+        use std::time::{Duration, SystemTime, UNIX_EPOCH};
+        let nonce = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .unwrap()
+            .as_nanos();
+        let directory = std::env::temp_dir().join(format!(
+            "cloudleaf-host-settings-{}-{nonce}",
+            std::process::id()
+        ));
+        let local = scheme_local();
+        let repository = InputPreferencesRepository::new(directory.clone());
+        let mut observed =
+            settings::Runtime::start(directory.clone(), repository.load().unwrap()).unwrap();
+        let wait =
+            |observed: &mut settings::Runtime, expected: RuntimeSettingsStatus, revision: u64| {
+                let started = std::time::Instant::now();
+                loop {
+                    observed.tick(&local);
+                    let receipts = read_runtime_receipts(&directory).unwrap();
+                    if let Some(receipt) = receipts.into_iter().find(|receipt| {
+                        receipt.status == expected && receipt.active.revision == revision
+                    }) {
+                        return receipt;
+                    }
+                    assert!(started.elapsed() < Duration::from_secs(5), "状态回执超时");
+                    std::thread::sleep(Duration::from_millis(15));
+                }
+            };
+        let initial = wait(&mut observed, RuntimeSettingsStatus::Applied, 1);
+        assert_eq!(initial.generation, 1);
+        type_text(&local, "nihao");
+        let composing = local.host.engine.borrow().frame();
+        let config = cloudleaf_settings::InputPreferences {
+            page_size: 2,
+            max_candidates: 4,
+            ..Default::default()
+        };
+        let saved = repository.save(&config).unwrap();
+        let deferred = wait(&mut observed, RuntimeSettingsStatus::Deferred, 1);
+        assert_eq!(deferred.pending_revision, Some(saved.revision));
+        assert_eq!(local.host.engine.borrow().frame(), composing);
+        local
+            .process(InputEvent::Key(Key::Escape), None, &|_| {
+                CommitOutcome::Applied
+            })
+            .unwrap();
+        let applied = wait(
+            &mut observed,
+            RuntimeSettingsStatus::Applied,
+            saved.revision,
+        );
+        assert_eq!(applied.active, saved);
+        assert_eq!(applied.generation, 2);
+        assert_eq!(initial.dictionary_version, applied.dictionary_version);
+        assert_eq!(local.host.engine.borrow().frame().page_size, 2);
+        std::fs::write(directory.join("input-settings.json"), b"{").unwrap();
+        let rejected = wait(
+            &mut observed,
+            RuntimeSettingsStatus::Rejected,
+            applied.active.revision,
+        );
+        assert_eq!(rejected.active, applied.active);
+        assert_eq!(rejected.generation, applied.generation);
+        assert_eq!(rejected.reason, Some(RuntimeSettingsReason::RecoveredFile));
+        assert_eq!(local.host.engine.borrow().frame().page_size, 2);
+        assert_eq!(local.host.projection.borrow().frame().page_size, 2);
+        drop(observed);
+        let started = std::time::Instant::now();
+        while !read_runtime_receipts(&directory).unwrap().is_empty() {
+            assert!(started.elapsed() < Duration::from_secs(5), "设置回执未关闭");
+            std::thread::sleep(Duration::from_millis(15));
+        }
+        std::fs::remove_dir_all(directory).unwrap();
+    }
+
+    #[test]
+    fn hot_settings_hold_unknown_through_recovery_without_replaying_document() {
+        let local = scheme_local();
+        type_text(&local, "nihao");
+        local
+            .process(InputEvent::Key(Key::Space), None, &|_| {
+                CommitOutcome::Unknown
+            })
+            .unwrap();
+        let unknown = local.host.engine.borrow().frame();
+        let preferences = cloudleaf_settings::InputPreferences {
+            page_size: 2,
+            max_candidates: 4,
+            ..Default::default()
+        };
+        assert!(settings::apply(&local, &preferences).unwrap().is_none());
+        assert_eq!(local.host.engine.borrow().frame(), unknown);
+        assert!(local.host.quarantined.get());
+        assert!(local.document.borrow().is_empty());
+        local.reset().unwrap();
+        assert!(settings::apply(&local, &preferences).unwrap().is_some());
+        assert!(local.document.borrow().is_empty());
+    }
+
+    #[test]
+    fn hot_settings_invalid_search_capacity_leaves_both_engines_untouched() {
+        let local = scheme_local();
+        let before = local.host.engine.borrow().frame();
+        let preferences = cloudleaf_settings::InputPreferences {
+            page_size: 2,
+            max_candidates: 25,
+            ..Default::default()
+        };
+        assert_eq!(
+            settings::apply(&local, &preferences).unwrap_err(),
+            cloudleaf_settings::RuntimeSettingsReason::IncompatibleHost
+        );
+        assert_eq!(local.host.engine.borrow().frame(), before);
+        assert_eq!(local.host.projection.borrow().frame(), before);
     }
 
     #[test]

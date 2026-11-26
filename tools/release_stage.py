@@ -3,8 +3,10 @@
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path, PurePosixPath
 import re
+import shutil
 import sys
 import tempfile
 
@@ -24,6 +26,8 @@ ROLES = {"bin", "licenses", "provenance", "resources"}
 COMMIT = re.compile(r"[a-f0-9]{40}")
 VERSION = re.compile(r"[a-z0-9][a-z0-9.-]{0,47}")
 SHA256 = re.compile(r"[a-f0-9]{64}")
+USER_CONFIG = ("settings.json", "settings.json.bak", "input-settings.json", "input-settings.json.bak")
+USER_GENERATION = re.compile(r"generation-[0-9]{20}\.clu")
 
 
 def isolated(path):
@@ -104,6 +108,18 @@ def seal(release, version, commit):
     return verify(release)
 
 
+def signature_request(release):
+    release = isolated(release)
+    manifest = verify(release)
+    # 签名输入是根清单原始字节。密钥和签名流程由发行方单独维护。
+    raw = (release / MANIFEST).read_bytes()
+    return {"schema_version": 1, "purpose": "cloudleaf-release-manifest-v1",
+            "file": MANIFEST, "signed_input": "raw-manifest-bytes",
+            "bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest(),
+            "version": manifest["version"], "commit": manifest["commit"],
+            "signature_status": "unsigned"}
+
+
 def managed(root):
     root = isolated(root)
     marker = root / "cloudleaf-isolated-stage"
@@ -167,6 +183,51 @@ def uninstall(root):
     return {"active": False}
 
 
+def migrate_user(source_root, target_root):
+    source_root = managed(source_root).parent
+    target_store = managed(target_root)
+    source, target = source_root / "user", target_store.parent / "user"
+    for path in (source, source / "user-dictionary", target):
+        assert_plain_path(path)
+    if not source.is_dir():
+        raise ValueError("源目录缺少隔离用户资料")
+    selected = [Path(name) for name in USER_CONFIG if (source / name).exists()]
+    dictionary = source / "user-dictionary"
+    if dictionary.is_dir():
+        selected.extend(Path("user-dictionary") / path.name for path in sorted(dictionary.iterdir())
+                        if USER_GENERATION.fullmatch(path.name))
+    if not selected or len(selected) > 4 + 64:
+        raise ValueError("没有可迁移的已发布用户资料，或文件数超限")
+
+    with publish_lock(target_store):
+        if target.exists():
+            raise ValueError("目标用户目录已存在，保留现有资料")
+        with tempfile.TemporaryDirectory(prefix=".user-migration-", dir=target.parent) as temporary:
+            staged = Path(temporary) / "user"
+            staged.mkdir()
+            records = []
+            for relative in selected:
+                original = source / relative
+                assert_plain_path(original)
+                maximum = 8 * 1024 * 1024 if relative.parent.name else 1024 * 1024
+                if not original.is_file() or original.stat().st_size > maximum:
+                    raise ValueError("用户资料不是普通文件或超出大小上限")
+                destination = staged / relative
+                destination.parent.mkdir(exist_ok=True)
+                shutil.copyfile(original, destination)
+                with destination.open("r+b") as stream:
+                    os.fsync(stream.fileno())
+                    copied_sha = hashlib.file_digest(stream, "sha256").hexdigest()
+                with original.open("rb") as stream:
+                    source_sha = hashlib.file_digest(stream, "sha256").hexdigest()
+                if copied_sha != source_sha:
+                    raise ValueError("复制校验失败，保留源和原目标")
+                records.append({"path": relative.as_posix(), "sha256": copied_sha,
+                                "bytes": destination.stat().st_size})
+            staged.rename(target)
+    return {"state": "copied", "files": records}
+
+
 def main():
     cli = argparse.ArgumentParser(description=__doc__)
     commands = cli.add_subparsers(dest="command", required=True)
@@ -174,6 +235,11 @@ def main():
     seal_cmd.add_argument("release", type=Path)
     seal_cmd.add_argument("version")
     seal_cmd.add_argument("commit")
+    signing = commands.add_parser("signature-request")
+    signing.add_argument("release", type=Path)
+    migration = commands.add_parser("migrate-user")
+    migration.add_argument("source_root", type=Path)
+    migration.add_argument("target_root", type=Path)
     for action in ("init", "install", "status", "rollback", "uninstall", "recover"):
         cmd = commands.add_parser(action)
         cmd.add_argument("root", type=Path)
@@ -185,6 +251,10 @@ def main():
     match settings.command:
         case "seal":
             output = seal(settings.release, settings.version, settings.commit)
+        case "signature-request":
+            output = signature_request(settings.release)
+        case "migrate-user":
+            output = migrate_user(settings.source_root, settings.target_root)
         case "init":
             output = initialize(settings.root)
         case "install":

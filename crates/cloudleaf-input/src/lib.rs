@@ -66,6 +66,27 @@ pub struct InputEngine {
     numeric_selection: bool,
 }
 
+/// 持有独占借用，保证双引擎都能先完成预检，再统一发布设置。
+pub struct PreparedIdleInput<'a> {
+    engine: &'a mut InputEngine,
+    preferences: InputConfig,
+    scheme: SchemeConfig,
+    mixed: bool,
+}
+
+impl PreparedIdleInput<'_> {
+    pub fn apply(self) {
+        let engine = self.engine;
+        engine.config = self.preferences;
+        engine.mixed_input = self.mixed;
+        let sentence = engine.sentence.as_mut().expect("已预检搜索后端");
+        sentence.apply_preferences(self.preferences.max_candidates, self.scheme);
+        // 仅在空组合更新；推进输入修订使旧来源与候选失效。
+        engine.advance_revision();
+        engine.search_diagnostic = None;
+    }
+}
+
 /// 只证明当前引擎确实选择过候选；本对象不证明宿主Applied，不能自行触发学习。
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct SelectionEvidence {
@@ -179,16 +200,19 @@ impl InputEngine {
             .map(sentence::SentenceBackend::snapshots)
     }
 
+    pub fn search_snapshot_version(&self) -> Option<&str> {
+        self.sentence
+            .as_ref()
+            .map(sentence::SentenceBackend::snapshot_version)
+    }
+
     pub fn translation_source_identity(
         &self,
         candidate_id: Option<String>,
     ) -> TranslationSourceIdentity {
-        let resources = self.search_resources();
         TranslationSourceIdentity {
             candidate_id,
-            lexicon: resources
-                .as_ref()
-                .map(|(snapshot, _)| snapshot.version().to_owned()),
+            lexicon: self.search_snapshot_version().map(str::to_owned),
             input_model: self
                 .sentence
                 .as_ref()
@@ -378,6 +402,41 @@ impl InputEngine {
     }
 
     /// 平台双引擎先共同预检，再在所属线程内一次应用；不改变待确认事务。
+    /// 有活动组合或待确认事务时由宿主保留设置，等待原输入状态正常收尾。
+    pub fn idle_for_preferences(&self) -> bool {
+        self.preedit.is_empty() && self.pending_commit.is_none() && self.failed_commit.is_none()
+    }
+
+    pub fn prepare_idle_preferences(
+        &mut self,
+        preferences: InputConfig,
+        scheme: SchemeConfig,
+        mixed: bool,
+    ) -> Result<PreparedIdleInput<'_>, CoreError> {
+        if !self.idle_for_preferences() {
+            return Err(CoreError::new(
+                ErrorCode::CommitPending,
+                "组合或提交尚未结束",
+            ));
+        }
+        self.validate_scheme_config(&scheme)?;
+        if !(1..=9).contains(&preferences.page_size)
+            || preferences.page_size > preferences.max_candidates
+        {
+            return Err(CoreError::new(ErrorCode::InvalidConfig, "候选分页设置无效"));
+        }
+        self.sentence
+            .as_ref()
+            .expect("已预检搜索后端")
+            .validate_output_limit(preferences.max_candidates)?;
+        Ok(PreparedIdleInput {
+            engine: self,
+            preferences,
+            scheme,
+            mixed,
+        })
+    }
+
     pub fn validate_scheme_config(&self, scheme: &SchemeConfig) -> Result<(), CoreError> {
         if self.pending_commit.is_some() || self.failed_commit.is_some() {
             return Err(CoreError::new(

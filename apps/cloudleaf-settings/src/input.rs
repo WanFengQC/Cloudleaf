@@ -193,6 +193,15 @@ impl InputPreferencesRepository {
         settings: &InputPreferences,
     ) -> Result<InputPreferences, InputSettingsError> {
         settings.validate()?;
+        fs::create_dir_all(&self.directory).map_err(|_| InputSettingsError::Io)?;
+        let lock = fs::OpenOptions::new()
+            .create(true)
+            .read(true)
+            .write(true)
+            .truncate(false)
+            .open(self.directory.join("input-settings.lock"))
+            .map_err(|_| InputSettingsError::Io)?;
+        lock.lock().map_err(|_| InputSettingsError::Io)?;
         let (current, previous) = self.read()?;
         if settings.revision != current.settings.revision {
             return Err(InputSettingsError::StaleRevision);
@@ -204,7 +213,6 @@ impl InputPreferencesRepository {
             .ok_or(InputSettingsError::StaleRevision)?;
         let mut bytes = serde_json::to_vec_pretty(&saved).map_err(|_| InputSettingsError::Io)?;
         bytes.push(b'\n');
-        fs::create_dir_all(&self.directory).map_err(|_| InputSettingsError::Io)?;
         if let Some(previous) = previous {
             write_atomic(&self.directory.join(BACKUP), &previous)
                 .map_err(|_| InputSettingsError::Io)?;

@@ -1,3 +1,4 @@
+import hashlib
 import os
 from pathlib import Path
 import subprocess
@@ -107,6 +108,49 @@ class ReleaseStageTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "链接"):
             release_stage.install(self.root, good)
         self.assertEqual(release_stage.status(self.root), {"active": False})
+
+    def test_signature_request_is_detached_and_binds_verified_manifest_bytes(self):
+        release = self.artifact("signing", "r28.1", b"payload")
+        manifest = release / "manifest.json"
+        before = manifest.read_bytes()
+        request = release_stage.signature_request(release)
+        self.assertEqual(request["sha256"], hashlib.sha256(before).hexdigest())
+        self.assertEqual(request["signed_input"], "raw-manifest-bytes")
+        self.assertEqual(request["signature_status"], "unsigned")
+        self.assertEqual(before, manifest.read_bytes())
+        (release / "bin/cloudleaf-cli.exe").write_bytes(b"changed")
+        with self.assertRaisesRegex(ValueError, "身份"):
+            release_stage.signature_request(release)
+
+    def test_migration_copies_allowlisted_settings_and_generations_without_overwrite(self):
+        target = self.parent / "new-host"
+        release_stage.initialize(target)
+        dictionary = self.user / "user-dictionary"
+        dictionary.mkdir()
+        saved = dictionary / "generation-00000000000000000001.clu"
+        saved.write_bytes(b"user entries and learning")
+        (dictionary / ".pending-00000000000000000002-00.clu").write_bytes(b"uncommitted")
+        (self.user / "credentials.json").write_bytes(b"excluded")
+        (self.user / "input-settings.json.bak").write_bytes(b"previous configuration")
+        receipt = release_stage.migrate_user(self.root, target)
+        result = target / "user"
+        self.assertEqual({"settings.json", "input-settings.json.bak", f"user-dictionary/{saved.name}"},
+                         {row["path"] for row in receipt["files"]})
+        for row in receipt["files"]:
+            self.assertEqual((self.user / row["path"]).read_bytes(), (result / row["path"]).read_bytes())
+        self.assertEqual(list((result / "user-dictionary").iterdir()), [result / "user-dictionary" / saved.name])
+        self.assertFalse((result / "credentials.json").exists())
+        with self.assertRaisesRegex(ValueError, "目标用户目录已存在"):
+            release_stage.migrate_user(self.root, target)
+
+    def test_migration_failure_keeps_destination_unpublished(self):
+        target = self.parent / "new-host"
+        release_stage.initialize(target)
+        os.link(self.user / "settings.json", self.user / "input-settings.json")
+        with self.assertRaisesRegex(ValueError, "链接"):
+            release_stage.migrate_user(self.root, target)
+        self.assertFalse((target / "user").exists())
+        self.assertEqual((self.user / "settings.json").read_bytes(), b"existing user settings")
 
 
 if __name__ == "__main__":

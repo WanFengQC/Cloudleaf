@@ -2,7 +2,9 @@
 
 use crate::center::UserAction;
 use crate::controller::PanelController;
+use crate::definitions::DefinitionDirection;
 use crate::platform::{WindowsCredentialStore, copy_unicode};
+use crate::resources::ResourceSlot;
 use crate::settings::{DirectionChoice, ProviderChoice, Settings, WorkerPriority, WorkerThreads};
 use cloudleaf_settings::{InputFuzzyPair, InputPreferences, InputScheme};
 use cloudleaf_translation::{QualityStatus, Secret, TranslationError, TranslationKind};
@@ -10,6 +12,7 @@ use std::cell::RefCell;
 use std::path::PathBuf;
 use std::ptr::{null, null_mut};
 use std::sync::Arc;
+use std::time::{Duration, Instant};
 use windows_sys::Win32::Foundation::*;
 use windows_sys::Win32::Graphics::Gdi::*;
 use windows_sys::Win32::System::LibraryLoader::GetModuleHandleW;
@@ -53,6 +56,7 @@ const PAGE_TRANSLATION: usize = 230;
 const PAGE_INPUT: usize = 231;
 const PAGE_USER: usize = 232;
 const PAGE_RESOURCES: usize = 233;
+const PAGE_DEFINITIONS: usize = 234;
 const INPUT_SCHEME: usize = 301;
 const INPUT_CORRECTION: usize = 302;
 const INPUT_MIXED: usize = 303;
@@ -80,6 +84,16 @@ const USER_CLEAR_LEARNING: usize = 415;
 const USER_CONTENT: usize = 416;
 const USER_NOTE: usize = 417;
 const RESOURCES: usize = 501;
+const RESOURCE_PATH: usize = 502;
+const RESOURCE_HASH: usize = 503;
+const RESOURCE_BASE: usize = 504;
+const RESOURCE_SUPPLEMENT: usize = 505;
+const DEFINITION_INDEX: usize = 601;
+const DEFINITION_HASH: usize = 602;
+const DEFINITION_MODE: usize = 603;
+const DEFINITION_QUERY: usize = 604;
+const DEFINITION_STATUS: usize = 605;
+const DEFINITION_CONTENT: usize = 606;
 
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum SettingsPage {
@@ -87,6 +101,7 @@ enum SettingsPage {
     Input,
     User,
     Resources,
+    Definitions,
 }
 
 struct Control {
@@ -113,6 +128,8 @@ struct WindowState {
     last_result: String,
     last_status: String,
     last_resources: String,
+    runtime_refresh: Instant,
+    last_definitions: String,
     closing: bool,
 }
 
@@ -275,6 +292,12 @@ unsafe extern "system" fn window_proc(
                         return 0;
                     }
                     WM_TIMER => {
+                        if matches!(state.page, SettingsPage::Resources | SettingsPage::Input)
+                            && state.runtime_refresh.elapsed() >= Duration::from_secs(1)
+                        {
+                            state.controller.refresh_runtime_settings();
+                            state.runtime_refresh = Instant::now();
+                        }
                         state.controller.tick();
                         state.render();
                         if state.closing
@@ -317,6 +340,8 @@ impl WindowState {
             last_result: String::new(),
             last_status: String::new(),
             last_resources: String::new(),
+            runtime_refresh: Instant::now(),
+            last_definitions: String::new(),
             closing: false,
         }
     }
@@ -421,16 +446,17 @@ impl WindowState {
             );
             for (id, label, x) in [
                 (PAGE_TRANSLATION, "翻译", 0),
-                (PAGE_INPUT, "输入方案", 92),
-                (PAGE_USER, "用户词库", 184),
-                (PAGE_RESOURCES, "资源诊断", 276),
+                (PAGE_INPUT, "输入方案", 78),
+                (PAGE_USER, "用户词库", 156),
+                (PAGE_RESOURCES, "资源诊断", 234),
+                (PAGE_DEFINITIONS, "词语释义", 312),
             ] {
                 self.add(
                     id,
                     "BUTTON",
                     label,
                     BS_PUSHBUTTON as u32,
-                    [x, 13, 84, 32],
+                    [x, 13, 74, 32],
                     true,
                 );
             }
@@ -638,14 +664,65 @@ impl WindowState {
             self.create_input_settings();
             self.create_user_settings();
             self.control_page = Some(SettingsPage::Resources);
-            self.add(0, "STATIC", "运行中的资源", 0, [0, 16, 400, 24], true);
+            self.settings_field(RESOURCE_PATH, "只读词典绝对路径", "", 0, 16);
+            self.settings_field(RESOURCE_HASH, "词典 SHA-256", "", 0, 83);
+            for (id, label, x) in [
+                (RESOURCE_BASE, "核验基础词典", 0),
+                (RESOURCE_SUPPLEMENT, "核验补充词典", 170),
+            ] {
+                self.add(
+                    id,
+                    "BUTTON",
+                    label,
+                    BS_PUSHBUTTON as u32,
+                    [x, 148, 160, 30],
+                    true,
+                );
+            }
             self.add(
                 RESOURCES,
                 "EDIT",
                 "",
                 ES_MULTILINE as u32 | ES_READONLY as u32 | WS_VSCROLL | WS_BORDER,
-                [0, 54, 400, 420],
+                [0, 198, 400, 415],
                 true,
+            );
+            self.control_page = Some(SettingsPage::Definitions);
+            self.settings_field(DEFINITION_INDEX, "语义索引绝对路径", "", 0, 16);
+            self.settings_field(DEFINITION_HASH, "索引 SHA-256", "", 0, 83);
+            self.add(
+                DEFINITION_MODE,
+                "COMBOBOX",
+                "",
+                CBS_DROPDOWNLIST as u32,
+                [0, 148, 205, 120],
+                true,
+            );
+            self.item(DEFINITION_MODE, "中文词语或短语");
+            self.item(DEFINITION_MODE, "精确反查英文释义");
+            SendMessageW(self.control(DEFINITION_MODE), CB_SETCURSEL, 0, 0);
+            self.add(
+                DEFINITION_QUERY,
+                "BUTTON",
+                "查询左侧原文",
+                BS_PUSHBUTTON as u32,
+                [219, 148, 128, 30],
+                true,
+            );
+            self.add(DEFINITION_STATUS, "STATIC", "", 0, [0, 193, 400, 35], true);
+            self.add(
+                DEFINITION_CONTENT,
+                "EDIT",
+                "",
+                ES_MULTILINE as u32 | ES_READONLY as u32 | WS_VSCROLL | WS_BORDER,
+                [0, 234, 400, 410],
+                true,
+            );
+            SendMessageW(
+                self.control(DEFINITION_CONTENT),
+                EM_SETLIMITTEXT,
+                128 * 1024,
+                0,
             );
             self.control_page = None;
         }
@@ -1109,6 +1186,12 @@ impl WindowState {
                 }
                 return;
             }
+            if notification == EN_CHANGE && [DEFINITION_INDEX, DEFINITION_HASH].contains(&id)
+                || id == DEFINITION_MODE && notification == CBN_SELCHANGE
+            {
+                self.controller.clear_definitions();
+                return;
+            }
             if [
                 DICTIONARY,
                 ENDPOINT,
@@ -1150,13 +1233,19 @@ impl WindowState {
                 return;
             }
             let result = match id {
-                PAGE_TRANSLATION | PAGE_INPUT | PAGE_USER | PAGE_RESOURCES => {
+                PAGE_TRANSLATION | PAGE_INPUT | PAGE_USER | PAGE_RESOURCES | PAGE_DEFINITIONS => {
+                    self.controller.clear_definitions();
                     self.page = match id {
                         PAGE_INPUT => SettingsPage::Input,
                         PAGE_USER => SettingsPage::User,
                         PAGE_RESOURCES => SettingsPage::Resources,
+                        PAGE_DEFINITIONS => SettingsPage::Definitions,
                         _ => SettingsPage::Translation,
                     };
+                    if matches!(self.page, SettingsPage::Resources | SettingsPage::Input) {
+                        self.controller.refresh_runtime_settings();
+                        self.runtime_refresh = Instant::now();
+                    }
                     self.layout(hwnd);
                     Ok(())
                 }
@@ -1164,6 +1253,42 @@ impl WindowState {
                     .input_settings_from_controls()
                     .and_then(|settings| self.controller.save_input_settings(settings)),
                 INPUT_LOAD => self.controller.reload_input_settings(),
+                DEFINITION_QUERY => {
+                    let result = read_text(self.control(DEFINITION_INDEX), 4096)
+                        .and_then(|path| {
+                            read_text(self.control(DEFINITION_HASH), 64).map(|hash| (path, hash))
+                        })
+                        .and_then(|(path, hash)| {
+                            self.controller.lookup_definition(
+                                PathBuf::from(path),
+                                hash,
+                                if SendMessageW(self.control(DEFINITION_MODE), CB_GETCURSEL, 0, 0)
+                                    == 1
+                                {
+                                    DefinitionDirection::EnglishGloss
+                                } else {
+                                    DefinitionDirection::ChineseHeadword
+                                },
+                            )
+                        });
+                    if result.is_err() {
+                        self.controller.definitions.notice =
+                            "无法开始查询，请核对原文、绝对路径和 SHA-256".into();
+                    }
+                    Ok(())
+                }
+                RESOURCE_BASE | RESOURCE_SUPPLEMENT => {
+                    let slot = if id == RESOURCE_BASE {
+                        ResourceSlot::Base
+                    } else {
+                        ResourceSlot::Supplement
+                    };
+                    let path = read_text(self.control(RESOURCE_PATH), 4096).unwrap_or_default();
+                    let hash = read_text(self.control(RESOURCE_HASH), 64).unwrap_or_default();
+                    self.controller
+                        .inspect_resource(slot, PathBuf::from(path), hash);
+                    Ok(())
+                }
                 USER_OPEN..=USER_CLEAR_LEARNING => self.user_command(hwnd, id),
                 TEST_CONNECTION => self.controller.test_connection(),
                 START => self.controller.start(),
@@ -1473,6 +1598,20 @@ impl WindowState {
 
     unsafe fn render_settings_center(&mut self) {
         unsafe {
+            let definitions = &self.controller.definitions;
+            EnableWindow(
+                self.control(DEFINITION_QUERY),
+                i32::from(!definitions.pending && !self.closing),
+            );
+            SetWindowTextW(
+                self.control(DEFINITION_STATUS),
+                wide(&definitions.notice).as_ptr(),
+            );
+            if self.last_definitions != definitions.contents {
+                let display = definitions.contents.replace('\n', "\r\n");
+                SetWindowTextW(self.control(DEFINITION_CONTENT), wide(&display).as_ptr());
+                self.last_definitions.clone_from(&definitions.contents);
+            }
             let input = &self.controller.input_settings;
             for id in (INPUT_SCHEME..=INPUT_LOAD)
                 .chain(INPUT_FUZZY..INPUT_FUZZY + InputFuzzyPair::ALL.len())
@@ -1620,6 +1759,73 @@ impl WindowState {
         }
         summary.push_str("\r\n输入设置状态\r\n");
         summary.push_str(&self.controller.input_settings.notice);
+        summary.push_str("\r\n");
+        summary.push_str(self.controller.runtime_notice);
+        for receipt in &self.controller.runtime_settings {
+            let config = &receipt.active;
+            let scheme = match config.scheme {
+                InputScheme::Full => "全拼",
+                InputScheme::Abbreviated => "简拼",
+                InputScheme::Xiaohe => "小鹤双拼",
+            };
+            let fuzzy = config
+                .fuzzy_pairs
+                .iter()
+                .map(|pair| pair.label())
+                .collect::<Vec<_>>()
+                .join("、");
+            let _ = write!(
+                summary,
+                "\r\n宿主 {} · PID {} · {}\r\n生效 {} · 代次 {} · 待应用 {}\r\n{scheme} · 模糊音 {} · 纠错 {} · 混排 {} · 每页 {} / 上限 {}\r\n快照 {}\r\n{}\r\n",
+                receipt.host_id,
+                receipt.process_id,
+                receipt.status.label(),
+                config.revision,
+                receipt.generation,
+                receipt
+                    .pending_revision
+                    .map_or_else(|| "—".into(), |revision| revision.to_string()),
+                if fuzzy.is_empty() { "关" } else { &fuzzy },
+                if config.correction { "开" } else { "关" },
+                if config.mixed_input { "开" } else { "关" },
+                config.page_size,
+                config.max_candidates,
+                receipt.dictionary_version.as_deref().unwrap_or("未报告"),
+                receipt.reason.map_or("", |reason| reason.label())
+            );
+        }
+        for (i, role) in ["基础词典", "补充词典"].into_iter().enumerate() {
+            let _ = write!(
+                summary,
+                "\r\n{role} · 只读 · {}\r\n",
+                if self.controller.resource_notice[i].is_empty() {
+                    "尚未核验"
+                } else {
+                    self.controller.resource_notice[i]
+                }
+            );
+            if let Some(identity) = &self.controller.resources[i] {
+                let _ = write!(
+                    summary,
+                    "最近通过的版本：{} · {} 条 · {} 字节\r\n内容版本 SHA-256 {}\r\n声明来源 {}\r\n查看不会切换宿主已加载词典\r\n",
+                    identity.name,
+                    identity.entries,
+                    identity.bytes,
+                    identity.sha256,
+                    identity.sources.join("、")
+                );
+            }
+        }
+        let user = &self.controller.user_settings;
+        let _ = write!(
+            summary,
+            "\r\n用户词库 · 可编辑 · 本地用户数据\r\n版本 {} · {} 条\r\n{}\r\n",
+            user.dictionary
+                .generation
+                .map_or_else(|| "未打开".into(), |generation| generation.to_string()),
+            user.dictionary.entries.len(),
+            user.notice
+        );
         summary
     }
 }

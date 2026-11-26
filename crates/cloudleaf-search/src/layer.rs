@@ -145,7 +145,7 @@ impl Lexicon {
         result.identity = Arc::new(());
         for entry in users.entries.iter() {
             let index = result.entries.len();
-            let last_start = entry.boundaries.last().copied().unwrap_or(0);
+            let last_start = entry.boundaries.last_or_start();
             let mut node = 0;
             for (offset, byte) in entry.letters.iter().enumerate() {
                 node = if let Some(&next) = result.trie[node].next.get(byte) {

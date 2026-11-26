@@ -140,12 +140,14 @@ def cpu_usage(start, end):
     return 1 - idle / (kernel + user)
 
 
-def matrix(variants, policies, repeats, lifecycle):
+def matrix(variants, policies, repeats, lifecycle, current_171=False):
     comparable = [('idle', 'normal'), ('infer', 'normal')]
     diagnostics = ('ready', 'loading', 'warm', 'full', 'cancel-next', 'direction-switch',
                    'store', 'after-exit', 'repeat-release')
     for iteration in range(repeats):
-        cases = [(size, mode, stage, policy, version) for size in TRACES for mode in ('lexical', 'word')
+        sizes = ('171',) if current_171 else TRACES
+        modes = ('lexical',) if current_171 else ('lexical', 'word')
+        cases = [(size, mode, stage, policy, version) for size in sizes for mode in modes
                  for stage, policy in comparable for version in variants]
         if 'round26' in variants:
             cases.extend((size, mode, 'infer', policy, 'round26') for size in TRACES
@@ -201,7 +203,20 @@ def measure(args):
     assert [record['sha256'] for record in (runtime, lexical, catalog, word)] == [
         RUNTIME_SHA, LANGUAGE_SHA, CATALOG_SHA, WORD_SHA]
     frozen = args.baseline_round26_quiet
-    if frozen:
+    if args.current_171:
+        receipt = read_json(args.build_receipt)
+        head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
+        if receipt['returncode'] != 0 or receipt['head'] != head:
+            raise ValueError('171 键专用配对需要当前提交的成功 Release 构建')
+        folder = out / 'current-bin'
+        folder.mkdir()
+        worker = folder / WORKER_NAME
+        shutil.copyfile(args.release / WORKER_NAME, worker)
+        probe = build(args.release, out, executable=folder / 'probe.exe')
+        exes = {'current': {'probe': identity(probe), 'worker': identity(worker),
+                            'build_head': head, 'build_receipt': identity(args.build_receipt),
+                            'local_build': identity(out / 'build.json'), 'probe_source_sha256': identity(SOURCE)}}
+    elif frozen:
         exes = freeze_round27(out, args.release, args.build_receipt, frozen)
     else:
         exes = freeze_executables(out, args.release, args.build_receipt, args.exact_baseline_release, args.reuse_current)
@@ -216,7 +231,8 @@ def measure(args):
     event_counts = {name: previous.expanded_events(path) for name, path in TRACES.items()}
     assert event_counts == {'171': 171, '243': 243}
     report = {'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
-              'baseline_head': ROUND26 if frozen else BASELINE, 'started_utc': datetime.now(UTC).isoformat(),
+              'baseline_head': None if args.current_171 else (ROUND26 if frozen else BASELINE),
+              'started_utc': datetime.now(UTC).isoformat(),
               'environment': platform.platform(), 'processor': platform.processor(), 'topology': layout,
               'resources': {'runtime': runtime, 'lexical': lexical, 'catalog': catalog, 'word': word,
                             'models': models, 'traces': {k: identity(v) for k, v in TRACES.items()}},
@@ -226,7 +242,8 @@ def measure(args):
     reference, translation = {}, {}
     groups = defaultdict(lambda: {'all': [], 'window': [], 'loading': [], 'runs': [],
                                   'models': [], 'cancels': [], 'ready': [], 'sample_cpu': []})
-    for iteration, size, mode, stage, policy, version in matrix(list(exes), policies, args.repeats, args.lifecycle):
+    for iteration, size, mode, stage, policy, version in matrix(
+            list(exes), policies, args.repeats, args.lifecycle, args.current_171):
         name = f'{size}-{iteration}-{mode}-{stage}-{policy}-{version}'
         try:
             with tempfile.TemporaryDirectory(prefix='cloudleaf-r26-worker-') as tmp:
@@ -318,8 +335,9 @@ def main():
     parser.add_argument('--baseline-round26-quiet', type=Path)
     parser.add_argument('--normal-only', action='store_true')
     parser.add_argument('--build-receipt', type=Path)
-    parser.add_argument('--repeats', type=int, choices=range(1, 7), default=3)
+    parser.add_argument('--repeats', type=int, choices=range(1, 25), default=3)
     parser.add_argument('--no-pin', action='store_true')
+    parser.add_argument('--current-171', action='store_true')
     parser.add_argument('--lifecycle', action='store_true')
     parser.add_argument('--stated-quiet', action='store_true')
     args = parser.parse_args()
@@ -330,6 +348,9 @@ def main():
     if args.baseline_round26_quiet and (not args.release or not args.normal_only
                                        or args.exact_baseline_release):
         parser.error('Round 26 冻结配对使用新 Release 构建与 --normal-only')
+    if args.current_171 and (not args.release or not args.normal_only or args.repeats < 8
+                             or args.baseline_round26_quiet or args.exact_baseline_release or args.lifecycle):
+        parser.error('171 键专用配对至少八轮，使用本提交 Release、--normal-only，且不混入其它场景')
     if args.release is not None:
         args.release = args.release.resolve()
         args.build_receipt = args.build_receipt.resolve()

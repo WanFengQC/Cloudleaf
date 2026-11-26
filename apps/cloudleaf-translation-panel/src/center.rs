@@ -22,7 +22,7 @@ impl InputSettingsView {
             Ok(loaded) => {
                 self.settings = loaded.settings;
                 self.notice = match loaded.status {
-                    InputSettingsStatus::Current if saved => "已保存，输入宿主可在下次启动加载",
+                    InputSettingsStatus::Current if saved => "已保存，运行状态见宿主回执",
                     InputSettingsStatus::Current => "已读取设置",
                     InputSettingsStatus::Backup => "已读取有效备份，原文件保留",
                     InputSettingsStatus::DefaultMissing => "首次启动，使用默认设置",

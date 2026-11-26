@@ -9,6 +9,7 @@ const INPUT_BYTES: usize = cloudleaf_pinyin::MAX_INPUT_LEN;
 const LITERAL_SOURCE: &str = "cloudleaf:mixed-literal";
 const MIXED_SOURCE: &str = "cloudleaf:mixed";
 const MAX_CHINESE_SPANS: usize = 3;
+const MIN_UNMARKED_CHINESE_BYTES: usize = 5;
 
 pub(crate) struct Output {
     pub(crate) candidates: Vec<Candidate>,
@@ -125,6 +126,7 @@ pub(crate) fn plan(raw: &str, lexicon: &Lexicon) -> Plan {
         }
     }
 
+    let complete_chinese = len > 0 && reach[0] & (1 << (len - 1)) != 0;
     let mut literal = [None; INPUT_BYTES + 1];
     let mut chinese = [None; INPUT_BYTES + 1];
     literal[0] = Some(Step {
@@ -171,7 +173,17 @@ pub(crate) fn plan(raw: &str, lexicon: &Lexicon) -> Plan {
             if !marked && token.len() < 4 && !(start == 0 && end == len) {
                 continue;
             }
-            let english_score = english_spelling_evidence(token);
+            let right_anchor = (u64::BITS - reach[end].leading_zeros()) as usize;
+            let token_has_exact_pinyin = reach[start] & (1 << (end - 1)) != 0;
+            let anchored = (start != 0 || end != len)
+                && (end == len || right_anchor >= end + MIN_UNMARKED_CHINESE_BYTES);
+            let english_score = english_spelling_evidence(token).max(
+                if anchored && !complete_chinese && !token_has_exact_pinyin {
+                    anchored_spelling_evidence(token, end != len)
+                } else {
+                    0
+                },
+            );
             retain(
                 &mut literal[end],
                 Step {
@@ -246,8 +258,18 @@ fn usable_chinese_span(raw: &[u8], start: usize, end: usize) -> bool {
     let marked_left = start > 0
         && (raw[start - 1].is_ascii_digit()
             || (start > 1 && raw[start - 1].is_ascii_uppercase() && marked(raw[start - 2])));
-    let close_to_literal_mark = marked_left || raw.get(end).copied().is_some_and(marked);
-    end - start >= if close_to_literal_mark { 2 } else { 5 }
+    if end - start >= MIN_UNMARKED_CHINESE_BYTES {
+        return true;
+    }
+    let inside_title = raw[..start]
+        .iter()
+        .rposition(|byte| marked(*byte))
+        .is_some_and(|index| {
+            raw[index].is_ascii_uppercase() && (index == 0 || !marked(raw[index - 1]))
+        });
+    // 连续大写或数字可以直接邻接短拼音；驼峰词内部没有这样的边界证据。
+    end - start >= 2
+        && (marked_left || (!inside_title && raw.get(end).copied().is_some_and(marked)))
 }
 
 fn english_spelling_evidence(token: &str) -> i16 {
@@ -265,6 +287,32 @@ fn english_spelling_evidence(token: &str) -> i16 {
     } else {
         0
     }
+}
+
+fn anchored_spelling_evidence(token: &str, has_right_chinese: bool) -> i16 {
+    let bytes = token.as_bytes();
+    if !(4..=16).contains(&bytes.len()) {
+        return 0;
+    }
+    let tail = &bytes[bytes.len() - 3..];
+    let vowel = |byte: u8| matches!(byte, b'a' | b'e' | b'i' | b'o' | b'u');
+    // 英语辅音尾缀的紧邻元音可避免从右侧中文借字母来凑最短字面段。
+    if vowel(tail[0]) && matches!(&tail[1..], b"ck" | b"ft" | b"mp" | b"nd" | b"st") {
+        return 32;
+    }
+    if has_right_chinese
+        && let Some(title) = bytes.iter().rposition(u8::is_ascii_uppercase)
+        && title + 3 < bytes.len()
+        && (title == 0 || !bytes[title - 1].is_ascii_uppercase())
+        && (matches!(&tail[1..], b"io" | b"ee" | b"oo")
+            || (vowel(tail[0])
+                && tail[1].is_ascii_lowercase()
+                && !vowel(tail[1])
+                && tail[2] == b'e'))
+    {
+        return 32;
+    }
+    0
 }
 
 pub(crate) fn with_punctuation(

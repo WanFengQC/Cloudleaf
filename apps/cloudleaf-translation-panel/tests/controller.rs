@@ -2,7 +2,9 @@ use cloudleaf_settings::{InputPreferences, InputScheme};
 use cloudleaf_translation::*;
 use cloudleaf_translation_panel::center::UserAction;
 use cloudleaf_translation_panel::controller::{PanelController, ViewStatus};
+use cloudleaf_translation_panel::definitions::DefinitionDirection;
 use cloudleaf_translation_panel::platform::{CredentialStore, PlatformError};
+use cloudleaf_translation_panel::resources::ResourceSlot;
 use cloudleaf_translation_panel::settings::{DirectionChoice, ProviderChoice, Settings};
 use ring::digest::{SHA256, digest};
 use serde_json::json;
@@ -89,6 +91,160 @@ fn wait(panel: &mut PanelController, predicate: impl Fn(&PanelController) -> boo
             panel.error
         );
         thread::sleep(Duration::from_millis(2));
+    }
+}
+
+#[test]
+fn definitions_keep_long_source_entries_and_drop_pending_results_after_edit() {
+    let local = Fixture::new();
+    let sha = "a".repeat(64);
+    let long = "完整释义坐标和来源。".repeat(65);
+    let index = json!({
+        "format": "cloudleaf-semantic-lookup-v1", "schema_version": 1, "scope": "research_only",
+        "bundle_manifest_sha256": sha, "content_sha256": sha,
+        "catalogs": [{"namespace":"zh", "language":"zh", "manifest_sha256":sha, "facts_sha256":sha, "runtime_sha256":sha}],
+        "sources": [{"id":"fixture", "version":"1", "artifact_sha256":sha, "license_id":"MIT", "status":"research_only"}],
+        "entries": [{"namespace":"zh", "entry_id":"word:1", "headword":"问候语"}],
+        "senses": [{"id":"sense:1", "namespace":"zh", "entry_id":"word:1", "language":"zh",
+                    "definition":long, "english_source_gloss":true, "part_of_speech":null,
+                    "assertions":[{"source_id":"fixture", "unit_id":"1", "pointer":"test:1", "sha256":sha}]}],
+        "relations":[],"phrases":[]
+    });
+    let path = local.0.join("lookup.json");
+    let bytes = serde_json::to_vec(&index).unwrap();
+    fs::write(&path, &bytes).unwrap();
+    let exact: String = digest(&SHA256, &bytes)
+        .as_ref()
+        .iter()
+        .map(|byte| format!("{byte:02x}"))
+        .collect();
+    let mut panel =
+        PanelController::new(local.0.clone(), None, Arc::new(FixtureStore::default())).unwrap();
+    panel.set_text("问候语".into());
+    panel
+        .lookup_definition(
+            path.clone(),
+            exact.clone(),
+            DefinitionDirection::ChineseHeadword,
+        )
+        .unwrap();
+    wait(&mut panel, |panel| !panel.definitions.pending);
+    assert!(panel.definitions.contents.contains(&long));
+    assert!(panel.definitions.contents.contains("word:1"));
+    assert!(panel.definitions.contents.contains("sense:1"));
+    assert!(panel.definitions.contents.contains("来源未提供"));
+    assert!(panel.definitions.contents.contains("fixture · 1 · test:1"));
+    assert!(panel.result().is_none() && panel.copy_text().is_err());
+
+    panel.set_text(long.clone());
+    panel
+        .lookup_definition(
+            path.clone(),
+            exact.clone(),
+            DefinitionDirection::EnglishGloss,
+        )
+        .unwrap();
+    wait(&mut panel, |panel| !panel.definitions.pending);
+    assert!(panel.definitions.contents.contains("sense:1"));
+    panel
+        .lookup_definition(
+            path.clone(),
+            exact.clone(),
+            DefinitionDirection::EnglishGloss,
+        )
+        .unwrap();
+    let prior = panel.definitions.task.unwrap();
+    panel.set_text("修改原文".into());
+    panel
+        .lookup_definition(path.clone(), exact, DefinitionDirection::ChineseHeadword)
+        .unwrap();
+    let current = panel.definitions.task.unwrap();
+    assert!(current.id > prior.id && current.input_revision > prior.input_revision);
+    wait(&mut panel, |panel| !panel.definitions.pending);
+    assert_eq!(panel.definitions.notice, "没有对应释义");
+    assert!(!panel.definitions.contents.contains(&long));
+
+    panel.set_text("问候语".into());
+    panel
+        .lookup_definition(path, "0".repeat(64), DefinitionDirection::ChineseHeadword)
+        .unwrap();
+    wait(&mut panel, |panel| !panel.definitions.pending);
+    assert!(!panel.definitions.notice.is_empty());
+    assert!(panel.definitions.contents.is_empty());
+}
+
+#[test]
+fn dictionary_inspection_keeps_two_slots_and_preserves_previous_verified_identity() {
+    let local = Fixture::new();
+    let lexicon = "# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\nnihao\tni hao\t你好\t\tunknown\t\tfixture\trow1\tMIT\n";
+    let path = local.0.join("runtime.tsv");
+    fs::write(&path, lexicon).unwrap();
+    let sha: String = digest(&SHA256, lexicon.as_bytes())
+        .as_ref()
+        .iter()
+        .map(|byte| format!("{byte:02x}"))
+        .collect();
+    let mut panel =
+        PanelController::new(local.0.clone(), None, Arc::new(FixtureStore::default())).unwrap();
+    panel.inspect_resource(ResourceSlot::Base, path.clone(), sha.clone());
+    panel.inspect_resource(ResourceSlot::Supplement, path.clone(), "0".repeat(64));
+    wait(&mut panel, |panel| {
+        panel.resources[0].is_some() && panel.resource_notice[1] == "词典格式或 SHA-256 不符"
+    });
+    let base = panel.resources[0].as_ref().unwrap();
+    assert_eq!(base.sha256, sha);
+    assert_eq!(base.entries, 1);
+    assert_eq!(base.sources, ["fixture (MIT)"]);
+    assert!(panel.resources[1].is_none());
+    panel.inspect_resource(ResourceSlot::Base, path.clone(), "0".repeat(64));
+    panel.inspect_resource(ResourceSlot::Supplement, path, sha.clone());
+    wait(&mut panel, |panel| {
+        panel.resource_notice[0] == "词典格式或 SHA-256 不符" && panel.resources[1].is_some()
+    });
+    assert_eq!(panel.resources[0].as_ref().unwrap().sha256, sha);
+    assert!(panel.result().is_none() && panel.copy_text().is_err());
+}
+
+#[test]
+#[ignore = "需要本地固定 ResearchOnly 语义索引"]
+fn definitions_replay_fixed_research_index() {
+    let index = PathBuf::from(std::env::var_os("CLOUDLEAF_DEFINITION_INDEX").expect("固定索引"));
+    let sha = std::env::var("CLOUDLEAF_DEFINITION_SHA256").expect("固定索引 SHA-256");
+    let fixture = Fixture::new();
+    let mut panel =
+        PanelController::new(fixture.0.clone(), None, Arc::new(FixtureStore::default())).unwrap();
+    let dictionary: serde_json::Value = serde_json::from_slice(&fs::read(&index).unwrap()).unwrap();
+    let entry = dictionary["entries"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|entry| entry["namespace"] == "zh" && entry["headword"] == "请问")
+        .unwrap();
+    let sense = dictionary["senses"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|sense| {
+            sense["entry_id"] == entry["entry_id"] && sense["english_source_gloss"] == true
+        })
+        .unwrap();
+    for (text, direction) in [
+        ("请问", DefinitionDirection::ChineseHeadword),
+        (
+            sense["definition"].as_str().unwrap(),
+            DefinitionDirection::EnglishGloss,
+        ),
+    ] {
+        panel.set_text(text.into());
+        panel
+            .lookup_definition(index.clone(), sha.clone(), direction)
+            .unwrap();
+        wait(&mut panel, |panel| !panel.definitions.pending);
+        let contents = &panel.definitions.contents;
+        assert!(contents.contains("ResearchOnly"));
+        assert!(contents.contains(sense["id"].as_str().unwrap()));
+        assert!(contents.contains(sense["assertions"][0]["source_id"].as_str().unwrap()));
+        assert!(panel.result().is_none());
     }
 }
 

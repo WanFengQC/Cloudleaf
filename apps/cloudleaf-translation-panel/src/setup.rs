@@ -1,9 +1,11 @@
 use crate::center::{UserAction, UserDictionaryView, user_action};
+use crate::definitions::{DefinitionLookup, DefinitionRequest, DefinitionTask, DictionaryCache};
 use crate::platform::CredentialStore;
+use crate::resources::{ResourceIdentity, ResourceRequest, ResourceSlot, inspect};
 use crate::settings::{ProviderChoice, Settings, SettingsRepository};
 use cloudleaf_settings::{
     InputPreferences, InputPreferencesRepository, InputSettingsError, InputSettingsStatus,
-    LoadedInputPreferences,
+    LoadedInputPreferences, RuntimeSettingsReceipt, read_runtime_receipts,
 };
 use cloudleaf_translation::*;
 use cloudleaf_translation_integrity::{Glossary, MAX_GLOSSARY_BYTES};
@@ -19,6 +21,9 @@ pub(crate) enum SetupCommand {
     Apply(Settings),
     ReadInput,
     SaveInput(InputPreferences),
+    Define(DefinitionRequest),
+    ReadRuntime,
+    InspectResource(ResourceRequest),
     UserDictionary(PathBuf, Option<u64>, UserAction),
     SaveKey(Settings, Secret),
     DeleteKey(Settings),
@@ -41,6 +46,9 @@ pub(crate) enum SetupEvent {
     Saved(Box<Prepared>),
     SaveRejected(String),
     Input(Result<LoadedInputPreferences, InputSettingsError>, bool),
+    Defined(DefinitionTask, Result<DefinitionLookup, TranslationError>),
+    Runtime(std::io::Result<Vec<RuntimeSettingsReceipt>>),
+    Resource(ResourceSlot, Result<ResourceIdentity, &'static str>),
     User(Result<UserDictionaryView, cloudleaf_user::Error>),
     Key(Result<&'static str, crate::platform::PlatformError>),
 }
@@ -59,7 +67,8 @@ impl SetupHandle {
             .name("cloudleaf-panel-settings".into())
             .spawn(move || {
                 let repository = SettingsRepository::new(directory.clone());
-                let input = InputPreferencesRepository::new(directory);
+                let input = InputPreferencesRepository::new(directory.clone());
+                let mut definitions = DictionaryCache::default();
                 while let Ok(command) = commands.recv() {
                     let event = match command {
                         SetupCommand::Load(dictionary) => {
@@ -86,6 +95,16 @@ impl SetupHandle {
                             }
                         }
                         SetupCommand::ReadInput => SetupEvent::Input(input.load(), false),
+                        SetupCommand::ReadRuntime => {
+                            SetupEvent::Runtime(read_runtime_receipts(&directory))
+                        }
+                        SetupCommand::InspectResource(request) => {
+                            SetupEvent::Resource(request.slot, inspect(request))
+                        }
+                        SetupCommand::Define(request) => {
+                            let task = request.task;
+                            SetupEvent::Defined(task, definitions.lookup(request))
+                        }
                         SetupCommand::SaveInput(settings) => SetupEvent::Input(
                             input
                                 .save(&settings)

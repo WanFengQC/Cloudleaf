@@ -20,7 +20,25 @@ pub struct Entry {
     pub source_record_id: String,
     pub license_id: String,
     pub(crate) letters: Vec<u8>,
-    pub(crate) boundaries: BTreeSet<usize>,
+    pub(crate) boundaries: SyllableBoundaries,
+}
+
+// 词典已验证拼音最多 80 字节，Trie 相交只沿这批词条的规范拼音遍历。
+#[derive(Clone, Copy, Debug, Default, Eq, Ord, PartialEq, PartialOrd)]
+pub(crate) struct SyllableBoundaries(u128);
+
+impl SyllableBoundaries {
+    pub(crate) fn insert(&mut self, offset: usize) {
+        self.0 |= 1 << offset;
+    }
+
+    pub(crate) fn contains(self, offset: usize) -> bool {
+        self.0 & (1 << offset) != 0
+    }
+
+    pub(crate) fn last_or_start(self) -> usize {
+        127usize.saturating_sub(self.0.leading_zeros() as usize)
+    }
 }
 
 #[derive(Clone, Debug, Default)]
@@ -180,7 +198,7 @@ impl Lexicon {
                     return Err(invalid());
                 }
                 let mut letters = Vec::new();
-                let mut boundaries = BTreeSet::new();
+                let mut boundaries = SyllableBoundaries::default();
                 for word in words {
                     if !letters.is_empty() {
                         boundaries.insert(letters.len());
@@ -206,7 +224,7 @@ impl Lexicon {
         entries.sort_by(|a, b| a.id.cmp(&b.id));
         let mut trie = vec![TrieNode::default()];
         for (entry_index, entry) in entries.iter().enumerate() {
-            let last_start = entry.boundaries.last().copied().unwrap_or(0);
+            let last_start = entry.boundaries.last_or_start();
             let mut node = 0;
             for (offset, byte) in entry.letters.iter().enumerate() {
                 node = if let Some(next) = trie[node].next.get(byte) {
@@ -266,7 +284,6 @@ impl Lexicon {
                 + entry.source_record_id.capacity()
                 + entry.license_id.capacity()
                 + entry.letters.capacity();
-            tree_nodes += small_btree_estimate(entry.boundaries.len(), 112, 208);
         }
         for node in &self.trie {
             owned +=
@@ -307,8 +324,8 @@ impl Lexicon {
     }
 }
 
-// Rust1.90 BTree的B=6、叶最多11键，非根最少5键。已验证音节边界最多15键、
-// Trie ASCII子节点最多26键，故这里只有叶或一层内部根；按对齐上取整的节点尺寸估算。
+// Rust1.90 BTree的B=6、叶最多11键，非根最少5键。Trie ASCII子节点最多26键，
+// 故这里只有叶或一层内部根；按对齐上取整的节点尺寸估算。
 // 该值不含allocator私有元数据或碎片，升级工具链时须重新核对，不能当作OS硬内存限制。
 fn small_btree_estimate(keys: usize, leaf_bytes: usize, internal_bytes: usize) -> usize {
     match keys {

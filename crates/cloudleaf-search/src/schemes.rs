@@ -1,10 +1,12 @@
 //! 输入音节图与既有词典Trie相交，不枚举完整拼音字符串或复制中文词库。
+use crate::lexicon::SyllableBoundaries;
 use crate::{Budget, Config, Edge, ErrorKind, Lattice, Lexicon, MatchKind, SearchError};
 use cloudleaf_pinyin::{
     BaseMatch, ChangeKind, PhoneticArc, PhoneticHypotheses, SchemeConfig, interpret,
 };
 use std::collections::BTreeMap;
 use std::collections::btree_map::Entry;
+use std::sync::OnceLock;
 
 const MAX_WORD_ARCS: usize = 16;
 
@@ -22,10 +24,8 @@ impl ArcTrace {
         self
     }
 
-    fn indices(&self) -> impl Iterator<Item = usize> + '_ {
-        self.encoded[..self.len]
-            .iter()
-            .map(|&index| usize::from(index - 1))
+    fn encoded(&self) -> &[u16] {
+        &self.encoded[..self.len]
     }
 }
 
@@ -106,16 +106,62 @@ pub struct SchemeGraphDiagnostics {
 pub(crate) struct Interpreted {
     pub version: String,
     pub max_edits: u16,
-    pub evidence: Vec<EdgeInterpretation>,
+    phonetics: Vec<PhoneticArc>,
+    source_indices: Vec<u16>,
+    evidence: Vec<TracedInterpretation>,
     pub statistics: SchemeStatistics,
     pub diagnostics: Option<SchemeGraphDiagnostics>,
+}
+
+#[derive(Clone, Debug)]
+struct TracedInterpretation {
+    cost: InterpretationCost,
+    start: u32,
+    len: u8,
+    materialized: OnceLock<Box<EdgeInterpretation>>,
+}
+
+impl Interpreted {
+    fn push(&mut self, cost: InterpretationCost, source: &ArcTrace) {
+        // 边最多 100,000 个，每边至多 16 个弧索引。
+        let encoded = source.encoded();
+        self.evidence.push(TracedInterpretation {
+            cost,
+            start: self
+                .source_indices
+                .len()
+                .try_into()
+                .expect("弧来源偏移受图预算约束"),
+            len: encoded.len() as u8,
+            materialized: OnceLock::new(),
+        });
+        self.source_indices.extend_from_slice(encoded);
+    }
+
+    fn evidence(&self, edge: usize) -> &EdgeInterpretation {
+        let trace = &self.evidence[edge];
+        trace
+            .materialized
+            .get_or_init(|| {
+                let start = trace.start as usize;
+                let end = start + usize::from(trace.len);
+                Box::new(EdgeInterpretation {
+                    cost: trace.cost,
+                    arcs: self.source_indices[start..end]
+                        .iter()
+                        .map(|&index| self.phonetics[usize::from(index - 1)].clone())
+                        .collect(),
+                })
+            })
+            .as_ref()
+    }
 }
 
 struct IntersectionState {
     node: usize,
     position: usize,
     canonical_len: usize,
-    boundaries: [u16; MAX_WORD_ARCS],
+    boundaries: SyllableBoundaries,
     arcs: ArcTrace,
     cost: InterpretationCost,
 }
@@ -202,6 +248,8 @@ impl<'a> Lattice<'a> {
             interpreted: Some(Interpreted {
                 version: scheme.version_id(),
                 max_edits,
+                phonetics: Vec::new(),
+                source_indices: Vec::new(),
                 evidence: Vec::new(),
                 statistics: SchemeStatistics {
                     phonetic_arcs: hypotheses.arcs.len(),
@@ -229,7 +277,7 @@ impl<'a> Lattice<'a> {
                 node: 0,
                 position: start,
                 canonical_len: 0,
-                boundaries: [0; MAX_WORD_ARCS],
+                boundaries: SyllableBoundaries::default(),
                 arcs: ArcTrace::default(),
                 cost: InterpretationCost::default(),
             }];
@@ -280,15 +328,7 @@ impl<'a> Lattice<'a> {
                             diagnostics.dictionary_rows += 1;
                         }
                         let word = &lexicon.entries[entry];
-                        if !word
-                            .boundaries
-                            .iter()
-                            .copied()
-                            .eq(state.boundaries[..state.arcs.len]
-                                .iter()
-                                .copied()
-                                .map(usize::from))
-                        {
+                        if word.boundaries != state.boundaries {
                             if DIAGNOSTICS {
                                 diagnostics.boundary_rejected += 1;
                             }
@@ -324,8 +364,7 @@ impl<'a> Lattice<'a> {
                     }
                     if arc.end < graph.letters.len() && source_arcs.len < MAX_WORD_ARCS {
                         let mut boundaries = state.boundaries;
-                        boundaries[state.arcs.len] =
-                            u16::try_from(canonical_len).expect("有效音节长度受解释和词条上限限制");
+                        boundaries.insert(canonical_len);
                         let value = (cost, source_arcs);
                         let key = (arc.end, node, cost.edits, boundaries);
                         match seen.entry(key) {
@@ -362,18 +401,7 @@ impl<'a> Lattice<'a> {
                     entry,
                     kind: cost.kind(),
                 });
-                graph
-                    .interpreted
-                    .as_mut()
-                    .unwrap()
-                    .evidence
-                    .push(EdgeInterpretation {
-                        cost,
-                        arcs: source_arcs
-                            .indices()
-                            .map(|index| hypotheses.arcs[index].clone())
-                            .collect(),
-                    });
+                graph.interpreted.as_mut().unwrap().push(cost, &source_arcs);
                 graph.outgoing[start].push(index);
             }
             if graph.budget.is_some() {
@@ -381,6 +409,7 @@ impl<'a> Lattice<'a> {
             }
         }
         let interpreted = graph.interpreted.as_mut().unwrap();
+        interpreted.phonetics = hypotheses.arcs;
         interpreted.statistics.intersection_states = visits;
         if DIAGNOSTICS {
             interpreted.diagnostics = Some(diagnostics);
@@ -389,11 +418,12 @@ impl<'a> Lattice<'a> {
     }
 
     pub fn interpretation(&self, edge: usize) -> Option<&EdgeInterpretation> {
-        self.interpreted.as_ref().map(|s| &s.evidence[edge])
+        self.interpreted.as_ref().map(|s| s.evidence(edge))
     }
     pub fn interpretation_cost(&self, edge: usize) -> InterpretationCost {
-        self.interpretation(edge)
-            .map_or(InterpretationCost::default(), |v| v.cost)
+        self.interpreted
+            .as_ref()
+            .map_or(InterpretationCost::default(), |s| s.evidence[edge].cost)
     }
     pub fn is_interpreted(&self) -> bool {
         self.interpreted.is_some()
@@ -410,5 +440,58 @@ impl<'a> Lattice<'a> {
 
     pub fn scheme_graph_diagnostics(&self) -> Option<&SchemeGraphDiagnostics> {
         self.interpreted.as_ref()?.diagnostics.as_ref()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use cloudleaf_pinyin::PinyinScheme;
+
+    #[test]
+    fn abbreviations_materialize_only_the_requested_edge_with_its_original_boundaries() {
+        let lexicon = Lexicon::from_tsv(concat!(
+            "# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\n",
+            "a\txian\t先\t\tunknown\t\tfixture\ta\tMIT\n",
+            "b\txi an\t西安\t\tunknown\t\tfixture\tb\tMIT\n",
+        ))
+        .unwrap();
+        let scheme = SchemeConfig {
+            scheme: PinyinScheme::AbbreviatedPinyin,
+            ..SchemeConfig::default()
+        };
+        let graph =
+            Lattice::build_with_scheme(&lexicon, "xa", &Config::default(), &scheme).unwrap();
+        let edge = graph
+            .edges
+            .iter()
+            .position(|edge| edge.start == 0 && edge.end == 2 && edge.entry == 1)
+            .unwrap();
+        let traces = &graph.interpreted.as_ref().unwrap().evidence;
+        assert!(traces.len() > 1);
+        assert_eq!(graph.interpretation_cost(edge).abbreviations, 1);
+        assert!(
+            traces
+                .iter()
+                .all(|trace| trace.materialized.get().is_none())
+        );
+        let evidence = graph.interpretation(edge).unwrap();
+        assert_eq!(evidence.cost, graph.interpretation_cost(edge));
+        assert_eq!(
+            evidence
+                .arcs
+                .iter()
+                .map(|arc| (arc.start, arc.end, arc.syllable.as_str()))
+                .collect::<Vec<_>>(),
+            [(0, 1, "xi"), (1, 2, "an")]
+        );
+        assert!(std::ptr::eq(evidence, graph.interpretation(edge).unwrap()));
+        assert_eq!(
+            traces
+                .iter()
+                .filter(|trace| trace.materialized.get().is_some())
+                .count(),
+            1
+        );
     }
 }

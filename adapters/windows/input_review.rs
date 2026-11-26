@@ -124,6 +124,9 @@ pub(super) fn load_host_config(
         max_input_bytes: 64,
         max_letters: 64,
         output_k,
+        context_pool: cloudleaf_search::Config::default()
+            .context_pool
+            .max(output_k),
         ..cloudleaf_search::Config::default()
     };
     let host = if let Some((path, expected)) = model {

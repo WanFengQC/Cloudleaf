@@ -33,6 +33,18 @@ fn engine_with(config: Config) -> InputEngine {
         ("e", "e", "饿"),
         ("ting", "ting", "听"),
         ("che", "che", "车"),
+        ("descending", "xia", "下"),
+        ("spray", "pen", "喷"),
+        ("favor", "en", "恩"),
+        ("reason", "li", "理"),
+        ("side", "ce", "侧"),
+        ("plot", "tu", "图"),
+        ("land", "di", "地"),
+        ("oh", "o", "哦"),
+        ("bright", "ming ming", "明明"),
+        ("simple", "jian dan", "简单"),
+        ("secure", "an", "安"),
+        ("amend", "gai", "改"),
         ("lou", "lou", "楼"),
     ] {
         tsv.push_str(&format!(
@@ -116,6 +128,76 @@ fn frozen_cases_cover_mixed_words_preserved_literals_and_real_commit() {
                 .preedit
                 .is_empty()
         );
+    }
+}
+
+#[test]
+fn english_codas_do_not_borrow_bytes_from_anchored_chinese() {
+    let mut engine = enabled();
+    for word in ["check", "back", "quick", "track", "block", "stock", "draft"] {
+        let original = format!("bangwo{word}yixiazhegewenjian");
+        type_raw(&mut engine, &original);
+        let expected = format!("帮我{word}一下这个文件");
+        let frame = engine.frame();
+        assert_eq!(frame.candidates[0].text, expected, "{word}");
+        let edges = &engine.search_diagnostic().unwrap().paths[0].edges;
+        let english_end = 6 + word.len();
+        let left_end = edges
+            .iter()
+            .map(|edge| edge.raw_end)
+            .filter(|end| *end <= 6)
+            .max();
+        let right_start = edges
+            .iter()
+            .map(|edge| edge.raw_start)
+            .filter(|start| *start >= 6)
+            .min();
+        assert_eq!(
+            (left_end, right_start),
+            (Some(6), Some(english_end)),
+            "{word}"
+        );
+        let request = key(&mut engine, Key::Enter).commit.unwrap();
+        assert_eq!(request.text, expected, "{word}");
+        let evidence = engine.pending_selection().unwrap();
+        assert_eq!(evidence.commit_id, request.id);
+        assert_eq!(evidence.revision, frame.revision);
+        assert_eq!(
+            evidence
+                .entries
+                .iter()
+                .map(|(id, _)| id.as_str())
+                .collect::<Vec<_>>(),
+            ["please", "have-a-look", "this", "file"],
+            "{word}"
+        );
+        engine.handle(InputEvent::CommitSucceeded { id: request.id });
+    }
+    type_raw(&mut engine, "nihaojiandangaixia");
+    let frame = engine.frame();
+    assert_eq!(frame.candidates[0].text, "你好简单改下");
+    assert_ne!(frame.candidates[0].source, "cloudleaf:mixed");
+}
+
+#[test]
+fn single_capitals_prevent_splitting_proper_names_without_masking_acronyms() {
+    let mut engine = enabled();
+    for (original, expected) in [
+        ("OpenAI", "OpenAI"),
+        ("VisualStudioxitong", "VisualStudio系统"),
+        ("Alicemingming", "Alice明明"),
+        ("SKUni", "SKU你"),
+        ("zhegeSKUzhege", "这个SKU这个"),
+    ] {
+        type_raw(&mut engine, original);
+        let frame = engine.frame();
+        assert_eq!(frame.candidates[0].text, expected);
+        let receipt = key(&mut engine, Key::Enter).commit.unwrap();
+        assert_eq!(receipt.text, expected);
+        if expected == original {
+            assert!(engine.pending_selection().is_none());
+        }
+        engine.handle(InputEvent::CommitSucceeded { id: receipt.id });
     }
 }
 

@@ -129,7 +129,7 @@ impl<'a> Lattice<'a> {
                     let entry = &lexicon.entries[entry_index];
                     if separators
                         .range(start + 1..end)
-                        .any(|boundary| !entry.boundaries.contains(&(boundary - start)))
+                        .any(|boundary| !entry.boundaries.contains(boundary - start))
                     {
                         continue;
                     }

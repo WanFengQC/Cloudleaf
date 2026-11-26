@@ -614,6 +614,10 @@ impl SentenceBackend {
         Ok(replacement)
     }
 
+    pub(crate) fn snapshot_version(&self) -> &str {
+        self.snapshot.version()
+    }
+
     pub(crate) fn snapshots(&self) -> (Arc<SearchSnapshot>, Option<Arc<LanguageSnapshot>>) {
         (self.snapshot.clone(), self.language.clone())
     }
@@ -624,6 +628,25 @@ impl SentenceBackend {
     pub(crate) fn set_scheme(&mut self, scheme: cloudleaf_pinyin::SchemeConfig) {
         self.transitions.clear();
         self.scheme = scheme;
+    }
+
+    pub(crate) fn validate_output_limit(&self, output_k: usize) -> Result<(), CoreError> {
+        let config = Config {
+            output_k,
+            ..self.config.clone()
+        };
+        config
+            .validate()
+            .map_err(|_| CoreError::new(ErrorCode::InvalidConfig, "候选预算超过预留搜索容量"))
+    }
+
+    pub(crate) fn apply_preferences(
+        &mut self,
+        output_k: usize,
+        scheme: cloudleaf_pinyin::SchemeConfig,
+    ) {
+        self.config.output_k = output_k;
+        self.set_scheme(scheme);
     }
 
     pub(crate) fn clear_cache(&mut self) {

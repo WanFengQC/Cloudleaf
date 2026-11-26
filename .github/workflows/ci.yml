@@ -57,7 +57,7 @@ jobs:
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v4
         with:
-          name: integration-round27-windows
+          name: integration-round28-windows
           path: |
             target/release/cloudleaf-cli.exe
             target/release/cloudleaf-ime.exe
@@ -78,6 +78,7 @@ jobs:
             target/release/examples/train_language.exe
             target/release/examples/coverage_probe.exe
             target/release/examples/scheme_trace.exe
+            Cargo.lock
             LICENSE
             THIRD_PARTY_NOTICES.md
             licenses/windows/
@@ -112,13 +113,17 @@ jobs:
             docs/integration-round27-search-design.md
             docs/integration-round27-mixed-design.md
             docs/integration-round27-settings-design.md
+            docs/integration-round28-design.md
+            docs/integration-round28-search-design.md
+            docs/integration-round28-mixed-design.md
+            docs/integration-round28-settings-design.md
             docs/testing/round22-native-translation-manual.md
           if-no-files-found: error
       - name: Upload Linux headless integration tools
         if: runner.os == 'Linux'
         uses: actions/upload-artifact@v4
         with:
-          name: integration-round27-linux
+          name: integration-round28-linux
           path: |
             target/release/cloudleaf-cli
             target/release/cloudleaf-bridge-headless
@@ -133,6 +138,7 @@ jobs:
             target/release/examples/offline_models
             target/release/examples/offline_translate
             target/release/examples/offline_lifecycle
+            Cargo.lock
             LICENSE
             THIRD_PARTY_NOTICES.md
             licenses/windows/
@@ -158,6 +164,10 @@ jobs:
             docs/integration-round27-search-design.md
             docs/integration-round27-mixed-design.md
             docs/integration-round27-settings-design.md
+            docs/integration-round28-design.md
+            docs/integration-round28-search-design.md
+            docs/integration-round28-mixed-design.md
+            docs/integration-round28-settings-design.md
           if-no-files-found: error
       - uses: actions/upload-artifact@v4
         with:
