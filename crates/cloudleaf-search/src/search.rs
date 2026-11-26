@@ -5,6 +5,8 @@ use crate::{
 };
 use std::cmp::Ordering;
 use std::collections::{BTreeMap, BinaryHeap};
+use std::rc::Rc;
+use std::sync::Arc;
 
 #[path = "recall.rs"]
 mod recall;
@@ -541,10 +543,20 @@ fn position_dynamic<O: Observer>(
 
 struct BoundedPath {
     bound: i64,
-    best_ids: Vec<usize>,
+    tail: Rc<[usize]>,
     order: usize,
     position: usize,
-    path: Path,
+    text: Rc<str>,
+    ids: Rc<[usize]>,
+    edges: Vec<usize>,
+    score: i64,
+    last_character: u32,
+}
+
+impl BoundedPath {
+    fn best_ids(&self) -> impl Iterator<Item = usize> + '_ {
+        self.ids.iter().chain(self.tail.iter()).copied()
+    }
 }
 
 impl PartialEq for BoundedPath {
@@ -562,7 +574,7 @@ impl Ord for BoundedPath {
     fn cmp(&self, other: &Self) -> Ordering {
         self.bound
             .cmp(&other.bound)
-            .then_with(|| other.best_ids.cmp(&self.best_ids))
+            .then_with(|| other.best_ids().cmp(self.best_ids()))
             .then_with(|| other.order.cmp(&self.order))
     }
 }
@@ -570,7 +582,7 @@ impl Ord for BoundedPath {
 #[derive(Clone)]
 struct Suffix {
     score: i64,
-    ids: Vec<usize>,
+    ids: Rc<[usize]>,
 }
 
 /// 精确后缀分用于有界最佳优先枚举；同分上界不能提前结束稳定ID比较。
@@ -597,10 +609,11 @@ fn character_exact<O: Observer>(
             }
         }
     }
+    let empty: Rc<[usize]> = Rc::from([]);
     for (&previous, value) in &mut suffix[end] {
         *value = Some(Suffix {
             score: model.finish(previous),
-            ids: Vec::new(),
+            ids: Rc::clone(&empty),
         });
     }
     for position in (0..end).rev() {
@@ -642,33 +655,47 @@ fn character_exact<O: Observer>(
     };
     let mut pending = BinaryHeap::from([BoundedPath {
         bound: best.score,
-        best_ids: best.ids.clone(),
+        tail: Rc::clone(&best.ids),
         order: 0,
         position: 0,
-        path: Path::default(),
+        text: Rc::from(""),
+        ids: Rc::clone(&empty),
+        edges: Vec::new(),
+        score: 0,
+        last_character: crate::character::BOS,
     }]);
     let mut order = 0;
     let mut complete: Vec<Path> = Vec::new();
-    let mut seen = vec![BTreeMap::<String, Vec<usize>>::new(); end + 1];
-    seen[0].insert(String::new(), Vec::new());
+    let mut seen = vec![BTreeMap::<Rc<str>, Rc<[usize]>>::new(); end + 1];
+    seen[0].insert(Rc::from(""), empty);
     let mut seen_count = 1;
     let mut scratch = String::new();
     while let Some(current) = pending.pop() {
         if scorer.cancelled() {
             return Vec::new();
         }
-        if seen[current.position].get(&current.path.text) != Some(&current.path.ids) {
+        if seen[current.position].get(current.text.as_ref()) != Some(&current.ids) {
             continue;
         }
         if complete.len() == k
             && (current.bound < complete.last().unwrap().score
                 || (current.bound == complete.last().unwrap().score
-                    && current.best_ids >= complete.last().unwrap().ids))
+                    && !current
+                        .best_ids()
+                        .cmp(complete.last().unwrap().ids.iter().copied())
+                        .is_lt()))
         {
             break;
         }
         if current.position == end {
-            let finished = scorer.finish(current.path, observer);
+            // 只有完成路径需要对外特征，使用同一评分器恢复完整诊断。
+            let path = current
+                .edges
+                .into_iter()
+                .fold(Path::default(), |path, edge| {
+                    scorer.extend(&path, edge, None, observer).unwrap()
+                });
+            let finished = scorer.finish(path, observer);
             insert_unique(&mut complete, finished, k, observer);
             continue;
         }
@@ -692,24 +719,20 @@ fn character_exact<O: Observer>(
                 return Vec::new();
             }
             let stamp = observer.start(Phase::Scoring);
-            let bound = current.path.score
-                + model.transition(
-                    current.path.last_character.unwrap_or(crate::character::BOS),
-                    entry.first,
-                )
-                + entry.internal
-                + rest.score;
+            let score = current.score
+                + model.transition(current.last_character, entry.first)
+                + entry.internal;
+            let bound = score + rest.score;
             observer.stop(Phase::Scoring, stamp);
             if complete.len() == k && bound < complete.last().unwrap().score {
                 continue;
             }
             // 先复用正文暂存并借用ID比较，被淘汰分支不复制整条路径。
             scratch.clear();
-            scratch.push_str(&current.path.text);
+            scratch.push_str(&current.text);
             scratch.push_str(&scorer.lexicon.entries[edge.entry].text);
             if seen[edge.end].get(scratch.as_str()).is_some_and(|ids| {
                 current
-                    .path
                     .ids
                     .iter()
                     .copied()
@@ -719,78 +742,154 @@ fn character_exact<O: Observer>(
             }) {
                 continue;
             }
-            let next = scorer
-                .extend(&current.path, *edge_index, None, observer)
-                .unwrap();
+            let ids: Rc<[usize]> = current
+                .ids
+                .iter()
+                .copied()
+                .chain(std::iter::once(edge.entry))
+                .collect();
+            let text: Rc<str> = Rc::from(scratch.as_str());
             if seen[edge.end]
-                .insert(next.text.clone(), next.ids.clone())
+                .insert(Rc::clone(&text), Rc::clone(&ids))
                 .is_none()
             {
                 seen_count += 1;
             }
+            let mut edges = Vec::with_capacity(current.edges.len() + 1);
+            edges.extend_from_slice(&current.edges);
+            edges.push(*edge_index);
             order += 1;
-            let best_ids = next
-                .ids
-                .iter()
-                .copied()
-                .chain(rest.ids.iter().copied())
-                .collect();
             pending.push(BoundedPath {
                 bound,
-                best_ids,
+                tail: Rc::clone(&rest.ids),
                 order,
                 position: edge.end,
-                path: next,
+                text,
+                ids,
+                edges,
+                score,
+                last_character: entry.last,
             });
         }
     }
     complete
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
-struct InterpretedSuffix {
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+struct InterpretedRank {
     cost: InterpretationCost,
     preference: u32,
     score: i64,
-    ids: Vec<usize>,
-    edges: Vec<usize>,
 }
 
-fn suffix_order(a: &InterpretedSuffix, b: &InterpretedSuffix) -> Ordering {
-    a.cost
-        .cmp(&b.cost)
-        .then_with(|| b.preference.cmp(&a.preference))
-        .then_with(|| b.score.cmp(&a.score))
-        .then_with(|| a.ids.cmp(&b.ids))
-        .then_with(|| a.edges.cmp(&b.edges))
-}
-
-impl InterpretedSuffix {
-    fn prefix(path: &Path) -> Self {
+impl InterpretedRank {
+    fn from_path(path: &Path) -> Self {
         Self {
             cost: path.features.interpretation_cost,
             preference: path.features.user_preference_units,
             score: path.score,
-            ids: path.ids.clone(),
-            edges: path.edges.clone(),
         }
     }
-    fn compare_completed(&self, other: &Path) -> Ordering {
-        self.cost
-            .cmp(&other.features.interpretation_cost)
-            .then_with(|| other.features.user_preference_units.cmp(&self.preference))
-            .then_with(|| other.score.cmp(&self.score))
-            .then_with(|| self.ids.cmp(&other.ids))
-            .then_with(|| self.edges.cmp(&other.edges))
+
+    fn then(self, other: Self) -> Self {
+        Self {
+            cost: self.cost.plus(other.cost),
+            preference: self.preference + other.preference,
+            score: self.score + other.score,
+        }
     }
 
-    fn completed(path: &Path, rest: &Self) -> Self {
-        Self {
-            cost: path.features.interpretation_cost.plus(rest.cost),
-            preference: path.features.user_preference_units + rest.preference,
-            score: path.score + rest.score,
-            ids: path.ids.iter().chain(&rest.ids).copied().collect(),
-            edges: path.edges.iter().chain(&rest.edges).copied().collect(),
+    fn order(self, other: Self) -> Ordering {
+        self.cost
+            .cmp(&other.cost)
+            .then_with(|| other.preference.cmp(&self.preference))
+            .then_with(|| other.score.cmp(&self.score))
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+struct InterpretedStep {
+    entry: usize,
+    edge: usize,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+struct InterpretedSuffix {
+    rank: InterpretedRank,
+    steps: Arc<[InterpretedStep]>,
+}
+
+fn step_order(
+    left: impl Iterator<Item = InterpretedStep> + Clone,
+    right: impl Iterator<Item = InterpretedStep> + Clone,
+) -> Ordering {
+    left.clone()
+        .map(|step| step.entry)
+        .cmp(right.clone().map(|step| step.entry))
+        .then_with(|| left.map(|step| step.edge).cmp(right.map(|step| step.edge)))
+}
+
+fn suffix_order(a: &InterpretedSuffix, b: &InterpretedSuffix) -> Ordering {
+    a.rank
+        .order(b.rank)
+        .then_with(|| step_order(a.steps.iter().copied(), b.steps.iter().copied()))
+}
+
+fn path_steps(path: &Path) -> impl Iterator<Item = InterpretedStep> + Clone + '_ {
+    path.ids
+        .iter()
+        .zip(&path.edges)
+        .map(|(&entry, &edge)| InterpretedStep { entry, edge })
+}
+
+impl InterpretedSuffix {
+    fn matches(&self, path: &Path) -> bool {
+        self.rank == InterpretedRank::from_path(path)
+            && self.steps.iter().copied().eq(path_steps(path))
+    }
+
+    fn compare_completed(&self, other: &Path) -> Ordering {
+        self.rank
+            .order(InterpretedRank::from_path(other))
+            .then_with(|| step_order(self.steps.iter().copied(), path_steps(other)))
+    }
+}
+
+// 先借用原路径和后缀比较完整顺序，只有必须保留时才拷贝序列。
+#[derive(Clone, Copy)]
+struct InterpretedExtension<'a> {
+    prefix: &'a Path,
+    step: InterpretedStep,
+    tail: &'a [InterpretedStep],
+    rank: InterpretedRank,
+}
+
+impl InterpretedExtension<'_> {
+    fn steps(&self) -> impl Iterator<Item = InterpretedStep> + Clone + '_ {
+        path_steps(self.prefix)
+            .chain(std::iter::once(self.step))
+            .chain(self.tail.iter().copied())
+    }
+
+    fn order(&self, other: &InterpretedSuffix) -> Ordering {
+        self.rank
+            .order(other.rank)
+            .then_with(|| step_order(self.steps(), other.steps.iter().copied()))
+    }
+
+    fn order_path(&self, other: &Path) -> Ordering {
+        self.rank
+            .order(InterpretedRank::from_path(other))
+            .then_with(|| step_order(self.steps(), path_steps(other)))
+    }
+
+    fn save(self) -> InterpretedSuffix {
+        let length = self.prefix.ids.len() + 1 + self.tail.len();
+        let mut steps = Vec::with_capacity(length);
+        steps.extend(self.steps());
+        InterpretedSuffix {
+            rank: self.rank,
+            steps: Arc::from(steps),
         }
     }
 }
@@ -848,15 +947,17 @@ fn interpreted_character_exact<O: Observer>(
             }
         }
     }
+    let empty: Arc<[InterpretedStep]> = Arc::from([]);
     for (&(previous, _), value) in &mut suffix[end] {
         *value = Some(InterpretedSuffix {
-            cost: InterpretationCost::default(),
-            preference: 0,
-            score: model.finish(previous),
-            ids: Vec::new(),
-            edges: Vec::new(),
+            rank: InterpretedRank {
+                score: model.finish(previous),
+                ..InterpretedRank::default()
+            },
+            steps: Arc::clone(&empty),
         });
     }
+    let root = Path::default();
     for position in (0..end).rev() {
         for remaining in 0..=max_edits {
             let mut groups = BTreeMap::<u32, InterpretedSuffix>::new();
@@ -876,42 +977,45 @@ fn interpreted_character_exact<O: Observer>(
                 else {
                     continue;
                 };
-                let candidate = InterpretedSuffix {
-                    cost: cost.plus(rest.cost),
-                    preference: scorer.lexicon.user_preference(edge.entry) + rest.preference,
-                    score: entry.internal + rest.score,
-                    ids: std::iter::once(edge.entry)
-                        .chain(rest.ids.iter().copied())
-                        .collect(),
-                    edges: std::iter::once(*edge_index)
-                        .chain(rest.edges.iter().copied())
-                        .collect(),
+                let candidate = InterpretedExtension {
+                    prefix: &root,
+                    step: InterpretedStep {
+                        entry: edge.entry,
+                        edge: *edge_index,
+                    },
+                    tail: &rest.steps,
+                    rank: InterpretedRank {
+                        cost,
+                        preference: scorer.lexicon.user_preference(edge.entry),
+                        score: entry.internal,
+                    }
+                    .then(rest.rank),
                 };
                 if groups
                     .get(&entry.first)
-                    .is_none_or(|old| suffix_order(&candidate, old) == Ordering::Less)
+                    .is_none_or(|old| candidate.order(old).is_lt())
                 {
                     if !resident_allowed(stats, labels + groups.len() + 2, config) {
                         return Vec::new();
                     }
-                    groups.insert(entry.first, candidate);
+                    groups.insert(entry.first, candidate.save());
                 }
             }
             let Some(class) = groups.values().min_by(|a, b| {
-                a.cost
-                    .cmp(&b.cost)
-                    .then_with(|| b.preference.cmp(&a.preference))
+                a.rank
+                    .cost
+                    .cmp(&b.rank.cost)
+                    .then_with(|| b.rank.preference.cmp(&a.rank.preference))
             }) else {
                 continue;
             };
-            let (cost, preference) = (class.cost, class.preference);
-            groups.retain(|_, s| s.cost == cost && s.preference == preference);
+            let (cost, preference) = (class.rank.cost, class.rank.preference);
+            groups.retain(|_, s| s.rank.cost == cost && s.rank.preference == preference);
             let mut fallback: Vec<_> = groups.iter().collect();
             fallback.sort_by(|(a_key, a), (b_key, b)| {
-                (b.score + model.unobserved_next(**b_key))
-                    .cmp(&(a.score + model.unobserved_next(**a_key)))
-                    .then_with(|| a.ids.cmp(&b.ids))
-                    .then_with(|| a.edges.cmp(&b.edges))
+                (b.rank.score + model.unobserved_next(**b_key))
+                    .cmp(&(a.rank.score + model.unobserved_next(**a_key)))
+                    .then_with(|| step_order(a.steps.iter().copied(), b.steps.iter().copied()))
             });
             if !resident_allowed(stats, labels + groups.len() + fallback.len() + 1, config) {
                 return Vec::new();
@@ -931,12 +1035,15 @@ fn interpreted_character_exact<O: Observer>(
                         return Vec::new();
                     }
                     if let Some(group) = groups.get(&(row.key as u32)) {
-                        let score = group.score + row.units;
+                        let score = group.rank.score + row.units;
                         if best.is_none_or(|(old, value)| {
                             score > value
                                 || (score == value
-                                    && (group.ids.as_slice(), group.edges.as_slice())
-                                        < (old.ids.as_slice(), old.edges.as_slice()))
+                                    && step_order(
+                                        group.steps.iter().copied(),
+                                        old.steps.iter().copied(),
+                                    )
+                                    .is_lt())
                         }) {
                             best = Some((group, score));
                         }
@@ -951,14 +1058,17 @@ fn interpreted_character_exact<O: Observer>(
                         .binary_search_by_key(*next, |row| row.key as u32)
                         .is_err()
                     {
-                        let score = group.score
+                        let score = group.rank.score
                             + model.unobserved_bias(previous)
                             + model.unobserved_next(**next);
                         if best.is_none_or(|(old, value)| {
                             score > value
                                 || (score == value
-                                    && (group.ids.as_slice(), group.edges.as_slice())
-                                        < (old.ids.as_slice(), old.edges.as_slice()))
+                                    && step_order(
+                                        group.steps.iter().copied(),
+                                        old.steps.iter().copied(),
+                                    )
+                                    .is_lt())
                         }) {
                             best = Some((group, score));
                         }
@@ -967,7 +1077,7 @@ fn interpreted_character_exact<O: Observer>(
                 }
                 let best = best.map(|(value, score)| {
                     let mut result = value.clone();
-                    result.score = score;
+                    result.rank.score = score;
                     result
                 });
                 observer.stop(Phase::Scoring, stamp);
@@ -1002,25 +1112,37 @@ fn interpreted_character_exact<O: Observer>(
         if !resident_allowed(stats, labels + complete.len() + 3, config) {
             return Vec::new();
         }
-        let Some(mut candidate) = scorer.extend(&Path::default(), *edge_index, None, observer)
-        else {
-            continue;
+        let extension = InterpretedExtension {
+            prefix: &root,
+            step: InterpretedStep {
+                entry: edge.entry,
+                edge: *edge_index,
+            },
+            tail: &rest.steps,
+            rank: InterpretedRank {
+                cost: scorer.graph.interpretation_cost(*edge_index),
+                preference: scorer.lexicon.user_preference(edge.entry),
+                score: model.transition(crate::character::BOS, entry.first) + entry.internal,
+            }
+            .then(rest.rank),
         };
-        let bound = InterpretedSuffix::completed(&candidate, rest);
-        if complete.len() == k
-            && bound.compare_completed(complete.last().unwrap()) != Ordering::Less
-        {
+        if complete.len() == k && !extension.order_path(complete.last().unwrap()).is_lt() {
             continue;
         }
+        let Some(mut candidate) = scorer.extend(&root, *edge_index, None, observer) else {
+            continue;
+        };
         // 后缀标签已按剩余编辑数验证，沿该链扩展必然可行。
-        for tail in &rest.edges {
+        for step in rest.steps.iter() {
             if scorer.cancelled() || !expand_allowed(stats, config) {
                 return Vec::new();
             }
-            candidate = scorer.extend(&candidate, *tail, None, observer).unwrap();
+            candidate = scorer
+                .extend(&candidate, step.edge, None, observer)
+                .unwrap();
         }
         let candidate = scorer.finish(candidate, observer);
-        debug_assert_eq!(bound.compare_completed(&candidate), Ordering::Equal);
+        debug_assert_eq!(extension.order_path(&candidate), Ordering::Equal);
         insert_unique(&mut complete, candidate, k, observer);
     }
     if !resident_allowed(stats, labels + complete.len() + 2, config) {
@@ -1038,15 +1160,24 @@ fn interpreted_character_exact<O: Observer>(
             vec![BTreeMap::<String, InterpretedSuffix>::new(); usize::from(max_edits) + 1];
             end + 1
         ];
-    seen[0][0].insert(String::new(), InterpretedSuffix::prefix(&Path::default()));
+    seen[0][0].insert(
+        String::new(),
+        InterpretedSuffix {
+            rank: InterpretedRank::default(),
+            steps: empty,
+        },
+    );
     let mut seen_count = 1;
+    let mut scratch = String::new();
     while let Some(current) = pending.pop() {
         if scorer.cancelled() {
             return Vec::new();
         }
         let edits = current.path.features.interpretation_cost.edits;
-        let signature = InterpretedSuffix::prefix(&current.path);
-        if seen[current.position][usize::from(edits)].get(&current.path.text) != Some(&signature) {
+        if !seen[current.position][usize::from(edits)]
+            .get(&current.path.text)
+            .is_some_and(|old| old.matches(&current.path))
+        {
             continue;
         }
         if complete.len() == k
@@ -1082,24 +1213,46 @@ fn interpreted_character_exact<O: Observer>(
             ) {
                 return Vec::new();
             }
+            let prefix_rank = InterpretedRank::from_path(&current.path).then(InterpretedRank {
+                cost: scorer.graph.interpretation_cost(*edge_index),
+                preference: scorer.lexicon.user_preference(edge.entry),
+                score: model.transition(
+                    current.path.last_character.unwrap_or(crate::character::BOS),
+                    entry.first,
+                ) + entry.internal,
+            });
+            let extension = InterpretedExtension {
+                prefix: &current.path,
+                step: InterpretedStep {
+                    entry: edge.entry,
+                    edge: *edge_index,
+                },
+                tail: &rest.steps,
+                rank: prefix_rank.then(rest.rank),
+            };
+            if complete.len() == k && !extension.order_path(complete.last().unwrap()).is_lt() {
+                continue;
+            }
+            let signature = InterpretedExtension {
+                tail: &[],
+                rank: prefix_rank,
+                ..extension
+            };
+            let bucket = &mut seen[edge.end][usize::from(used)];
+            scratch.clear();
+            scratch.push_str(&current.path.text);
+            scratch.push_str(&scorer.lexicon.entries[edge.entry].text);
+            if bucket
+                .get(scratch.as_str())
+                .is_some_and(|old| !signature.order(old).is_lt())
+            {
+                continue;
+            }
             let Some(next) = scorer.extend(&current.path, *edge_index, None, observer) else {
                 continue;
             };
-            let bound = InterpretedSuffix::completed(&next, rest);
-            if complete.len() == k
-                && bound.compare_completed(complete.last().unwrap()) != Ordering::Less
-            {
-                continue;
-            }
-            let signature = InterpretedSuffix::prefix(&next);
-            let bucket = &mut seen[edge.end][usize::from(used)];
-            if bucket
-                .get(next.text.as_str())
-                .is_some_and(|old| suffix_order(&signature, old) != Ordering::Less)
-            {
-                continue;
-            }
-            if bucket.insert(next.text.clone(), signature).is_none() {
+            let bound = extension.save();
+            if bucket.insert(next.text.clone(), signature.save()).is_none() {
                 seen_count += 1;
             }
             order += 1;

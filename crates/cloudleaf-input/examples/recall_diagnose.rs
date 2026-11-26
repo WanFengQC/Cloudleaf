@@ -209,7 +209,19 @@ fn audit_pool(
 }
 
 fn main() -> Outcome<()> {
-    let args: Vec<_> = std::env::args().skip(1).collect();
+    let mut args: Vec<_> = std::env::args().skip(1).collect();
+    let diagnostic_resident = if args.len() == 8 {
+        let argument = args.pop().unwrap();
+        argument
+            .strip_prefix("--diagnostic-resident=")
+            .ok_or("无效的离线驻留诊断参数")?
+            .parse::<usize>()?
+    } else {
+        Config::default().max_resident_paths
+    };
+    if !(50_000..=200_000).contains(&diagnostic_resident) {
+        return Err("离线驻留诊断预算应在 50000 至 200000 之间".into());
+    }
     let [runtime, lex_sha, word, word_sha, witten, witten_sha, input] = args.as_slice() else {
         return Err("usage: recall_diagnose RUNTIME SHA WORD SHA WITTEN SHA CASES_TSV".into());
     };
@@ -241,6 +253,7 @@ fn main() -> Outcome<()> {
     let character = Config {
         ranker: Ranker::CharacterBigram,
         method: Method::ExactDag,
+        max_resident_paths: diagnostic_resident,
         ..structural.clone()
     };
     let scheme = SchemeConfig::default();

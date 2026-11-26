@@ -19,6 +19,8 @@ from r21_evidence_common import (
 parser = argparse.ArgumentParser()
 parser.add_argument('--label', default='round24-search-replay')
 parser.add_argument('--expect-head', required=True)
+parser.add_argument('--expect-source-change', action='append', default=[],
+                    help='必须存在且与旧版不同的编译文件，完整结果差分保持严格')
 args = parser.parse_args()
 if args.expect_head != head():
     raise ValueError('指定提交与本地 HEAD 不一致')
@@ -48,6 +50,7 @@ shutil.copyfile(archive / 'source/Cargo.toml', probe / 'Cargo.toml')
 shutil.copytree(archive / 'probe', probe / 'probe')
 bindings = {}
 legacy_projection = {}
+source_changes = {}
 research_only = {
     'crates/cloudleaf-search/src/recall.rs',
     'crates/cloudleaf-search/src/word_context.rs',
@@ -84,11 +87,18 @@ for name in ('cloudleaf-search', 'cloudleaf-pinyin', 'cloudleaf-types'):
                 b'    RecallCandidate, RecallResult, recall_context, recall_interleaved, reference_recall_context,\n'
                 b'};\n\n', b'', 1,
             )
-        assert projection == git('show', f'{R20}:{key}'), key
+        legacy = git('show', f'{R20}:{key}')
+        if key in args.expect_source_change:
+            assert projection != legacy, key
+            source_changes[key] = {'legacy': hashlib.sha256(legacy).hexdigest(),
+                                   'current': bindings[key]}
+            continue
+        assert projection == legacy, key
         legacy_projection[key] = hashlib.sha256(projection).hexdigest()
         if key in source_binding['compiled_sources']:
             assert legacy_projection[key] == source_binding['compiled_sources'][key]['git_sha256']
 
+assert set(source_changes) == set(args.expect_source_change)
 flags = ['--manifest-path', probe / 'Cargo.toml']
 run(output / 'toolchain', ['rustc', '-Vv'], sample=False)
 run(output / 'resolve', ['cargo', 'generate-lockfile', '--offline', *flags], sample=False)
@@ -104,6 +114,7 @@ record = {
     'tool': identity(__file__), 'common': identity(LOCAL / 'r21_evidence_common.py'),
     'compiled_sources': bindings,
     'legacy_source_projection': legacy_projection,
+    'reviewed_source_changes': source_changes,
     'probe_source': {p.relative_to(probe).as_posix(): identity(p)['sha256']
                      for p in (probe/'probe').rglob('*') if p.is_file()},
     'probe_lock': identity(probe / 'Cargo.lock'),
