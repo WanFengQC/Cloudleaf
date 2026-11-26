@@ -1,6 +1,6 @@
 # Cloudleaf 产品能力追踪
 
-Round 25 复核原始 50 项要求和验收定义。真实桌面为 `not-run/user-paused`。原始需求与交付条件见[产品范围](../product-scope.md)，本轮配对证据见[交付状态](integration-round25-status.md)。
+Round 26 延续原始 50 项要求和验收定义。真实桌面为 `not-run/user-paused`。原始需求与交付条件见[产品范围](../product-scope.md)，本轮配对证据见[交付状态](integration-round26-status.md)。
 
 | 原需求 | 当前状态 | 证据与缺口 |
 | --- | --- | --- |
@@ -32,7 +32,7 @@ Round 25 复核原始 50 项要求和验收定义。真实桌面为 `not-run/use
 | REQ-TR-01 | research-only | 词语/短语释义查询和候选身份可用，原生长释义交互仍缺 |
 | REQ-TR-02 | research-only | 固定双向模型复测子句、开关、数量关系和数字表达，复杂语义和独立翻译质量待验 |
 | REQ-TR-03 | manual-not-run | 原生面板及隔离宿主确认代码保留，真实交互继续暂停 |
-| REQ-TR-04 | automated-verified | Worker 持有定额计算池，跨方向复用并验证取消、热加载和任务身份；面板调用路径待接入 |
+| REQ-TR-04 | automated-verified | 隔离宿主、独立面板和 Bridge 使用同一后台 Worker 协议，定额计算池、取消、方向切换和结果身份均有无窗口回归 |
 | REQ-TR-05 | blocked | 已核对替代权重及部署方案，新增权重授权、实测和独立分发审批待交付 |
 | REQ-TR-06 | implemented | 独立面板支持用户自定义在线 API 与本地协议回归 |
 | REQ-TR-07 | automated-verified | 显式授权、凭据隔离和禁默认联网，独立人工安全验证未执行 |
@@ -41,11 +41,11 @@ Round 25 复核原始 50 项要求和验收定义。真实桌面为 `not-run/use
 | REQ-WIN-03 | manual-not-run | 隔离宿主候选可构建，DPI、可访问性和实际候选交互未验 |
 | REQ-WIN-04 | automated-verified | 三态、未知隔离、迟到回执与恢复路径自动回归 |
 | REQ-WIN-05 | manual-not-run | 记事本、浏览器、办公编辑和多行真实应用未执行 |
-| REQ-CFG-01 | implemented | 输入方案、用户词库和翻译分别可配置，统一设置中心未实现 |
+| REQ-CFG-01 | implemented | 输入方案、用户词库和离线目录分别可配置，面板保留显式在线配置，统一设置中心未实现 |
 | REQ-CFG-02 | implemented | 来源、版本和损坏诊断可查询，系统级集中管理尚缺 |
 | REQ-QA-01 | automated-verified | 本地全回归和最终 Windows/Linux push CI 单独核验 |
 | REQ-QA-02 | blocked | 运行正式就绪门禁，真实独立人工 gold 尚无 |
-| REQ-QA-03 | research-only | 精确字符请求分配已对照，默认 lexical 并发仍有尾延迟，真实系统性能待测 |
+| REQ-QA-03 | research-only | 默认 lexical 减少查询内重复评分，171 和 243 键分别配对，真实系统性能待测。延迟门槛见本轮 Worker 报告 |
 | REQ-QA-04 | blocked | 状态机和有界资源回归保留，8h/24h 准入未放行 |
 | REQ-QA-05 | not-implemented | 正式安装、覆盖更新、回滚和卸载发行链尚未交付 |
 | REQ-QA-06 | automated-verified | 不输出私人输入的研发协议、本地默认与学习保护，经自动检查 |
