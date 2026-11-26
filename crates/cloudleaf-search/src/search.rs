@@ -6,6 +6,12 @@ use crate::{
 use std::cmp::Ordering;
 use std::collections::{BTreeMap, BinaryHeap};
 
+#[path = "recall.rs"]
+mod recall;
+pub use recall::{
+    RecallCandidate, RecallResult, recall_context, recall_interleaved, reference_recall_context,
+};
+
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
 pub struct Features {
     pub interpretation_cost: InterpretationCost,

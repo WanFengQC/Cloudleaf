@@ -489,6 +489,35 @@ impl WordContextModel {
     pub fn pair_count(&self) -> usize {
         self.pairs.len()
     }
+
+    pub(crate) fn recall_start(&self) -> u32 {
+        self.bos
+    }
+
+    pub(crate) fn recall_end(&self) -> u32 {
+        self.eos
+    }
+
+    pub(crate) fn recall_word(&self, entry: usize) -> u32 {
+        self.entries[entry]
+    }
+
+    pub(crate) fn recall_gain(&self, previous: u32, next: u32) -> i64 {
+        if previous == self.unknown || next == self.unknown {
+            return 0;
+        }
+        let index = previous as usize;
+        let rows = &self.pairs[self.starts[index]..self.starts[index + 1]];
+        let Some(row) = rows
+            .binary_search_by_key(&next, |pair| pair.next)
+            .ok()
+            .map(|index| &rows[index])
+            .filter(|row| row.observed >= 2)
+        else {
+            return 0;
+        };
+        (row.units - self.unigram(next)).clamp(0, 1024)
+    }
 }
 
 fn transition_units(pair_count: u64, prior_count: u64, word_count: u64, total: u64) -> i64 {

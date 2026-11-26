@@ -4,10 +4,13 @@ use cloudleaf_input::{
     SchemeConfig,
 };
 use cloudleaf_search::{
-    BigramModel, Config, LanguageModelSnapshot, Lattice, Lexicon, Method, Ranker, ResearchRanker,
-    SearchResult, WordContextModel, expected_reachability, search_graph,
+    BigramModel, Cancellation, Config, LanguageModelSnapshot, Lattice, Lexicon, Method, Ranker,
+    ResearchRanker, SearchResult, WordContextModel, expected_reachability, recall_context,
+    recall_interleaved, search_graph,
 };
 use ring::digest::{SHA256, digest};
+use std::alloc::{GlobalAlloc, Layout, System};
+use std::cell::Cell;
 use std::error::Error;
 use std::fs;
 use std::time::Instant;
@@ -16,6 +19,65 @@ type Outcome<T> = Result<T, Box<dyn Error>>;
 const MAX_INPUT: usize = 64;
 const TOP_K: usize = 10;
 const POOL: usize = 50;
+
+#[derive(Clone, Copy, Default)]
+struct Allocation {
+    bytes: usize,
+    calls: usize,
+}
+
+thread_local! {
+    static ALLOCATION: Cell<Option<Allocation>> = const { Cell::new(None) };
+}
+
+struct MeasuredAllocator;
+
+// 例程记录本线程成功申请的字节，系统分配器仍负责申请与释放。
+unsafe impl GlobalAlloc for MeasuredAllocator {
+    unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
+        let result = unsafe { System.alloc(layout) };
+        if !result.is_null() {
+            allocated(layout.size());
+        }
+        result
+    }
+
+    unsafe fn realloc(&self, ptr: *mut u8, layout: Layout, size: usize) -> *mut u8 {
+        let result = unsafe { System.realloc(ptr, layout, size) };
+        if !result.is_null() {
+            allocated(size);
+        }
+        result
+    }
+
+    unsafe fn dealloc(&self, ptr: *mut u8, layout: Layout) {
+        unsafe { System.dealloc(ptr, layout) };
+    }
+}
+
+#[global_allocator]
+static ALLOCATOR: MeasuredAllocator = MeasuredAllocator;
+
+fn allocated(bytes: usize) {
+    let _ = ALLOCATION.try_with(|slot| {
+        if let Some(total) = slot.get() {
+            slot.set(Some(Allocation {
+                bytes: total.bytes.saturating_add(bytes),
+                calls: total.calls.saturating_add(1),
+            }));
+        }
+    });
+}
+
+fn measure<T>(id: &str, phase: &str, operation: impl FnOnce() -> T) -> (T, u128) {
+    ALLOCATION.set(Some(Allocation::default()));
+    let start = Instant::now();
+    let output = operation();
+    let elapsed = start.elapsed().as_nanos();
+    let usage = ALLOCATION.take().unwrap_or_default();
+    println!("ALLOC\t{id}\t{phase}\t{}\t{}", usage.bytes, usage.calls);
+    (output, elapsed)
+}
 
 fn verified(path: &str, expected: &str) -> Outcome<String> {
     let text = fs::read_to_string(path)?;
@@ -109,8 +171,96 @@ fn baseline(
     }
 }
 
+fn recall_comparison(
+    id: &str,
+    graph: &Lattice<'_>,
+    lexicon: &Lexicon,
+    words: &WordContextModel,
+    lexical: &BigramModel,
+    characters: &BigramModel,
+) -> Outcome<()> {
+    let config = config(Ranker::CharacterBigram, POOL);
+    let (exact, exact_ns) = measure(id, "exact-pool", || {
+        search_graph(lexicon, graph, &config, Some(characters), None)
+    });
+    let exact = exact?;
+    result(id, "exact-pool", &exact, exact_ns, exact.candidates.len());
+    for (rank, path) in exact.candidates.iter().enumerate() {
+        println!(
+            "CAND\t{id}\texact-pool\t{}\t{}\t{}\t{:?}\t{:?}\t{:?}",
+            rank + 1,
+            path.text,
+            path.score,
+            path.features,
+            path.entry_ids,
+            path.edge_indices
+        );
+    }
+    let (ordered, word_ns) = measure(id, "finite-word", || {
+        words.rank_pool(graph, &exact, ResearchRanker::Word, None)
+    });
+    let ordered = ordered?;
+    result(id, "finite-word", &exact, word_ns, ordered.len());
+    for (index, row) in ordered.iter().enumerate() {
+        let path = &exact.candidates[row.pool_index];
+        println!(
+            "CAND\t{id}\tfinite-word\t{}\t{}\t{}\t{:?} {:?}\t{:?}\t{:?}",
+            index + 1,
+            path.text,
+            row.final_units,
+            row,
+            path.features,
+            path.entry_ids,
+            path.edge_indices
+        );
+    }
+
+    let cancellation = Cancellation::default();
+    for name in ["interleaved", "context-beam"] {
+        let (recalled, elapsed) = measure(id, name, || match name {
+            "interleaved" => recall_interleaved(graph, &config, characters, lexical, &cancellation),
+            _ => recall_context(graph, &config, characters, words, &cancellation),
+        });
+        let recalled = recalled?;
+        let stats = &recalled.work;
+        println!(
+            "RUN\t{id}\t{name}\t{}\t{:?}\t{}\t{}\t{}\t{}\t{}",
+            elapsed,
+            stats.budget,
+            recalled.exhaustive_for_score,
+            stats.graph_edges,
+            stats.expansions,
+            stats.resident_high_water,
+            recalled.candidates.len()
+        );
+        println!(
+            "WORK\t{id}\t{name}\t{}\t{:?}",
+            stats.beam_pruned, recalled.source_work
+        );
+        for (index, row) in recalled.candidates.iter().enumerate() {
+            let path = &row.path;
+            println!(
+                "CAND\t{id}\t{name}\t{}\t{}\t{}\t{:?} gain={} sources={:?}\t{:?}\t{:?}",
+                index + 1,
+                path.text,
+                path.score,
+                path.features,
+                row.word_gain,
+                row.source_ranks,
+                path.entry_ids,
+                path.edge_indices
+            );
+        }
+    }
+    Ok(())
+}
+
 fn main() -> Outcome<()> {
     let mut args: Vec<_> = std::env::args().skip(1).collect();
+    let round24 = args.last().is_some_and(|value| value == "--recall-round24");
+    if round24 {
+        args.pop();
+    }
     let character_pool = args.last().is_some_and(|value| value == "--character-pool");
     if character_pool {
         args.pop();
@@ -197,8 +347,14 @@ fn main() -> Outcome<()> {
             println!("REACH\t{id}\tunsupported");
             continue;
         };
-        let begin = Instant::now();
-        let graph = match Lattice::build_with_scheme(&lexicon, raw, &pool_config, &scheme) {
+        let build = || Lattice::build_with_scheme(&lexicon, raw, &pool_config, &scheme);
+        let (built, graph_ns) = if round24 {
+            measure(id, "lattice", build)
+        } else {
+            let begin = Instant::now();
+            (build(), begin.elapsed().as_nanos())
+        };
+        let graph = match built {
             Ok(value) => value,
             Err(error) => {
                 println!("REACH\t{id}\tinvalid");
@@ -206,7 +362,7 @@ fn main() -> Outcome<()> {
                 continue;
             }
         };
-        println!("LATTICE\t{id}\t{}", begin.elapsed().as_nanos());
+        println!("LATTICE\t{id}\t{graph_ns}");
         let reached = if expected.is_empty() {
             "no-target"
         } else {
@@ -217,6 +373,17 @@ fn main() -> Outcome<()> {
             }
         };
         println!("REACH\t{id}\t{reached}");
+        if round24 {
+            recall_comparison(
+                id,
+                &graph,
+                &lexicon,
+                &words,
+                lexical.model(),
+                witten.model(),
+            )?;
+            continue;
+        }
         baseline(id, &lexicon, &graph, modes);
         let pool_start = Instant::now();
         let pool = search_graph(&lexicon, &graph, &pool_config, pool_model, None)?;

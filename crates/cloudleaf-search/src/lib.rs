@@ -19,7 +19,8 @@ pub use model::{BigramModel, LanguageModelSnapshot, ModelMetadata};
 pub use profiling::{Measurement, Phase, Profile, profile_query, profile_scheme_query};
 pub use schemes::{EdgeInterpretation, InterpretationCost, SchemeStatistics};
 pub use search::{
-    Candidate, Features, SearchResult, Statistics, search_graph, search_graph_cancellable,
+    Candidate, Features, RecallCandidate, RecallResult, SearchResult, Statistics, recall_context,
+    recall_interleaved, reference_recall_context, search_graph, search_graph_cancellable,
 };
 pub use transition_cache::{TransitionCache, TransitionCacheStatistics};
 
