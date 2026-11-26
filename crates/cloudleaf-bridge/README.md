@@ -31,3 +31,7 @@ cloudleaf-bridge-headless RUNTIME_TSV LEXICON_SHA CATALOG_JSON CATALOG_SHA < act
 `wait` 只在无窗口示例里等待。普通输入 `space`、`enter` 和数字选词仍经原来的输入事件处理。`cancel`、`blur`、`unknown` 和 `reset-unknown` 可用于独立事务验证，最后一项需要给出增长的 `session`。状态日志默认隐藏原文、译文与文档正文。只有显式添加 `--show-text` 才输出这些字段，适合本轮已知的非私人研发样例。Worker 状态和完整性检查项作为附加字段报告，`confirm` 仍为当前结果的显式提交操作。
 
 桥接接受离线提供者，真实候选事务测试使用固定测试提供者。独立的原生翻译面板继续保留已授权的在线路径。本命令用于无窗口验证，Windows 窗口和 TSF 验收保持独立。
+
+Round 27 加入 `--settings-dir DIR`，在启动时读取独立输入偏好 `input-settings.json`，默认混排关闭。确认设置保存后，以新进程启动应用；运行中的组合继续保留。CLI 和隔离宿主使用同一份输入偏好格式。
+
+以 `--semantic-index INDEX SHA` 加载明确的研究索引后，可以另发 `{"op":"define","language":"zh","text":"词头","revision":7}`。应使用上一条实际记录的输入修订号。该操作返回 `definition`，带已核验的来源身份，并沿用 `--show-text` 的输出选择。英文 `language:"en"` 使用原始英文释义的精确反查。释义无提交编号，只有独立的本次记录；编辑后旧修订拒绝。
