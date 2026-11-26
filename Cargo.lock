@@ -183,9 +183,10 @@ name = "cloudleaf-bridge"
 version = "0.1.0"
 dependencies = [
  "cloudleaf-input",
- "cloudleaf-offline",
  "cloudleaf-search",
  "cloudleaf-translation",
+ "cloudleaf-translation-integrity",
+ "cloudleaf-translation-ipc",
  "cloudleaf-types",
  "serde_json",
 ]
@@ -266,6 +267,7 @@ version = "0.1.0"
 dependencies = [
  "cloudleaf-dictionary",
  "cloudleaf-input",
+ "cloudleaf-translation-ipc",
  "cloudleaf-types",
  "reqwest",
  "ring",
@@ -292,8 +294,9 @@ dependencies = [
 name = "cloudleaf-translation-panel"
 version = "0.1.0"
 dependencies = [
- "cloudleaf-offline",
  "cloudleaf-translation",
+ "cloudleaf-translation-integrity",
+ "cloudleaf-translation-ipc",
  "ring",
  "serde",
  "serde_json",

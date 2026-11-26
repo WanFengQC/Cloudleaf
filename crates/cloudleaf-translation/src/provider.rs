@@ -24,6 +24,11 @@ pub trait TranslationProvider: Send + Sync + 'static {
         request: &TranslationRequest,
         cancellation: &TranslationCancellation,
     ) -> Result<ProviderOutput, TranslationError>;
+
+    /// 队列结束后在后台线程收尾，交互线程不执行此方法。
+    fn shutdown(&self) -> Result<(), TranslationError> {
+        Ok(())
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -126,5 +131,12 @@ impl ProviderRegistry {
             .get(id)
             .cloned()
             .ok_or(TranslationError::ProviderUnavailable)
+    }
+
+    pub(crate) fn shutdown_providers(&self) -> Vec<Arc<dyn TranslationProvider>> {
+        self.providers
+            .values()
+            .map(|entry| Arc::clone(&entry.provider))
+            .collect()
     }
 }

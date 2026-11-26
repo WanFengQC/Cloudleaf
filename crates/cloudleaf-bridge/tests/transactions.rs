@@ -1,6 +1,4 @@
-use cloudleaf_bridge::{
-    BridgeError, LazyMarian, PendingCommit, TranslationBridge, TranslationState,
-};
+use cloudleaf_bridge::{BridgeError, PendingCommit, TranslationBridge, TranslationState};
 use cloudleaf_input::{InputConfig, InputEngine, PinyinScheme, SchemeConfig, SearchSnapshot};
 use cloudleaf_search::Config;
 use cloudleaf_translation::{
@@ -404,9 +402,16 @@ fn unavailable_or_corrupt_catalog_does_not_block_normal_chinese_input() {
     let fixtures = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures");
     for (name, error) in [
         ("missing-catalog.json", TranslationError::ModelNotFound),
-        ("lexicon.tsv", TranslationError::ModelLoadFailed),
+        ("lexicon.tsv", TranslationError::OfflineCatalogMismatch),
     ] {
-        let provider = LazyMarian::new(fixtures.join(name), "0".repeat(64)).unwrap();
+        let provider = cloudleaf_translation::WorkerProvider::new(
+            cloudleaf_translation_ipc::WorkerConfig::sibling(
+                fixtures.join(name),
+                "0".repeat(64),
+                cloudleaf_translation_ipc::ResourceThreads::One,
+            )
+            .unwrap(),
+        );
         let mut bridge = activated(Arc::new(provider), WAIT);
         candidate(&mut bridge);
         assert_eq!(finished(&mut bridge), TranslationState::Failed);

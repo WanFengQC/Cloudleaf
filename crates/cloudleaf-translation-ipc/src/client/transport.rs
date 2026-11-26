@@ -4,7 +4,7 @@ use std::io::{BufReader, BufWriter};
 use std::path::PathBuf;
 use std::process::{Child, Command as ProcessCommand, Stdio};
 use std::sync::Arc;
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::atomic::{AtomicBool, AtomicU32, Ordering};
 use std::sync::mpsc::{Receiver, RecvTimeoutError, SyncSender, TrySendError, sync_channel};
 use std::thread::{self, JoinHandle};
 use std::time::{Duration, Instant};
@@ -22,7 +22,7 @@ pub(super) struct Process {
 }
 
 impl Process {
-    pub(super) fn launch(config: &WorkerConfig) -> Result<Self, IpcError> {
+    pub(super) fn launch(config: &WorkerConfig, pid: &AtomicU32) -> Result<Self, IpcError> {
         let executable = worker_path(config)?;
         let threads = config.threads.count().to_string();
         let mut command = ProcessCommand::new(executable);
@@ -49,6 +49,7 @@ impl Process {
             command.creation_flags(CREATE_NO_WINDOW | scheduling);
         }
         let mut child = command.spawn().map_err(|_| IpcError::WorkerStartFailed)?;
+        pid.store(child.id(), Ordering::Release);
         let pipe_in = child.stdin.take().expect("已请求子进程标准输入管道");
         let pipe_out = child.stdout.take().expect("已请求子进程标准输出管道");
         let (stdin, outbound) = sync_channel(TRANSPORT_CAPACITY);
@@ -67,10 +68,7 @@ impl Process {
             });
         let writer = match writer {
             Ok(writer) => writer,
-            Err(_) => {
-                terminate_child(&mut child);
-                return Err(IpcError::WorkerStartFailed);
-            }
+            Err(_) => return Err(failed_launch(&mut child, pid)),
         };
         let received_too_many = Arc::new(AtomicBool::new(false));
         let input_overload = Arc::clone(&received_too_many);
@@ -110,14 +108,9 @@ impl Process {
             }),
             Err(_) => {
                 drop(stdin);
-                terminate_child(&mut child);
-                Err(IpcError::WorkerStartFailed)
+                Err(failed_launch(&mut child, pid))
             }
         }
-    }
-
-    pub(super) fn id(&self) -> u32 {
-        self.child.id()
     }
 
     pub(super) fn send(&self, envelope: Envelope<Command>) -> Result<(), IpcError> {
@@ -158,6 +151,16 @@ impl Process {
             }
         }
         reaped
+    }
+}
+
+fn failed_launch(child: &mut Child, pid: &AtomicU32) -> IpcError {
+    // 创建管道线程失败仍需证明本次已创建的子进程退出。
+    if terminate_child(child) {
+        pid.store(0, Ordering::Release);
+        IpcError::WorkerStartFailed
+    } else {
+        IpcError::WorkerReapFailed
     }
 }
 

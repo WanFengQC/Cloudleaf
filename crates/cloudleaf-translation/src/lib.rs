@@ -8,6 +8,7 @@ mod provider;
 mod scheduler;
 mod secret;
 mod types;
+mod worker;
 
 pub use dictionary::*;
 pub use interaction::*;
@@ -17,3 +18,4 @@ pub use provider::*;
 pub use scheduler::*;
 pub use secret::*;
 pub use types::*;
+pub use worker::*;

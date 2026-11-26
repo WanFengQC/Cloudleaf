@@ -6,6 +6,7 @@ use crate::{
     TranslationKind, TranslationRequest, TranslationResult, TranslationTaskId,
 };
 use std::collections::{BTreeMap, VecDeque};
+use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::{Arc, Mutex, mpsc};
 use std::thread::{self, JoinHandle};
 
@@ -78,7 +79,8 @@ pub struct TranslationService {
     limits: ServiceLimits,
     next_id: u64,
     sender: Option<mpsc::SyncSender<Job>>,
-    workers: Vec<JoinHandle<()>>,
+    workers: Vec<JoinHandle<Result<(), TranslationError>>>,
+    shutdown_error: Option<TranslationError>,
     tasks: BTreeMap<TranslationTaskId, TaskRecord>,
     cache: VecDeque<Cached>,
     cache_bytes: usize,
@@ -101,12 +103,29 @@ impl TranslationService {
         }
         let (sender, receiver) = mpsc::sync_channel::<Job>(limits.queued);
         let receiver = Arc::new(Mutex::new(receiver));
+        let remaining = Arc::new(AtomicUsize::new(limits.workers));
+        let providers = Arc::new(registry.shutdown_providers());
         let mut workers = Vec::new();
         for index in 0..limits.workers {
             let receiver = Arc::clone(&receiver);
+            let remaining = Arc::clone(&remaining);
+            let providers = Arc::clone(&providers);
             let worker = thread::Builder::new()
                 .name(format!("cloudleaf-translation-{index}"))
-                .spawn(move || worker_loop(receiver))
+                .spawn(move || {
+                    worker_loop(receiver);
+                    if remaining.fetch_sub(1, Ordering::AcqRel) == 1 {
+                        let mut failed = None;
+                        for provider in providers.iter() {
+                            if let Err(error) = provider.shutdown() {
+                                failed.get_or_insert(error);
+                            }
+                        }
+                        failed.map_or(Ok(()), Err)
+                    } else {
+                        Ok(())
+                    }
+                })
                 .map_err(|_| TranslationError::ProviderUnavailable)?;
             workers.push(worker);
         }
@@ -116,6 +135,7 @@ impl TranslationService {
             next_id: 1,
             sender: Some(sender),
             workers,
+            shutdown_error: None,
             tasks: BTreeMap::new(),
             cache: VecDeque::new(),
             cache_bytes: 0,
@@ -314,16 +334,30 @@ impl TranslationService {
         self.workers.iter().all(JoinHandle::is_finished)
     }
 
+    /// 在完成信号后回收后台线程，并保留不能确认进程已退出的错误。
+    pub fn finish_shutdown(&mut self) -> Result<(), TranslationError> {
+        if self.sender.is_some() || !self.workers_finished() {
+            return Err(TranslationError::Busy);
+        }
+        self.join_workers()
+    }
+
     /// 仅后台或已证明worker退出后调用；不合作的提供者无法安全强杀。
     pub fn shutdown(mut self) -> Result<(), TranslationError> {
         self.begin_shutdown();
-        let mut error = None;
+        self.join_workers()
+    }
+
+    fn join_workers(&mut self) -> Result<(), TranslationError> {
         for worker in self.workers.drain(..) {
-            if worker.join().is_err() {
-                error = Some(TranslationError::InternalError);
+            if let Err(failed) = worker
+                .join()
+                .unwrap_or(Err(TranslationError::InternalError))
+            {
+                self.shutdown_error.get_or_insert(failed);
             }
         }
-        error.map_or(Ok(()), Err)
+        self.shutdown_error.map_or(Ok(()), Err)
     }
 
     fn take_cached(&mut self, key: &CacheKey) -> Option<ProviderOutput> {

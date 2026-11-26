@@ -953,10 +953,14 @@ impl WindowState {
                         QualityStatus::Pending => "Pending",
                     };
                     format!(
-                        "{quality}\r\n提供者：{} · {:?}\r\n数据来源：{}\r\n\r\n{}",
+                        "{quality}\r\n提供者：{} · {:?}\r\n数据来源：{}{}\r\n\r\n{}",
                         r.provider.id,
                         r.output.output_kind,
                         r.output.source_ids.join(", "),
+                        self.controller
+                            .integrity_report()
+                            .map(integrity_summary)
+                            .unwrap_or_default(),
                         r.output
                             .translated_text
                             .replace("\r\n", "\n")
@@ -974,8 +978,13 @@ impl WindowState {
                 .elapsed
                 .map(|value| format!(" · 实测 {} ms（含UI观察间隔）", value.as_millis()))
                 .unwrap_or_default();
+            let worker = self
+                .controller
+                .worker_snapshot()
+                .map(|snapshot| format!(" · 工作进程{}", worker_stage(snapshot.stage)))
+                .unwrap_or_default();
             let status = format!(
-                "{:?}{elapsed} · {}{}",
+                "{:?}{elapsed}{worker} · {}{}",
                 self.controller.status,
                 self.controller.notice,
                 self.controller
@@ -999,6 +1008,42 @@ fn selected_direction(value: isize) -> DirectionChoice {
         3 => DirectionChoice::AutoChinese,
         _ => DirectionChoice::ChineseEnglish,
     }
+}
+
+fn worker_stage(stage: cloudleaf_translation::WorkerStage) -> &'static str {
+    use cloudleaf_translation::WorkerStage::*;
+    match stage {
+        NotStarted => "尚未启动",
+        Starting => "正在启动",
+        Verifying => "正在验证模型资源",
+        Loading => "正在加载模型",
+        Ready => "已就绪",
+        Translating => "正在翻译",
+        Cancelling => "正在取消请求",
+        Failed => "发生错误",
+        Closing => "正在关闭",
+        Stopped => "已停止",
+    }
+}
+
+fn integrity_summary(report: &cloudleaf_translation_integrity::IntegrityReport) -> String {
+    let mut labels: Vec<_> = report
+        .findings
+        .iter()
+        .filter(|finding| finding.status.requires_acknowledgement())
+        .map(|finding| (finding.kind.label(), finding.status.label()))
+        .collect();
+    labels.sort_unstable();
+    labels.dedup();
+    if labels.is_empty() {
+        return String::new();
+    }
+    let details = labels
+        .into_iter()
+        .map(|(kind, status)| format!("{kind}（{status}）"))
+        .collect::<Vec<_>>()
+        .join("、");
+    format!("\r\n完整性提示：{details}。请核对原文。")
 }
 fn wide(text: &str) -> Vec<u16> {
     text.encode_utf16().chain(Some(0)).collect()

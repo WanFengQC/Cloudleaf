@@ -2,6 +2,8 @@ use crate::platform::{CredentialStore, PlatformError};
 use crate::settings::{DirectionChoice, Settings};
 use crate::setup::{Prepared, SetupCommand, SetupEvent, SetupHandle};
 use cloudleaf_translation::*;
+use cloudleaf_translation_integrity::{self as integrity, Glossary, IntegrityReport};
+use cloudleaf_translation_ipc::IpcError;
 use std::path::PathBuf;
 use std::sync::{Arc, mpsc};
 use std::time::{Duration, Instant};
@@ -39,6 +41,10 @@ pub struct PanelController {
     identity: Option<ProviderIdentity>,
     authorization: Option<ProviderAuthorization>,
     capabilities: Option<ProviderCapabilities>,
+    worker: Option<WorkerObserver>,
+    worker_shutdown_error: Option<TranslationError>,
+    glossary: Glossary,
+    integrity: Option<IntegrityReport>,
     active: Option<(TranslationTaskId, TranslationContext, u64, Instant)>,
     setup: SetupHandle,
     preparing: bool,
@@ -84,6 +90,10 @@ impl PanelController {
             identity: None,
             authorization: None,
             capabilities: None,
+            worker: None,
+            worker_shutdown_error: None,
+            glossary: Glossary::default(),
+            integrity: None,
             active: None,
             setup,
             preparing: true,
@@ -133,6 +143,7 @@ impl PanelController {
 
     pub fn available(&self) -> bool {
         self.service.is_some()
+            && self.worker_shutdown_error.is_none()
             && self
                 .capabilities
                 .as_ref()
@@ -147,6 +158,9 @@ impl PanelController {
         }
         if settings.validate().is_err() {
             return Err(TranslationError::InvalidConfig);
+        }
+        if let Some(error) = self.worker_shutdown_error {
+            return Err(error);
         }
         settings.revision = self
             .settings
@@ -172,11 +186,16 @@ impl PanelController {
         if !self.focused {
             return Err(TranslationError::StaleResult);
         }
+        if let Some(error) = self.worker_shutdown_error {
+            return Err(error);
+        }
         self.cancel_active();
         self.panel.cancel();
+        self.context.input_revision += 1;
         self.panel.focus(self.context);
         self.error = None;
         self.elapsed = None;
+        self.integrity = None;
         let identity = self
             .identity
             .clone()
@@ -231,6 +250,14 @@ impl PanelController {
         self.panel.result()
     }
 
+    pub fn worker_snapshot(&self) -> Option<WorkerSnapshot> {
+        self.worker.as_ref().and_then(WorkerObserver::snapshot)
+    }
+
+    pub fn integrity_report(&self) -> Option<&IntegrityReport> {
+        self.integrity.as_ref()
+    }
+
     pub fn copy_text(&self) -> Result<String, TranslationError> {
         let result = self.panel.result().ok_or(TranslationError::StaleResult)?;
         Ok(self
@@ -273,9 +300,6 @@ impl PanelController {
     pub fn tick(&mut self) {
         for _ in 0..8 {
             match self.setup.receiver.try_recv() {
-                Ok(SetupEvent::ModelProgress(state)) => {
-                    self.notice = format!("{state:?} · 本地模型后台准备，未调用在线服务");
-                }
                 Ok(SetupEvent::Prepared(value)) => self.adopt(*value),
                 Ok(SetupEvent::Key(outcome)) => match outcome {
                     Ok(notice) => self.notice = notice.into(),
@@ -291,19 +315,39 @@ impl PanelController {
                 }
             }
         }
-        if self.pending.is_some()
+        if (self.pending.is_some() || self.closing.is_some())
+            && self.worker_shutdown_error.is_none()
             && self
                 .service
                 .as_ref()
                 .is_none_or(TranslationService::workers_finished)
         {
-            if let Some(service) = self.service.take() {
-                let _ = service.shutdown();
+            let retired = self
+                .service
+                .as_mut()
+                .map(TranslationService::finish_shutdown);
+            if let Some(Err(error)) = retired {
+                if self.worker.is_some() {
+                    self.worker_shutdown_error = Some(error);
+                }
+                if self.closing.is_some() {
+                    self.error = Some(translation_message(error));
+                } else {
+                    self.record_error(error);
+                }
             }
-            let settings = self.pending.take().expect("已检查pending");
-            match self.send(SetupCommand::Prepare(settings, true)) {
-                Ok(()) => self.preparing = true,
-                Err(error) => self.record_error(error),
+            if self.worker_shutdown_error.is_none() {
+                self.service = None;
+            }
+            if let Some(settings) = self.pending.take() {
+                if retired.is_some_and(|result| result.is_err()) {
+                    self.notice = "旧提供者关闭失败，未应用新设置".into();
+                } else {
+                    match self.send(SetupCommand::Prepare(settings, true)) {
+                        Ok(()) => self.preparing = true,
+                        Err(error) => self.record_error(error),
+                    }
+                }
             }
         }
         if let Some((id, context, revision, started)) = self.active {
@@ -338,6 +382,9 @@ impl PanelController {
                         }
                     };
                     if snapshot.state.is_terminal() {
+                        if snapshot.state == TaskState::Succeeded && self.worker.is_some() {
+                            self.update_integrity();
+                        }
                         self.elapsed = Some(started.elapsed());
                         self.error = snapshot.error.map(translation_message);
                         self.active = None;
@@ -372,15 +419,18 @@ impl PanelController {
     }
 
     pub fn close_ready(&self) -> bool {
-        self.service
-            .as_ref()
-            .is_none_or(TranslationService::workers_finished)
+        self.service.is_none()
+            && self.worker_shutdown_error.is_none()
             && self.setup.thread.is_finished()
     }
 
     pub fn close_deadline_reached(&self) -> bool {
-        self.closing
-            .is_some_and(|start| start.elapsed() >= Duration::from_secs(2))
+        let limit = if self.worker.is_some() {
+            Duration::from_secs(4)
+        } else {
+            Duration::from_secs(2)
+        };
+        self.closing.is_some_and(|start| start.elapsed() >= limit)
     }
 
     pub fn platform_error(&mut self, error: PlatformError) {
@@ -393,6 +443,7 @@ impl PanelController {
                 service.begin_shutdown();
             }
             self.service = value.service;
+            self.worker = value.worker;
             self.preparing = false;
             return;
         }
@@ -402,6 +453,8 @@ impl PanelController {
         self.identity = value.identity;
         self.authorization = value.authorization;
         self.capabilities = value.capabilities;
+        self.worker = value.worker;
+        self.glossary = value.glossary;
         if !self.supports_kind(self.kind) {
             self.kind = TranslationKind::Word;
         }
@@ -431,6 +484,7 @@ impl PanelController {
         self.authorized = false;
         self.elapsed = None;
         self.error = None;
+        self.integrity = None;
         if !self.preparing && self.closing.is_none() {
             self.status = if self.available() {
                 ViewStatus::Idle
@@ -447,6 +501,24 @@ impl PanelController {
             let _ = service.cancel(id);
             let _ = service.forget(id);
         }
+    }
+
+    fn update_integrity(&mut self) {
+        let Some(result) = self.panel.result() else {
+            return;
+        };
+        let direction = match result.direction.source {
+            Language::Chinese => integrity::Direction::ChineseToEnglish,
+            Language::English => integrity::Direction::EnglishToChinese,
+            Language::Auto => return,
+        };
+        let original = self.panel.original();
+        self.integrity = Some(integrity::check_translation(
+            original,
+            &result.output.translated_text,
+            direction,
+            &self.glossary,
+        ));
     }
 
     fn send(&self, command: SetupCommand) -> Result<(), TranslationError> {
@@ -502,6 +574,25 @@ fn translation_message(error: TranslationError) -> String {
         TranslationError::AuthenticationFailed => "服务拒绝凭据，请检查该端点的API Key",
         TranslationError::Timeout => "翻译已超时，原文保留，可手动重试",
         TranslationError::NetworkUnavailable => "网络不可用，原文保留",
+        TranslationError::ModelNotFound => "离线模型未安装或缺少目录文件",
+        TranslationError::ModelLoadFailed => "离线模型初始化失败",
+        TranslationError::OfflineCatalogMismatch => "离线模型目录已变化，请重新校验并应用设置",
+        TranslationError::OfflineWorker(IpcError::ModelInvalid) => "离线模型校验失败",
+        TranslationError::OfflineWorker(IpcError::WorkerStartFailed) => "无法启动离线翻译工作进程",
+        TranslationError::OfflineWorker(IpcError::HandshakeTimeout) => "离线翻译工作进程握手超时",
+        TranslationError::OfflineWorker(IpcError::InvalidWorkerPath) => {
+            "离线翻译工作进程文件不存在或路径无效"
+        }
+        TranslationError::OfflineWorker(IpcError::InvalidProtocolVersion) => {
+            "离线翻译工作进程协议版本不兼容"
+        }
+        TranslationError::OfflineWorker(IpcError::WorkerExited | IpcError::BrokenPipe) => {
+            "离线翻译工作进程已退出，请按需重新请求"
+        }
+        TranslationError::OfflineWorker(IpcError::WorkerReapFailed) => {
+            "无法确认旧工作进程退出，未启动重复实例"
+        }
+        TranslationError::OfflineWorker(_) => "离线翻译工作进程错误，原文保留",
         _ => "翻译未完成，原文保留；可检查设置或手动重试",
     };
     format!("{message} ({error})")

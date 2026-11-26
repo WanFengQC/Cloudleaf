@@ -68,6 +68,14 @@ impl WorkerConfig {
         self.threads
     }
 
+    pub fn catalog_path(&self) -> &std::path::Path {
+        &self.catalog
+    }
+
+    pub fn catalog_sha256(&self) -> &str {
+        &self.catalog_sha256
+    }
+
     pub fn with_scheduling(mut self, scheduling: WorkerScheduling) -> Result<Self, IpcError> {
         if scheduling == WorkerScheduling::BelowNormal && !cfg!(windows) {
             return Err(IpcError::InvalidConfiguration);
@@ -382,7 +390,7 @@ impl WorkerClient {
                 return Err(IpcError::Busy);
             }
             if self.child_pid().is_some() {
-                return Err(IpcError::WorkerExited);
+                return Err(IpcError::WorkerReapFailed);
             }
             // 旧进程已经退出，只有下一次显式请求才分配新代。
             self.backend.take();
@@ -475,15 +483,14 @@ impl Supervisor {
         if self.stop.load(Ordering::Acquire) {
             return Ok(());
         }
-        let process = Process::launch(&self.config)?;
-        self.pid.store(process.id(), Ordering::Release);
+        let process = Process::launch(&self.config, &self.pid)?;
         let result = self.exchange(&process);
         let _ = self.emit(WorkerEvent::State(WorkerState::Stopping));
         if process.stop(self.generation) {
             self.pid.store(0, Ordering::Release);
             result
         } else {
-            Err(IpcError::WorkerExited)
+            Err(IpcError::WorkerReapFailed)
         }
     }
 
@@ -499,7 +506,7 @@ impl Supervisor {
             self.pending.extend(self.requests.try_iter());
             self.dispatch(process)?;
             if !self.ready && Instant::now() >= handshake_deadline {
-                return Err(IpcError::Timeout);
+                return Err(IpcError::HandshakeTimeout);
             }
             if let Some(message) = process.receive(TICK)? {
                 self.receive(message)?;
@@ -635,9 +642,21 @@ impl Supervisor {
                 && output.catalog_sha256 == self.config.catalog_sha256
                 && !output.model_identity.is_empty()
                 && output.metrics.compute_threads == self.config.threads.count()
-                && output.metrics.resident_models == 1
-                && validate_text(&output.raw_translation, MAX_OUTPUT_BYTES).is_ok() =>
+                && output.metrics.resident_models == 1 =>
             {
+                match validate_text(&output.raw_translation, MAX_OUTPUT_BYTES) {
+                    Ok(()) => {}
+                    Err(IpcError::InputTooLong) => {
+                        return self.complete(
+                            index,
+                            WorkerEvent::Failed {
+                                key,
+                                error: IpcError::OutputTruncated,
+                            },
+                        );
+                    }
+                    Err(_) => return Err(IpcError::InvalidResponse),
+                }
                 self.complete(
                     index,
                     WorkerEvent::Completed {

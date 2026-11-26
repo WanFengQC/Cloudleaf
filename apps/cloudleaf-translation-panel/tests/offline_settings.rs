@@ -18,6 +18,7 @@ fn schema2_migration_adds_no_model_and_preserves_offline_start() {
     let loaded = SettingsRepository::new(directory.clone()).load().unwrap();
     assert_eq!(loaded.settings.schema_version, 3);
     assert!(loaded.settings.offline_catalog.is_none());
+    assert!(loaded.settings.offline_glossary.is_none());
     assert!(!loaded.settings.network_enabled);
     assert!(loaded.notice.is_some());
     std::fs::remove_dir_all(directory).unwrap();
@@ -28,6 +29,7 @@ fn model_catalog_is_distinct_from_online_model_and_dictionary() {
     let settings = Settings {
         provider: ProviderChoice::OfflineModel,
         offline_catalog: Some(PathBuf::from("models/catalog.json")),
+        offline_glossary: Some(PathBuf::from("models/glossary.tsv")),
         dictionary_path: Some(PathBuf::from("dictionary/catalog.json")),
         model: "online-model-kept".into(),
         ..Settings::default()

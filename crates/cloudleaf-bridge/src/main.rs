@@ -1,10 +1,10 @@
 //! 无窗口研发宿主。输入来自显式 JSONL，提交目标只存在于本进程内存。
 
-use cloudleaf_bridge::{
-    BridgeError, LazyMarian, PendingCommit, TranslationBridge, TranslationState,
-};
+use cloudleaf_bridge::{BridgeError, PendingCommit, TranslationBridge, TranslationState};
 use cloudleaf_input::{InputConfig, InputEngine, SearchSnapshot};
 use cloudleaf_search::{Config, Method, Ranker};
+use cloudleaf_translation::{WorkerObserver, WorkerProvider};
+use cloudleaf_translation_ipc::{ResourceThreads, WorkerConfig};
 use cloudleaf_types::{CommitOutcome, EventResult, InputEvent, InputMode, Key};
 use serde_json::{Value, json};
 use std::{
@@ -20,6 +20,7 @@ struct Headless {
     document: String,
     attempt: Option<PendingCommit>,
     show_text: bool,
+    worker: WorkerObserver,
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -42,13 +43,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         },
         InputConfig::default(),
     )?;
-    let provider = Arc::new(LazyMarian::new(PathBuf::from(&args[2]), args[3].clone())?);
+    let provider = Arc::new(WorkerProvider::new(WorkerConfig::sibling(
+        PathBuf::from(&args[2]),
+        args[3].clone(),
+        ResourceThreads::One,
+    )?));
+    let worker = provider.observer();
     let bridge = TranslationBridge::new(engine, 1, provider, Duration::from_secs(120))?;
     let mut host = Headless {
         bridge,
         document: String::new(),
         attempt: None,
         show_text,
+        worker,
     };
     for (index, line) in io::stdin().lock().lines().enumerate() {
         let line = line?;
@@ -210,6 +217,16 @@ impl Headless {
         let result = self.bridge.result();
         let original = self.bridge.original();
         let pending = self.attempt.as_ref();
+        let worker = self.worker.snapshot();
+        let integrity = self.bridge.integrity_report().map(|report| {
+            json!({
+                "review_required": report.requires_acknowledgement(),
+                "findings": report.findings.iter().map(|item| json!({
+                    "kind": item.kind.label(),
+                    "status": item.status.label(),
+                })).collect::<Vec<_>>(),
+            })
+        });
         json!({
             "index": index,
             "op": op,
@@ -231,7 +248,20 @@ impl Headless {
             "document": if self.show_text { Some(self.document.as_str()) } else { None },
             "document_bytes": self.document.len(),
             "learning_selection": self.bridge.input().pending_selection().is_some(),
-            "target": "in-memory"
+            "target": "in-memory",
+            "integrity": integrity,
+            "worker": worker.map(|worker| json!({
+                "stage": format!("{:?}", worker.stage),
+                "pid": worker.child_pid,
+                "request": worker.request,
+                "worker_task": worker.task_id,
+                "matches_result": original.zip(result).is_some_and(|(source, translated)| {
+                    worker.matches_result(source, translated)
+                }),
+                "model_identity": worker.model_identity,
+                "metrics": worker.metrics,
+                "error": worker.error.map(|error| error.to_string()),
+            })),
         })
     }
 }

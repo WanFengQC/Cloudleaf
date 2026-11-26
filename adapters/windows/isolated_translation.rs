@@ -718,6 +718,76 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "需要本地固定 Marian 和相邻 Worker；无窗口或系统操作"]
+    fn round26_isolated_host_uses_real_worker_in_both_directions() {
+        let catalog = PathBuf::from(std::env::var_os("CLOUDLEAF_ROUND26_CATALOG").unwrap());
+        let digest = std::env::var("CLOUDLEAF_ROUND26_CATALOG_SHA").unwrap();
+        let executable = PathBuf::from(std::env::var_os("CLOUDLEAF_ROUND26_HOST").unwrap());
+        let config = WorkerConfig::sibling(catalog, digest, ResourceThreads::One)
+            .unwrap()
+            .for_host_executable(executable)
+            .unwrap();
+        let local = host();
+        let mut controller = Controller::new(Some(config), Glossary::default());
+
+        for (direction, english) in [
+            (Direction::EnZh, "Please close the window."),
+            (Direction::ZhEn, ""),
+        ] {
+            if direction == Direction::ZhEn {
+                for key in "nihao".chars().map(Key::Char).chain([Key::Down]) {
+                    local
+                        .process(InputEvent::Key(key), None, &|_| panic!("候选预览不提交"))
+                        .unwrap();
+                }
+            }
+            controller.start(&local, direction, english).unwrap();
+            let until = std::time::Instant::now() + REQUEST_TIMEOUT;
+            loop {
+                controller.poll(&local, english);
+                match controller.active.as_ref().map(|active| &active.phase) {
+                    Some(Phase::Ready(preview)) => {
+                        assert!(preview.identity.task_id > 0 && preview.identity.version > 0);
+                        assert!(!preview.raw.trim().is_empty());
+                        assert_ne!(preview.raw, controller.view().source);
+                        assert_eq!(preview.raw, controller.view().output);
+                        assert_eq!(preview.model.len(), 64);
+                        println!(
+                            "isolated-host direction={direction:?} model={} bytes={}",
+                            preview.model,
+                            preview.raw.len()
+                        );
+                        break;
+                    }
+                    Some(Phase::Pending(_)) if std::time::Instant::now() < until => {
+                        std::thread::sleep(Duration::from_millis(10));
+                    }
+                    _ => panic!("真实 Worker 未完成：{}", controller.view().status),
+                }
+            }
+            assert!(local.document.borrow().is_empty());
+            controller.cancel(&local, "测试结束").unwrap();
+            assert!(controller.view().output.is_empty());
+        }
+        local
+            .process(InputEvent::Key(Key::Escape), None, &|_| {
+                panic!("Esc 不提交")
+            })
+            .unwrap();
+        controller
+            .start(&local, Direction::EnZh, "Please try again.")
+            .unwrap();
+        controller.cancel(&local, "已取消").unwrap();
+        local
+            .process(InputEvent::Key(Key::Char('a')), None, &|_| {
+                panic!("按键不提交")
+            })
+            .unwrap();
+        assert_eq!(local.host.engine.borrow().frame().preedit, "a");
+        controller.close();
+        assert!(controller.wait());
+    }
+    #[test]
     fn round22_argument_parser_retains_input_model_and_rejects_stray_config() {
         let legacy = ["runtime", "sha", "model", "model-sha"].map(|value| value.to_owned());
         let options = LaunchOptions::parse(&legacy).unwrap();

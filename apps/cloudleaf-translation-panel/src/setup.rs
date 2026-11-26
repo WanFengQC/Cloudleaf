@@ -1,7 +1,11 @@
 use crate::platform::CredentialStore;
 use crate::settings::{ProviderChoice, Settings, SettingsRepository};
 use cloudleaf_translation::*;
-use std::path::PathBuf;
+use cloudleaf_translation_integrity::{Glossary, MAX_GLOSSARY_BYTES};
+use cloudleaf_translation_ipc::{ResourceThreads, WorkerConfig};
+use std::fs::File;
+use std::io::Read;
+use std::path::{Path, PathBuf};
 use std::sync::{Arc, mpsc};
 use std::thread::{self, JoinHandle};
 use std::time::Duration;
@@ -19,12 +23,13 @@ pub(crate) struct Prepared {
     pub identity: Option<ProviderIdentity>,
     pub authorization: Option<ProviderAuthorization>,
     pub capabilities: Option<ProviderCapabilities>,
+    pub worker: Option<WorkerObserver>,
+    pub glossary: Glossary,
     pub notice: String,
     pub error: Option<String>,
 }
 
 pub(crate) enum SetupEvent {
-    ModelProgress(cloudleaf_offline::ModelState),
     Prepared(Box<Prepared>),
     Key(Result<&'static str, crate::platform::PlatformError>),
 }
@@ -57,12 +62,7 @@ impl SetupHandle {
                             if dictionary.is_some() {
                                 settings.dictionary_path = dictionary;
                             }
-                            SetupEvent::Prepared(Box::new(prepare(
-                                settings,
-                                store.clone(),
-                                notice,
-                                &events,
-                            )))
+                            SetupEvent::Prepared(Box::new(prepare(settings, store.clone(), notice)))
                         }
                         SetupCommand::Prepare(settings, persist) => {
                             if settings.validate().is_err() {
@@ -80,7 +80,6 @@ impl SetupHandle {
                                     settings,
                                     store.clone(),
                                     "设置已应用".into(),
-                                    &events,
                                 )))
                             }
                         }
@@ -119,19 +118,23 @@ fn unavailable(settings: Settings, reason: &str) -> Prepared {
         identity: None,
         authorization: None,
         capabilities: None,
+        worker: None,
+        glossary: Glossary::default(),
         notice: reason.into(),
         error: Some(reason.into()),
     }
 }
 
-fn prepare(
-    settings: Settings,
-    store: Arc<dyn CredentialStore>,
-    notice: String,
-    events: &mpsc::SyncSender<SetupEvent>,
-) -> Prepared {
-    let mut model_state = None;
+fn prepare(settings: Settings, store: Arc<dyn CredentialStore>, notice: String) -> Prepared {
+    let glossary = match (&settings.provider, &settings.offline_glossary) {
+        (ProviderChoice::OfflineModel, Some(path)) => match load_glossary(path) {
+            Some(glossary) => glossary,
+            None => return unavailable(settings, "离线术语表无法读取或格式无效，请检查设置"),
+        },
+        _ => Glossary::default(),
+    };
     let built: Result<_, TranslationError> = (|| {
+        let mut worker = None;
         let (provider, authorization): (Arc<dyn TranslationProvider>, _) = match settings.provider {
             ProviderChoice::Dictionary => {
                 let path = settings
@@ -171,16 +174,13 @@ fn prepare(
                     .offline_catalog
                     .as_ref()
                     .ok_or(TranslationError::ModelNotFound)?;
-                (
-                    Arc::new(cloudleaf_offline::MarianProvider::load_with_progress(
-                        catalog,
-                        |state| {
-                            model_state = Some(state);
-                            let _ = events.try_send(SetupEvent::ModelProgress(state));
-                        },
-                    )?),
-                    None,
-                )
+                let expected_sha256 = worker_catalog_sha256(catalog)?;
+                let config =
+                    WorkerConfig::sibling(catalog.clone(), expected_sha256, ResourceThreads::One)
+                        .map_err(TranslationError::OfflineWorker)?;
+                let provider = WorkerProvider::new(config);
+                worker = Some(provider.observer());
+                (Arc::new(provider), None)
             }
         };
         let identity = provider.identity();
@@ -213,19 +213,19 @@ fn prepare(
                 ..ServiceLimits::default()
             },
         )?;
-        Ok((service, identity, authorization, capabilities))
+        Ok((service, identity, authorization, capabilities, worker))
     })();
     match built {
-        Ok((service, identity, authorization, capabilities)) => Prepared {
+        Ok((service, identity, authorization, capabilities, worker)) => Prepared {
             settings: settings.clone(),
             service: Some(service),
             identity: Some(identity),
             authorization,
             capabilities: Some(capabilities),
+            worker,
+            glossary,
             notice: if settings.provider == ProviderChoice::OfflineModel {
-                format!(
-                    "Loaded · 固定 OPUS-MT / Candle CPU；Generated 不代表正式语言质量。{notice}"
-                )
+                format!("已配置离线模型，提交翻译时启动工作进程。{notice}")
             } else {
                 notice
             },
@@ -240,10 +240,22 @@ fn prepare(
                 TranslationError::ProviderUnavailable => {
                     "本地研究词典未配置；请指定导出的 catalog.json 并应用设置".to_owned()
                 }
-                _ if settings.provider == ProviderChoice::OfflineModel => format!("{:?} · 离线模型不可用：{error}；请用模型检查工具核对目录", model_state.unwrap_or(cloudleaf_offline::ModelState::Failed)),
+                _ if settings.provider == ProviderChoice::OfflineModel => {
+                    format!("离线模型不可用：{error}；请用模型检查工具核对目录")
+                }
                 _ => format!("提供者不可用：{error}。请检查设置与词典文件"),
             };
             unavailable(settings, &reason)
         }
     }
+}
+
+fn load_glossary(path: &Path) -> Option<Glossary> {
+    let mut text = String::new();
+    File::open(path)
+        .ok()?
+        .take(MAX_GLOSSARY_BYTES as u64 + 1)
+        .read_to_string(&mut text)
+        .ok()?;
+    Glossary::parse_tsv(&text).ok()
 }

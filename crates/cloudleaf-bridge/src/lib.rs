@@ -1,9 +1,6 @@
 //! 仅在显式操作时连接输入事务与后台翻译服务。
 
-mod marian;
-
 pub use cloudleaf_input::TranslationSourceIdentity as SourceIdentity;
-pub use marian::LazyMarian;
 
 use cloudleaf_input::{
     InputEngine, LanguageSnapshot, MAX_TRANSLATION_COMMIT_BYTES, SchemeConfig, SearchSnapshot,
@@ -13,6 +10,9 @@ use cloudleaf_translation::{
     ServiceLimits, TaskState, TranslationContext, TranslationDirection, TranslationError,
     TranslationKind, TranslationProvider, TranslationProviderConfig, TranslationRequest,
     TranslationResult, TranslationService, TranslationTaskId,
+};
+use cloudleaf_translation_integrity::{
+    Direction as IntegrityDirection, Glossary, IntegrityReport, check_translation,
 };
 use cloudleaf_types::{
     CommitOutcome, CommitRequest, CoreError, ErrorCode, EventResult, InputEvent, InputMode,
@@ -113,6 +113,7 @@ struct Active {
     direction: TranslationDirection,
     original: String,
     preedit: String,
+    integrity: Option<IntegrityReport>,
     phase: Phase,
 }
 
@@ -198,6 +199,11 @@ impl TranslationBridge {
             | Phase::CommitUnknown { result, .. } => Some(result),
             _ => None,
         }
+    }
+
+    pub fn integrity_report(&self) -> Option<&IntegrityReport> {
+        self.result()?;
+        self.active.as_ref()?.integrity.as_ref()
     }
 
     pub fn source_identity(&self) -> Option<&SourceIdentity> {
@@ -361,6 +367,7 @@ impl TranslationBridge {
             direction,
             original,
             preedit,
+            integrity: None,
             phase: Phase::Requested,
         });
         Ok(task)
@@ -396,7 +403,21 @@ impl TranslationBridge {
         if !matches!(phase, Phase::Requested | Phase::Running) {
             let _ = self.service.forget(task);
         }
-        self.active.as_mut().expect("当前任务仍由控制器持有").phase = phase;
+        let active = self.active.as_mut().expect("当前任务仍由控制器持有");
+        if let Phase::Ready(result) = &phase {
+            let direction = if result.direction.source == Language::Chinese {
+                IntegrityDirection::ChineseToEnglish
+            } else {
+                IntegrityDirection::EnglishToChinese
+            };
+            active.integrity = Some(check_translation(
+                &active.original,
+                &result.output.translated_text,
+                direction,
+                &Glossary::default(),
+            ));
+        }
+        active.phase = phase;
         self.state()
     }
 
@@ -598,6 +619,7 @@ impl TranslationBridge {
         if !self.backend_stopped() {
             return Err(BridgeError::InvalidState);
         }
+        self.service.finish_shutdown()?;
         let epoch = self.epoch.checked_add(1).ok_or(BridgeError::InvalidState)?;
         let (identity, service) = create_service(provider, timeout)?;
         self.provider = identity;

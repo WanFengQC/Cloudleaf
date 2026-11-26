@@ -105,6 +105,45 @@ fn start_after_queue_drains(panel: &mut PanelController) {
 }
 
 #[test]
+fn offline_setup_is_lazy_and_reports_invalid_glossary_with_no_worker() {
+    let f = Fixture::new();
+    let catalog = f.0.join("catalog.json");
+    fs::write(&catalog, b"invalid catalog contents").unwrap();
+    let dir = f.0.join("settings");
+    let settings = Settings {
+        provider: ProviderChoice::OfflineModel,
+        offline_catalog: Some(catalog),
+        ..Settings::default()
+    };
+    cloudleaf_translation_panel::settings::SettingsRepository::new(dir.clone())
+        .save(&settings)
+        .unwrap();
+    let mut panel = PanelController::new(dir, None, Arc::new(FixtureStore::default())).unwrap();
+    wait(&mut panel, |p| p.status == ViewStatus::Idle);
+    assert!(panel.worker_snapshot().is_some_and(|snapshot| {
+        snapshot.stage == WorkerStage::NotStarted && snapshot.child_pid.is_none()
+    }));
+    panel.set_text("保留原文".into());
+    panel
+        .apply(Settings {
+            offline_glossary: Some(f.0.join("unavailable-glossary.tsv")),
+            ..settings
+        })
+        .unwrap();
+    wait(&mut panel, |p| p.status == ViewStatus::ProviderUnavailable);
+    assert!(
+        panel
+            .error
+            .as_ref()
+            .is_some_and(|error| error.contains("术语表"))
+    );
+    assert!(panel.worker_snapshot().is_none());
+    assert_eq!(panel.text, "保留原文");
+    panel.begin_close();
+    wait(&mut panel, PanelController::close_ready);
+}
+
+#[test]
 fn actual_dictionary_roundtrip_keeps_research_status_original_and_capabilities() {
     let f = Fixture::new();
     let catalog = f.catalog();
@@ -115,6 +154,7 @@ fn actual_dictionary_roundtrip_keeps_research_status_original_and_capabilities()
     )
     .unwrap();
     wait(&mut panel, |p| p.status == ViewStatus::Idle);
+    assert!(panel.worker_snapshot().is_none());
     assert!(!panel.supports_kind(TranslationKind::Sentence));
     assert!(panel.supports_auto());
     panel.set_text("你好🙂".into());

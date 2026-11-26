@@ -37,6 +37,8 @@ pub struct Settings {
     pub provider: ProviderChoice,
     pub dictionary_path: Option<PathBuf>,
     pub offline_catalog: Option<PathBuf>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub offline_glossary: Option<PathBuf>,
     pub endpoint: String,
     pub model: String,
     pub direction: DirectionChoice,
@@ -55,6 +57,7 @@ impl Default for Settings {
             provider: ProviderChoice::Dictionary,
             dictionary_path: None,
             offline_catalog: None,
+            offline_glossary: None,
             endpoint: String::new(),
             model: String::new(),
             direction: DirectionChoice::ChineseEnglish,
@@ -112,15 +115,16 @@ impl Settings {
             || self.endpoint.len() > 2048
             || self.model.len() > 256
             || self.model.chars().any(char::is_control)
-            || self.dictionary_path.as_ref().is_some_and(|path| {
-                path.as_os_str().is_empty()
-                    || path.to_string_lossy().contains('\0')
-                    || path.to_string_lossy().len() > 4096
-            })
-            || self.offline_catalog.as_ref().is_some_and(|path| {
-                path.as_os_str().is_empty()
-                    || path.to_string_lossy().contains('\0')
-                    || path.to_string_lossy().len() > 4096
+            || [
+                &self.dictionary_path,
+                &self.offline_catalog,
+                &self.offline_glossary,
+            ]
+            .into_iter()
+            .flatten()
+            .any(|path| {
+                let value = path.to_string_lossy();
+                value.is_empty() || value.contains('\0') || value.len() > 4096
             })
         {
             return Err(SettingsError::InvalidConfig);

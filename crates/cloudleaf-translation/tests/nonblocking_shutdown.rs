@@ -19,6 +19,7 @@ struct Blocking {
     started: mpsc::SyncSender<()>,
     release: Arc<(Mutex<bool>, Condvar)>,
     panic: bool,
+    shutdown_started: Option<mpsc::SyncSender<()>>,
 }
 impl TranslationProvider for Blocking {
     fn identity(&self) -> ProviderIdentity {
@@ -52,6 +53,22 @@ impl TranslationProvider for Blocking {
         let guard = lock.lock().unwrap();
         drop(signal.wait_while(guard, |released| !*released).unwrap());
         Err(TranslationError::Cancelled)
+    }
+
+    fn shutdown(&self) -> Result<(), TranslationError> {
+        let Some(started) = &self.shutdown_started else {
+            return Ok(());
+        };
+        started.try_send(()).unwrap();
+        let (lock, signal) = &*self.release;
+        let guard = lock.lock().unwrap();
+        let (guard, _) = signal
+            .wait_timeout_while(guard, Duration::from_secs(3), |released| !*released)
+            .unwrap();
+        assert!(*guard);
+        Err(TranslationError::OfflineWorker(
+            cloudleaf_translation_ipc::IpcError::WorkerReapFailed,
+        ))
     }
 }
 fn request() -> TranslationRequest {
@@ -91,6 +108,7 @@ fn noncooperative_worker_keeps_its_budget_until_real_exit() {
                 started,
                 release,
                 panic: false,
+                shutdown_started: None,
             }),
             TranslationProviderConfig::default(),
         )
@@ -133,6 +151,7 @@ fn provider_thread_exit_is_reported_and_shutdown_retains_the_failure() {
                 started,
                 release: Arc::new((Mutex::new(false), Condvar::new())),
                 panic: true,
+                shutdown_started: None,
             }),
             TranslationProviderConfig::default(),
         )
@@ -163,4 +182,51 @@ fn provider_thread_exit_is_reported_and_shutdown_retains_the_failure() {
         std::thread::yield_now();
     }
     assert_eq!(service.shutdown(), Err(TranslationError::InternalError));
+}
+
+#[test]
+fn shutdown_requires_reap_confirmation_and_preserves_failure() {
+    let release = Arc::new((Mutex::new(false), Condvar::new()));
+    let (started, _) = mpsc::sync_channel(1);
+    let (shutdown_started, shutdown_calls) = mpsc::sync_channel(2);
+    let mut registry = ProviderRegistry::new();
+    registry
+        .register(
+            Arc::new(Blocking {
+                started,
+                release: release.clone(),
+                panic: false,
+                shutdown_started: Some(shutdown_started),
+            }),
+            TranslationProviderConfig::default(),
+        )
+        .unwrap();
+    let mut service = TranslationService::new(
+        registry,
+        ServiceLimits {
+            workers: 2,
+            ..ServiceLimits::default()
+        },
+    )
+    .unwrap();
+
+    assert_eq!(service.finish_shutdown(), Err(TranslationError::Busy));
+    service.begin_shutdown();
+    shutdown_calls.recv_timeout(Duration::from_secs(3)).unwrap();
+    assert_eq!(service.finish_shutdown(), Err(TranslationError::Busy));
+    *release.0.lock().unwrap() = true;
+    release.1.notify_all();
+
+    let deadline = Instant::now() + Duration::from_secs(3);
+    while !service.workers_finished() {
+        assert!(Instant::now() < deadline);
+        std::thread::yield_now();
+    }
+    let failed = Err(TranslationError::OfflineWorker(
+        cloudleaf_translation_ipc::IpcError::WorkerReapFailed,
+    ));
+    assert_eq!(service.finish_shutdown(), failed);
+    assert_eq!(service.finish_shutdown(), failed);
+    assert_eq!(service.shutdown(), failed);
+    assert!(shutdown_calls.try_recv().is_err());
 }

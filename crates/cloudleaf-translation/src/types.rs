@@ -161,6 +161,8 @@ pub enum TranslationError {
     ProviderUnavailable,
     ModelNotFound,
     ModelLoadFailed,
+    OfflineCatalogMismatch,
+    OfflineWorker(cloudleaf_translation_ipc::IpcError),
     DataNotApproved,
     NoMatch,
     NotFound,

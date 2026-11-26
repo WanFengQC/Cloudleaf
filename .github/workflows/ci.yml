@@ -57,7 +57,7 @@ jobs:
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v4
         with:
-          name: integration-round25-windows
+          name: integration-round26-windows
           path: |
             target/release/cloudleaf-cli.exe
             target/release/cloudleaf-ime.exe
@@ -103,13 +103,17 @@ jobs:
             docs/integration-round24-design.md
             docs/integration-round25-design.md
             docs/integration-round25-worker-design.md
+            docs/integration-round26-design.md
+            docs/integration-round26-worker-measurement-design.md
+            docs/integration-round26-provider-design.md
+            docs/integration-round26-panel-design.md
             docs/testing/round22-native-translation-manual.md
           if-no-files-found: error
       - name: Upload Linux headless integration tools
         if: runner.os == 'Linux'
         uses: actions/upload-artifact@v4
         with:
-          name: integration-round25-linux
+          name: integration-round26-linux
           path: |
             target/release/cloudleaf-cli
             target/release/cloudleaf-bridge-headless
@@ -139,6 +143,10 @@ jobs:
             docs/integration-round24-design.md
             docs/integration-round25-design.md
             docs/integration-round25-worker-design.md
+            docs/integration-round26-design.md
+            docs/integration-round26-worker-measurement-design.md
+            docs/integration-round26-provider-design.md
+            docs/integration-round26-panel-design.md
           if-no-files-found: error
       - uses: actions/upload-artifact@v4
         with:
