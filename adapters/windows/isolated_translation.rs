@@ -53,6 +53,7 @@ pub(super) struct LaunchOptions<'a> {
     pub runtime: &'a str,
     pub runtime_sha: &'a str,
     pub model: Option<(&'a str, &'a str)>,
+    pub settings_dir: Option<PathBuf>,
     worker: Option<WorkerConfig>,
     glossary: Option<PathBuf>,
 }
@@ -67,7 +68,7 @@ impl<'a> LaunchOptions<'a> {
         let usage = || {
             Error::new(
                 E_INVALIDARG,
-                "用法：--interactive-input-host RUNTIME SHA [MODEL MODEL_SHA] [--translation-catalog CATALOG SHA] [--translation-threads auto|1|2|4] [--translation-scheduling normal|below-normal] [--translation-glossary TSV]",
+                "用法：--interactive-input-host RUNTIME SHA [MODEL MODEL_SHA] [--settings-dir DIR] [--translation-catalog CATALOG SHA] [--translation-threads auto|1|2|4] [--translation-scheduling normal|below-normal] [--translation-glossary TSV]",
             )
         };
         let [runtime, runtime_sha, options @ ..] = args else {
@@ -89,6 +90,7 @@ impl<'a> LaunchOptions<'a> {
         let mut threads = None;
         let mut scheduling = None;
         let mut glossary = None;
+        let mut settings_dir = None;
         while !remaining.is_empty() {
             match remaining {
                 [flag, path, hash, rest @ ..]
@@ -124,6 +126,10 @@ impl<'a> LaunchOptions<'a> {
                     glossary = Some(PathBuf::from(path));
                     remaining = rest;
                 }
+                [flag, path, rest @ ..] if flag == "--settings-dir" && settings_dir.is_none() => {
+                    settings_dir = Some(PathBuf::from(path));
+                    remaining = rest;
+                }
                 _ => return Err(usage()),
             }
         }
@@ -144,6 +150,7 @@ impl<'a> LaunchOptions<'a> {
             runtime,
             runtime_sha,
             model,
+            settings_dir,
             worker,
             glossary,
         })

@@ -28,6 +28,7 @@ class ReleaseStageTests(unittest.TestCase):
         files = {
             "bin/cloudleaf-cli.exe": binary,
             "licenses/LICENSE": b"test licence",
+            "licenses/wasi-0.11.1+wasi-snapshot-preview1/LICENSE": b"versioned licence",
             "provenance/source-lock.json": b"{}",
             "provenance/Cargo.lock": b"locked dependencies",
             "resources/catalog.json": b"{}",

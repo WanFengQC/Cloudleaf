@@ -1,5 +1,6 @@
 //! 普通Win32隔离宿主，只写本窗口的文档，不取得任何TSF manager/context。
 use super::*;
+use cloudleaf_settings::InputPreferencesRepository;
 use cloudleaf_translation_ipc::{Direction, MAX_INPUT_BYTES};
 use std::{
     cell::{Cell, RefCell},
@@ -1286,11 +1287,81 @@ unsafe extern "system" fn window_proc(
     }).unwrap_or(LRESULT(0))
 }
 
+fn configured_host(options: &translation::LaunchOptions<'_>) -> Result<LocalHost> {
+    let preferences = options
+        .settings_dir
+        .clone()
+        .map(|path| InputPreferencesRepository::new(path).load())
+        .transpose()
+        .map_err(|error| Error::new(E_INVALIDARG, error.to_string()))?;
+    let (host, _, _) = match preferences.as_ref() {
+        Some(loaded) => super::input_review::load_host_config(
+            options.runtime,
+            options.runtime_sha,
+            options.model,
+            loaded.settings.max_candidates,
+            loaded.settings.input_config(),
+        )?,
+        None => super::input_review::load_host_k(
+            options.runtime,
+            options.runtime_sha,
+            options.model,
+            10,
+        )?,
+    };
+    let local = LocalHost::new(host)?;
+    if let Some(loaded) = preferences {
+        let config = loaded.settings;
+        local.switch_scheme(config.scheme_config())?;
+        for engine in [&local.host.engine, &local.host.projection] {
+            engine
+                .borrow()
+                .validate_mixed_input(config.mixed_input)
+                .map_err(|_| Error::new(E_FAIL, "当前输入配置不允许启用混排"))?;
+        }
+        for engine in [&local.host.engine, &local.host.projection] {
+            engine
+                .borrow_mut()
+                .reconfigure_mixed_input(config.mixed_input)
+                .map_err(|_| Error::new(E_FAIL, "双引擎混排设置应用失败"))?;
+        }
+        println!(
+            "input_settings={:?} revision={} mixed={}",
+            loaded.status, config.revision, config.mixed_input
+        );
+    }
+    Ok(local)
+}
+
+pub(crate) fn review_settings(args: &[String]) -> Result<()> {
+    let options = translation::LaunchOptions::parse(args)?;
+    if options.settings_dir.is_none() {
+        return Err(Error::new(E_INVALIDARG, "必须明确指定 --settings-dir"));
+    }
+    let local = configured_host(&options)?;
+    let actual = local.host.engine.borrow();
+    let projected = local.host.projection.borrow();
+    if actual.frame() != projected.frame()
+        || actual.mixed_input_enabled() != projected.mixed_input_enabled()
+        || actual.pinyin_scheme() != projected.pinyin_scheme()
+    {
+        return Err(Error::new(E_FAIL, "隔离输入双引擎配置不匹配"));
+    }
+    println!(
+        "settings_host=no-window page_size={} mixed={} scheme={:?}",
+        actual.frame().page_size,
+        actual.mixed_input_enabled(),
+        actual.pinyin_scheme()
+    );
+    Ok(())
+}
+
 pub(crate) fn run(args: &[String]) -> Result<()> {
     let options = translation::LaunchOptions::parse(args)?;
-    let (host, _, _) =
-        super::input_review::load_host_k(options.runtime, options.runtime_sha, options.model, 10)?;
-    let view = Rc::new(Window::new(LocalHost::new(host)?, options.controller()?));
+    let view = Rc::new(Window::new(
+        configured_host(&options)?,
+        options.controller()?,
+    ));
     // 安全：创建、运行和销毁本进程普通Win32窗口；没有任何注册或TSF激活动作。
     unsafe {
         let instance = HINSTANCE(GetModuleHandleW(None)?.0);

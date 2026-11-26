@@ -284,6 +284,24 @@ impl Lexicon {
         &self.entries
     }
 
+    /// 从指定字节沿现有读音索引查找完整词条端点，不枚举同音词条桶。
+    pub fn exact_pinyin_ends<'a>(
+        &'a self,
+        ascii: &'a [u8],
+        start: usize,
+    ) -> impl Iterator<Item = usize> + 'a {
+        let mut node = 0;
+        ascii
+            .iter()
+            .enumerate()
+            .skip(start)
+            .map_while(move |(position, byte)| {
+                node = *self.trie[node].next.get(byte)?;
+                Some((position + 1, self.trie[node].exact.is_empty()))
+            })
+            .filter_map(|(end, empty)| (!empty).then_some(end))
+    }
+
     pub fn trie_nodes(&self) -> usize {
         self.trie.len()
     }

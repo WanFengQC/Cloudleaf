@@ -1,6 +1,7 @@
 //! 显式试验后端；词典在会话创建前校验，按键查询只读不可变快照。
+use crate::mixed;
 use cloudleaf_search::{
-    Config, Features, LanguageModelSnapshot, Lattice, Lexicon, MatchKind, Method, Ranker,
+    Budget, Config, Features, LanguageModelSnapshot, Lattice, Lexicon, MatchKind, Method, Ranker,
     SearchError, Statistics, search_graph,
 };
 use cloudleaf_types::{Candidate, CoreError, ErrorCode};
@@ -646,7 +647,122 @@ impl SentenceBackend {
         input: &str,
         revision: u64,
     ) -> (Vec<Candidate>, SearchDiagnostic) {
-        let mut diagnostic = SearchDiagnostic {
+        self.query_with_config(input, revision, None)
+    }
+
+    pub(crate) fn query_mixed(
+        &mut self,
+        raw: &str,
+        revision: u64,
+        frame_limit: usize,
+    ) -> mixed::Output {
+        let (input, punctuation) = mixed::body_and_punctuation(raw);
+        if mixed::protected(raw) {
+            return mixed::Output::literal(raw, None);
+        }
+        if raw.len() > self.config.max_input_bytes {
+            let mut diagnostic = self.empty_diagnostic(raw, revision);
+            diagnostic.error = Some(SearchError {
+                kind: cloudleaf_search::ErrorKind::InvalidInput,
+                line: None,
+                message: "混排原文超过搜索输入预算",
+            });
+            return mixed::Output::literal(raw, Some(diagnostic));
+        }
+        let plan = if !self.scheme.is_default()
+            && input
+                .bytes()
+                .all(|byte| byte.is_ascii_lowercase() || byte == b'\'')
+        {
+            mixed::Plan::Chinese
+        } else {
+            mixed::plan(input, &self.snapshot.lexicon)
+        };
+        match plan {
+            mixed::Plan::Literal => mixed::Output::literal(raw, None),
+            mixed::Plan::Chinese => {
+                let (mut candidates, mut diagnostic) = self.query(input, revision);
+                if candidates.is_empty() {
+                    diagnostic.raw_input = raw.into();
+                    return mixed::Output::literal(raw, Some(diagnostic));
+                }
+                if let Some(mark) = punctuation {
+                    mixed::with_punctuation(raw, mark, &mut candidates, &mut diagnostic.paths);
+                    diagnostic.raw_input = raw.into();
+                }
+                if candidates.len() < frame_limit.min(self.config.output_k) {
+                    candidates.push(mixed::raw_candidate(raw));
+                }
+                mixed::Output {
+                    candidates,
+                    diagnostic: Some(diagnostic),
+                    has_literal: false,
+                    trailing_literal: false,
+                }
+            }
+            mixed::Plan::Mixed(spans) => {
+                let mut remaining = self.config.clone();
+                let mut statistics = Statistics::default();
+                let mut runs = Vec::with_capacity(spans.len());
+                let has_tail = spans.last().is_some_and(|range| range.end < raw.len());
+                let mut diagnostic = self.empty_diagnostic(raw, revision);
+                for span in spans {
+                    if span.len() > remaining.max_letters {
+                        diagnostic.statistics = statistics;
+                        diagnostic.error = Some(SearchError {
+                            kind: cloudleaf_search::ErrorKind::InvalidInput,
+                            line: None,
+                            message: "混排中文片段超过搜索字母总预算",
+                        });
+                        return mixed::Output::literal(raw, Some(diagnostic));
+                    }
+                    if remaining.max_edges == 0 || remaining.max_expansions == 0 {
+                        statistics.budget = Some(if remaining.max_edges == 0 {
+                            Budget::GraphEdges
+                        } else {
+                            Budget::Expansions
+                        });
+                        diagnostic.statistics = statistics;
+                        return mixed::Output::literal(raw, Some(diagnostic));
+                    }
+                    let (candidates, subquery) =
+                        self.query_with_config(&raw[span.clone()], revision, Some(&remaining));
+                    statistics.graph_edges += subquery.statistics.graph_edges;
+                    statistics.expansions += subquery.statistics.expansions;
+                    statistics.beam_pruned += subquery.statistics.beam_pruned;
+                    statistics.resident_high_water = statistics
+                        .resident_high_water
+                        .max(subquery.statistics.resident_high_water);
+                    statistics.budget = subquery.statistics.budget;
+                    if candidates.is_empty() || statistics.budget.is_some() {
+                        diagnostic.statistics = statistics;
+                        diagnostic.error = subquery.error;
+                        return mixed::Output::literal(raw, Some(diagnostic));
+                    }
+                    remaining.max_edges -= subquery.statistics.graph_edges;
+                    remaining.max_expansions -= subquery.statistics.expansions;
+                    remaining.max_letters -= span.len();
+                    runs.push((span, candidates, subquery.paths));
+                }
+                let limit = frame_limit.min(self.config.output_k);
+                let (mut candidates, paths) = mixed::merge(raw, &runs, limit);
+                if candidates.len() < limit {
+                    candidates.push(mixed::raw_candidate(raw));
+                }
+                diagnostic.statistics = statistics;
+                diagnostic.paths = paths;
+                mixed::Output {
+                    candidates,
+                    diagnostic: Some(diagnostic),
+                    has_literal: true,
+                    trailing_literal: has_tail,
+                }
+            }
+        }
+    }
+
+    fn empty_diagnostic(&self, input: &str, revision: u64) -> SearchDiagnostic {
+        SearchDiagnostic {
             revision,
             snapshot_version: self.snapshot.version.clone(),
             model_version: self.scoring_version().map(str::to_owned),
@@ -663,18 +779,29 @@ impl SentenceBackend {
             error: None,
             scheme_version: (!self.scheme.is_default()).then(|| self.scheme.version_id()),
             scheme_statistics: None,
-        };
-        let graph = if self.scheme.is_default() || !self.transitions.is_enabled() {
-            Lattice::build_with_scheme(&self.snapshot.lexicon, input, &self.config, &self.scheme)
-        } else {
-            Lattice::build_with_scheme_cached(
-                &self.snapshot.lexicon,
-                input,
-                &self.config,
-                &self.scheme,
-                &mut self.transitions,
-            )
-        };
+        }
+    }
+
+    fn query_with_config(
+        &mut self,
+        input: &str,
+        revision: u64,
+        limited: Option<&Config>,
+    ) -> (Vec<Candidate>, SearchDiagnostic) {
+        let mut diagnostic = self.empty_diagnostic(input, revision);
+        let config = limited.unwrap_or(&self.config);
+        let graph =
+            if limited.is_some() || self.scheme.is_default() || !self.transitions.is_enabled() {
+                Lattice::build_with_scheme(&self.snapshot.lexicon, input, config, &self.scheme)
+            } else {
+                Lattice::build_with_scheme_cached(
+                    &self.snapshot.lexicon,
+                    input,
+                    config,
+                    &self.scheme,
+                    &mut self.transitions,
+                )
+            };
         let graph = match graph {
             Ok(graph) => graph,
             Err(error) => {
@@ -684,12 +811,12 @@ impl SentenceBackend {
         };
         diagnostic.scheme_statistics = graph.scheme_statistics().cloned();
         let result = match if let Some(research) = &self.research {
-            research.rerank(&self.snapshot.lexicon, &graph, &self.config)
+            research.rerank(&self.snapshot.lexicon, &graph, config)
         } else {
             search_graph(
                 &self.snapshot.lexicon,
                 &graph,
-                &self.config,
+                config,
                 self.language.as_ref().map(|value| value.snapshot.model()),
                 self.left_word.as_deref(),
             )

@@ -4,6 +4,30 @@ use cloudleaf_pinyin::{
     BaseMatch, ChangeKind, PhoneticArc, PhoneticHypotheses, SchemeConfig, interpret,
 };
 use std::collections::BTreeMap;
+use std::collections::btree_map::Entry;
+
+const MAX_WORD_ARCS: usize = 16;
+
+#[derive(Clone, Copy, Default, Eq, Ord, PartialEq, PartialOrd)]
+struct ArcTrace {
+    // 解释器最多保留 16,384 条弧。索引加一让零填充保持 Vec 的逐项顺序。
+    encoded: [u16; MAX_WORD_ARCS],
+    len: usize,
+}
+
+impl ArcTrace {
+    fn appended(mut self, index: usize) -> Self {
+        self.encoded[self.len] = u16::try_from(index + 1).expect("音节弧索引在解释预算内");
+        self.len += 1;
+        self
+    }
+
+    fn indices(&self) -> impl Iterator<Item = usize> + '_ {
+        self.encoded[..self.len]
+            .iter()
+            .map(|&index| usize::from(index - 1))
+    }
+}
 
 #[derive(Clone, Copy, Debug, Default, Eq, Ord, PartialEq, PartialOrd)]
 pub struct InterpretationCost {
@@ -66,21 +90,33 @@ pub struct SchemeStatistics {
     pub interpreter_budget: Option<cloudleaf_pinyin::InterpretationBudget>,
 }
 
+/// 显式剖析取得的候选格账本，触顶时只统计实际处理的起点和条目。
+#[derive(Clone, Debug, Default, Eq, PartialEq)]
+pub struct SchemeGraphDiagnostics {
+    pub dictionary_rows: usize,
+    pub boundary_rejected: usize,
+    pub duplicate_edges: usize,
+    pub better_representatives: usize,
+    pub first_rejected_start: Option<usize>,
+    pub published_before_cap: usize,
+    pub buffered_before_cap: usize,
+}
+
 #[derive(Clone, Debug)]
 pub(crate) struct Interpreted {
     pub version: String,
     pub max_edits: u16,
     pub evidence: Vec<EdgeInterpretation>,
     pub statistics: SchemeStatistics,
+    pub diagnostics: Option<SchemeGraphDiagnostics>,
 }
 
-#[derive(Clone)]
 struct IntersectionState {
     node: usize,
     position: usize,
     canonical_len: usize,
-    boundaries: Vec<usize>,
-    arcs: Vec<usize>,
+    boundaries: [u16; MAX_WORD_ARCS],
+    arcs: ArcTrace,
     cost: InterpretationCost,
 }
 
@@ -123,7 +159,7 @@ impl<'a> Lattice<'a> {
         }
         let hypotheses = interpret(raw, scheme)
             .map_err(|_| SearchError::new(ErrorKind::InvalidInput, "输入方案配置或按键无效"))?;
-        Self::from_phonetic_controlled(lexicon, raw, config, scheme, hypotheses, cache)
+        Self::from_phonetic_controlled::<false>(lexicon, raw, config, scheme, hypotheses, cache)
     }
 
     pub(crate) fn from_phonetic(
@@ -133,10 +169,10 @@ impl<'a> Lattice<'a> {
         scheme: &SchemeConfig,
         hypotheses: PhoneticHypotheses,
     ) -> Result<Self, SearchError> {
-        Self::from_phonetic_controlled(lexicon, raw, config, scheme, hypotheses, None)
+        Self::from_phonetic_controlled::<true>(lexicon, raw, config, scheme, hypotheses, None)
     }
 
-    fn from_phonetic_controlled(
+    fn from_phonetic_controlled<const DIAGNOSTICS: bool>(
         lexicon: &'a Lexicon,
         raw: &str,
         config: &Config,
@@ -173,6 +209,7 @@ impl<'a> Lattice<'a> {
                     intersection_states: 0,
                     interpreter_budget: hypotheses.budget,
                 },
+                diagnostics: DIAGNOSTICS.then(SchemeGraphDiagnostics::default),
             }),
         };
         graph.outgoing = vec![Vec::new(); graph.letters.len() + 1];
@@ -181,9 +218,10 @@ impl<'a> Lattice<'a> {
         }
         let mut arcs_at = vec![Vec::new(); graph.outgoing.len()];
         for (index, arc) in hypotheses.arcs.iter().enumerate() {
-            arcs_at[arc.start].push(index);
+            arcs_at[arc.start].push((index, InterpretationCost::arc(arc)));
         }
         let mut visits = 0;
+        let mut diagnostics = SchemeGraphDiagnostics::default();
         // 相交预算独立于搜索展开，原搜索上限不因方案扩展而增加。
         let max_states = config.max_expansions;
         'starts: for start in 0..graph.letters.len() {
@@ -191,26 +229,26 @@ impl<'a> Lattice<'a> {
                 node: 0,
                 position: start,
                 canonical_len: 0,
-                boundaries: Vec::new(),
-                arcs: Vec::new(),
+                boundaries: [0; MAX_WORD_ARCS],
+                arcs: ArcTrace::default(),
                 cost: InterpretationCost::default(),
             }];
             let mut seen = BTreeMap::new();
-            let mut words = BTreeMap::<(usize, usize), (InterpretationCost, Vec<usize>)>::new();
-            while let Some(state) = pending.pop() {
+            let mut words = BTreeMap::<(usize, usize), (InterpretationCost, ArcTrace)>::new();
+            'intersection: while let Some(state) = pending.pop() {
                 visits += 1;
                 if visits > max_states {
                     graph.budget = Some(Budget::Intersection);
                     break 'starts;
                 }
-                for &arc_index in &arcs_at[state.position] {
+                for &(arc_index, arc_cost) in &arcs_at[state.position] {
                     visits += 1;
                     if visits > max_states {
                         graph.budget = Some(Budget::Intersection);
                         break 'starts;
                     }
                     let arc = &hypotheses.arcs[arc_index];
-                    let cost = state.cost.plus(InterpretationCost::arc(arc));
+                    let cost = state.cost.plus(arc_cost);
                     if cost.edits > max_edits {
                         continue;
                     }
@@ -235,59 +273,86 @@ impl<'a> Lattice<'a> {
                         }
                         node
                     };
-                    let mut source_arcs = state.arcs.clone();
-                    source_arcs.push(arc_index);
+                    let source_arcs = state.arcs.appended(arc_index);
                     let canonical_len = state.canonical_len + arc.syllable.len();
                     for &entry in &lexicon.trie[node].exact {
+                        if DIAGNOSTICS {
+                            diagnostics.dictionary_rows += 1;
+                        }
                         let word = &lexicon.entries[entry];
                         if !word
                             .boundaries
                             .iter()
                             .copied()
-                            .eq(state.boundaries.iter().copied())
+                            .eq(state.boundaries[..state.arcs.len]
+                                .iter()
+                                .copied()
+                                .map(usize::from))
                         {
+                            if DIAGNOSTICS {
+                                diagnostics.boundary_rejected += 1;
+                            }
                             continue;
                         }
-                        let key = (arc.end, entry);
-                        let value = (cost, source_arcs.clone());
-                        if !words.contains_key(&key)
-                            && words.len() + graph.edges.len() == config.max_edges
-                        {
-                            graph.budget = Some(Budget::GraphEdges);
-                            break 'starts;
-                        }
-                        if words.get(&key).is_none_or(|old| value < *old) {
-                            words.insert(key, value);
+                        let buffered = words.len();
+                        let value = (cost, source_arcs);
+                        match words.entry((arc.end, entry)) {
+                            Entry::Occupied(mut old) => {
+                                if DIAGNOSTICS {
+                                    diagnostics.duplicate_edges += 1;
+                                }
+                                if value < *old.get() {
+                                    if DIAGNOSTICS {
+                                        diagnostics.better_representatives += 1;
+                                    }
+                                    old.insert(value);
+                                }
+                            }
+                            Entry::Vacant(slot) => {
+                                if buffered + graph.edges.len() == config.max_edges {
+                                    if DIAGNOSTICS {
+                                        diagnostics.first_rejected_start = Some(start);
+                                        diagnostics.published_before_cap = graph.edges.len();
+                                        diagnostics.buffered_before_cap = buffered;
+                                    }
+                                    graph.budget = Some(Budget::GraphEdges);
+                                    break 'intersection;
+                                }
+                                slot.insert(value);
+                            }
                         }
                     }
-                    if arc.end < graph.letters.len() && source_arcs.len() < 16 {
-                        let mut boundaries = state.boundaries.clone();
-                        boundaries.push(canonical_len);
-                        let key = (arc.end, node, cost.edits, boundaries.clone());
-                        let value = (cost, source_arcs.clone());
-                        if seen.get(&key).is_none_or(|old| value < *old) {
-                            if pending.len() >= config.max_resident_paths {
-                                graph.budget = Some(Budget::Intersection);
-                                break 'starts;
+                    if arc.end < graph.letters.len() && source_arcs.len < MAX_WORD_ARCS {
+                        let mut boundaries = state.boundaries;
+                        boundaries[state.arcs.len] =
+                            u16::try_from(canonical_len).expect("有效音节长度受解释和词条上限限制");
+                        let value = (cost, source_arcs);
+                        let key = (arc.end, node, cost.edits, boundaries);
+                        match seen.entry(key) {
+                            Entry::Occupied(old) if value >= *old.get() => continue,
+                            Entry::Occupied(mut old) => {
+                                old.insert(value);
                             }
-                            seen.insert(key, value);
-                            pending.push(IntersectionState {
-                                node,
-                                position: arc.end,
-                                canonical_len,
-                                boundaries,
-                                arcs: source_arcs,
-                                cost,
-                            });
+                            Entry::Vacant(slot) => {
+                                slot.insert(value);
+                            }
                         }
+                        if pending.len() >= config.max_resident_paths {
+                            graph.budget = Some(Budget::Intersection);
+                            break 'starts;
+                        }
+                        pending.push(IntersectionState {
+                            node,
+                            position: arc.end,
+                            canonical_len,
+                            boundaries,
+                            arcs: source_arcs,
+                            cost,
+                        });
                     }
                 }
             }
             for ((end, entry), (cost, source_arcs)) in words {
-                if graph.edges.len() == config.max_edges {
-                    graph.budget = Some(Budget::GraphEdges);
-                    break 'starts;
-                }
                 let index = graph.edges.len();
                 graph.edges.push(Edge {
                     start,
@@ -305,19 +370,21 @@ impl<'a> Lattice<'a> {
                     .push(EdgeInterpretation {
                         cost,
                         arcs: source_arcs
-                            .iter()
-                            .map(|&i| hypotheses.arcs[i].clone())
+                            .indices()
+                            .map(|index| hypotheses.arcs[index].clone())
                             .collect(),
                     });
                 graph.outgoing[start].push(index);
             }
+            if graph.budget.is_some() {
+                break;
+            }
         }
-        graph
-            .interpreted
-            .as_mut()
-            .unwrap()
-            .statistics
-            .intersection_states = visits;
+        let interpreted = graph.interpreted.as_mut().unwrap();
+        interpreted.statistics.intersection_states = visits;
+        if DIAGNOSTICS {
+            interpreted.diagnostics = Some(diagnostics);
+        }
         Ok(graph)
     }
 
@@ -339,5 +406,9 @@ impl<'a> Lattice<'a> {
     }
     pub fn scheme_statistics(&self) -> Option<&SchemeStatistics> {
         self.interpreted.as_ref().map(|s| &s.statistics)
+    }
+
+    pub fn scheme_graph_diagnostics(&self) -> Option<&SchemeGraphDiagnostics> {
+        self.interpreted.as_ref()?.diagnostics.as_ref()
     }
 }

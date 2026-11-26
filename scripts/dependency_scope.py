@@ -2,6 +2,7 @@
 INPUT_ROOTS = {
     "cloudleaf-types", "cloudleaf-pinyin", "cloudleaf-dictionary", "cloudleaf-candidate",
     "cloudleaf-input", "cloudleaf-search", "cloudleaf-user", "cloudleaf-cli", "cloudleaf-windows-ime",
+    "cloudleaf-settings",
 }
 IPC_ROOTS = {"cloudleaf-translation-ipc"}
 INTEGRITY_ROOTS = {"cloudleaf-translation-integrity"}

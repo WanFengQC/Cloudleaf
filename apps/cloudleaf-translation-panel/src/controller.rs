@@ -1,6 +1,8 @@
+use crate::center::{InputSettingsView, UserAction, UserSettingsView};
 use crate::platform::{CredentialStore, PlatformError};
-use crate::settings::{DirectionChoice, Settings};
+use crate::settings::{DirectionChoice, ProviderChoice, Settings};
 use crate::setup::{Prepared, SetupCommand, SetupEvent, SetupHandle};
+use cloudleaf_settings::InputPreferences;
 use cloudleaf_translation::*;
 use cloudleaf_translation_integrity::{self as integrity, Glossary, IntegrityReport};
 use cloudleaf_translation_ipc::IpcError;
@@ -34,6 +36,8 @@ pub struct PanelController {
     pub authorized: bool,
     pub dirty: bool,
     pub settings_serial: u64,
+    pub input_settings: InputSettingsView,
+    pub user_settings: UserSettingsView,
     context: TranslationContext,
     focused: bool,
     panel: TranslationPanel,
@@ -45,10 +49,11 @@ pub struct PanelController {
     worker_shutdown_error: Option<TranslationError>,
     glossary: Glossary,
     integrity: Option<IntegrityReport>,
+    connection_check: bool,
     active: Option<(TranslationTaskId, TranslationContext, u64, Instant)>,
     setup: SetupHandle,
     preparing: bool,
-    pending: Option<Settings>,
+    pending: Option<Box<Prepared>>,
     closing: Option<Instant>,
 }
 
@@ -59,11 +64,10 @@ impl PanelController {
         store: Arc<dyn CredentialStore>,
     ) -> std::io::Result<Self> {
         let setup = SetupHandle::start(directory, store)?;
-        setup
-            .sender
-            .as_ref()
-            .expect("新建通道")
+        let sender = setup.sender.as_ref().expect("新建通道");
+        sender
             .try_send(SetupCommand::Load(dictionary))
+            .and_then(|()| sender.try_send(SetupCommand::ReadInput))
             .map_err(|_| std::io::Error::other("settings worker unavailable"))?;
         let settings = Settings::default();
         let context = TranslationContext {
@@ -83,6 +87,11 @@ impl PanelController {
             authorized: false,
             dirty: false,
             settings_serial: 0,
+            input_settings: InputSettingsView {
+                working: true,
+                ..InputSettingsView::default()
+            },
+            user_settings: UserSettingsView::default(),
             context,
             focused: true,
             panel: TranslationPanel::new(context),
@@ -94,6 +103,7 @@ impl PanelController {
             worker_shutdown_error: None,
             glossary: Glossary::default(),
             integrity: None,
+            connection_check: false,
             active: None,
             setup,
             preparing: true,
@@ -167,19 +177,86 @@ impl PanelController {
             .revision
             .checked_add(1)
             .ok_or(TranslationError::InvalidConfig)?;
+        self.send(SetupCommand::Apply(settings))?;
         self.invalidate();
         self.context.epoch += 1;
         self.panel.focus(self.context);
-        if let Some(service) = &mut self.service {
-            service.begin_shutdown();
-        }
-        self.pending = Some(settings);
+        self.preparing = true;
         self.status = ViewStatus::Preparing;
-        self.notice = "正在等待旧任务退出并应用设置…".into();
+        self.notice = "正在后台核验并保存设置…".into();
         Ok(())
     }
 
+    pub fn reload_input_settings(&mut self) -> Result<(), TranslationError> {
+        self.request_input(SetupCommand::ReadInput)
+    }
+
+    pub fn save_input_settings(
+        &mut self,
+        settings: InputPreferences,
+    ) -> Result<(), TranslationError> {
+        self.request_input(SetupCommand::SaveInput(settings))
+    }
+
+    fn request_input(&mut self, command: SetupCommand) -> Result<(), TranslationError> {
+        if self.input_settings.working || self.closing.is_some() {
+            return Err(TranslationError::Busy);
+        }
+        self.send(command)?;
+        self.input_settings.working = true;
+        Ok(())
+    }
+
+    pub fn manage_user_dictionary(
+        &mut self,
+        directory: PathBuf,
+        action: UserAction,
+    ) -> Result<(), TranslationError> {
+        if self.user_settings.working || self.closing.is_some() {
+            return Err(TranslationError::Busy);
+        }
+        if self.user_settings.needs_refresh && !matches!(&action, UserAction::Inspect) {
+            return Err(TranslationError::StaleResult);
+        }
+        if !directory.is_absolute() {
+            return Err(TranslationError::InvalidConfig);
+        }
+        if !matches!(&action, UserAction::Inspect)
+            && self.user_settings.directory.as_ref() != Some(&directory)
+        {
+            self.user_settings.notice = "请先读取当前目录并核对词库".into();
+            return Err(TranslationError::StaleResult);
+        }
+        self.send(SetupCommand::UserDictionary(
+            directory.clone(),
+            self.user_settings.dictionary.generation,
+            action,
+        ))?;
+        self.user_settings.pending_directory = Some(directory);
+        self.user_settings.working = true;
+        Ok(())
+    }
+
+    pub fn provider_identity(&self) -> Option<&ProviderIdentity> {
+        self.identity.as_ref()
+    }
+
     pub fn start(&mut self) -> Result<(), TranslationError> {
+        self.start_request(false)
+    }
+
+    /// 只发送固定探测短句，仍要求应用后的端点与单次授权。
+    pub fn test_connection(&mut self) -> Result<(), TranslationError> {
+        if self.settings.provider != ProviderChoice::Online || !self.settings.network_enabled {
+            return Err(TranslationError::ProviderUnavailable);
+        }
+        if !self.authorized {
+            return Err(TranslationError::OnlineNotAuthorized);
+        }
+        self.start_request(true)
+    }
+
+    fn start_request(&mut self, connection_check: bool) -> Result<(), TranslationError> {
         if self.preparing || self.pending.is_some() || self.dirty || self.closing.is_some() {
             return Err(TranslationError::Busy);
         }
@@ -201,17 +278,26 @@ impl PanelController {
             .clone()
             .ok_or(TranslationError::ProviderUnavailable)?;
         let context = self.context;
+        let (text, requested_direction, kind) = if connection_check {
+            (
+                "Cloudleaf connectivity check.".to_owned(),
+                DirectionChoice::EnglishChinese,
+                TranslationKind::Sentence,
+            )
+        } else {
+            (self.text.clone(), self.direction, self.kind)
+        };
         let request = TranslationRequest {
-            text: self.text.clone(),
-            direction: direction(self.direction),
-            kind: self.kind,
+            text,
+            direction: direction(requested_direction),
+            kind,
             context,
             send_authorized_to: if std::mem::take(&mut self.authorized) {
                 self.authorization.clone()
             } else {
                 None
             },
-            use_cache: self.settings.cache_enabled,
+            use_cache: !connection_check && self.settings.cache_enabled,
         };
         let service = self
             .service
@@ -219,6 +305,7 @@ impl PanelController {
             .ok_or(TranslationError::ProviderUnavailable)?;
         let id = service.submit(&identity.id, request.clone())?;
         self.panel.start(id, &request, identity)?;
+        self.connection_check = connection_check;
         self.active = Some((id, context, self.settings.revision, Instant::now()));
         self.status = ViewStatus::Queued;
         self.tick();
@@ -247,7 +334,7 @@ impl PanelController {
     }
 
     pub fn result(&self) -> Option<&TranslationResult> {
-        self.panel.result()
+        self.panel.result().filter(|_| !self.connection_check)
     }
 
     pub fn worker_snapshot(&self) -> Option<WorkerSnapshot> {
@@ -259,7 +346,7 @@ impl PanelController {
     }
 
     pub fn copy_text(&self) -> Result<String, TranslationError> {
-        let result = self.panel.result().ok_or(TranslationError::StaleResult)?;
+        let result = self.result().ok_or(TranslationError::StaleResult)?;
         Ok(self
             .panel
             .copy(result.task_id, self.context, RESULT_VERSION)?
@@ -301,6 +388,27 @@ impl PanelController {
         for _ in 0..8 {
             match self.setup.receiver.try_recv() {
                 Ok(SetupEvent::Prepared(value)) => self.adopt(*value),
+                Ok(SetupEvent::Saved(value)) if self.closing.is_none() => {
+                    if let Some(service) = &mut self.service {
+                        service.begin_shutdown();
+                    }
+                    self.pending = Some(value);
+                    self.notice = "设置已保存，等待旧工作进程退出…".into();
+                }
+                Ok(SetupEvent::Saved(_)) => (),
+                Ok(SetupEvent::SaveRejected(reason)) => {
+                    self.preparing = false;
+                    self.dirty = false;
+                    self.settings_serial += 1;
+                    self.status = if self.available() {
+                        ViewStatus::Idle
+                    } else {
+                        ViewStatus::ProviderUnavailable
+                    };
+                    self.notice = reason;
+                }
+                Ok(SetupEvent::Input(result, saved)) => self.input_settings.complete(result, saved),
+                Ok(SetupEvent::User(result)) => self.user_settings.complete(result),
                 Ok(SetupEvent::Key(outcome)) => match outcome {
                     Ok(notice) => self.notice = notice.into(),
                     Err(error) => self.platform_error(error),
@@ -339,14 +447,12 @@ impl PanelController {
             if self.worker_shutdown_error.is_none() {
                 self.service = None;
             }
-            if let Some(settings) = self.pending.take() {
+            if let Some(value) = self.pending.take() {
                 if retired.is_some_and(|result| result.is_err()) {
-                    self.notice = "旧提供者关闭失败，未应用新设置".into();
+                    self.preparing = false;
+                    self.notice = "设置已保存，旧提供者关闭失败，新设置未生效".into();
                 } else {
-                    match self.send(SetupCommand::Prepare(settings, true)) {
-                        Ok(()) => self.preparing = true,
-                        Err(error) => self.record_error(error),
-                    }
+                    self.adopt(*value);
                 }
             }
         }
@@ -382,6 +488,14 @@ impl PanelController {
                         }
                     };
                     if snapshot.state.is_terminal() {
+                        if self.connection_check {
+                            self.notice = if snapshot.state == TaskState::Succeeded {
+                                "已收到 API 测试响应。原文保留"
+                            } else {
+                                "API 测试未成功。原文保留"
+                            }
+                            .into();
+                        }
                         if snapshot.state == TaskState::Succeeded && self.worker.is_some() {
                             self.update_integrity();
                         }
@@ -453,6 +567,13 @@ impl PanelController {
         self.identity = value.identity;
         self.authorization = value.authorization;
         self.capabilities = value.capabilities;
+        if !self.supports_auto() {
+            self.direction = match self.direction {
+                DirectionChoice::AutoEnglish => DirectionChoice::ChineseEnglish,
+                DirectionChoice::AutoChinese => DirectionChoice::EnglishChinese,
+                explicit => explicit,
+            };
+        }
         self.worker = value.worker;
         self.glossary = value.glossary;
         if !self.supports_kind(self.kind) {
@@ -482,6 +603,7 @@ impl PanelController {
             self.panel.focus(self.context);
         }
         self.authorized = false;
+        self.connection_check = false;
         self.elapsed = None;
         self.error = None;
         self.integrity = None;

@@ -1,8 +1,10 @@
 #![allow(unsafe_code)]
 
+use crate::center::UserAction;
 use crate::controller::PanelController;
 use crate::platform::{WindowsCredentialStore, copy_unicode};
-use crate::settings::{DirectionChoice, ProviderChoice, Settings};
+use crate::settings::{DirectionChoice, ProviderChoice, Settings, WorkerPriority, WorkerThreads};
+use cloudleaf_settings::{InputFuzzyPair, InputPreferences, InputScheme};
 use cloudleaf_translation::{QualityStatus, Secret, TranslationError, TranslationKind};
 use std::cell::RefCell;
 use std::path::PathBuf;
@@ -43,6 +45,49 @@ const DELETE_KEY: usize = 213;
 const APPLY: usize = 214;
 const RESET: usize = 215;
 const OFFLINE_CATALOG: usize = 216;
+const THREADS: usize = 217;
+const PRIORITY: usize = 218;
+const OFFLINE_GLOSSARY: usize = 219;
+const TEST_CONNECTION: usize = 220;
+const PAGE_TRANSLATION: usize = 230;
+const PAGE_INPUT: usize = 231;
+const PAGE_USER: usize = 232;
+const PAGE_RESOURCES: usize = 233;
+const INPUT_SCHEME: usize = 301;
+const INPUT_CORRECTION: usize = 302;
+const INPUT_MIXED: usize = 303;
+const INPUT_PAGE_SIZE: usize = 304;
+const INPUT_MAXIMUM: usize = 305;
+const INPUT_SAVE: usize = 306;
+const INPUT_LOAD: usize = 307;
+const INPUT_NOTE: usize = 308;
+const INPUT_FUZZY: usize = 310;
+const USER_DIRECTORY: usize = 401;
+const USER_ID: usize = 402;
+const USER_WORD: usize = 403;
+const USER_PINYIN: usize = 404;
+const USER_TRANSFER: usize = 405;
+const USER_BACKUP: usize = 406;
+const USER_OPEN: usize = 407;
+const USER_ADD: usize = 408;
+const USER_EDIT: usize = 409;
+const USER_REMOVE: usize = 410;
+const USER_IMPORT: usize = 411;
+const USER_EXPORT: usize = 412;
+const USER_RECOVER: usize = 413;
+const USER_LEARNING: usize = 414;
+const USER_CLEAR_LEARNING: usize = 415;
+const USER_CONTENT: usize = 416;
+const USER_NOTE: usize = 417;
+const RESOURCES: usize = 501;
+
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum SettingsPage {
+    Translation,
+    Input,
+    User,
+    Resources,
+}
 
 struct Control {
     hwnd: HWND,
@@ -52,6 +97,7 @@ struct Control {
     width: i32,
     height: i32,
     right: bool,
+    page: Option<SettingsPage>,
 }
 struct WindowState {
     controller: PanelController,
@@ -60,8 +106,13 @@ struct WindowState {
     font: HFONT,
     dpi: u32,
     serial: u64,
+    input_serial: u64,
+    user_serial: u64,
+    page: SettingsPage,
+    control_page: Option<SettingsPage>,
     last_result: String,
     last_status: String,
+    last_resources: String,
     closing: bool,
 }
 
@@ -83,17 +134,7 @@ pub fn run(directory: PathBuf, dictionary: Option<PathBuf>) -> Result<(), String
         Arc::new(WindowsCredentialStore::default()),
     )
     .map_err(|_| "无法启动后台设置线程".to_owned())?;
-    let state = Box::new(RefCell::new(WindowState {
-        controller,
-        controls: Vec::new(),
-        parent: null_mut(),
-        font: null_mut(),
-        dpi: 96,
-        serial: u64::MAX,
-        last_result: String::new(),
-        last_status: String::new(),
-        closing: false,
-    }));
+    let state = Box::new(RefCell::new(WindowState::new(controller, null_mut())));
     unsafe {
         SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
         let instance = GetModuleHandleW(null());
@@ -112,7 +153,7 @@ pub fn run(directory: PathBuf, dictionary: Option<PathBuf>) -> Result<(), String
         let hwnd = CreateWindowExW(
             0,
             class_name.as_ptr(),
-            wide("云笺 Cloudleaf · 翻译面板").as_ptr(),
+            wide("云笺 Cloudleaf · 翻译与设置").as_ptr(),
             WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
             CW_USEDEFAULT,
             CW_USEDEFAULT,
@@ -261,6 +302,25 @@ unsafe extern "system" fn window_proc(
 }
 
 impl WindowState {
+    fn new(controller: PanelController, parent: HWND) -> Self {
+        Self {
+            controller,
+            controls: Vec::new(),
+            parent,
+            font: null_mut(),
+            dpi: 96,
+            serial: u64::MAX,
+            input_serial: u64::MAX,
+            user_serial: u64::MAX,
+            page: SettingsPage::Translation,
+            control_page: None,
+            last_result: String::new(),
+            last_status: String::new(),
+            last_resources: String::new(),
+            closing: false,
+        }
+    }
+
     unsafe fn create_controls(&mut self, hwnd: HWND) {
         self.parent = hwnd;
         unsafe {
@@ -359,7 +419,23 @@ impl WindowState {
                 [16, 733, 1000, 46],
                 false,
             );
-            self.add(0, "STATIC", "提供者与设置", 0, [0, 16, 400, 28], true);
+            for (id, label, x) in [
+                (PAGE_TRANSLATION, "翻译", 0),
+                (PAGE_INPUT, "输入方案", 92),
+                (PAGE_USER, "用户词库", 184),
+                (PAGE_RESOURCES, "资源诊断", 276),
+            ] {
+                self.add(
+                    id,
+                    "BUTTON",
+                    label,
+                    BS_PUSHBUTTON as u32,
+                    [x, 13, 84, 32],
+                    true,
+                );
+            }
+            self.control_page = Some(SettingsPage::Translation);
+            self.add(0, "STATIC", "翻译设置", 0, [0, 16, 400, 28], true);
             self.add(
                 PROVIDER,
                 "COMBOBOX",
@@ -493,7 +569,7 @@ impl WindowState {
                 "BUTTON",
                 "保存 / 更新密钥",
                 BS_PUSHBUTTON as u32,
-                [0, 635, 160, 32],
+                [0, 635, 128, 32],
                 true,
             );
             self.add(
@@ -501,7 +577,15 @@ impl WindowState {
                 "BUTTON",
                 "删除该端点密钥",
                 BS_PUSHBUTTON as u32,
-                [175, 635, 180, 32],
+                [137, 635, 119, 32],
+                true,
+            );
+            self.add(
+                TEST_CONNECTION,
+                "BUTTON",
+                "测试 API",
+                BS_PUSHBUTTON as u32,
+                [265, 635, 113, 32],
                 true,
             );
             self.add(
@@ -523,9 +607,218 @@ impl WindowState {
             self.add(
                 0,
                 "STATIC",
-                "离线模型仅从已校验本地目录加载；不自动下载。",
+                "离线 Worker 线程及调度（低优先级为研究档）",
                 0,
-                [0, 741, 400, 40],
+                [0, 735, 400, 20],
+                true,
+            );
+            self.add(
+                THREADS,
+                "COMBOBOX",
+                "",
+                CBS_DROPDOWNLIST as u32,
+                [0, 759, 145, 150],
+                true,
+            );
+            for label in ["单线程（默认）", "2 线程", "4 线程", "自动"] {
+                self.item(THREADS, label);
+            }
+            self.add(
+                PRIORITY,
+                "COMBOBOX",
+                "",
+                CBS_DROPDOWNLIST as u32,
+                [155, 759, 175, 115],
+                true,
+            );
+            for label in ["正常", "低优先级 · 研究"] {
+                self.item(PRIORITY, label);
+            }
+            self.settings_field(OFFLINE_GLOSSARY, "离线翻译术语表 TSV（可选）", "", 0, 800);
+            self.create_input_settings();
+            self.create_user_settings();
+            self.control_page = Some(SettingsPage::Resources);
+            self.add(0, "STATIC", "运行中的资源", 0, [0, 16, 400, 24], true);
+            self.add(
+                RESOURCES,
+                "EDIT",
+                "",
+                ES_MULTILINE as u32 | ES_READONLY as u32 | WS_VSCROLL | WS_BORDER,
+                [0, 54, 400, 420],
+                true,
+            );
+            self.control_page = None;
+        }
+    }
+
+    unsafe fn settings_field(&mut self, id: usize, label: &str, initial: &str, flags: u32, y: i32) {
+        unsafe {
+            self.add(0, "STATIC", label, 0, [0, y, 400, 24], true);
+            self.add(
+                id,
+                "EDIT",
+                initial,
+                ES_AUTOHSCROLL as u32 | WS_BORDER | flags,
+                [0, y + 26, 400, 28],
+                true,
+            );
+        }
+    }
+
+    unsafe fn create_input_settings(&mut self) {
+        self.control_page = Some(SettingsPage::Input);
+        unsafe {
+            self.add(0, "STATIC", "拼音输入方案", 0, [0, 16, 400, 24], true);
+            self.add(
+                INPUT_SCHEME,
+                "COMBOBOX",
+                "",
+                CBS_DROPDOWNLIST as u32,
+                [0, 47, 400, 150],
+                true,
+            );
+            for item in ["标准全拼", "简拼", "小鹤双拼"] {
+                self.item(INPUT_SCHEME, item);
+            }
+            self.add(0, "STATIC", "模糊音（双向）", 0, [0, 90, 400, 22], true);
+            for (index, pair) in InputFuzzyPair::ALL.into_iter().enumerate() {
+                let x = if index % 2 == 0 { 0 } else { 176 };
+                let y = 119 + (index / 2) as i32 * 31;
+                self.add(
+                    INPUT_FUZZY + index,
+                    "BUTTON",
+                    pair.label(),
+                    BS_AUTOCHECKBOX as u32,
+                    [x, y, 170, 28],
+                    true,
+                );
+            }
+            self.add(
+                INPUT_CORRECTION,
+                "BUTTON",
+                "启用拼音纠错（全拼、简拼）",
+                BS_AUTOCHECKBOX as u32,
+                [0, 257, 400, 29],
+                true,
+            );
+            self.add(
+                INPUT_MIXED,
+                "BUTTON",
+                "启用自动中英混排",
+                BS_AUTOCHECKBOX as u32,
+                [0, 292, 400, 29],
+                true,
+            );
+            self.settings_field(
+                INPUT_PAGE_SIZE,
+                "每页候选（1–9）",
+                "",
+                ES_NUMBER as u32,
+                339,
+            );
+            self.settings_field(INPUT_MAXIMUM, "最多候选（1–50）", "", ES_NUMBER as u32, 411);
+            self.add(
+                INPUT_SAVE,
+                "BUTTON",
+                "保存输入设置",
+                BS_PUSHBUTTON as u32,
+                [0, 491, 163, 34],
+                true,
+            );
+            self.add(
+                INPUT_LOAD,
+                "BUTTON",
+                "重新读取",
+                BS_PUSHBUTTON as u32,
+                [177, 491, 136, 34],
+                true,
+            );
+            self.add(INPUT_NOTE, "STATIC", "", 0, [0, 540, 400, 65], true);
+        }
+    }
+
+    unsafe fn create_user_settings(&mut self) {
+        self.control_page = Some(SettingsPage::User);
+        let directory = std::env::var_os("LOCALAPPDATA")
+            .map(PathBuf::from)
+            .map(|p| p.join("Cloudleaf/user-dictionary"))
+            .map(|p| p.to_string_lossy().into_owned())
+            .unwrap_or_default();
+        unsafe {
+            self.settings_field(USER_DIRECTORY, "用户词库绝对目录", &directory, 0, 16);
+            self.settings_field(USER_ID, "词条 ID（修改或删除时填写）", "", 0, 83);
+            self.settings_field(USER_WORD, "词语", "", 0, 148);
+            self.settings_field(USER_PINYIN, "拼音", "", 0, 213);
+            for (id, label, x) in [
+                (USER_OPEN, "读取", 0),
+                (USER_ADD, "添加", 88),
+                (USER_EDIT, "修改", 176),
+                (USER_REMOVE, "删除", 264),
+            ] {
+                self.add(
+                    id,
+                    "BUTTON",
+                    label,
+                    BS_PUSHBUTTON as u32,
+                    [x, 282, 80, 34],
+                    true,
+                );
+            }
+            self.settings_field(USER_TRANSFER, "导入文件或导出新文件的绝对路径", "", 0, 332);
+            self.add(
+                USER_IMPORT,
+                "BUTTON",
+                "导入并合并",
+                BS_PUSHBUTTON as u32,
+                [0, 390, 128, 34],
+                true,
+            );
+            self.add(
+                USER_EXPORT,
+                "BUTTON",
+                "导出备份",
+                BS_PUSHBUTTON as u32,
+                [142, 390, 128, 34],
+                true,
+            );
+            self.settings_field(
+                USER_BACKUP,
+                "恢复版本号（见下方当前状态）",
+                "",
+                ES_NUMBER as u32,
+                438,
+            );
+            self.add(
+                USER_RECOVER,
+                "BUTTON",
+                "恢复指定版本",
+                BS_PUSHBUTTON as u32,
+                [0, 497, 128, 34],
+                true,
+            );
+            self.add(
+                USER_LEARNING,
+                "BUTTON",
+                "启用学习",
+                BS_AUTOCHECKBOX as u32,
+                [142, 497, 112, 34],
+                true,
+            );
+            self.add(
+                USER_CLEAR_LEARNING,
+                "BUTTON",
+                "清理学习",
+                BS_PUSHBUTTON as u32,
+                [264, 497, 105, 34],
+                true,
+            );
+            self.add(USER_NOTE, "STATIC", "", 0, [0, 543, 400, 56], true);
+            self.add(
+                USER_CONTENT,
+                "EDIT",
+                "",
+                ES_MULTILINE as u32 | ES_READONLY as u32 | WS_VSCROLL | WS_BORDER,
+                [0, 604, 400, 218],
                 true,
             );
         }
@@ -563,6 +856,7 @@ impl WindowState {
                 width: rect[2],
                 height: rect[3],
                 right,
+                page: self.control_page,
             });
         }
     }
@@ -628,7 +922,13 @@ impl WindowState {
             let right_width = width - right_x - 20;
             for c in &self.controls {
                 let x = if c.right { right_x + c.x } else { c.x };
-                let y = if c.id == STATUS { height - 52 } else { c.y };
+                let y = if c.id == STATUS {
+                    height - 52
+                } else if c.page.is_some() {
+                    52 + c.y * 83 / 100
+                } else {
+                    c.y
+                };
                 let w = if c.right && c.width == 400 {
                     right_width
                 } else if [INPUT, RESULT].contains(&c.id) {
@@ -650,6 +950,14 @@ impl WindowState {
                     self.scale(w),
                     self.scale(h),
                     1,
+                );
+                ShowWindow(
+                    c.hwnd,
+                    if c.page.is_none_or(|page| page == self.page) {
+                        SW_SHOWNA
+                    } else {
+                        SW_HIDE
+                    },
                 );
             }
         }
@@ -677,6 +985,22 @@ impl WindowState {
             } else {
                 Some(PathBuf::from(catalog))
             };
+            let glossary = read_text(self.control(OFFLINE_GLOSSARY), 4096)?;
+            settings.offline_glossary =
+                (!glossary.trim().is_empty()).then(|| PathBuf::from(glossary));
+            settings.worker_threads = match SendMessageW(self.control(THREADS), CB_GETCURSEL, 0, 0)
+            {
+                1 => WorkerThreads::Two,
+                2 => WorkerThreads::Four,
+                3 => WorkerThreads::Auto,
+                _ => WorkerThreads::One,
+            };
+            settings.worker_priority =
+                if SendMessageW(self.control(PRIORITY), CB_GETCURSEL, 0, 0) == 1 {
+                    WorkerPriority::BelowNormal
+                } else {
+                    WorkerPriority::Normal
+                };
             settings.connect_timeout_secs = read_text(self.control(CONNECT), 8)?
                 .parse()
                 .map_err(|_| TranslationError::InvalidConfig)?;
@@ -688,6 +1012,82 @@ impl WindowState {
             settings.network_enabled = self.checked(NETWORK);
             settings.allow_loopback_http = self.checked(LOOPBACK);
             Ok(settings)
+        }
+    }
+
+    unsafe fn input_settings_from_controls(&self) -> Result<InputPreferences, TranslationError> {
+        unsafe {
+            let old = &self.controller.input_settings.settings;
+            Ok(InputPreferences {
+                scheme: match SendMessageW(self.control(INPUT_SCHEME), CB_GETCURSEL, 0, 0) {
+                    1 => InputScheme::Abbreviated,
+                    2 => InputScheme::Xiaohe,
+                    _ => InputScheme::Full,
+                },
+                fuzzy_pairs: InputFuzzyPair::ALL
+                    .into_iter()
+                    .enumerate()
+                    .filter_map(|(i, pair)| self.checked(INPUT_FUZZY + i).then_some(pair))
+                    .collect(),
+                correction: self.checked(INPUT_CORRECTION),
+                mixed_input: self.checked(INPUT_MIXED),
+                page_size: read_text(self.control(INPUT_PAGE_SIZE), 8)?
+                    .parse()
+                    .map_err(|_| TranslationError::InvalidConfig)?,
+                max_candidates: read_text(self.control(INPUT_MAXIMUM), 8)?
+                    .parse()
+                    .map_err(|_| TranslationError::InvalidConfig)?,
+                ..old.clone()
+            })
+        }
+    }
+
+    unsafe fn user_command(&mut self, hwnd: HWND, id: usize) -> Result<(), TranslationError> {
+        unsafe {
+            let directory = PathBuf::from(read_text(self.control(USER_DIRECTORY), 4096)?);
+            if matches!(id, USER_REMOVE | USER_RECOVER | USER_CLEAR_LEARNING)
+                && MessageBoxW(
+                    hwnd,
+                    wide(match id {
+                        USER_REMOVE => "删除填写 ID 所指的词条？",
+                        USER_RECOVER => "使用指定的历史版本恢复损坏的当前词库？",
+                        _ => "清除学习统计并保留用户词条？",
+                    })
+                    .as_ptr(),
+                    wide("确认用户词库操作").as_ptr(),
+                    MB_YESNO | MB_DEFBUTTON2 | MB_ICONWARNING,
+                ) != IDYES
+            {
+                return Ok(());
+            }
+            let word = || read_text(self.control(USER_WORD), 4096);
+            let pinyin = || read_text(self.control(USER_PINYIN), 512);
+            let entry = || read_text(self.control(USER_ID), 128);
+            let transfer = || read_text(self.control(USER_TRANSFER), 4096).map(PathBuf::from);
+            let action = match id {
+                USER_OPEN => UserAction::Inspect,
+                USER_ADD => UserAction::Add {
+                    text: word()?,
+                    pinyin: pinyin()?,
+                },
+                USER_EDIT => UserAction::Update {
+                    id: entry()?,
+                    text: word()?,
+                    pinyin: pinyin()?,
+                },
+                USER_REMOVE => UserAction::Remove(entry()?),
+                USER_IMPORT => UserAction::Import(transfer()?),
+                USER_EXPORT => UserAction::Export(transfer()?),
+                USER_RECOVER => UserAction::Recover(
+                    read_text(self.control(USER_BACKUP), 32)?
+                        .parse()
+                        .map_err(|_| TranslationError::InvalidConfig)?,
+                ),
+                USER_LEARNING => UserAction::ChangeLearning(self.checked(USER_LEARNING)),
+                USER_CLEAR_LEARNING => UserAction::ClearLearning,
+                _ => unreachable!("只处理用户词库按钮"),
+            };
+            self.controller.manage_user_dictionary(directory, action)
         }
     }
 
@@ -709,7 +1109,16 @@ impl WindowState {
                 }
                 return;
             }
-            if [DICTIONARY, ENDPOINT, MODEL, CONNECT, TOTAL, OFFLINE_CATALOG].contains(&id)
+            if [
+                DICTIONARY,
+                ENDPOINT,
+                MODEL,
+                CONNECT,
+                TOTAL,
+                OFFLINE_CATALOG,
+                OFFLINE_GLOSSARY,
+            ]
+            .contains(&id)
                 && notification == EN_CHANGE
             {
                 self.controller.mark_settings_dirty();
@@ -732,7 +1141,7 @@ impl WindowState {
                             _ => TranslationKind::Word,
                         },
                     ),
-                    PROVIDER => self.controller.mark_settings_dirty(),
+                    PROVIDER | THREADS | PRIORITY => self.controller.mark_settings_dirty(),
                     _ => {}
                 }
                 return;
@@ -741,6 +1150,22 @@ impl WindowState {
                 return;
             }
             let result = match id {
+                PAGE_TRANSLATION | PAGE_INPUT | PAGE_USER | PAGE_RESOURCES => {
+                    self.page = match id {
+                        PAGE_INPUT => SettingsPage::Input,
+                        PAGE_USER => SettingsPage::User,
+                        PAGE_RESOURCES => SettingsPage::Resources,
+                        _ => SettingsPage::Translation,
+                    };
+                    self.layout(hwnd);
+                    Ok(())
+                }
+                INPUT_SAVE => self
+                    .input_settings_from_controls()
+                    .and_then(|settings| self.controller.save_input_settings(settings)),
+                INPUT_LOAD => self.controller.reload_input_settings(),
+                USER_OPEN..=USER_CLEAR_LEARNING => self.user_command(hwnd, id),
+                TEST_CONNECTION => self.controller.test_connection(),
                 START => self.controller.start(),
                 CANCEL => {
                     self.clear_password();
@@ -825,7 +1250,7 @@ impl WindowState {
         unsafe {
             let editable =
                 !self.closing && self.controller.status != crate::controller::ViewStatus::Preparing;
-            for id in PROVIDER..=OFFLINE_CATALOG {
+            for id in PROVIDER..=OFFLINE_GLOSSARY {
                 EnableWindow(self.control(id), i32::from(editable));
             }
             if self.serial != self.controller.settings_serial {
@@ -862,6 +1287,33 @@ impl WindowState {
                             .unwrap_or(""),
                     )
                     .as_ptr(),
+                );
+                SetWindowTextW(
+                    self.control(OFFLINE_GLOSSARY),
+                    wide(
+                        s.offline_glossary
+                            .as_deref()
+                            .and_then(|path| path.to_str())
+                            .unwrap_or(""),
+                    )
+                    .as_ptr(),
+                );
+                SendMessageW(
+                    self.control(THREADS),
+                    CB_SETCURSEL,
+                    match s.worker_threads {
+                        WorkerThreads::One => 0,
+                        WorkerThreads::Two => 1,
+                        WorkerThreads::Four => 2,
+                        WorkerThreads::Auto => 3,
+                    },
+                    0,
+                );
+                SendMessageW(
+                    self.control(PRIORITY),
+                    CB_SETCURSEL,
+                    usize::from(s.worker_priority == WorkerPriority::BelowNormal),
+                    0,
                 );
                 SetWindowTextW(
                     self.control(CONNECT),
@@ -903,6 +1355,14 @@ impl WindowState {
                     },
                     0,
                 );
+                SendMessageW(self.control(DIRECTION), CB_RESETCONTENT, 0, 0);
+                for label in ["中文 → 英文", "英文 → 中文"] {
+                    self.item(DIRECTION, label);
+                }
+                if self.controller.supports_auto() {
+                    self.item(DIRECTION, "自动检测 → 英文");
+                    self.item(DIRECTION, "自动检测 → 中文");
+                }
                 SendMessageW(
                     self.control(DIRECTION),
                     CB_SETCURSEL,
@@ -915,6 +1375,7 @@ impl WindowState {
                     0,
                 );
             }
+            self.render_settings_center();
             SendMessageW(
                 self.control(CONSENT),
                 BM_SETCHECK,
@@ -941,6 +1402,16 @@ impl WindowState {
             EnableWindow(
                 self.control(COPY),
                 i32::from(!self.closing && self.controller.result().is_some()),
+            );
+            EnableWindow(
+                self.control(TEST_CONNECTION),
+                i32::from(
+                    editable
+                        && self.controller.available()
+                        && !self.controller.dirty
+                        && self.controller.settings.provider == ProviderChoice::Online
+                        && self.controller.authorized,
+                ),
             );
             let result = self
                 .controller
@@ -998,6 +1469,158 @@ impl WindowState {
                 self.last_status = status;
             }
         }
+    }
+
+    unsafe fn render_settings_center(&mut self) {
+        unsafe {
+            let input = &self.controller.input_settings;
+            for id in (INPUT_SCHEME..=INPUT_LOAD)
+                .chain(INPUT_FUZZY..INPUT_FUZZY + InputFuzzyPair::ALL.len())
+            {
+                EnableWindow(self.control(id), i32::from(!input.working && !self.closing));
+            }
+            let input_note = if input.working {
+                "正在处理输入设置…"
+            } else {
+                &input.notice
+            };
+            SetWindowTextW(self.control(INPUT_NOTE), wide(input_note).as_ptr());
+            if self.input_serial != input.serial {
+                self.input_serial = input.serial;
+                let settings = &input.settings;
+                SendMessageW(
+                    self.control(INPUT_SCHEME),
+                    CB_SETCURSEL,
+                    match settings.scheme {
+                        InputScheme::Full => 0,
+                        InputScheme::Abbreviated => 1,
+                        InputScheme::Xiaohe => 2,
+                    },
+                    0,
+                );
+                for (id, value) in [
+                    (INPUT_PAGE_SIZE, settings.page_size),
+                    (INPUT_MAXIMUM, settings.max_candidates),
+                ] {
+                    SetWindowTextW(self.control(id), wide(&value.to_string()).as_ptr());
+                }
+                for (id, selected) in [
+                    (INPUT_CORRECTION, settings.correction),
+                    (INPUT_MIXED, settings.mixed_input),
+                ]
+                .into_iter()
+                .chain(
+                    InputFuzzyPair::ALL
+                        .into_iter()
+                        .enumerate()
+                        .map(|(index, pair)| {
+                            (INPUT_FUZZY + index, settings.fuzzy_pairs.contains(&pair))
+                        }),
+                ) {
+                    SendMessageW(
+                        self.control(id),
+                        BM_SETCHECK,
+                        if selected { BST_CHECKED } else { BST_UNCHECKED } as usize,
+                        0,
+                    );
+                }
+            }
+
+            let user = &self.controller.user_settings;
+            for id in USER_OPEN..=USER_CLEAR_LEARNING {
+                let enabled =
+                    !user.working && !self.closing && (!user.needs_refresh || id == USER_OPEN);
+                EnableWindow(self.control(id), i32::from(enabled));
+            }
+            let note = if user.working {
+                "正在后台处理用户词库…"
+            } else {
+                &user.notice
+            };
+            SetWindowTextW(self.control(USER_NOTE), wide(note).as_ptr());
+            if self.user_serial != user.serial {
+                self.user_serial = user.serial;
+                let dictionary = &user.dictionary;
+                SendMessageW(
+                    self.control(USER_LEARNING),
+                    BM_SETCHECK,
+                    if dictionary.learning {
+                        BST_CHECKED
+                    } else {
+                        BST_UNCHECKED
+                    } as usize,
+                    0,
+                );
+                let generation = dictionary
+                    .generation
+                    .map(|n| n.to_string())
+                    .unwrap_or_else(|| "—".into());
+                let mut listing = format!(
+                    "当前版本 {generation} · 共 {} 条\r\n可用版本 {:?}\r\n\r\n",
+                    dictionary.entries.len(),
+                    dictionary.backups
+                );
+                for entry in dictionary.entries.iter().take(128) {
+                    use std::fmt::Write as _;
+                    let state = if entry.enabled { "启用" } else { "停用" };
+                    let _ = write!(
+                        listing,
+                        "{} · {} · {} · {state}\r\n",
+                        entry.id, entry.text, entry.pinyin
+                    );
+                }
+                if dictionary.entries.len() > 128 {
+                    listing.push_str("\r\n列表显示前 128 条。导出可查看完整词库。");
+                }
+                SetWindowTextW(self.control(USER_CONTENT), wide(&listing).as_ptr());
+            }
+
+            if self.page == SettingsPage::Resources {
+                let summary = self.resource_text();
+                if summary != self.last_resources {
+                    SetWindowTextW(self.control(RESOURCES), wide(&summary).as_ptr());
+                    self.last_resources = summary;
+                }
+            }
+        }
+    }
+
+    fn resource_text(&self) -> String {
+        use std::fmt::Write as _;
+        let mut summary = String::from("翻译提供者\r\n");
+        if let Some(identity) = self.controller.provider_identity() {
+            let _ = write!(
+                summary,
+                "标识：{}\r\n版本或校验：{}\r\n",
+                identity.id, identity.version
+            );
+        } else {
+            summary.push_str("当前没有可用的翻译提供者\r\n");
+        }
+        if let Some(snapshot) = self.controller.worker_snapshot() {
+            let _ = write!(summary, "\r\nWorker {}\r\n", worker_stage(snapshot.stage));
+            if let Some(model) = snapshot.model_identity {
+                let _ = write!(summary, "已观测模型：{model}\r\n");
+            }
+            if let Some(metrics) = snapshot.metrics {
+                let _ = write!(
+                    summary,
+                    "实际线程：{}\r\n载入：{} ms\r\n推理：{} ms\r\n",
+                    metrics.compute_threads,
+                    metrics.load_ns / 1_000_000,
+                    metrics.inference_ns / 1_000_000
+                );
+            }
+            if let Some(pid) = snapshot.child_pid {
+                let _ = write!(summary, "进程：{pid}\r\n");
+            }
+        }
+        if let Some(error) = self.controller.error.as_ref() {
+            let _ = write!(summary, "\r\n当前错误：{error}\r\n");
+        }
+        summary.push_str("\r\n输入设置状态\r\n");
+        summary.push_str(&self.controller.input_settings.notice);
+        summary
     }
 }
 
@@ -1121,17 +1744,7 @@ mod tests {
                 null(),
             ));
             assert!(!window.0.is_null());
-            let mut state = WindowState {
-                controller,
-                controls: Vec::new(),
-                parent: window.0,
-                font: null_mut(),
-                dpi: 96,
-                serial: u64::MAX,
-                last_result: String::new(),
-                last_status: String::new(),
-                closing: false,
-            };
+            let mut state = WindowState::new(controller, window.0);
             state.create_controls(window.0);
             state.render();
             assert_eq!(SendMessageW(state.control(KIND), CB_GETCOUNT, 0, 0), 3);
@@ -1178,17 +1791,7 @@ mod tests {
                 null(),
             ));
             assert!(!window.0.is_null());
-            let mut state = WindowState {
-                controller,
-                controls: Vec::new(),
-                parent: window.0,
-                font: null_mut(),
-                dpi: 96,
-                serial: u64::MAX,
-                last_result: String::new(),
-                last_status: String::new(),
-                closing: false,
-            };
+            let mut state = WindowState::new(controller, window.0);
             state.create_controls(window.0);
             state.render();
             assert_eq!(
@@ -1229,17 +1832,7 @@ mod tests {
                 null(),
             ));
             assert!(!window.0.is_null());
-            let mut state = WindowState {
-                controller,
-                controls: Vec::new(),
-                parent: window.0,
-                font: null_mut(),
-                dpi: 96,
-                serial: u64::MAX,
-                last_result: String::new(),
-                last_status: String::new(),
-                closing: false,
-            };
+            let mut state = WindowState::new(controller, window.0);
             state.create_controls(window.0);
             state.render();
             // endpoint为空，删除仅验证UI清理，不会访问任何生产凭据。
@@ -1288,17 +1881,7 @@ mod tests {
                 null(),
             ));
             assert!(!window.0.is_null());
-            let mut state = WindowState {
-                controller,
-                controls: Vec::new(),
-                parent: window.0,
-                font: null_mut(),
-                dpi: 96,
-                serial: u64::MAX,
-                last_result: String::new(),
-                last_status: String::new(),
-                closing: false,
-            };
+            let mut state = WindowState::new(controller, window.0);
             state.create_controls(window.0);
             state.render();
             SendMessageW(state.control(DIRECTION), CB_SETCURSEL, 1, 0);

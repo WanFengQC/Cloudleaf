@@ -21,6 +21,8 @@ from round22_worker_replay import build, flatten, identity, parse, percentiles, 
 
 LOCAL = ROOT / '.local'
 BASELINE = 'd56ce7167b10d7ee96ff341bb27573cdfcc7a8bc'
+ROUND26 = 'a6e48cbe28d48a010629a65537cfb6743522356a'
+ROUND26_REPLAY_HEAD = 'bb58b28b59a36f7167f750f8516a559cade8ef4a'
 WORD_SHA = 'f8062a4a8e456135840b9df51857c84e3ea3f16f59ced4f9dc85a5bd19fade3a'
 ARCHIVED_PROBE = '2e6db901532cdf0f961b0fdf3324bfa16ed88b6680fd439a612300a4070c2091'
 WORKER_NAME = 'cloudleaf-translation-worker.exe'
@@ -91,6 +93,35 @@ def freeze_executables(out, release, build_receipt, exact_baseline_release=None,
                              'probe_source_sha256': identity(SOURCE)['sha256'],
                              'local_build': identity(out / 'build.json')}
     return result
+
+
+def freeze_round27(out, release, build_receipt, frozen):
+    prior = read_json(frozen)
+    assert prior['head'] == ROUND26_REPLAY_HEAD and not prior['errors']
+    changed = subprocess.check_output(
+        ['git', 'diff', '--name-only', ROUND26_REPLAY_HEAD, ROUND26, '--',
+         'Cargo.toml', 'Cargo.lock', 'crates', 'apps/cloudleaf-translation-worker', str(SOURCE.relative_to(ROOT))],
+        cwd=ROOT,
+    )
+    assert not changed, '已冻结的 Round 26 测量与最终产品源码有差异'
+    identity_before = prior['executables']['round26']
+    base, current = (out / label for label in ('round26-bin', 'round27-bin'))
+    base.mkdir()
+    current.mkdir()
+    fixed = {'prior_measurement': identity(frozen), 'build_head': identity_before['build_head']}
+    for role, filename in [('probe', 'probe.exe'), ('worker', WORKER_NAME)]:
+        target = base / filename
+        shutil.copyfile(identity_before[role]['path'], target)
+        fixed[role] = identity(target)
+        assert fixed[role]['sha256'] == identity_before[role]['sha256']
+    receipt = read_json(build_receipt)
+    assert receipt['returncode'] == 0
+    worker = current / WORKER_NAME
+    shutil.copyfile(release / WORKER_NAME, worker)
+    probe = build(release, out, executable=current / 'probe.exe')
+    return {'round26': fixed, 'round27': {'probe': identity(probe), 'worker': identity(worker),
+             'build_head': receipt['head'], 'build_receipt': identity(build_receipt),
+             'local_build': identity(out / 'build.json'), 'probe_source_sha256': identity(SOURCE)}}
 
 
 def system_cpu(kernel):
@@ -169,7 +200,11 @@ def measure(args):
     word = identity(LOCAL / 'round24-corpus/final-minimum-base/word-context.tsv')
     assert [record['sha256'] for record in (runtime, lexical, catalog, word)] == [
         RUNTIME_SHA, LANGUAGE_SHA, CATALOG_SHA, WORD_SHA]
-    exes = freeze_executables(out, args.release, args.build_receipt, args.exact_baseline_release, args.reuse_current)
+    frozen = args.baseline_round26_quiet
+    if frozen:
+        exes = freeze_round27(out, args.release, args.build_receipt, frozen)
+    else:
+        exes = freeze_executables(out, args.release, args.build_receipt, args.exact_baseline_release, args.reuse_current)
     kernel, psapi = previous.api()
     kernel.GetSystemTimes.argtypes = [ctypes.POINTER(wintypes.FILETIME)] * 3
     layout = previous.topology(kernel)
@@ -181,7 +216,7 @@ def measure(args):
     event_counts = {name: previous.expanded_events(path) for name, path in TRACES.items()}
     assert event_counts == {'171': 171, '243': 243}
     report = {'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
-              'baseline_head': BASELINE, 'started_utc': datetime.now(UTC).isoformat(),
+              'baseline_head': ROUND26 if frozen else BASELINE, 'started_utc': datetime.now(UTC).isoformat(),
               'environment': platform.platform(), 'processor': platform.processor(), 'topology': layout,
               'resources': {'runtime': runtime, 'lexical': lexical, 'catalog': catalog, 'word': word,
                             'models': models, 'traces': {k: identity(v) for k, v in TRACES.items()}},
@@ -280,6 +315,7 @@ def main():
     parser.add_argument('--release', type=Path)
     parser.add_argument('--reuse-current', type=Path)
     parser.add_argument('--exact-baseline-release', type=Path)
+    parser.add_argument('--baseline-round26-quiet', type=Path)
     parser.add_argument('--normal-only', action='store_true')
     parser.add_argument('--build-receipt', type=Path)
     parser.add_argument('--repeats', type=int, choices=range(1, 7), default=3)
@@ -291,6 +327,9 @@ def main():
         parser.error("choose fresh or reused Release binaries")
     if (args.release is None) != (args.build_receipt is None):
         parser.error('--release 与 --build-receipt 需同时提供')
+    if args.baseline_round26_quiet and (not args.release or not args.normal_only
+                                       or args.exact_baseline_release):
+        parser.error('Round 26 冻结配对使用新 Release 构建与 --normal-only')
     if args.release is not None:
         args.release = args.release.resolve()
         args.build_receipt = args.build_receipt.resolve()

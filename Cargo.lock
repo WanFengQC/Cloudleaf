@@ -184,6 +184,7 @@ version = "0.1.0"
 dependencies = [
  "cloudleaf-input",
  "cloudleaf-search",
+ "cloudleaf-settings",
  "cloudleaf-translation",
  "cloudleaf-translation-integrity",
  "cloudleaf-translation-ipc",
@@ -209,6 +210,7 @@ dependencies = [
  "cloudleaf-input",
  "cloudleaf-pinyin",
  "cloudleaf-search",
+ "cloudleaf-settings",
  "cloudleaf-types",
 ]
 
@@ -262,6 +264,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "cloudleaf-settings"
+version = "0.1.0"
+dependencies = [
+ "cloudleaf-input",
+ "serde",
+ "serde_json",
+ "windows",
+]
+
+[[package]]
 name = "cloudleaf-translation"
 version = "0.1.0"
 dependencies = [
@@ -294,9 +306,11 @@ dependencies = [
 name = "cloudleaf-translation-panel"
 version = "0.1.0"
 dependencies = [
+ "cloudleaf-settings",
  "cloudleaf-translation",
  "cloudleaf-translation-integrity",
  "cloudleaf-translation-ipc",
+ "cloudleaf-user",
  "ring",
  "serde",
  "serde_json",
@@ -332,6 +346,7 @@ dependencies = [
  "cloudleaf-dictionary",
  "cloudleaf-input",
  "cloudleaf-search",
+ "cloudleaf-settings",
  "cloudleaf-translation-integrity",
  "cloudleaf-translation-ipc",
  "cloudleaf-types",

@@ -1,8 +1,12 @@
+use crate::center::{UserAction, UserDictionaryView, user_action};
 use crate::platform::CredentialStore;
 use crate::settings::{ProviderChoice, Settings, SettingsRepository};
+use cloudleaf_settings::{
+    InputPreferences, InputPreferencesRepository, InputSettingsError, InputSettingsStatus,
+    LoadedInputPreferences,
+};
 use cloudleaf_translation::*;
 use cloudleaf_translation_integrity::{Glossary, MAX_GLOSSARY_BYTES};
-use cloudleaf_translation_ipc::{ResourceThreads, WorkerConfig};
 use std::fs::File;
 use std::io::Read;
 use std::path::{Path, PathBuf};
@@ -12,7 +16,10 @@ use std::time::Duration;
 
 pub(crate) enum SetupCommand {
     Load(Option<PathBuf>),
-    Prepare(Settings, bool),
+    Apply(Settings),
+    ReadInput,
+    SaveInput(InputPreferences),
+    UserDictionary(PathBuf, Option<u64>, UserAction),
     SaveKey(Settings, Secret),
     DeleteKey(Settings),
 }
@@ -31,6 +38,10 @@ pub(crate) struct Prepared {
 
 pub(crate) enum SetupEvent {
     Prepared(Box<Prepared>),
+    Saved(Box<Prepared>),
+    SaveRejected(String),
+    Input(Result<LoadedInputPreferences, InputSettingsError>, bool),
+    User(Result<UserDictionaryView, cloudleaf_user::Error>),
     Key(Result<&'static str, crate::platform::PlatformError>),
 }
 
@@ -47,7 +58,8 @@ impl SetupHandle {
         let thread = thread::Builder::new()
             .name("cloudleaf-panel-settings".into())
             .spawn(move || {
-                let repository = SettingsRepository::new(directory);
+                let repository = SettingsRepository::new(directory.clone());
+                let input = InputPreferencesRepository::new(directory);
                 while let Ok(command) = commands.recv() {
                     let event = match command {
                         SetupCommand::Load(dictionary) => {
@@ -64,24 +76,27 @@ impl SetupHandle {
                             }
                             SetupEvent::Prepared(Box::new(prepare(settings, store.clone(), notice)))
                         }
-                        SetupCommand::Prepare(settings, persist) => {
-                            if settings.validate().is_err() {
-                                SetupEvent::Prepared(Box::new(unavailable(
-                                    settings,
-                                    "设置无效，请检查端点、模型和超时",
-                                )))
-                            } else if persist && repository.save(&settings).is_err() {
-                                SetupEvent::Prepared(Box::new(unavailable(
-                                    settings,
-                                    "设置保存失败，未启用新提供者",
-                                )))
-                            } else {
-                                SetupEvent::Prepared(Box::new(prepare(
-                                    settings,
-                                    store.clone(),
-                                    "设置已应用".into(),
-                                )))
+                        SetupCommand::Apply(settings) => {
+                            let prepared = prepare(settings, store.clone(), "设置已应用".into());
+                            match repository.save(&prepared.settings) {
+                                Ok(()) => SetupEvent::Saved(Box::new(prepared)),
+                                Err(error) => SetupEvent::SaveRejected(format!(
+                                    "设置保存失败，保留当前提供者：{error}"
+                                )),
                             }
+                        }
+                        SetupCommand::ReadInput => SetupEvent::Input(input.load(), false),
+                        SetupCommand::SaveInput(settings) => SetupEvent::Input(
+                            input
+                                .save(&settings)
+                                .map(|settings| LoadedInputPreferences {
+                                    settings,
+                                    status: InputSettingsStatus::Current,
+                                }),
+                            true,
+                        ),
+                        SetupCommand::UserDictionary(directory, generation, action) => {
+                            SetupEvent::User(user_action(&directory, generation, action))
                         }
                         SetupCommand::SaveKey(settings, secret) => SetupEvent::Key(
                             store
@@ -175,9 +190,9 @@ fn prepare(settings: Settings, store: Arc<dyn CredentialStore>, notice: String) 
                     .as_ref()
                     .ok_or(TranslationError::ModelNotFound)?;
                 let expected_sha256 = worker_catalog_sha256(catalog)?;
-                let config =
-                    WorkerConfig::sibling(catalog.clone(), expected_sha256, ResourceThreads::One)
-                        .map_err(TranslationError::OfflineWorker)?;
+                let config = settings
+                    .worker_config(catalog.clone(), expected_sha256)
+                    .map_err(TranslationError::OfflineWorker)?;
                 let provider = WorkerProvider::new(config);
                 worker = Some(provider.observer());
                 (Arc::new(provider), None)

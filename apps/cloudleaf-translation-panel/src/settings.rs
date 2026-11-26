@@ -1,16 +1,45 @@
+use cloudleaf_settings::{read_bounded, write_atomic};
 use cloudleaf_translation::{OpenAiCompatibleConfig, OpenAiCompatibleProvider, SessionSecretStore};
+use cloudleaf_translation_ipc::{IpcError, ResourceThreads, WorkerConfig, WorkerScheduling};
 use ring::digest::{SHA256, digest};
 use serde::{Deserialize, Serialize};
 use std::fmt;
-use std::fs::{self, File, OpenOptions};
-use std::io::{Read, Write};
-use std::path::{Path, PathBuf};
+use std::fs;
+use std::path::PathBuf;
 use std::sync::Arc;
-use std::sync::atomic::{AtomicU64, Ordering};
-use std::time::{Duration, SystemTime, UNIX_EPOCH};
+use std::time::Duration;
 
 const MAX_SETTINGS_BYTES: usize = 32 * 1024;
-static NEXT_TEMPORARY: AtomicU64 = AtomicU64::new(1);
+
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum WorkerThreads {
+    #[default]
+    One,
+    Two,
+    Four,
+    Auto,
+}
+
+impl WorkerThreads {
+    fn is_default(value: &Self) -> bool {
+        *value == Self::default()
+    }
+}
+
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum WorkerPriority {
+    #[default]
+    Normal,
+    BelowNormal,
+}
+
+impl WorkerPriority {
+    fn is_default(value: &Self) -> bool {
+        *value == Self::default()
+    }
+}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
@@ -39,6 +68,10 @@ pub struct Settings {
     pub offline_catalog: Option<PathBuf>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub offline_glossary: Option<PathBuf>,
+    #[serde(default, skip_serializing_if = "WorkerThreads::is_default")]
+    pub worker_threads: WorkerThreads,
+    #[serde(default, skip_serializing_if = "WorkerPriority::is_default")]
+    pub worker_priority: WorkerPriority,
     pub endpoint: String,
     pub model: String,
     pub direction: DirectionChoice,
@@ -58,6 +91,8 @@ impl Default for Settings {
             dictionary_path: None,
             offline_catalog: None,
             offline_glossary: None,
+            worker_threads: WorkerThreads::One,
+            worker_priority: WorkerPriority::Normal,
             endpoint: String::new(),
             model: String::new(),
             direction: DirectionChoice::ChineseEnglish,
@@ -104,6 +139,23 @@ impl fmt::Display for SettingsError {
 impl std::error::Error for SettingsError {}
 
 impl Settings {
+    pub(crate) fn worker_config(
+        &self,
+        catalog: PathBuf,
+        digest: String,
+    ) -> Result<WorkerConfig, IpcError> {
+        let config = match self.worker_threads {
+            WorkerThreads::One => WorkerConfig::sibling(catalog, digest, ResourceThreads::One),
+            WorkerThreads::Two => WorkerConfig::sibling(catalog, digest, ResourceThreads::Two),
+            WorkerThreads::Four => WorkerConfig::sibling(catalog, digest, ResourceThreads::Four),
+            WorkerThreads::Auto => WorkerConfig::sibling_auto(catalog, digest),
+        }?;
+        config.with_scheduling(match self.worker_priority {
+            WorkerPriority::Normal => WorkerScheduling::Normal,
+            WorkerPriority::BelowNormal => WorkerScheduling::BelowNormal,
+        })
+    }
+
     pub fn validate(&self) -> Result<(), SettingsError> {
         if self.schema_version != 3 {
             return Err(SettingsError::UnsupportedVersion);
@@ -179,29 +231,36 @@ impl SettingsRepository {
 
     pub fn load(&self) -> Result<LoadedSettings, SettingsError> {
         let main = self.directory.join("settings.json");
-        let primary = match read_file(&main) {
+        let primary = match read_bounded(&main, MAX_SETTINGS_BYTES) {
             Ok(bytes) => Some(bytes),
             Err(error) if error.kind() == std::io::ErrorKind::NotFound => None,
             Err(_) => return Err(SettingsError::Io),
         };
-        if let Some(bytes) = &primary {
-            if let Ok((settings, migrated)) = parse(bytes) {
-                return Ok(prepare_loaded(settings, migrated, None));
-            }
-        } else {
-            return Ok(LoadedSettings {
-                settings: Settings::default(),
-                notice: None,
-            });
-        }
-        if let Ok(bytes) = read_file(&self.directory.join("settings.json.bak"))
-            && let Ok((settings, migrated)) = parse(&bytes)
+        if let Some(bytes) = &primary
+            && let Ok((settings, migrated)) = parse(bytes)
         {
-            return Ok(prepare_loaded(
-                settings,
-                migrated,
-                Some("主设置无效，已读取有效备份；原文件未改动"),
-            ));
+            return Ok(prepare_loaded(settings, migrated, None));
+        }
+        match read_bounded(
+            &self.directory.join("settings.json.bak"),
+            MAX_SETTINGS_BYTES,
+        ) {
+            Ok(bytes) => {
+                if let Ok((settings, migrated)) = parse(&bytes) {
+                    return Ok(prepare_loaded(
+                        settings,
+                        migrated,
+                        Some("主设置缺失或无效，已读取有效备份；原文件未改动"),
+                    ));
+                }
+            }
+            Err(error) if primary.is_none() && error.kind() == std::io::ErrorKind::NotFound => {
+                return Ok(LoadedSettings {
+                    settings: Settings::default(),
+                    notice: None,
+                });
+            }
+            Err(_) => (),
         }
         Ok(LoadedSettings {
             settings: Settings::default(),
@@ -219,24 +278,20 @@ impl SettingsRepository {
         }
         fs::create_dir_all(&self.directory).map_err(|_| SettingsError::Io)?;
         let main = self.directory.join("settings.json");
-        match read_file(&main) {
-            Ok(previous) if parse(&previous).is_ok() => {
-                write_replacement(&self.directory.join("settings.json.bak"), &previous)?
-            }
-            Ok(_) => {}
+        match read_bounded(&main, MAX_SETTINGS_BYTES) {
+            Ok(previous) => match parse(&previous) {
+                Ok(_) => write_atomic(&self.directory.join("settings.json.bak"), &previous)
+                    .map_err(|_| SettingsError::Io)?,
+                Err(SettingsError::UnsupportedVersion) => {
+                    return Err(SettingsError::UnsupportedVersion);
+                }
+                Err(_) => (),
+            },
             Err(error) if error.kind() == std::io::ErrorKind::NotFound => {}
             Err(_) => return Err(SettingsError::Io),
         }
-        write_replacement(&main, &bytes)
+        write_atomic(&main, &bytes).map_err(|_| SettingsError::Io)
     }
-}
-
-fn read_file(path: &Path) -> Result<Vec<u8>, std::io::Error> {
-    let file = File::open(path)?;
-    let mut bytes = Vec::new();
-    file.take((MAX_SETTINGS_BYTES + 1) as u64)
-        .read_to_end(&mut bytes)?;
-    Ok(bytes)
 }
 
 fn parse(bytes: &[u8]) -> Result<(Settings, bool), SettingsError> {
@@ -293,69 +348,39 @@ fn prepare_loaded(
     }
 }
 
-struct TemporaryFile(PathBuf);
-impl Drop for TemporaryFile {
-    fn drop(&mut self) {
-        let _ = fs::remove_file(&self.0);
-    }
-}
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-fn write_replacement(path: &Path, bytes: &[u8]) -> Result<(), SettingsError> {
-    let parent = path.parent().ok_or(SettingsError::Io)?;
-    let timestamp = SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        .map_err(|_| SettingsError::Io)?
-        .as_nanos();
-    let temporary_path = parent.join(format!(
-        ".settings-{}-{timestamp}-{}.tmp",
-        std::process::id(),
-        NEXT_TEMPORARY.fetch_add(1, Ordering::Relaxed)
-    ));
-    let mut file = OpenOptions::new()
-        .create_new(true)
-        .write(true)
-        .open(&temporary_path)
-        .map_err(|_| SettingsError::Io)?;
-    let written = file.write_all(bytes).and_then(|()| file.sync_all());
-    drop(file);
-    // 仅清理本次create_new成功创建的文件，并先关闭Windows文件句柄。
-    let temporary = TemporaryFile(temporary_path);
-    written.map_err(|_| SettingsError::Io)?;
-    replace(&temporary.0, path)?;
-    #[cfg(unix)]
-    File::open(parent)
-        .and_then(|directory| directory.sync_all())
-        .map_err(|_| SettingsError::Io)?;
-    Ok(())
-}
-
-#[cfg(not(windows))]
-fn replace(from: &Path, to: &Path) -> Result<(), SettingsError> {
-    fs::rename(from, to).map_err(|_| SettingsError::Io)
-}
-
-#[cfg(windows)]
-#[allow(unsafe_code)]
-fn replace(from: &Path, to: &Path) -> Result<(), SettingsError> {
-    use std::os::windows::ffi::OsStrExt;
-    use windows_sys::Win32::Storage::FileSystem::{
-        MOVEFILE_REPLACE_EXISTING, MOVEFILE_WRITE_THROUGH, MoveFileExW,
-    };
-    let from: Vec<u16> = from.as_os_str().encode_wide().chain(Some(0)).collect();
-    let to: Vec<u16> = to.as_os_str().encode_wide().chain(Some(0)).collect();
-    if from[..from.len() - 1].contains(&0) || to[..to.len() - 1].contains(&0) {
-        return Err(SettingsError::Io);
+    #[test]
+    fn round27_worker_configuration_binds_catalog_identity_and_thread_preference() {
+        let legacy = serde_json::to_vec(&Settings::default()).unwrap();
+        let (legacy, migrated) = parse(&legacy).unwrap();
+        assert!(!migrated);
+        assert_eq!(legacy.worker_threads, WorkerThreads::One);
+        assert_eq!(legacy.worker_priority, WorkerPriority::Normal);
+        let settings = Settings {
+            worker_threads: WorkerThreads::Four,
+            worker_priority: WorkerPriority::BelowNormal,
+            ..legacy
+        };
+        let (restored, migrated) = parse(&serde_json::to_vec(&settings).unwrap()).unwrap();
+        assert_eq!(restored, settings);
+        assert!(!migrated);
+        let catalog = PathBuf::from("models/catalog.json");
+        let sha = "a".repeat(64);
+        if cfg!(windows) {
+            let child = restored
+                .worker_config(catalog.clone(), sha.clone())
+                .unwrap();
+            assert_eq!(child.compute_threads(), ResourceThreads::Four);
+            assert_eq!(child.catalog_path(), catalog);
+            assert_eq!(child.catalog_sha256(), sha);
+        } else {
+            assert!(matches!(
+                restored.worker_config(catalog, sha),
+                Err(IpcError::InvalidConfiguration)
+            ));
+        }
     }
-    // 同目录替换并请求写穿；不能据此声称物理断电已经验收。
-    if unsafe {
-        MoveFileExW(
-            from.as_ptr(),
-            to.as_ptr(),
-            MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH,
-        )
-    } == 0
-    {
-        return Err(SettingsError::Io);
-    }
-    Ok(())
 }

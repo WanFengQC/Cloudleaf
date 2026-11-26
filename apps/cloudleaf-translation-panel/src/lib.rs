@@ -1,3 +1,4 @@
+pub mod center;
 pub mod controller;
 pub mod platform;
 pub mod settings;

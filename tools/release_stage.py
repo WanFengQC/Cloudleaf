@@ -5,6 +5,7 @@ import hashlib
 import json
 from pathlib import Path, PurePosixPath
 import re
+import sys
 import tempfile
 
 from tools.data_pipeline.filesystem import assert_plain_path, assert_plain_tree
@@ -30,8 +31,15 @@ def isolated(path):
     assert_plain_path(original)
     temporary = Path(tempfile.gettempdir()).resolve()
     resolved = original.resolve()
+    if sys.platform == "win32":
+        value = str(resolved)
+        resolved = Path("\\\\" + value[8:] if value.startswith("\\\\?\\UNC\\") else value.removeprefix("\\\\?\\"))
     if resolved == temporary or not resolved.is_relative_to(temporary):
         raise ValueError("发行演练只能使用系统临时目录的独立子目录")
+    if sys.platform == "win32":
+        # 内容摘要目录和合法许可树结合时能超过 Win32 的传统路径限制。
+        value = str(resolved).removeprefix("\\\\?\\")
+        return Path("\\\\?\\UNC\\" + value[2:] if value.startswith("\\\\") else "\\\\?\\" + value)
     return resolved
 
 
@@ -39,7 +47,7 @@ def file_record(root, path):
     relative = path.relative_to(root).as_posix()
     parts = PurePosixPath(relative).parts
     if (len(parts) < 2 or parts[0] not in ROLES
-            or any(not re.fullmatch(r"[A-Za-z0-9_-][A-Za-z0-9_.-]*", component)
+            or any(not re.fullmatch(r"[A-Za-z0-9_-][A-Za-z0-9_.+-]*", component)
                    or component.endswith(".") for component in parts)
             or path.suffix.lower() in {".safetensors", ".pt", ".pth", ".bin"}
             or path.name.lower() in {"settings.json", "input-settings.json", "user-dictionary.tsv", "credentials.json"}):
@@ -53,7 +61,8 @@ def records(root):
     assert_plain_tree(root)
     if not root.is_dir():
         raise ValueError("缺少发行目录")
-    paths = sorted(path for path in root.rglob("*") if path.is_file() and path != root / MANIFEST)
+    paths = (path for path in root.rglob("*") if path.is_file() and path != root / MANIFEST)
+    paths = sorted(paths, key=lambda path: path.relative_to(root).as_posix())
     result = [file_record(root, path) for path in paths]
     if len({record["path"].casefold() for record in result}) != len(result):
         raise ValueError("发行包存在大小写冲突")

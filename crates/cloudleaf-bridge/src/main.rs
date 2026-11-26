@@ -3,7 +3,8 @@
 use cloudleaf_bridge::{BridgeError, PendingCommit, TranslationBridge, TranslationState};
 use cloudleaf_input::{InputConfig, InputEngine, SearchSnapshot};
 use cloudleaf_search::{Config, Method, Ranker};
-use cloudleaf_translation::{WorkerObserver, WorkerProvider};
+use cloudleaf_settings::InputPreferencesRepository;
+use cloudleaf_translation::{ReadPolicy, SemanticDictionary, WorkerObserver, WorkerProvider};
 use cloudleaf_translation_ipc::{ResourceThreads, WorkerConfig};
 use cloudleaf_types::{CommitOutcome, EventResult, InputEvent, InputMode, Key};
 use serde_json::{Value, json};
@@ -21,31 +22,74 @@ struct Headless {
     attempt: Option<PendingCommit>,
     show_text: bool,
     worker: WorkerObserver,
+    semantic: Option<SemanticDictionary>,
+    definition: Option<Value>,
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<_> = std::env::args().skip(1).collect();
-    let show_text = args.get(4).is_some_and(|arg| arg == "--show-text");
-    if !(args.len() == 4 || args.len() == 5 && show_text) {
-        return Err("usage: cloudleaf-bridge-headless RUNTIME_TSV LEXICON_SHA CATALOG_JSON CATALOG_SHA [--show-text] < actions.jsonl".into());
+    let usage = "用法：cloudleaf-bridge-headless RUNTIME_TSV LEXICON_SHA CATALOG_JSON CATALOG_SHA [--show-text] [--settings-dir DIR] [--semantic-index INDEX SHA] < actions.jsonl";
+    let [runtime, runtime_sha, catalog, catalog_sha, flags @ ..] = args.as_slice() else {
+        return Err(usage.into());
+    };
+    let mut flags = flags;
+    let mut show_text = false;
+    let mut preferences = None;
+    let mut semantic = None;
+    while !flags.is_empty() {
+        match flags {
+            [flag, rest @ ..] if flag == "--show-text" && !show_text => {
+                show_text = true;
+                flags = rest;
+            }
+            [flag, directory, rest @ ..] if flag == "--settings-dir" && preferences.is_none() => {
+                preferences = Some(InputPreferencesRepository::new(directory.into()).load()?);
+                flags = rest;
+            }
+            [flag, path, sha, rest @ ..] if flag == "--semantic-index" && semantic.is_none() => {
+                semantic = Some(SemanticDictionary::load(
+                    &PathBuf::from(path),
+                    sha,
+                    ReadPolicy::Research,
+                )?);
+                flags = rest;
+            }
+            _ => return Err(usage.into()),
+        }
     }
-    let dictionary = std::fs::read_to_string(&args[0])?;
-    let snapshot = Arc::new(SearchSnapshot::from_verified_tsv(&dictionary, &args[1])?);
-    let engine = InputEngine::with_search(
+    let dictionary = std::fs::read_to_string(runtime)?;
+    let snapshot = Arc::new(SearchSnapshot::from_verified_tsv(&dictionary, runtime_sha)?);
+    let mut engine = InputEngine::with_search(
         snapshot,
         Config {
             method: Method::PositionDag,
             ranker: Ranker::Structural,
-            output_k: 10,
+            output_k: preferences
+                .as_ref()
+                .map_or(10, |loaded| loaded.settings.max_candidates),
             max_input_bytes: 64,
             max_letters: 64,
             ..Default::default()
         },
-        InputConfig::default(),
+        preferences
+            .as_ref()
+            .map_or_else(InputConfig::default, |loaded| {
+                loaded.settings.input_config()
+            }),
     )?;
+    if let Some(loaded) = preferences {
+        engine.reconfigure_scheme(loaded.settings.scheme_config())?;
+        engine.reconfigure_mixed_input(loaded.settings.mixed_input)?;
+        eprintln!(
+            "input_settings={:?} revision={} mixed={}",
+            loaded.status,
+            loaded.settings.revision,
+            engine.mixed_input_enabled()
+        );
+    }
     let provider = Arc::new(WorkerProvider::new(WorkerConfig::sibling(
-        PathBuf::from(&args[2]),
-        args[3].clone(),
+        PathBuf::from(catalog),
+        catalog_sha.clone(),
         ResourceThreads::One,
     )?));
     let worker = provider.observer();
@@ -56,6 +100,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         attempt: None,
         show_text,
         worker,
+        semantic,
+        definition: None,
     };
     for (index, line) in io::stdin().lock().lines().enumerate() {
         let line = line?;
@@ -78,6 +124,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 impl Headless {
     fn execute(&mut self, op: &str, action: &Value) -> Result<(), BridgeError> {
+        self.definition = None;
         match op {
             "activate" => self.event(InputEvent::Activate),
             "blur" => self.event(InputEvent::FocusLost),
@@ -98,6 +145,7 @@ impl Headless {
             "backspace" => self.event(InputEvent::Key(Key::Backspace)),
             "space" => self.event(InputEvent::Key(Key::Space)),
             "enter" => self.event(InputEvent::Key(Key::Enter)),
+            "define" => self.define(action),
             "candidate" => {
                 let frame = self.bridge.input().frame();
                 let index = usize::try_from(action["index"].as_u64().unwrap_or(0))
@@ -167,6 +215,34 @@ impl Headless {
         }
     }
 
+    fn define(&mut self, action: &Value) -> Result<(), BridgeError> {
+        let engine = self.bridge.input();
+        let revision = engine.revision();
+        if action["revision"].as_u64() != Some(revision) {
+            return Err(BridgeError::StaleConfirmation);
+        }
+        let dictionary = self.semantic.as_ref().ok_or(BridgeError::InvalidState)?;
+        let text = field(action, "text")?;
+        if text.trim().is_empty() || text.len() > 4096 {
+            return Err(BridgeError::InvalidState);
+        }
+        let hits = match field(action, "language")? {
+            "zh" => dictionary.headword("zh", text),
+            "en" => dictionary.english_gloss_exact(text),
+            _ => return Err(BridgeError::InvalidState),
+        };
+        // 查询只返回当前操作的独立结果，后续帧不携带释义，也不产生提交凭据。
+        self.definition = Some(json!({
+            "revision": revision,
+            "quality": "ResearchOnly",
+            "index_sha256": dictionary.lookup_index_sha256(),
+            "bundle_sha256": dictionary.bundle_manifest_sha256(),
+            "count": hits.total,
+            "definitions": if self.show_text { Some(hits.hits) } else { None },
+        }));
+        Ok(())
+    }
+
     fn event(&mut self, event: InputEvent) -> Result<(), BridgeError> {
         let EventResult { error, commit, .. } = self.bridge.apply_input(event)?;
         if let Some(error) = error {
@@ -227,7 +303,7 @@ impl Headless {
                 })).collect::<Vec<_>>(),
             })
         });
-        json!({
+        let mut record = json!({
             "index": index,
             "op": op,
             "state": format!("{:?}", self.bridge.state()),
@@ -262,7 +338,11 @@ impl Headless {
                 "metrics": worker.metrics,
                 "error": worker.error.map(|error| error.to_string()),
             })),
-        })
+        });
+        if let Some(definition) = &self.definition {
+            record["definition"] = definition.clone();
+        }
+        record
     }
 }
 

@@ -1,5 +1,6 @@
 //! 平台无关输入状态机；宿主负责执行提交请求并同步确认结果。
 
+mod mixed;
 mod sentence;
 pub use sentence::{
     EdgeSource, LanguageSnapshot, ResearchLanguageSnapshot, SearchCapacityBounds, SearchDiagnostic,
@@ -59,6 +60,10 @@ pub struct InputEngine {
     failed_commit: Option<CommitRequest>,
     translation_commit_id: Option<u64>,
     pending_selection: Option<SelectionEvidence>,
+    mixed_input: bool,
+    mixed_has_literal: bool,
+    mixed_trailing_literal: bool,
+    numeric_selection: bool,
 }
 
 /// 只证明当前引擎确实选择过候选；本对象不证明宿主Applied，不能自行触发学习。
@@ -116,6 +121,10 @@ impl InputEngine {
             failed_commit: None,
             translation_commit_id: None,
             pending_selection: None,
+            mixed_input: false,
+            mixed_has_literal: false,
+            mixed_trailing_literal: false,
+            numeric_selection: false,
         })
     }
 
@@ -396,6 +405,37 @@ impl InputEngine {
         Ok(())
     }
 
+    pub fn mixed_input_enabled(&self) -> bool {
+        self.mixed_input
+    }
+
+    pub fn validate_mixed_input(&self, _enabled: bool) -> Result<(), CoreError> {
+        if self.pending_commit.is_some() || self.failed_commit.is_some() {
+            return Err(CoreError::new(
+                ErrorCode::CommitPending,
+                "事务未完成，不能切换自动混排",
+            ));
+        }
+        if self.revision == u64::MAX {
+            return Err(CoreError::new(ErrorCode::InvalidInput, "输入修订号已耗尽"));
+        }
+        Ok(())
+    }
+
+    pub fn reconfigure_mixed_input(&mut self, enabled: bool) -> Result<(), CoreError> {
+        self.validate_mixed_input(enabled)?;
+        if self.mixed_input == enabled {
+            return Ok(());
+        }
+        self.mixed_input = enabled;
+        let inactive = self.state == InputState::Inactive;
+        self.refresh();
+        if inactive {
+            self.state = InputState::Inactive;
+        }
+        Ok(())
+    }
+
     /// 未确定的提交先由原事务收尾，不能通过换词典解除失败保护。
     pub fn replace_search_snapshot(
         &mut self,
@@ -475,9 +515,7 @@ impl InputEngine {
         let handle_composition = if composing { Handle } else { PassThrough };
         let disposition = match key {
             Key::Char(' ' | '\n') | Key::Space | Key::Enter => handle_composition,
-            Key::Char(character)
-                if character.is_ascii_alphabetic() || (character == '\'' && composing) =>
-            {
+            Key::Char(character) if self.buffers_character(character) => {
                 if self.preedit.len() >= cloudleaf_pinyin::MAX_INPUT_LEN {
                     Blocked(ErrorCode::InputTooLong)
                 } else {
@@ -500,11 +538,7 @@ impl InputEngine {
         // 提交序号耗尽时，仅阻止会创建提交的键；光标编辑和取消仍可执行。
         let creates_commit = match key {
             Key::Char(' ' | '\n') | Key::Space | Key::Enter => composing,
-            Key::Char(character)
-                if character.is_ascii_alphabetic() || (character == '\'' && composing) =>
-            {
-                false
-            }
+            Key::Char(character) if self.buffers_character(character) => false,
             Key::Char(character) if character.is_control() => false,
             Key::Char(character) => composing || chinese_punctuation(character).is_some(),
             _ => false,
@@ -743,9 +777,17 @@ impl InputEngine {
                 if self.preedit.is_empty() {
                     self.result(false, None, None)
                 } else if let Some(index) = self.highlighted {
-                    self.begin_candidate_commit(index)
+                    let keep_space = self.mixed_input
+                        && matches!(key, Key::Char(' ') | Key::Space)
+                        && (self.mixed_trailing_literal
+                            || mixed::is_literal(&self.candidates[index]));
+                    self.begin_candidate_commit_with_space(index, keep_space)
                 } else {
-                    self.begin_commit(self.preedit.clone())
+                    let mut text = self.preedit.clone();
+                    if self.mixed_input && matches!(key, Key::Char(' ') | Key::Space) {
+                        text.push(' ');
+                    }
+                    self.begin_commit(text)
                 }
             }
             Key::Char(character) => self.handle_character(character),
@@ -788,8 +830,39 @@ impl InputEngine {
         }
     }
 
-    fn handle_character(&mut self, character: char) -> EventResult {
+    fn shortcut(&self, character: char) -> Option<usize> {
+        if self.mixed_input && !self.numeric_selection {
+            return None;
+        }
+        let digit = character.to_digit(10)? as usize;
+        if digit == 0 || !character.is_ascii_digit() {
+            return None;
+        }
+        let index = self.page_start + digit - 1;
+        let page_end = (self.page_start + self.config.page_size).min(self.candidates.len());
+        (index < page_end).then_some(index)
+    }
+
+    fn buffers_character(&self, character: char) -> bool {
         if character.is_ascii_alphabetic() || (character == '\'' && !self.preedit.is_empty()) {
+            return true;
+        }
+        if !self.mixed_input {
+            return false;
+        }
+        if character.is_ascii_digit() {
+            return self.shortcut(character).is_none();
+        }
+        if !character.is_ascii_punctuation() || self.preedit.is_empty() {
+            return false;
+        }
+        matches!(character, '.' | ':')
+            || chinese_punctuation(character).is_none()
+            || self.mixed_has_literal
+    }
+
+    fn handle_character(&mut self, character: char) -> EventResult {
+        if self.buffers_character(character) {
             if self.preedit.len() >= cloudleaf_pinyin::MAX_INPUT_LEN {
                 return self.result(
                     false,
@@ -807,16 +880,8 @@ impl InputEngine {
             return self.result(true, None, None);
         }
 
-        if let Some(digit) = character.to_digit(10)
-            && character.is_ascii_digit()
-            && (1..=9).contains(&digit)
-            && !self.candidates.is_empty()
-        {
-            let index = self.page_start + digit as usize - 1;
-            let page_end = (self.page_start + self.config.page_size).min(self.candidates.len());
-            if index < page_end {
-                return self.begin_candidate_commit(index);
-            }
+        if let Some(index) = self.shortcut(character) {
+            return self.begin_candidate_commit(index);
         }
 
         if character.is_control() {
@@ -849,6 +914,10 @@ impl InputEngine {
         let Some(current) = self.highlighted else {
             return self.result(false, None, None);
         };
+        let newly_armed = self.mixed_input && !self.numeric_selection;
+        if newly_armed {
+            self.numeric_selection = true;
+        }
         let last = self.candidates.len() - 1;
         let next = match key {
             Key::Up => current.saturating_sub(1),
@@ -861,6 +930,8 @@ impl InputEngine {
         if next != current {
             self.highlighted = Some(next);
             self.page_start = next / self.config.page_size * self.config.page_size;
+        }
+        if next != current || newly_armed {
             self.advance_revision();
         }
         self.result(true, None, None)
@@ -898,6 +969,10 @@ impl InputEngine {
     }
 
     fn begin_candidate_commit(&mut self, index: usize) -> EventResult {
+        self.begin_candidate_commit_with_space(index, false)
+    }
+
+    fn begin_candidate_commit_with_space(&mut self, index: usize, keep_space: bool) -> EventResult {
         let candidate = &self.candidates[index];
         let id = candidate.id.clone();
         let evidence = self.search_diagnostic.as_ref().and_then(|d| {
@@ -925,7 +1000,11 @@ impl InputEngine {
                 entries,
             })
         });
-        let result = self.begin_commit(candidate.text.clone());
+        let mut text = candidate.text.clone();
+        if keep_space {
+            text.push(' ');
+        }
+        let result = self.begin_commit(text);
         if result.commit.is_some() {
             self.pending_selection = evidence;
         }
@@ -1000,7 +1079,20 @@ impl InputEngine {
 
     fn refresh(&mut self) {
         self.advance_revision();
-        self.candidates = if let Some(backend) = &mut self.sentence {
+        self.numeric_selection = false;
+        self.mixed_has_literal = false;
+        self.mixed_trailing_literal = false;
+        self.candidates = if self.mixed_input && !self.preedit.is_empty() {
+            let output = if let Some(backend) = &mut self.sentence {
+                backend.query_mixed(&self.preedit, self.revision, self.config.max_candidates)
+            } else {
+                self.mixed_prototype_candidates()
+            };
+            self.search_diagnostic = output.diagnostic;
+            self.mixed_has_literal = output.has_literal;
+            self.mixed_trailing_literal = output.trailing_literal;
+            output.candidates
+        } else if let Some(backend) = &mut self.sentence {
             let (candidates, diagnostic) = backend.query(&self.preedit, self.revision);
             self.search_diagnostic = Some(diagnostic);
             candidates
@@ -1019,6 +1111,37 @@ impl InputEngine {
         self.highlighted = (!self.candidates.is_empty()).then_some(0);
         self.page_start = 0;
         self.state = self.composition_state();
+    }
+
+    fn mixed_prototype_candidates(&self) -> mixed::Output {
+        let (body, mark) = mixed::body_and_punctuation(&self.preedit);
+        if mixed::protected(&self.preedit)
+            || !body
+                .bytes()
+                .all(|byte| byte.is_ascii_lowercase() || byte == b'\'')
+        {
+            return mixed::Output::literal(&self.preedit, None);
+        }
+        let Ok(parsed) = cloudleaf_pinyin::parse(body) else {
+            return mixed::Output::literal(&self.preedit, None);
+        };
+        let mut candidates =
+            cloudleaf_candidate::generate(&parsed, &self.dictionary, self.config.max_candidates);
+        if candidates.is_empty() {
+            return mixed::Output::literal(&self.preedit, None);
+        }
+        if let Some(mark) = mark {
+            mixed::with_punctuation(&self.preedit, mark, &mut candidates, &mut []);
+        }
+        if candidates.len() < self.config.max_candidates {
+            candidates.push(mixed::raw_candidate(&self.preedit));
+        }
+        mixed::Output {
+            candidates,
+            diagnostic: None,
+            has_literal: false,
+            trailing_literal: false,
+        }
     }
 
     fn composition_state(&self) -> InputState {
@@ -1054,6 +1177,9 @@ impl InputEngine {
         self.failed_commit = None;
         self.translation_commit_id = None;
         self.pending_selection = None;
+        self.mixed_has_literal = false;
+        self.mixed_trailing_literal = false;
+        self.numeric_selection = false;
         self.state = state;
         self.advance_revision();
     }

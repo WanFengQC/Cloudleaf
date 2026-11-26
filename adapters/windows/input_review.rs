@@ -94,6 +94,22 @@ pub(super) fn load_host_k(
     model: Option<(&str, &str)>,
     output_k: usize,
 ) -> Result<(Shared, String, usize)> {
+    load_host_config(
+        runtime,
+        expected_sha256,
+        model,
+        output_k,
+        InputConfig::default(),
+    )
+}
+
+pub(super) fn load_host_config(
+    runtime: &str,
+    expected_sha256: &str,
+    model: Option<(&str, &str)>,
+    output_k: usize,
+    input: InputConfig,
+) -> Result<(Shared, String, usize)> {
     let text = std::fs::read_to_string(Path::new(runtime))
         .map_err(|_| Error::new(E_FAIL, "无法读取指定研发词典"))?;
     let snapshot = Arc::new(
@@ -132,9 +148,9 @@ pub(super) fn load_host_k(
             config.ranker = cloudleaf_search::Ranker::Bigram;
             config.method = cloudleaf_search::Method::ExactDag;
         }
-        Host::with_language(snapshot, config, language, InputConfig::default())?
+        Host::with_language(snapshot, config, language, input)?
     } else {
-        Host::with_search(snapshot, config, InputConfig::default())?
+        Host::with_search(snapshot, config, input)?
     };
     Ok((host, version, entries))
 }

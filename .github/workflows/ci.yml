@@ -57,7 +57,7 @@ jobs:
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v4
         with:
-          name: integration-round26-windows
+          name: integration-round27-windows
           path: |
             target/release/cloudleaf-cli.exe
             target/release/cloudleaf-ime.exe
@@ -70,6 +70,7 @@ jobs:
             target/release/examples/offline_translate.exe
             target/release/examples/offline_lifecycle.exe
             target/release/examples/input_trace.exe
+            target/release/examples/mixed_input_trace.exe
             target/release/examples/research_rank.exe
             target/release/examples/recall_diagnose.exe
             target/release/examples/language_audit.exe
@@ -107,18 +108,23 @@ jobs:
             docs/integration-round26-worker-measurement-design.md
             docs/integration-round26-provider-design.md
             docs/integration-round26-panel-design.md
+            docs/integration-round27-design.md
+            docs/integration-round27-search-design.md
+            docs/integration-round27-mixed-design.md
+            docs/integration-round27-settings-design.md
             docs/testing/round22-native-translation-manual.md
           if-no-files-found: error
       - name: Upload Linux headless integration tools
         if: runner.os == 'Linux'
         uses: actions/upload-artifact@v4
         with:
-          name: integration-round26-linux
+          name: integration-round27-linux
           path: |
             target/release/cloudleaf-cli
             target/release/cloudleaf-bridge-headless
             target/release/cloudleaf-translation-worker
             target/release/examples/input_trace
+            target/release/examples/mixed_input_trace
             target/release/examples/research_rank
             target/release/examples/recall_diagnose
             target/release/examples/language_audit
@@ -147,6 +153,10 @@ jobs:
             docs/integration-round26-worker-measurement-design.md
             docs/integration-round26-provider-design.md
             docs/integration-round26-panel-design.md
+            docs/integration-round27-design.md
+            docs/integration-round27-search-design.md
+            docs/integration-round27-mixed-design.md
+            docs/integration-round27-settings-design.md
           if-no-files-found: error
       - uses: actions/upload-artifact@v4
         with:

@@ -1,4 +1,6 @@
+use cloudleaf_settings::{InputPreferences, InputScheme};
 use cloudleaf_translation::*;
+use cloudleaf_translation_panel::center::UserAction;
 use cloudleaf_translation_panel::controller::{PanelController, ViewStatus};
 use cloudleaf_translation_panel::platform::{CredentialStore, PlatformError};
 use cloudleaf_translation_panel::settings::{DirectionChoice, ProviderChoice, Settings};
@@ -102,6 +104,111 @@ fn start_after_queue_drains(panel: &mut PanelController) {
             Err(error) => panic!("unexpected request failure: {error}"),
         }
     }
+}
+
+#[test]
+fn round27_settings_save_failure_preserves_active_translation_and_original() {
+    let f = Fixture::new();
+    let directory = f.0.join("settings");
+    let mut panel = PanelController::new(
+        directory.clone(),
+        Some(f.catalog()),
+        Arc::new(FixtureStore::default()),
+    )
+    .unwrap();
+    wait(&mut panel, |p| {
+        p.status == ViewStatus::Idle && !p.input_settings.working
+    });
+    let old = panel.settings.clone();
+    let identity = panel.provider_identity().cloned();
+    panel.set_text("你好🙂".into());
+    panel.mark_settings_dirty();
+    fs::write(&directory, b"isolated failure fixture").unwrap();
+    panel
+        .apply(Settings {
+            provider: ProviderChoice::OfflineModel,
+            offline_catalog: None,
+            ..old.clone()
+        })
+        .unwrap();
+    wait(&mut panel, |p| p.status == ViewStatus::Idle);
+    assert!(panel.notice.contains("保存失败"));
+    assert!(panel.available());
+    assert!(!panel.dirty);
+    assert_eq!(panel.settings, old);
+    assert_eq!(panel.provider_identity().cloned(), identity);
+    assert_eq!(panel.text, "你好🙂");
+    panel.start().unwrap();
+    wait(&mut panel, |p| p.status == ViewStatus::Completed);
+    assert_eq!(panel.copy_text().unwrap(), "mechanism gloss🙂");
+}
+
+#[test]
+fn round27_settings_center_replays_input_profile_and_real_user_store_operations() {
+    let f = Fixture::new();
+    let profile = f.0.join("settings");
+    let words = f.0.join("words");
+    let export = f.0.join("backup.clu");
+    let mut panel =
+        PanelController::new(profile.clone(), None, Arc::new(FixtureStore::default())).unwrap();
+    wait(&mut panel, |p| !p.input_settings.working);
+    panel.set_text("仍在编辑的原文".into());
+    let value = InputPreferences {
+        scheme: InputScheme::Abbreviated,
+        mixed_input: true,
+        page_size: 7,
+        ..panel.input_settings.settings.clone()
+    };
+    panel.save_input_settings(value).unwrap();
+    wait(&mut panel, |p| !p.input_settings.working);
+    assert!(panel.input_settings.notice.contains("已保存"));
+    let bound = cloudleaf_settings::InputPreferencesRepository::new(profile)
+        .load()
+        .unwrap();
+    assert_eq!(bound.settings, panel.input_settings.settings);
+    assert!(bound.settings.mixed_input);
+    assert_eq!(panel.text, "仍在编辑的原文");
+
+    fn action(panel: &mut PanelController, words: &std::path::Path, action: UserAction) {
+        panel
+            .manage_user_dictionary(words.to_owned(), action)
+            .unwrap();
+        wait(panel, |p| !p.user_settings.working);
+        assert_eq!(panel.user_settings.notice, "用户词库操作完成");
+    }
+    action(&mut panel, &words, UserAction::Inspect);
+    action(
+        &mut panel,
+        &words,
+        UserAction::Add {
+            text: "云笺".into(),
+            pinyin: "yun jian".into(),
+        },
+    );
+    let id = panel.user_settings.dictionary.entries[0].id.clone();
+    action(
+        &mut panel,
+        &words,
+        UserAction::Update {
+            id: id.clone(),
+            text: "云端".into(),
+            pinyin: "yun duan".into(),
+        },
+    );
+    action(&mut panel, &words, UserAction::ChangeLearning(true));
+    assert!(panel.user_settings.dictionary.learning);
+    action(&mut panel, &words, UserAction::Export(export.clone()));
+    assert!(export.is_file());
+    action(&mut panel, &words, UserAction::Remove(id));
+    assert!(panel.user_settings.dictionary.entries.is_empty());
+    action(&mut panel, &words, UserAction::Import(export));
+    assert_eq!(panel.user_settings.dictionary.entries[0].text, "云端");
+    action(&mut panel, &words, UserAction::ClearLearning);
+    assert_eq!(panel.user_settings.dictionary.entries.len(), 1);
+    assert!(!panel.user_settings.dictionary.backups.is_empty());
+    assert_eq!(panel.text, "仍在编辑的原文");
+    panel.begin_close();
+    wait(&mut panel, PanelController::close_ready);
 }
 
 #[test]
@@ -334,6 +441,31 @@ fn online_requires_explicit_authorization_and_late_errors_cannot_replace_new_suc
     assert!(!p.authorized);
     assert!(p.result().is_none());
     assert_eq!(p.start(), Err(TranslationError::OnlineNotAuthorized));
+    p.begin_close();
+    wait(&mut p, PanelController::close_ready);
+}
+
+#[test]
+fn round27_api_check_sends_only_a_fixed_probe_and_consumes_explicit_consent() {
+    let f = Fixture::new();
+    // 回环测试端在请求体包含 timeout 时故意超过截止时间。
+    let server = Server::new();
+    let (mut p, _) = online(&f, &server);
+    p.set_text("timeout remains an unsent private fixture".into());
+    assert_eq!(
+        p.test_connection(),
+        Err(TranslationError::OnlineNotAuthorized)
+    );
+    assert_eq!(server.requests.load(Ordering::Acquire), 0);
+    p.authorized = true;
+    p.test_connection().unwrap();
+    wait(&mut p, |p| p.status == ViewStatus::Completed);
+    assert_eq!(server.requests.load(Ordering::Acquire), 1);
+    assert!(p.notice.contains("已收到 API 测试响应"));
+    assert!(!p.authorized);
+    assert_eq!(p.text, "timeout remains an unsent private fixture");
+    assert!(p.result().is_none());
+    assert_eq!(p.copy_text(), Err(TranslationError::StaleResult));
     p.begin_close();
     wait(&mut p, PanelController::close_ready);
 }

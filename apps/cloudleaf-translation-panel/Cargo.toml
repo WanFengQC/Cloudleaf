@@ -7,9 +7,11 @@ license.workspace = true
 publish.workspace = true
 
 [dependencies]
+cloudleaf-settings.workspace = true
 cloudleaf-translation.workspace = true
 cloudleaf-translation-ipc.workspace = true
 cloudleaf-translation-integrity.workspace = true
+cloudleaf-user.workspace = true
 serde = { version = "=1.0.228", features = ["derive"] }
 serde_json = "=1.0.149"
 zeroize = "=1.8.2"

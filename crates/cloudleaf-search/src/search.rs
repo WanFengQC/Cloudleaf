@@ -1375,6 +1375,9 @@ pub(crate) fn search_controlled_observed<O: Observer>(
         budget: graph.budget,
         ..Statistics::default()
     };
+    let no_terminal_edge = graph.budget == Some(Budget::GraphEdges)
+        && graph.is_interpreted()
+        && graph.edges.iter().all(|edge| edge.end < graph.letters.len());
     let k = if config.ranker == Ranker::ContextRerank {
         config.context_pool
     } else {
@@ -1387,11 +1390,14 @@ pub(crate) fn search_controlled_observed<O: Observer>(
         model,
         cancellation,
         // 词汇分只依赖该边词条；每次查询清空，不跨版本、修订或输入方案复用。
-        lexical_cache: (config.ranker == Ranker::Lexical && config.method == Method::PositionDag)
+        lexical_cache: (!no_terminal_edge
+            && config.ranker == Ranker::Lexical
+            && config.method == Method::PositionDag)
             .then(|| vec![Cell::new(i32::MIN); graph.edges.len()]),
     };
     let stamp = observer.start(Phase::Traversal);
-    let mut paths = if graph.letters.is_empty() || graph.waiting {
+    // 触顶且缺末端边时，任何方法都无法形成覆盖全部输入的候选。
+    let mut paths = if graph.letters.is_empty() || graph.waiting || no_terminal_edge {
         Vec::new()
     } else if config.method == Method::Reference {
         reference(&scorer, config, &mut statistics, k, observer)
@@ -1400,10 +1406,11 @@ pub(crate) fn search_controlled_observed<O: Observer>(
         && (graph.is_interpreted() || lexicon.has_user_preferences())
     {
         interpreted_character_exact(&scorer, config, &mut statistics, k, observer)
+    } else if config.method == Method::PositionDag && graph.max_edit_cost() == 0 {
+        // 无历史评分、无编辑记账时，每个位置只有一个桶。仍按逐弧来源比较。
+        position_dynamic(&scorer, config, &mut statistics, k, observer)
     } else if graph.is_interpreted() || lexicon.has_user_preferences() {
         interpreted_dynamic(&scorer, config, &mut statistics, k, observer)
-    } else if config.method == Method::PositionDag {
-        position_dynamic(&scorer, config, &mut statistics, k, observer)
     } else if config.method == Method::ExactDag && config.ranker == Ranker::CharacterBigram {
         character_exact(&scorer, config, &mut statistics, k, observer)
     } else {

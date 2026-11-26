@@ -7,6 +7,7 @@ use std::process::ExitCode;
 
 use cloudleaf_dictionary::{Dictionary, PROTOTYPE_TSV};
 use cloudleaf_input::{InputConfig, InputEngine, LanguageSnapshot, SearchSnapshot};
+use cloudleaf_settings::InputPreferencesRepository;
 use cloudleaf_types::{EventResult, InputEvent, InputFrame, InputMode, Key};
 use std::sync::Arc;
 
@@ -30,6 +31,7 @@ fn run() -> Result<(), String> {
     let mut search_sha = None;
     let mut language_path = None;
     let mut language_sha = None;
+    let mut settings_dir = None;
     while let Some(arg) = args.next() {
         match arg.as_str() {
             "--help" | "-h" => {
@@ -43,6 +45,7 @@ fn run() -> Result<(), String> {
                     "独立研发评分：另加 --language-model <固定TSV> --language-sha <实际SHA256>；仅显式启用已预检的研究模型。"
                 );
                 println!("原文提交：<Raw> 保留组合，<Raw:后缀> 追加字面后缀。");
+                println!("--settings-dir <目录> 读取统一输入设置；指定非默认方案时需整句词典。");
                 return Ok(());
             }
             "--query" => query = Some(args.next().ok_or("--query 缺少拼音")?),
@@ -56,6 +59,7 @@ fn run() -> Result<(), String> {
                 language_path = Some(args.next().ok_or("--language-model 缺少路径")?)
             }
             "--language-sha" => language_sha = Some(args.next().ok_or("--language-sha 缺少SHA")?),
+            "--settings-dir" => settings_dir = Some(args.next().ok_or("--settings-dir 缺少目录")?),
             "--benchmark" => {
                 let count = args
                     .next()
@@ -88,11 +92,20 @@ fn run() -> Result<(), String> {
         return Err("--query、--replay 与 --benchmark 只能选择一种".into());
     }
     if let Some(iterations) = benchmark_iterations {
-        if dictionary_path.is_some() || search_path.is_some() {
+        if dictionary_path.is_some() || search_path.is_some() || settings_dir.is_some() {
             return Err("固定基准只使用版本化原型词典".into());
         }
         return benchmark::run(iterations);
     }
+    let settings = settings_dir
+        .map(|path| InputPreferencesRepository::new(path.into()).load())
+        .transpose()
+        .map_err(|error| error.to_string())?;
+    let input_config = settings
+        .as_ref()
+        .map_or_else(InputConfig::default, |loaded| {
+            loaded.settings.input_config()
+        });
     let dictionary = if let Some(path) = dictionary_path {
         match std::fs::read_to_string(path) {
             Ok(text) => match Dictionary::from_tsv(&text) {
@@ -131,7 +144,9 @@ fn run() -> Result<(), String> {
                 let mut config = cloudleaf_search::Config {
                     method: cloudleaf_search::Method::PositionDag,
                     ranker: cloudleaf_search::Ranker::Structural,
-                    output_k: 10,
+                    output_k: settings
+                        .as_ref()
+                        .map_or(10, |loaded| loaded.settings.max_candidates),
                     ..cloudleaf_search::Config::default()
                 };
                 if let Some(path) = language_path {
@@ -158,26 +173,38 @@ fn run() -> Result<(), String> {
                         config.method = cloudleaf_search::Method::ExactDag;
                         cloudleaf_search::Ranker::Bigram
                     };
-                    InputEngine::with_language(
-                        snapshot,
-                        config,
-                        language,
-                        None,
-                        InputConfig::default(),
-                    )
+                    InputEngine::with_language(snapshot, config, language, None, input_config)
                 } else {
-                    InputEngine::with_search(snapshot, config, InputConfig::default())
+                    InputEngine::with_search(snapshot, config, input_config)
                 }
                 .map_err(|error| error.to_string())?
             }
             Err(error) => {
                 eprintln!("整句词典拒绝：{error}；使用空词典保全原拼音，不混入原型人工词频。");
-                InputEngine::new(Dictionary::empty())
+                InputEngine::with_config(Dictionary::empty(), input_config)
+                    .map_err(|error| error.to_string())?
             }
         }
     } else {
-        InputEngine::new(dictionary)
+        InputEngine::with_config(dictionary, input_config).map_err(|error| error.to_string())?
     };
+    if let Some(loaded) = settings {
+        let scheme = loaded.settings.scheme_config();
+        if scheme != cloudleaf_input::SchemeConfig::default() {
+            engine
+                .reconfigure_scheme(scheme)
+                .map_err(|error| error.to_string())?;
+        }
+        engine
+            .reconfigure_mixed_input(loaded.settings.mixed_input)
+            .map_err(|error| error.to_string())?;
+        println!(
+            "输入设置={:?} revision={} mixed={}",
+            loaded.status,
+            loaded.settings.revision,
+            engine.mixed_input_enabled()
+        );
+    }
     engine.handle(InputEvent::Activate);
     if let Some(text) = query {
         for character in text.chars() {
