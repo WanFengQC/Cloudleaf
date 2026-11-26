@@ -67,6 +67,78 @@ fn raw_fallback_and_punctuation_do_not_create_learning_evidence() {
 }
 
 #[test]
+fn explicit_literal_keeps_mixed_text_and_submit_identity() {
+    use cloudleaf_types::ErrorCode;
+
+    let mut engine =
+        InputEngine::with_search(base(), Config::default(), InputConfig::default()).unwrap();
+    engine.handle(InputEvent::Activate);
+    for ch in "YuN".chars() {
+        engine.handle(InputEvent::Key(Key::Char(ch)));
+    }
+    let frame = engine.frame();
+    assert_eq!(frame.candidates[0].text, "云");
+    assert_eq!(
+        engine
+            .confirm_literal(frame.revision - 1, "@example.org")
+            .error
+            .unwrap()
+            .code,
+        ErrorCode::StaleCandidate
+    );
+    assert_eq!(
+        engine
+            .confirm_literal(frame.revision, "\n")
+            .error
+            .unwrap()
+            .code,
+        ErrorCode::InvalidInput
+    );
+    assert_eq!(
+        engine
+            .confirm_literal(frame.revision, &"汉".repeat(100))
+            .error
+            .unwrap()
+            .code,
+        ErrorCode::InputTooLong
+    );
+    assert_eq!(engine.frame(), frame);
+    let first = engine
+        .confirm_literal(frame.revision, "@example.org")
+        .commit
+        .unwrap();
+    assert_eq!(first.text, "YuN@example.org");
+    assert!(engine.pending_selection().is_none());
+    assert_eq!(
+        engine
+            .confirm_literal(frame.revision, "1")
+            .error
+            .unwrap()
+            .code,
+        ErrorCode::CommitPending
+    );
+    engine.handle(InputEvent::CommitFailed { id: first.id });
+
+    let retry = engine.handle(InputEvent::RetryCommit).commit.unwrap();
+    assert_ne!(retry.id, first.id);
+    assert_eq!(retry.text, first.text);
+    assert!(
+        engine
+            .handle(InputEvent::CommitSucceeded { id: first.id })
+            .error
+            .is_some()
+    );
+    assert!(engine.pending_selection().is_none());
+    engine.handle(InputEvent::CommitSucceeded { id: retry.id });
+    assert!(engine.frame().preedit.is_empty());
+    let raw = engine
+        .confirm_literal(engine.frame().revision, "https://example.org/v2?q=1")
+        .commit
+        .unwrap();
+    assert_eq!(raw.text, "https://example.org/v2?q=1");
+}
+
+#[test]
 fn explicit_retry_keeps_selection_provenance_but_changes_attempt_id() {
     let mut e =
         InputEngine::with_search(base(), Config::default(), InputConfig::default()).unwrap();

@@ -7,7 +7,7 @@ use std::process::ExitCode;
 
 use cloudleaf_dictionary::{Dictionary, PROTOTYPE_TSV};
 use cloudleaf_input::{InputConfig, InputEngine, LanguageSnapshot, SearchSnapshot};
-use cloudleaf_types::{InputEvent, InputFrame, InputMode, Key};
+use cloudleaf_types::{EventResult, InputEvent, InputFrame, InputMode, Key};
 use std::sync::Arc;
 
 fn main() -> ExitCode {
@@ -42,6 +42,7 @@ fn run() -> Result<(), String> {
                 println!(
                     "独立研发评分：另加 --language-model <固定TSV> --language-sha <实际SHA256>；仅显式启用已预检的研究模型。"
                 );
+                println!("原文提交：<Raw> 保留组合，<Raw:后缀> 追加字面后缀。");
                 return Ok(());
             }
             "--query" => query = Some(args.next().ok_or("--query 缺少拼音")?),
@@ -211,10 +212,26 @@ fn show_search(engine: &InputEngine) {
     }
 }
 
+enum ReplayAction<'a> {
+    Event(InputEvent),
+    Literal(&'a str),
+}
+
 fn replay_sequence(engine: &mut InputEngine, sequence: &str) -> Result<(), String> {
     // 先验证所有命令，避免错误命令出现前已部分提交。
     let mut events = Vec::new();
     for token in sequence.split_whitespace() {
+        if token == "<Raw>" {
+            events.push(ReplayAction::Literal(""));
+            continue;
+        }
+        if let Some(suffix) = token
+            .strip_prefix("<Raw:")
+            .and_then(|value| value.strip_suffix('>'))
+        {
+            events.push(ReplayAction::Literal(suffix));
+            continue;
+        }
         let event = match token {
             "<Space>" => Some(InputEvent::Key(Key::Space)),
             "<Enter>" => Some(InputEvent::Key(Key::Enter)),
@@ -235,23 +252,38 @@ fn replay_sequence(engine: &mut InputEngine, sequence: &str) -> Result<(), Strin
             _ => None,
         };
         if let Some(event) = event {
-            events.push(event);
+            events.push(ReplayAction::Event(event));
         } else {
             events.extend(
                 token
                     .chars()
-                    .map(|character| InputEvent::Key(Key::Char(character))),
+                    .map(|character| ReplayAction::Event(InputEvent::Key(Key::Char(character)))),
             );
         }
     }
-    for event in events {
-        dispatch(engine, event)?;
+    for action in events {
+        match action {
+            ReplayAction::Event(event) => dispatch(engine, event)?,
+            ReplayAction::Literal(suffix) => {
+                let result = engine.confirm_literal(engine.frame().revision, suffix);
+                display_result(engine, result)?;
+            }
+        }
     }
     Ok(())
 }
 
 fn dispatch(engine: &mut InputEngine, event: InputEvent) -> Result<(), String> {
     let result = engine.handle(event);
+    let passthrough = !result.handled && result.error.is_none() && result.commit.is_none();
+    display_result(engine, result)?;
+    if passthrough {
+        println!("交回系统：{event:?}");
+    }
+    Ok(())
+}
+
+fn display_result(engine: &mut InputEngine, result: EventResult) -> Result<(), String> {
     if let Some(error) = result.error {
         return Err(error.to_string());
     }
@@ -262,8 +294,6 @@ fn dispatch(engine: &mut InputEngine, event: InputEvent) -> Result<(), String> {
         if let Some(error) = ack.error {
             return Err(error.to_string());
         }
-    } else if !result.handled {
-        println!("交回系统：{event:?}");
     }
     Ok(())
 }

@@ -6,7 +6,6 @@ use crate::{
 use std::cmp::Ordering;
 use std::collections::{BTreeMap, BinaryHeap};
 use std::rc::Rc;
-use std::sync::Arc;
 
 #[path = "recall.rs"]
 mod recall;
@@ -809,14 +808,24 @@ impl InterpretedRank {
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct InterpretedStep {
-    entry: usize,
-    edge: usize,
+    entry: u32,
+    edge: u32,
+}
+
+impl InterpretedStep {
+    fn new(entry: usize, edge: usize) -> Self {
+        // 词条载入上限 500 万，图边配置上限 10 万。
+        Self {
+            entry: entry as u32,
+            edge: edge as u32,
+        }
+    }
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 struct InterpretedSuffix {
     rank: InterpretedRank,
-    steps: Arc<[InterpretedStep]>,
+    steps: Rc<[InterpretedStep]>,
 }
 
 fn step_order(
@@ -839,7 +848,7 @@ fn path_steps(path: &Path) -> impl Iterator<Item = InterpretedStep> + Clone + '_
     path.ids
         .iter()
         .zip(&path.edges)
-        .map(|(&entry, &edge)| InterpretedStep { entry, edge })
+        .map(|(&entry, &edge)| InterpretedStep::new(entry, edge))
 }
 
 impl InterpretedSuffix {
@@ -884,12 +893,9 @@ impl InterpretedExtension<'_> {
     }
 
     fn save(self) -> InterpretedSuffix {
-        let length = self.prefix.ids.len() + 1 + self.tail.len();
-        let mut steps = Vec::with_capacity(length);
-        steps.extend(self.steps());
         InterpretedSuffix {
             rank: self.rank,
-            steps: Arc::from(steps),
+            steps: self.steps().collect(),
         }
     }
 }
@@ -947,14 +953,14 @@ fn interpreted_character_exact<O: Observer>(
             }
         }
     }
-    let empty: Arc<[InterpretedStep]> = Arc::from([]);
+    let empty: Rc<[InterpretedStep]> = Rc::from([]);
     for (&(previous, _), value) in &mut suffix[end] {
         *value = Some(InterpretedSuffix {
             rank: InterpretedRank {
                 score: model.finish(previous),
                 ..InterpretedRank::default()
             },
-            steps: Arc::clone(&empty),
+            steps: Rc::clone(&empty),
         });
     }
     let root = Path::default();
@@ -979,10 +985,7 @@ fn interpreted_character_exact<O: Observer>(
                 };
                 let candidate = InterpretedExtension {
                     prefix: &root,
-                    step: InterpretedStep {
-                        entry: edge.entry,
-                        edge: *edge_index,
-                    },
+                    step: InterpretedStep::new(edge.entry, *edge_index),
                     tail: &rest.steps,
                     rank: InterpretedRank {
                         cost,
@@ -1114,10 +1117,7 @@ fn interpreted_character_exact<O: Observer>(
         }
         let extension = InterpretedExtension {
             prefix: &root,
-            step: InterpretedStep {
-                entry: edge.entry,
-                edge: *edge_index,
-            },
+            step: InterpretedStep::new(edge.entry, *edge_index),
             tail: &rest.steps,
             rank: InterpretedRank {
                 cost: scorer.graph.interpretation_cost(*edge_index),
@@ -1138,7 +1138,7 @@ fn interpreted_character_exact<O: Observer>(
                 return Vec::new();
             }
             candidate = scorer
-                .extend(&candidate, step.edge, None, observer)
+                .extend(&candidate, step.edge as usize, None, observer)
                 .unwrap();
         }
         let candidate = scorer.finish(candidate, observer);
@@ -1223,10 +1223,7 @@ fn interpreted_character_exact<O: Observer>(
             });
             let extension = InterpretedExtension {
                 prefix: &current.path,
-                step: InterpretedStep {
-                    entry: edge.entry,
-                    edge: *edge_index,
-                },
+                step: InterpretedStep::new(edge.entry, *edge_index),
                 tail: &rest.steps,
                 rank: prefix_rank.then(rest.rank),
             };

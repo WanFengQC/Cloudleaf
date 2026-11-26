@@ -23,6 +23,7 @@ pub const DEFAULT_PAGE_SIZE: usize = 5;
 pub const MAX_CANDIDATES: usize = 50;
 /// 显式确认的整段译文，与拼音预编辑分别限制大小。
 pub const MAX_TRANSLATION_COMMIT_BYTES: usize = 16 * 1024;
+const MAX_LITERAL_COMMIT_BYTES: usize = 256;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct InputConfig {
@@ -551,6 +552,37 @@ impl InputEngine {
             .position(|c| c.id == candidate.id)
             .unwrap();
         self.begin_candidate_commit(index)
+    }
+
+    /// 显式提交当前原始组合及字面后缀，保留拼写和标点，不产生候选学习。
+    pub fn confirm_literal(&mut self, revision: u64, suffix: &str) -> EventResult {
+        let error = if self.pending_commit.is_some() {
+            Some(ErrorCode::CommitPending)
+        } else if self.failed_commit.is_some() {
+            Some(ErrorCode::CommitFailed)
+        } else if self.state == InputState::Inactive || self.revision >= u64::MAX - 1 {
+            Some(ErrorCode::InvalidInput)
+        } else if revision != self.revision {
+            Some(ErrorCode::StaleCandidate)
+        } else if suffix.len() > MAX_LITERAL_COMMIT_BYTES - self.preedit.len() {
+            Some(ErrorCode::InputTooLong)
+        } else if (self.preedit.is_empty() && suffix.is_empty())
+            || suffix.chars().any(char::is_control)
+        {
+            Some(ErrorCode::InvalidInput)
+        } else {
+            None
+        };
+        if let Some(code) = error {
+            return self.result(
+                false,
+                None,
+                Some(CoreError::new(code, "原文不属于当前可提交帧或超出文本边界")),
+            );
+        }
+        let mut text = self.preedit.clone();
+        text.push_str(suffix);
+        self.begin_commit(text)
     }
 
     /// 实际引擎与投影引擎须在创建提交前各自完成只读预检。

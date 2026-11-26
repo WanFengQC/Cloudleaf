@@ -1,6 +1,6 @@
 # Cloudleaf 产品能力追踪
 
-Round 24 复核原始 50 项要求和验收定义。真实桌面为 `not-run/user-paused`。原始需求与交付条件见[产品范围](../product-scope.md)，本轮配对证据见[交付状态](integration-round24-status.md)。
+Round 25 复核原始 50 项要求和验收定义。真实桌面为 `not-run/user-paused`。原始需求与交付条件见[产品范围](../product-scope.md)，本轮配对证据见[交付状态](integration-round25-status.md)。
 
 | 原需求 | 当前状态 | 证据与缺口 |
 | --- | --- | --- |
@@ -8,7 +8,7 @@ Round 24 复核原始 50 项要求和验收定义。真实桌面为 `not-run/use
 | REQ-IN-02 | automated-verified | 光标、退格和 UTF-16 边界有契约测试，应用输入兼容待核 |
 | REQ-IN-03 | automated-verified | 空格、数字、分页与事务测试通过，真实键位覆盖待核 |
 | REQ-IN-04 | manual-not-run | 隔离宿主可切换模式，真实系统修饰键矩阵未执行 |
-| REQ-IN-05 | research-only | 基本混合与原文回退已有，复杂中英数字及代码场景缺覆盖 |
+| REQ-IN-05 | implemented | 核心及无窗口 CLI 支持按当前修订显式提交原文、邮箱或 URL，自动混排和真实跨应用测试待验证 |
 | REQ-PY-01 | automated-verified | 标准全拼、分隔符及音节解析回归 |
 | REQ-PY-02 | automated-verified | 多切分候选格和固定 Scheme 差分 |
 | REQ-PY-03 | research-only | 有界纠错开关与代价已实现，独立精确率及误改缺测 |
@@ -16,8 +16,8 @@ Round 24 复核原始 50 项要求和验收定义。真实桌面为 `not-run/use
 | REQ-PY-05 | automated-verified | 简拼及混合解释可重放，正式质量未取得 |
 | REQ-PY-06 | automated-verified | 小鹤双拼配置、输入轨迹与关闭语义已测 |
 | REQ-CA-01 | automated-verified | 可追溯词条格、来源和多条合法路径 |
-| REQ-CA-02 | research-only | 逐例区分词典缺口、池截断和预算耗尽，两种新增召回保留损失证据 |
-| REQ-CA-03 | research-only | 两种真实分词统计与词级累计评分已配对验证，默认排序沿用 |
+| REQ-CA-02 | research-only | 精确字符搜索共享路径键并延迟材质化，固定对照和召回失败分母保留 |
+| REQ-CA-03 | research-only | 已验证支持度保护、分词偏差和配对退化，默认排序沿用 |
 | REQ-CA-04 | automated-verified | 候选去重、预算诊断和修订过滤 |
 | REQ-CA-05 | research-only | 跨键缓存有等价验证，默认关闭 |
 | REQ-CA-06 | research-only | 释义查询独立于候选提交，迟到失效已无窗口验证 |
@@ -30,7 +30,7 @@ Round 24 复核原始 50 项要求和验收定义。真实桌面为 `not-run/use
 | REQ-DI-04 | research-only | 真实语义索引与双向查询可用，正式词性和显式义项关系缺交付 |
 | REQ-DI-05 | automated-verified | 缺损资源拒绝且保持基础输入，原子替换对旧状态有回归 |
 | REQ-TR-01 | research-only | 词语/短语释义查询和候选身份可用，原生长释义交互仍缺 |
-| REQ-TR-02 | research-only | 固定模型双向实测，已扩大字面保护探针，复杂关系与译文自然度仍待审核 |
+| REQ-TR-02 | research-only | 固定双向模型复测子句、开关、数量关系和数字表达，复杂语义和独立翻译质量待验 |
 | REQ-TR-03 | manual-not-run | 原生面板及隔离宿主确认代码保留，真实交互继续暂停 |
 | REQ-TR-04 | automated-verified | 任务身份、超时、取消与独立 worker 生命周期回归 |
 | REQ-TR-05 | blocked | 已核对替代权重及部署方案，新增权重授权、实测和独立分发审批待交付 |
