@@ -1377,7 +1377,10 @@ pub(crate) fn search_controlled_observed<O: Observer>(
     };
     let no_terminal_edge = graph.budget == Some(Budget::GraphEdges)
         && graph.is_interpreted()
-        && graph.edges.iter().all(|edge| edge.end < graph.letters.len());
+        && graph
+            .edges
+            .iter()
+            .all(|edge| edge.end < graph.letters.len());
     let k = if config.ranker == Ranker::ContextRerank {
         config.context_pool
     } else {

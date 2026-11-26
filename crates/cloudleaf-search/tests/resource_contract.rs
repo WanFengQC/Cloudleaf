@@ -102,7 +102,12 @@ fn interpreted_truncated_graph_without_terminal_edges_cannot_require_path_expans
         scheme: PinyinScheme::AbbreviatedPinyin,
         ..SchemeConfig::default()
     };
-    for method in [Method::Reference, Method::ExactDag, Method::PositionDag, Method::Beam] {
+    for method in [
+        Method::Reference,
+        Method::ExactDag,
+        Method::PositionDag,
+        Method::Beam,
+    ] {
         let config = Config {
             method,
             ranker: Ranker::Structural,
@@ -112,7 +117,12 @@ fn interpreted_truncated_graph_without_terminal_edges_cannot_require_path_expans
         let graph = Lattice::build_with_scheme(&lexicon, "aaaa", &config, &scheme).unwrap();
         assert_eq!(graph.budget(), Some(Budget::GraphEdges));
         assert_eq!(graph.edges().len(), 1);
-        assert!(graph.edges().iter().all(|edge| edge.end < graph.letters().len()));
+        assert!(
+            graph
+                .edges()
+                .iter()
+                .all(|edge| edge.end < graph.letters().len())
+        );
         let result = search_graph(&lexicon, &graph, &config, None, None).unwrap();
         assert_eq!(result.statistics.budget, Some(Budget::GraphEdges));
         assert_eq!(result.statistics.expansions, 0);
