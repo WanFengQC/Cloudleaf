@@ -214,18 +214,26 @@ fn definitions_replay_fixed_research_index() {
     let mut panel =
         PanelController::new(fixture.0.clone(), None, Arc::new(FixtureStore::default())).unwrap();
     let dictionary: serde_json::Value = serde_json::from_slice(&fs::read(&index).unwrap()).unwrap();
+    let catalogs = dictionary["catalogs"].as_array().unwrap();
     let entry = dictionary["entries"]
         .as_array()
         .unwrap()
         .iter()
-        .find(|entry| entry["namespace"] == "zh" && entry["headword"] == "请问")
+        .find(|entry| {
+            entry["headword"] == "请问"
+                && catalogs.iter().any(|catalog| {
+                    catalog["language"] == "zh" && catalog["namespace"] == entry["namespace"]
+                })
+        })
         .unwrap();
     let sense = dictionary["senses"]
         .as_array()
         .unwrap()
         .iter()
         .find(|sense| {
-            sense["entry_id"] == entry["entry_id"] && sense["english_source_gloss"] == true
+            sense["namespace"] == entry["namespace"]
+                && sense["entry_id"] == entry["entry_id"]
+                && sense["english_source_gloss"] == true
         })
         .unwrap();
     for (text, direction) in [
