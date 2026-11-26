@@ -730,9 +730,17 @@ mod tests {
         let local = host();
         let mut controller = Controller::new(Some(config), Glossary::default());
 
-        for (direction, english) in [
-            (Direction::EnZh, "Please close the window."),
-            (Direction::ZhEn, ""),
+        for (direction, english, model) in [
+            (
+                Direction::EnZh,
+                "Please close the window.",
+                "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255",
+            ),
+            (
+                Direction::ZhEn,
+                "",
+                "opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6",
+            ),
         ] {
             if direction == Direction::ZhEn {
                 for key in "nihao".chars().map(Key::Char).chain([Key::Down]) {
@@ -751,7 +759,7 @@ mod tests {
                         assert!(!preview.raw.trim().is_empty());
                         assert_ne!(preview.raw, controller.view().source);
                         assert_eq!(preview.raw, controller.view().output);
-                        assert_eq!(preview.model.len(), 64);
+                        assert_eq!(preview.model, model);
                         println!(
                             "isolated-host direction={direction:?} model={} bytes={}",
                             preview.model,

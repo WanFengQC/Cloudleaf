@@ -36,8 +36,15 @@ def replay(probe, worker, output):
     previous = ROOT / ".local/round25-translation-final"
     index = baseline.read(previous / "run-index.json")
     source_files, expected, cases = [], {}, []
-    for number, take in zip(baseline.CASE_SHA, index["runs"], strict=True):
+    for number, fixture_sha in baseline.CASE_SHA.items():
         fixture = baseline.fixture(number)
+        # 对照索引还含旧版 same-raw 控制组，以权威原件路径和哈希匹配真实推理行。
+        take, = (
+            run for run in index["runs"]
+            if Path(run["command"][-2]) == fixture
+            and run["inputs_sha256"].get(str(fixture)) == fixture_sha
+        )
+        assert take["exit_code"] == 0
         stdout = previous / f"r{number}-stdout.txt"
         baseline.verify(stdout, take["stdout_sha256"])
         prior, errors = baseline.obs(stdout)
