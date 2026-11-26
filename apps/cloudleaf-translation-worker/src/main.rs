@@ -162,7 +162,8 @@ impl Worker {
             settings.sha256.clone(),
             settings.threads.count(),
             notice_sender,
-        );
+        )
+        .map_err(wire_error)?;
         registry
             .register(
                 Arc::new(provider),

@@ -5,8 +5,8 @@ use cloudleaf_input::{
 use cloudleaf_search::{Config, Method, Ranker, ResearchRanker};
 use cloudleaf_translation_ipc::{
     Command, Direction, Envelope, IpcError, ProgressStage, RequestKey, ResourceThreads,
-    SourceIdentity, WorkerClient, WorkerConfig, WorkerEvent, WorkerOutput, WorkerState, read_frame,
-    write_frame,
+    SourceIdentity, WorkerClient, WorkerConfig, WorkerEvent, WorkerOutput, WorkerScheduling,
+    WorkerState, read_frame, write_frame,
 };
 use cloudleaf_types::{InputEvent, Key};
 use cloudleaf_user::Store;
@@ -245,6 +245,12 @@ fn codec() -> Outcome<()> {
 
 fn main() -> Outcome<()> {
     let mut args: Vec<_> = std::env::args().skip(1).collect();
+    let gate = if args.len() >= 2 && args[args.len() - 2] == "--replay-gate" {
+        let option = args.split_off(args.len() - 2);
+        Some(PathBuf::from(&option[1]))
+    } else {
+        None
+    };
     let research = if args.len() == 12 {
         Some(args.split_off(10))
     } else {
@@ -267,7 +273,11 @@ fn main() -> Outcome<()> {
             "usage: runtime sha language sha catalog sha events user-dir scenario threads".into(),
         );
     };
-    let threads = ResourceThreads::try_from(threads.parse::<usize>()?)?;
+    let (thread_option, scheduling) = if let Some(raw) = threads.strip_suffix("-below") {
+        (raw, WorkerScheduling::BelowNormal)
+    } else {
+        (threads.as_str(), WorkerScheduling::Normal)
+    };
     let lexicon = Arc::new(SearchSnapshot::from_verified_tsv(
         &std::fs::read_to_string(runtime)?,
         runtime_sha,
@@ -278,7 +288,11 @@ fn main() -> Outcome<()> {
         &lexicon,
     )?);
     let events = trace(&std::fs::read_to_string(events)?);
-    assert_eq!(events.len(), 171);
+    if gate.is_some() {
+        assert!((1..=1024).contains(&events.len()));
+    } else {
+        assert_eq!(events.len(), 171);
+    }
     let config = Config {
         method: Method::PositionDag,
         ranker: Ranker::Lexical,
@@ -324,7 +338,20 @@ fn main() -> Outcome<()> {
     engine.handle(InputEvent::Activate);
 
     let started = Instant::now();
-    let conf = || WorkerConfig::sibling(PathBuf::from(catalog), catalog_sha.to_owned(), threads);
+    let conf = || {
+        let config = if thread_option == "auto" {
+            WorkerConfig::sibling_auto(PathBuf::from(catalog), catalog_sha.to_owned())
+        } else {
+            let value = ResourceThreads::try_from(
+                thread_option
+                    .parse::<usize>()
+                    .map_err(|_| IpcError::InvalidConfiguration)?,
+            )?;
+            WorkerConfig::sibling(PathBuf::from(catalog), catalog_sha.to_owned(), value)
+        }?;
+        config.with_scheduling(scheduling)
+    };
+    let threads = conf()?.compute_threads();
     let mut worker = WorkerClient::new(conf()?);
     if scenario != "idle" {
         worker.start()?;
@@ -343,10 +370,26 @@ fn main() -> Outcome<()> {
             started.elapsed().as_nanos()
         ));
     }
+    if let Some(path) = gate {
+        publish(format_args!(
+            "RESOURCE\t{}\t{scheduling:?}",
+            threads.count()
+        ));
+        let deadline = Instant::now() + Duration::from_secs(15);
+        while !path.is_file() {
+            if Instant::now() >= deadline {
+                return Err("等待探针资源配置超时".into());
+            }
+            thread::sleep(Duration::from_millis(1));
+        }
+    }
 
     let english = EN.repeat(4);
     let mut first_model = None;
-    if matches!(scenario.as_str(), "direction-switch" | "repeat-release") {
+    if matches!(
+        scenario.as_str(),
+        "direction-switch" | "repeat-release" | "warm"
+    ) {
         let (task, start) = submit(&mut worker, 1, Direction::EnZh, &english)?;
         let output = terminal(&mut worker, task, false)?.unwrap();
         report_model("prime", &output, start.elapsed(), threads.count());
@@ -425,7 +468,7 @@ fn main() -> Outcome<()> {
     let mut observations = Vec::new();
     let mut cancel_at = None;
     for (index, event) in events.into_iter().enumerate() {
-        if scenario == "cancel" && index == 10 {
+        if matches!(scenario.as_str(), "cancel" | "cancel-next") && index == 10 {
             assert!(worker.cancel(active.as_ref().unwrap().0));
             cancel_at = Some(Instant::now());
         }
@@ -457,7 +500,7 @@ fn main() -> Outcome<()> {
                 .and_then(|(before, after)| after.checked_sub(before)),
             result,
         ));
-        if scenario == "cancel"
+        if matches!(scenario.as_str(), "cancel" | "cancel-next")
             && let Some(sent) = cancel_at
             && let Some(event) = worker.try_event()
         {
@@ -472,10 +515,17 @@ fn main() -> Outcome<()> {
         }
     }
     if let Some((task, asked)) = active {
-        if scenario != "cancel" {
+        if !matches!(scenario.as_str(), "cancel" | "cancel-next") {
             let output = terminal(&mut worker, task, false)?.unwrap();
             if let Some(prime) = first_model {
-                assert_eq!(output.model_identity == prime, scenario == "repeat-release");
+                assert_eq!(
+                    output.model_identity == prime,
+                    matches!(scenario.as_str(), "repeat-release" | "warm")
+                );
+            }
+            if scenario == "warm" {
+                assert_eq!(output.metrics.load_ns, 0);
+                assert_eq!(output.metrics.verification_ns, 0);
             }
             report_model("main", &output, asked.elapsed(), threads.count());
         } else if let Some(start) = cancel_at {
@@ -485,6 +535,12 @@ fn main() -> Outcome<()> {
     }
     if let Some(task) = queued {
         assert!(terminal(&mut worker, task, false)?.is_some());
+    }
+    if scenario == "cancel-next" {
+        let (next, began) = submit(&mut worker, 3, Direction::EnZh, &english)?;
+        let output = terminal(&mut worker, next, false)?.unwrap();
+        assert_eq!(output.metrics.load_ns, 0);
+        report_model("recovered", &output, began.elapsed(), threads.count());
     }
     if let Some(user) = user {
         user.join().map_err(|_| "合成词库写线程异常退出")?;

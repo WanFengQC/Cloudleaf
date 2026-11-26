@@ -19,11 +19,20 @@ const TICK: Duration = Duration::from_millis(5);
 const HANDSHAKE_TIMEOUT: Duration = Duration::from_secs(5);
 static NEXT_GENERATION: AtomicU64 = AtomicU64::new(1);
 
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
+pub enum WorkerScheduling {
+    #[default]
+    Normal,
+    /// 仅限 Windows 子进程，保持调用者线程及进程调度不变。
+    BelowNormal,
+}
+
 #[derive(Clone)]
 pub struct WorkerConfig {
     pub(super) catalog: PathBuf,
     pub(super) catalog_sha256: String,
     pub(super) threads: ResourceThreads,
+    pub(super) scheduling: WorkerScheduling,
     pub(super) host_executable: Option<PathBuf>,
 }
 
@@ -40,8 +49,31 @@ impl WorkerConfig {
             catalog,
             catalog_sha256,
             threads,
+            scheduling: WorkerScheduling::Normal,
             host_executable: None,
         })
+    }
+
+    /// 自动档仅使用宿主当前可用的逻辑处理器数，显式档仍由调用者选择。
+    pub fn sibling_auto(catalog: PathBuf, catalog_sha256: String) -> Result<Self, IpcError> {
+        let available = thread::available_parallelism().map_or(1, usize::from);
+        Self::sibling(
+            catalog,
+            catalog_sha256,
+            ResourceThreads::for_available_parallelism(available),
+        )
+    }
+
+    pub fn compute_threads(&self) -> ResourceThreads {
+        self.threads
+    }
+
+    pub fn with_scheduling(mut self, scheduling: WorkerScheduling) -> Result<Self, IpcError> {
+        if scheduling == WorkerScheduling::BelowNormal && !cfg!(windows) {
+            return Err(IpcError::InvalidConfiguration);
+        }
+        self.scheduling = scheduling;
+        Ok(self)
     }
 
     /// 从显式的宿主路径定位兄弟程序，供独立命令和测试宿主使用。
@@ -52,6 +84,26 @@ impl WorkerConfig {
         self.host_executable = Some(path);
         Ok(self)
     }
+}
+
+#[cfg(test)]
+#[test]
+fn automatic_worker_selection_is_bounded_and_default_scheduling_is_unchanged() {
+    let config = WorkerConfig::sibling_auto(PathBuf::from("catalog.json"), "a".repeat(64)).unwrap();
+    let cpus = thread::available_parallelism().map_or(1, usize::from);
+    assert_eq!(
+        config.compute_threads(),
+        ResourceThreads::for_available_parallelism(cpus)
+    );
+    assert_eq!(config.scheduling, WorkerScheduling::Normal);
+    for (available, expected) in [(0, 1), (1, 1), (4, 1), (5, 1), (6, 2), (64, 2)] {
+        assert_eq!(
+            ResourceThreads::for_available_parallelism(available).count(),
+            expected
+        );
+    }
+    let configured = config.with_scheduling(WorkerScheduling::BelowNormal);
+    assert_eq!(configured.is_ok(), cfg!(windows));
 }
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]

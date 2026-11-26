@@ -41,7 +41,12 @@ impl Process {
         {
             use std::os::windows::process::CommandExt;
             const CREATE_NO_WINDOW: u32 = 0x08000000;
-            command.creation_flags(CREATE_NO_WINDOW);
+            const BELOW_NORMAL_PRIORITY_CLASS: u32 = 0x00004000;
+            let scheduling = match config.scheduling {
+                super::WorkerScheduling::Normal => 0,
+                super::WorkerScheduling::BelowNormal => BELOW_NORMAL_PRIORITY_CLASS,
+            };
+            command.creation_flags(CREATE_NO_WINDOW | scheduling);
         }
         let mut child = command.spawn().map_err(|_| IpcError::WorkerStartFailed)?;
         let pipe_in = child.stdin.take().expect("已请求子进程标准输入管道");

@@ -14,12 +14,32 @@ use sentencepiece_rs::SentencePieceProcessor;
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::Path;
-use std::sync::{Mutex, TryLockError};
+use std::sync::{Arc, Mutex, TryLockError};
 use std::time::Instant;
 
 pub const MAX_INPUT_TOKENS: usize = 256;
 pub const MAX_OUTPUT_TOKENS: usize = 256;
 pub const COMPUTE_THREADS: usize = 4;
+
+#[derive(Clone)]
+pub struct MarianComputePool(Arc<ThreadPool>);
+
+impl MarianComputePool {
+    pub fn new(compute_threads: usize) -> Result<Self, TranslationError> {
+        if !matches!(compute_threads, 1 | 2 | 4) {
+            return Err(TranslationError::InvalidConfig);
+        }
+        let pool = ThreadPoolBuilder::new()
+            .num_threads(compute_threads)
+            .thread_name(|index| format!("cloudleaf-tensor-{index}"))
+            .build()
+            .map_err(|_| TranslationError::ModelLoadFailed)?;
+        if pool.current_num_threads() != compute_threads {
+            return Err(TranslationError::ModelLoadFailed);
+        }
+        Ok(Self(Arc::new(pool)))
+    }
+}
 
 #[derive(Debug, Clone, Serialize)]
 pub struct TokenizationObservation {
@@ -144,7 +164,7 @@ pub struct MarianProvider {
     catalog_sha256: String,
     directions: Vec<TranslationDirection>,
     models: Mutex<Vec<LoadedModel>>,
-    pool: ThreadPool,
+    pool: MarianComputePool,
 }
 
 impl MarianProvider {
@@ -156,7 +176,11 @@ impl MarianProvider {
         catalog_path: &Path,
         progress: impl FnMut(ModelState),
     ) -> Result<Self, TranslationError> {
-        Self::load_verified(COMPUTE_THREADS, || verify_catalog(catalog_path), progress)
+        Self::load_verified(
+            || MarianComputePool::new(COMPUTE_THREADS),
+            || verify_catalog(catalog_path),
+            progress,
+        )
     }
 
     pub fn load_direction(
@@ -167,16 +191,31 @@ impl MarianProvider {
         cancellation: &TranslationCancellation,
         progress: impl FnMut(ModelState),
     ) -> Result<Self, TranslationError> {
+        Self::load_direction_in_pool(
+            catalog_path,
+            expected_sha256,
+            direction,
+            &MarianComputePool::new(compute_threads)?,
+            cancellation,
+            progress,
+        )
+    }
+
+    pub fn load_direction_in_pool(
+        catalog_path: &Path,
+        expected_sha256: &str,
+        direction: TranslationDirection,
+        pool: &MarianComputePool,
+        cancellation: &TranslationCancellation,
+        progress: impl FnMut(ModelState),
+    ) -> Result<Self, TranslationError> {
         let direction = match (direction.source, direction.target) {
             (Language::Chinese, Language::English) => "zh-en",
             (Language::English, Language::Chinese) => "en-zh",
             _ => return Err(TranslationError::UnsupportedLanguagePair),
         };
-        if !matches!(compute_threads, 1 | 2 | 4) {
-            return Err(TranslationError::InvalidConfig);
-        }
         let provider = Self::load_verified(
-            compute_threads,
+            || Ok(pool.clone()),
             || verify_catalog_direction(catalog_path, direction, expected_sha256, cancellation),
             progress,
         )?;
@@ -185,7 +224,7 @@ impl MarianProvider {
     }
 
     fn load_verified(
-        compute_threads: usize,
+        pool: impl FnOnce() -> Result<MarianComputePool, TranslationError>,
         verify: impl FnOnce() -> Result<VerifiedCatalog, TranslationError>,
         mut progress: impl FnMut(ModelState),
     ) -> Result<Self, TranslationError> {
@@ -202,16 +241,9 @@ impl MarianProvider {
             }
         };
         progress(ModelState::Ready);
-        let pool = ThreadPoolBuilder::new()
-            .num_threads(compute_threads)
-            .thread_name(|index| format!("cloudleaf-tensor-{index}"))
-            .build()
-            .map_err(|_| {
-                progress(ModelState::Failed);
-                TranslationError::ModelLoadFailed
-            })?;
+        let pool = pool().inspect_err(|_| progress(ModelState::Failed))?;
         progress(ModelState::Loading);
-        let models = pool.install(|| {
+        let models = pool.0.install(|| {
             verified
                 .models
                 .into_iter()
@@ -255,7 +287,7 @@ impl MarianProvider {
             .iter_mut()
             .find(|model| model.direction == request.direction)
             .ok_or(TranslationError::UnsupportedLanguagePair)?;
-        self.pool.install(|| {
+        self.pool.0.install(|| {
             model.model.reset_kv_cache();
             let result = infer(
                 model,
@@ -497,5 +529,44 @@ impl HfConfig {
         }
         // 老版HF配置省略shared标记；该固定OPUS架构本身共用词嵌入。
         Ok(Config::opus_mt_en_zh())
+    }
+}
+
+#[cfg(test)]
+mod resource_tests {
+    use super::*;
+
+    #[test]
+    fn compute_pool_preserves_thread_identity_across_load_handles() {
+        assert!(matches!(
+            MarianComputePool::new(3),
+            Err(TranslationError::InvalidConfig)
+        ));
+        for count in [1, 2, 4] {
+            let pool = MarianComputePool::new(count).unwrap();
+            let identify = |pool: &MarianComputePool| {
+                pool.0.broadcast(|worker| {
+                    let handle = std::thread::current();
+                    (handle.id(), worker.index(), rayon::current_num_threads())
+                })
+            };
+            let before = identify(&pool);
+            let load_handle = pool.clone();
+            let output = load_handle.0.install(|| {
+                assert_eq!(rayon::current_num_threads(), count);
+                let matrix = Tensor::ones((256, 256), DType::F32, &Device::Cpu).unwrap();
+                matrix.matmul(&matrix).unwrap().to_vec2::<f32>().unwrap()
+            });
+            drop(load_handle);
+            assert_eq!(identify(&pool), before);
+            assert_eq!(before.len(), count);
+            assert!(
+                before
+                    .iter()
+                    .enumerate()
+                    .all(|(index, worker)| { worker.1 == index && worker.2 == count })
+            );
+            assert!(output.into_iter().flatten().all(|value| value == 256.0));
+        }
     }
 }

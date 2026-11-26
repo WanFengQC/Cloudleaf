@@ -43,6 +43,11 @@ pub enum ResourceThreads {
 }
 
 impl ResourceThreads {
+    /// 自动档为输入及系统任务留出空间。较少的逻辑 CPU 可能共享物理核心。
+    pub const fn for_available_parallelism(available: usize) -> Self {
+        if available >= 6 { Self::Two } else { Self::One }
+    }
+
     pub const fn count(self) -> usize {
         match self {
             Self::One => 1,

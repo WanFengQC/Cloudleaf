@@ -3,5 +3,5 @@
 mod client;
 mod wire;
 
-pub use client::{WorkerClient, WorkerConfig, WorkerEvent, WorkerState};
+pub use client::{WorkerClient, WorkerConfig, WorkerEvent, WorkerScheduling, WorkerState};
 pub use wire::*;

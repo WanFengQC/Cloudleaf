@@ -122,9 +122,9 @@ def percentiles(values):
                              {'max': xs[-1]} if xs else {})}
 
 
-def build(release, evidence):
+def build(release, evidence, *, executable=None):
     libs = ('cloudleaf_input', 'cloudleaf_search', 'cloudleaf_types', 'cloudleaf_user', 'cloudleaf_translation_ipc')
-    exe = (release / 'round22-worker-probe.exe').resolve()
+    exe = (executable or release / 'round22-worker-probe.exe').resolve()
     cmd = ['rustc', '--edition=2024', '-O', '-C', 'lto=thin', '-C', 'codegen-units=1',
            '-L', f"dependency={release / 'deps'}"]
     for native in (release / 'build').glob('ring-*/out'):
@@ -197,7 +197,7 @@ def execute(directory, command, kernel, psapi, priority):
     return out.read_text(encoding='utf-8').splitlines(), row
 
 
-def parse(lines):
+def parse(lines, expected_events=171):
     keys, semantics, metrics, codec, cancels, stop, stages = [], [], {}, [], [], [], []
     for line in lines:
         parts = line.split('\t')
@@ -221,8 +221,8 @@ def parse(lines):
                 stop.append(int(parts[1]))
             case 'STAGE':
                 stages.append(parts[1:])
-    assert len(keys) == len(semantics) == 171
-    assert [k['index'] for k in keys] == list(range(171))
+    assert len(keys) == len(semantics) == expected_events
+    assert [k['index'] for k in keys] == list(range(expected_events))
     return keys, semantics, metrics, codec, cancels, stop, stages
 
 

@@ -1,4 +1,4 @@
-use cloudleaf_offline::{MarianProvider, ModelState};
+use cloudleaf_offline::{MarianComputePool, MarianProvider, ModelState};
 use cloudleaf_translation::{
     Language, ProviderCapabilities, ProviderIdentity, ProviderOutput, TranslationCancellation,
     TranslationDirection, TranslationError, TranslationKind, TranslationProvider,
@@ -37,7 +37,7 @@ impl Notice {
 pub(crate) struct LocalMarian {
     catalog: PathBuf,
     sha256: String,
-    threads: usize,
+    pool: MarianComputePool,
     notices: SyncSender<Notice>,
     loaded: Mutex<Option<(TranslationDirection, MarianProvider)>>,
 }
@@ -48,14 +48,14 @@ impl LocalMarian {
         sha256: String,
         threads: usize,
         notices: SyncSender<Notice>,
-    ) -> Self {
-        Self {
+    ) -> Result<Self, TranslationError> {
+        Ok(Self {
             catalog,
             sha256,
-            threads,
+            pool: MarianComputePool::new(threads)?,
             notices,
             loaded: Mutex::new(None),
-        }
+        })
     }
 
     fn send_progress(&self, request_id: u64, stage: ProgressStage) {
@@ -91,11 +91,11 @@ impl LocalMarian {
             self.send_progress(request_id, ProgressStage::Verifying);
             let verify_started = Instant::now();
             let mut load_started = None;
-            let provider = MarianProvider::load_direction(
+            let provider = MarianProvider::load_direction_in_pool(
                 &self.catalog,
                 &self.sha256,
                 pair,
-                self.threads,
+                &self.pool,
                 cancellation,
                 |state| {
                     if state == ModelState::Ready {
