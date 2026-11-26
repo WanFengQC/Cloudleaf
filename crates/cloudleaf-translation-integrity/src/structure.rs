@@ -64,6 +64,14 @@ pub(crate) fn append_findings(
             Some(right.span.clone()),
         ));
     }
+    if let Some(span) = added_action_after_greeting(source.0, output.0, chinese) {
+        findings.push(IntegrityFinding {
+            kind: Kind::AddedCommandAction,
+            status: Status::Unverifiable,
+            source: None,
+            output: Some(span),
+        });
+    }
     let left = switches(source.0, chinese);
     let right = switches(output.0, !chinese);
     if let [setting] = left.as_slice() {
@@ -188,6 +196,56 @@ fn first_marker(text: &str, words: &[&str]) -> Option<Range<usize>> {
 
 fn ascii_word(character: char) -> bool {
     character.is_ascii_alphanumeric() || character == '_'
+}
+
+fn added_action_after_greeting(source: &str, output: &str, chinese: bool) -> Option<Range<usize>> {
+    const GREETINGS: &[(&[&str], &[&str])] = &[
+        (&["hello", "hi"], &["你好", "您好"]),
+        (&["good morning"], &["早上好", "早安"]),
+        (&["good afternoon"], &["下午好", "午安"]),
+        (&["good evening"], &["晚上好", "晚安"]),
+    ];
+    let terminal = |ch: char| matches!(ch, '.' | '!' | '?' | '。' | '！' | '？');
+    let separators = |ch: char| terminal(ch) || matches!(ch, ',' | '，' | ';' | '；' | '\n');
+    let head = source
+        .trim()
+        .trim_end_matches(|ch: char| terminal(ch) || ch.is_whitespace());
+    let targets = GREETINGS.iter().find_map(|&(en, zh)| {
+        let (from, to) = if chinese { (zh, en) } else { (en, zh) };
+        from.iter()
+            .any(|greeting| head.eq_ignore_ascii_case(greeting))
+            .then_some(to)
+    })?;
+    let tail = targets.iter().find_map(|greeting| {
+        let output = output.trim_start();
+        let width = prefix_len(output, greeting)?;
+        let rest = output[width..].trim_start_matches(|ch: char| ch != '\n' && ch.is_whitespace());
+        rest.starts_with(separators)
+            .then(|| rest.trim_start_matches(|ch: char| separators(ch) || ch.is_whitespace()))
+    })?;
+    let action = tail
+        .split_once(separators)
+        .map_or(tail, |(first, _)| first)
+        .trim_end();
+    let start = output.len() - tail.len();
+    let span = start..start + action.len();
+    let (polite, invite) = if chinese {
+        (&["please"][..], &["come in", "step inside"][..])
+    } else {
+        (&["请", "請"][..], &["进", "進", "进来", "進來"][..])
+    };
+    let command = polite.iter().find_map(|word| prefix_len(action, word))?;
+    let command = action[command..].trim_start();
+    // 只告警已经有明确信号的指令。礼貌套话和没有已知动作的句段交给人工质量评估。
+    (invite
+        .iter()
+        .any(|word| prefix_len(command, word).is_some())
+        || !commands(output, std::slice::from_ref(&span), !chinese).is_empty()
+        || (!chinese
+            && ["开门", "開門", "关门", "關門"]
+                .iter()
+                .any(|word| prefix_len(command, word).is_some())))
+    .then_some(span)
 }
 
 fn prefix_len(text: &str, word: &str) -> Option<usize> {

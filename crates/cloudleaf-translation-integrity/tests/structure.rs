@@ -136,6 +136,59 @@ fn command_actions_and_explicit_setting_are_separate_evidence() {
 }
 
 #[test]
+fn standalone_greeting_must_not_silently_gain_an_independent_instruction() {
+    use Direction::{ChineseToEnglish, EnglishToChinese};
+    for (direction, source, output, added) in [
+        (EnglishToChinese, "Good afternoon!", "下午好,请进", "请进"),
+        (EnglishToChinese, "Hello.", "您好。請開門。", "請開門"),
+        (
+            ChineseToEnglish,
+            "早上好！",
+            "Good morning! Please come in.",
+            "Please come in",
+        ),
+        (
+            ChineseToEnglish,
+            "您好。",
+            "Hello, please close the window.",
+            "please close the window",
+        ),
+    ] {
+        let findings = advisory(direction, source, output, "AddedCommandAction");
+        assert_eq!(findings.len(), 1, "{source} -> {output}");
+        assert_eq!(findings[0].status, FindingStatus::Unverifiable);
+        assert_eq!(findings[0].source, None);
+        assert_eq!(&output[findings[0].output.clone().unwrap()], added);
+        assert!(
+            check_translation(source, output, direction, &Glossary::default())
+                .requires_acknowledgement()
+        );
+    }
+}
+
+#[test]
+fn greeting_equivalences_and_existing_actions_do_not_get_an_added_action_finding() {
+    use Direction::{ChineseToEnglish, EnglishToChinese};
+    for (direction, source, output) in [
+        (EnglishToChinese, "Good afternoon!", "午安！"),
+        (EnglishToChinese, "Hello!", "你好呀！"),
+        (EnglishToChinese, "Hello, please come in.", "您好，请进。"),
+        (ChineseToEnglish, "早上好。", "Good morning, everyone!"),
+        (
+            ChineseToEnglish,
+            "早上好，请进。",
+            "Good morning. Please come in.",
+        ),
+        (ChineseToEnglish, "您好。", "Hello, pleasant to meet you."),
+    ] {
+        assert!(
+            advisory(direction, source, output, "AddedCommandAction").is_empty(),
+            "{source} -> {output}"
+        );
+    }
+}
+
+#[test]
 fn limited_cardinal_and_time_equivalences_preserve_old_boundaries() {
     use cloudleaf_translation_integrity::FindingKind::{Number, Time, Unit};
     let examples = [
