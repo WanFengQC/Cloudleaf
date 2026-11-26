@@ -1,0 +1,941 @@
+{
+  "git_head": "f90d0e705c2c36792401313fdc07ae68fbda32a1",
+  "commands": [
+    {
+      "label": "mechanical",
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "scripts/evaluate_search.py",
+        "--iterations",
+        "2",
+        "--warmup",
+        "1",
+        "--output",
+        ".local\\round23-eval\\f90d0e7-fixed\\mechanical.json"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0
+    },
+    {
+      "label": "real",
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "scripts/evaluate_real_lexicon.py",
+        "--evidence",
+        "<fixed-cl008-evidence.json>",
+        "--iterations",
+        "2",
+        "--warmup",
+        "1",
+        "--output",
+        ".local\\round23-eval\\f90d0e7-fixed\\cccedict-resources.json"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0
+    },
+    {
+      "label": "phase",
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "scripts/evaluate_search_phases.py",
+        "--evidence",
+        "<fixed-cl008-evidence.json>",
+        "--historical",
+        ".local\\round23-eval\\initial\\cccedict-resources.json",
+        "--iterations",
+        "2",
+        "--warmup",
+        "1",
+        "--output-dir",
+        ".local\\round23-eval\\f90d0e7-fixed\\phases"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0
+    },
+    {
+      "label": "restricted",
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "scripts/evaluate_restricted_oracle.py",
+        "--evidence",
+        "<fixed-cl008-evidence.json>",
+        "--output-dir",
+        ".local\\round23-eval\\f90d0e7-fixed\\oracle"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0
+    },
+    {
+      "label": "resources",
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "scripts/check_search_resources.py",
+        "--evidence",
+        "<fixed-cl008-evidence.json>",
+        "--output",
+        ".local\\round23-eval\\f90d0e7-fixed\\resource-contract.json"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0
+    },
+    {
+      "label": "readiness",
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "scripts/check_language_readiness.py",
+        "--plan",
+        "config\\evaluation\\language-readiness-v1.json",
+        "--output",
+        ".local\\round23-eval\\f90d0e7-fixed\\language-readiness.json"
+      ],
+      "returncode": 2,
+      "expected_returncode": 2
+    },
+    {
+      "label": "preparation",
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "scripts/check_quality_preparation.py",
+        "--plan",
+        "config\\evaluation\\language-readiness-v1.json",
+        "--preparation",
+        "config/evaluation/quality-preparation-v1.json",
+        "--output",
+        ".local\\round23-eval\\f90d0e7-fixed\\quality-preparation.json"
+      ],
+      "returncode": 2,
+      "expected_returncode": 2
+    },
+    {
+      "label": "handoff",
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "scripts/check_ime_task_handoff.py",
+        "--plan",
+        "config\\evaluation\\language-readiness-v1.json",
+        "--preparation",
+        "config/evaluation/quality-preparation-v1.json",
+        "--handoff",
+        "config/evaluation/ime-task-handoff-v1.json",
+        "--output",
+        ".local\\round23-eval\\f90d0e7-fixed\\ime-task-handoff.json"
+      ],
+      "returncode": 2,
+      "expected_returncode": 2
+    }
+  ],
+  "reviewed_annotation_pending": true,
+  "formal_metrics": {
+    "top1": null,
+    "top5": null,
+    "mrr": null
+  },
+  "experiments": {
+    "mechanical": {
+      "git_head": "f90d0e705c2c36792401313fdc07ae68fbda32a1",
+      "source_sha256": "c725477945c82e08d23d189756ea5b58af9986e4d2834a4110fb6bb9ff2102b2",
+      "binary_sha256": "2089b17d5ec6d9e86b210979908394c584bfd170854ddeea9c0e5cdd9f61a668",
+      "raw_report_sha256": "6dd8e07951285d1a04528aecd3802ab968e2ef73edd19e2d725eb1ed8a00866f",
+      "configuration_cases": 208
+    },
+    "real": {
+      "git_head": "f90d0e705c2c36792401313fdc07ae68fbda32a1",
+      "source_sha256": "c725477945c82e08d23d189756ea5b58af9986e4d2834a4110fb6bb9ff2102b2",
+      "binary_sha256": "fed81b25aa85a5cebe39213eb2694158bdbb16a5035a21149a77dd86ad98e4e2",
+      "raw_report_sha256": "e1661c4f8be4321f7cd7725e9509fc6ac93eb453a99fec19f24ef57eba181dc3",
+      "lexicon_counts": {
+        "entries": 123544,
+        "unknown_frequencies": 123544,
+        "multi_character_entries": 110045,
+        "source_counts": {
+          "cccedict:mirror-20260604": 123544
+        }
+      },
+      "equivalence_failures": [],
+      "configuration_cases": 288,
+      "runtime_sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+    },
+    "phases": {
+      "git_head": "f90d0e705c2c36792401313fdc07ae68fbda32a1",
+      "source_sha256": "c725477945c82e08d23d189756ea5b58af9986e4d2834a4110fb6bb9ff2102b2",
+      "binary_sha256": "29417da0b156d8d6ce26fe31e3c47d3132317b3abce0dd2f8c7dcd6472bf46cc",
+      "raw_report_sha256": "ef8ca38f9425076227f30ebda0b315d631746e846fb82cd81af3c60f8b8f4c83",
+      "lexicon_counts": {
+        "entries": 123544,
+        "unknown_frequencies": 123544,
+        "multi_character_entries": 110045,
+        "source_counts": {
+          "cccedict:mirror-20260604": 123544
+        }
+      },
+      "behavior_failures": [],
+      "configuration_cases": 288,
+      "paired_samples": 576,
+      "aggregate_outcomes": {
+        "reference": {
+          "complete": 8,
+          "budget": 14,
+          "rejected": 2
+        },
+        "exact": {
+          "complete": 16,
+          "budget": 6,
+          "rejected": 2
+        },
+        "beam1": {
+          "complete": 6,
+          "beam_pruned": 16,
+          "rejected": 2
+        },
+        "beam8": {
+          "complete": 6,
+          "beam_pruned": 16,
+          "rejected": 2
+        },
+        "beam64": {
+          "complete": 7,
+          "beam_pruned": 15,
+          "rejected": 2
+        },
+        "exact-edges128": {
+          "complete": 4,
+          "budget": 18,
+          "rejected": 2
+        },
+        "exact-expansions500": {
+          "complete": 6,
+          "budget": 16,
+          "rejected": 2
+        },
+        "exact-resident128": {
+          "complete": 6,
+          "budget": 16,
+          "rejected": 2
+        },
+        "position": {
+          "complete": 22,
+          "rejected": 2
+        },
+        "position-edges128": {
+          "complete": 4,
+          "budget": 18,
+          "rejected": 2
+        },
+        "position-expansions500": {
+          "complete": 6,
+          "budget": 16,
+          "rejected": 2
+        },
+        "position-resident128": {
+          "complete": 22,
+          "rejected": 2
+        }
+      }
+    },
+    "restricted": {
+      "git_head": "f90d0e705c2c36792401313fdc07ae68fbda32a1",
+      "source_sha256": "c725477945c82e08d23d189756ea5b58af9986e4d2834a4110fb6bb9ff2102b2",
+      "binary_sha256": "fed81b25aa85a5cebe39213eb2694158bdbb16a5035a21149a77dd86ad98e4e2",
+      "raw_report_sha256": "a46036f579e09b782377c87c3d6ba90030d60203c548a412db25f54c79889367",
+      "selected_entries": 26,
+      "failures": [],
+      "configuration_cases": 140,
+      "independent_cases": 14
+    },
+    "resource_contract": {
+      "git_head": "f90d0e705c2c36792401313fdc07ae68fbda32a1",
+      "source_sha256": "c725477945c82e08d23d189756ea5b58af9986e4d2834a4110fb6bb9ff2102b2",
+      "binary_sha256": "fed81b25aa85a5cebe39213eb2694158bdbb16a5035a21149a77dd86ad98e4e2",
+      "raw_report_sha256": "2718f4836388c4ee492173a3358ccaad8568b3a4edf81c617df63138fa0e8aa8",
+      "runtime_sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+      "count_contract_passed": true,
+      "production_resource_ready": false,
+      "total_observed_cases": 384,
+      "failures": [],
+      "groups": {
+        "standard": {
+          "configuration_limits": [
+            16384,
+            200000,
+            50000
+          ],
+          "methods": {
+            "reference": {
+              "cases": 24,
+              "rejected": 2,
+              "budget_cases": 14,
+              "pruned_cases": 0,
+              "max_p95_ns": 131773500
+            },
+            "exact": {
+              "cases": 24,
+              "rejected": 2,
+              "budget_cases": 6,
+              "pruned_cases": 0,
+              "max_p95_ns": 35138900
+            },
+            "position": {
+              "cases": 24,
+              "rejected": 2,
+              "budget_cases": 0,
+              "pruned_cases": 0,
+              "max_p95_ns": 724000
+            },
+            "beam": {
+              "cases": 24,
+              "rejected": 2,
+              "budget_cases": 0,
+              "pruned_cases": 16,
+              "max_p95_ns": 9805300
+            }
+          }
+        },
+        "edges128": {
+          "configuration_limits": [
+            128,
+            200000,
+            50000
+          ],
+          "methods": {
+            "reference": {
+              "cases": 24,
+              "rejected": 2,
+              "budget_cases": 18,
+              "pruned_cases": 0,
+              "max_p95_ns": 5440600
+            },
+            "exact": {
+              "cases": 24,
+              "rejected": 2,
+              "budget_cases": 18,
+              "pruned_cases": 0,
+              "max_p95_ns": 330400
+            },
+            "position": {
+              "cases": 24,
+              "rejected": 2,
+              "budget_cases": 18,
+              "pruned_cases": 0,
+              "max_p95_ns": 71100
+            },
+            "beam": {
+              "cases": 24,
+              "rejected": 2,
+              "budget_cases": 18,
+              "pruned_cases": 16,
+              "max_p95_ns": 455100
+            }
+          }
+        },
+        "expansions500": {
+          "configuration_limits": [
+            16384,
+            500,
+            50000
+          ],
+          "methods": {
+            "reference": {
+              "cases": 24,
+              "rejected": 2,
+              "budget_cases": 16,
+              "pruned_cases": 0,
+              "max_p95_ns": 444100
+            },
+            "exact": {
+              "cases": 24,
+              "rejected": 2,
+              "budget_cases": 16,
+              "pruned_cases": 0,
+              "max_p95_ns": 563300
+            },
+            "position": {
+              "cases": 24,
+              "rejected": 2,
+              "budget_cases": 16,
+              "pruned_cases": 0,
+              "max_p95_ns": 71900
+            },
+            "beam": {
+              "cases": 24,
+              "rejected": 2,
+              "budget_cases": 16,
+              "pruned_cases": 16,
+              "max_p95_ns": 451400
+            }
+          }
+        },
+        "resident128": {
+          "configuration_limits": [
+            16384,
+            200000,
+            128
+          ],
+          "methods": {
+            "reference": {
+              "cases": 24,
+              "rejected": 2,
+              "budget_cases": 16,
+              "pruned_cases": 0,
+              "max_p95_ns": 71100
+            },
+            "exact": {
+              "cases": 24,
+              "rejected": 2,
+              "budget_cases": 16,
+              "pruned_cases": 0,
+              "max_p95_ns": 187300
+            },
+            "position": {
+              "cases": 24,
+              "rejected": 2,
+              "budget_cases": 0,
+              "pruned_cases": 0,
+              "max_p95_ns": 475300
+            },
+            "beam": {
+              "cases": 24,
+              "rejected": 2,
+              "budget_cases": 16,
+              "pruned_cases": 9,
+              "max_p95_ns": 662600
+            }
+          }
+        }
+      }
+    }
+  },
+  "not_executed": [
+    "production_language_accuracy",
+    "native_windows"
+  ],
+  "qualification": "机械及真实词库资源对照。原始候选、语料、封存明文和更新前词库留在本地。无独立人类意图数据，无正式语言指标。",
+  "initial_phase_source_drift": [
+    {
+      "label": "phase-attempt",
+      "returncode": 1,
+      "log_sha256": "c21ed502498a12c01382e2bf4e7a1d627d7573d8ebb5c3f89d3377c2b7bed7ab"
+    },
+    {
+      "label": "integrated-replay-01",
+      "returncode": 1,
+      "log_sha256": "c21ed502498a12c01382e2bf4e7a1d627d7573d8ebb5c3f89d3377c2b7bed7ab"
+    }
+  ],
+  "origins": [
+    {
+      "path": "scripts/analyze_search_round3.py",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "789158b9fdc291831d23c84b876f780b9d5ff987",
+      "sha256": "2b06d7e1875b7bd8e4f762834e1ee9ab8f05e23191dc8908474afcfdf548da3a",
+      "bytes": 21241,
+      "action": "imported",
+      "implementation_sha256": "2b06d7e1875b7bd8e4f762834e1ee9ab8f05e23191dc8908474afcfdf548da3a",
+      "adapted": false
+    },
+    {
+      "path": "scripts/evaluate_search.py",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "245ae17f11109f901f43ac2eed211a95230b6c2d",
+      "sha256": "cc2ecb24b679604538649b125abd13324b1c56203138d23231dfa605c74af096",
+      "bytes": 9501,
+      "action": "imported",
+      "implementation_sha256": "cc2ecb24b679604538649b125abd13324b1c56203138d23231dfa605c74af096",
+      "adapted": false
+    },
+    {
+      "path": "scripts/evaluate_real_lexicon.py",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "3eaffc7076a04c56925fc73bfd813af8239a5248",
+      "sha256": "1d527e0508fc523a7328997faf249bb4df92ecaec3d5a2b8642ee13cd3a1b43c",
+      "bytes": 14796,
+      "action": "imported",
+      "implementation_sha256": "1d527e0508fc523a7328997faf249bb4df92ecaec3d5a2b8642ee13cd3a1b43c",
+      "adapted": false
+    },
+    {
+      "path": "scripts/evaluate_restricted_oracle.py",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "21fe628ee1cd0da2969a00eea68b0c146f5e5b1a",
+      "sha256": "9331f0d3d2a4b157c55bce35c225f8d657a15a4a16db0d85f1750a3cd05fcbcd",
+      "bytes": 13160,
+      "action": "imported",
+      "implementation_sha256": "9331f0d3d2a4b157c55bce35c225f8d657a15a4a16db0d85f1750a3cd05fcbcd",
+      "adapted": false
+    },
+    {
+      "path": "scripts/evaluate_search_phases.py",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "b3870ba31b2c4bc301e8d626f6bd2a3af0c698be",
+      "sha256": "3e90dc4ef6832e1e52e36df48dca732a8f872fcf8fc6c5c0179e4e7ea9b793f2",
+      "bytes": 12544,
+      "action": "imported",
+      "implementation_sha256": "3e90dc4ef6832e1e52e36df48dca732a8f872fcf8fc6c5c0179e4e7ea9b793f2",
+      "adapted": false
+    },
+    {
+      "path": "scripts/check_search_resources.py",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "704530bfcd85d4536a7bc58e1638b0d6761ad260",
+      "sha256": "d655a09168f547649b2ff7b9ac2b0fa3d3c498f8ab8227d7af4ad9fb24fa560c",
+      "bytes": 5173,
+      "action": "imported",
+      "implementation_sha256": "d655a09168f547649b2ff7b9ac2b0fa3d3c498f8ab8227d7af4ad9fb24fa560c",
+      "adapted": false
+    },
+    {
+      "path": "scripts/search_resource_contract.py",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "c28b0bc650fb78dd6cd06bf71c8aaf59a85013b6",
+      "sha256": "8753c98af7832959741eec6dc6eacd52a06470da6d6ea15b9080a25d13640d45",
+      "bytes": 2923,
+      "action": "imported",
+      "implementation_sha256": "8753c98af7832959741eec6dc6eacd52a06470da6d6ea15b9080a25d13640d45",
+      "adapted": false
+    },
+    {
+      "path": "scripts/check_language_readiness.py",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "ed16ba409b175685aed9d9673d720abc9d9249ed",
+      "sha256": "19a06ddead687d94b9acf8af79ed09e9c655ce7e61ed023b3cf8e24228d3d9c9",
+      "bytes": 14288,
+      "action": "imported",
+      "implementation_sha256": "caf0109213e5226f5aff496e9e014581755f75b354c1161a7c032cdd06d7ffb9",
+      "adapted": true
+    },
+    {
+      "path": "scripts/check_quality_preparation.py",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "0a62d298a46ddb848467aee2eea019d3f0aa72ac",
+      "sha256": "b2295fb1ba37081f761745935560b674bd1c91dcb3f6f818cfb9db280d8700ff",
+      "bytes": 5791,
+      "action": "imported",
+      "implementation_sha256": "960a7189049f6cbb75e62f9961e914c0218ec3836ed548ea8db78614171d024e",
+      "adapted": true
+    },
+    {
+      "path": "scripts/check_ime_task_handoff.py",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "b379b40306c7cd8beee70ebdd148baa79b52c193",
+      "sha256": "cd010b12f6f8e20fe51c5e857b7a2e8aa46a3dc39c2079d2239045ba6c6b5bc3",
+      "bytes": 11576,
+      "action": "imported",
+      "implementation_sha256": "cd010b12f6f8e20fe51c5e857b7a2e8aa46a3dc39c2079d2239045ba6c6b5bc3",
+      "adapted": false
+    },
+    {
+      "path": "scripts/manage_ime_annotation_queue.py",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "db7ef3a10de6ed54a4fbe750097a04d7f6743032",
+      "sha256": "3c7c02eb3dca82c697b1004f74ed98a5b1f50ffc097f78960bb0731708a737c3",
+      "bytes": 12869,
+      "action": "imported",
+      "implementation_sha256": "3c7c02eb3dca82c697b1004f74ed98a5b1f50ffc097f78960bb0731708a737c3",
+      "adapted": false
+    },
+    {
+      "path": "config/evaluation/ime-task-handoff-v1.json",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "12c3ee1ad4d686e9472888971cecc5a8bddc7d17",
+      "sha256": "88d16dffc95ddadcfbc7b6df63026c6fef723cade89592c98cf1d6b79bbbb2be",
+      "bytes": 570,
+      "action": "imported",
+      "implementation_sha256": "88d16dffc95ddadcfbc7b6df63026c6fef723cade89592c98cf1d6b79bbbb2be",
+      "adapted": false
+    },
+    {
+      "path": "config/evaluation/language-readiness-v1.json",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "3dc7b9dc511629052b69a1164a253d1723350e59",
+      "sha256": "19565b1a2df832113596fcdb6ed2b167cbcff2791459c1835c727437f157501e",
+      "bytes": 919,
+      "action": "imported",
+      "implementation_sha256": "19565b1a2df832113596fcdb6ed2b167cbcff2791459c1835c727437f157501e",
+      "adapted": false
+    },
+    {
+      "path": "config/evaluation/quality-preparation-v1.json",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "db7cdf9c1ade2432ec961cd772eeb6bca8499946",
+      "sha256": "c738ee1f8149ac0f134bed9962b439164bdf71b5ab8dd784861d7352f8d189bf",
+      "bytes": 736,
+      "action": "imported",
+      "implementation_sha256": "c738ee1f8149ac0f134bed9962b439164bdf71b5ab8dd784861d7352f8d189bf",
+      "adapted": false
+    },
+    {
+      "path": "tests/test_real_lexicon_evaluation.py",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "d8b4da7721072335dc06c73540c46cd28cea67ac",
+      "sha256": "de146c34bf37241941f2e329ce4c4fb8800df85d6f09c3416d9549ca6fe10db4",
+      "bytes": 10052,
+      "action": "imported",
+      "implementation_sha256": "de146c34bf37241941f2e329ce4c4fb8800df85d6f09c3416d9549ca6fe10db4",
+      "adapted": false
+    },
+    {
+      "path": "tests/test_restricted_oracle.py",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "3c2c8ad862eef1f4dfb4dbdc2f40748a96213862",
+      "sha256": "4d17e6f86c25de8accb25c25e3526e3146728f3208cf439f77345861a01ea5a5",
+      "bytes": 3726,
+      "action": "imported",
+      "implementation_sha256": "4d17e6f86c25de8accb25c25e3526e3146728f3208cf439f77345861a01ea5a5",
+      "adapted": false
+    },
+    {
+      "path": "tests/test_search_evaluation.py",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "3642b138f5903a4b3acdc74c0c30e6f5ec080c21",
+      "sha256": "e0f0cbe599097714dbea4e94b55a78be92be1903de8622734b6017effc383ef0",
+      "bytes": 2383,
+      "action": "imported",
+      "implementation_sha256": "e0f0cbe599097714dbea4e94b55a78be92be1903de8622734b6017effc383ef0",
+      "adapted": false
+    },
+    {
+      "path": "tests/test_search_resources.py",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "fec3964f28ed20d0de77a035d75db88069378c91",
+      "sha256": "2c5daa25ebd02f49fceecc6a90cffa18bad7e8afa7cc44589beee894e071ceca",
+      "bytes": 2961,
+      "action": "imported",
+      "implementation_sha256": "2c5daa25ebd02f49fceecc6a90cffa18bad7e8afa7cc44589beee894e071ceca",
+      "adapted": false
+    },
+    {
+      "path": "tests/test_language_readiness.py",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "f845a2e6437c3a084d72f463b80d6f934cff1632",
+      "sha256": "ee858afcd475675e33ed820fcf4b1f51f8bb22ccf41363097c086f477423fd4d",
+      "bytes": 12612,
+      "action": "imported",
+      "implementation_sha256": "75675bcb3701f939aaf87d6b34bf3faa8ccebe606261fd538d28fbf32f544c32",
+      "adapted": true
+    },
+    {
+      "path": "tests/test_quality_preparation.py",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "31d56e1b5b36bfa0fe1f934b43830db7cd11b8a9",
+      "sha256": "0f46ea5b4f5a4c9c53c3c1c53de758644b0335072543e1dbd8f9e4d5ac5496dc",
+      "bytes": 5376,
+      "action": "imported",
+      "implementation_sha256": "233766227f712587662d9061d3ebd88cc05474445b7676295f0eda5b9b1d85db",
+      "adapted": true
+    },
+    {
+      "path": "tests/test_annotation_queue.py",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "6f5aafaaa417fd9e0b5f7625c3b264011c8d2d3c",
+      "sha256": "d391ed46bd85d3831ee7410449aded882751f7c4127447ec04c56eb85e5dcd9d",
+      "bytes": 10769,
+      "action": "imported",
+      "implementation_sha256": "d391ed46bd85d3831ee7410449aded882751f7c4127447ec04c56eb85e5dcd9d",
+      "adapted": false
+    },
+    {
+      "path": "tests/test_ime_task_handoff.py",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "7f8002374218747a587f7076c3de22775b22fb82",
+      "sha256": "40ca255e777380025df571ac31b02fa6cc8fd37a6bebf10a5dadfdf640bcd28c",
+      "bytes": 9829,
+      "action": "imported",
+      "implementation_sha256": "40ca255e777380025df571ac31b02fa6cc8fd37a6bebf10a5dadfdf640bcd28c",
+      "adapted": false
+    },
+    {
+      "path": "docs/cl008-real-resource-protocol.md",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "8ab689c70f5e4713434cf127cc555cf38797584e",
+      "sha256": "692067c0507676bdf6c5dbe632a566e87cfcaedd6719c06bf5c75d1e5ae11e37",
+      "bytes": 6348,
+      "action": "imported",
+      "implementation_sha256": "692067c0507676bdf6c5dbe632a566e87cfcaedd6719c06bf5c75d1e5ae11e37",
+      "adapted": false
+    },
+    {
+      "path": "docs/cl008-round3-analysis-design.md",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "a560d04c0a7d012b41fb58bf247a3e76304c03d8",
+      "sha256": "dee5229285a5e22f2d8c03939ee8fc4b6221177db3efaf804f16c689748c18a7",
+      "bytes": 5513,
+      "action": "imported",
+      "implementation_sha256": "dee5229285a5e22f2d8c03939ee8fc4b6221177db3efaf804f16c689748c18a7",
+      "adapted": false
+    },
+    {
+      "path": "docs/cl008-round4-evaluation-gates.md",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "be237b31c0bbf205dd221fe479d977db061853a2",
+      "sha256": "47d714ce01c8822b217171304dda5962cbf806cceb81e6158a92322b00fcd8e6",
+      "bytes": 6137,
+      "action": "imported",
+      "implementation_sha256": "47d714ce01c8822b217171304dda5962cbf806cceb81e6158a92322b00fcd8e6",
+      "adapted": false
+    },
+    {
+      "path": "docs/cl008-round5-quality-preparation.md",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "f5f0718c7ab560e3485afc47738b274a05d93b30",
+      "sha256": "eab95e6cc0a90d324a0045d5976dc2eb2287d51cebac9702fc3c60ca2e810903",
+      "bytes": 2899,
+      "action": "imported",
+      "implementation_sha256": "eab95e6cc0a90d324a0045d5976dc2eb2287d51cebac9702fc3c60ca2e810903",
+      "adapted": false
+    },
+    {
+      "path": "docs/cl008-round7-design.md",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "96afced8c9fa9435215e3a9fb689f062a3eb7a99",
+      "sha256": "4fee0f87c550c1da7d5cea147900094c89fe85f69ca0e2a4b13df9234cbb858c",
+      "bytes": 6226,
+      "action": "imported",
+      "implementation_sha256": "4fee0f87c550c1da7d5cea147900094c89fe85f69ca0e2a4b13df9234cbb858c",
+      "adapted": false
+    },
+    {
+      "path": "docs/cl008-round8-external-handoff-design.md",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "620efc0fb239ec5e20698c1513a755e15e25833c",
+      "sha256": "eb5cb9252fa01d3fce2ad4c4fa7c4175f5a2daeb37ee2d0eed3b80a583233ce8",
+      "bytes": 2511,
+      "action": "imported",
+      "implementation_sha256": "eb5cb9252fa01d3fce2ad4c4fa7c4175f5a2daeb37ee2d0eed3b80a583233ce8",
+      "adapted": false
+    },
+    {
+      "path": "docs/acceptance/cl008-round8/README.md",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "a1dceeaea313993f4c681f7e19f57c214ede30c1",
+      "sha256": "afeb69014aea85b1ebc3af2d8a3a37e6ef3ae05907c0d29ed5d20f5c314f0a80",
+      "bytes": 8736,
+      "action": "imported",
+      "implementation_sha256": "afeb69014aea85b1ebc3af2d8a3a37e6ef3ae05907c0d29ed5d20f5c314f0a80",
+      "adapted": false
+    },
+    {
+      "path": "docs/acceptance/cl008-round8/context-review.template.json",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "2600a1c57596961518b7c30a7706fa2202960552",
+      "sha256": "c5bfd53df32af13dd4fdb14d0392b9b192adf838f0cd915916c035afca37f7a3",
+      "bytes": 797,
+      "action": "imported",
+      "implementation_sha256": "c5bfd53df32af13dd4fdb14d0392b9b192adf838f0cd915916c035afca37f7a3",
+      "adapted": false
+    },
+    {
+      "path": "docs/acceptance/cl008-round8/handoff.template.json",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "bd0a38958db5a911241c57cfdaa8fb335c82d643",
+      "sha256": "255fba08d0ddeab132378db19cb036b6e8acc6938259cb9a086a23e595c8f45d",
+      "bytes": 928,
+      "action": "imported",
+      "implementation_sha256": "255fba08d0ddeab132378db19cb036b6e8acc6938259cb9a086a23e595c8f45d",
+      "adapted": false
+    },
+    {
+      "path": "docs/acceptance/cl008-round8/intake-checklist.tsv",
+      "source_commit": "59dabdc2f8a3dc87cbd7f19ed89401ee607f7954",
+      "git_blob": "2edfb222fb1519278bbd737fe975418fc6353133",
+      "sha256": "47a9ab00fc408b37f3332da837f569026a4fe2822ff24422507c775cf569b404",
+      "bytes": 2135,
+      "action": "imported",
+      "implementation_sha256": "47a9ab00fc408b37f3332da837f569026a4fe2822ff24422507c775cf569b404",
+      "adapted": false
+    },
+    {
+      "path": "tools/data_pipeline/annotation_workflow.py",
+      "source_commit": "3f26f34e00c0775124f87e150a021f99fb52c567",
+      "git_blob": "acff8aa35ddf3caecfd9567be9f614276210c335",
+      "sha256": "ca64a3c2e1d82dcf8df896dabd1a9634e05760d3294eebd336727cfbbe3814eb",
+      "bytes": 11386,
+      "action": "imported",
+      "implementation_sha256": "ca64a3c2e1d82dcf8df896dabd1a9634e05760d3294eebd336727cfbbe3814eb",
+      "adapted": false
+    },
+    {
+      "path": "tests/test_annotation_workflow.py",
+      "source_commit": "3f26f34e00c0775124f87e150a021f99fb52c567",
+      "git_blob": "3cd6a9a442f10d56202136175e35a2f396854ca9",
+      "sha256": "bb76d97f88c4c319f51238ca87080ecaedfffdb1c2a2de039e1a882b51b88cef",
+      "bytes": 8244,
+      "action": "imported",
+      "implementation_sha256": "bb76d97f88c4c319f51238ca87080ecaedfffdb1c2a2de039e1a882b51b88cef",
+      "adapted": false
+    },
+    {
+      "path": "data/plans/ime-human-gold-v1.json",
+      "source_commit": "3f26f34e00c0775124f87e150a021f99fb52c567",
+      "git_blob": "8d8a814df0f9179e1345ea591231d1c6f36223af",
+      "sha256": "28a7012a2c1065afc105a2ac13e9cd27e93e8bfb76d276ab30877e4064d83ee6",
+      "bytes": 2178,
+      "action": "imported",
+      "implementation_sha256": "28a7012a2c1065afc105a2ac13e9cd27e93e8bfb76d276ab30877e4064d83ee6",
+      "adapted": false
+    },
+    {
+      "path": "data/plans/ime-annotation-round6.json",
+      "source_commit": "3f26f34e00c0775124f87e150a021f99fb52c567",
+      "git_blob": "d8f473ef8ee2d6f56d316ca33a45d0420205aa59",
+      "sha256": "f83310f21567d47ff34bd6753951253dacfaf53d51bfd9193112ce1241a68bff",
+      "bytes": 3962,
+      "action": "imported",
+      "implementation_sha256": "f83310f21567d47ff34bd6753951253dacfaf53d51bfd9193112ce1241a68bff",
+      "adapted": false
+    },
+    {
+      "path": "data/plans/round8-external-handoff.json",
+      "source_commit": "3f26f34e00c0775124f87e150a021f99fb52c567",
+      "git_blob": "9625bcbde9aeab42aa10e0a7ce9d2f8f0315355f",
+      "sha256": "bd0a09e748289f79d489d6eea9b88f88135542201144381e483d797901c45539",
+      "bytes": 2424,
+      "action": "imported",
+      "implementation_sha256": "bd0a09e748289f79d489d6eea9b88f88135542201144381e483d797901c45539",
+      "adapted": false
+    },
+    {
+      "path": "docs/cl009-round7-annotation-handoff.md",
+      "source_commit": "3f26f34e00c0775124f87e150a021f99fb52c567",
+      "git_blob": "774a5788990ec44f69c0a58be27a71d352ff96d3",
+      "sha256": "489f10600b0e05959d4f4eb70cfbdd5acea6e2d38dc33d4e5babd1a18b2d39ff",
+      "bytes": 2060,
+      "action": "imported",
+      "implementation_sha256": "489f10600b0e05959d4f4eb70cfbdd5acea6e2d38dc33d4e5babd1a18b2d39ff",
+      "adapted": false
+    }
+  ],
+  "authoring": {
+    "blank_task_count": 24,
+    "personal_annotations_complete": 0,
+    "formal_ready": false,
+    "known_seen_input_count": 290,
+    "known_seen_input_set_sha256": "010d501bb0e17d80571204b450a43e7297928db9e970865aae9a3c95cc55ff0e",
+    "blank_template_sha256": "ff1e2481def118255eac5293574e1f0510b95277aee87d0518525ec76c846a60",
+    "training_source_family_excluded_from_formal_evaluation": "tatoeba-community",
+    "frozen_scope": {
+      "text_hashes": 40,
+      "ready_pinyin_hashes": 40,
+      "no_source_text_in_inventory": true
+    }
+  },
+  "gate_outcomes": {
+    "readiness": {
+      "expected_exit": 2,
+      "ready": false,
+      "evidence_sha256": "ef245b9e9358e4856c166e65361c3a5318a2da7f469c23f48961f1d9b2fd0256",
+      "issues": [
+        {
+          "section": "protocol",
+          "reason": "评估者或预登记时间缺失"
+        },
+        {
+          "section": "sources",
+          "reason": "缺少独立评估语料或词库来源批准"
+        },
+        {
+          "section": "gold",
+          "reason": "缺少已核验的独立人工gold来源"
+        },
+        {
+          "section": "split_isolation",
+          "reason": "文件描述或SHA缺失"
+        },
+        {
+          "section": "heldout_seal",
+          "reason": "heldout未封存/已打开/保管者与评估者未分离"
+        },
+        {
+          "section": "parameter_freeze",
+          "reason": "'sealed_at'"
+        }
+      ]
+    },
+    "preparation": {
+      "expected_exit": 2,
+      "ready": false,
+      "evidence_sha256": "8e7a997a4f6bc08cd35f731fe19b74f466ee29783792071b20716dfb2ba525d2",
+      "issues": [
+        {
+          "section": "protocol",
+          "reason": "评估者或预登记时间缺失"
+        },
+        {
+          "section": "sources",
+          "reason": "缺少独立评估语料或词库来源批准"
+        },
+        {
+          "section": "gold",
+          "reason": "缺少已核验的独立人工gold来源"
+        },
+        {
+          "section": "split_isolation",
+          "reason": "文件描述或SHA缺失"
+        },
+        {
+          "section": "heldout_seal",
+          "reason": "heldout未封存/已打开/保管者与评估者未分离"
+        },
+        {
+          "section": "parameter_freeze",
+          "reason": "'sealed_at'"
+        }
+      ]
+    },
+    "handoff": {
+      "expected_exit": 2,
+      "ready": false,
+      "evidence_sha256": "c94ee479e295ca16bdf2afe35ac1ba9cdc04adb18644135a352c21f621fd435d",
+      "issues": [
+        {
+          "section": "protocol",
+          "reason": "评估者或预登记时间缺失"
+        },
+        {
+          "section": "sources",
+          "reason": "缺少独立评估语料或词库来源批准"
+        },
+        {
+          "section": "gold",
+          "reason": "缺少已核验的独立人工gold来源"
+        },
+        {
+          "section": "split_isolation",
+          "reason": "文件描述或SHA缺失"
+        },
+        {
+          "section": "heldout_seal",
+          "reason": "heldout未封存/已打开/保管者与评估者未分离"
+        },
+        {
+          "section": "parameter_freeze",
+          "reason": "'sealed_at'"
+        }
+      ]
+    }
+  },
+  "targeted_final_annotation_tests": {
+    "counts": {
+      "annotation_queue": 8,
+      "annotation_workflow": 10,
+      "ime_task_handoff": 8,
+      "language_readiness": 11,
+      "quality_preparation": 7
+    },
+    "total": 44
+  }
+}

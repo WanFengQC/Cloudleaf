@@ -1,0 +1,46 @@
+MODEL	zh01	opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6	f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f	539121600	1088913100	1
+OBSERVATION	real	zh01	money_brand	true	Term:Missing,Money:Changed	Claudeleaf now has a price of $123.45.
+MODEL	zh02	opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6	f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f	843382300	0	1
+OBSERVATION	real	zh02	chat	false		I'm free this weekend. We can talk to a quiet coffee shop.
+MODEL	zh03	opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6	f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f	1063220700	0	1
+OBSERVATION	real	zh03	business	false		Please confirm the order by Friday and then send the revised invoice to the procurement department.
+MODEL	zh04	opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6	f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f	1256770300	0	1
+OBSERVATION	real	zh04	quantity_relation	false	Unit:EquivalentRepresentation,Unit:EquivalentRepresentation	A commodity weighs 3 kg, B weighs 5 kg and A is lighter.
+MODEL	zh05	opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6	f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f	885628900	0	1
+OBSERVATION	real	zh05	date_time	true	Date:EquivalentRepresentation,Time:Missing,Number:Unverifiable	The meeting is scheduled for 4 p.m. on 25 November 2026.
+MODEL	zh06	opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6	f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f	650387100	0	1
+OBSERVATION	real	zh06	negation	false		If payment is not received, do not deliver the goods.
+MODEL	zh07	opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6	f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f	1125159600	0	1
+OBSERVATION	real	zh07	technical_mixed	false	Term:ExactPreserved,Term:ExactPreserved,Term:ExactPreserved	Please connect the device with USB-C lines and save the Cloudleaf configuration as JSON.
+MODEL	zh08	opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6	f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f	1059870800	0	1
+OBSERVATION	real	zh08	polysemy	false		This phone's out of power. I need to borrow a charger.
+MODEL	zh09	opus-mt-zh-en@cf109095479db38d6df799875e34039d4938aaa6	f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f	1539433200	0	1
+OBSERVATION	real	zh09	round22_anchor	true	Date:EquivalentRepresentation,Term:Missing,Number:EquivalentRepresentation,Money:Changed	On 2 November 2026, Claudelaf released the 13th round of R & D with a budget of $123.45.
+MODEL	en01	opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255	f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f	489417000	973076500	1
+OBSERVATION	real	en01	money_brand	true	Term:Missing,Money:EquivalentRepresentation	云叶牌每年要花123.45元
+MODEL	en02	opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255	f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f	419747000	0	1
+OBSERVATION	real	en02	chat	false		午饭后我们可以到图书馆吗?
+MODEL	en03	opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255	f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f	967711300	0	1
+OBSERVATION	real	en03	business_long	false		请在中午之前向供应商确认订正订单,并在供应商作出书面答复后才通知仓库。
+MODEL	en04	opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255	f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f	858922700	0	1
+OBSERVATION	real	en04	amount_relationship	false	Money:EquivalentRepresentation,Money:EquivalentRepresentation	产品A成本为15元,产品B成本为30元,产品A成本更低。
+MODEL	en05	opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255	f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f	764429200	0	1
+OBSERVATION	real	en05	time_length	false	Unit:EquivalentRepresentation,Time:EquivalentRepresentation,Date:EquivalentRepresentation	2026年11月25日下午4点30分前 3米电缆必须到达
+MODEL	en06	opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255	f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f	677667200	0	1
+OBSERVATION	real	en06	negation	false		如果备份不完整, 请不要删除原始文件 。
+MODEL	en07	opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255	f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f	2023351800	0	1
+OBSERVATION	real	en07	technical_mixed	true	Term:Missing,Term:Missing,Term:ExactPreserved	在云叶终端上安装 USB- C 适配器, 但不要更改 JSON 文件, 叫做. json 。
+MODEL	en08	opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255	f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f	706190800	0	1
+OBSERVATION	real	en08	polysemy	false		河岸见,银行五点关门
+OBSERVATION	control	ct01	swapped_amount	false	Money:ExactPreserved,Money:ExactPreserved	Product A costs CNY 30; product B costs CNY 15.
+OBSERVATION	control	ct02	wrong_association	false	Unit:ExactPreserved,Unit:ExactPreserved	Product B weighs 3 kg; product A weighs 5 kg.
+OBSERVATION	control	ct03	lost_negation	false		付款确认前请发送订单。
+OBSERVATION	control	ct04	date_roles	false	Date:EquivalentRepresentation,Date:EquivalentRepresentation	November 27, 2026 is the departure date and November 25, 2026 is the return date.
+OBSERVATION	control	ct05	quantity_relation	false	Unit:ExactPreserved,Unit:ExactPreserved	第一件重 3 kg，第二件重 5 kg；第一件比较重。
+OBSERVATION	control	ct06	term_relation	false	Term:ExactPreserved,Term:ExactPreserved,Term:ExactPreserved	USB-C 读取该 JSON；Cloudleaf 不读取它。
+OBSERVATION	control	ct07	equivalent_date_units	false	Date:EquivalentRepresentation,Unit:EquivalentRepresentation,Unit:EquivalentRepresentation	The measurements on November 25, 2026 were 3 kg and 20 cm.
+OBSERVATION	control	ct08	equivalent_money	false	Money:EquivalentRepresentation	The quote is CNY 123.45.
+OBSERVATION	control	ct09	changed_money_brand	true	Term:Missing,Money:Changed	Claudelaf costs $123.45.
+OBSERVATION	control	ct10	ambiguous_money	true	Money:Ambiguous	价格为 $12。
+OBSERVATION	control	ct11	ambiguous_date	true	Date:Ambiguous	使用定于 03/04/2026 的基线。
+OBSERVATION	control	ct12	measurement_false_alarm_control	true	Unit:Unverifiable,Unit:Unverifiable	The respective weights are 3 kg and 5 kg.

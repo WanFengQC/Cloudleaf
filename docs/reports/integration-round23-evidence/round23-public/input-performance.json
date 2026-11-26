@@ -1,0 +1,610 @@
+{
+  "word": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\round23-word-context\\verified-a\\word-context.tsv",
+    "bytes": 2619128,
+    "sha256": "f8062a4a8e456135840b9df51857c84e3ea3f16f59ced4f9dc85a5bd19fade3a"
+  },
+  "worker": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\target\\release\\cloudleaf-translation-worker.exe",
+    "bytes": 3310080,
+    "sha256": "6c52a4842612b77f53a9efa9e0504b55134c508fdf8a8e7eee041fec92d8cefc"
+  },
+  "tool": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\tools\\performance\\round23_input_replay.py",
+    "bytes": 4112,
+    "sha256": "c572a5814ab02ea4ad965a9811fde77a22a8839aa6ef74e077c7174216673e2b"
+  },
+  "probe": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\.local\\target\\release\\round22-worker-probe.exe",
+    "bytes": 1596928,
+    "sha256": "cb214c851fc1be805b4a9f6877a4097371acc5083c67e7128f92f61f2c840bd0"
+  },
+  "runtime": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\cl009-data\\Cloudleaf\\.local\\round5-clean-6d3d4e1\\release-a\\runtime.tsv",
+    "bytes": 23602173,
+    "sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431"
+  },
+  "lexical": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\input-round14\\Cloudleaf\\.local\\round15-language\\signal.tsv",
+    "bytes": 3034818,
+    "sha256": "36dc4d9057bc70e3494fe397da09e8ab6f187c435bd735b66a7734f9d414fce5"
+  },
+  "catalog": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\translation-round11\\Cloudleaf\\.local\\round13-managed-models\\catalog-f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f\\catalog.json",
+    "bytes": 326,
+    "sha256": "f88a5f57513a0aaae3bbd659950adf042c8c8dde07736084cb951f61f22c7f0f"
+  },
+  "events": {
+    "path": "C:\\Users\\EDY\\.codex\\worktrees\\integration-round21\\Cloudleaf\\tests\\fixtures\\input-round14-events.tsv",
+    "bytes": 863,
+    "sha256": "e087cc965bd2f6c889a84f3db89b3829ccfda452f436d7b3cf562bbb965602ad"
+  },
+  "runs": [
+    {
+      "case": "1-lexical-idle",
+      "io_resources": {
+        "host_samples": 15,
+        "worker_samples": 0,
+        "host": {
+          "rss": 188514304,
+          "peak_rss": 196034560,
+          "private": 187863040,
+          "threads": 4,
+          "process_cpu_ns": 921875000,
+          "read_bytes": 27655303
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "input_model": [
+        [
+          "lexical",
+          "7593979",
+          "860000"
+        ]
+      ],
+      "worker_metrics": {},
+      "overlap_or_idle": 171
+    },
+    {
+      "case": "1-word-idle",
+      "io_resources": {
+        "host_samples": 15,
+        "worker_samples": 0,
+        "host": {
+          "rss": 185171968,
+          "peak_rss": 194658304,
+          "private": 185655296,
+          "threads": 4,
+          "process_cpu_ns": 937500000,
+          "read_bytes": 30260502
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "input_model": [
+        [
+          "word",
+          "8445359",
+          "168779700"
+        ]
+      ],
+      "worker_metrics": {},
+      "overlap_or_idle": 171
+    },
+    {
+      "case": "1-lexical-infer",
+      "io_resources": {
+        "host_samples": 57,
+        "worker_samples": 43,
+        "host": {
+          "rss": 187506688,
+          "peak_rss": 194609152,
+          "private": 198057984,
+          "threads": 7,
+          "process_cpu_ns": 1265625000,
+          "read_bytes": 30953724
+        },
+        "worker": {
+          "rss": 597581824,
+          "peak_rss": 660111360,
+          "private": 595529728,
+          "threads": 7,
+          "process_cpu_ns": 2968750000,
+          "read_bytes": 631704956
+        },
+        "paired_max_rss": 765591552
+      },
+      "input_model": [
+        [
+          "lexical",
+          "7593979",
+          "846000"
+        ]
+      ],
+      "worker_metrics": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 448252100,
+          "load_ns": 397235500,
+          "inference_ns": 2333017300,
+          "encoder_ns": 85437900,
+          "decoder_ns": 2222176000,
+          "generated_steps": 69,
+          "queue_wait_ns": 40300,
+          "infer_start": 1795657448492502700,
+          "infer_end": 1795657450826160100,
+          "load_start": 1795657448095259000,
+          "load_end": 1795657448492494500,
+          "host_request_to_result_ns": 3204994200,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255"
+        }
+      },
+      "overlap_or_idle": 171
+    },
+    {
+      "case": "1-word-infer",
+      "io_resources": {
+        "host_samples": 55,
+        "worker_samples": 40,
+        "host": {
+          "rss": 179032064,
+          "peak_rss": 194580480,
+          "private": 198799360,
+          "threads": 7,
+          "process_cpu_ns": 1015625000,
+          "read_bytes": 33572852
+        },
+        "worker": {
+          "rss": 427274240,
+          "peak_rss": 660148224,
+          "private": 657625088,
+          "threads": 7,
+          "process_cpu_ns": 2937500000,
+          "read_bytes": 631616283
+        },
+        "paired_max_rss": 601350144
+      },
+      "input_model": [
+        [
+          "word",
+          "8445359",
+          "172933100"
+        ]
+      ],
+      "worker_metrics": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 345145500,
+          "load_ns": 387315000,
+          "inference_ns": 2265024600,
+          "encoder_ns": 71543300,
+          "decoder_ns": 2160960200,
+          "generated_steps": 69,
+          "queue_wait_ns": 45000,
+          "infer_start": 1795657452680077200,
+          "infer_end": 1795657454945917700,
+          "load_start": 1795657452292756000,
+          "load_end": 1795657452680071000,
+          "host_request_to_result_ns": 3017628100,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255"
+        }
+      },
+      "overlap_or_idle": 171
+    },
+    {
+      "case": "2-word-infer",
+      "io_resources": {
+        "host_samples": 54,
+        "worker_samples": 39,
+        "host": {
+          "rss": 187359232,
+          "peak_rss": 194654208,
+          "private": 200048640,
+          "threads": 7,
+          "process_cpu_ns": 1156250000,
+          "read_bytes": 33572852
+        },
+        "worker": {
+          "rss": 588242944,
+          "peak_rss": 660148224,
+          "private": 586018816,
+          "threads": 7,
+          "process_cpu_ns": 2859375000,
+          "read_bytes": 631616283
+        },
+        "paired_max_rss": 762273792
+      },
+      "input_model": [
+        [
+          "word",
+          "8445359",
+          "166013900"
+        ]
+      ],
+      "worker_metrics": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 367692100,
+          "load_ns": 372885300,
+          "inference_ns": 2230034900,
+          "encoder_ns": 71870700,
+          "decoder_ns": 2134046100,
+          "generated_steps": 69,
+          "queue_wait_ns": 40200,
+          "infer_start": 1795657456831727800,
+          "infer_end": 1795657459062374600,
+          "load_start": 1795657456458833100,
+          "load_end": 1795657456831718400,
+          "host_request_to_result_ns": 2985675100,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255"
+        }
+      },
+      "overlap_or_idle": 171
+    },
+    {
+      "case": "2-lexical-infer",
+      "io_resources": {
+        "host_samples": 53,
+        "worker_samples": 43,
+        "host": {
+          "rss": 179081216,
+          "peak_rss": 194691072,
+          "private": 198893568,
+          "threads": 7,
+          "process_cpu_ns": 1203125000,
+          "read_bytes": 30953725
+        },
+        "worker": {
+          "rss": 510439424,
+          "peak_rss": 660082688,
+          "private": 508133376,
+          "threads": 7,
+          "process_cpu_ns": 3000000000,
+          "read_bytes": 631616361
+        },
+        "paired_max_rss": 678313984
+      },
+      "input_model": [
+        [
+          "lexical",
+          "7593979",
+          "375100"
+        ]
+      ],
+      "worker_metrics": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 375293500,
+          "load_ns": 359942000,
+          "inference_ns": 2299390100,
+          "encoder_ns": 72428900,
+          "decoder_ns": 2192799800,
+          "generated_steps": 69,
+          "queue_wait_ns": 123600,
+          "infer_start": 1795657460744911600,
+          "infer_end": 1795657463044943700,
+          "load_start": 1795657460384963700,
+          "load_end": 1795657460744905700,
+          "host_request_to_result_ns": 3059272300,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255"
+        }
+      },
+      "overlap_or_idle": 171
+    },
+    {
+      "case": "2-word-idle",
+      "io_resources": {
+        "host_samples": 15,
+        "worker_samples": 0,
+        "host": {
+          "rss": 186327040,
+          "peak_rss": 194551808,
+          "private": 186884096,
+          "threads": 3,
+          "process_cpu_ns": 984375000,
+          "read_bytes": 30260502
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "input_model": [
+        [
+          "word",
+          "8445359",
+          "172480700"
+        ]
+      ],
+      "worker_metrics": {},
+      "overlap_or_idle": 171
+    },
+    {
+      "case": "2-lexical-idle",
+      "io_resources": {
+        "host_samples": 15,
+        "worker_samples": 0,
+        "host": {
+          "rss": 181551104,
+          "peak_rss": 194674688,
+          "private": 200540160,
+          "threads": 4,
+          "process_cpu_ns": 1031250000,
+          "read_bytes": 27641374
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "input_model": [
+        [
+          "lexical",
+          "7593979",
+          "711000"
+        ]
+      ],
+      "worker_metrics": {},
+      "overlap_or_idle": 171
+    },
+    {
+      "case": "3-lexical-idle",
+      "io_resources": {
+        "host_samples": 15,
+        "worker_samples": 0,
+        "host": {
+          "rss": 186765312,
+          "peak_rss": 194600960,
+          "private": 187416576,
+          "threads": 4,
+          "process_cpu_ns": 984375000,
+          "read_bytes": 27641374
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "input_model": [
+        [
+          "lexical",
+          "7593979",
+          "555400"
+        ]
+      ],
+      "worker_metrics": {},
+      "overlap_or_idle": 171
+    },
+    {
+      "case": "3-word-idle",
+      "io_resources": {
+        "host_samples": 15,
+        "worker_samples": 0,
+        "host": {
+          "rss": 187351040,
+          "peak_rss": 194551808,
+          "private": 197230592,
+          "threads": 4,
+          "process_cpu_ns": 984375000,
+          "read_bytes": 30260502
+        },
+        "worker": {
+          "rss": null,
+          "peak_rss": null,
+          "private": null,
+          "threads": null,
+          "process_cpu_ns": null,
+          "read_bytes": null
+        },
+        "paired_max_rss": null
+      },
+      "input_model": [
+        [
+          "word",
+          "8445359",
+          "182419900"
+        ]
+      ],
+      "worker_metrics": {},
+      "overlap_or_idle": 171
+    },
+    {
+      "case": "3-lexical-infer",
+      "io_resources": {
+        "host_samples": 53,
+        "worker_samples": 42,
+        "host": {
+          "rss": 185270272,
+          "peak_rss": 194641920,
+          "private": 185749504,
+          "threads": 7,
+          "process_cpu_ns": 1203125000,
+          "read_bytes": 30953724
+        },
+        "worker": {
+          "rss": 613498880,
+          "peak_rss": 660623360,
+          "private": 611803136,
+          "threads": 7,
+          "process_cpu_ns": 3031250000,
+          "read_bytes": 631616361
+        },
+        "paired_max_rss": 781496320
+      },
+      "input_model": [
+        [
+          "lexical",
+          "7593979",
+          "798200"
+        ]
+      ],
+      "worker_metrics": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 370266900,
+          "load_ns": 377477900,
+          "inference_ns": 2288304000,
+          "encoder_ns": 79696100,
+          "decoder_ns": 2163579600,
+          "generated_steps": 69,
+          "queue_wait_ns": 69700,
+          "infer_start": 1795657469251629100,
+          "infer_end": 1795657471542484900,
+          "load_start": 1795657468874147400,
+          "load_end": 1795657469251625300,
+          "host_request_to_result_ns": 3055635500,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255"
+        }
+      },
+      "overlap_or_idle": 171
+    },
+    {
+      "case": "3-word-infer",
+      "io_resources": {
+        "host_samples": 55,
+        "worker_samples": 40,
+        "host": {
+          "rss": 181428224,
+          "peak_rss": 194592768,
+          "private": 200396800,
+          "threads": 7,
+          "process_cpu_ns": 1046875000,
+          "read_bytes": 33572852
+        },
+        "worker": {
+          "rss": 595501056,
+          "peak_rss": 660115456,
+          "private": 593379328,
+          "threads": 7,
+          "process_cpu_ns": 2968750000,
+          "read_bytes": 631616361
+        },
+        "paired_max_rss": 769548288
+      },
+      "input_model": [
+        [
+          "word",
+          "8445359",
+          "165596800"
+        ]
+      ],
+      "worker_metrics": {
+        "main": {
+          "compute_threads": 1,
+          "resident_models": 1,
+          "verification_ns": 381196000,
+          "load_ns": 373156500,
+          "inference_ns": 2226501400,
+          "encoder_ns": 68931400,
+          "decoder_ns": 2131748100,
+          "generated_steps": 69,
+          "queue_wait_ns": 53500,
+          "infer_start": 1795657473429831900,
+          "infer_end": 1795657475656960000,
+          "load_start": 1795657473056668500,
+          "load_end": 1795657473429825000,
+          "host_request_to_result_ns": 3010012600,
+          "model": "opus-mt-en-zh@408d9bc410a388e1d9aef112a2daba955b945255"
+        }
+      },
+      "overlap_or_idle": 171
+    }
+  ],
+  "errors": [],
+  "wall_ns": {
+    "lexical/idle": {
+      "n": 513,
+      "p50": 860600,
+      "p95": 5218800,
+      "p99": 7620200,
+      "max": 9437100
+    },
+    "word/idle": {
+      "n": 513,
+      "p50": 430500,
+      "p95": 2093400,
+      "p99": 3088400,
+      "max": 4213500
+    },
+    "lexical/infer": {
+      "n": 513,
+      "p50": 1285600,
+      "p95": 8537000,
+      "p99": 18135900,
+      "max": 22660800
+    },
+    "word/infer": {
+      "n": 513,
+      "p50": 474600,
+      "p95": 2720700,
+      "p99": 4353800,
+      "max": 5624300
+    }
+  },
+  "thread_cycles": {
+    "lexical/idle": {
+      "n": 513,
+      "p50": 2211495,
+      "p95": 12583124,
+      "p99": 19455033,
+      "max": 24181287
+    },
+    "word/idle": {
+      "n": 513,
+      "p50": 1098749,
+      "p95": 5186593,
+      "p99": 7061645,
+      "max": 10730360
+    },
+    "lexical/infer": {
+      "n": 513,
+      "p50": 3274993,
+      "p95": 21523191,
+      "p99": 39312348,
+      "max": 56278281
+    },
+    "word/infer": {
+      "n": 513,
+      "p50": 1207353,
+      "p95": 6693839,
+      "p99": 9523527,
+      "max": 14267404
+    }
+  },
+  "semantics_stable_within_each_ranker": true
+}

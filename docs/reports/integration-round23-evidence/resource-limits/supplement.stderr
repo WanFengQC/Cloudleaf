@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\scripts\build_word_context.py", line 326, in <module>
+    main()
+  File "C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\scripts\build_word_context.py", line 321, in main
+    print(json.dumps(build(args.lexicon, args.corpus_dir, args.source_dir, args.output_dir,
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\scripts\build_word_context.py", line 256, in build
+    unigrams, bigrams, observed = train(records, entries)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EDY\.codex\worktrees\integration-round21\Cloudleaf\scripts\build_word_context.py", line 201, in train
+    raise ValueError("词元或转移资源超出上限，禁止静默截断")
+ValueError: 词元或转移资源超出上限，禁止静默截断

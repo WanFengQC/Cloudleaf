@@ -1,0 +1,368 @@
+[
+  {
+    "label": "round23-verified-01",
+    "command": [
+      "C:\\Program Files\\Git\\cmd\\git.EXE",
+      "diff",
+      "--check"
+    ],
+    "head": "f90d0e705c2c36792401313fdc07ae68fbda32a1",
+    "at_utc": "2026-11-26T01:36:13.179464+00:00",
+    "seconds": 0.125,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "round23-verified-02",
+    "command": [
+      "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+      "fmt",
+      "--all",
+      "--check"
+    ],
+    "head": "f90d0e705c2c36792401313fdc07ae68fbda32a1",
+    "at_utc": "2026-11-26T01:36:15.279679+00:00",
+    "seconds": 1.3280000000377186,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "round23-verified-03",
+    "command": [
+      "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--locked",
+      "--offline",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "head": "f90d0e705c2c36792401313fdc07ae68fbda32a1",
+    "at_utc": "2026-11-26T01:36:34.739351+00:00",
+    "seconds": 18.625,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "bytes": 1210,
+      "sha256": "71436f60070b646cf710d894298b7d68b202ca7d11ab3c9ec1f3c780fdc906e1"
+    }
+  },
+  {
+    "label": "round23-verified-04",
+    "command": [
+      "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+      "test",
+      "--workspace",
+      "--all-targets",
+      "--locked",
+      "--offline"
+    ],
+    "head": "f90d0e705c2c36792401313fdc07ae68fbda32a1",
+    "at_utc": "2026-11-26T01:38:04.450145+00:00",
+    "seconds": 88.76600000000326,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 46113,
+      "sha256": "e05acbe1aa6bea973d1a1784be4e4fdbfc5b605eb1321b47bde600b94680ef2d"
+    },
+    "stderr": {
+      "bytes": 9041,
+      "sha256": "b354ac6bfd65c8902aaa1e66564f641e137414aa2a74db4c5de89a211d07660d"
+    }
+  },
+  {
+    "label": "round23-verified-05",
+    "command": [
+      "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+      "test",
+      "--workspace",
+      "--doc",
+      "--locked",
+      "--offline"
+    ],
+    "head": "f90d0e705c2c36792401313fdc07ae68fbda32a1",
+    "at_utc": "2026-11-26T01:38:08.974370+00:00",
+    "seconds": 3.7660000000032596,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 1582,
+      "sha256": "260676f5060a542e4e8a97512ca112fef34d3d46724608472af21237e93b9281"
+    },
+    "stderr": {
+      "bytes": 530,
+      "sha256": "cb1ae3fa06ceec0566e75f83cb357246bfd99d370d6e1313ac66e4ac66ed6394"
+    }
+  },
+  {
+    "label": "round23-verified-06",
+    "command": [
+      "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+      "build",
+      "--workspace",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "head": "f90d0e705c2c36792401313fdc07ae68fbda32a1",
+    "at_utc": "2026-11-26T01:40:37.639237+00:00",
+    "seconds": 147.93800000002375,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "bytes": 1212,
+      "sha256": "bac9edd165caf18f163e7a9233d635907438768d26eaeae6a2f70abb13463ee0"
+    }
+  },
+  {
+    "label": "round23-verified-07",
+    "command": [
+      "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.EXE",
+      "scripts/check_workspace.py"
+    ],
+    "head": "f90d0e705c2c36792401313fdc07ae68fbda32a1",
+    "at_utc": "2026-11-26T01:40:41.129731+00:00",
+    "seconds": 2.6560000000172295,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 647,
+      "sha256": "baaa5235b8890bde59628fc68adf189f810f7f2ddafcf9cbf49461302ada28cc"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "round23-verified-08",
+    "command": [
+      "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.EXE",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_*.py",
+      "-v"
+    ],
+    "head": "f90d0e705c2c36792401313fdc07ae68fbda32a1",
+    "at_utc": "2026-11-26T01:41:34.160710+00:00",
+    "seconds": 52.25,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 44,
+      "sha256": "48be988b8690832fbca5f54416fb88c67689df1d115b004b069ab54531c44f66"
+    },
+    "stderr": {
+      "bytes": 34890,
+      "sha256": "5513e19014e69b9a552b129ea6c97bbda3b551f3c87bee2dd948fdb12c523c23"
+    }
+  },
+  {
+    "label": "round23-verified-09",
+    "command": [
+      "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.EXE",
+      "scripts/audit_windows_dependencies.py",
+      "--audit-binary",
+      "C:/Users/EDY/WebstormProjects/Cloudleaf/.local/audit-tool/bin/cargo-audit.exe",
+      "--output",
+      ".local/round23-verified-windows-audit.json"
+    ],
+    "head": "f90d0e705c2c36792401313fdc07ae68fbda32a1",
+    "at_utc": "2026-11-26T01:41:45.469663+00:00",
+    "seconds": 10.375,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 266,
+      "sha256": "8c550645af486078cc7e964d9b15af30ed547759dc68e538a8acda63b2852750"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "round23-verified-10",
+    "command": [
+      "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.EXE",
+      "scripts/benchmark.py",
+      "--iterations",
+      "100",
+      "--output",
+      ".local/round23-verified-input-performance.json"
+    ],
+    "head": "f90d0e705c2c36792401313fdc07ae68fbda32a1",
+    "at_utc": "2026-11-26T01:41:54.656236+00:00",
+    "seconds": 8.40600000001723,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 1369,
+      "sha256": "3f7dafd9c1be8f626e0adafca790d89ae00a6988780e594631236fb3455b0c12"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "round23-verified-11",
+    "command": [
+      "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.EXE",
+      "scripts/evaluate_algorithms.py",
+      "--output-dir",
+      ".local/round23-verified-algorithm-v1"
+    ],
+    "head": "f90d0e705c2c36792401313fdc07ae68fbda32a1",
+    "at_utc": "2026-11-26T01:41:59.597385+00:00",
+    "seconds": 4.23499999998603,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 2666,
+      "sha256": "54fa16791696df724e44290ba737f40b963629252026e512da042b838c05b752"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "round23-verified-12",
+    "command": [
+      "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+      "build",
+      "-p",
+      "cloudleaf-input",
+      "--examples",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "head": "f90d0e705c2c36792401313fdc07ae68fbda32a1",
+    "at_utc": "2026-11-26T01:42:12.804306+00:00",
+    "seconds": 12.485000000044238,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "bytes": 184,
+      "sha256": "f4341020d348933c98cd75b2d23ef004c51989c1afca500fb5ebce7376f4bc63"
+    }
+  },
+  {
+    "label": "round23-verified-13",
+    "command": [
+      "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+      "build",
+      "-p",
+      "cloudleaf-search",
+      "--examples",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "head": "f90d0e705c2c36792401313fdc07ae68fbda32a1",
+    "at_utc": "2026-11-26T01:42:13.913145+00:00",
+    "seconds": 0.31200000003445894,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "bytes": 62,
+      "sha256": "b65d97c967cb13bb2fd061b2f5b86011ef366acea387375a92a9808f93395384"
+    }
+  },
+  {
+    "label": "round23-verified-14",
+    "command": [
+      "C:\\Users\\EDY\\.cargo\\bin\\cargo.EXE",
+      "build",
+      "-p",
+      "cloudleaf-offline",
+      "--examples",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "head": "f90d0e705c2c36792401313fdc07ae68fbda32a1",
+    "at_utc": "2026-11-26T01:43:37.340318+00:00",
+    "seconds": 82.70299999997951,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "bytes": 321,
+      "sha256": "da1bfa43b8ad65ec469ba26d2cb41a1090c88e87fe15338b383bce12e8fe092c"
+    }
+  },
+  {
+    "label": "round23-verified-15",
+    "command": [
+      "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.EXE",
+      "scripts/check_offline_vendor.py",
+      "."
+    ],
+    "head": "f90d0e705c2c36792401313fdc07ae68fbda32a1",
+    "at_utc": "2026-11-26T01:43:38.720521+00:00",
+    "seconds": 0.46899999998277053,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 125,
+      "sha256": "c9a19367fb58e46223ff8062e331b5c5e6518e019df9f558750b24602eb5bda5"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "round23-verified-16",
+    "command": [
+      "C:\\Users\\EDY\\AppData\\Local\\Programs\\Python\\Python312\\python.EXE",
+      "scripts/audit_translation_dependencies.py",
+      "--audit-binary",
+      "C:/Users/EDY/WebstormProjects/Cloudleaf/.local/audit-tool/bin/cargo-audit.exe",
+      "--output",
+      ".local/round23-verified-translation-audit.json"
+    ],
+    "head": "f90d0e705c2c36792401313fdc07ae68fbda32a1",
+    "at_utc": "2026-11-26T01:43:50.985390+00:00",
+    "seconds": 11.311999999976251,
+    "returncode": 0,
+    "stdout": {
+      "bytes": 262,
+      "sha256": "ef9eb5dc6a4cbf1d0adb03296f53e1f40e8eafb21bef2348acdc3a80f0dd2078"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+]

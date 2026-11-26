@@ -1,0 +1,75 @@
+{
+  "format": "cloudleaf-word-context-v1",
+  "usage": "research_only",
+  "production_approved": false,
+  "formal_gold": false,
+  "source_id": "tatoeba:cmn-week-20261031",
+  "source_family": "tatoeba-community",
+  "global_source_families": 1,
+  "source_revision": "weekly export Last-Modified 2026-10-31",
+  "source_weight": 1,
+  "training_data_sha256": "c1b316998064caf1979641dc88b6179e287a5373ceed71e7d402580712af6387",
+  "corpus_sha256": "6239834d64855a942dbe17dd7d1f90e374251894dd80c67249d72b186550e858",
+  "additional_exclusions": null,
+  "external_development_guard": {
+    "source_family": "wikimedia-wikinews-zh",
+    "tasks_sha256": "dd3cae229d7353702883952d2c6840418e3bef73be4c0f44e033b813329cec4e",
+    "frozen_slots": 48,
+    "protected_distinct_texts": 45,
+    "rule": "NFKC canonical equality or 3-scalar shingle Jaccard >= 4/5 on lengths >= 8",
+    "limitations": "No independent semantic paraphrase or traditional/simplified equivalence claim"
+  },
+  "rules": {
+    "deduplication": "exact UTF-8 fragment, retain first frozen eligible row",
+    "normalization": "require NFC and preserve original Han script, no conversion",
+    "tokenization": "minimize unknown scalars then token count; longest path choice on left tie",
+    "unit": "observed research token occurrences and adjacent token pairs",
+    "model_terms": "BOS/EOS around each retained fragment; unknown maps one uncovered scalar",
+    "non_han": "legacy frozen partition contains only Han stretches; original source remains intact"
+  },
+  "lexicon_sha256": "c9ab8b56b9d960091a1c39c37b7c1df7882ff50de2a64767174af8f4244c219f",
+  "lexicon_status": "fixed_research_supplement",
+  "segmentation_lexicon_sha256": "03891e9e7540fca778d02fcd5c468825a9c32b96dabb8dac6de54b21b72f1431",
+  "training_vocabulary_surface_types": 119726,
+  "lexicon_entries": 127354,
+  "lexicon_entries_with_observed_surface": 21987,
+  "lexicon_entries_without_observed_surface": 105367,
+  "lexicon_annotated_frequencies": {
+    "unknown": 127354
+  },
+  "han_lexicon_surface_types": 123333,
+  "observed_lexicon_surface_types": 20028,
+  "distinct_bigram_rows": 152518,
+  "distinct_unigram_rows_including_boundaries": 20031,
+  "frozen_filter": {
+    "blocked_exact_nontrain_hash": 10,
+    "dropped_exact_train_duplicate": 1768,
+    "retained_families": 65615,
+    "retained_fragments": 84959,
+    "retained_sentence_ids": 69686,
+    "source_fragments": 86737,
+    "source_scalars": 716681,
+    "unique_families_before_deduplication": 65934
+  },
+  "observed": {
+    "bigrams_observed": 626681,
+    "fully_covered_segments": 47489,
+    "scalars": 709544,
+    "segments": 84959,
+    "segments_with_unknown": 37470,
+    "tokens": 541722,
+    "unknown_tokens": 102400
+  },
+  "policy_sha256": "8bf055056057c74a4b4872b0f813c638890a7a9aa309aab24116f8e7564fe83a",
+  "tool_sha256": "91a6c02864f3633fea1e5af60702b4b8993c0c7861344a64fc4a9ac5b94defcd",
+  "model": {
+    "file": "word-context.tsv",
+    "bytes": 2619128,
+    "sha256": "3d10abca0976b2544ac1420cb83e708dd2dddb532c0f9f522c8065777ae56d75"
+  },
+  "formal_frequency": {
+    "token_frequency": null,
+    "document_frequency": null,
+    "zipf": null
+  }
+}
