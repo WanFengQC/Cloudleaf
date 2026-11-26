@@ -302,3 +302,95 @@ fn glossary_cannot_override_a_conflicting_numeric_fact() {
         vec![(Term, EquivalentRepresentation), (Money, Changed)]
     );
 }
+
+#[test]
+fn technical_literals_are_compared_as_whole_occurrences() {
+    let source =
+        "请读取build.log，访问https://example.com/x?id=204，再核对v2.0.1、AX-204和AX-204。";
+    let output =
+        "Read Build.log, visit (https://example.com/x?id=205), then check v2.0.1 and AX-204.";
+    let report = compare(source, output, &Glossary::default());
+    let evidence = report
+        .findings
+        .iter()
+        .map(|finding| {
+            (
+                finding.kind,
+                finding.status,
+                finding.source.clone().map(|span| &source[span]),
+                finding.output.clone().map(|span| &output[span]),
+            )
+        })
+        .collect::<Vec<_>>();
+    assert_eq!(
+        evidence,
+        [
+            (FileName, Changed, Some("build.log"), Some("Build.log")),
+            (
+                Url,
+                Changed,
+                Some("https://example.com/x?id=204"),
+                Some("https://example.com/x?id=205")
+            ),
+            (
+                Version,
+                ExactPreserved,
+                Some("v2.0.1"),
+                Some("v2.0.1")
+            ),
+            (
+                ModelCode,
+                ExactPreserved,
+                Some("AX-204"),
+                Some("AX-204")
+            ),
+            (ModelCode, Missing, Some("AX-204"), None),
+        ]
+    );
+    assert!(report.requires_acknowledgement());
+}
+
+#[test]
+fn literal_boundaries_preserve_distinct_time_and_ignore_email_usernames() {
+    let source = "Send log.txt@example.com a note at 2:30 p.m. Open https://example.com/5.";
+    let output = "下午3点30分通知log.txt@example.com。访问https://example.com/5。";
+    let report = check_translation(source, output, EnglishToChinese, &Glossary::default());
+    assert_eq!(statuses(&report), [(Time, Changed), (Url, ExactPreserved)]);
+}
+
+#[test]
+fn negation_marker_mismatch_requests_review_without_claiming_scope() {
+    let pairs = [
+        ("请勿断开电源。", "Disconnect the power.", true),
+        ("确认。禁止打开盖子。", "Confirmed. Open the lid.", true),
+        (
+            "请不要断开电源。",
+            "Please don't disconnect the power.",
+            false,
+        ),
+        ("请勿断开电源。", "Do not reconnect the power.", false),
+        ("无需准备。", "Not everyone is arriving early.", false),
+        ("开启。", "Do nothing.", false),
+    ];
+    for (source, output, warn) in pairs {
+        let report = compare(source, output, &Glossary::default());
+        assert_eq!(
+            report.requires_acknowledgement(),
+            warn,
+            "{source} / {output}"
+        );
+        if warn {
+            assert_eq!(report.findings[0].kind, NegationMarker);
+            assert_eq!(report.findings[0].status, Unverifiable);
+        }
+    }
+
+    let report = compare(
+        "请勿断开电源。请勿打开盖子。",
+        "Do not open the lid.",
+        &Glossary::default(),
+    );
+    assert_eq!(statuses(&report), [(NegationMarker, Unverifiable)]);
+    assert_eq!(report.findings[0].source, None);
+    assert_eq!(report.findings[0].output, None);
+}

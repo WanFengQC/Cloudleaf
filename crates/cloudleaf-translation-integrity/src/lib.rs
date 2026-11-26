@@ -1,6 +1,7 @@
 //! 对原文与模型原始输出做关键内容检查。结果仅用于审阅，不修改译文。
 
 mod glossary;
+mod literals;
 mod tokens;
 
 pub use glossary::{
@@ -21,6 +22,11 @@ pub enum FindingKind {
     Time,
     Unit,
     Term,
+    FileName,
+    Url,
+    Version,
+    ModelCode,
+    NegationMarker,
     Truncated,
 }
 
@@ -34,6 +40,11 @@ impl FindingKind {
             Self::Time => "时间",
             Self::Unit => "计量单位",
             Self::Term => "术语",
+            Self::FileName => "文件名",
+            Self::Url => "网址",
+            Self::Version => "版本号",
+            Self::ModelCode => "型号",
+            Self::NegationMarker => "命令式否定提示",
             Self::Truncated => "模型输出",
         }
     }
@@ -114,6 +125,11 @@ pub fn check_translation(
         raw_translation,
         &source_tokens,
         &output_tokens,
+    ));
+    findings.extend(literals::negation_mismatch(
+        source,
+        raw_translation,
+        direction,
     ));
     findings.sort_by_key(|finding| {
         finding

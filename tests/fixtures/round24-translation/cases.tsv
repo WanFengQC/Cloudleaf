@@ -1,0 +1,44 @@
+mode	id	direction	topic	source	intentional_output
+real	z01	zh-en	daily_short	地铁到站以后，我在南门等你。	-
+real	z02	zh-en	business_email	您好，请在周三之前确认修订后的交付清单。确认后我会把发票发给财务。	-
+real	z03	zh-en	chat	我可能晚到一会儿，你们先点菜吧。我到楼下以后给你发消息。	-
+real	z04	zh-en	long_multisentence	这季度我们先完成测试环境的迁移，再处理客户反馈中影响最大的两个问题。如果周五之前还没有收到审计报告，就把正式上线延后一周。无论是否延期，都请发一封邮件说明情况。	-
+real	z05	zh-en	currency	订金是150.25元，另有一笔35.50美元的邮费，由采购方支付。	-
+real	z06	zh-en	weight_length	第一箱重12.5公斤，第二箱长30厘米，不能把两个标签贴反。	-
+real	z07	zh-en	datetime	请在2026年12月5日下午3点20分来仓库，下午5点以前办理完退货。	-
+real	z08	zh-en	object_relation	甲组有6个可用名额，乙组只有3个，把乙组补到5个就可以了。	-
+real	z09	zh-en	imperative_negation	请勿关闭设备。如果没有听见提示音，请不要拔掉电源。	-
+real	z10	zh-en	double_negation	我不是不愿意帮忙，只是今天没有时间。	-
+real	z11	zh-en	conditional_comparison	如果 A 箱比 B 箱重，就先搬 B 箱，否则先搬 A 箱。	-
+real	z12	zh-en	filename_url_version	请在 https://example.com/releases/v1.2.3 下载 release_notes.txt，并把版本锁定在 v1.2.3。	-
+real	z13	zh-en	model_mixed_name	请把 AX-204 交给林晓，记得把 beta 开关设为 off，然后通过 USB-C 连接 Cloudleaf。	-
+real	e01	en-zh	daily_short	I left the spare key by the kitchen window.	-
+real	e02	en-zh	business_email	Please confirm receipt of the amended invoice by Thursday. We will release the shipment after your approval.	-
+real	e03	en-zh	chat	No worries, take your time. I'll grab a table and text you when I get there.	-
+real	e04	en-zh	long_multisentence	The morning truck will take the sealed boxes. Leave the opened boxes at the front desk and ask Lin to count them again. If the revised count is lower, tell the warehouse team before the evening pickup.	-
+real	e05	en-zh	currency	The deposit is USD 150.25 and the postage is CNY 35.50. Only the postage is refundable.	-
+real	e06	en-zh	weight_length	The blue case weighs 12.5 kg, but the steel bar is 30 cm long. Keep the case upright.	-
+real	e07	en-zh	datetime	Move the call from December 5, 2026 at 3:20 p.m. to December 6, 2026 at 5:45 p.m.	-
+real	e08	en-zh	object_relation	Give Lin 6 blue clips and give Zhou 3 red clips. Keep 5 blue clips for tomorrow.	-
+real	e09	en-zh	imperative_negation	Do not turn the device off. Please do not open the cover until it stops flashing.	-
+real	e10	en-zh	double_negation	It's not that I don't want to help. I just don't have time today.	-
+real	e11	en-zh	conditional_comparison	If case A is heavier than case B, move case B first. Otherwise, move case A first.	-
+real	e12	en-zh	filename_url_version	Save release_notes.txt from https://example.com/releases/v1.2.3 and pin the tool to v1.2.3.	-
+real	e13	en-zh	model_mixed_name	Please hand AX-204 to Lin Xiao and set beta to off, then connect Cloudleaf via USB-C.	-
+control	c01	zh-en	filename_missing	请附上 release_notes.txt。	Please attach the release notes.
+control	c02	zh-en	filename_exact	请附上 release_notes.txt。	Please attach release_notes.txt.
+control	c03	en-zh	filename_changed	Load settings.json.	载入 setting.json。
+control	c04	en-zh	url_changed	Use https://example.com/v1?item=204&size=2.	使用 https://example.com/v1?item=205&size=2。
+control	c05	zh-en	url_exact	访问 https://example.com/v1?item=204&size=2。	Open (https://example.com/v1?item=204&size=2).
+control	c06	zh-en	version_changed	当前为 v1.2.30。	The current version is v1.2.3.
+control	c07	en-zh	model_missing	The unit is AX-204.	就是这台设备。
+control	c08	zh-en	model_repeated	核对 AX-204 和 AX-204。	Check AX-204.
+control	c09	en-zh	imperative_negation_dropped	Do not unplug the device.	拔掉设备电源。
+control	c10	zh-en	imperative_negation_dropped	请勿断开电源。	Disconnect the power.
+control	c11	zh-en	imperative_negation_presence	请勿断开电源。	Do not disconnect the power.
+control	c12	zh-en	imperative_scope_flip	请勿断开电源。	Do not reconnect the power.
+control	c13	zh-en	numeric_relation_flip	甲箱有3公斤石料，乙箱有5公斤砂砾。	Case A holds 5 kg of stones and case B holds 3 kg of gravel.
+control	c14	en-zh	ambiguous_domain_email	Mail log.txt@example.com.	发送邮件到 log.txt@example.com。
+control	c15	zh-en	mixed_adjacent	读取build.log后访问https://example.com/help，再查v2.0.1和KZ-307。	Read build.log, visit https://example.com/help, then check v2.0.1 and KZ-307.
+control	c16	en-zh	numeric_outside_url	Fetch https://example.com/item/5 at 2:30 p.m.	请在下午3点30分访问 https://example.com/item/5。
+control	c17	en-zh	duplicate_url	Use https://example.com/a and https://example.com/a.	使用 https://example.com/a。

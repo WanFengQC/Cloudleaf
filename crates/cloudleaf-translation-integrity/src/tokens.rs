@@ -67,6 +67,7 @@ pub(crate) enum Value {
     Unit(String, Unit),
     Date(u32, u32, u32),
     Time(u32, u32, u32),
+    Literal(FindingKind, String),
     Uncertain(FindingKind, FindingStatus),
 }
 
@@ -79,7 +80,7 @@ impl Value {
             Self::Unit(..) => FindingKind::Unit,
             Self::Date(..) => FindingKind::Date,
             Self::Time(..) => FindingKind::Time,
-            Self::Uncertain(kind, _) => *kind,
+            Self::Literal(kind, _) | Self::Uncertain(kind, _) => *kind,
         }
     }
 
@@ -120,7 +121,8 @@ pub(crate) fn tokenize(text: &str, protected: &[Range<usize>]) -> Vec<Token> {
         let character = remaining.chars().next().expect("下一个匹配位置存在");
         let previous = text[..cursor].chars().next_back();
         if !previous.is_some_and(ascii_identifier)
-            && let Some((len, value)) = calendar(remaining)
+            && let Some((len, value)) = crate::literals::technical(remaining, previous)
+                .or_else(|| calendar(remaining))
                 .or_else(|| clock(remaining))
                 .or_else(|| numeric(remaining))
         {

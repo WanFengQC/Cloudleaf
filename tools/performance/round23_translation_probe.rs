@@ -11,29 +11,48 @@ use std::thread;
 use std::time::{Duration, Instant};
 
 fn evaluate(
-    mode: &str,
-    id: &str,
-    topic: &str,
+    (mode, id, topic): (&str, &str, &str),
     direction: IntegrityDirection,
     source: &str,
     output: &str,
     glossary: &Glossary,
+    truncated: bool,
+    detailed: bool,
 ) {
-    let report = check_translation(source, output, direction, glossary);
+    let mut report = check_translation(source, output, direction, glossary);
+    if truncated {
+        report.mark_truncated();
+    }
     let findings = report
         .findings
         .iter()
         .map(|finding| format!("{:?}:{:?}", finding.kind, finding.status))
         .collect::<Vec<_>>()
         .join(",");
-    assert!(!output.contains(['\n', '\r', '\t']));
+    let escaped;
+    let output = if detailed {
+        escaped = output
+            .replace('\\', "\\\\")
+            .replace('\n', "\\n")
+            .replace('\r', "\\r")
+            .replace('\t', "\\t");
+        escaped.as_str()
+    } else {
+        assert!(!output.contains(['\n', '\r', '\t']));
+        output
+    };
     println!(
         "OBSERVATION\t{mode}\t{id}\t{topic}\t{}\t{findings}\t{output}",
         report.requires_acknowledgement()
     );
 }
 
-fn run(cases: &str, glossary: &Glossary, client: &mut WorkerClient) -> Result<(), Box<dyn Error>> {
+fn run(
+    cases: &str,
+    glossary: &Glossary,
+    client: &mut WorkerClient,
+    detailed: bool,
+) -> Result<(), Box<dyn Error>> {
     for (index, row) in cases.lines().skip(1).enumerate() {
         let fields = row.split('\t').collect::<Vec<_>>();
         let [mode, id, direction, topic, source, intentional_output] = fields.as_slice() else {
@@ -47,13 +66,13 @@ fn run(cases: &str, glossary: &Glossary, client: &mut WorkerClient) -> Result<()
         match *mode {
             "control" if *intentional_output != "-" => {
                 evaluate(
-                    mode,
-                    id,
-                    topic,
+                    (mode, id, topic),
                     direction,
                     source,
                     intentional_output,
                     glossary,
+                    false,
+                    detailed,
                 );
             }
             "real" if *intentional_output == "-" => {
@@ -84,7 +103,27 @@ fn run(cases: &str, glossary: &Glossary, client: &mut WorkerClient) -> Result<()
                                 output.metrics.load_ns,
                                 output.metrics.compute_threads
                             );
-                            evaluate(mode, id, topic, direction, source, translation, glossary);
+                            if detailed {
+                                println!(
+                                    "METRICS\t{id}\t{}\t{}\t{}\t{}\t{}\t{}\t{}",
+                                    output.metrics.generated_steps,
+                                    output.metrics.output_truncated,
+                                    output.metrics.verification_ns,
+                                    output.metrics.encoder_ns,
+                                    output.metrics.decoder_ns,
+                                    output.metrics.queue_wait_ns,
+                                    output.provider_identity,
+                                );
+                            }
+                            evaluate(
+                                (mode, id, topic),
+                                direction,
+                                source,
+                                translation,
+                                glossary,
+                                output.metrics.output_truncated,
+                                detailed,
+                            );
                             break;
                         }
                         Some(WorkerEvent::Failed { key: actual, error }) if actual == key => {
@@ -108,9 +147,13 @@ fn run(cases: &str, glossary: &Glossary, client: &mut WorkerClient) -> Result<()
 
 fn main() -> Result<(), Box<dyn Error>> {
     let args = std::env::args_os().skip(1).collect::<Vec<_>>();
-    let [worker, catalog, catalog_sha, cases, glossary] = args.as_slice() else {
+    let (detailed, files) = match args.as_slice() {
+        [flag, files @ ..] if flag == "--detailed" => (true, files),
+        files => (false, files),
+    };
+    let [worker, catalog, catalog_sha, cases, glossary] = files else {
         return Err(
-            "用法：round23_translation_probe <worker> <catalog> <catalog-sha> <cases> <glossary>"
+            "用法：round23_translation_probe [--detailed] <worker> <catalog> <catalog-sha> <cases> <glossary>"
                 .into(),
         );
     };
@@ -124,7 +167,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let cases = std::fs::read_to_string(cases)?;
     let glossary = Glossary::parse_tsv(&std::fs::read_to_string(glossary)?)?;
     let mut client = WorkerClient::new(config);
-    let result = run(&cases, &glossary, &mut client);
+    let result = run(&cases, &glossary, &mut client, detailed);
     client.close();
     if !client.wait_for_shutdown(Duration::from_secs(5)) {
         return Err("未确认离线 worker 回收".into());
