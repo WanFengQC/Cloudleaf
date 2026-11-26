@@ -9,8 +9,6 @@ use cloudleaf_search::{
     recall_interleaved, search_graph,
 };
 use ring::digest::{SHA256, digest};
-use std::alloc::{GlobalAlloc, Layout, System};
-use std::cell::Cell;
 use std::error::Error;
 use std::fs;
 use std::time::Instant;
@@ -20,63 +18,21 @@ const MAX_INPUT: usize = 64;
 const TOP_K: usize = 10;
 const POOL: usize = 50;
 
-#[derive(Clone, Copy, Default)]
-struct Allocation {
-    bytes: usize,
-    calls: usize,
+pub struct AllocationProbe {
+    pub start: fn(),
+    pub finish: fn() -> (usize, usize),
 }
 
-thread_local! {
-    static ALLOCATION: Cell<Option<Allocation>> = const { Cell::new(None) };
-}
-
-struct MeasuredAllocator;
-
-// 例程记录本线程成功申请的字节，系统分配器仍负责申请与释放。
-unsafe impl GlobalAlloc for MeasuredAllocator {
-    unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
-        let result = unsafe { System.alloc(layout) };
-        if !result.is_null() {
-            allocated(layout.size());
-        }
-        result
+impl AllocationProbe {
+    fn measure<T>(&self, id: &str, phase: &str, operation: impl FnOnce() -> T) -> (T, u128) {
+        (self.start)();
+        let start = Instant::now();
+        let output = operation();
+        let elapsed = start.elapsed().as_nanos();
+        let (bytes, calls) = (self.finish)();
+        println!("ALLOC\t{id}\t{phase}\t{bytes}\t{calls}");
+        (output, elapsed)
     }
-
-    unsafe fn realloc(&self, ptr: *mut u8, layout: Layout, size: usize) -> *mut u8 {
-        let result = unsafe { System.realloc(ptr, layout, size) };
-        if !result.is_null() {
-            allocated(size);
-        }
-        result
-    }
-
-    unsafe fn dealloc(&self, ptr: *mut u8, layout: Layout) {
-        unsafe { System.dealloc(ptr, layout) };
-    }
-}
-
-#[global_allocator]
-static ALLOCATOR: MeasuredAllocator = MeasuredAllocator;
-
-fn allocated(bytes: usize) {
-    let _ = ALLOCATION.try_with(|slot| {
-        if let Some(total) = slot.get() {
-            slot.set(Some(Allocation {
-                bytes: total.bytes.saturating_add(bytes),
-                calls: total.calls.saturating_add(1),
-            }));
-        }
-    });
-}
-
-fn measure<T>(id: &str, phase: &str, operation: impl FnOnce() -> T) -> (T, u128) {
-    ALLOCATION.set(Some(Allocation::default()));
-    let start = Instant::now();
-    let output = operation();
-    let elapsed = start.elapsed().as_nanos();
-    let usage = ALLOCATION.take().unwrap_or_default();
-    println!("ALLOC\t{id}\t{phase}\t{}\t{}", usage.bytes, usage.calls);
-    (output, elapsed)
 }
 
 fn verified(path: &str, expected: &str) -> Outcome<String> {
@@ -178,9 +134,10 @@ fn recall_comparison(
     words: &WordContextModel,
     lexical: &BigramModel,
     characters: &BigramModel,
+    probe: &AllocationProbe,
 ) -> Outcome<()> {
     let config = config(Ranker::CharacterBigram, POOL);
-    let (exact, exact_ns) = measure(id, "exact-pool", || {
+    let (exact, exact_ns) = probe.measure(id, "exact-pool", || {
         search_graph(lexicon, graph, &config, Some(characters), None)
     });
     let exact = exact?;
@@ -196,7 +153,7 @@ fn recall_comparison(
             path.edge_indices
         );
     }
-    let (ordered, word_ns) = measure(id, "finite-word", || {
+    let (ordered, word_ns) = probe.measure(id, "finite-word", || {
         words.rank_pool(graph, &exact, ResearchRanker::Word, None)
     });
     let ordered = ordered?;
@@ -217,7 +174,7 @@ fn recall_comparison(
 
     let cancellation = Cancellation::default();
     for name in ["interleaved", "context-beam"] {
-        let (recalled, elapsed) = measure(id, name, || match name {
+        let (recalled, elapsed) = probe.measure(id, name, || match name {
             "interleaved" => recall_interleaved(graph, &config, characters, lexical, &cancellation),
             _ => recall_context(graph, &config, characters, words, &cancellation),
         });
@@ -255,7 +212,15 @@ fn recall_comparison(
     Ok(())
 }
 
+#[allow(dead_code)]
 fn main() -> Outcome<()> {
+    run_probe(AllocationProbe {
+        start: || {},
+        finish: || (0, 0),
+    })
+}
+
+pub fn run_probe(probe: AllocationProbe) -> Outcome<()> {
     let mut args: Vec<_> = std::env::args().skip(1).collect();
     let round24 = args.last().is_some_and(|value| value == "--recall-round24");
     if round24 {
@@ -349,7 +314,7 @@ fn main() -> Outcome<()> {
         };
         let build = || Lattice::build_with_scheme(&lexicon, raw, &pool_config, &scheme);
         let (built, graph_ns) = if round24 {
-            measure(id, "lattice", build)
+            probe.measure(id, "lattice", build)
         } else {
             let begin = Instant::now();
             (build(), begin.elapsed().as_nanos())
@@ -381,6 +346,7 @@ fn main() -> Outcome<()> {
                 &words,
                 lexical.model(),
                 witten.model(),
+                &probe,
             )?;
             continue;
         }

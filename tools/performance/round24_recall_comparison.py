@@ -129,6 +129,7 @@ def main():
     parser.add_argument('out', type=Path)
     parser.add_argument('--supplement', action='store_true')
     parser.add_argument('--frozen', action='store_true')
+    parser.add_argument('--probe', type=Path)
     args = parser.parse_args()
     args.out.mkdir(parents=True, exist_ok=False)
     fixed = get_json(LOCAL / 'round22-search-fixed/summary.json')
@@ -152,8 +153,8 @@ def main():
     else:
         old = LOCAL / 'round23-word-context' / ('frozen-supplement' if args.supplement else 'frozen-base')
         fixture, sources = cases(args.out, old / 'rank-replay-cases.tsv', False)
-    binary = LOCAL / ('target/release/examples/research_rank.exe' if os.name == 'nt' else
-                      'target/release/examples/research_rank')
+    binary = args.probe or LOCAL / ('target/release/examples/research_rank.exe' if os.name == 'nt' else
+                                   'target/release/examples/research_rank')
     word = identity(args.word)
     command = [binary, fixed['runtime']['path'], fixed['runtime']['sha256'], word['path'], word['sha256']]
     for role in ('lexical', 'addone', 'witten'):

@@ -9,6 +9,8 @@ use std::collections::{BTreeMap, BTreeSet};
 
 const MAX_EXPANSIONS: usize = 200_000;
 const MAX_RESIDENT: usize = 50_000;
+const MAX_INPUT: usize = 64;
+const MAX_EDGES: usize = 16_384;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct RecallCandidate {
@@ -37,9 +39,9 @@ fn validate(
     config.validate()?;
     if config.max_expansions > MAX_EXPANSIONS
         || config.max_resident_paths > MAX_RESIDENT
-        || graph.raw().len() > config.max_input_bytes
-        || graph.letters().len() > config.max_letters
-        || graph.edges().len() > config.max_edges
+        || graph.raw().len() > config.max_input_bytes.min(MAX_INPUT)
+        || graph.letters().len() > config.max_letters.min(MAX_INPUT)
+        || graph.edges().len() > config.max_edges.min(MAX_EDGES)
     {
         return Err(SearchError::new(
             ErrorKind::InvalidConfig,
