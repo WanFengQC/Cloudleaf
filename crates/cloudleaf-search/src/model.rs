@@ -4,6 +4,30 @@ use std::collections::{BTreeMap, BTreeSet};
 const BOS: &str = "<bos>";
 const EOS: &str = "<eos>";
 const UNK: &str = "<unk>";
+const MAX_MODEL_COUNT: u64 = 1_000_000_000_000;
+
+#[derive(Clone, Copy, Debug)]
+struct LexicalObservation(u64);
+
+impl LexicalObservation {
+    // 原计数至多 40 位，预计算值不占用额外的词典索引空间。
+    const COUNT_BITS: u32 = 40;
+    const COUNT_MASK: u64 = (1 << Self::COUNT_BITS) - 1;
+
+    fn new(count: u64) -> Self {
+        debug_assert!(count <= MAX_MODEL_COUNT && MAX_MODEL_COUNT <= Self::COUNT_MASK);
+        let units = log2_fixed(count + 1) as u64;
+        Self(count | (units << Self::COUNT_BITS))
+    }
+
+    fn count(self) -> u64 {
+        self.0 & Self::COUNT_MASK
+    }
+
+    fn units(self) -> i64 {
+        (self.0 >> Self::COUNT_BITS) as i64
+    }
+}
 
 /// 独立训练快照的一阶模型；只存计数，不保存原始语句。
 #[derive(Clone, Debug)]
@@ -11,7 +35,7 @@ pub struct BigramModel {
     vocabulary: BTreeSet<String>,
     pairs: BTreeMap<(String, String), u64>,
     totals: BTreeMap<String, u64>,
-    lexical: BTreeMap<String, u64>,
+    lexical: BTreeMap<String, LexicalObservation>,
     pub(crate) character: Option<crate::character::CharacterModel>,
 }
 
@@ -88,7 +112,7 @@ impl BigramModel {
     }
 
     pub fn lexical_units(&self, id: &str) -> Option<i64> {
-        self.lexical.get(id).map(|count| log2_fixed(count + 1))
+        self.lexical.get(id).map(|observed| observed.units())
     }
 
     pub fn has_transitions(&self) -> bool {
@@ -295,14 +319,17 @@ impl LanguageModelSnapshot {
                 return Err(invalid());
             }
             let count = fields[2].parse::<u64>().map_err(|_| invalid())?;
-            if count == 0 || count > 1_000_000_000_000 {
+            if count == 0 || count > MAX_MODEL_COUNT {
                 return Err(invalid());
             }
             let (previous, next) = (fields[0], fields[1]);
             if metadata.kind == "lexical" {
                 if previous != "<lexical>"
                     || !ids.contains(next)
-                    || model.lexical.insert(next.into(), count).is_some()
+                    || model
+                        .lexical
+                        .insert(next.into(), LexicalObservation::new(count))
+                        .is_some()
                 {
                     return Err(invalid());
                 }
@@ -433,8 +460,8 @@ impl LanguageModelSnapshot {
         }
         output.push_str("previous\tnext\tcount\n");
         if m.kind == "lexical" {
-            for (id, count) in &self.model.lexical {
-                output.push_str(&format!("<lexical>\t{id}\t{count}\n"));
+            for (id, observation) in &self.model.lexical {
+                output.push_str(&format!("<lexical>\t{id}\t{}\n", observation.count()));
             }
         } else if let Some(model) = &self.model.character {
             model.write_tsv(&mut output);
@@ -489,6 +516,29 @@ pub(crate) fn log2_fixed(value: u64) -> i64 {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn precomputed_lexical_values_preserve_counts_scores_and_entry_size() {
+        assert_eq!(
+            std::mem::size_of::<LexicalObservation>(),
+            std::mem::size_of::<u64>()
+        );
+        let counts = [
+            1,
+            2,
+            7,
+            8,
+            65_535,
+            1 << 32,
+            MAX_MODEL_COUNT - 1,
+            MAX_MODEL_COUNT,
+        ];
+        for count in counts {
+            let observation = LexicalObservation::new(count);
+            assert_eq!(observation.count(), count);
+            assert_eq!(observation.units(), log2_fixed(count + 1));
+        }
+    }
     #[test]
     fn integer_log_is_monotone_and_exact_at_powers() {
         assert_eq!(log2_fixed(1), 0);
