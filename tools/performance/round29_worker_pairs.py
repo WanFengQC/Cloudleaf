@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 
 from round22_worker_replay import parse, percentiles
-from round26_worker_isolation import attach_windows, latency
+from round26_worker_isolation import attach_windows, latency, pair_schedule
 
 
 def read(path):
@@ -27,6 +27,14 @@ def summarize(directory, baseline, conditions_path):
         raise ValueError("运行失败或记录无法绑定当前源码")
     if len(runs) < 16 or len(runs) % 2 or any(row["external"] for row in conditions["observations"]):
         raise ValueError("配对轮数不足或观测窗口存在已知竞争进程")
+    schedule = report.get("pair_schedule")
+    pair_count = len(runs) // 2
+    if schedule is not None and (
+        pair_count < 12 or pair_count % 2
+        or conditions.get("seed") != schedule["seed"]
+        or schedule["first_stage"] != pair_schedule(pair_count, schedule["seed"])
+    ):
+        raise ValueError("Round 30 schedule does not match the recorded seed and balance")
     resources = report["resources"]
     identity = {
         "trace_sha256": resources["traces"]["171"]["sha256"],
@@ -40,12 +48,14 @@ def summarize(directory, baseline, conditions_path):
     pairs = []
     first = {"idle": [], "infer": []}
     second = {"idle": [], "infer": []}
+    by_order = {key: {"idle": [], "infer": []} for key in first}
     for index in range(0, len(runs), 2):
         number = index // 2 + 1
         pair = runs[index:index + 2]
-        order = ["idle", "infer"] if number % 2 else ["infer", "idle"]
+        initial = schedule["first_stage"][number - 1] if schedule else ("idle" if number % 2 else "infer")
+        order = [initial, "infer" if initial == "idle" else "idle"]
         if [run["stage"] for run in pair] != order:
-            raise ValueError(f"第 {number} 轮顺序不符合冻结交替条件")
+            raise ValueError(f"第 {number} 轮顺序不符合已记录的配对安排")
         row = {"pair": number, "order": order}
         for results, run in zip((first, second), pair, strict=True):
             stage = run["stage"]
@@ -80,17 +90,25 @@ def summarize(directory, baseline, conditions_path):
             stats = latency(events)
             result_groups[stage].extend(events)
             results[stage].extend(events)
+            by_order[initial][stage].extend(events)
             row[stage] = {
                 "wall_ns": stats["wall_ns"], "cpu_ns": stats["cpu_ns"],
                 "cycles": stats["cycles"], "system_cpu_fraction": run["system_cpu_fraction"],
                 "load_ns": model.get("load_ns"), "queue_wait_ns": model.get("queue_wait_ns"),
                 "inference_ns": model.get("inference_ns"), "record_sha256": sha256(path),
+                "resources": run["resources"], "infer_window_events": run["infer_window_events"],
+                "load_window_events": run["load_window_events"],
             }
         row["ratio"] = row["infer"]["wall_ns"]["p95"] / row["idle"]["wall_ns"]["p95"]
         pairs.append(row)
     idle, infer = (latency(result_groups[key])["wall_ns"] for key in ("idle", "infer"))
     ratio = infer["p95"] / idle["p95"]
     aggregate = report["aggregate"]["current/171/lexical/infer/normal"]
+    ordered = {}
+    for initial, stages in by_order.items():
+        left, right = (latency(stages[stage])["wall_ns"] for stage in ("idle", "infer"))
+        ordered[initial] = {"pairs": len(stages["idle"]) // 171, "idle": left, "infer": right,
+                            "ratio": right["p95"] / left["p95"]}
     return {
         "head": report["head"], **identity, "samples": len(pairs),
         "candidate_sha256": baseline["candidate_sha256"],
@@ -99,6 +117,7 @@ def summarize(directory, baseline, conditions_path):
         "summary_sha256": sha256(raw_path), "conditions_sha256": sha256(conditions_path),
         "quiet_samples": len(conditions["observations"]),
         "idle": idle, "infer": infer, "ratio": ratio, "pairs": pairs,
+        "pair_schedule": schedule, "by_first_stage": ordered,
         "gates": {"idle_p95": idle["p95"] <= 5_000_000, "idle_p99": idle["p99"] <= 10_000_000,
                   "infer_p95": infer["p95"] <= 8_000_000, "ratio": ratio <= 1.5},
         "within_ratio_gate": sum(pair["ratio"] <= 1.5 for pair in pairs),

@@ -6,6 +6,7 @@ import hashlib
 import json
 import os
 import platform
+import random
 import shutil
 import subprocess
 import tempfile
@@ -140,7 +141,13 @@ def cpu_usage(start, end):
     return 1 - idle / (kernel + user)
 
 
-def matrix(variants, policies, repeats, lifecycle, current_171=False):
+def pair_schedule(repeats, seed):
+    first = ['idle', 'infer'] * (repeats // 2)
+    random.Random(seed).shuffle(first)
+    return first
+
+
+def matrix(variants, policies, repeats, lifecycle, current_171=False, schedule=None):
     comparable = [('idle', 'normal'), ('infer', 'normal')]
     diagnostics = ('ready', 'loading', 'warm', 'full', 'cancel-next', 'direction-switch',
                    'store', 'after-exit', 'repeat-release')
@@ -156,7 +163,8 @@ def matrix(variants, policies, repeats, lifecycle, current_171=False):
             if 'pinned' in policies:
                 cases.extend((size, mode, 'idle', 'pinned', 'round26') for size in TRACES
                              for mode in ('lexical', 'word'))
-        for size, mode, stage, policy, version in cases[::(-1 if iteration % 2 else 1)]:
+        infer_first = schedule[iteration] == 'infer' if schedule is not None else iteration % 2
+        for size, mode, stage, policy, version in reversed(cases) if infer_first else cases:
             yield iteration + 1, size, mode, stage, policy, version
     if lifecycle:
         for mode in ('lexical', 'word'):
@@ -239,11 +247,16 @@ def measure(args):
               'runner': identity(Path(__file__)), 'executables': exes, 'runs': [], 'errors': [],
               'not_measured': ['ETW', 'scheduler ready-time', 'LLC and DRAM', 'allocator contention'],
               'stated_quiet': args.stated_quiet}
+    schedule = None
+    if args.pair_seed is not None:
+        schedule = pair_schedule(args.repeats, args.pair_seed)
+        report['pair_schedule'] = {'seed': args.pair_seed, 'first_stage': schedule}
+        write_json(out / 'summary.json', report)
     reference, translation = {}, {}
     groups = defaultdict(lambda: {'all': [], 'window': [], 'loading': [], 'runs': [],
                                   'models': [], 'cancels': [], 'ready': [], 'sample_cpu': []})
     for iteration, size, mode, stage, policy, version in matrix(
-            list(exes), policies, args.repeats, args.lifecycle, args.current_171):
+            list(exes), policies, args.repeats, args.lifecycle, args.current_171, schedule):
         name = f'{size}-{iteration}-{mode}-{stage}-{policy}-{version}'
         try:
             with tempfile.TemporaryDirectory(prefix='cloudleaf-r26-worker-') as tmp:
@@ -338,6 +351,7 @@ def main():
     parser.add_argument('--repeats', type=int, choices=range(1, 25), default=3)
     parser.add_argument('--no-pin', action='store_true')
     parser.add_argument('--current-171', action='store_true')
+    parser.add_argument('--pair-seed', type=int)
     parser.add_argument('--lifecycle', action='store_true')
     parser.add_argument('--stated-quiet', action='store_true')
     args = parser.parse_args()
@@ -351,6 +365,8 @@ def main():
     if args.current_171 and (not args.release or not args.normal_only or args.repeats < 8
                              or args.baseline_round26_quiet or args.exact_baseline_release or args.lifecycle):
         parser.error('171 键专用配对至少八轮，使用本提交 Release、--normal-only，且不混入其它场景')
+    if args.pair_seed is not None and (not args.current_171 or args.repeats < 12 or args.repeats % 2):
+        parser.error('--pair-seed requires --current-171 and an even repeat count of at least 12')
     if args.release is not None:
         args.release = args.release.resolve()
         args.build_receipt = args.build_receipt.resolve()
