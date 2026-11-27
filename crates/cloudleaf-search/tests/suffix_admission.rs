@@ -1,6 +1,6 @@
-use cloudleaf_pinyin::{PhoneticArc, PinyinScheme, SchemeConfig, interpret};
+use cloudleaf_pinyin::{BaseMatch, PhoneticArc, PinyinScheme, SchemeConfig, interpret};
 use cloudleaf_search::{
-    Budget, Config, Lattice, Lexicon, Method, Ranker, SchemeAdmission,
+    Budget, Config, InterpretationCost, Lattice, Lexicon, Method, Ranker, SchemeAdmission,
     profile_scheme_query_with_admission, search_graph,
 };
 use std::collections::BTreeMap;
@@ -49,7 +49,23 @@ fn complete_graph_retains_all_origins_multiple_boundaries_and_ranked_paths() {
         output_k: 10,
         ..Config::default()
     };
-    for raw in ["xa", "xian", "xi'an", "xaxa", "xixian"] {
+    let mut inputs = vec![
+        "xa".into(),
+        "xian".into(),
+        "xi'an".into(),
+        "xaxa".into(),
+        "xixian".into(),
+    ];
+    for length in 1..=5 {
+        for mask in 0..1 << length {
+            inputs.push(
+                (0..length)
+                    .map(|bit| if mask & (1 << bit) == 0 { 'x' } else { 'a' })
+                    .collect::<String>(),
+            );
+        }
+    }
+    for raw in inputs.iter().map(String::as_str) {
         let phonetic = interpret(raw, &scheme).unwrap();
         let mut reference = BTreeMap::<_, Vec<Vec<usize>>>::new();
         for start in 0..phonetic.keys.len() {
@@ -82,12 +98,28 @@ fn complete_graph_retains_all_origins_multiple_boundaries_and_ranked_paths() {
                 let paths = &reference[&(edge.start, edge.end, edge.entry)];
                 let evidence = graph.interpretation(index).unwrap();
                 assert_eq!(Some(evidence), forward.interpretation(index));
-                assert!(paths.iter().any(|indexes| {
+                let (cost, indexes) = paths
+                    .iter()
+                    .map(|indexes| {
+                        let mut cost = InterpretationCost::default();
+                        for &index in indexes {
+                            match phonetic.arcs[index].base {
+                                BaseMatch::Abbreviation => cost.abbreviations += 1,
+                                BaseMatch::Prefix => cost.prefixes += 1,
+                                _ => {}
+                            }
+                        }
+                        (cost, indexes)
+                    })
+                    .min()
+                    .unwrap();
+                assert_eq!(evidence.cost, cost, "{raw}");
+                assert!(
                     indexes
                         .iter()
                         .map(|&i| &phonetic.arcs[i])
                         .eq(&evidence.arcs)
-                }));
+                );
                 assert_eq!(edge.raw_start, phonetic.raw_offsets[edge.start]);
                 assert_eq!(edge.raw_end, phonetic.raw_offsets[edge.end]);
             }
