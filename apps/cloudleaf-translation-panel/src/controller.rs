@@ -4,7 +4,10 @@ use crate::platform::{CredentialStore, PlatformError};
 use crate::resources::{ResourceIdentity, ResourceRequest, ResourceSlot};
 use crate::settings::{DirectionChoice, ProviderChoice, Settings};
 use crate::setup::{Prepared, SetupCommand, SetupEvent, SetupHandle};
-use cloudleaf_settings::{InputPreferences, RuntimeSettingsReceipt};
+use cloudleaf_settings::{
+    DictionaryArtifact, InputPreferences, LanguageResourceConfig, ResourceAction, ResourceReceipt,
+    ResourceSlot as DictionarySlot, RuntimeSettingsReceipt,
+};
 use cloudleaf_translation::*;
 use cloudleaf_translation_integrity::{self as integrity, Glossary, IntegrityReport};
 use cloudleaf_translation_ipc::IpcError;
@@ -46,6 +49,10 @@ pub struct PanelController {
     runtime_pending: bool,
     pub resources: [Option<ResourceIdentity>; 2],
     pub resource_notice: [&'static str; 2],
+    pub dictionary_config: Option<LanguageResourceConfig>,
+    pub dictionary_hosts: Vec<ResourceReceipt>,
+    pub dictionary_notice: String,
+    pub dictionary_saving: bool,
     next_definition: u64,
     context: TranslationContext,
     focused: bool,
@@ -107,6 +114,10 @@ impl PanelController {
             runtime_pending: false,
             resources: [None, None],
             resource_notice: [""; 2],
+            dictionary_config: None,
+            dictionary_hosts: Vec::new(),
+            dictionary_notice: String::new(),
+            dictionary_saving: false,
             next_definition: 1,
             context,
             focused: true,
@@ -288,6 +299,43 @@ impl PanelController {
         } else {
             "暂时无法开始检查"
         };
+    }
+
+    pub fn select_dictionary(&mut self, slot: ResourceSlot, path: PathBuf, sha256: String) {
+        let artifact = match DictionaryArtifact::new(path, sha256) {
+            Ok(artifact) => artifact,
+            Err(error) => {
+                self.dictionary_notice = error.to_string();
+                return;
+            }
+        };
+        self.manage_dictionary(ResourceAction::Select(
+            match slot {
+                ResourceSlot::Base => DictionarySlot::Base,
+                ResourceSlot::Supplement => DictionarySlot::Supplement,
+            },
+            artifact,
+        ));
+    }
+
+    pub fn manage_dictionary(&mut self, action: ResourceAction) {
+        if self.dictionary_saving || self.closing.is_some() {
+            return;
+        }
+        let Some(config) = &self.dictionary_config else {
+            self.dictionary_notice = "当前词典配置尚未读取，请稍后重试".into();
+            self.refresh_runtime_settings();
+            return;
+        };
+        if self
+            .send(SetupCommand::SaveDictionaryRuntime(config.revision, action))
+            .is_ok()
+        {
+            self.dictionary_saving = true;
+            self.dictionary_notice = "正在校验已登记身份并保存词典配置".into();
+        } else {
+            self.dictionary_notice = "未能开始词典配置保存".into();
+        }
     }
 
     pub fn save_input_settings(
@@ -510,7 +558,7 @@ impl PanelController {
                 Ok(SetupEvent::Runtime(result)) => {
                     self.runtime_pending = false;
                     self.runtime_settings.clear();
-                    self.runtime_notice = match result {
+                    self.runtime_notice = match result.settings {
                         Ok(receipts) if receipts.is_empty() => "未收到存活宿主回执",
                         Ok(receipts) => {
                             self.runtime_settings = receipts;
@@ -518,6 +566,42 @@ impl PanelController {
                         }
                         Err(_) => "无法读取运行时设置回执",
                     };
+                    match result.dictionary {
+                        Ok(config) => self.dictionary_config = Some(config),
+                        Err(error) => {
+                            self.dictionary_config = None;
+                            self.dictionary_notice = error;
+                        }
+                    }
+                    match result.hosts {
+                        Ok(hosts) => {
+                            let changed = hosts.iter().any(|host| {
+                                self.dictionary_hosts.iter().any(|old| {
+                                    old.host_id == host.host_id && old.active != host.active
+                                })
+                            });
+                            self.dictionary_hosts = hosts;
+                            if changed {
+                                self.invalidate();
+                            }
+                        }
+                        Err(error) => {
+                            self.dictionary_hosts.clear();
+                            self.dictionary_notice = error;
+                        }
+                    }
+                }
+                Ok(SetupEvent::DictionaryRuntimeSaved(result)) => {
+                    self.dictionary_saving = false;
+                    match result {
+                        Ok(config) => {
+                            self.dictionary_notice =
+                                format!("修订 {} 已保存，等待宿主核验和应用", config.revision);
+                            self.dictionary_config = Some(config);
+                        }
+                        Err(error) => self.dictionary_notice = error,
+                    }
+                    self.refresh_runtime_settings();
                 }
                 Ok(SetupEvent::Resource(slot, result)) => {
                     let i = slot.index();

@@ -20,11 +20,16 @@ use windows::Win32::{
     },
 };
 use windows_core::{PCWSTR, w};
+#[path = "isolated_resources.rs"]
+mod resources;
 #[path = "isolated_settings.rs"]
 mod settings;
 #[path = "isolated_translation.rs"]
 mod translation;
 use translation::{Captured, Controller as TranslationController};
+#[cfg(test)]
+#[path = "isolated_resource_tests.rs"]
+mod resource_tests;
 #[path = "user_panel.rs"]
 mod user_panel;
 #[path = "user_worker.rs"]
@@ -49,6 +54,7 @@ struct TranslationReceipt {
 
 pub(crate) struct LocalHost {
     pub host: Shared,
+    resource_bounds: Option<cloudleaf_input::SearchCapacityBounds>,
     document: RefCell<String>,
     pub retained: RefCell<String>,
 }
@@ -61,8 +67,10 @@ impl LocalHost {
         }
         host.engine.borrow_mut().handle(InputEvent::Activate);
         host.projection.borrow_mut().handle(InputEvent::Activate);
+        let resource_bounds = host.search_resource_bounds;
         Ok(Self {
             host,
+            resource_bounds,
             document: RefCell::new(String::new()),
             retained: RefCell::new(String::new()),
         })
@@ -422,6 +430,7 @@ struct Window {
     dictionary_window: Cell<HWND>,
     translation: RefCell<TranslationController>,
     settings: RefCell<Option<settings::Runtime>>,
+    resources: RefCell<Option<resources::Runtime>>,
     translation_controls: Cell<TranslationControls>,
 }
 struct UserState {
@@ -429,6 +438,8 @@ struct UserState {
     worker: user_worker::Worker,
     active: Option<user_worker::Prepared>,
     pending: Option<user_worker::Prepared>,
+    pending_resource_revision: Option<u64>,
+    staged_resources: Option<(u64, std::result::Result<user_worker::Prepared, String>)>,
     busy: bool,
     session: String,
 }
@@ -462,6 +473,7 @@ impl Window {
             dictionary_window: Cell::new(HWND::default()),
             translation: RefCell::new(translation),
             settings: RefCell::new(None),
+            resources: RefCell::new(None),
             translation_controls: Cell::default(),
         }
     }
@@ -828,7 +840,10 @@ impl Window {
                     && let Some(active) = &users.active
                     && active.learning
                 {
-                    if users.busy || evidence.snapshot_version != active.snapshot.version() {
+                    if users.busy
+                        || users.pending_resource_revision.is_some()
+                        || evidence.snapshot_version != active.snapshot.version()
+                    {
                         users.panel.refresh(
                             &active.listing,
                             "本次提交已完成；后台任务未完成或版本已过期，此次学习未记录",
@@ -882,11 +897,11 @@ impl Window {
             return Ok(());
         }
         let (base, language) = self
-            .local
-            .host
-            .engine
+            .resources
             .borrow()
-            .search_resources()
+            .as_ref()
+            .map(|resources| resources.current.clone())
+            .or_else(|| self.local.host.engine.borrow().search_resources())
             .ok_or_else(|| Error::new(E_FAIL, "没有可管理的搜索快照"))?;
         let weak = Rc::downgrade(self);
         let focus_view = weak.clone();
@@ -913,6 +928,8 @@ impl Window {
             worker,
             active: None,
             pending: None,
+            pending_resource_revision: None,
+            staged_resources: None,
             busy: true,
             session: format!(
                 "{}-{}",
@@ -933,7 +950,7 @@ impl Window {
     fn user_command(self: &Rc<Self>, command: user_panel::Command) {
         let mut users = self.users.borrow_mut();
         let Some(users) = users.as_mut() else { return };
-        if users.busy || users.pending.is_some() {
+        if users.busy || users.pending.is_some() || users.pending_resource_revision.is_some() {
             users.panel.refresh("", "任务仍在进行，稍后重试");
             return;
         }
@@ -975,13 +992,21 @@ impl Window {
             return Ok(());
         };
         if let Some(reply) = users.worker.poll() {
-            users.busy = false;
             match reply {
                 user_worker::Reply::Error(e) => {
+                    users.busy = false;
                     let listing = users.active.as_ref().map_or("", |a| a.listing.as_str());
                     users.panel.refresh(listing, &e);
                 }
-                user_worker::Reply::Ready(p) => users.pending = Some(p),
+                user_worker::Reply::Ready(p) => {
+                    users.busy = false;
+                    users.pending = Some(p);
+                }
+                user_worker::Reply::Rebased(revision, result) => {
+                    if users.pending_resource_revision == Some(revision) {
+                        users.staged_resources = Some((revision, result));
+                    }
+                }
             }
         }
         let Some(p) = users.pending.as_ref() else {
@@ -994,7 +1019,7 @@ impl Window {
             return Ok(());
         }
         for engine in [&self.local.host.engine, &self.local.host.projection] {
-            let current = engine.borrow().search_capacity_bounds().unwrap();
+            let current = self.local.resource_bounds.unwrap();
             let next = engine
                 .borrow()
                 .replacement_capacity_bounds(p.snapshot.clone(), p.language.clone())
@@ -1039,6 +1064,28 @@ impl Window {
             .borrow_mut()
             .as_mut()
             .and_then(|settings| settings.tick(&self.local));
+        if let Some(frame) = frame {
+            self.update(frame)?;
+        }
+        Ok(())
+    }
+
+    fn poll_resources(self: &Rc<Self>) -> Result<()> {
+        let frame = {
+            let mut slot = self.resources.borrow_mut();
+            let Some(runtime) = slot.as_mut() else {
+                return Ok(());
+            };
+            runtime.receive();
+            let mut state = self.users.borrow_mut();
+            let frame = apply_resources(&self.local, runtime, state.as_mut());
+            let user_generation = state
+                .as_ref()
+                .and_then(|users| users.active.as_ref())
+                .map(|active| active.generation);
+            runtime.publish(&self.local, user_generation);
+            frame
+        };
         if let Some(frame) = frame {
             self.update(frame)?;
         }
@@ -1173,6 +1220,99 @@ impl Window {
         self.ui.borrow_mut().as_mut().unwrap().update(frame, rect)
     }
 }
+fn apply_resources(
+    local: &LocalHost,
+    runtime: &mut resources::Runtime,
+    mut users: Option<&mut UserState>,
+) -> Option<InputFrame> {
+    let desired = runtime.pending.as_ref().map(|(revision, _)| *revision);
+    if let Some(users) = users.as_mut()
+        && users
+            .staged_resources
+            .as_ref()
+            .is_some_and(|(revision, _)| Some(*revision) != desired)
+    {
+        users.staged_resources = None;
+        users.pending_resource_revision = None;
+    }
+    let (revision, next) = runtime.pending.as_ref()?;
+    if !resources::idle(local) {
+        runtime.defer("当前组合或事务待收尾，保留其词典和输入");
+        return None;
+    }
+    let mut retired_user = None;
+    let installed = if let Some(users) = users.as_mut() {
+        if users.busy || users.pending.is_some() {
+            runtime.defer("等待现有用户词库保存");
+            return None;
+        }
+        if let Some((_, prepared)) = users.staged_resources.take() {
+            users.pending_resource_revision = None;
+            match prepared {
+                Ok(p) => {
+                    match resources::install(
+                        local,
+                        runtime.bound(),
+                        &p.snapshot,
+                        p.language.as_ref(),
+                        || {
+                            users
+                                .worker
+                                .send(user_worker::Work::AcceptRebase {
+                                    base: next.snapshot.clone(),
+                                    language: next.language.clone(),
+                                })
+                                .map_err(str::to_owned)
+                        },
+                    ) {
+                        Ok(Some(frame)) => {
+                            users.panel.refresh(&p.listing, &p.status);
+                            retired_user = users.active.replace(p);
+                            Ok(Some(frame))
+                        }
+                        other => other,
+                    }
+                }
+                Err(error) => Err(error),
+            }
+        } else if users.pending_resource_revision.is_none() {
+            match users.worker.send(user_worker::Work::PrepareRebase {
+                revision: *revision,
+                base: next.snapshot.clone(),
+                language: next.language.clone(),
+            }) {
+                Ok(()) => {
+                    users.pending_resource_revision = Some(*revision);
+                    runtime.defer("正在后台保留用户词条和学习后准备新快照");
+                    return None;
+                }
+                Err(error) => Err(error.into()),
+            }
+        } else {
+            return None;
+        }
+    } else {
+        resources::install(
+            local,
+            runtime.bound(),
+            &next.snapshot,
+            next.language.as_ref(),
+            || Ok(()),
+        )
+    };
+    match installed {
+        Ok(Some(frame)) => {
+            runtime.applied(retired_user);
+            Some(frame)
+        }
+        Ok(None) => None,
+        Err(error) => {
+            runtime.reject(error);
+            None
+        }
+    }
+}
+
 fn user_directory() -> Result<std::path::PathBuf> {
     use windows::Win32::UI::Shell::{
         FOLDERID_LocalAppData, KNOWN_FOLDER_FLAG, SHGetKnownFolderPath,
@@ -1291,7 +1431,7 @@ unsafe extern "system" fn window_proc(
                     }
                 }
                 WM_TIMER if wparam.0==19 => {view.poll_users()?;Ok(LRESULT(0))}
-                WM_TIMER if wparam.0==22 => {view.poll_settings()?;view.poll_translation()?;Ok(LRESULT(0))}
+                WM_TIMER if wparam.0==22 => {view.poll_settings()?;view.poll_resources()?;view.poll_translation()?;Ok(LRESULT(0))}
                 // 内部子控件不改变顶层激活；唯一的跨窗口例外是登记的词库面板。
                 WM_ACTIVATE if wparam.0 & 0xffff == WA_INACTIVE as usize => {
                     view.deactivate(HWND(lparam.0 as *mut _))?; Ok(LRESULT(0))
@@ -1333,6 +1473,7 @@ fn configured_host(
             options.model,
             cloudleaf_input::MAX_CANDIDATES,
             cloudleaf_input::InputConfig::default(),
+            true,
         )?,
         None => super::input_review::load_host_k(
             options.runtime,
@@ -1379,6 +1520,65 @@ pub(crate) fn review_settings(args: &[String]) -> Result<()> {
     Ok(())
 }
 
+pub(crate) fn review_resources(args: &[String]) -> Result<()> {
+    let [revision, launch @ ..] = args else {
+        return Err(Error::new(
+            E_INVALIDARG,
+            "需指定目标配置修订、启动词典及 --settings-dir",
+        ));
+    };
+    let revision = revision
+        .parse::<u64>()
+        .map_err(|_| Error::new(E_INVALIDARG, "无效的词典配置修订"))?;
+    let options = translation::LaunchOptions::parse(launch)?;
+    let directory = options
+        .settings_dir
+        .clone()
+        .ok_or_else(|| Error::new(E_INVALIDARG, "需明确指定 --settings-dir"))?;
+    let (local, _) = configured_host(&options)?;
+    let mut runtime = resources::Runtime::start(directory, &local)
+        .map_err(|_| Error::new(E_FAIL, "无法启动词典准备任务"))?;
+    let deadline = Instant::now() + Duration::from_secs(20);
+    loop {
+        runtime.receive();
+        apply_resources(&local, &mut runtime, None);
+        runtime.publish(&local, None);
+        let receipt = runtime.receipt();
+        if receipt.active_revision == revision
+            && receipt.state == cloudleaf_settings::ResourceState::Applied
+        {
+            let base = &receipt.active.base;
+            let supplement = receipt.active.supplement.as_ref();
+            println!(
+                "resources_host=no-window desired={} active={} generation={} base_sha256={} supplement_sha256={} supplement_admission={:?} model_sha256={} snapshot_sha256={}",
+                receipt.desired_revision,
+                receipt.active_revision,
+                receipt.generation,
+                base.runtime_sha256,
+                supplement.map_or("-", |data| data.runtime_sha256.as_str()),
+                supplement.map(|data| data.admission),
+                receipt.active.model_sha256.as_deref().unwrap_or("-"),
+                receipt.active.snapshot_sha256
+            );
+            return Ok(());
+        }
+        if receipt.state == cloudleaf_settings::ResourceState::Rejected
+            || Instant::now() >= deadline
+        {
+            return Err(Error::new(
+                E_FAIL,
+                format!(
+                    "词典核验未通过，期望 {revision}，生效 {}，保留 {}：{}",
+                    receipt.active_revision,
+                    receipt.active.snapshot_sha256,
+                    receipt.error.as_deref().unwrap_or("等待超时")
+                ),
+            ));
+        }
+        std::thread::sleep(Duration::from_millis(20));
+    }
+}
+
 pub(crate) fn run(args: &[String]) -> Result<()> {
     let options = translation::LaunchOptions::parse(args)?;
     let (local, preferences) = configured_host(&options)?;
@@ -1389,8 +1589,15 @@ pub(crate) fn run(args: &[String]) -> Result<()> {
         .map(|(directory, loaded)| settings::Runtime::start(directory, loaded))
         .transpose()
         .map_err(|_| Error::new(E_FAIL, "无法启动输入设置通知"))?;
+    let runtime_resources = options
+        .settings_dir
+        .clone()
+        .map(|directory| resources::Runtime::start(directory, &local))
+        .transpose()
+        .map_err(|_| Error::new(E_FAIL, "无法启动词典资源任务"))?;
     let view = Rc::new(Window::new(local, options.controller()?));
     *view.settings.borrow_mut() = runtime_settings;
+    *view.resources.borrow_mut() = runtime_resources;
     // 安全：创建、运行和销毁本进程普通Win32窗口；没有任何注册或TSF激活动作。
     unsafe {
         let instance = HINSTANCE(GetModuleHandleW(None)?.0);
@@ -1928,7 +2135,7 @@ mod tests {
             max_letters: 64,
             ..Default::default()
         };
-        LocalHost::new(Host::with_search(snapshot, config, InputConfig::default()).unwrap())
+        LocalHost::new(Host::with_search(snapshot, config, InputConfig::default(), false).unwrap())
             .unwrap()
     }
 
@@ -2033,6 +2240,85 @@ mod tests {
             .unwrap();
         assert_eq!(local.document.borrow().as_str(), expected);
         assert_eq!(local.host.engine.borrow().frame().preedit, "");
+    }
+
+    #[test]
+    fn dictionary_swap_defers_composition_and_unknown_then_invalidates_old_owners() {
+        let local = scheme_local();
+        let (base, _) = local.host.engine.borrow().search_resources().unwrap();
+        let bound = local.resource_bounds.unwrap();
+        let substituted = Arc::new(
+            base.with_user_layer(
+                "# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\n",
+                &std::collections::BTreeMap::new(),
+            ).unwrap()
+        );
+        assert_ne!(base.version(), substituted.version());
+        type_text(&local, "nihao");
+        local
+            .process(InputEvent::Key(Key::Left), None, &|_| {
+                CommitOutcome::Applied
+            })
+            .unwrap();
+        let composing = local.host.engine.borrow().frame();
+        let former_candidate = composing.candidates[0].id.clone();
+        assert!(
+            resources::install(&local, bound, &substituted, None, || {
+                panic!("有组合时不得确认新资源")
+            })
+            .unwrap()
+            .is_none()
+        );
+        assert_eq!(local.host.engine.borrow().frame(), composing);
+
+        local
+            .process(InputEvent::Key(Key::Space), None, &|_| {
+                CommitOutcome::Unknown
+            })
+            .unwrap();
+        assert!(
+            resources::install(&local, bound, &substituted, None, || {
+                panic!("Unknown 只能由原有确认流程处置")
+            })
+            .unwrap()
+            .is_none()
+        );
+        assert!(local.host.quarantined.get());
+        assert!(local.retained.borrow().contains("nihao"));
+        assert!(local.document.borrow().is_empty());
+
+        local.reset().unwrap();
+        let capture = Captured::new(&local, Direction::EnZh, "original").unwrap();
+        let before = local.host.engine.borrow().revision();
+        assert!(
+            resources::install(&local, bound, &substituted, None, || Err(
+                "后端未确认".into()
+            ))
+            .is_err()
+        );
+        assert_eq!(
+            local.host.engine.borrow().search_snapshot_version(),
+            Some(base.version())
+        );
+        assert_eq!(local.host.engine.borrow().revision(), before);
+        assert!(capture.current(&local, "original", before));
+
+        let new = resources::install(&local, bound, &substituted, None, || Ok(()))
+            .unwrap()
+            .unwrap();
+        assert!(!capture.current(&local, "original", before));
+        assert_eq!(new.revision, before + 1);
+        assert_eq!(new, local.host.projection.borrow().frame());
+        type_text(&local, "nihao");
+        let current = local.host.engine.borrow().frame();
+        assert_ne!(current.candidates[0].id, former_candidate);
+        let selected = local.process(
+            InputEvent::Key(Key::Enter),
+            Some((composing.revision, former_candidate)),
+            &|_| panic!("旧候选不能写入新资源"),
+        );
+        assert!(selected.is_err());
+        assert!(local.document.borrow().is_empty());
     }
 
     #[test]

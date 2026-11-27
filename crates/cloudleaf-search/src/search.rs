@@ -524,7 +524,16 @@ fn position_dynamic<O: Observer>(
     observer: &mut O,
 ) -> Vec<Path> {
     // 仅无历史评分可合并最后词条状态；相同位置具有相同后缀集合和后续增分。
-    let mut states: Vec<Vec<Path>> = vec![Vec::new(); scorer.graph.letters.len() + 1];
+    let positions = scorer.graph.letters.len() + 1;
+    let suffix = scorer.graph.has_reachable_suffix_graph_cap().then(|| {
+        let mut reachable = vec![false; positions];
+        reachable[positions - 1] = true;
+        for edge in scorer.graph.edges.iter().rev() {
+            reachable[edge.start] |= reachable[edge.end];
+        }
+        reachable
+    });
+    let mut states: Vec<Vec<Path>> = vec![Vec::new(); positions];
     states[0].push(Path::default());
     let mut resident = 1;
     stats.resident_high_water = 1;
@@ -536,10 +545,17 @@ fn position_dynamic<O: Observer>(
                 if scorer.cancelled() {
                     return Vec::new();
                 }
+                let edge = &scorer.graph.edges[*edge_index];
+                // 图仍保留局部边；没有后缀的局部边不能参与完整候选搜索。
+                if suffix
+                    .as_ref()
+                    .is_some_and(|reachable| !reachable[edge.end])
+                {
+                    continue;
+                }
                 if !expand_allowed(stats, config) {
                     return Vec::new();
                 }
-                let edge = &scorer.graph.edges[*edge_index];
                 let bucket = &mut states[edge.end];
                 let old = bucket.len();
                 if !resident_allowed(stats, resident + 1, config) {

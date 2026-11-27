@@ -276,3 +276,105 @@ fn character_model_switch_preserves_raw_revision_and_commit_guards() {
         "qz"
     );
 }
+
+#[test]
+fn resource_switch_keeps_complete_provenance_and_rejects_old_transactions() {
+    let (base, model) = fixtures(true);
+    let rows = concat!(
+        "# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\n",
+        "a\tma\t甲\t\tunknown\t\tfixture\ta\tMIT\n",
+        "other\tma\t甲\t\tunknown\t\talternate\tone\tMIT\n",
+        "different\tmai\t甲\t\tunknown\t\talternate\ttwo\tMIT\n"
+    );
+    let supplement = SearchSnapshot::from_verified_tsv(rows, &hash(rows)).unwrap();
+    let stack = Arc::new(base.with_supplement(&supplement).unwrap());
+    assert_eq!(stack.entries().len(), 5);
+    assert_eq!(
+        stack
+            .entries()
+            .iter()
+            .filter(|row| row.text == "甲")
+            .count(),
+        3
+    );
+    let corrupt = rows.replace("a\tma\t甲", "a\tma\t丁");
+    let conflicting = SearchSnapshot::from_verified_tsv(&corrupt, &hash(&corrupt)).unwrap();
+    assert!(base.with_supplement(&conflicting).is_err());
+
+    let mut engine = InputEngine::with_language(
+        base.clone(),
+        cfg(),
+        model.clone(),
+        None,
+        InputConfig::default(),
+    )
+    .unwrap();
+    engine.handle(InputEvent::Activate);
+    assert!(
+        engine
+            .prepare_idle_resources(stack.clone(), Some(model.clone()))
+            .is_err()
+    );
+    for ch in "ma".chars() {
+        engine.handle(InputEvent::Key(Key::Char(ch)));
+    }
+    engine.handle(InputEvent::Key(Key::Left));
+    let previous = engine.frame();
+    assert!(engine.prepare_idle_resources(stack.clone(), None).is_err());
+    assert_eq!(previous, engine.frame());
+    let request = engine.handle(InputEvent::Key(Key::Space)).commit.unwrap();
+    assert!(engine.prepare_idle_resources(stack.clone(), None).is_err());
+    engine.handle(InputEvent::CommitFailed { id: request.id });
+    assert!(engine.prepare_idle_resources(stack.clone(), None).is_err());
+    engine.handle(InputEvent::Key(Key::Escape));
+
+    let revision = engine.frame().revision;
+    engine
+        .prepare_idle_resources(stack.clone(), None)
+        .unwrap()
+        .apply();
+    assert!(engine.frame().revision > revision);
+    assert_eq!(engine.search_snapshot_version(), Some(stack.version()));
+    assert!(
+        engine
+            .translation_source_identity(None)
+            .input_model
+            .is_none()
+    );
+    for ch in "ma".chars() {
+        engine.handle(InputEvent::Key(Key::Char(ch)));
+    }
+    assert_eq!(
+        engine
+            .frame()
+            .candidates
+            .iter()
+            .filter(|candidate| candidate.text == "甲")
+            .count(),
+        1
+    );
+    assert_eq!(
+        engine
+            .select_candidate(previous.revision, &previous.candidates[0].id)
+            .error
+            .unwrap()
+            .code,
+        ErrorCode::StaleCandidate,
+    );
+    engine.handle(InputEvent::Key(Key::Escape));
+    engine
+        .prepare_idle_resources(base.clone(), Some(model.clone()))
+        .unwrap()
+        .apply();
+    assert_eq!(
+        engine
+            .translation_source_identity(None)
+            .input_model
+            .as_deref(),
+        Some(model.version())
+    );
+    for ch in "ma".chars() {
+        engine.handle(InputEvent::Key(Key::Char(ch)));
+    }
+    assert_eq!(engine.frame().candidates[0].text, "乙");
+}

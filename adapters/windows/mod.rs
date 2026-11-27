@@ -49,6 +49,12 @@ pub fn manage(args: Vec<String>) -> Result<()> {
     }
     if args
         .first()
+        .is_some_and(|value| value == "--review-language-resources")
+    {
+        return session::review_language_resources(&args[1..]);
+    }
+    if args
+        .first()
         .is_some_and(|value| value == "--benchmark-input-host")
     {
         return match args.as_slice() {

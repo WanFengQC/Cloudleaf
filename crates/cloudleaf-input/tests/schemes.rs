@@ -1,7 +1,7 @@
 use cloudleaf_input::{
     DoublePinyinLayout, InputConfig, InputEngine, PinyinScheme, SchemeConfig, SearchSnapshot,
 };
-use cloudleaf_search::{Config, Ranker};
+use cloudleaf_search::{Budget, Config, Method, Ranker};
 use cloudleaf_types::{ErrorCode, InputEvent, Key};
 use ring::digest::{SHA256, digest};
 use std::sync::Arc;
@@ -119,4 +119,99 @@ fn invalid_scheme_configuration_is_atomic_and_does_not_change_raw() {
         ErrorCode::InvalidConfig
     );
     assert_eq!(engine.frame(), before);
+}
+
+fn capped_engine(method: Method, max_expansions: usize) -> InputEngine {
+    let mut text = String::from(
+        "# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\n",
+    );
+    for index in 0..24 {
+        let word = char::from_u32(0x4e00 + index).unwrap();
+        text.push_str(&format!(
+            "one-{index}\tni\t{word}\t\tunknown\t\tfixture\t{index}\tMIT\n"
+        ));
+    }
+    text.push_str("two\tkan\t看\t\tunknown\t\tfixture\ttwo\tMIT\n");
+    let sha: String = digest(&SHA256, text.as_bytes())
+        .as_ref()
+        .iter()
+        .map(|b| format!("{b:02x}"))
+        .collect();
+    let mut engine = InputEngine::with_search(
+        Arc::new(SearchSnapshot::from_verified_tsv(&text, &sha).unwrap()),
+        Config {
+            method,
+            ranker: Ranker::Structural,
+            output_k: 8,
+            max_edges: 8,
+            max_expansions,
+            ..Config::default()
+        },
+        InputConfig::default(),
+    )
+    .unwrap();
+    engine.handle(InputEvent::Activate);
+    engine
+        .reconfigure_scheme(SchemeConfig {
+            scheme: PinyinScheme::AbbreviatedPinyin,
+            ..SchemeConfig::default()
+        })
+        .unwrap();
+    engine
+}
+
+#[test]
+fn capped_complete_abbreviation_is_selectable_and_literal_confirmation_remains_available() {
+    let mut engine = capped_engine(Method::PositionDag, Config::default().max_expansions);
+    type_keys(&mut engine, "nk");
+    let frame = engine.frame();
+    let diagnostic = engine.search_diagnostic().unwrap();
+    assert_eq!(diagnostic.statistics.budget, Some(Budget::GraphEdges));
+    assert!(!diagnostic.guaranteed);
+    let candidate = &frame.candidates[0];
+    assert!(candidate.text.ends_with('看'));
+    assert_eq!(candidate.id, diagnostic.paths[0].candidate_id);
+    let commit = engine
+        .select_candidate(frame.revision, &candidate.id)
+        .commit
+        .unwrap();
+    assert_eq!(commit.text, candidate.text);
+    engine.handle(InputEvent::CommitSucceeded { id: commit.id });
+    assert!(engine.frame().preedit.is_empty());
+
+    type_keys(&mut engine, "nk");
+    let literal = engine
+        .confirm_literal(engine.frame().revision, "")
+        .commit
+        .unwrap();
+    assert_eq!(literal.text, "nk");
+}
+
+#[test]
+fn capped_abbreviation_keeps_literal_fallback_outside_the_complete_position_search() {
+    for (method, limit, input, expected_budget) in [
+        (
+            Method::PositionDag,
+            Config::default().max_expansions,
+            "nq",
+            Budget::GraphEdges,
+        ),
+        (
+            Method::Reference,
+            Config::default().max_expansions,
+            "nk",
+            Budget::GraphEdges,
+        ),
+        (Method::PositionDag, 1, "nk", Budget::Intersection),
+    ] {
+        let mut engine = capped_engine(method, limit);
+        type_keys(&mut engine, input);
+        assert_eq!(
+            engine.search_diagnostic().unwrap().statistics.budget,
+            Some(expected_budget)
+        );
+        assert!(engine.frame().candidates.is_empty());
+        let commit = engine.handle(InputEvent::Key(Key::Space)).commit.unwrap();
+        assert_eq!(commit.text, input);
+    }
 }

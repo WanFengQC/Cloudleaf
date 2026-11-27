@@ -22,6 +22,7 @@ fn ready(worker: &Worker) -> Prepared {
     match receive(worker) {
         Reply::Ready(value) => value,
         Reply::Error(message) => panic!("实际worker拒绝测试任务：{message}"),
+        Reply::Rebased(_, _) => panic!("预期用户词库操作，收到词典重绑结果"),
     }
 }
 
@@ -286,5 +287,90 @@ fn invalid_import_preserves_the_saved_user_layer_and_worker_remains_usable() {
     assert_eq!(store.load().unwrap().generation(), generation);
     drop(store);
     assert_eq!(directory.parent().unwrap().canonicalize().unwrap(), temp);
+    std::fs::remove_dir_all(directory).unwrap();
+}
+
+#[test]
+fn rebase_preserves_user_generation_preference_and_private_store() {
+    let temp = std::env::temp_dir().canonicalize().unwrap();
+    let directory = temp.join(format!(
+        "cloudleaf-r29-user-rebase-{}-{}",
+        std::process::id(),
+        SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .unwrap()
+            .as_nanos()
+    ));
+    let original = Arc::new(SearchSnapshot::from_verified_tsv(BASE, BASE_SHA).unwrap());
+    let updated =
+        format!("{BASE}base-xuexi\txue xi\t学习\t\tunknown\t\tfixture\tbase-xuexi\tMIT\n");
+    let replaced = Arc::new(
+        SearchSnapshot::from_verified_tsv(
+            &updated,
+            "f3d3b4648b06538e89cb90ea06d856db1dcdc590f640b78848f65af388bd2373",
+        )
+        .unwrap(),
+    );
+    let mut worker = Worker::start(original.clone(), None, directory.clone());
+    drop(ready(&worker));
+    worker
+        .send(Work::Manage(user_panel::Command::Add {
+            text: "云笺".into(),
+            pinyin: "yun jian".into(),
+        }))
+        .unwrap();
+    drop(ready(&worker));
+    worker
+        .send(Work::Manage(user_panel::Command::ToggleLearning))
+        .unwrap();
+    let learning = ready(&worker);
+    let selected = cloudleaf_user::fingerprint("云笺", "yun jian");
+    worker
+        .send(Work::Learn {
+            event: SelectionEvent {
+                token: "r29-owned:1".into(),
+                origin: SelectionOrigin::IsolatedOwnedWindow,
+                learning_epoch: learning.epoch,
+                entries: vec![("user:1".into(), selected.clone())],
+            },
+            generation: learning.generation,
+        })
+        .unwrap();
+    drop(learning);
+    let learned = ready(&worker);
+    let expected = learned.generation;
+    assert!(learned.listing.contains("选择=1"));
+    worker
+        .send(Work::PrepareRebase {
+            revision: 29,
+            base: replaced.clone(),
+            language: None,
+        })
+        .unwrap();
+    let Reply::Rebased(29, Ok(staged)) = receive(&worker) else {
+        panic!("用户层未能为新资源重新准备");
+    };
+    assert_eq!(staged.generation, expected);
+    assert_eq!(staged.epoch, learned.epoch);
+    assert_ne!(staged.snapshot.version(), learned.snapshot.version());
+    assert_eq!(staged.listing, learned.listing);
+    worker
+        .send(Work::AcceptRebase {
+            base: replaced,
+            language: None,
+        })
+        .unwrap();
+    worker
+        .send(Work::Manage(user_panel::Command::Reload))
+        .unwrap();
+    let current = ready(&worker);
+    assert_eq!(current.snapshot.version(), staged.snapshot.version());
+    assert_eq!(current.generation, expected);
+    worker.shutdown();
+    let mut store = Store::open(directory.clone()).unwrap();
+    let disk = store.load().unwrap();
+    assert_eq!(disk.generation(), expected);
+    assert_eq!(disk.preference("user:1", &selected), 1);
+    drop(store);
     std::fs::remove_dir_all(directory).unwrap();
 }

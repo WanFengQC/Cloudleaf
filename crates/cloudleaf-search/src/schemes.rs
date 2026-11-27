@@ -2,10 +2,11 @@
 use crate::lexicon::SyllableBoundaries;
 use crate::{Budget, Config, Edge, ErrorKind, Lattice, Lexicon, MatchKind, SearchError};
 use cloudleaf_pinyin::{
-    BaseMatch, ChangeKind, PhoneticArc, PhoneticHypotheses, SchemeConfig, interpret,
+    BaseMatch, ChangeKind, PhoneticArc, PhoneticHypotheses, PinyinScheme, SchemeConfig, interpret,
 };
-use std::collections::BTreeMap;
+use std::cmp::Reverse;
 use std::collections::btree_map::Entry;
+use std::collections::{BTreeMap, BTreeSet};
 use std::sync::OnceLock;
 
 const MAX_WORD_ARCS: usize = 16;
@@ -106,6 +107,7 @@ pub struct SchemeGraphDiagnostics {
 pub(crate) struct Interpreted {
     pub version: String,
     pub max_edits: u16,
+    pub admission: SchemeAdmission,
     phonetics: Vec<PhoneticArc>,
     source_indices: Vec<u16>,
     evidence: Vec<TracedInterpretation>,
@@ -157,6 +159,154 @@ impl Interpreted {
     }
 }
 
+/// 诊断可比较旧顺序和只分摊容量的对照，输入引擎按输入方案选择。
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum SchemeAdmission {
+    Forward,
+    Balanced,
+    ReachableSuffix,
+}
+
+impl SchemeAdmission {
+    pub(crate) fn for_scheme(scheme: &SchemeConfig) -> Self {
+        if scheme.scheme == PinyinScheme::AbbreviatedPinyin && scheme.correction.is_none() {
+            Self::ReachableSuffix
+        } else {
+            Self::Forward
+        }
+    }
+}
+
+type WordKey = (usize, usize);
+type WordTrace = (InterpretationCost, ArcTrace);
+
+#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
+struct AdmissionRank {
+    missing_suffix: bool,
+    cost: InterpretationCost,
+    covered: Reverse<usize>,
+    key: WordKey,
+}
+
+impl AdmissionRank {
+    fn new(start: usize, key: WordKey, value: WordTrace, suffix: &[bool]) -> Self {
+        Self {
+            missing_suffix: !suffix[key.0],
+            cost: value.0,
+            covered: Reverse(key.0 - start),
+            key,
+        }
+    }
+}
+
+#[derive(Default)]
+struct WordBucket {
+    rows: BTreeMap<WordKey, WordTrace>,
+    ranks: Option<BTreeSet<AdmissionRank>>,
+}
+
+impl WordBucket {
+    fn rank_rows(&mut self, start: usize, suffix: &[bool]) {
+        self.ranks.get_or_insert_with(|| {
+            self.rows
+                .iter()
+                .map(|(&key, &trace)| AdmissionRank::new(start, key, trace, suffix))
+                .collect()
+        });
+    }
+
+    fn set(&mut self, start: usize, key: WordKey, value: WordTrace, suffix: &[bool]) {
+        let previous = self.rows.insert(key, value);
+        if let Some(ranks) = &mut self.ranks {
+            if let Some(old) = previous {
+                ranks.remove(&AdmissionRank::new(start, key, old, suffix));
+            }
+            ranks.insert(AdmissionRank::new(start, key, value, suffix));
+        }
+    }
+}
+
+struct AdmissionTable {
+    buckets: Vec<WordBucket>,
+    suffix: Vec<bool>,
+    occupied: usize,
+    capacity: usize,
+    priority: Option<BTreeSet<(usize, AdmissionRank, usize)>>,
+}
+
+impl AdmissionTable {
+    fn new(positions: usize, capacity: usize) -> Self {
+        let mut suffix = vec![false; positions + 1];
+        suffix[positions] = true;
+        Self {
+            buckets: (0..positions).map(|_| WordBucket::default()).collect(),
+            suffix,
+            occupied: 0,
+            capacity,
+            priority: None,
+        }
+    }
+
+    fn rank(bucket: &WordBucket, start: usize) -> Option<(usize, AdmissionRank, usize)> {
+        bucket
+            .ranks
+            .as_ref()
+            .and_then(|ranks| ranks.last())
+            .map(|&worst| (bucket.rows.len(), worst, start))
+    }
+
+    fn set(&mut self, start: usize, key: WordKey, value: WordTrace) {
+        let bucket = &mut self.buckets[start];
+        if let Some(priority) = &mut self.priority
+            && let Some(rank) = Self::rank(bucket, start)
+        {
+            priority.remove(&rank);
+        }
+        bucket.set(start, key, value, &self.suffix);
+        if let Some(priority) = &mut self.priority {
+            priority.insert(Self::rank(bucket, start).expect("本轮写入了一条边"));
+        }
+    }
+
+    fn admit(&mut self, start: usize, key: WordKey, value: WordTrace) {
+        if self.occupied < self.capacity {
+            self.occupied += 1;
+        } else {
+            let priority = self.priority.get_or_insert_with(|| {
+                self.buckets
+                    .iter_mut()
+                    .enumerate()
+                    .filter_map(|(position, bucket)| {
+                        bucket.rank_rows(position, &self.suffix);
+                        Self::rank(bucket, position)
+                    })
+                    .collect()
+            });
+            let arrival = AdmissionRank::new(start, key, value, &self.suffix);
+            let current = &self.buckets[start];
+            let count = current.rows.len();
+            let local = Self::rank(current, start);
+            let &(size, rank, victim) = priority.last().expect("已满的候选格至少有一个词条");
+            let displaced = if victim != start && (count + 1, arrival) < (size, rank) {
+                (size, rank, victim)
+            } else if let Some(local) = local.filter(|&(_, worst, _)| arrival < worst) {
+                local
+            } else {
+                return;
+            };
+            let (_, worst, position) = displaced;
+            let bucket = &mut self.buckets[position];
+            priority.remove(&displaced);
+            bucket.rows.remove(&worst.key);
+            bucket.ranks.as_mut().unwrap().remove(&worst);
+            if let Some(rank) = Self::rank(bucket, position) {
+                priority.insert(rank);
+            }
+        }
+        self.set(start, key, value);
+    }
+}
+
 struct IntersectionState {
     node: usize,
     position: usize,
@@ -205,7 +355,15 @@ impl<'a> Lattice<'a> {
         }
         let hypotheses = interpret(raw, scheme)
             .map_err(|_| SearchError::new(ErrorKind::InvalidInput, "输入方案配置或按键无效"))?;
-        Self::from_phonetic_controlled::<false>(lexicon, raw, config, scheme, hypotheses, cache)
+        Self::from_phonetic_controlled::<false>(
+            lexicon,
+            raw,
+            config,
+            scheme,
+            hypotheses,
+            cache,
+            SchemeAdmission::for_scheme(scheme),
+        )
     }
 
     pub(crate) fn from_phonetic(
@@ -214,8 +372,11 @@ impl<'a> Lattice<'a> {
         config: &Config,
         scheme: &SchemeConfig,
         hypotheses: PhoneticHypotheses,
+        admission: SchemeAdmission,
     ) -> Result<Self, SearchError> {
-        Self::from_phonetic_controlled::<true>(lexicon, raw, config, scheme, hypotheses, None)
+        Self::from_phonetic_controlled::<true>(
+            lexicon, raw, config, scheme, hypotheses, None, admission,
+        )
     }
 
     fn from_phonetic_controlled<const DIAGNOSTICS: bool>(
@@ -225,6 +386,7 @@ impl<'a> Lattice<'a> {
         scheme: &SchemeConfig,
         hypotheses: PhoneticHypotheses,
         mut cache: Option<&mut crate::TransitionCache>,
+        admission: SchemeAdmission,
     ) -> Result<Self, SearchError> {
         if hypotheses.keys.len() > config.max_letters {
             return Err(SearchError::new(
@@ -248,6 +410,7 @@ impl<'a> Lattice<'a> {
             interpreted: Some(Interpreted {
                 version: scheme.version_id(),
                 max_edits,
+                admission,
                 phonetics: Vec::new(),
                 source_indices: Vec::new(),
                 evidence: Vec::new(),
@@ -272,7 +435,16 @@ impl<'a> Lattice<'a> {
         let mut diagnostics = SchemeGraphDiagnostics::default();
         // 相交预算独立于搜索展开，原搜索上限不因方案扩展而增加。
         let max_states = config.max_expansions;
-        'starts: for start in 0..graph.letters.len() {
+        let position_count = graph.letters.len();
+        let mut table = AdmissionTable::new(position_count, config.max_edges);
+        let mut unfinished = None;
+        'starts: for index in 0..position_count {
+            let start = if admission == SchemeAdmission::ReachableSuffix {
+                position_count - index - 1
+            } else {
+                index
+            };
+            unfinished = Some(start);
             let mut pending = vec![IntersectionState {
                 node: 0,
                 position: start,
@@ -282,7 +454,7 @@ impl<'a> Lattice<'a> {
                 cost: InterpretationCost::default(),
             }];
             let mut seen = BTreeMap::new();
-            let mut words = BTreeMap::<(usize, usize), (InterpretationCost, ArcTrace)>::new();
+            let mut first_seen = DIAGNOSTICS.then(BTreeMap::<WordKey, WordTrace>::new);
             'intersection: while let Some(state) = pending.pop() {
                 visits += 1;
                 if visits > max_states {
@@ -334,35 +506,51 @@ impl<'a> Lattice<'a> {
                             }
                             continue;
                         }
-                        let buffered = words.len();
+                        let key = (arc.end, entry);
                         let value = (cost, source_arcs);
-                        match words.entry((arc.end, entry)) {
-                            Entry::Occupied(mut old) => {
-                                if DIAGNOSTICS {
+                        if let Some(first_seen) = &mut first_seen {
+                            match first_seen.entry(key) {
+                                Entry::Occupied(mut old) => {
                                     diagnostics.duplicate_edges += 1;
-                                }
-                                if value < *old.get() {
-                                    if DIAGNOSTICS {
+                                    if value < *old.get() {
                                         diagnostics.better_representatives += 1;
+                                        old.insert(value);
                                     }
-                                    old.insert(value);
                                 }
-                            }
-                            Entry::Vacant(slot) => {
-                                if buffered + graph.edges.len() == config.max_edges {
-                                    if DIAGNOSTICS {
-                                        diagnostics.first_rejected_start = Some(start);
-                                        diagnostics.published_before_cap = graph.edges.len();
-                                        diagnostics.buffered_before_cap = buffered;
-                                    }
-                                    graph.budget = Some(Budget::GraphEdges);
-                                    break 'intersection;
+                                Entry::Vacant(slot) => {
+                                    slot.insert(value);
                                 }
-                                slot.insert(value);
                             }
                         }
+                        if let Some(&previous) = table.buckets[start].rows.get(&key) {
+                            if value < previous {
+                                table.set(start, key, value);
+                            }
+                            continue;
+                        }
+                        if table.occupied == config.max_edges {
+                            if DIAGNOSTICS && diagnostics.first_rejected_start.is_none() {
+                                let buffered = table.buckets[start].rows.len();
+                                diagnostics.first_rejected_start = Some(start);
+                                diagnostics.published_before_cap = table.occupied - buffered;
+                                diagnostics.buffered_before_cap = buffered;
+                            }
+                            graph.budget = Some(Budget::GraphEdges);
+                            if admission == SchemeAdmission::Forward {
+                                break 'intersection;
+                            }
+                        }
+                        table.admit(start, key, value);
+                        if admission == SchemeAdmission::ReachableSuffix {
+                            table.suffix[start] |= table.suffix[arc.end];
+                        }
                     }
-                    if arc.end < graph.letters.len() && source_arcs.len < MAX_WORD_ARCS {
+                    // Trie 叶节点无法再接受任何完整音节，跳过已证实无后继的状态。
+                    if arc.end < position_count
+                        && source_arcs.len < MAX_WORD_ARCS
+                        && (admission == SchemeAdmission::Forward
+                            || !lexicon.trie[node].next.is_empty())
+                    {
                         let mut boundaries = state.boundaries;
                         boundaries.insert(canonical_len);
                         let value = (cost, source_arcs);
@@ -391,7 +579,19 @@ impl<'a> Lattice<'a> {
                     }
                 }
             }
-            for ((end, entry), (cost, source_arcs)) in words {
+            unfinished = None;
+            if graph.budget.is_some() && admission == SchemeAdmission::Forward {
+                break;
+            }
+        }
+        if admission == SchemeAdmission::Forward
+            && let Some(start) = unfinished
+        {
+            // 旧相交预算只发布处理完整的起点；图边触顶已在内部退出。
+            table.buckets[start].rows.clear();
+        }
+        for (start, bucket) in table.buckets.into_iter().enumerate() {
+            for ((end, entry), (cost, source_arcs)) in bucket.rows {
                 let index = graph.edges.len();
                 graph.edges.push(Edge {
                     start,
@@ -403,9 +603,6 @@ impl<'a> Lattice<'a> {
                 });
                 graph.interpreted.as_mut().unwrap().push(cost, &source_arcs);
                 graph.outgoing[start].push(index);
-            }
-            if graph.budget.is_some() {
-                break;
             }
         }
         let interpreted = graph.interpreted.as_mut().unwrap();
@@ -440,6 +637,15 @@ impl<'a> Lattice<'a> {
 
     pub fn scheme_graph_diagnostics(&self) -> Option<&SchemeGraphDiagnostics> {
         self.interpreted.as_ref()?.diagnostics.as_ref()
+    }
+
+    /// 继续报告图边截断；其保留的完整路径可供按位置搜索使用。
+    pub fn has_reachable_suffix_graph_cap(&self) -> bool {
+        self.budget == Some(Budget::GraphEdges)
+            && self
+                .interpreted
+                .as_ref()
+                .is_some_and(|graph| graph.admission == SchemeAdmission::ReachableSuffix)
     }
 }
 

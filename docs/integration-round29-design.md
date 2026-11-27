@@ -19,7 +19,7 @@
 | `crates/cloudleaf-search` | 固定预算图生成、参考对照、52 个截断事件和两个标注目标；独立普通计时及分配探针 |
 | `crates/cloudleaf-input`、`apps/cloudleaf-settings` | 分层快照、稳定身份、配置、后台准备、旧模型绑定及独立回退 |
 | `adapters/windows`、`apps/cloudleaf-translation-panel` | 双核心切换、宿主回执、组合与 Unknown 安全、设置中心实际控制、旧释义与翻译失效 |
-| `tools/release_stage.py`、`config/input-resources` | 发行档绑定资源声明，参考源与实际包含性校验，兼容旧清单 |
+| `tools/release_stage.py`、`config/language-resources.json` | 发行档绑定资源声明，参考源与实际包含性校验，兼容旧清单 |
 | `tools/performance`、`.github/workflows/ci.yml` | 同版本 171 键真实 Worker 交替配对、各专项与精确推送 CI 证据 |
 
 现有 16 项检查与历史 837 组搜索、188,325 次机械对照、480 条语言研发样本、68 条混排及 63 条真实译文全部保留。失败、数据原件和逐事件结果保留在 Git 外。正式准确率、词频及桌面验收继续以真实授权材料和环境为准。

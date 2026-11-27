@@ -49,6 +49,29 @@ pub fn profile_scheme_query<'a>(
     Profile,
     cloudleaf_pinyin::InterpretationProfile,
 ) {
+    profile_scheme_query_with_admission(
+        lexicon,
+        input,
+        config,
+        scheme,
+        model,
+        crate::SchemeAdmission::for_scheme(scheme),
+    )
+}
+
+/// 以冻结输入比较触顶选边策略；输入核心继续使用生产策略。
+pub fn profile_scheme_query_with_admission<'a>(
+    lexicon: &'a Lexicon,
+    input: &str,
+    config: &Config,
+    scheme: &cloudleaf_pinyin::SchemeConfig,
+    model: Option<&BigramModel>,
+    admission: crate::SchemeAdmission,
+) -> (
+    Result<(Lattice<'a>, SearchResult), SearchError>,
+    Profile,
+    cloudleaf_pinyin::InterpretationProfile,
+) {
     if scheme.is_default() {
         let (result, profile) = profile_query(lexicon, input, config, model, None);
         return (
@@ -76,7 +99,7 @@ pub fn profile_scheme_query<'a>(
             SearchError::new(crate::ErrorKind::InvalidInput, "输入方案配置或按键无效")
         })?;
         let stamp = profile.start(Phase::SchemeIntersection);
-        let graph = Lattice::from_phonetic(lexicon, input, config, scheme, hypotheses);
+        let graph = Lattice::from_phonetic(lexicon, input, config, scheme, hypotheses, admission);
         profile.stop(Phase::SchemeIntersection, stamp);
         let graph = graph?;
         crate::search::search_observed(lexicon, &graph, config, model, None, &mut profile)

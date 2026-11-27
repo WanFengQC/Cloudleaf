@@ -95,6 +95,108 @@ fn wait(panel: &mut PanelController, predicate: impl Fn(&PanelController) -> boo
 }
 
 #[test]
+fn active_dictionary_identity_invalidates_panel_definition_and_translation() {
+    use cloudleaf_settings::{
+        DictionaryIdentity, LanguageResourceIdentity, LanguageResourceRepository,
+        ResourceAdmission, ResourceReceipt, ResourceState,
+    };
+    let fixation = Fixture::new();
+    let repo = LanguageResourceRepository::new(fixation.0.clone());
+    let catalog = fixation.catalog();
+    let sha = "a".repeat(64);
+    let index = json!({
+        "format":"cloudleaf-semantic-lookup-v1","schema_version":1,"scope":"research_only",
+        "bundle_manifest_sha256":sha,"content_sha256":sha,
+        "catalogs":[{"namespace":"zh","language":"zh","manifest_sha256":sha,"facts_sha256":sha,"runtime_sha256":sha}],
+        "sources":[{"id":"fixture","version":"1","artifact_sha256":sha,"license_id":"MIT","status":"research_only"}],
+        "entries":[{"namespace":"zh","entry_id":"word:1","headword":"你好🙂"}],
+        "senses":[{"id":"sense:1","namespace":"zh","entry_id":"word:1","language":"zh","definition":"hello",
+                   "english_source_gloss":true,"part_of_speech":null,
+                   "assertions":[{"source_id":"fixture","unit_id":"1","pointer":"test:1","sha256":sha}]}],
+        "relations":[],"phrases":[]
+    });
+    let index_bytes = serde_json::to_vec(&index).unwrap();
+    let index_sha: String = digest(&SHA256, &index_bytes)
+        .as_ref()
+        .iter()
+        .map(|byte| format!("{byte:02x}"))
+        .collect();
+    let index_path = fixation.0.join("definitions.json");
+    fs::write(&index_path, index_bytes).unwrap();
+    let mut panel = PanelController::new(
+        fixation.0.clone(),
+        Some(catalog),
+        Arc::new(FixtureStore::default()),
+    )
+    .unwrap();
+    wait(&mut panel, |state| state.available());
+    let mut receipt = ResourceReceipt {
+        host_id: "owned-test".into(),
+        process_id: std::process::id(),
+        desired_revision: 1,
+        active_revision: 1,
+        generation: 1,
+        active: LanguageResourceIdentity {
+            base: DictionaryIdentity {
+                version: "old".into(),
+                runtime_sha256: sha.clone(),
+                source_id: "fixture".into(),
+                source_sha256: None,
+                source_lock: None,
+                source_lock_sha256: None,
+                license_id: "MIT".into(),
+                license_sha256: None,
+                admission: ResourceAdmission::StartupUnregistered,
+            },
+            supplement: None,
+            snapshot_sha256: sha,
+            model_sha256: None,
+        },
+        user_generation: None,
+        state: ResourceState::Applied,
+        error: None,
+    };
+    repo.publish_receipt(&receipt).unwrap();
+    panel.refresh_runtime_settings();
+    wait(&mut panel, |state| {
+        state.dictionary_hosts == [receipt.clone()]
+    });
+    panel.set_text("你好🙂".into());
+    start_after_queue_drains(&mut panel);
+    wait(&mut panel, |state| state.result().is_some());
+    panel
+        .lookup_definition(index_path, index_sha, DefinitionDirection::ChineseHeadword)
+        .unwrap();
+    wait(&mut panel, |state| {
+        state.definitions.contents.contains("sense:1")
+    });
+    receipt.desired_revision = 2;
+    receipt.state = ResourceState::Deferred;
+    repo.publish_receipt(&receipt).unwrap();
+    panel.refresh_runtime_settings();
+    wait(&mut panel, |state| {
+        state.dictionary_hosts == [receipt.clone()]
+    });
+    assert!(panel.result().is_some());
+    assert!(panel.definitions.contents.contains("sense:1"));
+
+    receipt.active_revision = 2;
+    receipt.generation += 1;
+    receipt.active.base.version = "new".into();
+    receipt.active.snapshot_sha256 = "b".repeat(64);
+    receipt.state = ResourceState::Applied;
+    repo.publish_receipt(&receipt).unwrap();
+    panel.refresh_runtime_settings();
+    wait(&mut panel, |state| {
+        state.dictionary_hosts == [receipt.clone()]
+    });
+    assert_eq!(panel.text, "你好🙂");
+    assert!(panel.definitions.contents.is_empty());
+    assert!(panel.result().is_none());
+    assert!(panel.copy_text().is_err());
+}
+
+#[test]
 fn definitions_keep_long_source_entries_and_drop_pending_results_after_edit() {
     let local = Fixture::new();
     let sha = "a".repeat(64);

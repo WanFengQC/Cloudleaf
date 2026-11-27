@@ -1,4 +1,5 @@
 import hashlib
+import json
 import os
 from pathlib import Path
 import subprocess
@@ -24,7 +25,7 @@ class ReleaseStageTests(unittest.TestCase):
         (self.user / "user-dictionary.tsv").write_bytes(b"existing user dictionary")
         self.store = release_stage.managed(self.root)
 
-    def artifact(self, subdir, version, binary):
+    def artifact(self, subdir, version, binary, *, seal=True):
         folder = self.parent / subdir
         files = {
             "bin/cloudleaf-cli.exe": binary,
@@ -38,7 +39,8 @@ class ReleaseStageTests(unittest.TestCase):
             path = folder / name
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(data)
-        release_stage.seal(folder, version, "a" * 40)
+        if seal:
+            release_stage.seal(folder, version, "a" * 40)
         return folder
 
     def test_idempotent_install_upgrade_corrupt_current_rollback_and_uninstall(self):
@@ -132,9 +134,10 @@ class ReleaseStageTests(unittest.TestCase):
         (dictionary / ".pending-00000000000000000002-00.clu").write_bytes(b"uncommitted")
         (self.user / "credentials.json").write_bytes(b"excluded")
         (self.user / "input-settings.json.bak").write_bytes(b"previous configuration")
+        (self.user / "language-resources.json").write_bytes(b"private resource selections")
         receipt = release_stage.migrate_user(self.root, target)
         result = target / "user"
-        self.assertEqual({"settings.json", "input-settings.json.bak", f"user-dictionary/{saved.name}"},
+        self.assertEqual({"settings.json", "input-settings.json.bak", "language-resources.json", f"user-dictionary/{saved.name}"},
                          {row["path"] for row in receipt["files"]})
         for row in receipt["files"]:
             self.assertEqual((self.user / row["path"]).read_bytes(), (result / row["path"]).read_bytes())
@@ -151,6 +154,88 @@ class ReleaseStageTests(unittest.TestCase):
             release_stage.migrate_user(self.root, target)
         self.assertFalse((target / "user").exists())
         self.assertEqual((self.user / "settings.json").read_bytes(), b"existing user settings")
+
+
+    def test_dictionary_registry_pins_source_archive_and_license_identity(self):
+        registry = json.loads(release_stage.DICTIONARY_CATALOG.read_bytes())
+        root = release_stage.DICTIONARY_CATALOG.parents[1]
+        seen = set()
+        for entry in registry["resources"]:
+            identity = (entry["slot"], entry["runtime_sha256"])
+            self.assertNotIn(identity, seen)
+            seen.add(identity)
+            lock_raw = (root / entry["source_lock"]).read_bytes()
+            self.assertEqual(entry["source_lock_sha256"], hashlib.sha256(lock_raw).hexdigest())
+            lock = json.loads(lock_raw)
+            self.assertEqual(lock["review_status"], "approved")
+            self.assertEqual(entry["source_id"], lock["source_id"])
+            self.assertEqual(entry["source_sha256"], lock["sha256"])
+            self.assertEqual(entry["license_id"], lock["license_id"])
+            self.assertEqual(entry["license_sha256"], lock["license_sha256"])
+            license_raw = (root / lock["license_file"]).read_bytes()
+            self.assertEqual(entry["license_sha256"], hashlib.sha256(license_raw).hexdigest())
+            self.assertIn(entry["admission"], {"approved_source", "research_only"})
+            if entry["slot"] == "supplement":
+                self.assertEqual(entry["admission"], "research_only")
+
+    def test_resource_scope_binds_catalog_and_keeps_external_dictionary_default_off(self):
+        release = self.artifact("round29", "r29.1", b"binary", seal=False)
+        staged = release / "resources/config/language-resources.json"
+        staged.parent.mkdir()
+        staged.write_bytes(release_stage.DICTIONARY_CATALOG.read_bytes())
+        descriptor = release_stage.stamp_dictionaries(release)
+        self.assertIsNone(descriptor["base_payload"])
+        self.assertEqual({"enabled_by_default": False, "scope": "external"}, descriptor["supplement"])
+        self.assertEqual({"generation": None, "scope": "external"}, descriptor["user_dictionary"])
+        with self.assertRaisesRegex(ValueError, "不可重写"):
+            release_stage.stamp_dictionaries(release)
+        release_stage.seal(release, "r29.1", "a" * 40)
+        checked = release_stage.verify(release)
+        self.assertIn(release_stage.DICTIONARY_SCOPE, {row["path"] for row in checked["files"]})
+        staged.write_bytes(b"{}")
+        with self.assertRaisesRegex(ValueError, "身份"):
+            release_stage.verify(release)
+
+
+    def test_approved_historical_registry_subset_can_be_verified_for_rollback(self):
+        release = self.artifact("old-catalog", "r29.1", b"binary", seal=False)
+        staged = release / "resources/config/language-resources.json"
+        old = json.loads(release_stage.DICTIONARY_CATALOG.read_bytes())
+        old["resources"] = [old["resources"][0]]
+        raw = json.dumps(old, ensure_ascii=False).encode()
+        staged.parent.mkdir()
+        staged.write_bytes(raw)
+        descriptor = {
+            "schema_version": 1, "catalog_sha256": hashlib.sha256(raw).hexdigest(),
+            "base_payload": None, "supplement": {"enabled_by_default": False, "scope": "external"},
+            "user_dictionary": {"generation": None, "scope": "external"}
+        }
+        (release / release_stage.DICTIONARY_SCOPE).write_text(json.dumps(descriptor), encoding="utf-8")
+        receipt = release_stage.seal(release, "r29.1", "a" * 40)
+        host = release_stage.install(self.root, release)
+        self.assertEqual(release_stage.status(self.root)["current"], host["current"])
+        self.assertEqual(release_stage.verify(release), receipt)
+
+    def test_release_refuses_unknown_lexicon_payload_even_when_requested_as_base(self):
+        release = self.artifact("round29", "r29.1", b"binary", seal=False)
+        staged = release / "resources/config/language-resources.json"
+        staged.parent.mkdir()
+        staged.write_bytes(release_stage.DICTIONARY_CATALOG.read_bytes())
+        runtime = "resources/runtime.data"
+        (release / runtime).write_bytes(b"# cloudleaf-lexicon-v2\n")
+        with self.assertRaisesRegex(ValueError, "缺少资源身份"):
+            release_stage.seal(release, "r29.1", "a" * 40)
+        with self.assertRaisesRegex(ValueError, "研究或未知"):
+            release_stage.stamp_dictionaries(release, runtime)
+        with self.assertRaisesRegex(ValueError, "未声明"):
+            release_stage.stamp_dictionaries(release)
+        (release / runtime).rename(release / "provenance/supplement.data")
+        with self.assertRaisesRegex(ValueError, "缺少资源身份"):
+            release_stage.seal(release, "r29.1", "a" * 40)
+        with self.assertRaisesRegex(ValueError, "仅允许"):
+            release_stage.stamp_dictionaries(release, "provenance/supplement.data")
+        self.assertFalse((release / release_stage.DICTIONARY_SCOPE).exists())
+        self.assertFalse((release / release_stage.MANIFEST).exists())
 
 
 if __name__ == "__main__":

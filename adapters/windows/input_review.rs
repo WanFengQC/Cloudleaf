@@ -100,6 +100,7 @@ pub(super) fn load_host_k(
         model,
         output_k,
         InputConfig::default(),
+        false,
     )
 }
 
@@ -109,6 +110,7 @@ pub(super) fn load_host_config(
     model: Option<(&str, &str)>,
     output_k: usize,
     input: InputConfig,
+    managed_resources: bool,
 ) -> Result<(Shared, String, usize)> {
     let text = std::fs::read_to_string(Path::new(runtime))
         .map_err(|_| Error::new(E_FAIL, "无法读取指定研发词典"))?;
@@ -151,9 +153,9 @@ pub(super) fn load_host_config(
             config.ranker = cloudleaf_search::Ranker::Bigram;
             config.method = cloudleaf_search::Method::ExactDag;
         }
-        Host::with_language(snapshot, config, language, input)?
+        Host::with_language(snapshot, config, language, input, managed_resources)?
     } else {
-        Host::with_search(snapshot, config, input)?
+        Host::with_search(snapshot, config, input, managed_resources)?
     };
     Ok((host, version, entries))
 }

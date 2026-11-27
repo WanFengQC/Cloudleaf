@@ -6,7 +6,10 @@ use crate::definitions::DefinitionDirection;
 use crate::platform::{WindowsCredentialStore, copy_unicode};
 use crate::resources::ResourceSlot;
 use crate::settings::{DirectionChoice, ProviderChoice, Settings, WorkerPriority, WorkerThreads};
-use cloudleaf_settings::{InputFuzzyPair, InputPreferences, InputScheme};
+use cloudleaf_settings::{
+    DictionaryIdentity, InputFuzzyPair, InputPreferences, InputScheme, ResourceAction,
+    ResourceSlot as DictionarySlot,
+};
 use cloudleaf_translation::{QualityStatus, Secret, TranslationError, TranslationKind};
 use std::cell::RefCell;
 use std::path::PathBuf;
@@ -88,6 +91,11 @@ const RESOURCE_PATH: usize = 502;
 const RESOURCE_HASH: usize = 503;
 const RESOURCE_BASE: usize = 504;
 const RESOURCE_SUPPLEMENT: usize = 505;
+const RESOURCE_SELECT_BASE: usize = 506;
+const RESOURCE_SELECT_SUPPLEMENT: usize = 507;
+const RESOURCE_ROLLBACK_BASE: usize = 508;
+const RESOURCE_ROLLBACK_SUPPLEMENT: usize = 509;
+const RESOURCE_ENABLE_SUPPLEMENT: usize = 510;
 const DEFINITION_INDEX: usize = 601;
 const DEFINITION_HASH: usize = 602;
 const DEFINITION_MODE: usize = 603;
@@ -292,9 +300,7 @@ unsafe extern "system" fn window_proc(
                         return 0;
                     }
                     WM_TIMER => {
-                        if matches!(state.page, SettingsPage::Resources | SettingsPage::Input)
-                            && state.runtime_refresh.elapsed() >= Duration::from_secs(1)
-                        {
+                        if state.runtime_refresh.elapsed() >= Duration::from_secs(1) {
                             state.controller.refresh_runtime_settings();
                             state.runtime_refresh = Instant::now();
                         }
@@ -679,12 +685,35 @@ impl WindowState {
                     true,
                 );
             }
+            for (id, label, x, y) in [
+                (RESOURCE_SELECT_BASE, "选用基础词典", 0, 189),
+                (RESOURCE_SELECT_SUPPLEMENT, "选用补充词典", 170, 189),
+                (RESOURCE_ROLLBACK_BASE, "回退基础词典", 0, 230),
+                (RESOURCE_ROLLBACK_SUPPLEMENT, "回退补充词典", 170, 230),
+            ] {
+                self.add(
+                    id,
+                    "BUTTON",
+                    label,
+                    BS_PUSHBUTTON as u32,
+                    [x, y, 160, 30],
+                    true,
+                );
+            }
+            self.add(
+                RESOURCE_ENABLE_SUPPLEMENT,
+                "BUTTON",
+                "启用已选补充词典（研究）",
+                BS_AUTOCHECKBOX as u32,
+                [0, 271, 340, 26],
+                true,
+            );
             self.add(
                 RESOURCES,
                 "EDIT",
                 "",
                 ES_MULTILINE as u32 | ES_READONLY as u32 | WS_VSCROLL | WS_BORDER,
-                [0, 198, 400, 415],
+                [0, 310, 400, 415],
                 true,
             );
             self.control_page = Some(SettingsPage::Definitions);
@@ -1277,16 +1306,41 @@ impl WindowState {
                     }
                     Ok(())
                 }
-                RESOURCE_BASE | RESOURCE_SUPPLEMENT => {
-                    let slot = if id == RESOURCE_BASE {
+                RESOURCE_BASE
+                | RESOURCE_SUPPLEMENT
+                | RESOURCE_SELECT_BASE
+                | RESOURCE_SELECT_SUPPLEMENT => {
+                    let slot = if matches!(id, RESOURCE_BASE | RESOURCE_SELECT_BASE) {
                         ResourceSlot::Base
                     } else {
                         ResourceSlot::Supplement
                     };
                     let path = read_text(self.control(RESOURCE_PATH), 4096).unwrap_or_default();
                     let hash = read_text(self.control(RESOURCE_HASH), 64).unwrap_or_default();
+                    if matches!(id, RESOURCE_BASE | RESOURCE_SUPPLEMENT) {
+                        self.controller
+                            .inspect_resource(slot, PathBuf::from(path), hash);
+                    } else {
+                        self.controller
+                            .select_dictionary(slot, PathBuf::from(path), hash);
+                    }
+                    Ok(())
+                }
+                RESOURCE_ROLLBACK_BASE | RESOURCE_ROLLBACK_SUPPLEMENT => {
+                    let slot = if id == RESOURCE_ROLLBACK_BASE {
+                        DictionarySlot::Base
+                    } else {
+                        DictionarySlot::Supplement
+                    };
                     self.controller
-                        .inspect_resource(slot, PathBuf::from(path), hash);
+                        .manage_dictionary(ResourceAction::Rollback(slot));
+                    Ok(())
+                }
+                RESOURCE_ENABLE_SUPPLEMENT => {
+                    let enable =
+                        SendMessageW(self.control(id), BM_GETCHECK, 0, 0) == BST_CHECKED as isize;
+                    self.controller
+                        .manage_dictionary(ResourceAction::SetSupplementEnabled(enable));
                     Ok(())
                 }
                 USER_OPEN..=USER_CLEAR_LEARNING => self.user_command(hwnd, id),
@@ -1715,6 +1769,28 @@ impl WindowState {
             }
 
             if self.page == SettingsPage::Resources {
+                let controller = &self.controller;
+                let editable =
+                    controller.dictionary_config.is_some() && !controller.dictionary_saving;
+                for id in RESOURCE_SELECT_BASE..=RESOURCE_ENABLE_SUPPLEMENT {
+                    EnableWindow(self.control(id), i32::from(editable));
+                }
+                let supplement_enabled = controller
+                    .dictionary_config
+                    .as_ref()
+                    .is_some_and(|config| config.supplement_enabled);
+                if !controller.dictionary_saving {
+                    SendMessageW(
+                        self.control(RESOURCE_ENABLE_SUPPLEMENT),
+                        BM_SETCHECK,
+                        if supplement_enabled {
+                            BST_CHECKED
+                        } else {
+                            BST_UNCHECKED
+                        } as usize,
+                        0,
+                    );
+                }
                 let summary = self.resource_text();
                 if summary != self.last_resources {
                     SetWindowTextW(self.control(RESOURCES), wide(&summary).as_ptr());
@@ -1726,7 +1802,57 @@ impl WindowState {
 
     fn resource_text(&self) -> String {
         use std::fmt::Write as _;
-        let mut summary = String::from("翻译提供者\r\n");
+        let mut summary = String::from("输入词典运行时\r\n");
+        let _ = writeln!(summary, "{}\r", self.controller.dictionary_notice);
+        if let Some(config) = &self.controller.dictionary_config {
+            let digest = |artifact: Option<&cloudleaf_settings::DictionaryArtifact>| {
+                artifact
+                    .map(|file| file.sha256().to_owned())
+                    .unwrap_or_else(|| "未记录".into())
+            };
+            let _ = write!(
+                summary,
+                "已保存修订：{}\r\n已选基础 SHA-256：{}\r\n基础回退 SHA-256：{}\r\n已选补充 SHA-256：{}\r\n补充回退 SHA-256：{}\r\n补充开关：{}\r\n",
+                config.revision,
+                digest(config.base.as_ref()),
+                digest(config.previous_base.as_ref()),
+                digest(config.supplement.as_ref()),
+                digest(config.previous_supplement.as_ref()),
+                if config.supplement_enabled {
+                    "开"
+                } else {
+                    "关"
+                }
+            );
+        }
+        if self.controller.dictionary_hosts.is_empty() {
+            summary.push_str("未收到在线宿主的词典状态\r\n");
+        }
+        for host in &self.controller.dictionary_hosts {
+            let status = host.state.label();
+            let _ = write!(
+                summary,
+                "\r\n宿主 {} · PID {} · {}\r\n希望修订 {} · 生效修订 {} · 快照代次 {}\r\n实际快照 SHA-256 {}\r\n输入模型 {}\r\n用户词库代次 {}\r\n{}\r\n",
+                host.host_id,
+                host.process_id,
+                status,
+                host.desired_revision,
+                host.active_revision,
+                host.generation,
+                host.active.snapshot_sha256,
+                host.active.model_sha256.as_deref().unwrap_or("结构排序"),
+                host.user_generation
+                    .map_or_else(|| "未发布用户层".into(), |n| n.to_string()),
+                host.error.as_deref().unwrap_or("")
+            );
+            render_dictionary_identity(&mut summary, "基础", &host.active.base);
+            if let Some(supplement) = &host.active.supplement {
+                render_dictionary_identity(&mut summary, "补充", supplement);
+            } else {
+                summary.push_str("补充未生效\r\n");
+            }
+        }
+        summary.push_str("\r\n翻译提供者\r\n");
         if let Some(identity) = self.controller.provider_identity() {
             let _ = write!(
                 summary,
@@ -1828,6 +1954,22 @@ impl WindowState {
         );
         summary
     }
+}
+
+fn render_dictionary_identity(summary: &mut String, role: &str, identity: &DictionaryIdentity) {
+    use std::fmt::Write as _;
+    let _ = write!(
+        summary,
+        "{role} {} · 来源 {} · 许可 {} · {}\r\nRuntime SHA-256 {}\r\n来源原件 SHA-256 {}\r\n来源锁 SHA-256 {}\r\n许可证 SHA-256 {}\r\n",
+        identity.version,
+        identity.source_id,
+        identity.license_id,
+        identity.admission.label(),
+        identity.runtime_sha256,
+        identity.source_sha256.as_deref().unwrap_or("未报告"),
+        identity.source_lock_sha256.as_deref().unwrap_or("未报告"),
+        identity.license_sha256.as_deref().unwrap_or("未报告"),
+    );
 }
 
 fn selected_direction(value: isize) -> DirectionChoice {

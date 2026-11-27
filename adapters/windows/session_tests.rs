@@ -390,6 +390,7 @@ pub(crate) fn sentence_host(mode: u8, readonly: bool) -> Shared {
             page_size: 2,
             max_candidates: 5,
         },
+        false,
     )
     .unwrap();
     *host.context.borrow_mut() = Some(FaultContext { mode, readonly }.into());
@@ -447,6 +448,7 @@ fn language_host_kind(character: bool) -> Shared {
         },
         language,
         InputConfig::default(),
+        false,
     )
     .unwrap();
     host.engine.borrow_mut().handle(InputEvent::Activate);

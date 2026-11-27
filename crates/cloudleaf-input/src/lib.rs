@@ -87,6 +87,23 @@ impl PreparedIdleInput<'_> {
     }
 }
 
+pub struct PreparedIdleResources<'a> {
+    engine: &'a mut InputEngine,
+    replacement: sentence::SentenceBackend,
+}
+
+impl PreparedIdleResources<'_> {
+    pub fn capacity_bounds(&self) -> SearchCapacityBounds {
+        self.replacement.capacity_bounds()
+    }
+
+    pub fn apply(self) {
+        self.engine.sentence = Some(self.replacement);
+        self.engine.advance_revision();
+        self.engine.search_diagnostic = None;
+    }
+}
+
 /// 只证明当前引擎确实选择过候选；本对象不证明宿主Applied，不能自行触发学习。
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct SelectionEvidence {
@@ -405,6 +422,31 @@ impl InputEngine {
     /// 有活动组合或待确认事务时由宿主保留设置，等待原输入状态正常收尾。
     pub fn idle_for_preferences(&self) -> bool {
         self.preedit.is_empty() && self.pending_commit.is_none() && self.failed_commit.is_none()
+    }
+
+    pub fn prepare_idle_resources(
+        &mut self,
+        snapshot: Arc<SearchSnapshot>,
+        language: Option<Arc<LanguageSnapshot>>,
+    ) -> Result<PreparedIdleResources<'_>, CoreError> {
+        if !self.idle_for_preferences() || self.pending_selection.is_some() {
+            return Err(CoreError::new(
+                ErrorCode::CommitPending,
+                "组合或提交尚未结束",
+            ));
+        }
+        if self.revision == u64::MAX {
+            return Err(CoreError::new(ErrorCode::InvalidInput, "输入修订号已耗尽"));
+        }
+        let replacement = self
+            .sentence
+            .as_ref()
+            .ok_or_else(|| CoreError::new(ErrorCode::InvalidConfig, "非整句后端"))?
+            .idle_resources(snapshot, language)?;
+        Ok(PreparedIdleResources {
+            engine: self,
+            replacement,
+        })
     }
 
     pub fn prepare_idle_preferences(

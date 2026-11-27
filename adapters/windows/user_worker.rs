@@ -13,6 +13,15 @@ use std::{
 
 pub(super) enum Work {
     Manage(user_panel::Command),
+    PrepareRebase {
+        revision: u64,
+        base: Arc<SearchSnapshot>,
+        language: Option<Arc<LanguageSnapshot>>,
+    },
+    AcceptRebase {
+        base: Arc<SearchSnapshot>,
+        language: Option<Arc<LanguageSnapshot>>,
+    },
     Learn {
         event: SelectionEvent,
         generation: u64,
@@ -30,6 +39,7 @@ pub(super) struct Prepared {
 }
 pub(super) enum Reply {
     Ready(Prepared),
+    Rebased(u64, std::result::Result<Prepared, String>),
     Error(String),
 }
 pub(super) struct Worker {
@@ -196,8 +206,8 @@ fn prepare(
 }
 
 fn run(
-    base: Arc<SearchSnapshot>,
-    language: Option<Arc<LanguageSnapshot>>,
+    mut base: Arc<SearchSnapshot>,
+    mut language: Option<Arc<LanguageSnapshot>>,
     path: PathBuf,
     commands: Receiver<(Work, u64)>,
     results: SyncSender<Reply>,
@@ -237,6 +247,38 @@ fn run(
         }
     }
     while let Ok((work, epoch)) = commands.recv() {
+        let work = match work {
+            Work::PrepareRebase {
+                revision,
+                base,
+                language,
+            } => {
+                let staged = dictionary
+                    .as_ref()
+                    .ok_or_else(|| "用户词库待恢复，保留原词典快照".to_owned())
+                    .and_then(|dictionary| {
+                        prepare(
+                            &base,
+                            &language,
+                            dictionary,
+                            "用户词库已随基础资源生效".into(),
+                        )
+                    });
+                if results.send(Reply::Rebased(revision, staged)).is_err() {
+                    break;
+                }
+                continue;
+            }
+            Work::AcceptRebase {
+                base: next,
+                language: model,
+            } => {
+                base = next;
+                language = model;
+                continue;
+            }
+            other => other,
+        };
         let result = (|| -> std::result::Result<Prepared, String> {
             let import = match &work {
                 Work::Manage(user_panel::Command::Import { path }) => {

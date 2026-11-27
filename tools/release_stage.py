@@ -22,11 +22,14 @@ from tools.data_pipeline.pipeline import (
 from tools.data_pipeline.recovery import recover_store
 
 MANIFEST = "manifest.json"
+DICTIONARY_SCOPE = "resources/dictionary-lifecycle.json"
+DICTIONARY_CATALOG = Path(__file__).resolve().parents[1] / "config/language-resources.json"
 ROLES = {"bin", "licenses", "provenance", "resources"}
 COMMIT = re.compile(r"[a-f0-9]{40}")
 VERSION = re.compile(r"[a-z0-9][a-z0-9.-]{0,47}")
 SHA256 = re.compile(r"[a-f0-9]{64}")
-USER_CONFIG = ("settings.json", "settings.json.bak", "input-settings.json", "input-settings.json.bak")
+USER_CONFIG = ("settings.json", "settings.json.bak", "input-settings.json", "input-settings.json.bak",
+               "language-resources.json")
 USER_GENERATION = re.compile(r"generation-[0-9]{20}\.clu")
 
 
@@ -54,7 +57,8 @@ def file_record(root, path):
             or any(not re.fullmatch(r"[A-Za-z0-9_-][A-Za-z0-9_.+-]*", component)
                    or component.endswith(".") for component in parts)
             or path.suffix.lower() in {".safetensors", ".pt", ".pth", ".bin"}
-            or path.name.lower() in {"settings.json", "input-settings.json", "user-dictionary.tsv", "credentials.json"}):
+            or path.name.lower() in {"settings.json", "input-settings.json", "user-dictionary.tsv", "credentials.json"}
+            or path.name == "language-resources.json" and relative != "resources/config/language-resources.json"):
         raise ValueError(f"发行包路径或资源类型无效：{relative}")
     with path.open("rb") as stream:
         checksum = hashlib.file_digest(stream, "sha256").hexdigest()
@@ -75,11 +79,96 @@ def records(root):
     return result
 
 
+def dictionary_scope(release, files, proposed=None):
+    by_path = {row["path"]: row["sha256"] for row in files}
+    material = {}
+    for name in by_path:
+        if name != DICTIONARY_SCOPE:
+            with (release / name).open("rb") as stream:
+                if stream.readline(128).rstrip(b"\r\n") == b"# cloudleaf-lexicon-v2":
+                    material[name] = by_path[name]
+    if DICTIONARY_SCOPE not in by_path:
+        if material:
+            raise ValueError("发行词典缺少资源身份清单")
+        return
+
+    descriptor = read_json(release / DICTIONARY_SCOPE) if proposed is None else proposed
+    if (not isinstance(descriptor, dict)
+            or set(descriptor) != {"schema_version", "catalog_sha256", "base_payload", "supplement", "user_dictionary"}
+            or type(descriptor["schema_version"]) is not int or descriptor["schema_version"] != 1
+            or descriptor["supplement"] != {"enabled_by_default": False, "scope": "external"}
+            or descriptor["user_dictionary"] != {"generation": None, "scope": "external"}):
+        raise ValueError("词典生命周期清单无效")
+    catalog_name = "resources/config/language-resources.json"
+    if (catalog_name not in by_path or descriptor["catalog_sha256"] != by_path[catalog_name]
+            or (release / catalog_name).stat().st_size > 65_536):
+        raise ValueError("发行包的词典来源注册表与锁定版本不符")
+    catalog = read_json(release / catalog_name)
+    trusted = read_json(DICTIONARY_CATALOG)["resources"]
+    if (not isinstance(catalog, dict) or set(catalog) != {"schema_version", "resources"}
+            or type(catalog["schema_version"]) is not int or catalog["schema_version"] != 1
+            or not isinstance(catalog["resources"], list) or not catalog["resources"]
+            or any(item not in trusted for item in catalog["resources"])):
+        raise ValueError("发行包的词典来源注册表包含未知身份")
+    base = descriptor["base_payload"]
+    if base is None:
+        if material:
+            raise ValueError("未声明的词典不得进入发行包")
+        return
+    if (not isinstance(base, dict)
+            or set(base) != {"path", "runtime_sha256", "enabled_by_default"}
+            or base["enabled_by_default"] is not True
+            or not isinstance(base["path"], str) or not isinstance(base["runtime_sha256"], str)
+            or not base["path"].startswith("resources/")
+            or material != {base["path"]: base["runtime_sha256"]}):
+        raise ValueError("发行包仅允许声明一份经授权的基础词典")
+    entry = next((item for item in catalog["resources"] if item["slot"] == "base"
+                  and item["admission"] == "approved_source"
+                  and item["runtime_sha256"] == base["runtime_sha256"]), None)
+    if entry is None:
+        raise ValueError("研究或未知词典不得进入发行包")
+    source = "resources/" + entry["source_lock"]
+    license_id = entry["license_id"]
+    if (by_path.get(source) != entry["source_lock_sha256"]
+            or by_path.get(f"licenses/data/{license_id}.txt") != entry["license_sha256"]):
+        raise ValueError("发行包缺少原件来源锁或许可证")
+    notices = [str(PurePosixPath(base["path"]).parent / name) for name in ("NOTICE.txt", "MODIFICATIONS.txt")]
+    for name in notices:
+        if name not in by_path or (release / name).stat().st_size > 65_536 or not (release / name).read_bytes().strip():
+            raise ValueError("基础词典缺少署名或修改说明")
+
+
+def stamp_dictionaries(release, base_path=None):
+    release = isolated(release)
+    if (release / MANIFEST).exists() or (release / DICTIONARY_SCOPE).exists():
+        raise ValueError("不可重写词典生命周期清单或已经封装的发行包")
+    catalog_path = release / "resources/config/language-resources.json"
+    assert_plain_path(catalog_path)
+    raw = DICTIONARY_CATALOG.read_bytes()
+    if not catalog_path.is_file() or catalog_path.read_bytes() != raw:
+        raise ValueError("从相同构建获取固定词典来源注册表")
+    files = records(release)
+    base = None
+    if base_path is not None:
+        entry = next((row for row in files if row["path"] == base_path), None)
+        if entry is None:
+            raise ValueError("指定的发布词典文件不存在")
+        base = {"path": base_path, "runtime_sha256": entry["sha256"], "enabled_by_default": True}
+    data = {"schema_version": 1, "catalog_sha256": hashlib.sha256(raw).hexdigest(),
+            "base_payload": base, "supplement": {"enabled_by_default": False, "scope": "external"},
+            "user_dictionary": {"generation": None, "scope": "external"}}
+    # 先以待发布字节核验同一套条件，失败时不存在已发布描述符。
+    dictionary_scope(release, [*files, {"path": DICTIONARY_SCOPE, "sha256": ""}], data)
+    atomic_json(release / DICTIONARY_SCOPE, data)
+    return data
+
+
 def verify(release):
     assert_plain_path(release / MANIFEST)
     if (release / MANIFEST).stat().st_size > 2_000_000:
         raise ValueError("发行清单超限")
     manifest = read_json(release / MANIFEST)
+    files = records(release)
     if (not isinstance(manifest, dict)
             or set(manifest) != {"schema_version", "scope", "version", "commit", "files"}
             or type(manifest["schema_version"]) is not int
@@ -87,8 +176,9 @@ def verify(release):
             or manifest["scope"] != "isolated-rehearsal"
             or not VERSION.fullmatch(str(manifest["version"]))
             or not COMMIT.fullmatch(str(manifest["commit"]))
-            or manifest["files"] != records(release)):
+            or manifest["files"] != files):
         raise ValueError("发行清单、文件身份或范围不匹配")
+    dictionary_scope(release, files)
     return manifest
 
 
@@ -102,8 +192,10 @@ def seal(release, version, commit):
         if (existing["version"], existing["commit"]) == (version, commit):
             return existing
         raise ValueError("不可改写已封装清单")
+    files = records(release)
+    dictionary_scope(release, files)
     manifest = {"schema_version": 1, "scope": "isolated-rehearsal",
-                "version": version, "commit": commit, "files": records(release)}
+                "version": version, "commit": commit, "files": files}
     atomic_json(path, manifest)
     return verify(release)
 
@@ -196,7 +288,7 @@ def migrate_user(source_root, target_root):
     if dictionary.is_dir():
         selected.extend(Path("user-dictionary") / path.name for path in sorted(dictionary.iterdir())
                         if USER_GENERATION.fullmatch(path.name))
-    if not selected or len(selected) > 4 + 64:
+    if not selected or len(selected) > len(USER_CONFIG) + 64:
         raise ValueError("没有可迁移的已发布用户资料，或文件数超限")
 
     with publish_lock(target_store):
@@ -235,6 +327,9 @@ def main():
     seal_cmd.add_argument("release", type=Path)
     seal_cmd.add_argument("version")
     seal_cmd.add_argument("commit")
+    dictionaries = commands.add_parser("stamp-dictionaries")
+    dictionaries.add_argument("release", type=Path)
+    dictionaries.add_argument("--base-payload")
     signing = commands.add_parser("signature-request")
     signing.add_argument("release", type=Path)
     migration = commands.add_parser("migrate-user")
@@ -251,6 +346,8 @@ def main():
     match settings.command:
         case "seal":
             output = seal(settings.release, settings.version, settings.commit)
+        case "stamp-dictionaries":
+            output = stamp_dictionaries(settings.release, settings.base_payload)
         case "signature-request":
             output = signature_request(settings.release)
         case "migrate-user":

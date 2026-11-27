@@ -6,7 +6,7 @@ use cloudleaf_search::{
 };
 use cloudleaf_types::{Candidate, CoreError, ErrorCode};
 use ring::digest::{Context, SHA256, digest};
-use std::sync::Arc;
+use std::{collections::BTreeMap, fmt::Write, sync::Arc};
 
 const INPUT_BYTES: usize = 64;
 const CANDIDATE_ID_BYTES: usize = 64;
@@ -23,16 +23,38 @@ pub struct SearchSnapshot {
 }
 
 impl SearchSnapshot {
-    pub fn from_verified_tsv(text: &str, expected_sha256: &str) -> Result<Self, CoreError> {
-        let actual = hex(digest(&SHA256, text.as_bytes()).as_ref());
-        if actual != expected_sha256 || !text.starts_with("# cloudleaf-lexicon-v2\n") {
+    /// 对固定来源文件检查格式标记和全量内容身份，构建索引仍由 reader 完成。
+    pub fn verify_tsv(text: &str, expected_sha256: &str) -> Result<(), CoreError> {
+        if !text.starts_with("# cloudleaf-lexicon-v2\n")
+            || hex(digest(&SHA256, text.as_bytes()).as_ref()) != expected_sha256
+        {
             return Err(CoreError::new(
                 ErrorCode::InvalidDictionary,
                 "词典版本或实际SHA-256不符",
             ));
         }
+        Ok(())
+    }
+
+    /// 已索引快照可复用，只需核对新路径读回的完整内容身份。
+    pub fn verify_tsv_identity(&self, text: &str, expected_sha256: &str) -> Result<(), CoreError> {
+        if self.version != expected_sha256 {
+            return Err(CoreError::new(
+                ErrorCode::InvalidDictionary,
+                "词典快照身份不符",
+            ));
+        }
+        Self::verify_tsv(text, expected_sha256)
+    }
+
+    pub fn from_verified_tsv(text: &str, expected_sha256: &str) -> Result<Self, CoreError> {
+        Self::verify_tsv(text, expected_sha256)?;
         let lexicon = Lexicon::from_tsv(text)
             .map_err(|_| CoreError::new(ErrorCode::InvalidDictionary, "词典快照格式或索引无效"))?;
+        Ok(Self::unlayered(lexicon, expected_sha256.to_owned()))
+    }
+
+    fn unlayered(lexicon: Lexicon, version: String) -> Self {
         let max_text_bytes = lexicon
             .entries()
             .iter()
@@ -59,13 +81,70 @@ impl SearchSnapshot {
             })
             .max()
             .unwrap_or(0);
-        Ok(Self {
+        Self {
             lexicon,
-            version: actual,
+            version,
             max_text_bytes,
             max_edge_source_bytes,
             base_version: None,
-        })
+        }
+    }
+
+    /// 独立资源通过各自校验后，后台建立组合索引。
+    pub fn with_supplement(&self, supplement: &Self) -> Result<Self, CoreError> {
+        let invalid = || CoreError::new(ErrorCode::InvalidDictionary, "词典层身份冲突或超出容量");
+        if self.base_version.is_some() || supplement.base_version.is_some() {
+            return Err(invalid());
+        }
+        let base_entries: BTreeMap<_, _> = self
+            .entries()
+            .iter()
+            .map(|entry| (entry.id.as_str(), entry))
+            .collect();
+        let mut tsv = String::from(
+            "# cloudleaf-lexicon-v2\nid\tpinyin\ttext\tfrequency\tfrequency_kind\tannotation\tsource\tsource_record_id\tlicense_id\n",
+        );
+        for entry in self
+            .entries()
+            .iter()
+            .chain(supplement.entries().iter().filter(|entry| {
+                base_entries
+                    .get(entry.id.as_str())
+                    .is_none_or(|base| *base != *entry)
+            }))
+        {
+            let kind = match entry.frequency_kind {
+                cloudleaf_search::FrequencyKind::Unknown => "unknown",
+                cloudleaf_search::FrequencyKind::Manual => "manual",
+                cloudleaf_search::FrequencyKind::Count => "count",
+            };
+            let frequency = entry
+                .frequency
+                .map_or_else(String::new, |item| item.to_string());
+            writeln!(
+                tsv,
+                "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}",
+                entry.id,
+                entry.pinyin,
+                entry.text,
+                frequency,
+                kind,
+                entry.annotation,
+                entry.source,
+                entry.source_record_id,
+                entry.license_id,
+            )
+            .expect("写入 String 不失败");
+            if tsv.len() > 64 * 1024 * 1024 {
+                return Err(invalid());
+            }
+        }
+        // 同 ID 的冲突行仍由解析入口拒绝；不同来源保留独立 ID。
+        let lexicon = Lexicon::from_tsv(&tsv).map_err(|_| invalid())?;
+        Ok(Self::unlayered(
+            lexicon,
+            hex(digest(&SHA256, tsv.as_bytes()).as_ref()),
+        ))
     }
 
     pub fn version(&self) -> &str {
@@ -158,15 +237,29 @@ impl SearchSnapshot {
     }
 
     pub fn capacity_bounds(&self) -> SearchCapacityBounds {
-        self.bounds(50)
+        self.bounds(crate::MAX_CANDIDATES)
+    }
+
+    pub fn managed_resource_capacity_bounds() -> SearchCapacityBounds {
+        // 已登记托管资源的实测上界为 6 字节每字母及 141 字节来源标识。
+        // 超过托管预留的未来资源仍须通过宿主原有的严格容量预检。
+        Self::bounds_for(crate::MAX_CANDIDATES, 8, 160)
     }
 
     fn bounds(&self, candidates: usize) -> SearchCapacityBounds {
-        let max_candidate_text_bytes = self.max_text_bytes * INPUT_BYTES;
+        Self::bounds_for(candidates, self.max_text_bytes, self.max_edge_source_bytes)
+    }
+
+    fn bounds_for(
+        candidates: usize,
+        max_text_bytes: usize,
+        max_edge_source_bytes: usize,
+    ) -> SearchCapacityBounds {
+        let max_candidate_text_bytes = max_text_bytes * INPUT_BYTES;
         // 每条边至少消耗一个ASCII字母；末音节前缀仍只增加一个词条。
         let diagnostic_path_bytes = std::mem::size_of::<SearchPath>()
             + CANDIDATE_ID_BYTES
-            + INPUT_BYTES * (std::mem::size_of::<EdgeSource>() + self.max_edge_source_bytes)
+            + INPUT_BYTES * (std::mem::size_of::<EdgeSource>() + max_edge_source_bytes)
             // 最多64个非零消耗音节；每弧两条模糊规则或一条编辑，字符串与结构分开计费。
             + INPUT_BYTES * (std::mem::size_of::<cloudleaf_pinyin::PhoneticArc>()
                 + 2 * std::mem::size_of::<cloudleaf_pinyin::PhoneticChange>() + 128);
@@ -455,6 +548,7 @@ pub(crate) struct SentenceBackend {
     config: Config,
     language: Option<Arc<LanguageSnapshot>>,
     research: Option<Arc<ResearchLanguageSnapshot>>,
+    ranker_before_resource_fallback: Option<Ranker>,
     left_word: Option<String>,
     scheme: cloudleaf_pinyin::SchemeConfig,
     transitions: cloudleaf_search::TransitionCache,
@@ -514,6 +608,7 @@ impl SentenceBackend {
             config,
             language,
             research: None,
+            ranker_before_resource_fallback: None,
             left_word,
             scheme: cloudleaf_pinyin::SchemeConfig::default(),
             transitions,
@@ -607,6 +702,38 @@ impl SentenceBackend {
             self.left_word.clone(),
         )?;
         replacement.research = self.research.clone();
+        replacement.ranker_before_resource_fallback = self.ranker_before_resource_fallback;
+        replacement.scheme = self.scheme.clone();
+        replacement
+            .transitions
+            .set_enabled(self.transitions.is_enabled());
+        Ok(replacement)
+    }
+
+    pub(crate) fn idle_resources(
+        &self,
+        snapshot: Arc<SearchSnapshot>,
+        language: Option<Arc<LanguageSnapshot>>,
+    ) -> Result<Self, CoreError> {
+        if self.research.is_some() {
+            return self.resources(snapshot, language);
+        }
+        let ranker = self
+            .ranker_before_resource_fallback
+            .unwrap_or(self.config.ranker);
+        let mut config = self.config.clone();
+        if language.is_none() && !matches!(ranker, Ranker::Structural | Ranker::Weighted) {
+            config.ranker = Ranker::Structural;
+        } else {
+            config.ranker = ranker;
+        }
+        let left_word = self.left_word.clone().filter(|id| {
+            config.ranker == Ranker::ContextRerank
+                && snapshot.entries().iter().any(|entry| &entry.id == id)
+        });
+        let fallen_back = config.ranker != ranker;
+        let mut replacement = Self::configured(snapshot, config, language, left_word)?;
+        replacement.ranker_before_resource_fallback = fallen_back.then_some(ranker);
         replacement.scheme = self.scheme.clone();
         replacement
             .transitions
@@ -854,6 +981,13 @@ impl SentenceBackend {
         diagnostic.waiting = result.waiting;
         diagnostic.finite_pool_only = result.finite_pool_only;
         diagnostic.statistics = result.statistics;
+        // 仅公开已完成按位置搜索的完整路径。其它预算失败沿用原文回退。
+        let publish = diagnostic.statistics.budget.is_none()
+            || (diagnostic.statistics.budget == Some(Budget::GraphEdges)
+                && config.method == Method::PositionDag
+                && limited.is_none()
+                && self.research.is_none()
+                && graph.has_reachable_suffix_graph_cap());
         let mut candidates = Vec::with_capacity(result.candidates.len());
         diagnostic.paths = Vec::with_capacity(result.candidates.len());
         for path in result.candidates {
@@ -907,7 +1041,7 @@ impl SentenceBackend {
                 features: path.features,
                 edges,
             });
-            if diagnostic.statistics.budget.is_none() {
+            if publish {
                 candidates.push(Candidate {
                     id,
                     text: path.text,

@@ -5,7 +5,8 @@ use crate::resources::{ResourceIdentity, ResourceRequest, ResourceSlot, inspect}
 use crate::settings::{ProviderChoice, Settings, SettingsRepository};
 use cloudleaf_settings::{
     InputPreferences, InputPreferencesRepository, InputSettingsError, InputSettingsStatus,
-    LoadedInputPreferences, RuntimeSettingsReceipt, read_runtime_receipts,
+    LanguageResourceConfig, LanguageResourceRepository, LoadedInputPreferences, ResourceAction,
+    ResourceReceipt, RuntimeSettingsReceipt, read_runtime_receipts,
 };
 use cloudleaf_translation::*;
 use cloudleaf_translation_integrity::{Glossary, MAX_GLOSSARY_BYTES};
@@ -24,6 +25,7 @@ pub(crate) enum SetupCommand {
     Define(DefinitionRequest),
     ReadRuntime,
     InspectResource(ResourceRequest),
+    SaveDictionaryRuntime(u64, ResourceAction),
     UserDictionary(PathBuf, Option<u64>, UserAction),
     SaveKey(Settings, Secret),
     DeleteKey(Settings),
@@ -47,10 +49,17 @@ pub(crate) enum SetupEvent {
     SaveRejected(String),
     Input(Result<LoadedInputPreferences, InputSettingsError>, bool),
     Defined(DefinitionTask, Result<DefinitionLookup, TranslationError>),
-    Runtime(std::io::Result<Vec<RuntimeSettingsReceipt>>),
+    Runtime(RuntimeView),
+    DictionaryRuntimeSaved(Result<LanguageResourceConfig, String>),
     Resource(ResourceSlot, Result<ResourceIdentity, &'static str>),
     User(Result<UserDictionaryView, cloudleaf_user::Error>),
     Key(Result<&'static str, crate::platform::PlatformError>),
+}
+
+pub(crate) struct RuntimeView {
+    pub settings: std::io::Result<Vec<RuntimeSettingsReceipt>>,
+    pub dictionary: Result<LanguageResourceConfig, String>,
+    pub hosts: Result<Vec<ResourceReceipt>, String>,
 }
 
 pub(crate) struct SetupHandle {
@@ -68,6 +77,7 @@ impl SetupHandle {
             .spawn(move || {
                 let repository = SettingsRepository::new(directory.clone());
                 let input = InputPreferencesRepository::new(directory.clone());
+                let resources = LanguageResourceRepository::new(directory.clone());
                 let mut definitions = DictionaryCache::default();
                 while let Ok(command) = commands.recv() {
                     let event = match command {
@@ -95,8 +105,15 @@ impl SetupHandle {
                             }
                         }
                         SetupCommand::ReadInput => SetupEvent::Input(input.load(), false),
-                        SetupCommand::ReadRuntime => {
-                            SetupEvent::Runtime(read_runtime_receipts(&directory))
+                        SetupCommand::ReadRuntime => SetupEvent::Runtime(RuntimeView {
+                            settings: read_runtime_receipts(&directory),
+                            dictionary: resources.load().map_err(|e| e.to_string()),
+                            hosts: resources.receipts().map_err(|e| e.to_string()),
+                        }),
+                        SetupCommand::SaveDictionaryRuntime(revision, action) => {
+                            SetupEvent::DictionaryRuntimeSaved(
+                                resources.save(revision, action).map_err(|e| e.to_string()),
+                            )
                         }
                         SetupCommand::InspectResource(request) => {
                             SetupEvent::Resource(request.slot, inspect(request))

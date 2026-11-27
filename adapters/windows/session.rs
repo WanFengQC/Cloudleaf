@@ -42,6 +42,7 @@ struct PendingWrite {
 pub(crate) struct Host {
     // 固定对象预算凭证本身持有模块租约，避免 Host 另计同一存活边界。
     recovery_budget: Arc<budget::Reservation>,
+    pub(super) search_resource_bounds: Option<SearchCapacityBounds>,
     epoch_cost: (usize, usize),
     epoch_budget: RefCell<Option<(u64, Arc<budget::Reservation>)>>,
     pending_write: RefCell<Option<PendingWrite>>,
@@ -207,6 +208,7 @@ impl Host {
             projection,
             fixed,
             recovery_cost(),
+            None,
         )
     }
 
@@ -214,13 +216,14 @@ impl Host {
         snapshot: Arc<SearchSnapshot>,
         search_config: cloudleaf_search::Config,
         config: InputConfig,
+        managed_resources: bool,
     ) -> Result<Shared> {
         let dictionary_bytes = snapshot.estimated_bytes();
         let engine = InputEngine::with_search(snapshot.clone(), search_config.clone(), config)
             .map_err(|_| Error::new(E_FAIL, "输入搜索配置无效"))?;
         let projection = InputEngine::with_search(snapshot, search_config, config)
             .map_err(|_| Error::new(E_FAIL, "投影搜索配置无效"))?;
-        Self::from_search_engines(engine, projection, dictionary_bytes)
+        Self::from_search_engines(engine, projection, dictionary_bytes, managed_resources)
     }
 
     pub fn with_language(
@@ -228,6 +231,7 @@ impl Host {
         search_config: cloudleaf_search::Config,
         language: Arc<cloudleaf_input::LanguageSnapshot>,
         config: InputConfig,
+        managed_resources: bool,
     ) -> Result<Shared> {
         let fixed_bytes = checked_cost(
             snapshot
@@ -245,17 +249,28 @@ impl Host {
         let projection =
             InputEngine::with_language(snapshot, search_config, language, None, config)
                 .map_err(|_| Error::new(E_FAIL, "投影语言配置无效"))?;
-        Self::from_search_engines(engine, projection, fixed_bytes)
+        Self::from_search_engines(engine, projection, fixed_bytes, managed_resources)
     }
 
     fn from_search_engines(
         engine: InputEngine,
         projection: InputEngine,
         dictionary_bytes: usize,
+        managed_resources: bool,
     ) -> Result<Shared> {
-        let bounds = engine
+        let mut bounds = engine
             .search_capacity_bounds()
             .ok_or_else(|| Error::new(E_FAIL, "缺少搜索容量约定"))?;
+        if managed_resources {
+            let managed = SearchSnapshot::managed_resource_capacity_bounds();
+            bounds.max_candidate_text_bytes = bounds
+                .max_candidate_text_bytes
+                .max(managed.max_candidate_text_bytes);
+            bounds.max_frame_bytes = bounds.max_frame_bytes.max(managed.max_frame_bytes);
+            bounds.max_diagnostic_bytes = bounds
+                .max_diagnostic_bytes
+                .max(managed.max_diagnostic_bytes);
+        }
         let (epoch_cost, frame_bytes, diagnostic_bytes) = search_recovery_cost(bounds)?;
         // 快照与两份持久诊断按Host保守计费，事件FIFO只复制frame，不重复计诊断。
         let fixed = checked_cost(
@@ -270,7 +285,7 @@ impl Host {
                 .and_then(|value| value.checked_add(frame_bytes.checked_mul(2)?))
                 .and_then(|value| value.checked_add(diagnostic_bytes.checked_mul(2)?)),
         )?;
-        Self::from_engines(engine, projection, fixed, epoch_cost)
+        Self::from_engines(engine, projection, fixed, epoch_cost, Some(bounds))
     }
 
     fn from_engines(
@@ -278,6 +293,7 @@ impl Host {
         projection: InputEngine,
         fixed: usize,
         epoch_cost: (usize, usize),
+        search_resource_bounds: Option<SearchCapacityBounds>,
     ) -> Result<Shared> {
         if !budget::can_reserve_host(fixed) {
             return Err(Error::new(E_FAIL, "模块恢复固定对象预算已满"));
@@ -287,6 +303,7 @@ impl Host {
             .ok_or_else(|| Error::new(E_FAIL, "模块恢复固定对象预算已满"))?;
         Ok(Rc::new(Self {
             recovery_budget,
+            search_resource_bounds,
             epoch_cost,
             epoch_budget: RefCell::new(None),
             pending_write: RefCell::new(None),
@@ -2012,5 +2029,6 @@ pub(crate) use input_review::run_with_language as review_language_host;
 #[path = "isolated_input.rs"]
 mod isolated_input;
 pub(crate) use isolated_input::benchmark as benchmark_input_host;
+pub(crate) use isolated_input::review_resources as review_language_resources;
 pub(crate) use isolated_input::review_settings as review_settings_host;
 pub(crate) use isolated_input::run as interactive_input_host;
