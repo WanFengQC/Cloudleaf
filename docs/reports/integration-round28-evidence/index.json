@@ -1,0 +1,405 @@
+{
+  "binary_sha256": {
+    "cloudleaf-bridge-headless.exe": "ceb206cba634007d5006ba3f9814a3dc9e6866135f34145edb71322cc1efdd91",
+    "cloudleaf-cli.exe": "7c373c4c4af059edca768d3daa4743ff37798bc21cde1f667dbc6e60e5c3ce8f",
+    "cloudleaf-ime.exe": "24a6a6f5a6a9fee0463e0f81f4b1b573ae49ccbbde380a5926e8c25b57d8cccf",
+    "cloudleaf-translation-panel.exe": "40cd53e35148a1d7f565a52b674f7149aa37ed24883d64f57c8849f9297587d3",
+    "cloudleaf-translation-worker.exe": "222a21fe10a7c4767d7b82ed2ae2cb12a8c23c636d4664467eeb3d7aeb7c472d",
+    "cloudleaf_windows_ime.dll": "65feeef38c0d243e0a392db32cffd147de4ff4f7bbf13c1cf25657bc96a9b286",
+    "examples/input_trace.exe": "ff0e8248a23654054f993f29b75be4d43888ef2a5f0277df3eacd22869d9467e",
+    "examples/language_audit.exe": "b4429a5a29534113d9b24696bdd79b1ffe780a2dcacf73c3423505a9a2cb4740",
+    "examples/mixed_input_trace.exe": "66c487d87cdf48d5a72c3a62321f47180c8058663655223b3a4c61c58a9f4e77"
+  },
+  "failure_log_identities": {
+    ".local/round21-runs/round28-definitions-research/result.json": {
+      "returncode": 101,
+      "stderr": {
+        "bytes": 506,
+        "sha256": "b7ea266490420426f7c87b39186214bfe2b5afadcad95fa2d285b350d6ad000a"
+      },
+      "stdout": {
+        "bytes": 543,
+        "sha256": "f39ffb84681ad40c07dd9f9ac2ef633dc148e55218814a91b182e186c5a0fb0c"
+      }
+    },
+    ".local/round21-runs/round28-mixed-baseline-replay/result.json": {
+      "returncode": 101,
+      "stderr": {
+        "bytes": 248,
+        "sha256": "feb423a52c498be93fbabec9338f13a6697e635648d7ade2ec1d216e1b6a2852"
+      },
+      "stdout": {
+        "bytes": 92038,
+        "sha256": "d4fda2ac9fef6986c4f0dd942dfb392d5a5618d216d73c2366eedec0524abaad"
+      }
+    },
+    ".local/round21-runs/round28-mixed-coda-red/result.json": {
+      "returncode": 101,
+      "stderr": {
+        "bytes": 280,
+        "sha256": "a0a91a8fd228f11f8b48556452172c6f05a0fa9f65daeaae7a09c9f4a350f93b"
+      },
+      "stdout": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    ".local/round21-runs/round28-mixed-red-test/result.json": {
+      "returncode": 101,
+      "stderr": {
+        "bytes": 405,
+        "sha256": "39e11a5c0786db8f5aede33dd366f87e033eed97df5089dd0aaa37bf95ed030e"
+      },
+      "stdout": {
+        "bytes": 671,
+        "sha256": "f8fa5ef826fbe8503e6010d6b8d946d2bea179c9793b79dc79200bcf4afe8cc4"
+      }
+    },
+    ".local/round21-runs/round28-search-scoped-final/result.json": {
+      "returncode": 101,
+      "stderr": {
+        "bytes": 345,
+        "sha256": "d6c7d2f41dc18a322d3c9f9737c72439003dbd2638dbda79f918661ea405f3d8"
+      },
+      "stdout": {
+        "bytes": 2323,
+        "sha256": "e37a388834296c0fd5b7ab6018afa3cb1f6c18fe3b1e6dfbbf22f069e85fb872"
+      }
+    }
+  },
+  "files": {},
+  "format": "cloudleaf-round28-audit-v1",
+  "generated_utc": "2026-11-27T01:05:09.329050+00:00",
+  "implementation": "b59c95bbf5ab7332731095cc95a7d75f634f5056",
+  "raw_kept_locally": {
+    ".local/r28-mixed-dev/mixed-input-round28.tsv": {
+      "bytes": 3560,
+      "sha256": "1fbca98904b72fa820ca25c5900e714c054a67cf826fc490cd133d91b1849730"
+    },
+    ".local/round21-runs/round28-definitions-research-fixed/result.json": {
+      "bytes": 54625,
+      "sha256": "d86b833c1f909f0999644cc5cc0433fe3efcd390795eb2e88f0abd9cad5af8cd"
+    },
+    ".local/round21-runs/round28-mixed-exact/public-safe.json": {
+      "bytes": 298,
+      "sha256": "d367bd8cf7f40dc0cabb22ab63a91bfc48d59f6f1d1fe5420c42e5efc286ed19"
+    },
+    ".local/round21-runs/round28-reference1548/result.json": {
+      "bytes": 54559,
+      "sha256": "d6c83efa8c4b16f1dc3e3cd133c9eb23538db4589aa46694bcf02fafe163d4a8"
+    },
+    ".local/round21-runs/round28-reference2186/result.json": {
+      "bytes": 54550,
+      "sha256": "812cd2b16e86662c654227b29984b19024e6c88a4fa0a642c6edf49a27215717"
+    },
+    ".local/round27-ci/round28-baseline/summary.json": {
+      "bytes": 10264,
+      "sha256": "49c4083a6e259e9d284ef95f945073fc552d4f7fec33e9dd443cad29c25299d0"
+    },
+    ".local/round27-ci/round28-baseline/zip-verification.json": {
+      "bytes": 952,
+      "sha256": "48e113371c96b8459e2818de23eb9b0f2d7bfb28558ccdef0ba5fe7f1c403d2b"
+    },
+    ".local/round28-bridge-actual/public-safe.json": {
+      "bytes": 1635,
+      "sha256": "272378255ad9fd64f8d706777034f1d89739219a52af0bfc659e151b0dfd7787"
+    },
+    ".local/round28-entry-replays/public-safe.json": {
+      "bytes": 3192,
+      "sha256": "6d0c22bea148cb509a978eabb6513642db329c0cb84e3f205d88f1c861d86e9a"
+    },
+    ".local/round28-language-regression/public-safe.json": {
+      "bytes": 897,
+      "sha256": "f5944ccd0760481347ff1bc7171814f0cf9868ea2141da25ab2f5c4a79d5475f"
+    },
+    ".local/round28-legacy-search/summary.json": {
+      "bytes": 28493,
+      "sha256": "82bbbad9de5fd5012260f31bdfdcb6488d8406d97c91623e29e507af88ca73fd"
+    },
+    ".local/round28-migration-real/public-safe.json": {
+      "bytes": 319,
+      "sha256": "2ad10671f5c461a744a80a6410ac9253364dd31e33d94521de0f5ab1ace54647"
+    },
+    ".local/round28-release-archived/public-safe.json": {
+      "bytes": 1664,
+      "sha256": "fa7467dd00a6202861f835346ff2f4f53ebf89888ee95cdd16c248fa0fd9ced2"
+    },
+    ".local/round28-search-alloc/summary.json": {
+      "bytes": 145180,
+      "sha256": "9a59f3a50fba119e8f1aac46c4db3df2963dbbd8d1cdaa354a59a0774546cd66"
+    },
+    ".local/round28-search-caps/summary.json": {
+      "bytes": 764,
+      "sha256": "5da54d0cb8b64798beb71a7120996ea4a0c0178760f1bcb53fb2a127a8332f38"
+    },
+    ".local/round28-search-input-clean/summary.json": {
+      "bytes": 183555,
+      "sha256": "f76f9a4351dc626e469f5d1bb3949af3143035fecb3a663c263fdc6224652df0"
+    },
+    ".local/round28-search-profile/summary.json": {
+      "bytes": 132585,
+      "sha256": "300f66e567b85d4df0d7b2b50801c780ba1aab7182b541d928eb86a222c38b06"
+    },
+    ".local/round28-translation-real/comparison-safe.json": {
+      "bytes": 636,
+      "sha256": "0aca23d613091a514ef4005ccf660f826598681969900ed3e3c53ad1461074fc"
+    },
+    ".local/round28-verified-results.json": {
+      "bytes": 10810,
+      "sha256": "6f6c4b620c3a8c24bb54e6e27eee1d7123c28a720be87bdc1d6d486d86b10786"
+    },
+    ".local/round28-worker-quiet-conditions.json": {
+      "bytes": 4490,
+      "sha256": "5fa9c9b50742ba9a0932791c8fc24b39d7ee8fb6644f8f9e3019c72750b83fb2"
+    },
+    ".local/round28-worker-quiet/public-safe.json": {
+      "bytes": 5705,
+      "sha256": "c17bb6636a1fef4c4a618dced5d9fffb91af8a0e4b595e4452f5f8d52fe20a3d"
+    },
+    ".local/round28-worker-quiet/summary.json": {
+      "bytes": 52140,
+      "sha256": "ed5e6eb0b9cd1d274d8a77e4dcbb383ce48e0e9ae86e07fb1700f2d220b26cc6"
+    }
+  },
+  "replays": {
+    "round28-bridge": {
+      "result_sha256": "6611753eaa24713f72423110264592999f83fb9775103ad34acb6db697736c6f",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 77,
+        "sha256": "30fc38966c8192b3e3267e932eb89162c5236a584d6670d2ff48d0ec9dbfc8ef"
+      }
+    },
+    "round28-definitions-research-fixed": {
+      "result_sha256": "d86b833c1f909f0999644cc5cc0433fe3efcd390795eb2e88f0abd9cad5af8cd",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 296,
+        "sha256": "ef8868df6e27058ddc897192ec1fcc0c7545f33207c14695957cc08936d1b149"
+      },
+      "stdout": {
+        "bytes": 165,
+        "sha256": "6a4c85d16c5c4ff100ba3e839a45530a22d94db033fd505a072e0cfd4828b638"
+      }
+    },
+    "round28-entrypoints": {
+      "result_sha256": "f3dfdc3ed92276f4fb04a95bfb56cc7bf940a29a59b2a423a3354858158933c3",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 67,
+        "sha256": "5c4c9613682b621cc24ddb48d81032166132ac6d29e045d7791cb52c3258c00b"
+      }
+    },
+    "round28-language-compare": {
+      "result_sha256": "6a78cda5ec116c702c5718d19c76424d53e81333dc03262d3c1c88d5933998b7",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 278,
+        "sha256": "3d9a17d2db7be8b5683c464dfabd547a7c8c455fb07d59984b99e6a84134f2f1"
+      }
+    },
+    "round28-language-driver": {
+      "result_sha256": "8d834aa876fa5dcc74584b9a8f325373928115aea1c9baf5ad6bfe9d5f754952",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 408,
+        "sha256": "f1c05ff12f179d7a255ab981e3baf926424ef7a9fd1a4ed4d1335b056ce82e88"
+      }
+    },
+    "round28-legacy-compare": {
+      "result_sha256": "6a4b3f49ea5f64992da643cc288a2cec424e9e6089212be33edbdc7d8d5bc324",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 43,
+        "sha256": "922fb28482e6cc7696e35281b00b3d61a790bf17e71a323f46c82393f1500177"
+      }
+    },
+    "round28-legacy-search-driver": {
+      "result_sha256": "482217e87918ecca5cd9c28296bcaa2a16daa61b9cfb809af8782f30828206fb",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 10104,
+        "sha256": "4219fe7187c2ec2aecbb50291cac4d6467abd8d73735f3bf77938f7e7a6ccf6a"
+      }
+    },
+    "round28-migration-real": {
+      "result_sha256": "ec7d1b2a996dcde32408816bca080a1afe3a49731c21c15e3e68acacb0dac9b4",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 297,
+        "sha256": "91180d8da3416cab490b908ea35586db3a01b89c0d7046c5dd5eae53447d3e49"
+      }
+    },
+    "round28-mixed-exact": {
+      "result_sha256": "55be3fdb2fd6eb50cdf4090d3f354b4bb0cf79baae7e25defb519cbdd921aa39",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 115529,
+        "sha256": "7cb0655db768de32cb8caf48842aecac1621432d68e1af44d8d0f0e0193273dc"
+      }
+    },
+    "round28-reference1548": {
+      "result_sha256": "d6c83efa8c4b16f1dc3e3cd133c9eb23538db4589aa46694bcf02fafe163d4a8",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 165,
+        "sha256": "a1a34d462eac3393e08b3903e00c0b0bea37187a803a24a10322d9a05d83085c"
+      },
+      "stdout": {
+        "bytes": 226,
+        "sha256": "7070d28369af7b2719bb99e754677ae54e5f40a7b6d6068157e624a9d51b097b"
+      }
+    },
+    "round28-reference2186": {
+      "result_sha256": "812cd2b16e86662c654227b29984b19024e6c88a4fa0a642c6edf49a27215717",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 145,
+        "sha256": "c5de3d3881c4a1d94a49279f0c232266a0ca534d4a6cd8fde09c73a7193c51dd"
+      },
+      "stdout": {
+        "bytes": 312,
+        "sha256": "5da55d5dba3ef2ef49ba0f172ac53350a74fc633969b49c900991e76ec5ae2a4"
+      }
+    },
+    "round28-release-archival": {
+      "result_sha256": "49190c3d0a4879a4bd0083974a561fbc8d7cf8e170d55b6e7c8eeb6277d91f2b",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 1341,
+        "sha256": "67b41af71e2a7f3cbbaa6c59b093cd39d0cf6b5e782be1c62f1fef1db2c96186"
+      }
+    },
+    "round28-translation-build": {
+      "result_sha256": "18a6a83bf472e0916713c7163aa1d8e02bcecef098ad97c95dd16853820a3ae8",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 20,
+        "sha256": "18b516645c78070e6caf543310d2cebbf155360563ead8aaba13b411a7d18042"
+      }
+    },
+    "round28-translation-comparison": {
+      "result_sha256": "63d930a8818f2e8206fd10a44b95df1ad5785b4bb73c0ed0433f751774dcbba0",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 476,
+        "sha256": "1a2a6402165b4c30e21416198b12d09d93d2c5c579577ccf898640765d0c76de"
+      }
+    },
+    "round28-translation-replay": {
+      "result_sha256": "6f4f18321cf66051491ea80797b3b9309ad9f4c63a3bf3825b5ec772964a844e",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 2594,
+        "sha256": "5fd4a79abad6e897ac2a97a7036c44403512ae4555c8593971123496c24cd84b"
+      }
+    },
+    "round28-worker-driver": {
+      "result_sha256": "fd7701364c22ba63a40a0af7eaa9b12ffb9c158ade18f474568bc7eb918d7398",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 893,
+        "sha256": "c9c6a1c51c6935b110a0a654cb24577abdd32e1b3b3d6eb862a85b53b38417dc"
+      }
+    },
+    "round28-worker-release": {
+      "result_sha256": "43f92c8adc88ca182cbf3a01f316e5048283c90b46c4fe91bf9e30180c5e1f80",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 448,
+        "sha256": "f41bff6d2d1869677d5e8afc5af381950b60d91f0db42b91d6f4dcb65f9fcec0"
+      },
+      "stdout": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "round27_baseline": "a5675b0e88fb4ea9f0e88061350f4a255beb98c5",
+  "runtime_implementation": "e46cfc60b901739cd5f1d65185b7a675d8102e38",
+  "source_sha256": {
+    ".github/workflows/ci.yml": "36c989fe31a8e2d5e4b942e385499bf3bed91e4c21cbdb92dc01cafeae97b72a",
+    "Cargo.lock": "450dc8505444c782d9391ebe8ce9e95e7dfd6982def0d89daecdbce8c3ab09f0",
+    "adapters/windows/input_review.rs": "1e5bc451944b14d2ade28fc3bd1b542252a0e9542e4103ce0167d9346d8577f1",
+    "adapters/windows/isolated_input.rs": "ac04f58a742cb854d88d0f3001fc86b9e510bd7f0b4dc92356ed308e3bdb173d",
+    "adapters/windows/isolated_settings.rs": "d0feebdab14c53beba663967eff26a32963d391ba24f80526951d631f4ff7e17",
+    "apps/cloudleaf-settings/src/input.rs": "2757d0a8407e0562b6b0777faebc10dbed8fb7c36f8ec193f127b274b06f69e2",
+    "apps/cloudleaf-settings/src/lib.rs": "96348aa4cd8381118eb04a1980ac4c9888cc02908051dcdb37af960baafc23cd",
+    "apps/cloudleaf-settings/src/runtime.rs": "896ad38bfc49f2c84caec885d3aed2b9c7e8e93dac66ab51ddc687c9b3343b4f",
+    "apps/cloudleaf-settings/tests/round28_runtime.rs": "980181d0f34dcd4752dd55defcb9120645e6b947f1248b173ec57cf6048d2ccf",
+    "apps/cloudleaf-translation-panel/Cargo.toml": "4b9759d5c9d4b1d464a916392f7f8116c41eda12a2b9eb6254789b3c24aad2f2",
+    "apps/cloudleaf-translation-panel/src/center.rs": "a24e61b21bf6d44bc22c08dfab6fab99664d34911cb4dd6735f2968395a67b30",
+    "apps/cloudleaf-translation-panel/src/controller.rs": "1bf0319d19879815cd82a50a92b57604e3cbe10bf60a736077bbc3590cca68f6",
+    "apps/cloudleaf-translation-panel/src/definitions.rs": "7aa2d26c1224cd80ae82babe87c44f5f1782ebfdaaa679fc51804ddaffa9918d",
+    "apps/cloudleaf-translation-panel/src/lib.rs": "d99e09be49caa542a36d9d568c7fb76dce33e29422e0cbfbf93b933fed7647bf",
+    "apps/cloudleaf-translation-panel/src/resources.rs": "fd76ec2e9231b20b535d94b2cd61dba73d785f5853b431b71ef5fbc2d9ff4b28",
+    "apps/cloudleaf-translation-panel/src/setup.rs": "12a1466e4b5eef0905aa79fe0cef6c1735c8d8ed5612d7a3aa059dbfc0920e57",
+    "apps/cloudleaf-translation-panel/src/windows_ui.rs": "7253f83146767001ca54657aa2950d70967b3669009750b8594e3428bcc0fd4a",
+    "apps/cloudleaf-translation-panel/tests/controller.rs": "c3fbb2c47a180e6a5f01ff6c4bc3ad4f2b6a1c0be6421541bdbc95dbf260b362",
+    "crates/cloudleaf-input/examples/mixed_input_trace.rs": "0c882c4af8e8e2ec65a8af02ac186018b390e0bd25aa20ae1b71d9949dad0e7d",
+    "crates/cloudleaf-input/src/lib.rs": "26cbae10e6cf13c9c74eb7f48a47801718a5abe148a170fee7a23ee709623c7f",
+    "crates/cloudleaf-input/src/mixed.rs": "2310d73b5bad6eb21afddaa8227101e8e5f877c5bd4a47bf792276b88609b82a",
+    "crates/cloudleaf-input/src/sentence.rs": "57800b7d25ad8684b1cfa539c32a7e7acf30ee7eedb1195011e8f38992bf9029",
+    "crates/cloudleaf-input/tests/mixed_input.rs": "6d877ecb436743a7fb5b8914ac600f95d96961e4f2d87fc2d449054f8e4f9e19",
+    "crates/cloudleaf-search/src/lattice.rs": "366d0a58a18091efc25968fdf311ef325c071c3c2fcbdd53da4f058cd5bb1a9f",
+    "crates/cloudleaf-search/src/layer.rs": "8036821f352be758bada66fab255f79235868e2eb53fba405a53f87ff04952fc",
+    "crates/cloudleaf-search/src/lexicon.rs": "00df5fb6c66da8b92290cf7af1ae504887e7d567dcfaeb2627c9cdecf0bf032b",
+    "crates/cloudleaf-search/src/schemes.rs": "d6c6f290a412cdd9f71258443399d3903bc7c846633258fa2e59556a3f74ca06",
+    "tests/test_release_stage.py": "0a21a7002b78ecbaa45f7c53712baef3884decea922b8f64fd55012c339279ce",
+    "tools/performance/round26_worker_isolation.py": "d1e39c28855adfcc45112be90d3579ce8643971c2785c537641347fd4a97b4c1",
+    "tools/performance/round28_search_replay.py": "f1262008f28c2497508fc05f577f80f763516970b030d5c0e3e4ed82000d0b60",
+    "tools/release_stage.py": "2503023b4b3c05e0daa5b4f8d4b763275d04fd8bffabcdf7a625a1a40ebb27c2"
+  }
+}
