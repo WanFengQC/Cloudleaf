@@ -1,6 +1,6 @@
 # Cloudleaf 产品能力追踪
 
-Round 28 延续原始 50 项要求和验收定义。真实桌面为 `not-run/user-paused`。原始需求与交付条件见[产品范围](../product-scope.md)，本轮证据见[交付状态](integration-round28-status.md)。
+Round 29 延续原始 50 项要求和验收定义。真实桌面为 `not-run/user-paused`。原始需求与交付条件见[产品范围](../product-scope.md)，本轮证据见[交付状态](integration-round29-status.md)。
 
 | 原需求 | 当前状态 | 证据与缺口 |
 | --- | --- | --- |
@@ -13,22 +13,22 @@ Round 28 延续原始 50 项要求和验收定义。真实桌面为 `not-run/use
 | REQ-PY-02 | automated-verified | 多切分候选格和固定 Scheme 差分 |
 | REQ-PY-03 | research-only | 纠错开关可经宿主热应用，独立精确率及误改缺测 |
 | REQ-PY-04 | research-only | 模糊音可经宿主热应用，保留固定分组和代价回归，实际误配待核 |
-| REQ-PY-05 | automated-verified | 音节解释惰性生成，1,656 键配对候选和提交身份一致。两条简拼仍截断 7、45 次，两个已知目标未恢复 |
+| REQ-PY-05 | automated-verified | 固定 16,384 边内两条目标候选均第 1，选词经 Applied 核对；43 个断开图恢复，原图边截断仍报告 |
 | REQ-PY-06 | automated-verified | 小鹤双拼配置、输入轨迹与关闭语义已测 |
 | REQ-CA-01 | automated-verified | 可追溯词条格、来源和多条合法路径 |
-| REQ-CA-02 | research-only | 简拼减少每键边解释分配，两个同预算目标仍缺失。精确对照和失败分母保留 |
+| REQ-CA-02 | research-only | 满预算时优先保留可接后缀的合法边并发布完整位置搜索候选，243 键简拼延迟仍需降低 |
 | REQ-CA-03 | research-only | 已验证支持度保护、分词偏差和配对退化，默认排序沿用 |
 | REQ-CA-04 | automated-verified | 候选去重、预算诊断和修订过滤 |
 | REQ-CA-05 | research-only | 本轮惰性解释限定在单图；跨键缓存仍默认关闭 |
-| REQ-CA-06 | research-only | 独立长释义面板按任务与输入修订隔离，候选提交与学习路径保持独立 |
+| REQ-CA-06 | research-only | 独立释义按任务和输入修订隔离；宿主活动词典变动使旧释义失效 |
 | REQ-LE-01 | automated-verified | 仅可信 Applied 产生学习凭据，译文与 Unknown 不学习 |
 | REQ-LE-02 | automated-verified | 关闭与清理学习的存储回归，敏感场景人工验证待做 |
 | REQ-LE-03 | automated-verified | 用户词库编辑、持久化、备份与恢复自动回归 |
 | REQ-DI-01 | blocked | 固定词库可追溯，正式现代统计词频与独立质量未获批 |
 | REQ-DI-02 | automated-verified | 原子管线、双构建、来源核对与坏数据拒绝 |
-| REQ-DI-03 | automated-verified | 版本、指针、回滚与进程中断已验证，物理断电未执行 |
+| REQ-DI-03 | automated-verified | 基础和补充槽独立加载、切换与回退；双 Windows 无窗口宿主可收敛，进程中断和既有发布回退保留 |
 | REQ-DI-04 | research-only | 语义索引可按中文词头和完整英语义项查询，保留来源和缺失词性；正式词性和显式义项关系仍缺 |
-| REQ-DI-05 | automated-verified | 缺损资源拒绝且保持基础输入，原子替换对旧状态有回归 |
+| REQ-DI-05 | automated-verified | 源身份及准备失败不改变活动快照；Unknown 待明确处置后应用，用户词库代次保全 |
 | REQ-TR-01 | research-only | Bridge 与独立 Win32 长释义页具有输入修订门禁，可核验研究索引及来源。真实桌面和正式语义数据待验收 |
 | REQ-TR-02 | research-only | 63 条固定双向模型原文一致，增译指令有明确人工复核提示，角色和隐含排他仍缺独立评估 |
 | REQ-TR-03 | manual-not-run | 原生面板及隔离宿主确认代码保留，真实交互继续暂停 |
@@ -42,12 +42,12 @@ Round 28 延续原始 50 项要求和验收定义。真实桌面为 `not-run/use
 | REQ-WIN-04 | automated-verified | 三态、未知隔离、迟到回执与恢复路径自动回归 |
 | REQ-WIN-05 | manual-not-run | 记事本、浏览器、办公编辑和多行真实应用未执行 |
 | REQ-CFG-01 | implemented | 隔离 Windows 输入宿主可对同一配置文件热应用并回执，组合和未知提交延迟处理。正式 TSF 及桌面验收待办 |
-| REQ-CFG-02 | implemented | 资源页显示 Worker、宿主活动配置与快照身份，可分槽核验基础和补充词典；分别加载与切换待实现 |
+| REQ-CFG-02 | implemented | 资源页按宿主展示期望及活动修订、基础和补充层、模型、用户代次和失败；可分别切换及回退 |
 | REQ-QA-01 | automated-verified | 本地全回归和最终 Windows/Linux push CI 单独核验 |
 | REQ-QA-02 | blocked | 运行正式就绪门禁，真实独立人工 gold 尚无 |
-| REQ-QA-03 | research-only | 171 键八轮真实推理配对绝对时延通过，倍率 1.533× 超门槛；简拼时延和真实系统仍待验收 |
+| REQ-QA-03 | research-only | 171 键八轮真实推理配对四项汇总通过，5/8 单轮在倍率门槛内；简拼及真实 Windows 判定仍 partial |
 | REQ-QA-04 | blocked | 状态机和有界资源回归保留，8h/24h 准入未放行 |
-| REQ-QA-05 | implemented | 隔离发行增加允许列表用户资料迁移及 unsigned 签名请求；正式签名、系统安装器和真实系统验收仍待交付 |
+| REQ-QA-05 | implemented | 隔离发行包含版本化词典登记清单，研究补充不入默认包；签名 unsigned、系统安装待验收 |
 | REQ-QA-06 | automated-verified | 不输出私人输入的研发协议、本地默认与学习保护，经自动检查 |
 | REQ-QA-07 | automated-verified | 来源锁、许可原件、依赖和产物校验可重放 |
 | REQ-PL-01 | automated-verified | 共享 Rust 核心在 Windows/Linux 构建，平台业务隔离 |
