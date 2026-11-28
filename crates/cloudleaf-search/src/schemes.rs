@@ -526,14 +526,18 @@ impl<'a> Lattice<'a> {
                     graph.budget = Some(Budget::Intersection);
                     break 'starts;
                 }
-                for arc_index in arcs_at[state.position]..arcs_at[state.position + 1] {
+                let start_arc = arcs_at[state.position];
+                let end_arc = arcs_at[state.position + 1];
+                let costs = &arc_costs[start_arc..end_arc];
+                let arcs = &hypotheses.arcs[start_arc..end_arc];
+                for (offset, (arc, &arc_cost)) in arcs.iter().zip(costs).enumerate() {
                     visits += 1;
                     if visits > max_states {
                         graph.budget = Some(Budget::Intersection);
                         break 'starts;
                     }
-                    let arc = &hypotheses.arcs[arc_index];
-                    let cost = state.cost.plus(arc_costs[arc_index]);
+                    let arc_index = start_arc + offset;
+                    let cost = state.cost.plus(arc_cost);
                     if cost.edits > max_edits {
                         continue;
                     }
