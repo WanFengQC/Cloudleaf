@@ -1,6 +1,6 @@
 # Cloudleaf 产品能力追踪
 
-Round 29 延续原始 50 项要求和验收定义。真实桌面为 `not-run/user-paused`。原始需求与交付条件见[产品范围](../product-scope.md)，本轮证据见[交付状态](integration-round29-status.md)。
+Round 30 延续原始 50 项要求和验收定义。真实桌面为 `not-run/user-paused`。原始需求与交付条件见[产品范围](../product-scope.md)，本轮证据见[交付状态](integration-round30-status.md)。
 
 | 原需求 | 当前状态 | 证据与缺口 |
 | --- | --- | --- |
@@ -13,13 +13,13 @@ Round 29 延续原始 50 项要求和验收定义。真实桌面为 `not-run/use
 | REQ-PY-02 | automated-verified | 多切分候选格和固定 Scheme 差分 |
 | REQ-PY-03 | research-only | 纠错开关可经宿主热应用，独立精确率及误改缺测 |
 | REQ-PY-04 | research-only | 模糊音可经宿主热应用，保留固定分组和代价回归，实际误配待核 |
-| REQ-PY-05 | automated-verified | 固定 16,384 边内两条目标候选均第 1，选词经 Applied 核对；43 个断开图恢复，原图边截断仍报告 |
+| REQ-PY-05 | automated-verified | 固定 16,384 边内两条目标仍排第 1，事件 79 空格 Applied，既有 43 个恢复图及 349 个未触顶对照保持一致 |
 | REQ-PY-06 | automated-verified | 小鹤双拼配置、输入轨迹与关闭语义已测 |
 | REQ-CA-01 | automated-verified | 可追溯词条格、来源和多条合法路径 |
-| REQ-CA-02 | research-only | 满预算时优先保留可接后缀的合法边并发布完整位置搜索候选，243 键简拼延迟仍需降低 |
+| REQ-CA-02 | research-only | 预算触顶后按已保留终点判定可达性，继续发布合法部分边。尾延迟与活内存限额仍待闭合 |
 | REQ-CA-03 | research-only | 已验证支持度保护、分词偏差和配对退化，默认排序沿用 |
 | REQ-CA-04 | automated-verified | 候选去重、预算诊断和修订过滤 |
-| REQ-CA-05 | research-only | 本轮惰性解释限定在单图；跨键缓存仍默认关闭 |
+| REQ-CA-05 | research-only | 单图复用相交栈和连续弧索引，跨键缓存仍默认关闭 |
 | REQ-CA-06 | research-only | 独立释义按任务和输入修订隔离；宿主活动词典变动使旧释义失效 |
 | REQ-LE-01 | automated-verified | 仅可信 Applied 产生学习凭据，译文与 Unknown 不学习 |
 | REQ-LE-02 | automated-verified | 关闭与清理学习的存储回归，敏感场景人工验证待做 |
@@ -45,7 +45,7 @@ Round 29 延续原始 50 项要求和验收定义。真实桌面为 `not-run/use
 | REQ-CFG-02 | implemented | 资源页按宿主展示期望及活动修订、基础和补充层、模型、用户代次和失败；可分别切换及回退 |
 | REQ-QA-01 | automated-verified | 本地全回归和最终 Windows/Linux push CI 单独核验 |
 | REQ-QA-02 | blocked | 运行正式就绪门禁，真实独立人工 gold 尚无 |
-| REQ-QA-03 | research-only | 171 键八轮真实推理配对四项汇总通过，5/8 单轮在倍率门槛内；简拼及真实 Windows 判定仍 partial |
+| REQ-QA-03 | research-only | 12 轮真实配对，汇总 1.499×，四项汇总门槛通过。单轮 5/12 满足倍率门槛。简拼及真实 Windows 判定仍 partial |
 | REQ-QA-04 | blocked | 状态机和有界资源回归保留，8h/24h 准入未放行 |
 | REQ-QA-05 | implemented | 隔离发行包含版本化词典登记清单，研究补充不入默认包；签名 unsigned、系统安装待验收 |
 | REQ-QA-06 | automated-verified | 不输出私人输入的研发协议、本地默认与学习保护，经自动检查 |
